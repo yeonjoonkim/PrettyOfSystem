@@ -1,0 +1,50 @@
+<!--TODO: add user information and menu information from app.component-->
+
+<!--User Info-->
+<ion-card id="user-info-card">
+  <ion-card-header>
+    <div id="user-info-title">
+      <ion-card-title>{{user.fullName}}</ion-card-title>
+      <ion-card-subtitle>{{user.role}}</ion-card-subtitle>
+    </div>
+      <ion-button>{{ 'menu.edit' | languageTransform : language.currentLanguage}}</ion-button>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-button expand="block" *ngIf="user">{{ 'menu.signOut' | languageTransform : language.currentLanguage}}</ion-button>
+    <ion-button expand="block" *ngIf="!user"> {{ 'menu.signIn' | languageTransform : language.currentLanguage}}</ion-button>
+  </ion-card-content>
+</ion-card>
+
+
+<!--Menu-->
+<ion-accordion-group>
+
+  <!--Route Link-->
+  <ion-accordion *ngFor="let menu of menus">
+    <!--Header-->
+    <ion-item slot="header" [ngClass]="menu.title === selectedTitleHeading ? 'active' : ''">
+      <ion-icon slot="start" name="{{menu.icon}}"></ion-icon>
+      {{ menu.title | languageTransform : language.currentLanguage}}
+    </ion-item>
+
+    <!--Content-->
+    <ion-list slot="content" *ngFor="let content of menu.content">
+        <ion-item button routerLink="{{content.url}}" routerLinkActive="active" (click)="onChangeMenu(content.url)">
+          <ion-label>
+            <ion-icon slot="start" name="{{content.icon}}"></ion-icon>
+            {{ content.title | languageTransform : language.currentLanguage}}
+          </ion-label>
+        </ion-item>
+    </ion-list>
+  </ion-accordion>
+
+  <!--Language Setting-->
+  <ion-item>
+    <ion-label position="floating"> {{'language.language'| languageTransform : language.currentLanguage}}</ion-label>
+    <ion-select interface="popover" (ionChange)="onChangeLanguage()" [(ngModel)]="selectedLangauge">
+        <ion-select-option *ngFor="let lang of language.languages" [value]="lang.language.code">  {{lang.language.flag}} {{lang.language.name | languageTransform : language.currentLanguage}} </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+</ion-accordion-group>
+

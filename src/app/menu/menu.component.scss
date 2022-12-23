@@ -1,0 +1,14 @@
+#selected-shop-info-card, #user-info-card{
+  margin: 0px 0px 10px 0px;
+  ion-button{
+  background: transparent;
+  --background: transparent;
+  position: relative;
+  margin: auto;
+  }
+}
+
+#user-info-card ion-card-header{
+  display: flex;
+  justify-items: center;
+}

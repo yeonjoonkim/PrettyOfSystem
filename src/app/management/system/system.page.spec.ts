@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { UiLanguageComponent } from './ui-language.component';
+import { SystemPage } from './system.page';
 
-describe('UiLanguageComponent', () => {
-  let component: UiLanguageComponent;
-  let fixture: ComponentFixture<UiLanguageComponent>;
+describe('SystemPage', () => {
+  let component: SystemPage;
+  let fixture: ComponentFixture<SystemPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UiLanguageComponent ],
+      declarations: [ SystemPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UiLanguageComponent);
+    fixture = TestBed.createComponent(SystemPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

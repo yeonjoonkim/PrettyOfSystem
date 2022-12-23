@@ -30,3 +30,9 @@
   margin: 5px;
   cursor: pointer;
 }
+
+.active{
+  --background: rgb(54,53,54);
+  --background: linear-gradient(90deg, rgba(54,53,54,1) 0%, rgba(65,70,86,1) 100%);
+  font-weight: bold;
+}
