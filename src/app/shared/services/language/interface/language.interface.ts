@@ -10,13 +10,30 @@ export interface ILanguagePackageItem
 
 export interface ILanguagePackage{
   //langauge
+  language: ILanguage;
+  menu: ILanguagePackageMenu;
+}
+
+export interface ILanguage{
   language: string;
   englishLangauge: string;
   koreanLangauge: string;
   chineseLangauge: string;
-
-  //Setting
-  settingTitle: string;
 }
+
+//Setting
+export interface ILanguagePackageMenu{
+  setting: string;
+  management: string;
+  systemManagement: string;
+  userManagement: string;
+  shopManagement: string;
+  paymentSubscriptionManagement: string;
+  signOut: string;
+  signIn: string;
+  edit: string;
+}
+
+
 
 

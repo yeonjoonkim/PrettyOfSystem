@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 
 //Import Config
 import { languageTrainsformConfigService } from './language-transform-config.service';
+import { UiLanguagePipe } from './language-transform.pipe';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
+  exports:[UiLanguagePipe],
+  declarations: [UiLanguagePipe]
 })
 
 export class UiLanguagePipeModule {
