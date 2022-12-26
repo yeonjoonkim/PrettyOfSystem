@@ -25,14 +25,29 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-#setting-close{
+.icon{
   font-size: 30px;
   margin: 5px;
   cursor: pointer;
+}
+
+.page-toolbar-icon{
+  margin-right: 10px;
 }
 
 .active{
   --background: rgb(54,53,54);
   --background: linear-gradient(90deg, rgba(54,53,54,1) 0%, rgba(65,70,86,1) 100%);
   font-weight: bold;
+}
+
+.pop-over-container{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 80px;
+}
+
+ion-popover {
+  --width: fit-content;
 }

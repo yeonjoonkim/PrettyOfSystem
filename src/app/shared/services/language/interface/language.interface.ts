@@ -1,39 +1,58 @@
-export interface ILanguagePackageItem
-{
-  language: {
-    code: string,
-    name: string,
-    flag: string
-  };
+//Language Package
+export interface ILanguagePackageItem {
+  language: ILanguagePackageDescription;
   file: any;
 }
 
-export interface ILanguagePackage{
-  //langauge
+//Description
+export interface ILanguagePackageDescription {
+  code: string;
+  name: string;
+  flag: string;
+}
+
+//Key Pair Value
+export interface ILanugagePackageKeyPairValue {
+  key: string;
+  value: string;
+}
+
+//Transform Package
+export interface ILanguagePackage {
   language: ILanguage;
   menu: ILanguagePackageMenu;
+  system: ILanguagePackageSystem;
+  systemModal: ILanguagePackageSystemModal;
 }
 
-export interface ILanguage{
+//Language
+export interface ILanguage {
   language: string;
-  englishLangauge: string;
-  koreanLangauge: string;
-  chineseLangauge: string;
+  english: string;
+  korean: string;
+  chinese: string;
 }
 
-//Setting
-export interface ILanguagePackageMenu{
+//Menu
+export interface ILanguagePackageMenu {
   setting: string;
   management: string;
   systemManagement: string;
   userManagement: string;
   shopManagement: string;
-  paymentSubscriptionManagement: string;
+  paymentSubscription: string;
   signOut: string;
   signIn: string;
   edit: string;
 }
 
+//System Modal
+export interface ILanguagePackageSystemModal{
+  dictionary: string;
+  key: string;
+  value: string;
+}
 
-
-
+export interface ILanguagePackageSystem {
+  open: string;
+}

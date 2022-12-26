@@ -3,9 +3,9 @@ import { ILanguagePackage } from "../interface/language.interface";
 const enLangPackage: ILanguagePackage = {
   language: {
     language: 'Language',
-    englishLangauge: 'English',
-    koreanLangauge: 'Korean',
-    chineseLangauge: 'Chinese',
+    english: 'English',
+    korean: 'Korean',
+    chinese: 'Chinese',
   },
     menu :
     {
@@ -14,10 +14,18 @@ const enLangPackage: ILanguagePackage = {
     systemManagement: 'System Management',
     shopManagement: 'Shop Management',
     userManagement: 'User Management',
-    paymentSubscriptionManagement: 'Payment Subscription',
+    paymentSubscription: 'Payment Subscription',
     signOut: 'Sign Out',
     signIn: 'Sign In',
     edit: 'Edit'
+  },
+  system:{
+    open: 'Open'
+  },
+  systemModal: {
+    dictionary: 'Language Transform Dictionary',
+    key: 'Key',
+    value: 'Value',
   }
 };
 

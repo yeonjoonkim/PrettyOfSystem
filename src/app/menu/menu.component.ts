@@ -27,7 +27,7 @@ export class MenuComponent implements OnInit, OnDestroy {
         {url: '/management/system', title: "menu.systemManagement", icon: "code-slash-outline"},
         {url: '/management/shop', title: "menu.shopManagement", icon: "bag-outline"},
         {url: '/management/user', title: "menu.userManagement", icon: "people-outline"},
-        {url: '/management/payment', title: "menu.paymentSubscriptionManagement", icon: "cash-outline"},
+        {url: '/management/payment', title: "menu.paymentSubscription", icon: "cash-outline"},
     ]},
     {
       title: "language.language", icon: "build-outline",
@@ -55,7 +55,6 @@ export class MenuComponent implements OnInit, OnDestroy {
   async setDefaultTitleHeading(){
     let currentUrl = this.location.path();
     await this.onChangeMenu(currentUrl);
-    console.log(currentUrl)
   }
 
 
