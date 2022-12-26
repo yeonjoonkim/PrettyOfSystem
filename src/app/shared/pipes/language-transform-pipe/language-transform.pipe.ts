@@ -10,7 +10,7 @@ export class UiLanguagePipe implements PipeTransform {
 
   transform(value: any, ...args: any[]): any {
     if(value){
-      return this.language.getString(value);
+      return this.language.getTransformValue(value);
     }
     return value;
   }

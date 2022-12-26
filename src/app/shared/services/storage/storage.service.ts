@@ -28,7 +28,7 @@ export class StorageService {
   }
 
   public async getCurrentLanguage(){
-    let value = await this.storage.get(storageKey.default.language);
+    let value: string = await this.storage.get(storageKey.default.language);
     return value;
   }
 
