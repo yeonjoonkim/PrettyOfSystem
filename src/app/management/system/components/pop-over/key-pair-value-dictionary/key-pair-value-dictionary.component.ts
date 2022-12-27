@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { LanguageService } from 'src/app/shared/services/language/service/language.service';
-import { ILanguagePackageDescription, ILanugagePackageKeyPairValue } from './../../../../shared/services/language/interface/language.interface';
 import { ModalController } from '@ionic/angular';
+import { LanguageService } from 'src/app/shared/services/language/service/language.service';
+import { ILanguagePackageDescription, ILanugagePackageKeyPairValue } from '../../../../../shared/services/language/interface/language.interface';
+
 @Component({
   selector: 'system-key-pair-value-dictionary',
   templateUrl: './key-pair-value-dictionary.component.html',
@@ -22,10 +23,12 @@ export class KeyPairValueDictionaryComponent implements OnInit {
 
   ngOnInit() {}
 
+  /**Language Change segment event */
   onChangeLanguage(){
     this.transformDictionary = this.language.getLanguageTransformValue(this.currentLanguageCode);
   }
 
+  /**Dismiss the Component Modal */
   dismiss(){
     this.modalCtrl.dismiss();
   }

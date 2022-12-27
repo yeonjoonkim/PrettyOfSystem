@@ -5,11 +5,14 @@ import { ISystemPopOverActionCriteria, ISystemPopOverActionItem } from '../../in
 @Injectable({
   providedIn: 'root'
 })
+
 export class SystemManagementPopOverService {
 
   constructor(private language: LanguageService) { }
 
-  public getSystemManagementPopOverButton(){
+
+  /**This function is to provide the action buttons on the Pop Over Component */
+  public getSystemManagementDevelopmentButton(){
     let actionButton: ISystemPopOverActionItem[] = [];
     let keyPairValueAction = this.setKeyPairValuePopOverButton();
 
@@ -17,6 +20,8 @@ export class SystemManagementPopOverService {
     return actionButton;
   }
 
+
+  //**This function is to set the Key Pair Value Component Action */
   private setKeyPairValuePopOverButton(){
     let description = this.language.getTransformValue('systemModal.dictionary');
     let action = this.setDefaultActionCriteria();
@@ -29,6 +34,8 @@ export class SystemManagementPopOverService {
     return keyPairValueCriteria;
   }
 
+
+  /**This will set the default action criteria */
   private setDefaultActionCriteria(){
     let actionControlCriteria: ISystemPopOverActionCriteria = {
       isKeyPairValueActionSheet: false

@@ -1,12 +1,16 @@
 <ion-header>
   <ion-toolbar>
+
+    <!-- Menu -->
     <ion-buttons slot="start">
       <ion-menu-button auto-hide="true"></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      {{'menu.systemManagement'| languageTransform : language.currentLanguage}}
-    </ion-title>
-    <ion-icon class="icon page-toolbar-icon" id="click-trigger" slot="end" name="terminal-outline" (click)="presentPopover($event)"></ion-icon>
+
+    <!-- Title -->
+    <ion-title>{{'menu.systemManagement'| languageTransform : language.currentLanguage}} </ion-title>
+
+    <!-- Development Helper -->
+    <ion-icon class="icon page-toolbar-icon" id="click-trigger" slot="end" name="terminal-outline" (click)="presentDevelopmentPopOver($event)"></ion-icon>
   </ion-toolbar>
 </ion-header>
 

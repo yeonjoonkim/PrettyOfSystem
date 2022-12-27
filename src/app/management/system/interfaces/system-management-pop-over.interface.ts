@@ -6,3 +6,7 @@ export interface ISystemPopOverActionItem{
   description: string;
   action: ISystemPopOverActionCriteria;
 }
+
+export interface ISystemPopOverCriteria{
+  isDevelopment: boolean;
+}
