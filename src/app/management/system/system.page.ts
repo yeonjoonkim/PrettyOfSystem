@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LanguageService } from 'src/app/shared/services/language/service/language.service';
 import { PopoverController } from '@ionic/angular';
-import { SystemManagementPopOverComponent } from './components/pop-over/system-management-pop-over/system-management-pop-over.component';
-import { ISystemPopOverCriteria } from './interfaces/system-management-pop-over.interface';
+import { SystemManagementPopOverComponent } from './components/system-management-pop-over/system-management-pop-over.component';
+import { ISystemPopOverActionItem, ISystemPopOverCriteria, ISystemMenuAction } from './interfaces/system-management-pop-over.interface';
 
 @Component({
   selector: 'app-system',
@@ -10,8 +10,13 @@ import { ISystemPopOverCriteria } from './interfaces/system-management-pop-over.
   styleUrls: ['./system.page.scss'],
 })
 export class SystemPage implements OnInit {
+  public isDevelopment: boolean = false;
+  public menuSelection: ISystemMenuAction = {
+    isRouteManagement: false
+  };
 
   constructor(public language: LanguageService, private popOverCtrl: PopoverController) {
+
   }
 
   ngOnInit() {
@@ -32,5 +37,23 @@ export class SystemPage implements OnInit {
     });
 
     await popOver.present();
+  }
+
+  async presentSysManagementMenuPopOver(e: Event){
+    let criteria: ISystemPopOverCriteria = {
+      isDevelopment: false
+    };
+
+    let menuPopOver = await this.popOverCtrl.create({
+      component: SystemManagementPopOverComponent,
+      event: e,
+      backdropDismiss: true,
+      translucent: true,
+      componentProps: {criteria: criteria}
+    });
+
+    await menuPopOver.present();
+    let event: ISystemPopOverActionItem = await (await menuPopOver.onWillDismiss()).data;
+    this.menuSelection = event.action.menu;
   }
 }

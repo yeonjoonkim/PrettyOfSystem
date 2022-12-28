@@ -22,7 +22,6 @@ export interface ILanguagePackage {
   language: ILanguage;
   menu: ILanguagePackageMenu;
   system: ILanguagePackageSystem;
-  systemModal: ILanguagePackageSystemModal;
 }
 
 //Language
@@ -46,6 +45,16 @@ export interface ILanguagePackageMenu {
   edit: string;
 }
 
+export interface ILanguagePackageSystem {
+  open: string;
+  modal: ILanguagePackageSystemModal;
+  menuSelection: ILanguagePackageSystemMenuSelection;
+}
+
+export interface ILanguagePackageSystemMenuSelection{
+  route: string;
+}
+
 //System Modal
 export interface ILanguagePackageSystemModal{
   dictionary: string;
@@ -53,6 +62,4 @@ export interface ILanguagePackageSystemModal{
   value: string;
 }
 
-export interface ILanguagePackageSystem {
-  open: string;
-}
+

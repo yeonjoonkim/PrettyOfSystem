@@ -2,3 +2,7 @@
   <!--Action Button -->
   <ion-button expand="block" *ngFor="let button of systemPopOverActionButtons" (click)="onClickDevelopmentActionButton(button.action)">{{button.description}}</ion-button>
 </ion-content>
+<ion-content class="ion-padding" *ngIf="!criteria.isDevelopment">
+  <!--Action Button -->
+  <ion-button expand="block" *ngFor="let button of systemPopOverActionButtons" (click)="onClickMenuActionButton(button)">{{button.description}}</ion-button>
+</ion-content>

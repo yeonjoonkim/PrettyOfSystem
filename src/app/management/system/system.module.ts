@@ -14,9 +14,11 @@ import { UiLanguagePipeModule } from '../../shared/pipes/language-transform-pipe
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Component
-import { KeyPairValueDictionaryComponent } from './components/pop-over/key-pair-value-dictionary/key-pair-value-dictionary.component';
-import { SystemManagementPopOverComponent } from './components/pop-over/system-management-pop-over/system-management-pop-over.component';
+import { KeyPairValueDictionaryComponent } from './components/key-pair-value-dictionary/key-pair-value-dictionary.component';
+import { SystemManagementPopOverComponent } from './components/system-management-pop-over/system-management-pop-over.component';
 
+//Import Management Module
+import { RouteManagementModule } from './route-management/route-management.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -25,6 +27,7 @@ import { SystemManagementPopOverComponent } from './components/pop-over/system-m
     SystemPageRoutingModule,
     UiLanguagePipeModule,
     Ng2SearchPipeModule,
+    RouteManagementModule
   ],
   declarations: [SystemPage, KeyPairValueDictionaryComponent, SystemManagementPopOverComponent],
   exports: [KeyPairValueDictionaryComponent, SystemManagementPopOverComponent],

@@ -22,7 +22,7 @@ const routes: Routes = [
   {
     path: 'management/payment',
     loadChildren: () => import('./management/payment/payment.module').then( m => m.PaymentPageModule)
-  },
+  }
 ];
 
 @NgModule({

@@ -80,8 +80,19 @@ export class LanguageService {
       Object.keys(firstKeyValue).forEach((secondKey) => {
         let keyPairName = firstKeyName + '.' + secondKey;
         let keyPairValue = firstKeyValue[secondKey];
-        let element = { key: keyPairName, value: keyPairValue };
-        list.push(element);
+        let isStringType = (typeof keyPairValue) === 'string';
+
+        if(isStringType){
+          let element = { key: keyPairName, value: keyPairValue };
+          list.push(element);
+        }else{
+          Object.keys(keyPairValue).forEach((thirdKey) => {
+            let thirdKeyPairName = firstKeyName + '.' + secondKey + '.' + thirdKey;
+            let thridKeyPairValue = keyPairValue[thirdKey];
+            let element = {key: thirdKeyPairName, value: thridKeyPairValue};
+            list.push(element);
+          });
+        }
       });
     });
 

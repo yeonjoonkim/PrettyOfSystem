@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { LanguageService } from 'src/app/shared/services/language/service/language.service';
-import { ILanguagePackageDescription, ILanugagePackageKeyPairValue } from '../../../../../shared/services/language/interface/language.interface';
+import { ILanguagePackageDescription, ILanugagePackageKeyPairValue } from '../../../../shared/services/language/interface/language.interface';
 
 @Component({
   selector: 'system-key-pair-value-dictionary',

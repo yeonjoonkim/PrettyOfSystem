@@ -20,13 +20,16 @@ const enLangPackage: ILanguagePackage = {
     edit: 'Edit'
   },
   system:{
-    open: 'Open'
+    open: 'Open',
+    modal: {
+      dictionary: 'Language Transform Dictionary',
+      key: 'Key',
+      value: 'Value',
+    },
+    menuSelection: {
+      route: 'Route'
+    }
   },
-  systemModal: {
-    dictionary: 'Language Transform Dictionary',
-    key: 'Key',
-    value: 'Value',
-  }
 };
 
 
