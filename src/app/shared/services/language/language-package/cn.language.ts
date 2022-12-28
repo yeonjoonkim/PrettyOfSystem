@@ -19,13 +19,17 @@ const cnLangPackage: ILanguagePackage = {
     edit: '管理'
   },
   system:{
-    open: '管理'
+    open: '管理',
+    modal: {
+      dictionary: '管理 管理',
+      key: '管理',
+      value: '管理',
+    },
+    menuSelection: {
+      route: '管理'
+    }
   },
-  systemModal: {
-    dictionary: '管理 管理',
-    key: '管理',
-    value: '管理',
-  }
+
 };
 
 

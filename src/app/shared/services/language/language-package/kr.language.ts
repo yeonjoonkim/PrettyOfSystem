@@ -20,12 +20,15 @@ const krLangPackage: ILanguagePackage = {
   edit: '편집'
   },
   system:{
-    open: '열기'
-  },
-  systemModal: {
-    dictionary: '언어 변형 사전',
-    key: '키',
-    value: '값',
+    open: '열기',
+    modal: {
+      dictionary: '언어 변형 사전',
+      key: '키',
+      value: '값',
+    },
+    menuSelection: {
+      route: '라우트'
+    }
   }
 };
 
