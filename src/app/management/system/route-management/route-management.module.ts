@@ -18,7 +18,6 @@ import { AddNewRouteCategoryComponent } from './components/add-new-route-categor
   exports: [RouteManagementComponent, AddNewRouteCategoryComponent],
   imports: [
     CommonModule,
-    CommonModule,
     FormsModule,
     IonicModule,
     UiLanguagePipeModule,

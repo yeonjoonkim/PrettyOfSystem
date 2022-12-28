@@ -12,7 +12,7 @@ import { ISystemPopOverActionItem, ISystemPopOverCriteria, ISystemMenuAction } f
 export class SystemPage implements OnInit {
   public isDevelopment: boolean = false;
   public menuSelection: ISystemMenuAction = {
-    isRouteManagement: false
+    isRouteManagement: true
   };
 
   constructor(public language: LanguageService, private popOverCtrl: PopoverController) {
