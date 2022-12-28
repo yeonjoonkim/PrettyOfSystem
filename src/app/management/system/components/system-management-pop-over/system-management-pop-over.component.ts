@@ -36,8 +36,8 @@ export class SystemManagementPopOverComponent implements OnInit {
   }
 
   /**This on click event trigger the send the action to the system.page */
-  async onClickMenuActionButton(criteria: ISystemPopOverActionItem){
-    await this.popOverCtrl.dismiss(criteria);
+  async onClickMenuActionButton(action: ISystemMenuAction){
+    await this.popOverCtrl.dismiss(action);
   }
 
 }

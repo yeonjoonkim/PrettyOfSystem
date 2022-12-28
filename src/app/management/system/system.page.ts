@@ -53,7 +53,8 @@ export class SystemPage implements OnInit {
     });
 
     await menuPopOver.present();
-    let event: ISystemPopOverActionItem = await (await menuPopOver.onWillDismiss()).data;
-    this.menuSelection = event.action.menu;
+
+    let event: ISystemMenuAction = await (await menuPopOver.onWillDismiss())?.data;
+    this.menuSelection = event;
   }
 }

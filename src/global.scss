@@ -48,6 +48,12 @@
   padding: 80px;
 }
 
+.flex-row{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
 ion-popover {
   --width: fit-content;
 }
