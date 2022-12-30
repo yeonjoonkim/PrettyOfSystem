@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { IMenu } from './../shared/interfaces/menu/menu.interface.service';
-import { LanguageService } from '../shared/services/language/service/language.service';
-import {StorageService} from '../shared/services/storage/storage.service';
+import { IMenu } from '../../interfaces/menu/menu.interface.service';
+import { LanguageService } from '../../services/language/service/language.service';
+import {StorageService} from '../../services/storage/storage.service';
 
 @Component({
   selector: 'side-menu',
