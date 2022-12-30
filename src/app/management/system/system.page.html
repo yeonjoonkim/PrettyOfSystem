@@ -7,7 +7,7 @@
     </ion-buttons>
 
     <!-- Title -->
-    <ion-title>{{'menu.systemManagement'| languageTransform : language.currentLanguage}}</ion-title>
+    <ion-title>{{'menu.systemManagement'| languageTransform }}</ion-title>
     <!--Subtitle-->
     <ion-icon *ngIf="isDevelopment" class="icon page-toolbar-icon" id="click-trigger" slot="end" name="terminal-outline" (click)="presentDevelopmentPopOver($event)"></ion-icon>
     <ion-icon class="icon page-toolbar-icon" slot="end" name="chevron-down-outline" (click)="presentSysManagementMenuPopOver($event)"></ion-icon>
@@ -15,6 +15,6 @@
 
 </ion-header>
 
-<ion-content>
-  <system-route-management *ngIf="menuSelection.isRouteManagement"></system-route-management>
+<ion-content *ngIf="menuSelection.isRouteManagement">
+  <system-route-management></system-route-management>
 </ion-content>

@@ -11,7 +11,7 @@ export class RouteManagementComponent implements OnInit {
   constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    //this.presentAddNewComponentModal()
+    this.presentAddNewComponentModal()
   }
 
   /** This function is to present the add new route component as a modal */

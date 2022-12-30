@@ -1,7 +1,6 @@
 //Language Package
 export interface ILanguagePackageItem {
   language: ILanguagePackageDescription;
-  file: any;
 }
 
 //Description

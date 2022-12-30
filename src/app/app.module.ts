@@ -24,21 +24,15 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Language Package
 import { UiLanguagePipeModule } from './shared/pipes/language-transform-pipe/language-transform.pipe.module';
-import * as krLanguagePackage from './shared/services/language/language-package/kr.language';
-import * as cnLanguagePackage from './shared/services/language/language-package/cn.language';
-import * as enLanguagePackage from './shared/services/language/language-package/en.language';
 const langauges = [
   {
-    language: { code: 'EN', name: 'language.english', flag: '🇺🇲' },
-    file: enLanguagePackage,
+    language: { code: 'EN', name: 'language.english', flag: '🇺🇲' }
   },
   {
     language: { code: 'KR', name: 'language.korean', flag: '🇰🇷' },
-    file: krLanguagePackage,
   },
   {
-    language: { code: 'CN', name: 'language.chinese', flag: '🇨🇳' },
-    file: cnLanguagePackage,
+    language: { code: 'CN', name: 'language.chinese', flag: '🇨🇳' }
   },
 ];
 
