@@ -33,6 +33,7 @@
     "ionicons": "^6.0.3",
     "localforage-cordovasqlitedriver": "^1.8.0",
     "ng2-search-filter": "^0.5.1",
+    "openai": "^3.1.0",
     "querystring-es3": "^0.2.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

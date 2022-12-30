@@ -5,25 +5,46 @@ import { Injectable } from '@angular/core';
 })
 export class TextTransformService {
 
-  constructor() { }
+  constructor() {
+  }
 
-  public getCapitalzedWord(stringValue: string){
-    let lowcaseValue: string = stringValue.toLowerCase();
-    let capitalzedWord: string = stringValue.charAt(0).toUpperCase() + lowcaseValue.slice(1);
+
+  /** This will retreive capitalzed word as a single string value.
+   * Recommand to use a single string value.
+  */
+  public getCapitalzedWord(str: string): string{
+    let lowcaseValue: string = str.toLowerCase();
+    let capitalzedWord: string = str.charAt(0).toUpperCase() + lowcaseValue.slice(1);
     return capitalzedWord;
   }
 
-  public getLowercaseWord(stringValue: string){
-    return stringValue.toLowerCase();
+  /** This will retreive title format string.
+   * "eXample exAmple" => "Example Example".
+  */
+  public getTitleFormat(str: string): string{
+    let titleFormat: string = '';
+    let words: Array<string> = this.getContainWordList(str);
+    words.forEach((word, index) => {
+      if(index === 0){
+        let capitalzedWord = this.getCapitalzedWord(word);
+        titleFormat += capitalzedWord;
+      }else{
+        let capitalzedWord = this.getCapitalzedWord(word);
+        titleFormat += " " + capitalzedWord;
+      }
+    });
+
+    return titleFormat;
   }
 
-  public getUppercaseWord(stringValue: string){
-    return stringValue.toUpperCase();
-  }
-  public getSentenceFormat(stringValue: string){
+  /** This will retreive sentence format string.
+   * "eXample exAmple" => "Example example."
+   * "THIS IS SAMPLE" => "This is sample."
+  */
+  public setSentenceFormat(str: string): string{
     let sentenceFormat: string = '';
-    let words: Array<string> = stringValue.split(" ");
-    let includeDotFormat: boolean = words[words.length - 1].includes('.');
+    let words: Array<string> = this.getContainWordList(str);
+    let includeFinalised: boolean = words.length > 1 ? words[words.length - 1].includes('.') : true;
 
     words.forEach((word, index) => {
       if(index === 0){
@@ -31,15 +52,27 @@ export class TextTransformService {
         sentenceFormat += capitalzedWord;
       }
       else{
-        let lowercaseWord: string = this.getLowercaseWord(word);
-        sentenceFormat += " " + lowercaseWord;
+          let lowercaseWord: string = word.toLowerCase();
+          sentenceFormat += " " + lowercaseWord;
       }
     });
 
-    if(!includeDotFormat){
+    if(!includeFinalised){
       sentenceFormat += ".";
     }
 
     return sentenceFormat;
+  }
+
+  public setCommandSentenceFormat(sentence: string){
+    return '"' + sentence + '"';
+  }
+
+  public deleteSpaces(str: string): string{
+    return str.replace(/(\r\n|\n|\r|\"|)/gm,"");
+  }
+
+  public getContainWordList(str: string):  Array<string> {
+    return str.split(" ").filter(str => str.length > 0);
   }
 }
