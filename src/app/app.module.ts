@@ -1,3 +1,4 @@
+import { initializeApp } from '@angular/fire/app';
 //Import Environment
 import { environment } from 'src/environments/environment';
 
@@ -16,30 +17,30 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 //Import Component
-import { MenuComponent } from './shared/components/menu/menu.component';
+import { MenuComponent } from './menu/menu.component';
 
 //Import Firebase
-import {provideFirebaseApp, initializeApp} from '@angular/fire/app';
-import {getFirestore, provideFirestore} from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
 //Import Pipe
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Language Package
 import { UiLanguagePipeModule } from './shared/pipes/language-transform-pipe/language-transform.pipe.module';
-const langauges = [
-  {language: { code: 'EN', name: 'language.english', flag: '🇺🇲' }},
-  {language: { code: 'KR', name: 'language.korean', flag: '🇰🇷' }},
-  {language: { code: 'CN', name: 'language.chinese', flag: '🇨🇳' }}
-];
 
 @NgModule({
   declarations: [AppComponent, MenuComponent],
   imports: [
     IonicModule.forRoot(),
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore()),
-    UiLanguagePipeModule.forRoot(langauges),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
+    AngularFirestoreModule,
+    UiLanguagePipeModule.forRoot(),
     IonicStorageModule.forRoot(),
     HttpClientModule,
     BrowserModule,

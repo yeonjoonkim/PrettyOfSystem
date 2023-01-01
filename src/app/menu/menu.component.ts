@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { IMenu } from '../../interfaces/menu/menu.interface.service';
-import { LanguageService } from '../../services/language/service/language.service';
-import {StorageService} from '../../services/storage/storage.service';
+import { IMenu } from '../interface/menu/menu.interface.service';
+import { LanguageService } from '../shared/services/language/language.service';
+import {StorageService} from '../shared/services/storage/storage.service';
 
 @Component({
   selector: 'side-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
+
 //InProgress
 //Todo: Add @Input from app component 'User-Info'
 export class MenuComponent implements OnInit, OnDestroy {
@@ -22,34 +23,29 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   public menus: Array<IMenu> = [
     {
-      title: "menu.management", icon: "build-outline",
+      title: "menu.name.management", icon: "build-outline",
       content: [
-        {url: '/management/system', title: "menu.systemManagement", icon: "code-slash-outline"},
-        {url: '/management/shop', title: "menu.shopManagement", icon: "bag-outline"},
-        {url: '/management/user', title: "menu.userManagement", icon: "people-outline"},
-        {url: '/management/payment', title: "menu.paymentSubscription", icon: "cash-outline"},
-    ]},
-    {
-      title: "language.language", icon: "build-outline",
-      content: [
-    ]
-  }];
+        {url: '/management/system', title: "menu.name.systemmanagement", icon: "code-slash-outline"},
+        {url: '/management/shop', title: "menu.name.shopmanagement", icon: "bag-outline"},
+        {url: '/management/user', title: "menu.name.usermangement", icon: "people-outline"},
+        {url: '/management/payment', title: "menu.name.paymentmanagement", icon: "cash-outline"},
+    ]}
+  ];
 
   constructor(public language: LanguageService, private storage: StorageService, private location: Location) {
+    this.storage.getCurrentLanguage().then(langCode => {
+      this.selectedLangauge = langCode;
+    });
   }
 
 
   async ngOnInit() {
-    await this.storage.getCurrentLanguage().then(langCode => {
-      this.selectedLangauge = langCode;
-    });
     await this.setDefaultTitleHeading();
   }
 
 
   ngOnDestroy(){
   }
-
 
   /** Implemented on the ngOnInit to set up the default Title Heading param */
   async setDefaultTitleHeading(){
@@ -60,9 +56,8 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   /** This function will set the global language by using language service. */
   async onChangeLanguage(){
-    await this.language.languageChange(this.selectedLangauge);
+    this.language.languageChange(this.selectedLangauge);
   }
-
 
   /** This function will change the title heading param based on current url.*/
   async onChangeMenu(url: string){

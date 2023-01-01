@@ -15,7 +15,7 @@ export class LanguageTranslateService {
   private readonly language = {
     english: 'English',
     korean: 'Korean',
-    traditionalChinese: 'Traditional Chinese',
+    traditionalChinese: 'Simplified Chinese',
     japanese: 'Japanese'
   };
   private readonly correctGrammer: string = 'Correct grammar '
@@ -113,7 +113,6 @@ export class LanguageTranslateService {
       //Todo: Please modify the error message to be notification or alert user.
       console.error(err);
     }
-    console.log(result)
     return result;
   }
 

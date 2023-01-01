@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { LanguageService } from '../../services/language/service/language.service';
+import { LanguageService } from '../../services/language/language.service';
 
 @Pipe({
   name: 'languageTransform'
@@ -8,9 +8,10 @@ import { LanguageService } from '../../services/language/service/language.servic
 export class UiLanguagePipe implements PipeTransform {
   constructor(private language: LanguageService){}
 
-  transform(value: any, ...args: any[]): any {
+  async transform(value: any) {
     if(value){
-      return this.language.getTransformValue(value);
+      let item = await this.language.getLanguageTransformValue(value);
+      return item;
     }
     return value;
   }

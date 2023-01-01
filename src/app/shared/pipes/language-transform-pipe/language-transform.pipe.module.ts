@@ -1,9 +1,8 @@
-import { LanguageService } from '../../services/language/service/language.service';
+import { LanguageService } from '../../services/language/language.service';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 //Import Config
-import { languageTrainsformConfigService } from './language-transform-config.service';
 import { UiLanguagePipe } from './language-transform.pipe';
 
 @NgModule({
@@ -13,15 +12,11 @@ import { UiLanguagePipe } from './language-transform.pipe';
 })
 
 export class UiLanguagePipeModule {
-  static forRoot(config: any): ModuleWithProviders<UiLanguagePipeModule>{
+  static forRoot(): ModuleWithProviders<UiLanguagePipeModule>{
     return {
       ngModule: UiLanguagePipeModule,
       providers: [
-        LanguageService,
-        {
-          provide: languageTrainsformConfigService,
-          useValue: config
-        }
+        LanguageService
       ]
     }
   }
