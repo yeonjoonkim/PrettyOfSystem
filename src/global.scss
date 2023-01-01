@@ -51,3 +51,14 @@
 ion-popover {
   --width: fit-content;
 }
+
+.error-toast{
+  --background: red;
+}
+
+ion-button{
+  --background: rgb(54,53,54);
+  --background: linear-gradient(90deg, rgba(54,53,54,1) 0%, rgba(65,70,86,1) 100%);
+  position: relative;
+  margin: auto;
+}

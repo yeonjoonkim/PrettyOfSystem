@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LanguageService } from 'src/app/shared/services/language/service/language.service';
 
 @Component({
   selector: 'app-payment',
@@ -8,7 +7,7 @@ import { LanguageService } from 'src/app/shared/services/language/service/langua
 })
 export class PaymentPage implements OnInit {
 
-  constructor(public language: LanguageService) { }
+  constructor() { }
 
   ngOnInit() {
   }

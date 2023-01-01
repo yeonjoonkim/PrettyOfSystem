@@ -1,4 +1,5 @@
 
+
 //Import Ionic Angular Module
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -10,27 +11,20 @@ import { SystemPageRoutingModule } from './system-routing.module';
 import { SystemPage } from './system.page';
 
 //Import Pipe
-import { UiLanguagePipeModule } from '../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { UiLanguagePipeModule } from './../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
-//Import Component
-import { KeyPairValueDictionaryComponent } from './components/key-pair-value-dictionary/key-pair-value-dictionary.component';
-import { SystemManagementPopOverComponent } from './components/system-management-pop-over/system-management-pop-over.component';
-
-//Import Management Module
-import { RouteManagementModule } from './route-management/route-management.module';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     SystemPageRoutingModule,
-    UiLanguagePipeModule,
     Ng2SearchPipeModule,
-    RouteManagementModule
+    UiLanguagePipeModule
   ],
-  declarations: [SystemPage, KeyPairValueDictionaryComponent, SystemManagementPopOverComponent],
-  exports: [KeyPairValueDictionaryComponent, SystemManagementPopOverComponent],
+  declarations: [SystemPage],
+  exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
 export class SystemPageModule {}

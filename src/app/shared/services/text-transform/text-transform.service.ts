@@ -1,4 +1,9 @@
+import { ILanguageTranslateResult } from './../language-translate/language-translate.service';
 import { Injectable } from '@angular/core';
+
+export interface ITextTransformObject{
+  [key: string]: string | {};
+}
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +22,30 @@ export class TextTransformService {
     let capitalzedWord: string = str.charAt(0).toUpperCase() + lowcaseValue.slice(1);
     return capitalzedWord;
   }
+
+  public getTranslatedTitleFormat(translated: ILanguageTranslateResult){
+    translated.en = translated.en.endsWith('.') ? translated.en.slice(0, translated.en.length -1) : translated.en;
+    translated.kr = translated.kr.endsWith('.') ? translated.kr.slice(0, translated.kr.length -1) : translated.kr;
+    translated.jp = translated.jp.endsWith('。') ? translated.jp.slice(0, translated.jp.length -1) : translated.jp;
+    translated.cn = translated.cn.endsWith('。') ? translated.cn.slice(0, translated.cn.length -1) : translated.cn;
+
+    translated.en = this.getTitleFormat(translated.en);
+    translated.kr = this.getTitleFormat(translated.kr);
+    translated.jp = this.getTitleFormat(translated.jp);
+    translated.cn = this.getTitleFormat(translated.cn);
+
+    return translated;
+  }
+
+  public getTranslatedDescrptionFormat(translated: ILanguageTranslateResult){
+    translated.en = this.getSentenceFormat(translated.en);
+    translated.kr = this.getSentenceFormat(translated.kr);
+    translated.jp = this.getSentenceFormat(translated.jp);
+    translated.cn = this.getSentenceFormat(translated.cn);
+
+    return translated;
+  }
+
 
   /** This will retreive title format string.
    * "eXample exAmple" => "Example Example".
@@ -41,7 +70,7 @@ export class TextTransformService {
    * "eXample exAmple" => "Example example."
    * "THIS IS SAMPLE" => "This is sample."
   */
-  public setSentenceFormat(str: string): string{
+  public getSentenceFormat(str: string): string{
     let sentenceFormat: string = '';
     let words: Array<string> = this.getContainWordList(str);
     let includeFinalised: boolean = words.length > 1 ? words[words.length - 1].includes('.') : true;
@@ -64,8 +93,14 @@ export class TextTransformService {
     return sentenceFormat;
   }
 
-  public setCommandSentenceFormat(sentence: string){
-    return '"' + sentence + '"';
+  public setLanguageTransformCodeList(key: string): Array<string>{
+    let lowcaseKey: string = key.toLowerCase();
+    return lowcaseKey.split(".");
+  }
+
+  public setKeyPairValueObject(isTitle: boolean, value: string): {}{
+    let objectValue: string = isTitle ? this.getTitleFormat(value) : this.getSentenceFormat(value);
+    return objectValue;
   }
 
   public deleteSpaces(str: string): string{
