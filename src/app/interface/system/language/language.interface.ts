@@ -16,5 +16,6 @@ export interface ILanguageTransform {
   description: string;
   key: string;
   isTitle: boolean;
+  isDescription: boolean;
 }
 

@@ -1,5 +1,6 @@
 
 
+
 //Import Ionic Angular Module
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -14,6 +15,7 @@ import { SystemPage } from './system.page';
 import { UiLanguagePipeModule } from './../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
+import { LanguageTransformModule } from './components/language-transform/language-transform.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     IonicModule,
     SystemPageRoutingModule,
     Ng2SearchPipeModule,
-    UiLanguagePipeModule
+    UiLanguagePipeModule,
+    LanguageTransformModule
   ],
   declarations: [SystemPage],
   exports: [],

@@ -24,7 +24,7 @@ export class LanguageTranslateService {
   private readonly singleString: string = 'a single String Value.';
 
   //command
-  private readonly correctGrammerThenTranslateTo: string = this.correctGrammer + "and " +this.translateTo;
+  private readonly correctGrammerThenTranslateTo: string = this.translateTo;
   private readonly returnAsSingleString: string = this.returnAs + this.singleString;
   private readonly convertJSON: string = " convert into JSON file";
   private readonly allLanguage: string = this.language.english + "," + this.language.korean + "," + this.language.traditionalChinese + "," + this.language.japanese;

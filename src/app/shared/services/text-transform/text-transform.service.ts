@@ -24,17 +24,18 @@ export class TextTransformService {
   }
 
   public getTranslatedTitleFormat(translated: ILanguageTranslateResult){
-    translated.en = translated.en.endsWith('.') ? translated.en.slice(0, translated.en.length -1) : translated.en;
-    translated.kr = translated.kr.endsWith('.') ? translated.kr.slice(0, translated.kr.length -1) : translated.kr;
-    translated.jp = translated.jp.endsWith('。') ? translated.jp.slice(0, translated.jp.length -1) : translated.jp;
-    translated.cn = translated.cn.endsWith('。') ? translated.cn.slice(0, translated.cn.length -1) : translated.cn;
+    let formatter = translated;
+    formatter.en = translated.en.endsWith('.') ? translated.en.slice(0, translated.en.length -1) : translated.en;
+    formatter.kr = translated.kr.endsWith('.') ? translated.kr.slice(0, translated.kr.length -1) : translated.kr;
+    formatter.jp = translated.jp.endsWith('。') ? translated.jp.slice(0, translated.jp.length -1) : translated.jp;
+    formatter.cn = translated.cn.endsWith('。') ? translated.cn.slice(0, translated.cn.length -1) : translated.cn;
 
-    translated.en = this.getTitleFormat(translated.en);
-    translated.kr = this.getTitleFormat(translated.kr);
-    translated.jp = this.getTitleFormat(translated.jp);
-    translated.cn = this.getTitleFormat(translated.cn);
+    formatter.en = this.getTitleFormat(translated.en);
+    formatter.kr = this.getTitleFormat(translated.kr);
+    formatter.jp = this.getTitleFormat(translated.jp);
+    formatter.cn = this.getTitleFormat(translated.cn);
 
-    return translated;
+    return formatter;
   }
 
   public getTranslatedDescrptionFormat(translated: ILanguageTranslateResult){

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { IMenu } from '../interface/menu/menu.interface.service';
-import { LanguageService } from '../shared/services/language/language.service';
-import {StorageService} from '../shared/services/storage/storage.service';
+import { IMenu } from '../../../interface/menu/menu.interface.service';
+import { LanguageService } from '../../services/language/language.service';
+import {StorageService} from '../../services/storage/storage.service';
 
 @Component({
   selector: 'side-menu',
@@ -43,7 +43,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     await this.setDefaultTitleHeading();
   }
 
-
   ngOnDestroy(){
   }
 
@@ -53,11 +52,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     await this.onChangeMenu(currentUrl);
   }
 
-
-  /** This function will set the global language by using language service. */
-  async onChangeLanguage(){
-    this.language.languageChange(this.selectedLangauge);
-  }
 
   /** This function will change the title heading param based on current url.*/
   async onChangeMenu(url: string){

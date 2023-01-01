@@ -13,33 +13,6 @@
 
 
 <ion-content>
-  <!--ADD NEW LANGUAGE TRANSFORM-->
-  <ion-accordion-group>
-  <ion-accordion>
-    <!--Header-->
-    <ion-item slot="header">
-        <ion-title>{{'transform.name.title' | languageTransform | async }}</ion-title>
-    </ion-item>
-
-    <!--Content-->
-    <ion-list slot="content">
-      <ion-item>
-        <ion-label>{{'transform.name.key' | languageTransform | async }}</ion-label>
-        <ion-input [(ngModel)]="languageTransform.key" placeholder="path.component.item"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>{{'transform.name.description' | languageTransform | async }}</ion-label>
-        <ion-input [(ngModel)]="languageTransform.description"  placeholder="Item"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>{{'transform.name.istitle' | languageTransform | async }}</ion-label>
-        <ion-checkbox [(ngModel)]="languageTransform.isTitle"></ion-checkbox>
-      </ion-item>
-      <ion-button expand="block" (click)="onClickSave()">{{'button.name.save' | languageTransform | async }}</ion-button>
-    </ion-list>
-
-  </ion-accordion>
-</ion-accordion-group>
-
+  <add-language-transform></add-language-transform>
 </ion-content>
 

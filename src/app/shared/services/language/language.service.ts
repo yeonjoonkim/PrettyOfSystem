@@ -11,8 +11,8 @@ import { ILanguageSelection, ILanguageKey } from './../../../interface/system/la
 })
 
 export class LanguageService{
-  public changeLanguageAction = new EventEmitter<string>();
   public currentLanguage: string = '';
+  public changeLanguageAction = new EventEmitter<string>();
   public languageSelectionKey!: Observable<ILanguageKey[]>;
   public languageSelection!: Observable<ILanguageSelection[]>;
 
@@ -59,10 +59,10 @@ export class LanguageService{
 
 
   /** Language Change Event */
-  public async languageChange(lang: string) {
-    await this.storage.storeCurrentLanguage(lang);
-    this.currentLanguage = lang;
-    this.changeLanguageAction.emit(lang);
+  public async languageChange() {
+    console.log(this.currentLanguage)
+    await this.storage.storeCurrentLanguage(this.currentLanguage);
+    this.changeLanguageAction.emit(this.currentLanguage);
   }
 
 
