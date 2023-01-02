@@ -3,8 +3,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { SystemLanguageRepositoryService } from './../../../firebase/system-repository/language/system-language-repository.service';
 import { ITextTransformObject, TextTransformService } from '../text-transform/text-transform.service';
-import { ILanguageTranslateResult } from '../language-translate/language-translate.service';
-import { ILanguageSelection, ILanguageKey } from './../../../interface/system/language/language.interface';
+import { ILanguageSelection, ILanguageKey, ILanguageTranslateResult, ILanguageTransformKeyPairValue } from './../../../interface/system/language/language.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -43,11 +42,40 @@ export class LanguageService{
     }
   }
 
+  public async getDefaultLanguageSelection(){
+    let selection = await firstValueFrom(this.languageSelection);
+    return selection.filter(lang => lang.isDefault)[0];
+  }
+
+  public async getDefaultLanguagePackageKeyPairValue(){
+    let keyPairValueList: ILanguageTransformKeyPairValue[] = [];
+    let defaultLanguage = await this.getDefaultLanguageSelection();
+    let key = await this.getLanguageSelectionKey();
+    key.used.forEach(async key => {
+      let path = this.textTransform.setLanguageTransformCodeList(key);
+      let value = await this.getObjectValue(path, defaultLanguage.package);
+      keyPairValueList.push({key: key, value: value});
+    });
+
+    return keyPairValueList;
+  }
 
   /** Retreive Language Selection Item */
   public async getSelectedLanguageSelection(selectedLangCode: string){
     let selection = await firstValueFrom(this.languageSelection);
     return selection.filter(lang => lang.code === selectedLangCode)[0];
+  }
+
+  public async getLanguageSelection(){
+    return await firstValueFrom(this.languageSelection);
+  }
+
+  public async getAllLanguageTranslateCriteria(){
+    let selections = await this.getLanguageSelection();
+    let languageCodeList = selections.map(language => language.code.toLowerCase());
+    let languageNameList = selections.map(language => language.name);
+
+    return {code: languageCodeList, name: languageNameList};
   }
 
 
@@ -75,20 +103,24 @@ export class LanguageService{
     return (typeof objectValue === 'string') ? objectValue : key;
   }
 
+
   /** Update Transform value in db */
   public async updateTransformValue(translated: ILanguageTranslateResult, keyValue: string){
-    let updatedJapaneseSelection: ILanguageSelection = await this.addNewTransformValue('JP', keyValue, translated.jp);
-    let updatedKoreanSelection: ILanguageSelection = await this.addNewTransformValue('KR', keyValue, translated.kr);
-    let updatedEnglishSelection: ILanguageSelection = await this.addNewTransformValue('EN', keyValue, translated.en);
-    let updatedChineseSelection: ILanguageSelection = await this.addNewTransformValue('CN', keyValue, translated.cn);
+    let languages = await this.getLanguageSelection();
+
     try{
-      this.systemLanguageRepository.updateLanguageSelection(updatedChineseSelection);
-      this.systemLanguageRepository.updateLanguageSelection(updatedEnglishSelection);
-      this.systemLanguageRepository.updateLanguageSelection(updatedKoreanSelection);
-      this.systemLanguageRepository.updateLanguageSelection(updatedJapaneseSelection);
+      languages.forEach(async language => {
+        let languageCode = language.code.toLowerCase();
+        for(let translatedLanguageCode in translated){
+          if(languageCode === translatedLanguageCode){
+            let updatedSelection: ILanguageSelection = await this.addNewTransformValue(language.code, keyValue, translated[translatedLanguageCode]);
+            await this.systemLanguageRepository.updateLanguageSelection(updatedSelection);
+          }
+        }
+      });
     }
     catch(error){
-      console.error(error);
+    console.error(error);
     }
   }
 
@@ -101,8 +133,8 @@ export class LanguageService{
 
   /** Retreive Language Selection with updated transfrom value */
   private async addNewTransformValue(selectedlanguageCode: string, key: string, value: string){
-    let langugeSelection = await this.getSelectedLanguageSelection(selectedlanguageCode);
-    let pack: ITextTransformObject =  langugeSelection.package;
+    let languageSelection = await this.getSelectedLanguageSelection(selectedlanguageCode);
+    let pack: ITextTransformObject =  languageSelection.package;
     let path = this.textTransform.setLanguageTransformCodeList(key);
     let hasFirstPath = pack[path[0]] !== undefined;
     let hasSecondPath = this.hasSecondPath(pack, path);
@@ -125,8 +157,36 @@ export class LanguageService{
       pack[path[0]] = firstPath;
     }
 
-    langugeSelection.package = pack;
-    return langugeSelection;
+    languageSelection.package = pack;
+    return languageSelection;
+  }
+
+
+  public async setNewPackageTransformValue(pack: ITextTransformObject, keyPairValue: ILanguageTransformKeyPairValue){
+    let newPackage = pack;
+    let path = this.textTransform.setLanguageTransformCodeList(keyPairValue.key);
+    let hasFirstPath = pack[path[0]] !== undefined;
+    let hasSecondPath = this.hasSecondPath(pack, path);
+    let hasThirdPath = this.hasThirdPath(pack, path);
+
+    if(!hasFirstPath){
+      newPackage[path[0]] = {};
+    }
+
+    if(!hasSecondPath){
+      let firstPath: any = newPackage[path[0]];
+      firstPath[path[1]] = {};
+      newPackage[path[0]] = firstPath;
+    }
+
+    if(!hasThirdPath){
+      let firstPath: any = newPackage[path[0]];
+      let secondPath: any = firstPath[path[1]];
+      secondPath[path[2]] = keyPairValue.value;
+      newPackage[path[0]] = firstPath;
+    }
+
+    return newPackage;
   }
 
   private hasSecondPath(pack: any, path: string[]){

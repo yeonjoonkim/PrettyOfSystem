@@ -40,7 +40,7 @@ export class SystemLanguageRepositoryService {
       }));
   }
 
-  public updateLanguageSelection(criteria: ILanguageSelection){
+  public async updateLanguageSelection(criteria: ILanguageSelection){
     let updateCommand = {...criteria, ...this.timeStamp};
     this.afs.collection(this.languageSelectionCollectionPath).doc(criteria.id).update(updateCommand);
   }
@@ -64,18 +64,6 @@ export class SystemLanguageRepositoryService {
     return key;
   }
 
-  setDefaultILanguageSelection(code: string, description: string, name: string, flag: string){
-    let selection: ILanguageSelection = {
-      code: code,
-      description: description,
-      name: name,
-      flag: flag,
-      package: {}
-    }
-    return selection;
-  }
-
-
   public async addNewLanguageSelection(criteria: ILanguageSelection){
     let id = {id: this.afs.createId()};
     let newSelection = {...id, ...criteria, ...this.timeStamp};
@@ -85,5 +73,17 @@ export class SystemLanguageRepositoryService {
     catch(e){
       console.error(e);
     }
+  }
+
+  private setDefaultILanguageSelection(code: string, description: string, name: string, flag: string){
+    let selection: ILanguageSelection = {
+      code: code,
+      description: description,
+      name: name,
+      flag: flag,
+      package: {},
+      isDefault: false
+    }
+    return selection;
   }
 }

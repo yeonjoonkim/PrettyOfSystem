@@ -1,7 +1,6 @@
-import { ILanguageTranslateResult } from './../../../../../shared/services/language-translate/language-translate.service';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { Component, OnInit } from '@angular/core';
-import { ILanguageKey } from 'src/app/interface/system/language/language.interface';
+import { ILanguageKey, ILanguageNameCodeCollection, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
 import { LanguageTranslateService } from 'src/app/shared/services/language-translate/language-translate.service';
 import { TextTransformService } from 'src/app/shared/services/text-transform/text-transform.service';
 import { LoadingService } from 'src/app/shared/services/loading/loading.service';
@@ -40,7 +39,8 @@ export class AddLanguageTransformComponent implements OnInit {
 
       let selectionFormat =  await this.openFormatSelectionSheet();
       if(!selectionFormat?.data?.isCancel){
-        let translatedResult = await this.getTranslatedDescription(selectionFormat.data.isTitle);
+        let translateCriteria: ILanguageNameCodeCollection = await this.language.getAllLanguageTranslateCriteria();
+        let translatedResult = await this.getTranslatedDescription(selectionFormat.data.isTitle, translateCriteria);
         await this.updateTransformValue(translatedResult);
       }
     }
@@ -85,7 +85,7 @@ export class AddLanguageTransformComponent implements OnInit {
 
   /** This will update language package */
   private async updateTransformValue(translated: ILanguageTranslateResult){
-    if(translated.cn && translated.kr && translated.en && translated.jp){
+    if(translated){
       try{
         let sccuess = await this.language.getLanguageTransformValue('message.success.save');
         let key: ILanguageKey = await this.language.getLanguageSelectionKey();
@@ -103,10 +103,10 @@ export class AddLanguageTransformComponent implements OnInit {
 
 
   /** This will retreive the translated description */
-  private async getTranslatedDescription(isTitle: boolean){
+  private async getTranslatedDescription(isTitle: boolean, allLanguages: ILanguageNameCodeCollection){
     let loadingMsg = await this.language.getLanguageTransformValue('loading.name.translating');
     this.loading.show(loadingMsg);
-    let translated = await this.langugeTranslate.getTranslatedSentenceAllLanguages(this.languageTransform.description);
+    let translated = await this.langugeTranslate.getTranslatedSentenceAllLanguages(this.languageTransform.description, allLanguages);
     this.loading.dismiss();
 
     return isTitle ? this.textTransform.getTranslatedTitleFormat(translated) : this.textTransform.getTranslatedDescrptionFormat(translated);
@@ -131,3 +131,4 @@ export class AddLanguageTransformComponent implements OnInit {
 
 
 }
+

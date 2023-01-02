@@ -25,26 +25,23 @@ export class TextTransformService {
 
   public getTranslatedTitleFormat(translated: ILanguageTranslateResult){
     let formatter = translated;
-    formatter.en = translated.en.endsWith('.') ? translated.en.slice(0, translated.en.length -1) : translated.en;
-    formatter.kr = translated.kr.endsWith('.') ? translated.kr.slice(0, translated.kr.length -1) : translated.kr;
-    formatter.jp = translated.jp.endsWith('。') ? translated.jp.slice(0, translated.jp.length -1) : translated.jp;
-    formatter.cn = translated.cn.endsWith('。') ? translated.cn.slice(0, translated.cn.length -1) : translated.cn;
 
-    formatter.en = this.getTitleFormat(translated.en);
-    formatter.kr = this.getTitleFormat(translated.kr);
-    formatter.jp = this.getTitleFormat(translated.jp);
-    formatter.cn = this.getTitleFormat(translated.cn);
+    for(let key in formatter){
+      formatter[key] = formatter[key].endsWith('.') ? formatter[key].slice(0, formatter[key].length -1) : formatter[key];
+      formatter[key] = this.getTitleFormat(formatter[key]);
+    }
 
     return formatter;
   }
 
   public getTranslatedDescrptionFormat(translated: ILanguageTranslateResult){
-    translated.en = this.getSentenceFormat(translated.en);
-    translated.kr = this.getSentenceFormat(translated.kr);
-    translated.jp = this.getSentenceFormat(translated.jp);
-    translated.cn = this.getSentenceFormat(translated.cn);
+    let formatter = translated;
 
-    return translated;
+    for(let key in formatter){
+      formatter[key] = this.getDescriptionFormat(formatter[key]);
+    }
+
+    return formatter;
   }
 
 
@@ -65,6 +62,11 @@ export class TextTransformService {
     });
 
     return titleFormat;
+  }
+
+  public getDescriptionFormat(str: string){
+    let paragraph = str.split('.');
+    return paragraph.map(sentence => this.getSentenceFormat(sentence)).join(' ');
   }
 
   /** This will retreive sentence format string.
