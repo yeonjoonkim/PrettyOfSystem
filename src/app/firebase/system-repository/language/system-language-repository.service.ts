@@ -9,7 +9,7 @@ import { map } from 'rxjs';
   providedIn: 'root'
 })
 export class SystemLanguageRepositoryService {
-  private readonly timeStamp = {timeStamp: new Date()};
+  private readonly timeStamp = {lastModifiedDate: new Date()};
   private readonly systemLanguage: string = 'system/language/';
   private readonly languageSelectionCollectionPath: string = this.systemLanguage + 'selection';
   private readonly languageKeyPath: string = this.systemLanguage + 'key';
@@ -40,12 +40,12 @@ export class SystemLanguageRepositoryService {
       }));
   }
 
-  public updateLanguageSelection(criteria: ILanguageSelection){
+  public async updateLanguageSelection(criteria: ILanguageSelection){
     let updateCommand = {...criteria, ...this.timeStamp};
     this.afs.collection(this.languageSelectionCollectionPath).doc(criteria.id).update(updateCommand);
   }
 
-  public updateLanguageKey(criteria: ILanguageKey){
+  public async updateLanguageKey(criteria: ILanguageKey){
     let updateCommand = {...criteria, ...this.timeStamp};
     this.afs.collection(this.languageKeyPath).doc(criteria.id).update(updateCommand);
   }
@@ -64,18 +64,6 @@ export class SystemLanguageRepositoryService {
     return key;
   }
 
-  setDefaultILanguageSelection(code: string, description: string, name: string, flag: string){
-    let selection: ILanguageSelection = {
-      code: code,
-      description: description,
-      name: name,
-      flag: flag,
-      package: {}
-    }
-    return selection;
-  }
-
-
   public async addNewLanguageSelection(criteria: ILanguageSelection){
     let id = {id: this.afs.createId()};
     let newSelection = {...id, ...criteria, ...this.timeStamp};
@@ -85,5 +73,17 @@ export class SystemLanguageRepositoryService {
     catch(e){
       console.error(e);
     }
+  }
+
+  private setDefaultILanguageSelection(code: string, description: string, name: string, flag: string){
+    let selection: ILanguageSelection = {
+      code: code,
+      description: description,
+      name: name,
+      flag: flag,
+      package: {},
+      isDefault: false
+    }
+    return selection;
   }
 }

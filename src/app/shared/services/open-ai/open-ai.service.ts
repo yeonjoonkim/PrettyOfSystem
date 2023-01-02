@@ -1,3 +1,6 @@
+import { LanguageService } from 'src/app/shared/services/language/language.service';
+import { LoadingService } from './../loading/loading.service';
+import { ToastService } from 'src/app/shared/services/toast/toast.service';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -7,7 +10,7 @@ import { Injectable } from '@angular/core';
 export class OpenAiService {
   //API
   private readonly openAiUrl: string = 'https://api.openai.com/v1/completions';
-  private readonly apiKey: string = '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';
+  private readonly apiKey: string = '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';
 
   //API DEFAULT PARAM
   private readonly defaultParams = {
@@ -25,21 +28,26 @@ export class OpenAiService {
         'Authorization': 'Bearer ' + this.apiKey
   }
 
-  constructor() {}
+  constructor(private toast: ToastService, private loading: LoadingService, private language: LanguageService) {}
 
   /**This function is trigger api to receive answer from open ai */
   public async receiveResult(command: string): Promise<string>{
     //Set api request
     let param = { ...this.defaultParams, ...{prompt: command}};
     let requestOptions = this.setReqeustOptions(param);
+    let apiResult: string = '';
 
     //fetch api with request
-    let response = await fetch(this.openAiUrl, requestOptions);
-
-    //retreive response
-    let data = await response.json();
-    let apiResult: string = data.choices[0].text;
-
+    await fetch(this.openAiUrl, requestOptions).then(async result => {
+      if(!result.ok){
+        this.loading.dismiss();
+        let err = await this.language.getLanguageTransformValue('message.error.api');
+        this.toast.presentError(err);
+      }else{
+        let data = await result.json();
+        apiResult = data.choices[0].text;
+      }
+    })
     return apiResult;
   }
 

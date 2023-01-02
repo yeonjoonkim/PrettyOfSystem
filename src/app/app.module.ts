@@ -1,4 +1,3 @@
-import { initializeApp } from '@angular/fire/app';
 //Import Environment
 import { environment } from 'src/environments/environment';
 
@@ -17,7 +16,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 //Import Component
-import { MenuComponent } from './menu/menu.component';
+import { MenuComponent } from './shared/components/menu/menu.component';
+import { LangaugeSelectionComponent } from './shared/components/langauge-selection/langauge-selection.component';
+
 
 //Import Firebase
 import { AngularFireModule } from '@angular/fire/compat';
@@ -33,7 +34,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { UiLanguagePipeModule } from './shared/pipes/language-transform-pipe/language-transform.pipe.module';
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent],
+  declarations: [AppComponent, MenuComponent, LangaugeSelectionComponent],
   imports: [
     IonicModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),

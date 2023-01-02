@@ -5,6 +5,7 @@ export interface ILanguageSelection {
   flag: string;
   description: string;
   package: {};
+  isDefault: boolean;
 }
 
 export interface ILanguageKey{
@@ -16,5 +17,20 @@ export interface ILanguageTransform {
   description: string;
   key: string;
   isTitle: boolean;
+  isDescription: boolean;
 }
 
+export interface ILanguageTranslatedCriteria {
+  name: string[];
+  code: string[];
+  isTitle: boolean;
+}
+
+export interface ILanguageTranslateResult{
+  [key: string]: string;
+}
+
+export interface ILanguageTransformKeyPairValue{
+  key: string;
+  value: string;
+}

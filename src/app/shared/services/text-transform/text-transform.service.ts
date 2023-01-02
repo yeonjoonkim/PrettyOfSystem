@@ -2,7 +2,7 @@ import { ILanguageTranslateResult } from './../language-translate/language-trans
 import { Injectable } from '@angular/core';
 
 export interface ITextTransformObject{
-  [key: string]: string | {};
+  [key: string]: any;
 }
 
 @Injectable({
@@ -24,26 +24,25 @@ export class TextTransformService {
   }
 
   public getTranslatedTitleFormat(translated: ILanguageTranslateResult){
-    translated.en = translated.en.endsWith('.') ? translated.en.slice(0, translated.en.length -1) : translated.en;
-    translated.kr = translated.kr.endsWith('.') ? translated.kr.slice(0, translated.kr.length -1) : translated.kr;
-    translated.jp = translated.jp.endsWith('。') ? translated.jp.slice(0, translated.jp.length -1) : translated.jp;
-    translated.cn = translated.cn.endsWith('。') ? translated.cn.slice(0, translated.cn.length -1) : translated.cn;
+    let formatter = translated;
 
-    translated.en = this.getTitleFormat(translated.en);
-    translated.kr = this.getTitleFormat(translated.kr);
-    translated.jp = this.getTitleFormat(translated.jp);
-    translated.cn = this.getTitleFormat(translated.cn);
+    for(let key in formatter){
+      formatter[key] = formatter[key].endsWith('.') ? formatter[key].slice(0, formatter[key].length -1) : formatter[key];
+      formatter[key] = formatter[key].endsWith('。') ? formatter[key].slice(0, formatter[key].length -1) : formatter[key];
+      formatter[key] = this.getTitleFormat(formatter[key]);
+    }
 
-    return translated;
+    return formatter;
   }
 
   public getTranslatedDescrptionFormat(translated: ILanguageTranslateResult){
-    translated.en = this.getSentenceFormat(translated.en);
-    translated.kr = this.getSentenceFormat(translated.kr);
-    translated.jp = this.getSentenceFormat(translated.jp);
-    translated.cn = this.getSentenceFormat(translated.cn);
+    let formatter = translated;
 
-    return translated;
+    for(let key in formatter){
+      formatter[key] = this.getDescriptionFormat(formatter[key]);
+    }
+
+    return formatter;
   }
 
 
@@ -64,6 +63,11 @@ export class TextTransformService {
     });
 
     return titleFormat;
+  }
+
+  public getDescriptionFormat(str: string){
+    let paragraph = str.split('.');
+    return paragraph.map(sentence => this.getSentenceFormat(sentence)).join(' ');
   }
 
   /** This will retreive sentence format string.
