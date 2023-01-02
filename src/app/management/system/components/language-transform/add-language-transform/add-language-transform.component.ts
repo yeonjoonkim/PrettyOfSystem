@@ -1,6 +1,8 @@
+import { ITextTransformObject } from './../../../../../shared/services/text-transform/text-transform.service';
+import { ILanguageTransformKeyPairValue } from './../../../../../interface/system/language/language.interface';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { Component, OnInit } from '@angular/core';
-import { ILanguageKey, ILanguageNameCodeCollection, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
+import { ILanguageKey, ILanguageTranslatedCriteria, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
 import { LanguageTranslateService } from 'src/app/shared/services/language-translate/language-translate.service';
 import { TextTransformService } from 'src/app/shared/services/text-transform/text-transform.service';
 import { LoadingService } from 'src/app/shared/services/loading/loading.service';
@@ -29,8 +31,9 @@ export class AddLanguageTransformComponent implements OnInit {
     private actionSheetCtrl: ActionSheetController, private textTransform: TextTransformService,
     private loading: LoadingService, private toast: ToastService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
 
+  }
 
   /**This will start, when user click save button */
   public async onClickSaveButton(){
@@ -39,9 +42,10 @@ export class AddLanguageTransformComponent implements OnInit {
 
       let selectionFormat =  await this.openFormatSelectionSheet();
       if(!selectionFormat?.data?.isCancel){
-        let translateCriteria: ILanguageNameCodeCollection = await this.language.getAllLanguageTranslateCriteria();
-        let translatedResult = await this.getTranslatedDescription(selectionFormat.data.isTitle, translateCriteria);
-        await this.updateTransformValue(translatedResult);
+        let translateCriteria = await this.language.getAllLanguageTranslateCriteria();
+        translateCriteria.isTitle = selectionFormat.data.isTitle;
+        let translatedResult = await this.getTranslatedDescription(translateCriteria);
+        await this.updateLanguagePackage(translatedResult);
       }
     }
     else{
@@ -84,13 +88,11 @@ export class AddLanguageTransformComponent implements OnInit {
 
 
   /** This will update language package */
-  private async updateTransformValue(translated: ILanguageTranslateResult){
+  private async updateLanguagePackage(translated: ILanguageTranslateResult){
     if(translated){
       try{
         let sccuess = await this.language.getLanguageTransformValue('message.success.save');
-        let key: ILanguageKey = await this.language.getLanguageSelectionKey();
-        await this.language.updateTransformValue(translated, this.languageTransform.key.toLowerCase());
-        await this.language.updateLanguageKey(key, this.languageTransform.key.toLowerCase());
+        await this.language.updateLanguagePackage(translated, this.languageTransform.key.toLowerCase());
         await this.toast.present(sccuess);
       }
       catch(err: any){
@@ -103,13 +105,13 @@ export class AddLanguageTransformComponent implements OnInit {
 
 
   /** This will retreive the translated description */
-  private async getTranslatedDescription(isTitle: boolean, allLanguages: ILanguageNameCodeCollection){
+  private async getTranslatedDescription(translatedCriteria: ILanguageTranslatedCriteria){
     let loadingMsg = await this.language.getLanguageTransformValue('loading.name.translating');
     this.loading.show(loadingMsg);
-    let translated = await this.langugeTranslate.getTranslatedSentenceAllLanguages(this.languageTransform.description, allLanguages);
+    let translated = await this.langugeTranslate.getTranslatedSentenceAllLanguages(this.languageTransform.description, translatedCriteria);
     this.loading.dismiss();
 
-    return isTitle ? this.textTransform.getTranslatedTitleFormat(translated) : this.textTransform.getTranslatedDescrptionFormat(translated);
+    return translatedCriteria.isTitle ? this.textTransform.getTranslatedTitleFormat(translated) : this.textTransform.getTranslatedDescrptionFormat(translated);
   }
 
 
@@ -130,5 +132,40 @@ export class AddLanguageTransformComponent implements OnInit {
   }
 
 
+
+
+
+
+  public async test(values: ILanguageTransformKeyPairValue[]){
+  //  //this.language.deleteKeyPairValue('test.test.name');
+  //  //let values = await this.language.getDefaultLanguagePackageKeyPairValue();
+  //  let newPackage: ITextTransformObject = {};
+   // let max = values.length;
+  //  let currentIndex = 0;
+   // let loadingMsg = await this.language.getLanguageTransformValue('loading.name.translating');
+   // await this.loading.show(loadingMsg);
+
+   // let interval = setInterval(() => {
+     // if(currentIndex + 1 === values.length){
+     //   this.loading.dismiss();
+    //    clearInterval(interval);
+    //  }else{
+    //    let percentage =  " (" +Math.round((currentIndex / max) * 100) + "%" + ")";
+   //     this.loading.message = loadingMsg + percentage;
+   //   }
+   // }, 1500);
+    //send api
+   // values.forEach(async (value, index) => {
+//      setTimeout(async () => {
+//        currentIndex = index;
+  //      value.value = await this.langugeTranslate.getTranslatedSelectedLanguage('Taiwanese', value.value);
+  //      //newPackage = await this.language.setNewPackageTransformValue(newPackage, value);
+  //    }, index * 2500);
+  //  });
+  //}
+
 }
+
+
+
 

@@ -1,3 +1,4 @@
+import { LanguagePackageService } from './../language-package/language-package.service';
 import { Injectable, EventEmitter, OnInit } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
@@ -16,7 +17,10 @@ export class LanguageService{
   public languageSelection!: Observable<ILanguageSelection[]>;
 
 
-  constructor( private textTransform: TextTransformService, private storage: StorageService, private systemLanguageRepository: SystemLanguageRepositoryService) {
+  constructor( private textTransform: TextTransformService,
+    private storage: StorageService, private systemLanguageRepository: SystemLanguageRepositoryService,
+    private languagePackage: LanguagePackageService
+    ) {
     this.subscribeLanguageRepository().then(() => {
       this.setDefaultLanguage();
     });
@@ -47,20 +51,20 @@ export class LanguageService{
     return selection.filter(lang => lang.isDefault)[0];
   }
 
-  public async getDefaultLanguagePackageKeyPairValue(){
-    let keyPairValueList: ILanguageTransformKeyPairValue[] = [];
+  public async getDefaultKeyPairValueList(){
     let defaultLanguage = await this.getDefaultLanguageSelection();
     let key = await this.getLanguageSelectionKey();
-    key.used.forEach(async key => {
-      let path = this.textTransform.setLanguageTransformCodeList(key);
-      let value = await this.getObjectValue(path, defaultLanguage.package);
-      keyPairValueList.push({key: key, value: value});
-    });
-
+    let keyPairValueList: ILanguageTransformKeyPairValue[] = this.languagePackage.getKeyPairValue(key.used, defaultLanguage.package);
     return keyPairValueList;
   }
 
-  /** Retreive Language Selection Item */
+  public async getSelectedLanguageKeyPairValueList(selectedLangCode: string){
+    let selectedLanguage = await this.getSelectedLanguageSelection(selectedLangCode);
+    let key = await this.getLanguageSelectionKey();
+    let keyPairValueList: ILanguageTransformKeyPairValue[] = this.languagePackage.getKeyPairValue(key.used, selectedLanguage.package);
+    return keyPairValueList;
+  }
+
   public async getSelectedLanguageSelection(selectedLangCode: string){
     let selection = await firstValueFrom(this.languageSelection);
     return selection.filter(lang => lang.code === selectedLangCode)[0];
@@ -75,7 +79,7 @@ export class LanguageService{
     let languageCodeList = selections.map(language => language.code.toLowerCase());
     let languageNameList = selections.map(language => language.name);
 
-    return {code: languageCodeList, name: languageNameList};
+    return {code: languageCodeList, name: languageNameList, isTitle: false};
   }
 
 
@@ -93,138 +97,80 @@ export class LanguageService{
     this.changeLanguageAction.emit(this.currentLanguage);
   }
 
-
   /** Transform Value */
   public async getLanguageTransformValue(key: string) {
     let path = this.textTransform.setLanguageTransformCodeList(key);
     let currentLanguage = await this.getSelectedLanguageSelection(this.currentLanguage);
-    let objectValue = await this.getObjectValue(path, currentLanguage?.package);
+    let objectValue = this.languagePackage.getValue(path, currentLanguage?.package);
 
     return (typeof objectValue === 'string') ? objectValue : key;
   }
 
+  public async updateLanguagePackage(translated: ILanguageTranslateResult, keyValue: string){
+    await this.updatePackage(translated, keyValue);
+    await this.updateLanguageKey(keyValue);
+  }
+
+  public async deleteKeyPairValue(selectedKey: string){
+    await this.deletePackageKeyValue(selectedKey);
+    await this.deleteUsedKey(selectedKey);
+  }
 
   /** Update Transform value in db */
-  public async updateTransformValue(translated: ILanguageTranslateResult, keyValue: string){
+  private async updatePackage(translated: ILanguageTranslateResult, keyValue: string){
     let languages = await this.getLanguageSelection();
 
-    try{
-      languages.forEach(async language => {
+    languages.forEach(
+      async language => {
         let languageCode = language.code.toLowerCase();
         for(let translatedLanguageCode in translated){
           if(languageCode === translatedLanguageCode){
-            let updatedSelection: ILanguageSelection = await this.addNewTransformValue(language.code, keyValue, translated[translatedLanguageCode]);
-            await this.systemLanguageRepository.updateLanguageSelection(updatedSelection);
+            let keyPairValue: ILanguageTransformKeyPairValue = {key: keyValue, value: translated[translatedLanguageCode]}
+            language.package = this.languagePackage.editKeyValuePackage(language.package, keyPairValue);
+            await this.systemLanguageRepository.updateLanguageSelection(language);
           }
         }
       });
-    }
-    catch(error){
-    console.error(error);
-    }
+  }
+
+
+  public async editSelectedPackage(selectedLanguageCode: string, keyPairValue: ILanguageTransformKeyPairValue){
+    let language = (await this.getLanguageSelection()).filter(lang => lang.code === selectedLanguageCode)[0];
+    language.package = this.languagePackage.editKeyValuePackage(language.package, keyPairValue);
+    await this.systemLanguageRepository.updateLanguageSelection(language);
   }
 
   /** Update Transform language selection key in db */
-  public async updateLanguageKey(key: ILanguageKey, newKeyValue: string){
+  private async updateLanguageKey(newKeyValue: string){
+    let key = await this.getLanguageSelectionKey();
     key.used.push(newKeyValue);
     key.used.sort();
-    this.systemLanguageRepository.updateLanguageKey(key);
+    await this.systemLanguageRepository.updateLanguageKey(key);
   }
 
-  /** Retreive Language Selection with updated transfrom value */
-  private async addNewTransformValue(selectedlanguageCode: string, key: string, value: string){
-    let languageSelection = await this.getSelectedLanguageSelection(selectedlanguageCode);
-    let pack: ITextTransformObject =  languageSelection.package;
-    let path = this.textTransform.setLanguageTransformCodeList(key);
-    let hasFirstPath = pack[path[0]] !== undefined;
-    let hasSecondPath = this.hasSecondPath(pack, path);
-    let hasThirdPath = this.hasThirdPath(pack, path);
+  private async deleteUsedKey(usedKeyValue: string){
+    let key = await this.getLanguageSelectionKey();
+    let index = key.used.indexOf(usedKeyValue);
+    key.used.splice(index, 1);
+    key.used.sort();
+    await this.systemLanguageRepository.updateLanguageKey(key);
+  }
 
-    if(!hasFirstPath){
-      pack[path[0]] = {};
+  private async deletePackageKeyValue(key: string){
+    let selections = await this.getLanguageSelection();
+    let usedKey = await this.getLanguageSelectionKey();
+    let isUsed = usedKey.used.includes(key)
+
+    if(isUsed){
+      selections.forEach(
+        async selection => {
+          selection.package = this.languagePackage.deleteKeyValuePackage(selection.package, key);
+          this.systemLanguageRepository.updateLanguageSelection(selection);
+      });
     }
-
-    if(!hasSecondPath){
-      let firstPath: any = pack[path[0]];
-      firstPath[path[1]] = {};
-      pack[path[0]] = firstPath;
-    }
-
-    if(!hasThirdPath){
-      let firstPath: any = pack[path[0]];
-      let secondPath: any = firstPath[path[1]];
-      secondPath[path[2]] = value;
-      pack[path[0]] = firstPath;
-    }
-
-    languageSelection.package = pack;
-    return languageSelection;
   }
 
 
-  public async setNewPackageTransformValue(pack: ITextTransformObject, keyPairValue: ILanguageTransformKeyPairValue){
-    let newPackage = pack;
-    let path = this.textTransform.setLanguageTransformCodeList(keyPairValue.key);
-    let hasFirstPath = pack[path[0]] !== undefined;
-    let hasSecondPath = this.hasSecondPath(pack, path);
-    let hasThirdPath = this.hasThirdPath(pack, path);
 
-    if(!hasFirstPath){
-      newPackage[path[0]] = {};
-    }
-
-    if(!hasSecondPath){
-      let firstPath: any = newPackage[path[0]];
-      firstPath[path[1]] = {};
-      newPackage[path[0]] = firstPath;
-    }
-
-    if(!hasThirdPath){
-      let firstPath: any = newPackage[path[0]];
-      let secondPath: any = firstPath[path[1]];
-      secondPath[path[2]] = keyPairValue.value;
-      newPackage[path[0]] = firstPath;
-    }
-
-    return newPackage;
-  }
-
-  private hasSecondPath(pack: any, path: string[]){
-    let object = pack[path[0]] !== undefined ? pack[path[0]] : {};
-    let secondObject = object[path[1]];
-    return secondObject !== undefined;
-  }
-
-  private hasThirdPath(pack: any, path: string[]){
-    let object = pack[path[0]] !== undefined ? pack[path[0]] : {};
-    let secondObject = pack[path[1]] !== undefined ? object[path[1]] : {};
-    let thirdObject = secondObject[path[2]];
-
-    return thirdObject !== undefined;
-  }
-
-  /** Find a Object Key Value from path */
-  private getObjectValue(path: string[], obj: {}){
-    let selectedValue: any;
-
-    path.forEach((code, index) => {
-      if (index === 0) {
-        selectedValue = obj;
-        for (let key in selectedValue) {
-          if (key === code) {
-            selectedValue = selectedValue[key];
-          }
-        }
-      } else if (index > 0) {
-        for (let key in selectedValue) {
-          if (key === code) {
-            selectedValue = selectedValue[key];
-          }
-        }
-      }
-    });
-
-    return selectedValue;
-  }
 
 }

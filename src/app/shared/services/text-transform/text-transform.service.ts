@@ -2,7 +2,7 @@ import { ILanguageTranslateResult } from './../language-translate/language-trans
 import { Injectable } from '@angular/core';
 
 export interface ITextTransformObject{
-  [key: string]: string | {};
+  [key: string]: any;
 }
 
 @Injectable({
@@ -28,6 +28,7 @@ export class TextTransformService {
 
     for(let key in formatter){
       formatter[key] = formatter[key].endsWith('.') ? formatter[key].slice(0, formatter[key].length -1) : formatter[key];
+      formatter[key] = formatter[key].endsWith('。') ? formatter[key].slice(0, formatter[key].length -1) : formatter[key];
       formatter[key] = this.getTitleFormat(formatter[key]);
     }
 

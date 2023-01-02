@@ -9,7 +9,7 @@ import { map } from 'rxjs';
   providedIn: 'root'
 })
 export class SystemLanguageRepositoryService {
-  private readonly timeStamp = {timeStamp: new Date()};
+  private readonly timeStamp = {lastModifiedDate: new Date()};
   private readonly systemLanguage: string = 'system/language/';
   private readonly languageSelectionCollectionPath: string = this.systemLanguage + 'selection';
   private readonly languageKeyPath: string = this.systemLanguage + 'key';
@@ -45,7 +45,7 @@ export class SystemLanguageRepositoryService {
     this.afs.collection(this.languageSelectionCollectionPath).doc(criteria.id).update(updateCommand);
   }
 
-  public updateLanguageKey(criteria: ILanguageKey){
+  public async updateLanguageKey(criteria: ILanguageKey){
     let updateCommand = {...criteria, ...this.timeStamp};
     this.afs.collection(this.languageKeyPath).doc(criteria.id).update(updateCommand);
   }

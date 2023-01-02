@@ -20,9 +20,10 @@ export interface ILanguageTransform {
   isDescription: boolean;
 }
 
-export interface ILanguageNameCodeCollection {
-  name: string[],
-  code: string[]
+export interface ILanguageTranslatedCriteria {
+  name: string[];
+  code: string[];
+  isTitle: boolean;
 }
 
 export interface ILanguageTranslateResult{

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ILanguageNameCodeCollection, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
+import { ILanguageTranslatedCriteria, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
 import { OpenAiService } from '../open-ai/open-ai.service';
 
 
@@ -20,7 +20,7 @@ export class LanguageTranslateService {
   private readonly singleString: string = 'a single String Value.';
 
   //command
-  private readonly correctGrammerThenTranslateTo: string = this.translateTo;
+  private readonly correctGrammerThenTranslateTo: string = this.correctGrammer + "then "+ this.translateTo;
   private readonly returnAsSingleString: string = this.returnAs + this.singleString;
   private readonly convertJSON: string = " convert into JSON file";
 
@@ -29,13 +29,15 @@ export class LanguageTranslateService {
 
 
   /** This will trigger open ai api to retreive the translate the sentence to all languages as a JSON format*/
-  public async getTranslatedSentenceAllLanguages(sentence: string, allLanguageCriteria: ILanguageNameCodeCollection): Promise<ILanguageTranslateResult>{
+  public async getTranslatedSentenceAllLanguages(sentence: string, criteria: ILanguageTranslatedCriteria): Promise<ILanguageTranslateResult>{
+    let firstCommand = criteria.isTitle ? this.translateTo : this.correctGrammerThenTranslateTo;
     let commandFormat = this.setCommandSentenceFormat(sentence);
-    let allLanguageCommand = allLanguageCriteria.name.join(', ');
-    let jsonFormatCommand = this.setJSONFormatCommand(allLanguageCriteria.code);
-    let command = this.correctGrammerThenTranslateTo + allLanguageCommand + this.convertJSON + jsonFormatCommand + commandFormat;
+    let allLanguageCommand = criteria.name.join(', ');
+    let jsonFormatCommand = this.setJSONFormatCommand(criteria.code);
+    let command = firstCommand + allLanguageCommand + this.convertJSON + jsonFormatCommand + commandFormat;
+    console.log(command)
     let response: string = await this.openAi.receiveResult(command);
-    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, allLanguageCriteria.code);
+    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
 
     return jsonFormat;
   }
@@ -133,7 +135,7 @@ export class LanguageTranslateService {
         command += '{' + '"' + code + '":"translatedValue",';
       }else{
         if(codes.length - 1 === index){
-          command +=  '"' + code + '":"translatedValue"}';
+          command +=  '"' + code + '":"translatedValue"} ';
         }
         else{
           command +=  '"' + code + '":"translatedValue",';
