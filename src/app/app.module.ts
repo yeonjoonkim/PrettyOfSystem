@@ -31,7 +31,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Language Package
-import { UiLanguagePipeModule } from './shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from './shared/pipes/language-transform-pipe/language-transform.pipe.module';
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, LangaugeSelectionComponent],
@@ -41,7 +41,7 @@ import { UiLanguagePipeModule } from './shared/pipes/language-transform-pipe/lan
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,
-    UiLanguagePipeModule.forRoot(),
+    LanguageTransformPipeModule.forRoot(),
     IonicStorageModule.forRoot(),
     HttpClientModule,
     BrowserModule,

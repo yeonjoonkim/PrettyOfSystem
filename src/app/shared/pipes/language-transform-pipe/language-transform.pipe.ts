@@ -5,7 +5,7 @@ import { LanguageService } from '../../services/language/language.service';
   name: 'languageTransform'
 })
 
-export class UiLanguagePipe implements PipeTransform {
+export class LanguageTransformPipe implements PipeTransform {
   constructor(private language: LanguageService){}
 
   async transform(value: any) {

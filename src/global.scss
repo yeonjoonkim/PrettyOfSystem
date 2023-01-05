@@ -25,14 +25,10 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-.icon{
+.modal-toolbar-icon{
   font-size: 30px;
   margin: 5px;
   cursor: pointer;
-}
-
-.page-toolbar-icon{
-  margin-right: 10px;
 }
 
 .active{
@@ -61,4 +57,15 @@ ion-button{
   --background: linear-gradient(90deg, rgba(54,53,54,1) 0%, rgba(65,70,86,1) 100%);
   position: relative;
   margin: auto;
+  color: white;
+}
+
+
+.modal {
+  align-items: center;
+  justify-content: center;
+  &::part(content){
+    width: fit-content;
+    height: fit-content;
+  }
 }

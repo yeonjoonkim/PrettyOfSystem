@@ -12,7 +12,7 @@ import { SystemPageRoutingModule } from './system-routing.module';
 import { SystemPage } from './system.page';
 
 //Import Pipe
-import { UiLanguagePipeModule } from './../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from './../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { LanguageTransformModule } from './components/language-transform/language-transform.module';
@@ -23,7 +23,7 @@ import { LanguageTransformModule } from './components/language-transform/languag
     IonicModule,
     SystemPageRoutingModule,
     Ng2SearchPipeModule,
-    UiLanguagePipeModule,
+    LanguageTransformPipeModule,
     LanguageTransformModule
   ],
   declarations: [SystemPage],

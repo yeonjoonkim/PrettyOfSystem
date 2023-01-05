@@ -34,3 +34,9 @@ export interface ILanguageTransformKeyPairValue{
   key: string;
   value: string;
 }
+
+export interface IlanugaeTransformPopOverCriteria{
+  key: string;
+  value: string;
+  selectedLangCode: string;
+}
