@@ -10,18 +10,23 @@ export class LanguagePackageService {
 
   constructor(private textTransform: TextTransformService) { }
 
-  public getKeyPairValue(usedKeyList: string[], pack: any){
+  /** This will retreive list of key pair value.*/
+  public getKeyPairValue(usedKeyList: string[], pack: any): ILanguageTransformKeyPairValue[]{
     let keyPairValueList: ILanguageTransformKeyPairValue[] = [];
-    usedKeyList.forEach(
-      key => {
-        let path = this.textTransform.setLanguageTransformCodeList(key);
-        let value = this.getValue(path, pack);
-        keyPairValueList.push({key: key, value: value});
-      });
 
+    if(usedKeyList.length > 0){
+      keyPairValueList =  usedKeyList.map(
+        key => {
+          let path = this.textTransform.setLanguageTransformCodeList(key);
+          let value = this.getValue(path, pack);
+          return {key: key, value: value};
+        });
+    }
     return keyPairValueList;
   }
 
+
+  /** This will return edited key value in the package to update in db */
   public editKeyValuePackage(pack: ITextTransformObject, keyPairValue: ILanguageTransformKeyPairValue){
     let editedPackage = pack;
     let path: string[] = this.textTransform.setLanguageTransformCodeList(keyPairValue.key);
@@ -47,6 +52,8 @@ export class LanguagePackageService {
     return editedPackage;
   }
 
+
+  /** This will return removed key value in the package to update in db */
   public deleteKeyValuePackage(pack: ITextTransformObject, selectedKey: string){
     let editPackage = pack;
     let path: string[] = this.textTransform.setLanguageTransformCodeList(selectedKey);
@@ -74,6 +81,7 @@ export class LanguagePackageService {
           editPackage[path[0]] = firsthPathPackage;
         }
     }
+
     return editPackage;
   }
 

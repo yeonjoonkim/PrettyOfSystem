@@ -7,7 +7,7 @@ import { ShopPageRoutingModule } from './shop-routing.module';
 import { ShopPage } from './shop.page';
 
 //import Pipe
-import { UiLanguagePipeModule } from '../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from '../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { UiLanguagePipeModule } from '../../shared/pipes/language-transform-pipe
     FormsModule,
     IonicModule,
     ShopPageRoutingModule,
-    UiLanguagePipeModule
+    LanguageTransformPipeModule
   ],
   declarations: [ShopPage]
 })

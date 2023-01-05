@@ -7,7 +7,7 @@ import { PaymentPageRoutingModule } from './payment-routing.module';
 import { PaymentPage } from './payment.page';
 
 //import Pipe
-import { UiLanguagePipeModule } from '../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from '../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { UiLanguagePipeModule } from '../../shared/pipes/language-transform-pipe
     FormsModule,
     IonicModule,
     PaymentPageRoutingModule,
-    UiLanguagePipeModule
+    LanguageTransformPipeModule
   ],
   declarations: [PaymentPage]
 })

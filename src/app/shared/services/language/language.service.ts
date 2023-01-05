@@ -4,7 +4,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { SystemLanguageRepositoryService } from './../../../firebase/system-repository/language/system-language-repository.service';
 import { ITextTransformObject, TextTransformService } from '../text-transform/text-transform.service';
-import { ILanguageSelection, ILanguageKey, ILanguageTranslateResult, ILanguageTransformKeyPairValue } from './../../../interface/system/language/language.interface';
+import { ILanguageSelection, ILanguageKey, ILanguageTranslateResult, ILanguageTransformKeyPairValue, ILanguageTranslatedCriteria } from './../../../interface/system/language/language.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,25 +16,23 @@ export class LanguageService{
   public languageSelectionKey!: Observable<ILanguageKey[]>;
   public languageSelection!: Observable<ILanguageSelection[]>;
 
-
-  constructor( private textTransform: TextTransformService,
-    private storage: StorageService, private systemLanguageRepository: SystemLanguageRepositoryService,
-    private languagePackage: LanguagePackageService
-    ) {
-    this.subscribeLanguageRepository().then(() => {
-      this.setDefaultLanguage();
-    });
+  /** At the start of the build, It will listen to the languageRepo then set the default language to avoid any errors. */
+  constructor(private textTransform: TextTransformService, private storage: StorageService,
+     private systemLanguageRepository: SystemLanguageRepositoryService,private languagePackage: LanguagePackageService) {
+      this.subscribeLanguageRepository().then(() => {
+        this.setDefaultLanguage();
+      });
   }
 
   /** Subscribe Language Repository */
-  private async subscribeLanguageRepository(){
+  private async subscribeLanguageRepository(): Promise<void>{
     this.languageSelection = this.systemLanguageRepository.getLanguageSelectionResult();
     this.languageSelectionKey = this.systemLanguageRepository.getLanguageKeyResult();
   }
 
 
   //** This will validate the local storage value then set either default value*/
-  private async setDefaultLanguage() {
+  private async setDefaultLanguage(): Promise<void> {
     await this.storage.create();
     let result = await this.storage.getCurrentLanguage();
     if(result){
@@ -46,35 +44,46 @@ export class LanguageService{
     }
   }
 
-  public async getDefaultLanguageSelection(){
+
+  /** This will retreive the default language selection */
+  public async getDefaultLanguageSelection(): Promise<ILanguageSelection>{
     let selection = await firstValueFrom(this.languageSelection);
     return selection.filter(lang => lang.isDefault)[0];
   }
 
-  public async getDefaultKeyPairValueList(){
+
+  /** This will return list of key pair value in default language*/
+  public async getDefaultKeyPairValueList(): Promise<ILanguageTransformKeyPairValue[]>{
     let defaultLanguage = await this.getDefaultLanguageSelection();
     let key = await this.getLanguageSelectionKey();
     let keyPairValueList: ILanguageTransformKeyPairValue[] = this.languagePackage.getKeyPairValue(key.used, defaultLanguage.package);
     return keyPairValueList;
   }
 
-  public async getSelectedLanguageKeyPairValueList(selectedLangCode: string){
+
+  /** This will retreive the list of key pair value in selected language package. */
+  public async getSelectedLanguageKeyPairValueList(selectedLangCode: string): Promise<ILanguageTransformKeyPairValue[]>{
     let selectedLanguage = await this.getSelectedLanguageSelection(selectedLangCode);
     let key = await this.getLanguageSelectionKey();
     let keyPairValueList: ILanguageTransformKeyPairValue[] = this.languagePackage.getKeyPairValue(key.used, selectedLanguage.package);
     return keyPairValueList;
   }
 
-  public async getSelectedLanguageSelection(selectedLangCode: string){
+
+  /** This will retreive selected language selection by language code */
+  public async getSelectedLanguageSelection(selectedLangCode: string): Promise<ILanguageSelection>{
     let selection = await firstValueFrom(this.languageSelection);
     return selection.filter(lang => lang.code === selectedLangCode)[0];
   }
 
-  public async getLanguageSelection(){
+
+  /** This will retreive all list of language selection.*/
+  public async getLanguageSelection(): Promise<ILanguageSelection[]>{
     return await firstValueFrom(this.languageSelection);
   }
 
-  public async getAllLanguageTranslateCriteria(){
+  /** This will set the all language translate criteria list to query the JSON format. */
+  public async getAllLanguageTranslateCriteria(): Promise<ILanguageTranslatedCriteria>{
     let selections = await this.getLanguageSelection();
     let languageCodeList = selections.map(language => language.code.toLowerCase());
     let languageNameList = selections.map(language => language.name);
@@ -84,40 +93,45 @@ export class LanguageService{
 
 
   /** Retreive used languageSelection package keys */
-  public async getLanguageSelectionKey(){
+  public async getLanguageSelectionKey(): Promise<ILanguageKey>{
     let key = await firstValueFrom(this.languageSelectionKey);
     return key[0];
   }
 
 
   /** Language Change Event */
-  public async languageChange() {
-    console.log(this.currentLanguage)
+  public async languageChange(): Promise<void> {
     await this.storage.storeCurrentLanguage(this.currentLanguage);
     this.changeLanguageAction.emit(this.currentLanguage);
   }
 
-  /** Transform Value */
-  public async getLanguageTransformValue(key: string) {
-    let path = this.textTransform.setLanguageTransformCodeList(key);
+
+  /** Retreive from language transform form key to value based on the current language package.
+   * 'example.example.title' --> 'Sample Example'
+   */
+  public async getLanguageTransformValue(key: string): Promise<string> {
     let currentLanguage = await this.getSelectedLanguageSelection(this.currentLanguage);
+    let path = this.textTransform.setLanguageTransformCodeList(key);
     let objectValue = this.languagePackage.getValue(path, currentLanguage?.package);
 
     return (typeof objectValue === 'string') ? objectValue : key;
   }
 
-  public async updateLanguagePackage(translated: ILanguageTranslateResult, keyValue: string){
+
+  /**Update all language package with new translated value and key value. */
+  public async updateLanguagePackage(translated: ILanguageTranslateResult, keyValue: string): Promise<void> {
     await this.updatePackage(translated, keyValue);
     await this.updateLanguageKey(keyValue);
   }
 
-  public async deleteKeyPairValue(selectedKey: string){
+  /**Delete the key value */
+  public async deleteKeyPairValue(selectedKey: string): Promise<void> {
     await this.deletePackageKeyValue(selectedKey);
     await this.deleteUsedKey(selectedKey);
   }
 
   /** Update Transform value in db */
-  private async updatePackage(translated: ILanguageTranslateResult, keyValue: string){
+  private async updatePackage(translated: ILanguageTranslateResult, keyValue: string): Promise<void>{
     let languages = await this.getLanguageSelection();
 
     languages.forEach(
@@ -134,43 +148,58 @@ export class LanguageService{
   }
 
 
-  public async editSelectedPackage(selectedLanguageCode: string, keyPairValue: ILanguageTransformKeyPairValue){
+  /** Edit the key pair value in selected language package. */
+  public async editSelectedPackage(selectedLanguageCode: string, keyPairValue: ILanguageTransformKeyPairValue): Promise<void>{
     let language = (await this.getLanguageSelection()).filter(lang => lang.code === selectedLanguageCode)[0];
     language.package = this.languagePackage.editKeyValuePackage(language.package, keyPairValue);
     await this.systemLanguageRepository.updateLanguageSelection(language);
   }
 
+
   /** Update Transform language selection key in db */
-  private async updateLanguageKey(newKeyValue: string){
+  private async updateLanguageKey(newKeyValue: string): Promise<void>{
     let key = await this.getLanguageSelectionKey();
     key.used.push(newKeyValue);
     key.used.sort();
     await this.systemLanguageRepository.updateLanguageKey(key);
   }
 
-  private async deleteUsedKey(usedKeyValue: string){
+
+  /** This will delete the used key value in db */
+  private async deleteUsedKey(usedKeyValue: string): Promise<void>{
     let key = await this.getLanguageSelectionKey();
-    let index = key.used.indexOf(usedKeyValue);
-    key.used.splice(index, 1);
-    key.used.sort();
-    await this.systemLanguageRepository.updateLanguageKey(key);
+
+    if(key.used.length > 0){
+      let isExistKey = key.used.includes(usedKeyValue);
+      let index = key.used.indexOf(usedKeyValue);
+      if(isExistKey && index !== -1){
+        if (index !== -1) {
+          key.used.splice(index, 1);
+          key.used.sort();
+          await this.systemLanguageRepository.updateLanguageKey(key);
+        }
+      }
+    }
+
   }
 
-  private async deletePackageKeyValue(key: string){
+
+  /** This will delete key pair value in all language selections. */
+  private async deletePackageKeyValue(key: string): Promise<void>{
     let selections = await this.getLanguageSelection();
     let usedKey = await this.getLanguageSelectionKey();
-    let isUsed = usedKey.used.includes(key)
+    if(usedKey.used.length > 0){
+      let isUsed = usedKey.used.includes(key);
 
-    if(isUsed){
-      selections.forEach(
-        async selection => {
-          selection.package = this.languagePackage.deleteKeyValuePackage(selection.package, key);
-          this.systemLanguageRepository.updateLanguageSelection(selection);
-      });
+      if(isUsed){
+        selections.forEach(
+          async selection => {
+            selection.package = this.languagePackage.deleteKeyValuePackage(selection.package, key);
+            await this.systemLanguageRepository.updateLanguageSelection(selection);
+          });
+        }
+      }
+
     }
-  }
-
-
-
 
 }

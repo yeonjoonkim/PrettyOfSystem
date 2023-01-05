@@ -1,5 +1,3 @@
-import { ITextTransformObject } from './../../../../../shared/services/text-transform/text-transform.service';
-import { ILanguageTransformKeyPairValue } from './../../../../../interface/system/language/language.interface';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { Component, OnInit } from '@angular/core';
 import { ILanguageKey, ILanguageTranslatedCriteria, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
@@ -8,6 +6,7 @@ import { TextTransformService } from 'src/app/shared/services/text-transform/tex
 import { LoadingService } from 'src/app/shared/services/loading/loading.service';
 import { ToastService } from 'src/app/shared/services/toast/toast.service';
 import { ActionSheetController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 
 export interface IAddLanguageTransformSaveCommand{
   hasDescriptionValue: boolean;
@@ -22,6 +21,7 @@ export interface IAddLanguageTransformSaveCommand{
 })
 
 export class AddLanguageTransformComponent implements OnInit {
+  private isSaved: boolean = false;
   public languageTransform = {
     key: '',
     description: ''
@@ -29,11 +29,15 @@ export class AddLanguageTransformComponent implements OnInit {
 
   constructor(public language: LanguageService, private langugeTranslate: LanguageTranslateService,
     private actionSheetCtrl: ActionSheetController, private textTransform: TextTransformService,
-    private loading: LoadingService, private toast: ToastService) { }
+    private loading: LoadingService, private toast: ToastService, private modalCtrl: ModalController) { }
 
-  ngOnInit() {
+  ngOnInit() {}
 
+  /** This will close the this component as a modal*/
+  public async dismissAddLanguage(){
+    await this.modalCtrl.dismiss({key: this.languageTransform.key, isSaved: this.isSaved});
   }
+
 
   /**This will start, when user click save button */
   public async onClickSaveButton(){
@@ -94,6 +98,8 @@ export class AddLanguageTransformComponent implements OnInit {
         let sccuess = await this.language.getLanguageTransformValue('message.success.save');
         await this.language.updateLanguagePackage(translated, this.languageTransform.key.toLowerCase());
         await this.toast.present(sccuess);
+        this.isSaved = true;
+        this.dismissAddLanguage();
       }
       catch(err: any){
         let errorMsg = await this.language.getLanguageTransformValue('message.error.unsave');
@@ -130,39 +136,6 @@ export class AddLanguageTransformComponent implements OnInit {
       await this.toast.presentError(error);
     }
   }
-
-
-
-
-
-
-  public async test(values: ILanguageTransformKeyPairValue[]){
-  //  //this.language.deleteKeyPairValue('test.test.name');
-  //  //let values = await this.language.getDefaultLanguagePackageKeyPairValue();
-  //  let newPackage: ITextTransformObject = {};
-   // let max = values.length;
-  //  let currentIndex = 0;
-   // let loadingMsg = await this.language.getLanguageTransformValue('loading.name.translating');
-   // await this.loading.show(loadingMsg);
-
-   // let interval = setInterval(() => {
-     // if(currentIndex + 1 === values.length){
-     //   this.loading.dismiss();
-    //    clearInterval(interval);
-    //  }else{
-    //    let percentage =  " (" +Math.round((currentIndex / max) * 100) + "%" + ")";
-   //     this.loading.message = loadingMsg + percentage;
-   //   }
-   // }, 1500);
-    //send api
-   // values.forEach(async (value, index) => {
-//      setTimeout(async () => {
-//        currentIndex = index;
-  //      value.value = await this.langugeTranslate.getTranslatedSelectedLanguage('Taiwanese', value.value);
-  //      //newPackage = await this.language.setNewPackageTransformValue(newPackage, value);
-  //    }, index * 2500);
-  //  });
-  //}
 
 }
 

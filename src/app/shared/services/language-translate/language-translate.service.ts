@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ILanguageTranslatedCriteria, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
 import { OpenAiService } from '../open-ai/open-ai.service';
-
+import { ToastService } from '../toast/toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class LanguageTranslateService {
   private readonly returnAsSingleString: string = this.returnAs + this.singleString;
   private readonly convertJSON: string = " convert into JSON file";
 
-  constructor(private openAi: OpenAiService) {
+  constructor(private openAi: OpenAiService, private toast: ToastService) {
   }
 
 
@@ -35,7 +35,7 @@ export class LanguageTranslateService {
     let allLanguageCommand = criteria.name.join(', ');
     let jsonFormatCommand = this.setJSONFormatCommand(criteria.code);
     let command = firstCommand + allLanguageCommand + this.convertJSON + jsonFormatCommand + commandFormat;
-    console.log(command)
+
     let response: string = await this.openAi.receiveResult(command);
     let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
 
@@ -112,7 +112,7 @@ export class LanguageTranslateService {
       resultItem = JSON.parse(response);
     }
     catch(err){
-      //Todo: Please modify the error message to be notification or alert user.
+      this.toast.presentError("API ERROR")
       console.error(err);
     }
     return resultItem;
