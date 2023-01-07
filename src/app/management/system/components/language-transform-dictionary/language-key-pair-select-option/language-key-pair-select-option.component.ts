@@ -1,8 +1,8 @@
 import { AlertController, AlertOptions } from '@ionic/angular';
-import { ToastService } from './../../../../../shared/services/toast/toast.service';
-import { LoadingService } from './../../../../../shared/services/loading/loading.service';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
+import { LoadingService } from '../../../../../shared/services/loading/loading.service';
 import { ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
-import { Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 
 @Component({
@@ -11,11 +11,8 @@ import { LanguageService } from 'src/app/shared/services/language/language.servi
   styleUrls: ['./language-key-pair-select-option.component.scss'],
 })
 export class LanguageKeyPairSelectOptionComponent implements OnInit {
-  @ViewChild('selectionOption')
-  public selectionOption: any;
   @Input() keyPairValue!: ILanguageTransformKeyPairValue;
   @Input() languageCode!: string;
-  public isOpen: boolean = false;
 
   constructor(private language: LanguageService, private loading: LoadingService, private toast: ToastService, private alertCtrl: AlertController) {
   }
@@ -23,11 +20,6 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
   ngOnInit() {}
 
 
-  /** This will change to isOpen to true to present the option button */
-  public presentOption(e: Event) {
-    this.selectionOption = e;
-    this.isOpen = true;
-  }
 
 
   /** This will open the setConfirmDeleteAlert then receive the action to fire deleteKeyPairValue() based on role value*/
@@ -38,7 +30,6 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
     if(action?.role === 'delete'){
       await this.deleteKeyPairValue();
-      this.isOpen = false;
     }
   }
 
@@ -54,14 +45,15 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
     if(result?.role === 'edit' && editedValue !== undefined){
       this.keyPairValue.value = editedValue[0];
       await this.editKeyPairValue();
-      this.isOpen = false;
     }
   }
 
   /** This will set the confirmation of delete alert */
   private async setConfirmDeleteAlert(){
+    let deleteMsg = await this.language.getLanguageTransformValue('message.header.delete');
+    let header = this.keyPairValue.key + " - " + deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
-      header: await this.language.getLanguageTransformValue('message.header.delete'),
+      header: header,
       buttons: [
         {
           text: await this.language.getLanguageTransformValue('button.name.delete'),
@@ -99,8 +91,10 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   //** This will set the edit alert */
   private async setEditAlert(){
+    let header = await this.language.getLanguageTransformValue('menu.name.edit');
+
     let editedAlertCriteria: AlertOptions = {
-      header: await this.language.getLanguageTransformValue('menu.name.edit'),
+      header: this.keyPairValue.key + " " + header + " (" + this.languageCode + ")",
       inputs: [
         {
           placeholder: await this.language.getLanguageTransformValue('transform.edit.placeholder'),

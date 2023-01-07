@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 export class OpenAiService {
   //API
   private readonly openAiUrl: string = 'https://api.openai.com/v1/completions';
-  private readonly apiKey: string = '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';
+  private readonly apiKey: string = '';
 
   //API DEFAULT PARAM
   private readonly defaultParams = {

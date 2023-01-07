@@ -1,7 +1,7 @@
 import { PopoverController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { LanguageTransformDictionaryComponent } from './components/language-transform/language-transform-dictionary/language-transform-dictionary.component';
+import { LanguageTransformDictionaryComponent } from './components/language-transform-dictionary/language-transform-dictionary/language-transform-dictionary.component';
 @Component({
   selector: 'app-system',
   templateUrl: './system.page.html',
@@ -14,7 +14,6 @@ export class SystemPage implements OnInit {
   }
 
   ngOnInit() {
-    this.openLanguageDictionary();
   }
 
   /**This will open the language dictionary as a modal */

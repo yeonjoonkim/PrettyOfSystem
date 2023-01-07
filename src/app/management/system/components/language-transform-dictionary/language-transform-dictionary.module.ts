@@ -5,7 +5,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,NgModule} from '@angular/core';
 
 
 //Import Pipe
-import { LanguageTransformPipeModule } from './../../../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from '../../../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Component
@@ -25,4 +25,4 @@ import { LanguageKeyPairSelectOptionComponent } from './language-key-pair-select
   exports: [AddLanguageTransformComponent, LanguageTransformDictionaryComponent, LanguageKeyPairSelectOptionComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
-export class LanguageTransformModule { }
+export class LanguageTransformDictionaryModule { }
