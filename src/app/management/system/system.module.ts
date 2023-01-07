@@ -15,7 +15,9 @@ import { SystemPage } from './system.page';
 import { LanguageTransformPipeModule } from './../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
-import { LanguageTransformModule } from './components/language-transform/language-transform.module';
+
+import { LanguageTransformDictionaryModule } from './components/language-transform-dictionary/language-transform-dictionary.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +26,7 @@ import { LanguageTransformModule } from './components/language-transform/languag
     SystemPageRoutingModule,
     Ng2SearchPipeModule,
     LanguageTransformPipeModule,
-    LanguageTransformModule
+    LanguageTransformDictionaryModule,
   ],
   declarations: [SystemPage],
   exports: [],

@@ -1,0 +1,41 @@
+<ion-header>
+  <!-- Title -->
+  <ion-toolbar>
+    <ion-title>{{'transform.title.name'| languageTransform | async }}</ion-title>
+    <ion-icon class="toolbar-icon" name="add-outline" slot="start" (click)="openAddLanguageTransform()"></ion-icon>
+    <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="dismissDictonary()"></ion-icon>
+  </ion-toolbar>
+
+  <!--Language Selection-->
+  <ion-item>
+    <ion-segment id="language-selection" interface="popover" [scrollable]="true" [(ngModel)]="selectedLanguageCode" (ionChange)="onChangeLanguageSelection()">
+      <ion-segment-button *ngFor="let lang of language.languageSelection | async" [value]="lang.code"> <p> {{lang.flag}} {{lang.description | languageTransform | async }} </p> </ion-segment-button>
+    </ion-segment>
+  </ion-item>
+
+  <!--Search bar-->
+  <ion-searchbar type="text" [(ngModel)]="selectedKeyPairValue"></ion-searchbar>
+
+</ion-header>
+
+<!--Key Pair Value-->
+<ion-content>
+  <ion-list *ngFor="let pair of keyPairValue | filter:selectedKeyPairValue let i = index">
+
+    <!--Key Pair Value Title-->
+    <ion-list-header *ngIf="i === 0">
+        <ion-label> {{'transform.name.key'  | languageTransform | async }}  </ion-label>
+        <ion-label> {{'transform.name.value' | languageTransform | async }} </ion-label>
+    </ion-list-header>
+
+    <!--Key Pair Value Item-->
+    <ion-item-sliding>
+      <ion-item lines="full">
+        <ion-label class="ion-text-wrap"> <p>{{pair.key}}</p></ion-label>
+        <ion-label class="ion-text-wrap"> <p>{{pair.value}}</p></ion-label>
+      </ion-item>
+      <language-key-pair-select-option [keyPairValue]="pair" [languageCode]="selectedLanguageCode"></language-key-pair-select-option>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
+
