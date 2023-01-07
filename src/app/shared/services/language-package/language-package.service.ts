@@ -100,11 +100,18 @@ export class LanguagePackageService {
 
   //** Determine Third Path is exist.*/
   private hasThirdPath(pack: any, path: string[]){
+    let hasThirdPath = false;
     let object = pack[path[0]] !== undefined ? pack[path[0]] : {};
     let secondObject = pack[path[1]] !== undefined ? object[path[1]] : {};
-    let thirdObject = secondObject[path[2]];
 
-    return thirdObject !== undefined;
+    if(secondObject !== undefined){
+      let thirdObject = secondObject[path[2]];
+      if(thirdObject !== undefined){
+        hasThirdPath = true;
+      }
+    }
+
+    return hasThirdPath;
   }
 
 
