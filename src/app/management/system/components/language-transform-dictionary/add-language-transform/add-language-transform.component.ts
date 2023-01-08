@@ -33,14 +33,15 @@ export class AddLanguageTransformComponent implements OnInit {
 
   ngOnInit() {}
 
+
   /** This will close the this component as a modal*/
-  public async dismissAddLanguage(){
+  public async dismissAddLanguage(): Promise<void>{
     await this.modalCtrl.dismiss({key: this.languageTransform.key, isSaved: this.isSaved});
   }
 
 
   /**This will start, when user click save button */
-  public async onClickSaveButton(){
+  public async onClickSaveButton(): Promise<void>{
     let validated: IAddLanguageTransformSaveCommand = await this.vaildatedInputValue();
     if(validated.hasDescriptionValue && validated.isKeyNotExisted && validated.isTransformKeyValueFormat){
 
@@ -59,7 +60,7 @@ export class AddLanguageTransformComponent implements OnInit {
 
 
   /**This will validated the user input */
-  private async vaildatedInputValue(){
+  private async vaildatedInputValue(): Promise<IAddLanguageTransformSaveCommand>{
     let key: ILanguageKey = await this.language.getLanguageSelectionKey();
     let vaildated: IAddLanguageTransformSaveCommand  = {
       hasDescriptionValue: this.languageTransform.description.length > 0,
@@ -92,7 +93,7 @@ export class AddLanguageTransformComponent implements OnInit {
 
 
   /** This will update language package */
-  private async updateLanguagePackage(translated: ILanguageTranslateResult){
+  private async updateLanguagePackage(translated: ILanguageTranslateResult): Promise<void>{
     if(translated){
       try{
         let sccuess = await this.language.getLanguageTransformValue('message.success.save');
@@ -111,7 +112,7 @@ export class AddLanguageTransformComponent implements OnInit {
 
 
   /** This will retreive the translated description */
-  private async getTranslatedDescription(translatedCriteria: ILanguageTranslatedCriteria){
+  private async getTranslatedDescription(translatedCriteria: ILanguageTranslatedCriteria): Promise<ILanguageTranslateResult>{
     let loadingMsg = await this.language.getLanguageTransformValue('loading.name.translating');
     this.loading.show(loadingMsg);
     let translated = await this.langugeTranslate.getTranslatedSentenceAllLanguages(this.languageTransform.description, translatedCriteria);
@@ -122,7 +123,7 @@ export class AddLanguageTransformComponent implements OnInit {
 
 
   /** Send Error Notifciation */
-  private async sendErrorToast(validated: IAddLanguageTransformSaveCommand){
+  private async sendErrorToast(validated: IAddLanguageTransformSaveCommand): Promise<void>{
     if(!validated.isTransformKeyValueFormat){
       let error = await this.language.getLanguageTransformValue('message.error.transformkeyvalue');
       await this.toast.presentError(error);

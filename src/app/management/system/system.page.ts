@@ -1,7 +1,5 @@
-import { PopoverController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { LanguageTransformDictionaryComponent } from './components/language-transform-dictionary/language-transform-dictionary/language-transform-dictionary.component';
+import { SystemModalService } from './services/system-modal-service/system-modal-service.service';
 @Component({
   selector: 'app-system',
   templateUrl: './system.page.html',
@@ -10,17 +8,12 @@ import { LanguageTransformDictionaryComponent } from './components/language-tran
 
 export class SystemPage implements OnInit {
 
-  constructor(private popOverCtrl: PopoverController, private modalCtrl: ModalController) {
+  constructor(private systemModalService: SystemModalService) {
   }
 
+  //TODO: Delete languageDcitionary Modal Open Method
   ngOnInit() {
+    this.systemModalService.presentLanguageDictionary();
   }
 
-  /**This will open the language dictionary as a modal */
-  async openLanguageDictionary(){
-    let dictionary = await this.modalCtrl.create({
-      component: LanguageTransformDictionaryComponent
-    })
-    await dictionary.present();
-  }
 }

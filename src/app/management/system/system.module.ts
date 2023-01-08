@@ -17,7 +17,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 import { LanguageTransformDictionaryModule } from './components/language-transform-dictionary/language-transform-dictionary.module';
-
+import { LanguageManagementModule } from './components/language-management/language-management.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,6 +27,7 @@ import { LanguageTransformDictionaryModule } from './components/language-transfo
     Ng2SearchPipeModule,
     LanguageTransformPipeModule,
     LanguageTransformDictionaryModule,
+    LanguageManagementModule
   ],
   declarations: [SystemPage],
   exports: [],

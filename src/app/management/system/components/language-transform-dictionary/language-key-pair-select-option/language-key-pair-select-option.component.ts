@@ -5,6 +5,7 @@ import { ILanguageTransformKeyPairValue } from 'src/app/interface/system/languag
 import { Component, Input, OnInit} from '@angular/core';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 
+
 @Component({
   selector: 'language-key-pair-select-option',
   templateUrl: './language-key-pair-select-option.component.html',
@@ -14,16 +15,15 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
   @Input() keyPairValue!: ILanguageTransformKeyPairValue;
   @Input() languageCode!: string;
 
+
   constructor(private language: LanguageService, private loading: LoadingService, private toast: ToastService, private alertCtrl: AlertController) {
   }
 
   ngOnInit() {}
 
 
-
-
   /** This will open the setConfirmDeleteAlert then receive the action to fire deleteKeyPairValue() based on role value*/
-  public async onClickDelete(){
+  public async onClickDelete(): Promise<void>{
     let confirmAlert = await this.setConfirmDeleteAlert();
     await confirmAlert.present();
     let action = await confirmAlert.onWillDismiss();
@@ -35,7 +35,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
 
   /** This will open the editAlert then receive the action to fire editkeyPairValue() based on role value*/
-  public async onClickEdit(){
+  public async onClickEdit(): Promise<void>{
     let editAlert = await this.setEditAlert();
     await editAlert.present();
 
@@ -49,7 +49,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
   }
 
   /** This will set the confirmation of delete alert */
-  private async setConfirmDeleteAlert(){
+  private async setConfirmDeleteAlert(): Promise<HTMLIonAlertElement>{
     let deleteMsg = await this.language.getLanguageTransformValue('message.header.delete');
     let header = this.keyPairValue.key + " - " + deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
@@ -71,7 +71,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
 
   /**This will fire deletion of key pair value in all language packages and selection list to remove the key value. */
-  private async deleteKeyPairValue(){
+  private async deleteKeyPairValue(): Promise<void>{
     let deleteMsg = await this.language.getLanguageTransformValue('loading.name.deleting');
     let sucessfulMsg = await this.language.getLanguageTransformValue('message.success.delete');
     let errorMsg = await this.language.getLanguageTransformValue('message.error.updated');
@@ -90,7 +90,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
 
   //** This will set the edit alert */
-  private async setEditAlert(){
+  private async setEditAlert(): Promise<HTMLIonAlertElement>{
     let header = await this.language.getLanguageTransformValue('menu.name.edit');
 
     let editedAlertCriteria: AlertOptions = {
@@ -117,7 +117,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
 
   /** This will fire the update value in the selected package */
-  private async editKeyPairValue(){
+  private async editKeyPairValue(): Promise<void>{
     let editMsg = await this.language.getLanguageTransformValue('loading.name.editing');
     let sucessfulMsg = await this.language.getLanguageTransformValue('message.success.edit');
     let errorMsg = await this.language.getLanguageTransformValue('message.error.edit');
