@@ -1,15 +1,30 @@
 import { Component, OnInit } from '@angular/core';
+import { LanguageService } from 'src/app/shared/services/language/language.service';
+import { AddLanguageComponent } from '../add-language/add-language.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'language-management',
   templateUrl: './language-management.component.html',
   styleUrls: ['./language-management.component.scss'],
 })
+
+//TODO: Will implement the add language with products, services to the shops
 export class LanguageManagementComponent implements OnInit {
 
-  constructor() { }
+  constructor(public language: LanguageService, private modalCtrl: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+  public async onClickAddLanguage(): Promise<void>{
+    let addLanguage = await this.modalCtrl.create({
+      component: AddLanguageComponent,
+      cssClass: 'modal'
+    });
+
+    await addLanguage.present();
+  }
 
 
 

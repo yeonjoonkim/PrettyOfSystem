@@ -26,13 +26,13 @@ export class LanguageTransformDictionaryComponent implements OnInit {
 
 
   /** This will get the key pair value from selected language package to display in ui.*/
-  public async onChangeLanguageSelection(){
+  public async onChangeLanguageSelection(): Promise<void>{
     this.keyPairValue = await this.language.getSelectedLanguageKeyPairValueList(this.selectedLanguageCode);
   }
 
 
   /** This will open the add component */
-  public async openAddLanguageTransform(){
+  public async openAddLanguageTransform(): Promise<void>{
     let addLanguageTransformModal = await this.modalCtrl.create(
       {component: AddLanguageTransformComponent,
       cssClass: 'modal' },
@@ -47,13 +47,13 @@ export class LanguageTransformDictionaryComponent implements OnInit {
 
 
   /** This will close this component (modal version)*/
-  public dismissDictonary(){
+  public dismissDictonary(): void{
     this.modalCtrl.dismiss();
   }
 
 
   /** This will subscribe language key list to receive any change of the database.*/
-  private subscribeLanguageKeyValue(){
+  private subscribeLanguageKeyValue(): void{
     this.language.languageSelectionKey.subscribe(
       async () => {
       this.keyPairValue = await this.language.getSelectedLanguageKeyPairValueList(this.selectedLanguageCode);
