@@ -1,3 +1,4 @@
+import { LOCALE_ID } from '@angular/core';
 //Import Environment
 import { environment } from 'src/environments/environment';
 
@@ -32,6 +33,12 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Language Package
 import { LanguageTransformPipeModule } from './shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { registerLocaleData } from '@angular/common';
+import localeKo from '@angular/common/locales/ko';
+import localeJa from '@angular/common/locales/ja';
+import localeEn from '@angular/common/locales/en';
+import localeZh from '@angular/common/locales/zh';
+
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, LangaugeSelectionComponent],
@@ -51,8 +58,12 @@ import { LanguageTransformPipeModule } from './shared/pipes/language-transform-p
     Ng2SearchPipeModule,
   ],
   exports: [],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: LOCALE_ID, useValue: 'en' || 'ko' },
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class AppModule {}
+export class AppModule {
+}

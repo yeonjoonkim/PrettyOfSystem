@@ -31,6 +31,7 @@
     "dependency": "^0.0.1",
     "firebase": "9.9.3",
     "flag-icon-css": "^4.1.7",
+    "get-user-locale": "^2.0.0",
     "ionicons": "^6.0.3",
     "localforage-cordovasqlitedriver": "^1.8.0",
     "ng-packagr": "^15.0.3",

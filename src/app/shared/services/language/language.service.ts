@@ -1,10 +1,11 @@
 import { LanguagePackageService } from './../language-package/language-package.service';
-import { Injectable, EventEmitter, OnInit } from '@angular/core';
+import { Injectable, EventEmitter} from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { SystemLanguageRepositoryService } from './../../../firebase/system-repository/language/system-language-repository.service';
-import { ITextTransformObject, TextTransformService } from '../text-transform/text-transform.service';
+import { TextTransformService } from '../text-transform/text-transform.service';
 import { ILanguageSelection, ILanguageKey, ILanguageTranslateResult, ILanguageTransformKeyPairValue, ILanguageTranslatedCriteria } from './../../../interface/system/language/language.interface';
+import { getUserLocale } from 'get-user-locale';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +18,9 @@ export class LanguageService{
   public languageSelection!: Observable<ILanguageSelection[]>;
 
   /** At the start of the build, It will listen to the languageRepo then set the default language to avoid any errors. */
-  constructor(private textTransform: TextTransformService, private storage: StorageService,
-     private systemLanguageRepository: SystemLanguageRepositoryService,private languagePackage: LanguagePackageService) {
+  constructor(
+    private textTransform: TextTransformService, private storage: StorageService,
+     private systemLanguageRepository: SystemLanguageRepositoryService, private languagePackage: LanguagePackageService) {
       this.subscribeLanguageRepository().then(() => {
         this.setDefaultLanguage();
       });
@@ -34,13 +36,13 @@ export class LanguageService{
   //** This will validate the local storage value then set either default value*/
   private async setDefaultLanguage(): Promise<void> {
     await this.storage.create();
+
     let result = await this.storage.getCurrentLanguage();
     if(result){
       this.currentLanguage = result;
     }
     else{
-      this.currentLanguage ='EN';
-      await this.storage.storeCurrentLanguage('EN');
+      await this.setCurrentLanguage();
     }
   }
 
@@ -183,6 +185,30 @@ export class LanguageService{
 
   }
 
+  //** TODO: If Language Selection has added, please specified the language code */
+  private async setCurrentLanguage(){
+    let currentLanguage = getUserLocale();
+    let isKorean = currentLanguage.includes('ko');
+    let isJapanese = currentLanguage.includes('ja');
+    let isChinese = currentLanguage.includes('zh');
+
+    if(isKorean){
+      this.currentLanguage = 'ko';
+      await this.storage.storeCurrentLanguage('ko');
+    }
+    else if(isChinese){
+      this.currentLanguage = 'zh';
+      await this.storage.storeCurrentLanguage('zh');
+    }
+    else if(isJapanese){
+      this.currentLanguage = 'ja';
+      await this.storage.storeCurrentLanguage('ja');
+    }
+    else{
+      this.currentLanguage = 'en';
+      await this.storage.storeCurrentLanguage('en');
+    }
+  }
 
   /** This will delete key pair value in all language selections. */
   private async deletePackageKeyValue(key: string): Promise<void>{
@@ -199,7 +225,6 @@ export class LanguageService{
           });
         }
       }
-
     }
 
 }
