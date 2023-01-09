@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SystemModalService } from './services/system-modal-service/system-modal-service.service';
+
 @Component({
   selector: 'app-system',
   templateUrl: './system.page.html',
@@ -8,12 +8,11 @@ import { SystemModalService } from './services/system-modal-service/system-modal
 
 export class SystemPage implements OnInit {
 
-  constructor(private systemModalService: SystemModalService) {
+  constructor() {
   }
 
-  //TODO: Delete languageDcitionary Modal Open Method
+
   ngOnInit() {
-    this.systemModalService.presentLanguageDictionary();
   }
 
 }
