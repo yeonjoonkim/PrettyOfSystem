@@ -33,11 +33,6 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Language Package
 import { LanguageTransformPipeModule } from './shared/pipes/language-transform-pipe/language-transform.pipe.module';
-import { registerLocaleData } from '@angular/common';
-import localeKo from '@angular/common/locales/ko';
-import localeJa from '@angular/common/locales/ja';
-import localeEn from '@angular/common/locales/en';
-import localeZh from '@angular/common/locales/zh';
 
 
 @NgModule({
@@ -60,7 +55,6 @@ import localeZh from '@angular/common/locales/zh';
   exports: [],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: LOCALE_ID, useValue: 'en' || 'ko' },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
