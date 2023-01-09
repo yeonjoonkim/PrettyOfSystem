@@ -126,11 +126,13 @@ export class LanguageService{
     await this.updateLanguageKey(keyValue);
   }
 
+
   /**Delete the key value */
   public async deleteKeyPairValue(selectedKey: string): Promise<void> {
     await this.deletePackageKeyValue(selectedKey);
     await this.deleteUsedKey(selectedKey);
   }
+
 
   /** Update Transform value in db */
   private async updatePackage(translated: ILanguageTranslateResult, keyValue: string): Promise<void>{
