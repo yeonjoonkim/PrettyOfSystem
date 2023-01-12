@@ -6,10 +6,12 @@
     </ion-buttons>
     <!-- Title -->
     <ion-title>{{'menu.name.systemmanagement'| languageTransform | async }}</ion-title>
-    <system-menu slot="end"></system-menu>
-  </ion-toolbar>
-</ion-header>
+    <!--System Menu-->
+    <ion-icon class="toolbar-icon" id="system-menu" slot="end" [name]="systemMenuIcon" (click)="onClickSystemMenu($event)"></ion-icon>
 
+  </ion-toolbar>
+
+</ion-header>
 
 <ion-content>
   <!--TODO ADD COMPONENT-->

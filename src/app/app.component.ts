@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   async delay(){
     let timeout = setTimeout(() => {
       this.isLoaded = true;
-    }, 1000);
+    }, 100);
 
     await timeout;
   }

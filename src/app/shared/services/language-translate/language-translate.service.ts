@@ -108,13 +108,11 @@ export class LanguageTranslateService {
     for(let languageCode of code){
       resultItem[languageCode] = '';
     }
-    try{
+
+    if(response){
       resultItem = JSON.parse(response);
     }
-    catch(err){
-      this.toast.presentError("API ERROR")
-      console.error(err);
-    }
+
     return resultItem;
   }
 
