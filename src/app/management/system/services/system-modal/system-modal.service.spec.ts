@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SystemModalService } from './system-modal-service.service';
+import { SystemModalService } from './system-modal.service';
 
 describe('ModalServiceService', () => {
   let service: SystemModalService;

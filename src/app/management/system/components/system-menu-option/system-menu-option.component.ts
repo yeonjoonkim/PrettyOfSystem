@@ -1,0 +1,24 @@
+import { ISystemMenuOptionAction } from '../../services/system-menu-option/system-menu-option-controller.service';
+import { Component, OnInit } from '@angular/core';
+import { SystemMenuOptionControllerService } from '../../services/system-menu-option/system-menu-option-controller.service';
+import { SystemModalService } from '../../services/system-modal/system-modal.service';
+import { PopoverController } from '@ionic/angular';
+@Component({
+  selector: 'system-menu-option',
+  templateUrl: './system-menu-option.component.html',
+  styleUrls: ['./system-menu-option.component.scss'],
+})
+export class SystemMenuOptionComponent implements OnInit {
+  public menuOptions!: ISystemMenuOptionAction[];
+
+  constructor(private systemMenuCtrl: SystemMenuOptionControllerService, private systemModal: SystemModalService, private popOverCtrl: PopoverController) {
+  }
+
+  async ngOnInit() {
+    this.menuOptions = await this.systemMenuCtrl.getSystemMenuOption();
+  }
+
+  async onClickMenuOption(selectedOption: ISystemMenuOptionAction){
+    await this.popOverCtrl.dismiss({option: selectedOption});
+  }
+}

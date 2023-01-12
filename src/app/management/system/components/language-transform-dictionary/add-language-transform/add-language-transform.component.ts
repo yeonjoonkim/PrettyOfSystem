@@ -46,12 +46,14 @@ export class AddLanguageTransformComponent implements OnInit {
     if(validated.hasDescriptionValue && validated.isKeyNotExisted && validated.isTransformKeyValueFormat){
 
       let selectionFormat =  await this.openFormatSelectionSheet();
-      if(!selectionFormat?.data?.isCancel){
+
+      if(!selectionFormat?.data?.isCancel && selectionFormat?.data !== undefined){
         let translateCriteria = await this.language.getAllLanguageTranslateCriteria();
         translateCriteria.isTitle = selectionFormat.data.isTitle;
         let translatedResult = await this.getTranslatedDescription(translateCriteria);
         await this.updateLanguagePackage(translatedResult);
       }
+
     }
     else{
       await this.sendErrorToast(validated);
@@ -94,20 +96,28 @@ export class AddLanguageTransformComponent implements OnInit {
 
   /** This will update language package */
   private async updateLanguagePackage(translated: ILanguageTranslateResult): Promise<void>{
-    if(translated){
-      try{
-        let sccuess = await this.language.getLanguageTransformValue('message.success.save');
-        await this.language.updateLanguagePackage(translated, this.languageTransform.key.toLowerCase());
-        await this.toast.present(sccuess);
-        this.isSaved = true;
-        this.dismissAddLanguage();
-      }
-      catch(err: any){
-        let errorMsg = await this.language.getLanguageTransformValue('message.error.unsave');
-        await this.toast.presentError(errorMsg);
-        await this.toast.presentError(err?.message);
-      }
+    let hasEmptyValue = this.validatedTranslated(translated);
+    if(!hasEmptyValue){
+      let sccuess = await this.language.getLanguageTransformValue('message.success.save');
+      await this.language.updateLanguagePackage(translated, this.languageTransform.key.toLowerCase());
+      await this.toast.present(sccuess);
+      this.isSaved = true;
+      this.dismissAddLanguage();
     }
+    else{
+      let errorMsg = await this.language.getLanguageTransformValue('message.error.unsaved');
+      await this.toast.presentError(errorMsg);
+    }
+  }
+
+  private validatedTranslated(translated: ILanguageTranslateResult){
+    let validatedValue: boolean[] = [];
+    for(let langCode in translated){
+      let validated = translated[langCode].length > 0 ? true : false;
+      validatedValue.push(validated);
+    }
+
+    return validatedValue.includes(false);
   }
 
 
