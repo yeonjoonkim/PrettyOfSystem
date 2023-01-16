@@ -28,7 +28,7 @@ export class SystemMenuOptionControllerService {
   private async getLanguageDictionaryOption(){
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     let optionName: string = this.menuOption.transformDictionary;
-    let currentLanguageOptionName: string = await this.language.getLanguageTransformValue(optionName);
+    let currentLanguageOptionName: string = await this.language.transform(optionName);
     controller.isLanguageDictionary = true;
     controller.name = currentLanguageOptionName;
 

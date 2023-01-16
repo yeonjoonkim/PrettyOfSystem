@@ -1,19 +1,15 @@
+import { LoadingService } from './../loading/loading.service';
+import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { Injectable } from '@angular/core';
-import { ILanguageTranslatedCriteria, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
+import { ILanguageTranslatedCriteria, ILanguageTranslateItem, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
 import { OpenAiService } from '../open-ai/open-ai.service';
-import { ToastService } from '../toast/toast.service';
+import { TextTransformService } from '../text-transform/text-transform.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class LanguageTranslateService {
-  private readonly language = {
-    english: 'English',
-    korean: 'Korean',
-    traditionalChinese: 'Simplified Chinese',
-    japanese: 'Japanese'
-  };
   private readonly correctGrammer: string = 'Correct grammar ';
   private readonly translateTo: string = 'Translate to ';
   private readonly returnAs: string = 'return as ';
@@ -24,81 +20,85 @@ export class LanguageTranslateService {
   private readonly returnAsSingleString: string = this.returnAs + this.singleString;
   private readonly convertJSON: string = " convert into JSON file";
 
-  constructor(private openAi: OpenAiService, private toast: ToastService) {
+  constructor(private openAi: OpenAiService, private textTransform: TextTransformService, private language: LanguageService, private loading: LoadingService) {
+  }
+
+  public async getTranslatedLanguagePackage(value: string, criteria: ILanguageTranslatedCriteria): Promise<ILanguageTranslateItem>{
+    let translated: ILanguageTranslateResult = criteria.isTitle
+                  ? await this.getTitleFormatTranslatedLanguagePackage(value, criteria)
+                  : await this.getDescriptionFormatTranslatedLanguagePackage(value, criteria);
+    let validated = this.validatedTranslated(translated);
+
+    return {isEmpty: validated, translated: translated};
+  }
+
+  public async getTitleFormatTranslatedLanguagePackage(value: string, criteria: ILanguageTranslatedCriteria){
+    await this.translateLoading();
+    let command = this.getTranslatedCommand(value, criteria);
+    let response: string = await this.openAi.receiveResult(command);
+    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
+    let titleFormat: ILanguageTranslateResult = this.textTransform.getTranslatedTitleFormat(jsonFormat);
+    await this.loading.dismiss();
+    return titleFormat;
+  }
+
+  public async getDescriptionFormatTranslatedLanguagePackage(value: string, criteria: ILanguageTranslatedCriteria){
+    await this.translateLoading();
+    let command = this.getTranslatedCommand(value, criteria);
+    let response: string = await this.openAi.receiveResult(command);
+    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
+    let descriptionFormat: ILanguageTranslateResult = this.textTransform.getTranslatedDescrptionFormat(jsonFormat);
+    await this.loading.dismiss();
+    return descriptionFormat;
   }
 
 
-  /** This will trigger open ai api to retreive the translate the sentence to all languages as a JSON format*/
-  public async getTranslatedSentenceAllLanguages(sentence: string, criteria: ILanguageTranslatedCriteria): Promise<ILanguageTranslateResult>{
+  /** This will trigger open ai api to retreive the translate the sentence to selected language */
+  public async getTranslatedSelectedLanguage(selectedLanguage: string, value: string): Promise<string>{
+    await this.translateLoading();
+    let command = this.correctGrammerThenTranslateTo + selectedLanguage + this.setCommandSentenceFormat(value) + this.returnAsSingleString;
+    let response = await this.openAi.receiveResult(command);
+    let result: string = this.deleteSpaces(response);
+    await this.loading.dismiss();
+    return result;
+  }
+
+
+  /** This will trigger open ai api to retreive the translate the sentence to English */
+  public async getTranslateToEnglish(value: string): Promise<string>{
+    await this.translateLoading();
+    let command = this.correctGrammerThenTranslateTo + "English" + this.setCommandSentenceFormat(value) + this.returnAsSingleString;
+    let response = await this.openAi.receiveResult(command);
+    let result: string = this.deleteSpaces(response);
+
+    await this.loading.dismiss();
+    return result;
+  }
+
+
+  private getTranslatedCommand(value: string, criteria: ILanguageTranslatedCriteria){
     let firstCommand = criteria.isTitle ? this.translateTo : this.correctGrammerThenTranslateTo;
-    let commandFormat = this.setCommandSentenceFormat(sentence);
+    let commandFormat = this.setCommandSentenceFormat(value);
     let allLanguageCommand = criteria.name.join(', ');
     let jsonFormatCommand = this.setJSONFormatCommand(criteria.code);
     let command = firstCommand + allLanguageCommand + this.convertJSON + jsonFormatCommand + commandFormat;
 
-    let response: string = await this.openAi.receiveResult(command);
-    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
-
-    return jsonFormat;
+    return command;
   }
 
-    /** This will trigger open ai api to retreive the translate the sentence to selected language */
-    public async getTranslatedSelectedLanguage(selectedLanguage: string, sentence: string): Promise<string>{
-      //initial command prompt
-      let commandSentence = this.setCommandSentenceFormat(sentence);
-      let command = this.correctGrammerThenTranslateTo + selectedLanguage + commandSentence + this.returnAsSingleString;
-      let response = await this.openAi.receiveResult(command);
-      let result: string = this.deleteSpaces(response);
+  private async translateLoading(){
+    let loadingMsg = await this.language.transform('loading.name.translating');
+    await this.loading.show(loadingMsg);
+  }
 
-      return result;
+  private validatedTranslated(translated: ILanguageTranslateResult){
+    let validatedValue: boolean[] = [];
+    for(let langCode in translated){
+      let validated = translated[langCode].length > 0 ? true : false;
+      validatedValue.push(validated);
     }
 
-
-  /** This will trigger open ai api to retreive the translate the sentence to English */
-  public async getTranslateToEnglish(sentence: string): Promise<string>{
-    //initial command prompt
-    let commandSentence = this.setCommandSentenceFormat(sentence);
-    let command = this.correctGrammerThenTranslateTo + this.language.english + commandSentence + this.returnAsSingleString;
-    let response = await this.openAi.receiveResult(command);
-    let result: string = this.deleteSpaces(response);
-
-    return result;
-  }
-
-
-  /** This will trigger open ai api to retreive the translate the sentence to Korean */
-  public async getTranslateToKorean(sentence: string): Promise<string>{
-    //initial command prompt
-    let commandSentence = this.setCommandSentenceFormat(sentence);
-    let command = this.correctGrammerThenTranslateTo + this.language.korean + commandSentence + this.returnAsSingleString;
-    let response = await this.openAi.receiveResult(command);
-    let result: string = this.deleteSpaces(response);
-
-    return result;
-  }
-
-
-  /** This will trigger open ai api to retreive the translate the sentence to Traditional Chinese */
-  public async getTranslateToTraditionalChinese(sentence: string): Promise<string>{
-    //initial command prompt
-    let commandSentence = this.setCommandSentenceFormat(sentence);
-    let command = this.correctGrammerThenTranslateTo + this.language.traditionalChinese + commandSentence + this.returnAsSingleString;
-    let response = await this.openAi.receiveResult(command);
-    let result: string = this.deleteSpaces(response);
-
-    return result;
-  }
-
-
-  /** This will trigger open ai api to retreive the translate the sentence to Japanese*/
-  public async getTranslateToJapanese(sentence: string): Promise<string>{
-    //initial command prompt
-    let commandSentence = this.setCommandSentenceFormat(sentence);
-    let command = this.correctGrammerThenTranslateTo + this.language.japanese + commandSentence + this.returnAsSingleString;
-    let response = await this.openAi.receiveResult(command);
-    let result: string = this.deleteSpaces(response);
-
-    return result;
+    return validatedValue.includes(false);
   }
 
 
@@ -115,7 +115,6 @@ export class LanguageTranslateService {
 
     return resultItem;
   }
-
 
   private setCommandSentenceFormat(sentence: string){
     return '"' + sentence + '"';

@@ -50,17 +50,17 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   /** This will set the confirmation of delete alert */
   private async setConfirmDeleteAlert(): Promise<HTMLIonAlertElement>{
-    let deleteMsg = await this.language.getLanguageTransformValue('message.header.delete');
+    let deleteMsg = await this.language.transform('message.header.delete');
     let header = this.keyPairValue.key + " - " + deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
       header: header,
       buttons: [
         {
-          text: await this.language.getLanguageTransformValue('button.name.delete'),
+          text: await this.language.transform('button.name.delete'),
           role: 'delete',
         },
         {
-        text: await this.language.getLanguageTransformValue('button.name.cancel'),
+        text: await this.language.transform('button.name.cancel'),
         role: '',}
     ]};
 
@@ -72,9 +72,9 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   /**This will fire deletion of key pair value in all language packages and selection list to remove the key value. */
   private async deleteKeyPairValue(): Promise<void>{
-    let deleteMsg = await this.language.getLanguageTransformValue('loading.name.deleting');
-    let sucessfulMsg = await this.language.getLanguageTransformValue('message.success.delete');
-    let errorMsg = await this.language.getLanguageTransformValue('message.error.updated');
+    let deleteMsg = await this.language.transform('loading.name.deleting');
+    let sucessfulMsg = await this.language.transform('message.success.delete');
+    let errorMsg = await this.language.transform('message.error.updated');
     await this.loading.show(deleteMsg);
 
     try{
@@ -91,22 +91,22 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   //** This will set the edit alert */
   private async setEditAlert(): Promise<HTMLIonAlertElement>{
-    let header = await this.language.getLanguageTransformValue('menu.name.edit');
+    let header = await this.language.transform('menu.name.edit');
 
     let editedAlertCriteria: AlertOptions = {
       header: this.keyPairValue.key + " " + header + " (" + this.languageCode + ")",
       inputs: [
         {
-          placeholder: await this.language.getLanguageTransformValue('transform.edit.placeholder'),
+          placeholder: await this.language.transform('transform.edit.placeholder'),
         }
       ],
       buttons: [
         {
-          text: await this.language.getLanguageTransformValue('button.name.edit'),
+          text: await this.language.transform('button.name.edit'),
           role: 'edit',
         },
         {
-        text: await this.language.getLanguageTransformValue('button.name.cancel'),
+        text: await this.language.transform('button.name.cancel'),
         role: '',}
     ]};
 
@@ -118,9 +118,9 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   /** This will fire the update value in the selected package */
   private async editKeyPairValue(): Promise<void>{
-    let editMsg = await this.language.getLanguageTransformValue('loading.name.editing');
-    let sucessfulMsg = await this.language.getLanguageTransformValue('message.success.edit');
-    let errorMsg = await this.language.getLanguageTransformValue('message.error.edit');
+    let editMsg = await this.language.transform('loading.name.editing');
+    let sucessfulMsg = await this.language.transform('message.success.edit');
+    let errorMsg = await this.language.transform('message.error.edit');
     await this.loading.show(editMsg);
 
     try{

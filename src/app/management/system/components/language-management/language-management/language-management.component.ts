@@ -36,7 +36,7 @@ export class LanguageManagementComponent implements OnInit {
   //  let newPackage: ITextTransformObject = {};
    // let max = values.length;
   //  let currentIndex = 0;
-   // let loadingMsg = await this.language.getLanguageTransformValue('loading.name.translating');
+   // let loadingMsg = await this.language.transform('loading.name.translating');
    // await this.loading.show(loadingMsg);
 
    // let interval = setInterval(() => {

@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 export class OpenAiService {
   //API
   private readonly openAiUrl: string = 'https://api.openai.com/v1/completions';
-  private readonly apiKey: string = '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';
+
 
   //API DEFAULT PARAM
   private readonly defaultParams = {
@@ -41,7 +41,7 @@ export class OpenAiService {
     await fetch(this.openAiUrl, requestOptions).then(async result => {
       if(!result.ok){
         this.loading.dismiss();
-        let err = await this.language.getLanguageTransformValue('message.error.api');
+        let err = await this.language.transform('message.error.api');
         this.toast.presentError(err);
       }else{
         let data = await result.json();

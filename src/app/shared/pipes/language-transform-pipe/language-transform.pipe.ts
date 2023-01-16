@@ -10,7 +10,7 @@ export class LanguageTransformPipe implements PipeTransform {
 
   async transform(value: any) {
     if(value){
-      let item = await this.language.getLanguageTransformValue(value);
+      let item = await this.language.transform(value);
       return item;
     }
     return value;
