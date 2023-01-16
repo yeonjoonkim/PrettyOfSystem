@@ -1,18 +1,10 @@
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { Component, OnInit } from '@angular/core';
-import { ILanguageKey, ILanguageTranslatedCriteria, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
+import { IAddLanguageTransformSaveCommand, ILanguageKey, ILanguageTranslateItem, ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
 import { LanguageTranslateService } from 'src/app/shared/services/language-translate/language-translate.service';
-import { TextTransformService } from 'src/app/shared/services/text-transform/text-transform.service';
-import { LoadingService } from 'src/app/shared/services/loading/loading.service';
 import { ToastService } from 'src/app/shared/services/toast/toast.service';
 import { ActionSheetController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
-
-export interface IAddLanguageTransformSaveCommand{
-  hasDescriptionValue: boolean;
-  isKeyNotExisted: boolean;
-  isTransformKeyValueFormat: boolean;
-}
 
 @Component({
   selector: 'add-language-transform',
@@ -22,14 +14,13 @@ export interface IAddLanguageTransformSaveCommand{
 
 export class AddLanguageTransformComponent implements OnInit {
   private isSaved: boolean = false;
-  public languageTransform = {
+  public languageTransform: ILanguageTransformKeyPairValue = {
     key: '',
-    description: ''
+    value: ''
   }
 
   constructor(public language: LanguageService, private langugeTranslate: LanguageTranslateService,
-    private actionSheetCtrl: ActionSheetController, private textTransform: TextTransformService,
-    private loading: LoadingService, private toast: ToastService, private modalCtrl: ModalController) { }
+    private actionSheetCtrl: ActionSheetController, private toast: ToastService, private modalCtrl: ModalController) { }
 
   ngOnInit() {}
 
@@ -42,18 +33,16 @@ export class AddLanguageTransformComponent implements OnInit {
 
   /**This will start, when user click save button */
   public async onClickSaveButton(): Promise<void>{
-    let validated: IAddLanguageTransformSaveCommand = await this.vaildatedInputValue();
-    if(validated.hasDescriptionValue && validated.isKeyNotExisted && validated.isTransformKeyValueFormat){
+    let validated: IAddLanguageTransformSaveCommand = await this.language.validateNewKeyPairValue(this.languageTransform);
 
+    if(validated.hasValue && validated.isKeyNotExisted && validated.isTransformKeyValueFormat){
       let selectionFormat =  await this.openFormatSelectionSheet();
-
       if(!selectionFormat?.data?.isCancel && selectionFormat?.data !== undefined){
         let translateCriteria = await this.language.getAllLanguageTranslateCriteria();
         translateCriteria.isTitle = selectionFormat.data.isTitle;
-        let translatedResult = await this.getTranslatedDescription(translateCriteria);
-        await this.updateLanguagePackage(translatedResult);
+        let result = await this.langugeTranslate.getTranslatedLanguagePackage(this.languageTransform.value, translateCriteria);
+        await this.updateLanguagePackage(result);
       }
-
     }
     else{
       await this.sendErrorToast(validated);
@@ -61,25 +50,12 @@ export class AddLanguageTransformComponent implements OnInit {
   }
 
 
-  /**This will validated the user input */
-  private async vaildatedInputValue(): Promise<IAddLanguageTransformSaveCommand>{
-    let key: ILanguageKey = await this.language.getLanguageSelectionKey();
-    let vaildated: IAddLanguageTransformSaveCommand  = {
-      hasDescriptionValue: this.languageTransform.description.length > 0,
-      isKeyNotExisted: !key.used.includes(this.languageTransform.key.toLowerCase()),
-      isTransformKeyValueFormat: this.textTransform.setLanguageTransformCodeList(this.languageTransform.key.toLowerCase()).length === 3
-    };
-
-    return vaildated;
-  }
-
-
   /**This will return format action */
   private async openFormatSelectionSheet(){
-    let formatSelectionHeader = await this.language.getLanguageTransformValue('transform.name.formatselectionheader');
-    let descriptionFormat = await this.language.getLanguageTransformValue('transform.name.descriptionformat');
-    let titleFormat = await this.language.getLanguageTransformValue('transform.name.titleFormat');
-    let cancel = await this.language.getLanguageTransformValue('button.name.cancel');
+    let formatSelectionHeader = await this.language.transform('transform.name.formatselectionheader');
+    let descriptionFormat = await this.language.transform('transform.name.descriptionformat');
+    let titleFormat = await this.language.transform('transform.name.titleFormat');
+    let cancel = await this.language.transform('button.name.cancel');
     let formatSelection = await this.actionSheetCtrl.create({
       header: formatSelectionHeader,
       buttons:[
@@ -87,7 +63,8 @@ export class AddLanguageTransformComponent implements OnInit {
         {text: titleFormat, data: { isTitle: true, isCancel: false}},
         {text: cancel, data: { isTitle: false, isCancel: true}}
       ]
-    })
+    });
+
     await formatSelection.present();
     let result = await formatSelection.onDidDismiss();
     return result;
@@ -95,61 +72,34 @@ export class AddLanguageTransformComponent implements OnInit {
 
 
   /** This will update language package */
-  private async updateLanguagePackage(translated: ILanguageTranslateResult): Promise<void>{
-    let hasEmptyValue = this.validatedTranslated(translated);
-    if(!hasEmptyValue){
-      let sccuess = await this.language.getLanguageTransformValue('message.success.save');
-      await this.language.updateLanguagePackage(translated, this.languageTransform.key.toLowerCase());
+  private async updateLanguagePackage(result: ILanguageTranslateItem): Promise<void>{
+    if(!result.isEmpty){
+      let sccuess = await this.language.transform('message.success.save');
+      await this.language.editLanguagePackage(result, this.languageTransform.key.toLowerCase());
       await this.toast.present(sccuess);
       this.isSaved = true;
       this.dismissAddLanguage();
     }
     else{
-      let errorMsg = await this.language.getLanguageTransformValue('message.error.unsaved');
+      let errorMsg = await this.language.transform('message.error.unsaved');
       await this.toast.presentError(errorMsg);
     }
-  }
-
-  private validatedTranslated(translated: ILanguageTranslateResult){
-    let validatedValue: boolean[] = [];
-    for(let langCode in translated){
-      let validated = translated[langCode].length > 0 ? true : false;
-      validatedValue.push(validated);
-    }
-
-    return validatedValue.includes(false);
-  }
-
-
-  /** This will retreive the translated description */
-  private async getTranslatedDescription(translatedCriteria: ILanguageTranslatedCriteria): Promise<ILanguageTranslateResult>{
-    let loadingMsg = await this.language.getLanguageTransformValue('loading.name.translating');
-    this.loading.show(loadingMsg);
-    let translated = await this.langugeTranslate.getTranslatedSentenceAllLanguages(this.languageTransform.description, translatedCriteria);
-    this.loading.dismiss();
-
-    return translatedCriteria.isTitle ? this.textTransform.getTranslatedTitleFormat(translated) : this.textTransform.getTranslatedDescrptionFormat(translated);
   }
 
 
   /** Send Error Notifciation */
   private async sendErrorToast(validated: IAddLanguageTransformSaveCommand): Promise<void>{
     if(!validated.isTransformKeyValueFormat){
-      let error = await this.language.getLanguageTransformValue('message.error.transformkeyvalue');
+      let error = await this.language.transform('message.error.transformkeyvalue');
       await this.toast.presentError(error);
     }
     else if(!validated.isKeyNotExisted){
-      let error = await this.language.getLanguageTransformValue('message.error.transformsamekeyvalue');
+      let error = await this.language.transform('message.error.transformsamekeyvalue');
       await this.toast.presentError(error);
     }
-    else if(!validated.hasDescriptionValue){
-      let error = await this.language.getLanguageTransformValue('message.error.transformdescription');
+    else if(!validated.hasValue){
+      let error = await this.language.transform('message.error.transformdescription');
       await this.toast.presentError(error);
     }
   }
-
 }
-
-
-
-

@@ -13,11 +13,15 @@ export interface ILanguageKey{
   used: string[];
 }
 
-export interface ILanguageTransform {
-  description: string;
-  key: string;
-  isTitle: boolean;
-  isDescription: boolean;
+export interface ILanguageTranslateItem{
+  isEmpty: boolean;
+  translated: ILanguageTranslateResult;
+}
+
+export interface IAddLanguageTransformSaveCommand{
+  hasValue: boolean;
+  isKeyNotExisted: boolean;
+  isTransformKeyValueFormat: boolean;
 }
 
 export interface ILanguageTranslatedCriteria {

@@ -15,7 +15,7 @@ export class LangaugeSelectionComponent implements OnInit {
 
     /** This function will set the global language by using language service. */
     async onChangeLanguage(){
-      this.language.languageChange();
+      this.language.onLanguageChange();
     }
 
 }

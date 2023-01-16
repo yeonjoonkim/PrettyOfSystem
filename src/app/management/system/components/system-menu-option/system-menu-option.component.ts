@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { SystemMenuOptionControllerService } from '../../services/system-menu-option/system-menu-option-controller.service';
 import { SystemModalService } from '../../services/system-modal/system-modal.service';
 import { PopoverController } from '@ionic/angular';
+
 @Component({
   selector: 'system-menu-option',
   templateUrl: './system-menu-option.component.html',
