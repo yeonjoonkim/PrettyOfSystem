@@ -1,0 +1,6 @@
+
+<ion-list *ngFor="let category of menuCategories | async">
+  <ion-label>{{category.name | languageTransform | async}}</ion-label>
+</ion-list>
+
+<menu-category></menu-category>

@@ -1,5 +1,3 @@
-
-import { ToastService } from './../../../shared/services/toast/toast.service';
 import { ILanguageSelection, ILanguageKey } from './../../../interface/system/language/language.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -14,7 +12,7 @@ export class SystemLanguageRepositoryService {
   private readonly languageSelectionCollectionPath: string = this.systemLanguage + 'selection';
   private readonly languageKeyPath: string = this.systemLanguage + 'key';
 
-  constructor(private afs: AngularFirestore, private toast: ToastService) {}
+  constructor(private afs: AngularFirestore) {}
 
   public getLanguageSelectionResult(){
     return this.afs.collection(this.languageSelectionCollectionPath)
@@ -65,10 +63,10 @@ export class SystemLanguageRepositoryService {
   }
 
   public async addNewLanguageSelection(criteria: ILanguageSelection){
-    let id = {id: this.afs.createId()};
-    let newSelection = {...id, ...criteria, ...this.timeStamp};
+    let id = this.afs.createId();
+    let newSelection = {...criteria, ...this.timeStamp, id: id};
     try{
-      await this.afs.collection(this.languageSelectionCollectionPath).ref.add(newSelection);
+      await this.afs.collection(this.languageSelectionCollectionPath).doc(id).set(newSelection);
     }
     catch(e){
       console.error(e);

@@ -1,6 +1,3 @@
-
-
-
 //Import Ionic Angular Module
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -18,6 +15,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { LanguageTransformDictionaryModule } from './components/language-transform-dictionary/language-transform-dictionary.module';
 import { LanguageManagementModule } from './components/language-management/language-management.module';
+import { MenuManagementModule } from './components/menu-management/menu-management.module';
 
 import { SystemMenuOptionComponent } from './components/system-menu-option/system-menu-option.component';
 
@@ -30,7 +28,8 @@ import { SystemMenuOptionComponent } from './components/system-menu-option/syste
     Ng2SearchPipeModule,
     LanguageTransformPipeModule,
     LanguageTransformDictionaryModule,
-    LanguageManagementModule
+    LanguageManagementModule,
+    MenuManagementModule
   ],
   declarations: [SystemPage, SystemMenuOptionComponent],
   exports: [],

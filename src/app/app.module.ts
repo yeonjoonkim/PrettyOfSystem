@@ -1,4 +1,3 @@
-import { LOCALE_ID } from '@angular/core';
 //Import Environment
 import { environment } from 'src/environments/environment';
 

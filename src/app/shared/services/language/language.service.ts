@@ -13,6 +13,7 @@ import { ToastService } from '../toast/toast.service';
 })
 
 export class LanguageService{
+  public deafultLanguageCode: string = 'en';
   public currentLanguage: string = '';
   public changeLanguageAction = new EventEmitter<string>();
   public languageSelectionKey!: Observable<ILanguageKey[]>;
@@ -41,7 +42,7 @@ export class LanguageService{
   public async getSelectedLanguageKeyPairValueList(selectedLangCode: string): Promise<ILanguageTransformKeyPairValue[]>{
     let selectedLanguage = await this.getSelectedLanguageSelection(selectedLangCode);
     let key = await this.getLanguageSelectionKey();
-    let keyPairValueList: ILanguageTransformKeyPairValue[] = this.languagePackage.getKeyPairValue(key.used, selectedLanguage.package);
+    let keyPairValueList: ILanguageTransformKeyPairValue[] = this.languagePackage.getKeyPairValue(key?.used, selectedLanguage.package);
     return keyPairValueList;
   }
 
@@ -78,13 +79,26 @@ export class LanguageService{
   /** This will validate new Key and Value */
   public async validateNewKeyPairValue(keyPairValue: ILanguageTransformKeyPairValue){
     let key: ILanguageKey = await this.getLanguageSelectionKey();
-    let vaildated: IAddLanguageTransformSaveCommand  = {
+    let validated: IAddLanguageTransformSaveCommand  = {
       hasValue: keyPairValue.value.length > 0,
       isKeyNotExisted: !key.used.includes(keyPairValue.key.toLowerCase()),
       isTransformKeyValueFormat: this.textTransform.setLanguageTransformCodeList(keyPairValue.key.toLowerCase()).length === 3
     };
 
-    return vaildated;
+    if(!validated.isTransformKeyValueFormat){
+      let error = await this.transform('message.error.transformkeyvalue');
+      await this.toast.presentError(error);
+    }
+    else if(!validated.isKeyNotExisted){
+      let error = await this.transform('message.error.transformsamekeyvalue');
+      await this.toast.presentError(error);
+    }
+    else if(!validated.hasValue){
+      let error = await this.transform('message.error.transformdescription');
+      await this.toast.presentError(error);
+    }
+
+    return validated;
   }
 
 
@@ -104,6 +118,18 @@ export class LanguageService{
   public async deleteKeyPairValue(selectedKey: string): Promise<void> {
     await this.deletePackageKeyValue(selectedKey);
     await this.deleteUsedKey(selectedKey);
+  }
+
+
+  public getDefaultLanguageDescription(result: ILanguageTranslateResult){
+    let description = '';
+    for(let key in result){
+      if(key === this.deafultLanguageCode){
+        description = result[key];
+      }
+    }
+
+    return description;
   }
 
 

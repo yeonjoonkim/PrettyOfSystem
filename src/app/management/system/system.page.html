@@ -5,14 +5,12 @@
       <ion-menu-button auto-hide="true"></ion-menu-button>
     </ion-buttons>
     <!-- Title -->
-    <ion-title>{{'menu.name.systemmanagement'| languageTransform | async }}</ion-title>
+    <ion-title>{{'menu.name.systemmanagement'| languageTransform | async }} {{selectedSystemMenu.name}}</ion-title>
     <!--System Menu-->
     <ion-icon class="toolbar-icon" id="system-menu" slot="end" [name]="systemMenuIcon" (click)="onClickSystemMenu($event)"></ion-icon>
-
   </ion-toolbar>
-
 </ion-header>
 
 <ion-content>
-  <!--TODO ADD COMPONENT-->
+  <menu-management *ngIf="selectedSystemMenu.isMenuManagement"></menu-management>
 </ion-content>
