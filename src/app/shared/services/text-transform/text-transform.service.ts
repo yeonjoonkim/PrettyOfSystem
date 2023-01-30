@@ -70,6 +70,15 @@ export class TextTransformService {
     return paragraph.map(sentence => this.getSentenceFormat(sentence)).join(' ');
   }
 
+  public getTransformObjectKeyValue(keyValue: string, name: string){
+    let objectKeyFormatValue = keyValue;
+    let words: string[] = this.getContainWordList(name);
+    words.forEach((word) => {
+        objectKeyFormatValue += word.toLowerCase();
+    });
+    return objectKeyFormatValue;
+  }
+
   /** This will retreive sentence format string.
    * "eXample exAmple" => "Example example."
    * "THIS IS SAMPLE" => "This is sample."

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { IMenu } from '../../../interface/menu/menu.interface.service';
+import { IMenuCategory } from '../../../interface/menu/menu.interface.service';
 import { LanguageService } from '../../services/language/language.service';
 import {StorageService} from '../../services/storage/storage.service';
 
@@ -21,9 +21,10 @@ export class MenuComponent implements OnInit, OnDestroy {
     role: "Software Developer",
   };
 
-  public menus: Array<IMenu> = [
+  public menus = [
     {
-      title: "menu.name.management", icon: "build-outline",
+      description: "",
+      title: "menu.name.management", icon: "build-outline", index: 0,
       content: [
         {url: '/management/system', title: "menu.name.systemmanagement", icon: "code-slash-outline"},
         {url: '/management/shop', title: "menu.name.shopmanagement", icon: "bag-outline"},

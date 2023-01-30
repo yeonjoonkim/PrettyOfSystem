@@ -44,9 +44,6 @@ export class AddLanguageTransformComponent implements OnInit {
         await this.updateLanguagePackage(result);
       }
     }
-    else{
-      await this.sendErrorToast(validated);
-    }
   }
 
 
@@ -83,23 +80,6 @@ export class AddLanguageTransformComponent implements OnInit {
     else{
       let errorMsg = await this.language.transform('message.error.unsaved');
       await this.toast.presentError(errorMsg);
-    }
-  }
-
-
-  /** Send Error Notifciation */
-  private async sendErrorToast(validated: IAddLanguageTransformSaveCommand): Promise<void>{
-    if(!validated.isTransformKeyValueFormat){
-      let error = await this.language.transform('message.error.transformkeyvalue');
-      await this.toast.presentError(error);
-    }
-    else if(!validated.isKeyNotExisted){
-      let error = await this.language.transform('message.error.transformsamekeyvalue');
-      await this.toast.presentError(error);
-    }
-    else if(!validated.hasValue){
-      let error = await this.language.transform('message.error.transformdescription');
-      await this.toast.presentError(error);
     }
   }
 }
