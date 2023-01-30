@@ -120,6 +120,7 @@ export class LanguageService{
     await this.deleteUsedKey(selectedKey);
   }
 
+
   public getDefaultLanguageDescription(result: ILanguageTranslateResult){
     let description = '';
     for(let key in result){
@@ -127,6 +128,7 @@ export class LanguageService{
         description = result[key];
       }
     }
+
     return description;
   }
 
