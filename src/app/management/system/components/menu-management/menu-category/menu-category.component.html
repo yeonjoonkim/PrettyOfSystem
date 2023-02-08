@@ -8,3 +8,7 @@
   <ion-input [(ngModel)]="category.icon"> </ion-input>
 </ion-item>
 <ion-button (click)="onClickSaveNewCategory()">{{'button.name.save' | languageTransform | async}}</ion-button>
+
+<ion-item *ngFor="let icon of iconList">
+  <ion-icon [name]="icon.name"></ion-icon>
+</ion-item>

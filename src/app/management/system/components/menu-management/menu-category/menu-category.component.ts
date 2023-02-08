@@ -1,6 +1,7 @@
 import { IMenuCategory } from 'src/app/interface/menu/menu.interface.service';
 import { Component, OnInit } from '@angular/core';
 import { SystemMenuCategoryService } from 'src/app/service/system/menu/category/system-menu-category.service';
+import ionicIcon from '../../../../../shared/services/ionic-icon/ionic-icon-list';
 @Component({
   selector: 'menu-category',
   templateUrl: './menu-category.component.html',
@@ -15,6 +16,7 @@ export class MenuCategoryComponent implements OnInit{
     icon: '',
     content: []
   };
+  public iconList = ionicIcon;
 
   constructor(private systemMenuCategoryService: SystemMenuCategoryService) {
   }
