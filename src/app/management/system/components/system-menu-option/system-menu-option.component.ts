@@ -1,7 +1,7 @@
-import { ISystemMenuOptionAction } from '../../services/system-menu-option/system-menu-option-controller.service';
+import { ISystemMenuOptionAction } from '../../../../service/system/menu/system-menu-option/system-menu-option-controller.service';
 import { Component, OnInit } from '@angular/core';
-import { SystemMenuOptionControllerService } from '../../services/system-menu-option/system-menu-option-controller.service';
-import { SystemModalService } from '../../services/system-modal/system-modal.service';
+import { SystemMenuOptionControllerService } from '../../../../service/system/menu/system-menu-option/system-menu-option-controller.service';
+import { SystemModalService } from '../../../../service/system/menu/system-modal/system-modal.service';
 import { PopoverController } from '@ionic/angular';
 
 @Component({

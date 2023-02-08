@@ -5,8 +5,16 @@ import { StorageService } from '../storage/storage.service';
 import { SystemLanguageRepositoryService } from './../../../firebase/system-repository/language/system-language-repository.service';
 import { TextTransformService } from '../text-transform/text-transform.service';
 import { ILanguageSelection, ILanguageKey, ILanguageTranslateResult, ILanguageTransformKeyPairValue, ILanguageTranslatedCriteria, ILanguageTranslateItem, IAddLanguageTransformSaveCommand } from './../../../interface/system/language/language.interface';
-import { getUserLocale } from 'get-user-locale';
 import { ToastService } from '../toast/toast.service';
+import getUserLocale from 'get-user-locale';
+
+const localeOption = {
+    useFallbackLocale: false,
+    fallbackLocale: 'en-US',
+};
+
+const currentLocale = getUserLocale(localeOption) === null ? 'en' : getUserLocale(localeOption);
+
 
 @Injectable({
   providedIn: 'root',
@@ -197,10 +205,9 @@ export class LanguageService{
 
   //** TODO: If Language Selection has added, please specified the language code */
   private async setCurrentLanguage(){
-    let currentLanguage = getUserLocale();
-    let isKorean = currentLanguage.includes('ko');
-    let isJapanese = currentLanguage.includes('ja');
-    let isChinese = currentLanguage.includes('zh');
+    let isKorean = currentLocale?.includes('ko');
+    let isJapanese = currentLocale?.includes('ja');
+    let isChinese = currentLocale?.includes('zh');
 
     if(isKorean){
       this.currentLanguage = 'ko';
