@@ -3,6 +3,6 @@
   <ion-label> {{'menu.name.language' | languageTransform | async }}</ion-label>
     <!--Selection of language Type-->
   <ion-select interface="popover"  (ionChange)="onChangeLanguage()" [(ngModel)]="language.currentLanguage">
-      <ion-select-option *ngFor="let lang of language.languageSelection | async" [value]="lang.code">  {{lang.flag}} {{lang.description | languageTransform | async }} </ion-select-option>
+      <ion-select-option *ngFor="let lang of language.languageSelection | async" [value]="lang.code">  {{lang.description | languageTransform | async }} </ion-select-option>
   </ion-select>
 </ion-item>

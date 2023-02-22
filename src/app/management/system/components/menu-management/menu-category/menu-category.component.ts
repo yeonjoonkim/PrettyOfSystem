@@ -1,7 +1,8 @@
 import { IMenuCategory } from 'src/app/interface/menu/menu.interface.service';
 import { Component, OnInit } from '@angular/core';
 import { SystemMenuCategoryService } from 'src/app/service/system/menu/category/system-menu-category.service';
-import ionicIcon from '../../../../../shared/services/ionic-icon/ionic-icon-list';
+import { IonicIconService } from 'src/app/shared/services/ionic-icon/ionic-icon.service';
+import { IIonicIcon } from 'src/app/shared/interfaces/Icon/icon.interface.service';
 @Component({
   selector: 'menu-category',
   templateUrl: './menu-category.component.html',
@@ -16,9 +17,10 @@ export class MenuCategoryComponent implements OnInit{
     icon: '',
     content: []
   };
-  public iconList = ionicIcon;
+  public outlineIcon: IIonicIcon[];
 
-  constructor(private systemMenuCategoryService: SystemMenuCategoryService) {
+  constructor(private systemMenuCategoryService: SystemMenuCategoryService, private ionicIcon: IonicIconService) {
+    this.outlineIcon = this.ionicIcon.getOutlineIcon();
   }
 
   ngOnInit() {

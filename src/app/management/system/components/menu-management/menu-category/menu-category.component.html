@@ -9,6 +9,6 @@
 </ion-item>
 <ion-button (click)="onClickSaveNewCategory()">{{'button.name.save' | languageTransform | async}}</ion-button>
 
-<ion-item *ngFor="let icon of iconList">
+<ion-item *ngFor="let icon of outlineIcon">
   <ion-icon [name]="icon.name"></ion-icon>
 </ion-item>
