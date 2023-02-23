@@ -9,6 +9,11 @@
 </ion-item>
 <ion-button (click)="onClickSaveNewCategory()">{{'button.name.save' | languageTransform | async}}</ion-button>
 
-<ion-item *ngFor="let icon of outlineIcon">
-  <ion-icon [name]="icon.name"></ion-icon>
-</ion-item>
+
+
+<ion-list>
+  <ion-item *ngFor="let icon of outlineIcon">
+    <ion-checkbox slot="start"></ion-checkbox>
+    <p><ion-icon [name]="icon.name"></ion-icon> {{icon.name}}</p>
+  </ion-item>
+</ion-list>
