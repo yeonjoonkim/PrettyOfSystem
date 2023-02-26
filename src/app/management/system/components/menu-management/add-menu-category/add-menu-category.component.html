@@ -1,0 +1,8 @@
+<div id="add-menu-container">
+  <ion-item>
+    <ion-label>{{'label.name.description' | languageTransform | async}}</ion-label>
+    <ion-input [(ngModel)]="category.description"></ion-input>
+  </ion-item>
+  <ionic-icon-selection [(icon)]="category.icon"></ionic-icon-selection>
+  <ion-button expand="full" (click)="onClickSaveNewCategory()">{{'button.name.save' | languageTransform | async}}</ion-button>
+</div>

@@ -1,0 +1,15 @@
+
+  <!--Search Bar -->
+  <ion-searchbar type="text" [(ngModel)]="query"></ion-searchbar>
+  
+  <!--Icon List -->
+  <ion-content id="icon-selection-container">
+    <ion-item *ngFor="let icon of ionicIconSelection | filter:query" (click)="dismissIconPopOver(icon.name)">
+      <!--Check Box-->
+      <ion-checkbox slot="start" [(ngModel)]="icon.selected"></ion-checkbox>
+      <!--Icon Label-->
+      <ion-label>
+        <ion-icon id="icon-display" [name]="icon.name"></ion-icon>
+      </ion-label>
+    </ion-item>
+  </ion-content>

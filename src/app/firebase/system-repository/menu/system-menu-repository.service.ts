@@ -50,10 +50,10 @@ export class SystemMenuRepositoryService {
 
   /**This will compare the name and return asc */
   private compareByContentName(a: IMenuCategory, b: IMenuCategory) {
-    if (a.content[0]?.name < b.content[0]?.name) {
+    if (a.name < b.name) {
       return -1;
     }
-    if (a.content[0]?.name > b.content[0]?.name) {
+    if (a.name > b.name) {
       return 1;
     }
     return 0;

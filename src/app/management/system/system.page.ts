@@ -11,7 +11,6 @@ import { SystemModalService } from '../../service/system/menu/system-modal/syste
 
 //TODO: Add User Role Permission to system menu option
 export class SystemPage implements OnInit {
-
   public isSystemMenuOpen: boolean = false;
   public systemMenuIcon: string = 'chevron-down-outline';
   public selectedSystemMenu: ISystemMenuOptionAction = {
@@ -23,7 +22,7 @@ export class SystemPage implements OnInit {
   constructor(private popOverCtrl: PopoverController, private systemModal: SystemModalService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
   }
 
   /** This will open the system menu */
@@ -56,7 +55,7 @@ export class SystemPage implements OnInit {
     let option = result?.data?.option;
     this.changeSystemMenu();
     if(option){
-      await this.processSystemMenuOption(option);
+      this.processSystemMenuOption(option);
     }
   }
 
