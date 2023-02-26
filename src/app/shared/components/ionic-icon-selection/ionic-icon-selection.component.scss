@@ -1,0 +1,29 @@
+#selected-icon-container{
+  width: 300px;
+  min-width: 200px;
+  padding-right: 15px;
+}
+
+#icon-label{
+  display: flex;
+}
+
+#selected-icon{
+  margin-left: 15px;
+  font-size: 20px;
+}
+
+#no-selection-label{
+  margin-left: 15px;
+}
+
+#search-icon{
+  font-size: 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+ionic-icon-list{
+  min-height: 200px;
+  height: 400px;
+}

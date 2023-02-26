@@ -1,5 +1,5 @@
 import { LanguageService } from './shared/services/language/language.service';
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Subscription } from 'rxjs';
 import { SystemLanguageRepositoryService } from './firebase/system-repository/language/system-language-repository.service';
@@ -17,10 +17,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private storage: Storage, private language: LanguageService, private sysLanguageRepo: SystemLanguageRepositoryService) {
     this.language.languageSelection = this.sysLanguageRepo.getLanguageSelectionResult();
     this.storage.create();
-    this.subscribeLanguage();
   }
 
-  async ngOnInit(){
+  ngOnInit(){
+    this.subscribeLanguage();
   }
 
   async ngAfterViewInit(){
@@ -31,11 +31,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async delay(){
-    let timeout = setTimeout(() => {
+    setTimeout(() => {
       this.isLoaded = true;
     }, 100);
-
-    await timeout;
   }
 
   async ngOnDestroy(){
@@ -44,14 +42,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async subscribeLanguage(){
   this.languageChangeActionSubscription = this.language.changeLanguageAction.subscribe(async (i) => {
-      await this.ngOnDestroy();
-      await this.ngOnInit();
-      await window.location.reload();
+      this.ngOnDestroy();
+      window.location.reload();
     });
   }
-
-
-
-
-
+  
 }

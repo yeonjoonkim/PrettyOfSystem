@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IMenuCategory } from 'src/app/interface/menu/menu.interface.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
+import { PopoverController } from '@ionic/angular';
+import { AddMenuCategoryComponent } from '../add-menu-category/add-menu-category.component';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,25 +12,33 @@ import { Observable } from 'rxjs';
 })
 
 export class MenuManagementComponent implements OnInit {
-  public menus = [
-    {
-      description: "",
-      title: "menu.name.management", icon: "build-outline", index: 0,
-      content: [
-        {url: '/management/system', title: "menu.name.systemmanagement", icon: "code-slash-outline"},
-        {url: '/management/shop', title: "menu.name.shopmanagement", icon: "bag-outline"},
-        {url: '/management/user', title: "menu.name.usermangement", icon: "people-outline"},
-        {url: '/management/payment', title: "menu.name.paymentmanagement", icon: "cash-outline"},
-    ]}
-  ];
+  public readonly menuCategories: Observable<IMenuCategory[]> = this.systemMenuRepository.getSystemMenuCategories();
+  public selectedCategory: IMenuCategory = {
+    description: '',
+    name: '',
+    icon: '',
+    content: []
+  };
 
-  public menuCategories: Observable<IMenuCategory[]>;
-  constructor(private systemMenuRepository: SystemMenuRepositoryService) {
-    this.menuCategories = this.systemMenuRepository.getSystemMenuCategories();
+  constructor(private systemMenuRepository: SystemMenuRepositoryService, private popoverCtrl: PopoverController) {
   }
 
   async ngOnInit() {
+  }
 
+  public async presentAddMenuCategory(event: any){
+    let addMenuCategory = await this.popoverCtrl.create({
+      component: AddMenuCategoryComponent,
+      event: event,
+      translucent: true
+    });
+
+    await addMenuCategory.present();
+  }
+
+  public onClickCategory(selectedCategory: IMenuCategory){
+    this.selectedCategory = selectedCategory;
+    console.log(this.selectedCategory)
   }
 
 }

@@ -10,18 +10,22 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Component
 import { MenuManagementComponent } from './menu-management/menu-management.component';
-import { MenuCategoryComponent } from './menu-category/menu-category.component';
+import { AddMenuCategoryComponent } from './add-menu-category/add-menu-category.component';
+
+//Import Module
+import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
 
 @NgModule({
-  declarations: [MenuManagementComponent, MenuCategoryComponent],
+  declarations: [MenuManagementComponent, AddMenuCategoryComponent],
   imports: [
     CommonModule,
     IonicModule,
     FormsModule,
     LanguageTransformPipeModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    IonicIconSelectionModule
   ],
-  exports: [MenuManagementComponent, MenuCategoryComponent],
+  exports: [MenuManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class MenuManagementModule { }
