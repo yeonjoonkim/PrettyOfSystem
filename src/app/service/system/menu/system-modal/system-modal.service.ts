@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 //Import Component
-import { LanguageTransformDictionaryComponent } from '../../components/language-transform-dictionary/language-transform-dictionary/language-transform-dictionary.component';
-import { LanguageManagementComponent } from '../../components/language-management/language-management/language-management.component';
+import { LanguageTransformDictionaryComponent } from '../../../../management/system/components/language-transform-dictionary/language-transform-dictionary/language-transform-dictionary.component';
+import { LanguageManagementComponent } from '../../../../management/system/components/language-management/language-management/language-management.component';
 @Injectable({
   providedIn: 'root'
 })

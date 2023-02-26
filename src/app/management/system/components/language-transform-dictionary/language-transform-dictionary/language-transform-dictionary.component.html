@@ -9,7 +9,7 @@
   <!--Language Selection-->
   <ion-item>
     <ion-segment id="language-selection" interface="popover" [scrollable]="true" [(ngModel)]="selectedLanguageCode" (ionChange)="onChangeLanguageSelection()">
-      <ion-segment-button *ngFor="let lang of language.languageSelection | async" [value]="lang.code"> <p> {{lang.flag}} {{lang.description | languageTransform | async }} </p> </ion-segment-button>
+      <ion-segment-button *ngFor="let lang of language.languageSelection | async" [value]="lang.code"> <p> {{lang.description | languageTransform | async }} </p> </ion-segment-button>
     </ion-segment>
   </ion-item>
 

@@ -2,7 +2,6 @@ export interface ILanguageSelection {
   id?: string;
   code: string;
   name: string;
-  flag: string;
   description: string;
   package: {};
   isDefault: boolean;

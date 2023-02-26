@@ -17,12 +17,12 @@
       <ion-item-sliding>
         <!-- Language Title -->
         <ion-item>
-          <ion-label><p>{{lang.flag}} {{lang.description | languageTransform | async}}</p></ion-label>
+          <ion-label><p>{{lang.description | languageTransform | async}}</p></ion-label>
           <ion-label *ngIf="lang.isDefault"><ion-icon name="checkmark-outline"></ion-icon></ion-label>
         </ion-item>
         <!--Delete Option -->
         <ion-item-options side="end" *ngIf="!lang.isDefault">
-          
+
           <!--TODO: will Implmenent with products and services-->
           <ion-item-option color="danger"> <p> {{'button.name.delete' | languageTransform | async }} </p> </ion-item-option>
         </ion-item-options>

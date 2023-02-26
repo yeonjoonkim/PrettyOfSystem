@@ -73,12 +73,11 @@ export class SystemLanguageRepositoryService {
     }
   }
 
-  private setDefaultILanguageSelection(code: string, description: string, name: string, flag: string){
+  private setDefaultILanguageSelection(code: string, description: string, name: string){
     let selection: ILanguageSelection = {
       code: code,
       description: description,
       name: name,
-      flag: flag,
       package: {},
       isDefault: false
     }
