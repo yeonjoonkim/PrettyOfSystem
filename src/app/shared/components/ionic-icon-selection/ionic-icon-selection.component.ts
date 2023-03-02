@@ -33,10 +33,13 @@ export class IonicIconSelectionComponent implements OnInit {
 
   /** This will open the menu option */
   public async presentIconSelection(event: any): Promise<void>{
-    let iconSelection = await this.createIconSelectionPopover(event);
-    await this.onChangeSearhOpen(true);
-    await iconSelection.present();
-    await this.handleIconSelection(iconSelection);
+    if(!this.isSearchOpen){
+      this.isSearchOpen = true;
+      let iconSelection = await this.createIconSelectionPopover(event);
+      this.onChangeSearhOpen(true);
+      await iconSelection.present();
+      await this.handleIconSelection(iconSelection);
+    }
   }
 
 
@@ -60,12 +63,13 @@ export class IonicIconSelectionComponent implements OnInit {
     let selectedIcon = result?.data?.selected;
     this.icon = (selectedIcon !== undefined && selectedIcon !== null) ? selectedIcon : this.icon;
     this.isSearchOpen = false;
-    await this.onChangeSearhOpen(false);
+    this.onChangeSearhOpen(false);
   }
 
   /** This will change the search icon based on the condition */
-  private async onChangeSearhOpen(searchIconAction: boolean): Promise<void>{
+  private onChangeSearhOpen(searchIconAction: boolean){
     this.searchIcon = searchIconAction ? 'caret-up-outline' : 'caret-down-outline';
+
   }
 
 }

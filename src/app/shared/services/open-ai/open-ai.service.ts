@@ -7,16 +7,17 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 
+
 export class OpenAiService {
   //API
   private readonly openAiUrl: string = 'https://api.openai.com/v1/completions';
-  private readonly apiKey: string = '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';
+  private readonly apiKey: string = '';
 
   //API DEFAULT PARAM
   private readonly defaultParams = {
     model: "text-davinci-003",
     temperature: 0.4,
-    max_tokens: 500,
+    max_tokens: 3800,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,

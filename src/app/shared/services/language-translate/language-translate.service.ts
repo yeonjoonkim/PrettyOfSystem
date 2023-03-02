@@ -18,7 +18,7 @@ export class LanguageTranslateService {
   //command
   private readonly correctGrammerThenTranslateTo: string = this.correctGrammer + "then "+ this.translateTo;
   private readonly returnAsSingleString: string = this.returnAs + this.singleString;
-  private readonly convertJSON: string = " convert into JSON file";
+  private readonly convertJSON: string = " must convert into exact same JSON format";
 
   constructor(private openAi: OpenAiService, private textTransform: TextTransformService, private language: LanguageService, private loading: LoadingService) {
   }

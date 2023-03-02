@@ -7,8 +7,6 @@ export interface IMenuCategory{
 }
 
 export interface IMenuContent{
-  id?: string;
-  index: number;
   name: string;
   description: string;
   url: string;

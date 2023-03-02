@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AddMenuCategoryComponent } from './add-menu-category.component';
+import { MenuCategoryCardComponent } from './menu-category-card.component';
 
-describe('MenuCategoryComponent', () => {
-  let component: AddMenuCategoryComponent;
-  let fixture: ComponentFixture<AddMenuCategoryComponent>;
+describe('MenuCategoryCardComponent', () => {
+  let component: MenuCategoryCardComponent;
+  let fixture: ComponentFixture<MenuCategoryCardComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddMenuCategoryComponent ],
+      declarations: [ MenuCategoryCardComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddMenuCategoryComponent);
+    fixture = TestBed.createComponent(MenuCategoryCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

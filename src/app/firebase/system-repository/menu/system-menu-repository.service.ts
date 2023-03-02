@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IMenuCategory, IMenuContent} from '../../../interface/menu/menu.interface.service';
+import { IMenuCategory, IMenuContent} from '../../../interface/menu/menu.interface';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { firstValueFrom, map, Observable } from 'rxjs';
 
@@ -10,11 +10,8 @@ export class SystemMenuRepositoryService {
   private readonly timeStamp = {lastModifiedDate: new Date()};
   private readonly systemMenu: string = 'system/menu/';
   private readonly category: string = this.systemMenu + 'category';
-  //TODO
-  private readonly categoryName: string = this.systemMenu + 'categoryName';
-  private readonly systemMenuCategories!: Observable<IMenuCategory[]>;
+  private readonly systemMenuCategories: Observable<IMenuCategory[]> = this.getSystemMenuCategories();
   constructor(private afs: AngularFirestore) {
-    this.systemMenuCategories = this.getSystemMenuCategories();
   }
 
   /** This will validate the category name in the db*/
@@ -22,6 +19,11 @@ export class SystemMenuRepositoryService {
     let categories = await firstValueFrom(this.systemMenuCategories);
     let hasSameCategoryName = categories.filter(category => category.name === selectedCategoryName).length > 0;
     return hasSameCategoryName;
+  }
+
+  public async getSelectedSystemMenuCategory(selectedMenuCategoryId: string){
+    const categories = await firstValueFrom(this.getSystemMenuCategories());
+    return categories.find(cat => cat.id === selectedMenuCategoryId);
   }
 
   /**This will return the category */
@@ -35,6 +37,16 @@ export class SystemMenuRepositoryService {
           return cat;
         }))
       );
+  }
+
+  /**Based on Id delete the document */
+  public deleteSystemMenuCategory(selectedSystemMenuCategoryId: string){
+    this.afs.doc(this.category + '/' + selectedSystemMenuCategoryId).delete();
+  }
+
+  /**Based on systemMenuCat Id update */
+  public updateSystemMenuCategory(selectedSystemMenuCategory: IMenuCategory){
+    this.afs.doc(this.category+'/'+ selectedSystemMenuCategory.id).update(selectedSystemMenuCategory);
   }
 
   /**This will compare the name and return asc */

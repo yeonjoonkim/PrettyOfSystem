@@ -20,11 +20,11 @@
 <ion-accordion-group>
 
   <!--Route Link-->
-  <ion-accordion *ngFor="let menu of menus">
+  <ion-accordion *ngFor="let menu of menus | async">
     <!--Header-->
-    <ion-item slot="header" [ngClass]="menu.title === selectedTitleHeading ? 'active' : ''">
-      <ion-icon slot="start" name="{{menu.icon}}"></ion-icon>
-      {{ menu.title | languageTransform | async }}
+    <ion-item slot="header" [ngClass]="menu.name === selectedTitleHeading ? 'active' : ''">
+      <ion-icon slot="start" [name]="menu.icon"></ion-icon>
+      {{ menu.name | languageTransform | async }}
     </ion-item>
 
     <!--Content-->
@@ -32,7 +32,7 @@
         <ion-item button routerLink="{{content.url}}" routerLinkActive="active" (click)="onChangeMenu(content.url)">
           <ion-label>
             <ion-icon slot="start" name="{{content.icon}}"></ion-icon>
-            {{ content.title | languageTransform | async}}
+            {{ content.name | languageTransform | async}}
           </ion-label>
         </ion-item>
     </ion-list>

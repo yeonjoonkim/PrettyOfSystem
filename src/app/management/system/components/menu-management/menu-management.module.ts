@@ -11,12 +11,21 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 //Import Component
 import { MenuManagementComponent } from './menu-management/menu-management.component';
 import { AddMenuCategoryComponent } from './add-menu-category/add-menu-category.component';
+import { MenuCategoryCardComponent } from './menu-category-card/menu-category-card.component';
+import { MenuCategoryContentCardComponent } from './menu-category-content-card/menu-category-content-card.component';
+import { AddMenuCategoryContentComponent } from './add-menu-category-content/add-menu-category-content.component';
 
 //Import Module
 import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
 
 @NgModule({
-  declarations: [MenuManagementComponent, AddMenuCategoryComponent],
+  declarations: [
+    MenuManagementComponent,
+    AddMenuCategoryComponent,
+    MenuCategoryCardComponent,
+    MenuCategoryContentCardComponent,
+    AddMenuCategoryContentComponent
+  ],
   imports: [
     CommonModule,
     IonicModule,
