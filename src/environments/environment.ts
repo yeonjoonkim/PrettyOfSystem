@@ -12,6 +12,7 @@ export const environment = {
     appId: "1:204754094061:web:51aede03733baed57249e4",
     measurementId: "G-KJVX7Z430Y"
   },
+  openAiApi: '',
   production: true
 };
 
