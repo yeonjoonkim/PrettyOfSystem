@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IMenuCategory } from 'src/app/interface/menu/menu.interface.service';
+import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
-import { PopoverController } from '@ionic/angular';
-import { AddMenuCategoryComponent } from '../add-menu-category/add-menu-category.component';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -20,25 +18,10 @@ export class MenuManagementComponent implements OnInit {
     content: []
   };
 
-  constructor(private systemMenuRepository: SystemMenuRepositoryService, private popoverCtrl: PopoverController) {
+  constructor(private systemMenuRepository: SystemMenuRepositoryService) {
   }
 
   async ngOnInit() {
-  }
-
-  public async presentAddMenuCategory(event: any){
-    let addMenuCategory = await this.popoverCtrl.create({
-      component: AddMenuCategoryComponent,
-      event: event,
-      translucent: true
-    });
-
-    await addMenuCategory.present();
-  }
-
-  public onClickCategory(selectedCategory: IMenuCategory){
-    this.selectedCategory = selectedCategory;
-    console.log(this.selectedCategory)
   }
 
 }

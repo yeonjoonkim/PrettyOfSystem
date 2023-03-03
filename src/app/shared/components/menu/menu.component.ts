@@ -1,8 +1,10 @@
+import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
+import { Observable } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { IMenuCategory } from '../../../interface/menu/menu.interface.service';
 import { LanguageService } from '../../services/language/language.service';
-import {StorageService} from '../../services/storage/storage.service';
+import { StorageService } from '../../services/storage/storage.service';
+import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 
 @Component({
   selector: 'side-menu',
@@ -21,19 +23,10 @@ export class MenuComponent implements OnInit, OnDestroy {
     role: "Software Developer",
   };
 
-  public menus = [
-    {
-      description: "",
-      title: "menu.name.management", icon: "build-outline", index: 0,
-      content: [
-        {url: '/management/system', title: "menu.name.systemmanagement", icon: "code-slash-outline"},
-        {url: '/management/shop', title: "menu.name.shopmanagement", icon: "bag-outline"},
-        {url: '/management/user', title: "menu.name.usermangement", icon: "people-outline"},
-        {url: '/management/payment', title: "menu.name.paymentmanagement", icon: "cash-outline"},
-    ]}
-  ];
+  public menus: Observable<IMenuCategory[]> = this.systemMenuRepository.getSystemMenuCategories();
 
-  constructor(public language: LanguageService, private storage: StorageService, private location: Location) {
+  constructor(public language: LanguageService, private storage: StorageService, private location: Location, private systemMenuRepository: SystemMenuRepositoryService) {
+
     this.storage.getCurrentLanguage().then(langCode => {
       this.selectedLangauge = langCode;
     });
@@ -57,10 +50,11 @@ export class MenuComponent implements OnInit, OnDestroy {
   /** This function will change the title heading param based on current url.*/
   async onChangeMenu(url: string){
     this.menus.forEach(menu => {
-      let isCurrentMenu = menu.content.filter(content => content.url === url).length > 0;
-      if(isCurrentMenu){
-        this.selectedTitleHeading = menu.title;
-      }
+      menu.forEach(m => {
+        let currentMenu = m.content.filter(content => content.url === url)[0];
+        this.selectedTitleHeading = currentMenu.name
+
+      });
     });
   }
 

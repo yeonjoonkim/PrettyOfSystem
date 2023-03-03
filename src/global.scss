@@ -61,6 +61,16 @@ ion-button{
   color: white;
 }
 
+.ion-card-title-icon{
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 30px;
+  margin-top: 15px;
+  margin-right: 5px;
+}
+
 .modal {
   align-items: center;
   justify-content: center;

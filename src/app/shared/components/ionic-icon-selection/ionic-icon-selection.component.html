@@ -1,14 +1,14 @@
 
 <!-- Selected Label -->
-<ion-item>
+<ion-item (click)="editMode && presentIconSelection($event)">
   <!--Icon Label -->
   <ion-label id="icon-label">
     {{'label.name.icon' | languageTransform | async}}
     <p id="selected-icon"><ion-icon *ngIf="icon" [name]="icon"></ion-icon></p>
     <p id="no-selection-label" *ngIf="!icon"> {{'label.icon.selection' | languageTransform | async }}</p>
-    
+
       <!--Icon Selection Popover Controller-->
   </ion-label>
-  <ion-icon *ngIf="editMode" id="search-icon" [name]="searchIcon" slot="end" (click)="presentIconSelection($event)"></ion-icon>
+  <ion-icon *ngIf="editMode" id="search-icon" [name]="searchIcon" slot="end"></ion-icon>
 </ion-item>
 

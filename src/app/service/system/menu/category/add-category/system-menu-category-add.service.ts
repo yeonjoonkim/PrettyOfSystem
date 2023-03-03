@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ILanguageTranslateItem, ILanguageTranslateResult } from 'src/app/interface/system/language/language.interface';
-import { LanguageTranslateService } from './../../../../../shared/services/language-translate/language-translate.service';
+import { LanguageTranslateService } from '../../../../../shared/services/language-translate/language-translate.service';
 import { ToastService } from 'src/app/shared/services/toast/toast.service';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
-import { IMenuCategory } from 'src/app/interface/menu/menu.interface.service';
+import { IMenuCategory, IMenuContent } from 'src/app/interface/menu/menu.interface';
 import { TextTransformService } from 'src/app/shared/services/text-transform/text-transform.service';
 
 
@@ -12,7 +12,8 @@ import { TextTransformService } from 'src/app/shared/services/text-transform/tex
   providedIn: 'root'
 })
 export class SystemMenuCategoryAddService {
-  private readonly prefixedCategoryOjbectName: string = 'menu.category.';
+  public readonly prefixedCategoryOjbectName: string = 'menu.category.';
+  public readonly prefixedCategoryContentObjectName: string = 'menu.content.';
 
   constructor(private textTransform: TextTransformService, private systemMenuRepository: SystemMenuRepositoryService,
     private language: LanguageService, private toast: ToastService, private languageTranslate: LanguageTranslateService) {
@@ -28,7 +29,6 @@ export class SystemMenuCategoryAddService {
       await this.saveNewCategory(translatedResult, newCategory);
     }
   }
-
 
   /**This will validate the result and save into language package */
   private async saveNewCategory(result: ILanguageTranslateItem, newCategory: IMenuCategory): Promise<void>{
@@ -50,10 +50,17 @@ export class SystemMenuCategoryAddService {
 
 
   /**This will translate the description */
-  private async getTranslatedCategoryDescription(newCategory: IMenuCategory): Promise<ILanguageTranslateItem>{
+  public async getTranslatedCategoryDescription(newCategory: IMenuCategory): Promise<ILanguageTranslateItem>{
     let translateCriteria = await this.language.getAllLanguageTranslateCriteria();
     translateCriteria.isTitle = true;
     let result: ILanguageTranslateItem = await this.languageTranslate.getTranslatedLanguagePackage(newCategory.description, translateCriteria);
+    return result;
+  }
+  /**This will translate the description of content */
+  public async getTranslatedContentDescription(newContent: IMenuContent): Promise<ILanguageTranslateItem>{
+    let translateCriteria = await this.language.getAllLanguageTranslateCriteria();
+    translateCriteria.isTitle = true;
+    let result: ILanguageTranslateItem = await this.languageTranslate.getTranslatedLanguagePackage(newContent.description, translateCriteria);
     return result;
   }
 

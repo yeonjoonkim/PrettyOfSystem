@@ -23,6 +23,7 @@ const currentLocale = getUserLocale(localeOption) === null ? 'en' : getUserLocal
 export class LanguageService{
   public deafultLanguageCode: string = 'en';
   public currentLanguage: string = '';
+  public currentLanguageDescription: string = '';
   public changeLanguageAction = new EventEmitter<string>();
   public languageSelectionKey!: Observable<ILanguageKey[]>;
   public languageSelection!: Observable<ILanguageSelection[]>;
@@ -69,6 +70,13 @@ export class LanguageService{
   public async onLanguageChange(): Promise<void> {
     await this.storage.storeCurrentLanguage(this.currentLanguage);
     this.changeLanguageAction.emit(this.currentLanguage);
+    await this.getLanguageDescription();
+  }
+
+  public async getLanguageDescription(){
+    let lang =  await this.getSelectedLanguageSelection(this.currentLanguage)
+    console.log(lang.description)
+    return lang.description;
   }
 
 
@@ -128,6 +136,21 @@ export class LanguageService{
     await this.deleteUsedKey(selectedKey);
   }
 
+  public async deleteKeyPairValueList(selectedDeleteKeyList: string[]): Promise<void>{
+    let selections = await this.getLanguageSelection();
+    let usedKey = await this.getLanguageSelectionKey();
+    usedKey.used = usedKey.used.filter((element) => !selectedDeleteKeyList.includes(element));
+
+    selections.forEach(
+      async selection => {
+        selectedDeleteKeyList.forEach(key => {
+          selection.package = this.languagePackage.deleteKeyValuePackage(selection.package, key);
+        });
+        await this.systemLanguageRepository.updateLanguageSelection(selection);
+      });
+
+      await this.systemLanguageRepository.updateLanguageKey(usedKey);
+  }
 
   public getDefaultLanguageDescription(result: ILanguageTranslateResult){
     let description = '';
