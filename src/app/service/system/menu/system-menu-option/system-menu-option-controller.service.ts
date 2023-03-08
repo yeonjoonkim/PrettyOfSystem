@@ -4,6 +4,7 @@ export interface ISystemMenuOptionAction{
   name: string;
   isLanguageDictionary: boolean;
   isMenuManagement: boolean;
+  isRoleManagement: boolean;
 };
 
 
@@ -15,50 +16,51 @@ export class SystemMenuOptionControllerService {
   private readonly systemMenu: string = 'system.menu.';
   private readonly menuOption = {
     transformDictionary: this.systemMenu + 'dictionary',
-    menuManagement: this.systemMenu + 'menuManagement' 
+    menuManagement: this.systemMenu + 'menumanagement',
+    roleManagement: this.systemMenu + 'rolemanagement'
   };
 
   constructor(private language: LanguageService) { }
 
-  public async getSystemMenuOption(){
-    let menuOptions: ISystemMenuOptionAction[] = [];
+  public async getSystemMenuOption(): Promise<ISystemMenuOptionAction[]>{
     let dictionary = await this.getLanguageDictionaryOption();
     let menuManagement = await this.getMenuManagementOption();
+    let roleManagement = await this.getRoleManagementOption();
 
-    menuOptions.push(menuManagement);
-    menuOptions.push(dictionary);
-    return menuOptions;
+    return [ menuManagement, roleManagement, dictionary ];
   }
 
 
   private async getLanguageDictionaryOption(){
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    let optionName: string = this.menuOption.transformDictionary;
-    let currentLanguageOptionName: string = await this.language.transform(optionName);
+    controller.name = await this.language.transform(this.menuOption.transformDictionary);
     controller.isLanguageDictionary = true;
-    controller.name = currentLanguageOptionName;
 
     return controller;
   }
 
+  private async getRoleManagementOption(){
+    let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
+    controller.name = await this.language.transform(this.menuOption.roleManagement);
+    controller.isRoleManagement = true;
+
+    return controller;
+  }
 
   private async getMenuManagementOption(){
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    let optionName: string = this.menuOption.menuManagement;
-    let currentLanguageOptionName: string = await this.language.transform(optionName);
+    controller.name = await this.language.transform(this.menuOption.menuManagement);
     controller.isMenuManagement = true;
-    controller.name = currentLanguageOptionName;
 
     return controller;
   }
 
-  private setDefaultSystemMenuOptionController(){
-    let defaultController: ISystemMenuOptionAction = {
+  public setDefaultSystemMenuOptionController(): ISystemMenuOptionAction {
+    return {
       name: '',
       isMenuManagement: false,
-      isLanguageDictionary: false
+      isLanguageDictionary: false,
+      isRoleManagement: false
     };
-
-    return defaultController;
   }
 }

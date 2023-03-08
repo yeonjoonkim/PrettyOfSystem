@@ -1,8 +1,9 @@
-import { ISystemMenuOptionAction } from '../../service/system/menu/system-menu-option/system-menu-option-controller.service';
+import { ISystemMenuOptionAction, SystemMenuOptionControllerService } from '../../service/system/menu/system-menu-option/system-menu-option-controller.service';
 import { SystemMenuOptionComponent } from './components/system-menu-option/system-menu-option.component';
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { SystemModalService } from '../../service/system/menu/system-modal/system-modal.service';
+
 @Component({
   selector: 'app-system',
   templateUrl: './system.page.html',
@@ -13,13 +14,9 @@ import { SystemModalService } from '../../service/system/menu/system-modal/syste
 export class SystemPage implements OnInit {
   public isSystemMenuOpen: boolean = false;
   public systemMenuIcon: string = 'chevron-down-outline';
-  public selectedSystemMenu: ISystemMenuOptionAction = {
-    name: '',
-    isLanguageDictionary: false,
-    isMenuManagement: false,
-  };
+  public selectedSystemMenu: ISystemMenuOptionAction = this.systemMenuOptionCtrl.setDefaultSystemMenuOptionController();
 
-  constructor(private popOverCtrl: PopoverController, private systemModal: SystemModalService) {
+  constructor(private popOverCtrl: PopoverController, private systemModal: SystemModalService, private systemMenuOptionCtrl: SystemMenuOptionControllerService) {
   }
 
   async ngOnInit() {
