@@ -10,13 +10,16 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Module
 import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
+import { YesNoSelectionModule } from 'src/app/shared/components/yes-no-selection/yes-no-selection.module';
 
 //Import Component
 import { RoleManagementComponent } from './role-management/role-management.component';
+import { AddRoleComponent } from './add-role/add-role.component';
 
 @NgModule({
   declarations: [
-    RoleManagementComponent
+    RoleManagementComponent,
+    AddRoleComponent
   ],
   imports: [
     CommonModule,
@@ -24,9 +27,10 @@ import { RoleManagementComponent } from './role-management/role-management.compo
     FormsModule,
     LanguageTransformPipeModule,
     Ng2SearchPipeModule,
-    IonicIconSelectionModule
+    IonicIconSelectionModule,
+    YesNoSelectionModule
   ],
   exports: [RoleManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
-export class MenuManagementModule { }
+export class RoleManagementModule { }

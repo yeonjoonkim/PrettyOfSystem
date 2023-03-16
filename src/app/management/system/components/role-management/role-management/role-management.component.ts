@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { RoleModalService } from 'src/app/service/system/role/role-modal/role-modal.service';
 
 @Component({
-  selector: 'app-role-management',
+  selector: 'role-management',
   templateUrl: './role-management.component.html',
   styleUrls: ['./role-management.component.scss'],
 })
 export class RoleManagementComponent implements OnInit {
-
-  constructor() { }
+  constructor(private roleModal: RoleModalService) { }
 
   ngOnInit() {}
+
+
+  /** present the Add Role Component */
+  public async onClickAddRole(){
+    await this.roleModal.prsentAddRole();
+  }
 
 }
