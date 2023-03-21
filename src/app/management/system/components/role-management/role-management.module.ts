@@ -14,12 +14,14 @@ import { YesNoSelectionModule } from 'src/app/shared/components/yes-no-selection
 
 //Import Component
 import { RoleManagementComponent } from './role-management/role-management.component';
-import { AddRoleComponent } from './add-role/add-role.component';
+import { RoleComponent } from './role/role.component';
+import { RoleListCardComponent } from './role-list-card/role-list-card.component';
 
 @NgModule({
   declarations: [
     RoleManagementComponent,
-    AddRoleComponent
+    RoleComponent,
+    RoleListCardComponent
   ],
   imports: [
     CommonModule,

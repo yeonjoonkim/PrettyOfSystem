@@ -12,6 +12,14 @@ export interface ILanguageKey{
   used: string[];
 }
 
+export interface ILanguageTrasnlationResult{
+  description: string;
+  name: string;
+  isSaved: boolean;
+  isEmpty: boolean;
+  isKeyNotExisited: boolean;
+}
+
 export interface ILanguageTranslateItem{
   isEmpty: boolean;
   translated: ILanguageTranslateResult;
@@ -38,7 +46,7 @@ export interface ILanguageTransformKeyPairValue{
   value: string;
 }
 
-export interface IlanugaeTransformPopOverCriteria{
+export interface ILanugaeTransformPopOverCriteria{
   key: string;
   value: string;
   selectedLangCode: string;

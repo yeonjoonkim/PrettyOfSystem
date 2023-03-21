@@ -1,0 +1,29 @@
+<!-- Title -->
+<ion-toolbar>
+  <ion-title *ngIf="!editMode">{{'title.name.addrole'| languageTransform | async }}</ion-title>
+  <ion-title  *ngIf="editMode">{{editedTitle | languageTransform | async }} {{'title.name.editrole' | languageTransform | async }}</ion-title>
+  <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="dismiss()"></ion-icon>
+</ion-toolbar>
+
+<!--Role Label-->
+<div id="role-label-container">
+  <ion-item>
+    <ion-label>{{ 'label.name.roledescription' | languageTransform | async}}</ion-label>
+    <ion-input type="text" placeholder="{{'label.placeholder.roledescription' | languageTransform | async}}" [(ngModel)]="role.description"></ion-input>
+  </ion-item>
+</div>
+
+<!--Role Config -->
+<div id="role-config-container">
+  <yes-no-selection label="label.name.systemadmin" [(value)]="role.accessLevel.isSystemAdmin" (valueChange)="onChangeSystemAdminAccessCtrl($event)"></yes-no-selection>
+  <yes-no-selection label="label.name.admin" [(value)]="role.accessLevel.isAdmin" (valueChange)="onChangeAdminAccessCtrl($event)"></yes-no-selection>
+  <yes-no-selection label="label.name.manager" [(value)]="role.accessLevel.isManager" (valueChange)="onChangeManagerAccessCtrl($event)"></yes-no-selection>
+  <yes-no-selection label="label.name.employee" [(value)]="role.accessLevel.isEmployee" (valueChange)="onChangeEmployeeAccessCtrl($event)"></yes-no-selection>
+  <yes-no-selection label="label.name.reception" [(value)]="role.accessLevel.isReception" (valueChange)="onChangeReceptionAccessCtrl($event)"></yes-no-selection>
+</div>
+
+<!--Save Button-->
+<div>
+  <ion-button expand="full" *ngIf="!editMode" (click)="onClickSaveRoleConfiguration()">{{'button.name.save' | languageTransform | async}}</ion-button>
+  <ion-button expand="full" *ngIf="editMode" (click)="onClickSaveRoleConfiguration()">{{'button.name.edit' | languageTransform | async}}</ion-button>
+</div>

@@ -120,6 +120,7 @@ export class LanguageService{
 
   /**Update all language package with new translated value and key value. */
   public async editLanguagePackage(result: ILanguageTranslateItem, keyValue: string): Promise<void> {
+    keyValue = keyValue.toLowerCase().replace(" ", "");
     if(!result.isEmpty){
       await this.updateLanguagePackage(result.translated, keyValue);
       await this.updateLanguageKey(keyValue);

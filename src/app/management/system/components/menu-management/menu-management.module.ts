@@ -17,6 +17,7 @@ import { AddMenuCategoryContentComponent } from './add-menu-category-content/add
 
 //Import Module
 import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
+import { YesNoSelectionModule } from 'src/app/shared/components/yes-no-selection/yes-no-selection.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-s
     FormsModule,
     LanguageTransformPipeModule,
     Ng2SearchPipeModule,
-    IonicIconSelectionModule
+    IonicIconSelectionModule,
+    YesNoSelectionModule
   ],
   exports: [MenuManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

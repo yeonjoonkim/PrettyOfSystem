@@ -20,6 +20,7 @@ export class SystemPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.selectedSystemMenu.isRoleManagement = true;
   }
 
   /** This will open the system menu */

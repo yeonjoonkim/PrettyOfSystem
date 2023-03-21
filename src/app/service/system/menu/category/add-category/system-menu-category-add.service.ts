@@ -16,7 +16,7 @@ export class SystemMenuCategoryAddService {
   public readonly prefixedCategoryContentObjectName: string = 'menu.content.';
 
   constructor(private textTransform: TextTransformService, private systemMenuRepository: SystemMenuRepositoryService,
-    private language: LanguageService, private toast: ToastService, private languageTranslate: LanguageTranslateService) {
+    private language: LanguageService, private toast: ToastService, private languageTranslate: LanguageTranslateService,) {
   }
 
   /**This event will validate and save into language package and will modify the category name to language transform object value */

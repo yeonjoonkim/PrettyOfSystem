@@ -16,7 +16,14 @@ export class AddMenuCategoryComponent implements OnInit{
     description: '',
     name: '',
     icon: '',
-    content: []
+    content: [],
+    accessLevel: {
+      isSystemAdmin: false,
+      isAdmin: false,
+      isManager: false,
+      isEmployee: false,
+      isReception: false
+    },
   };
 
   /**This will retreive the category by using pop over action*/
@@ -33,16 +40,81 @@ export class AddMenuCategoryComponent implements OnInit{
 
   /**This event will validate and save into language package and will modify the category name to language transform object value */
   public async onClickSaveNewCategory(): Promise<void>{
-    if(this.category.icon || this.category.description){
+    if(this.category.icon && this.category.description, this.hasAccessLevel()){
       await this.systemMenuCategoryService.processSaveNewSystemMenuCategory(this.category);
       await this.popoverCtrl.dismiss();
     }
   }
-  
+
+  private hasAccessLevel(): boolean{
+    return this.category.accessLevel.isSystemAdmin  || this.category.accessLevel.isAdmin || this.category.accessLevel.isManager || this.category.accessLevel.isEmployee || this.category.accessLevel.isReception;
+  }
+
   /**This event will attempt to edit the value and pass to the component */
   public async onClickEditCategory(){
     if(this.category.icon && this.category.description){
       await this.popoverCtrl.dismiss({result: this.category});
     }
   }
+
+
+  /** When the system admin toggle is changed, modify the Configuration */
+  public onChangeSystemAdminAccessCtrl(newAccessCtrl: boolean): void{
+    if(newAccessCtrl){
+      this.category.accessLevel.isSystemAdmin = true;
+      this.category.accessLevel.isAdmin = false;
+      this.category.accessLevel.isManager = false;
+      this.category.accessLevel.isEmployee = false;
+      this.category.accessLevel.isReception = false;
+    }
+  }
+
+
+  /** When the admin toggle is changed, modify the Configuration */
+  public onChangeAdminAccessCtrl(newAccessCtrl: boolean): void{
+    if(newAccessCtrl){
+      this.category.accessLevel.isSystemAdmin = false;
+      this.category.accessLevel.isAdmin = true;
+      this.category.accessLevel.isManager = false;
+      this.category.accessLevel.isEmployee = false;
+      this.category.accessLevel.isReception = false;
+    }
+  }
+
+
+  /** When the manager toggle is changed, modify the Configuration */
+  public onChangeManagerAccessCtrl(newAccessCtrl: boolean){
+    if(newAccessCtrl){
+      this.category.accessLevel.isSystemAdmin = false;
+      this.category.accessLevel.isAdmin = false;
+      this.category.accessLevel.isManager = true;
+      this.category.accessLevel.isEmployee = false;
+      this.category.accessLevel.isReception = false;
+    }
+  }
+
+
+  /** When the reception toggle is changed, modify the Configuration */
+  public onChangeReceptionAccessCtrl(newAccessCtrl: boolean): void{
+    if(newAccessCtrl){
+      this.category.accessLevel.isSystemAdmin = false;
+      this.category.accessLevel.isAdmin = false;
+      this.category.accessLevel.isManager = false;
+      this.category.accessLevel.isEmployee = false;
+      this.category.accessLevel.isReception = true;
+    }
+  }
+
+
+  /** When the employee toggle is changed, modify the Configuration */
+  public onChangeEmployeeAccessCtrl(newAccessCtrl: boolean): void{
+    if(newAccessCtrl){
+      this.category.accessLevel.isSystemAdmin = false;
+      this.category.accessLevel.isAdmin = false;
+      this.category.accessLevel.isManager = false;
+      this.category.accessLevel.isEmployee = true;
+      this.category.accessLevel.isReception = false;
+    }
+  }
+
 }

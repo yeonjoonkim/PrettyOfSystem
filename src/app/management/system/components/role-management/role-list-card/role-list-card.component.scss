@@ -1,0 +1,15 @@
+ion-card{
+  width: 100%;
+
+}
+
+#role-list-card{
+  width: 300px;
+  #role-list-slider{
+    display: flex;
+  }
+  #role-list{
+    overflow-y: scroll;
+    height: 320px;
+  }
+}
