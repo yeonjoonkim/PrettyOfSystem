@@ -7,6 +7,16 @@
   <!--Icon-->
   <ionic-icon-selection [(icon)]="category.icon"></ionic-icon-selection>
 
+  <!--Role Config -->
+<div id="role-config-container">
+  <yes-no-selection label="label.name.systemadmin" [(value)]="category.accessLevel.isSystemAdmin" (valueChange)="onChangeSystemAdminAccessCtrl($event)"></yes-no-selection>
+  <yes-no-selection label="label.name.admin" [(value)]="category.accessLevel.isAdmin" (valueChange)="onChangeAdminAccessCtrl($event)"></yes-no-selection>
+  <yes-no-selection label="label.name.manager" [(value)]="category.accessLevel.isManager" (valueChange)="onChangeManagerAccessCtrl($event)"></yes-no-selection>
+  <yes-no-selection label="label.name.employee" [(value)]="category.accessLevel.isEmployee" (valueChange)="onChangeEmployeeAccessCtrl($event)"></yes-no-selection>
+  <yes-no-selection label="label.name.reception" [(value)]="category.accessLevel.isReception" (valueChange)="onChangeReceptionAccessCtrl($event)"></yes-no-selection>
+</div>
+
+
   <!--Button-->
   <ion-button *ngIf="!editMode" expand="full" (click)="onClickSaveNewCategory()">{{'button.name.save' | languageTransform | async}}</ion-button>
   <ion-button *ngIf="editMode" expand="full" (click)="onClickEditCategory()">{{'button.name.edit' | languageTransform | async}}</ion-button>

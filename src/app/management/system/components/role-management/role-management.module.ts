@@ -8,24 +8,20 @@ import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,NgModule} from '@angular/core';
 import { LanguageTransformPipeModule } from '../../../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
-//Import Component
-import { MenuManagementComponent } from './menu-management/menu-management.component';
-import { AddMenuCategoryComponent } from './add-menu-category/add-menu-category.component';
-import { MenuCategoryCardComponent } from './menu-category-card/menu-category-card.component';
-import { MenuCategoryContentCardComponent } from './menu-category-content-card/menu-category-content-card.component';
-import { AddMenuCategoryContentComponent } from './add-menu-category-content/add-menu-category-content.component';
-
 //Import Module
 import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
 import { YesNoSelectionModule } from 'src/app/shared/components/yes-no-selection/yes-no-selection.module';
 
+//Import Component
+import { RoleManagementComponent } from './role-management/role-management.component';
+import { RoleComponent } from './role/role.component';
+import { RoleListCardComponent } from './role-list-card/role-list-card.component';
+
 @NgModule({
   declarations: [
-    MenuManagementComponent,
-    AddMenuCategoryComponent,
-    MenuCategoryCardComponent,
-    MenuCategoryContentCardComponent,
-    AddMenuCategoryContentComponent
+    RoleManagementComponent,
+    RoleComponent,
+    RoleListCardComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +32,7 @@ import { YesNoSelectionModule } from 'src/app/shared/components/yes-no-selection
     IonicIconSelectionModule,
     YesNoSelectionModule
   ],
-  exports: [MenuManagementComponent],
+  exports: [RoleManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
-export class MenuManagementModule { }
+export class RoleManagementModule { }

@@ -8,7 +8,7 @@ import { LanguageService } from '../../services/language/language.service';
   styleUrls: ['./langauge-selection.component.scss'],
 })
 export class LangaugeSelectionComponent implements OnInit {
-  public selectedLanugageDescription: string = '';
+  public selectedLanugageDescription: string = this.language.currentLanguage;
   constructor(public language: LanguageService) { }
 
   ngOnInit() {}

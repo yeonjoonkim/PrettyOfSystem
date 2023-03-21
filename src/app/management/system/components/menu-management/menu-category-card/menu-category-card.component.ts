@@ -26,7 +26,14 @@ export class MenuCategoryCardComponent implements OnInit {
     description: '',
     name: '',
     icon: '',
-    content: []
+    content: [],
+    accessLevel: {
+      isSystemAdmin: false,
+      isAdmin: false,
+      isManager: false,
+      isEmployee: false,
+      isReception: false
+    }
   };
 
 
@@ -59,7 +66,19 @@ export class MenuCategoryCardComponent implements OnInit {
 
     if(action?.role === 'delete'){
       let selectedCategoryId = selectedCategory.id ? selectedCategory.id : '';
-      this.category = {description: '', name: '',icon: '',content: []};
+      this.category = {
+        description: '',
+        name: '',
+        icon: '',
+        content: [],
+        accessLevel: {
+        isSystemAdmin: false,
+        isAdmin: false,
+        isManager: false,
+        isEmployee: false,
+        isReception: false
+        }
+      };
       await this.systemMenuCategoryService.processDeleteSystemMenuCategory(selectedCategoryId);
     }
   }
@@ -79,7 +98,19 @@ export class MenuCategoryCardComponent implements OnInit {
 
     let action = await addMenuCategory.onWillDismiss();
     if(action.data?.result){
-       this.category = { description: '', name: '', icon: '', content: [] };
+       this.category = {
+        description: '',
+        name: '',
+        icon: '',
+        content: [],
+        accessLevel: {
+        isSystemAdmin: false,
+        isAdmin: false,
+        isManager: false,
+        isEmployee: false,
+        isReception: false
+        }
+      };
       let result: IMenuCategory = action?.data?.result;
       await this.systemMenuCategoryService.processUpdateSystemMenuCategory(result);
     }

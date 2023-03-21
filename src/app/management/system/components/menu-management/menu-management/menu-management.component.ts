@@ -15,7 +15,14 @@ export class MenuManagementComponent implements OnInit {
     description: '',
     name: '',
     icon: '',
-    content: []
+    content: [],
+    accessLevel: {
+      isSystemAdmin: false,
+      isAdmin: false,
+      isManager: false,
+      isEmployee: false,
+      isReception: false
+      }
   };
 
   constructor(private systemMenuRepository: SystemMenuRepositoryService) {

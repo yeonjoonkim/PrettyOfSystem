@@ -20,7 +20,7 @@
 <ion-accordion-group>
 
   <!--Route Link-->
-  <ion-accordion *ngFor="let menu of menus | async">
+  <ion-accordion *ngFor="let menu of menus">
     <!--Header-->
     <ion-item slot="header" [ngClass]="menu.name === selectedTitleHeading ? 'active' : ''">
       <ion-icon slot="start" [name]="menu.icon"></ion-icon>
