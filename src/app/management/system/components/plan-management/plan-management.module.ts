@@ -1,3 +1,4 @@
+
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -14,12 +15,13 @@ import { YesNoSelectionModule } from 'src/app/shared/components/yes-no-selection
 
 //Import Component
 import { PlanManagementComponent } from './plan-management/plan-management.component';
-
+import { PlanComponent } from './plan/plan.component';
 
 
 @NgModule({
   declarations: [
-    PlanManagementComponent
+    PlanManagementComponent,
+    PlanComponent
   ],
   imports: [
     CommonModule,

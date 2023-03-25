@@ -1,3 +1,4 @@
+import { PlanService } from './../../../../../service/system/plan/plan.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,8 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlanManagementComponent implements OnInit {
 
-  constructor() { }
+  constructor(private planService: PlanService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.onClickAddPlan();
+  }
+
+  public async onClickAddPlan(){
+    await this.planService.modal.presentAddPlan();
+  }
 
 }

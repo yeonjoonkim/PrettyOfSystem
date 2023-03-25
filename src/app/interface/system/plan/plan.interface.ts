@@ -1,22 +1,28 @@
-export interface IPlanSelectionOption {
-  isFreePlan: boolean;
-  isMontlyPlan: boolean;
-  isAnnualPlan: boolean;
-}
-
 export interface IPlanPrice{
   tax: number;
   net: number;
   total: number;
 }
 
+export interface IPlanRangeOption{
+  isFreePlan: boolean;
+  isWeeklyPlan: boolean;
+  isMontlyPlan: boolean;
+  isAnnualPlan: boolean;
+}
+
+export interface IPlanPriceSelectOption{
+  id: string;
+  name: string;
+  option: IPlanRangeOption;
+}
+
 export interface IPlanConfiguration{
   id: string;
   name: string;
-  description: string;
-  option: IPlanSelectionOption;
-  price: IPlanPrice;
-  expiryIndays: number;
+  weeklyPrice: IPlanPrice;
+  monthlyPrice: IPlanPrice;
+  annuallyPrice: IPlanPrice;
   isPremium: boolean;
   limitedService: number;
   limitedProduct: number;
