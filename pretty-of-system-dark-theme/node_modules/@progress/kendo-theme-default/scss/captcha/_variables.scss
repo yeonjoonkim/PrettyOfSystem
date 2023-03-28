@@ -1,0 +1,19 @@
+// Captcha
+$kendo-captcha-spacer: k-map-get( $kendo-spacing, 2 ) !default;
+
+$kendo-captcha-width: 280px !default;
+$kendo-captcha-font-family: $kendo-font-family !default;
+$kendo-captcha-font-size: $kendo-font-size-md !default;
+$kendo-captcha-line-height: $kendo-line-height-md !default;
+$kendo-captcha-gap: $kendo-captcha-spacer !default;
+$kendo-captcha-bg: $kendo-component-bg !default;
+$kendo-captcha-text: $kendo-component-bg !default;
+$kendo-captcha-border: $kendo-component-bg !default;
+
+$kendo-captcha-image-wrap-gap: $kendo-captcha-spacer !default;
+
+$kendo-captcha-image-controls-gap: $kendo-captcha-spacer !default;
+
+$kendo-captcha-validation-message-margin-top: k-math-div( $kendo-captcha-spacer, 2 ) !default;
+$kendo-captcha-validation-message-font-size: $kendo-font-size-sm !default;
+$kendo-captcha-validation-message-font-style: italic !default;

@@ -13,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "pretty-of-system-dark-theme": "file:./pretty-of-system-dark-theme",
     "@angular/common": "^15.0.0",
     "@angular/core": "^15.0.0",
     "@angular/fire": "^7.5.0",

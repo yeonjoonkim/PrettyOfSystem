@@ -1,0 +1,57 @@
+// Orgchart
+$kendo-orgchart-spacer: k-map-get( $kendo-spacing, 6 ) !default;
+$kendo-orgchart-padding-y: $kendo-orgchart-spacer !default;
+$kendo-orgchart-padding-x: $kendo-orgchart-padding-y !default;
+$kendo-orgchart-font-family: $kendo-font-family !default;
+$kendo-orgchart-font-size: $kendo-font-size-md !default;
+$kendo-orgchart-line-height: $kendo-line-height-md !default;
+$kendo-orgchart-bg: $kendo-component-bg !default;
+$kendo-orgchart-text: $kendo-component-text !default;
+$kendo-orgchart-border: $kendo-component-border !default;
+
+$kendo-orgchart-node-gap: $kendo-orgchart-spacer !default;
+$kendo-orgchart-group-gap: $kendo-orgchart-spacer !default;
+$kendo-orgchart-node-container-gap: $kendo-orgchart-spacer !default;
+
+$kendo-orgchart-node-group-padding-y: $kendo-orgchart-spacer !default;
+$kendo-orgchart-node-group-padding-x: $kendo-orgchart-node-group-padding-y !default;
+$kendo-orgchart-node-group-border-width: 1px !default;
+$kendo-orgchart-node-group-border-radius: $kendo-border-radius-md !default;
+$kendo-orgchart-node-group-bg: $kendo-base-bg !default;
+$kendo-orgchart-node-group-text: $kendo-base-text !default;
+$kendo-orgchart-node-group-border: $kendo-base-border !default;
+
+$kendo-orgchart-node-group-focus-border: $kendo-card-focus-border !default;
+$kendo-orgchart-node-group-focus-shadow: $kendo-card-focus-shadow !default;
+
+$kendo-orgchart-node-group-title-font-size: $kendo-font-size-lg !default;
+$kendo-orgchart-node-group-title-margin-bottom: k-math-div( $kendo-orgchart-spacer, 3 ) !default;
+$kendo-orgchart-node-group-title-line-height: $kendo-line-height-sm !default;
+
+$kendo-orgchart-node-group-subtitle-font-size: $kendo-font-size-md !default;
+$kendo-orgchart-node-group-subtitle-margin-bottom: $kendo-orgchart-spacer !default;
+$kendo-orgchart-node-group-subtitle-text: $kendo-subtle-text !default;
+
+$kendo-orgchart-card-width: 300px !default;
+$kendo-orgchart-card-padding-y: $kendo-card-padding-y !default;
+$kendo-orgchart-card-padding-x: $kendo-orgchart-card-padding-y !default;
+$kendo-orgchart-card-border-width: $kendo-card-border-width !default;
+$kendo-orgchart-card-shadow: $kendo-card-shadow !default;
+$kendo-orgchart-card-focus-shadow: $kendo-card-focus-shadow !default;
+
+$kendo-orgchart-card-title-margin-bottom: 0px !default;
+$kendo-orgchart-card-title-font-size: null !default;
+
+$kendo-orgchart-card-subtitle-margin-bottom: 0px !default;
+$kendo-orgchart-card-subtitle-font-size: null !default;
+
+$kendo-orgchart-card-body-border-width: 2px 0 0 !default;
+$kendo-orgchart-card-body-border-color: transparent !default;
+
+$kendo-orgchart-card-body-vbox-margin-right: k-math-div( $kendo-orgchart-spacer, 2 ) !default;
+$kendo-orgchart-card-body-vbox-min-height: $kendo-card-avatar-size !default;
+
+$kendo-orgchart-line-size: 1px !default;
+$kendo-orgchart-line-fill: $kendo-base-border !default;
+
+$kendo-orgchart-line-v-height: 25px !default;

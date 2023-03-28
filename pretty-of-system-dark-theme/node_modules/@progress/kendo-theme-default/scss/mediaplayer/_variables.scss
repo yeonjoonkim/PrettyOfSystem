@@ -1,0 +1,16 @@
+// Media player
+$kendo-media-player-border-width: 1px !default;
+$kendo-media-player-font-family: $kendo-font-family !default;
+$kendo-media-player-font-size: $kendo-font-size-md !default;
+$kendo-media-player-line-height: $kendo-line-height-md !default;
+
+$kendo-media-player-bg: $kendo-component-bg !default;
+$kendo-media-player-text: $kendo-component-text !default;
+$kendo-media-player-border: $kendo-component-border !default;
+
+$kendo-media-player-titlebar-padding-x: k-map-get( $kendo-spacing, 2 ) !default;
+$kendo-media-player-titlebar-padding-y: k-map-get( $kendo-spacing, 2 ) !default;
+$kendo-media-player-titlebar-bg: null !default;
+$kendo-media-player-titlebar-text: $kendo-media-player-bg !default;
+$kendo-media-player-titlebar-border: null !default;
+$kendo-media-player-titlebar-gradient: rgba( $kendo-media-player-text, .7 ), rgba( $kendo-media-player-text, 0 ) !default;

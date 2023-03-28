@@ -1,0 +1,49 @@
+$kendo-signature-width: 250px !default;
+$kendo-signature-height: 84px !default;
+
+$kendo-signature-lg-min-height: 110px !default;
+
+$kendo-signature-maximized-width: 750px !default;
+$kendo-signature-maximized-height: 252px !default;
+
+$kendo-signature-padding-x: k-map-get( $kendo-spacing, 1 ) !default;
+$kendo-signature-sm-padding-x: k-map-get( $kendo-spacing, 0.5 ) !default; // sass-lint:disable-line leading-zero
+$kendo-signature-md-padding-x: k-map-get( $kendo-spacing, 1 ) !default;
+$kendo-signature-lg-padding-x: k-map-get( $kendo-spacing, 2 ) !default;
+
+$kendo-signature-padding-y: $kendo-signature-padding-x !default;
+$kendo-signature-sm-padding-y: $kendo-signature-sm-padding-x !default;
+$kendo-signature-md-padding-y: $kendo-signature-md-padding-x !default;
+$kendo-signature-lg-padding-y: $kendo-signature-lg-padding-x !default;
+
+$kendo-signature-line-width: 1px !default;
+$kendo-signature-line-style: dashed !default;
+$kendo-signature-line-color: rgba( $kendo-color-info, .24 ) !default;
+
+$kendo-signature-line-size: calc( 100% - 2 * #{$kendo-signature-padding-x} ) !default;
+$kendo-signature-sm-line-size: calc( 100% - 2 * #{$kendo-signature-sm-padding-x} ) !default;
+$kendo-signature-md-line-size: calc( 100% - 2 * #{$kendo-signature-md-padding-x} ) !default;
+$kendo-signature-lg-line-size: calc( 100% - 2 * #{$kendo-signature-lg-padding-x} ) !default;
+
+$kendo-signature-line-bottom-offset: 33% !default;
+
+$kendo-signature-sizes: (
+    sm: (
+        padding-x: $kendo-signature-sm-padding-x,
+        padding-y: $kendo-signature-sm-padding-y,
+        line-size: $kendo-signature-sm-line-size
+    ),
+    md: (
+        padding-x: $kendo-signature-md-padding-x,
+        padding-y: $kendo-signature-md-padding-y,
+        line-size: $kendo-signature-md-line-size
+    ),
+    lg: (
+        padding-x: $kendo-signature-lg-padding-x,
+        padding-y: $kendo-signature-lg-padding-y,
+        line-size: $kendo-signature-lg-line-size
+    )
+) !default;
+
+$kendo-signature-actions-gap: k-map-get( $kendo-spacing, 1 ) !default;
+$kendo-signature-maximized-line-width: 3px !default;

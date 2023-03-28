@@ -1,0 +1,56 @@
+@import "../action-buttons/_variables.scss";
+
+
+// Window
+
+$kendo-window-border-width: 0px !default;
+$kendo-window-border-radius: 0px !default;
+$kendo-window-font-family: $kendo-font-family !default;
+$kendo-window-font-size: $kendo-font-size-md !default;
+$kendo-window-line-height: 1.25 !default;
+
+$kendo-window-titlebar-padding-x: 16px !default;
+$kendo-window-titlebar-padding-y: 12px !default;
+$kendo-window-titlebar-border-width: 0 0 1px !default;
+$kendo-window-titlebar-border-style: solid !default;
+
+$kendo-window-title-font-size: $kendo-font-size-lg !default;
+$kendo-window-title-line-height: 1.25 !default;
+
+$kendo-window-actions-gap: null !default;
+
+$kendo-window-action-opacity: null !default;
+$kendo-window-action-hover-opacity: null !default;
+
+$kendo-window-inner-padding-x: 16px !default;
+$kendo-window-inner-padding-y: 16px !default;
+
+$kendo-window-buttongroup-padding-x: $kendo-actions-padding-x !default;
+$kendo-window-buttongroup-padding-y: $kendo-actions-padding-y !default;
+$kendo-window-buttongroup-border-width: 1px !default;
+
+$kendo-window-bg: $kendo-component-bg !default;
+$kendo-window-text: $kendo-component-text !default;
+$kendo-window-border: $kendo-component-border !default;
+
+$kendo-window-titlebar-bg: $kendo-component-header-bg !default;
+$kendo-window-titlebar-text: $kendo-component-header-text !default;
+$kendo-window-titlebar-border: inherit !default;
+$kendo-window-titlebar-gradient: null !default;
+
+$kendo-window-shadow: 0 3px 3px 0 rgba(0, 0, 0, .06) !default;
+$kendo-window-focus-shadow: 1px 1px 7px 1px rgba(0, 0, 0, .3) !default;
+
+$kendo-window-sizes: (
+    sm: 300px,
+    md: 800px,
+    lg: 1200px
+) !default;
+
+/// Theme colors map for the window.
+/// @group window
+$kendo-window-theme-colors: (
+    "primary": k-map-get($kendo-theme-colors, "primary"),
+    "light": k-map-get($kendo-theme-colors, "light"),
+    "dark": k-map-get($kendo-theme-colors, "dark")
+) !default;

@@ -1,0 +1,87 @@
+// Stepper
+$kendo-stepper-margin-x: null !default;
+$kendo-stepper-margin-y: null !default;
+$kendo-stepper-padding-x: null !default;
+$kendo-stepper-padding-y: null !default;
+$kendo-stepper-label-margin-x: 12px !default;
+$kendo-stepper-label-padding-x: 12px !default;
+$kendo-stepper-label-padding-y: 5px !default;
+$kendo-stepper-border-width: 0px !default;
+
+$kendo-stepper-inline-content-padding-x: 20px !default;
+$kendo-stepper-inline-content-padding-y: 10px !default;
+
+$kendo-stepper-font-size: $kendo-font-size-md !default;
+$kendo-stepper-line-height: $kendo-line-height-md !default;
+$kendo-stepper-font-family: $kendo-font-family !default;
+
+$kendo-stepper-bg: null !default;
+$kendo-stepper-text: $kendo-component-text !default;
+$kendo-stepper-border: null !default;
+
+$kendo-stepper-indicator-width: 28px !default;
+$kendo-stepper-indicator-height: $kendo-stepper-indicator-width !default;
+$kendo-stepper-indicator-border-width: 1px !default;
+$kendo-stepper-indicator-border-radius: 50% !default;
+
+$kendo-stepper-indicator-focus-border-width: 1px !default;
+$kendo-stepper-indicator-focus-size: 2px !default;
+$kendo-stepper-indicator-focus-offset: 3px !default;
+$kendo-stepper-indicator-focus-calc-offset: calc( #{$kendo-stepper-indicator-focus-border-width} + #{$kendo-stepper-indicator-focus-offset} ) !default;
+
+$kendo-stepper-indicator-bg: $kendo-component-bg !default;
+$kendo-stepper-indicator-text: $kendo-component-text !default;
+$kendo-stepper-indicator-border: #cccccc !default;
+
+$kendo-stepper-indicator-hover-bg: k-try-shade( $kendo-stepper-indicator-bg ) !default;
+$kendo-stepper-indicator-hover-text: null !default;
+$kendo-stepper-indicator-hover-border: null !default;
+
+$kendo-stepper-indicator-disabled-bg: null !default;
+$kendo-stepper-indicator-disabled-text: $kendo-disabled-text !default;
+$kendo-stepper-indicator-disabled-border: null !default;
+
+$kendo-stepper-indicator-done-bg: $kendo-color-primary !default;
+$kendo-stepper-indicator-done-text: k-contrast-legacy( $kendo-stepper-indicator-done-bg ) !default;
+$kendo-stepper-indicator-done-border: $kendo-stepper-indicator-done-bg !default;
+
+$kendo-stepper-indicator-done-hover-bg: k-try-shade( $kendo-stepper-indicator-done-bg ) !default;
+$kendo-stepper-indicator-done-hover-text: null !default;
+$kendo-stepper-indicator-done-hover-border: null !default;
+
+$kendo-stepper-indicator-done-disabled-bg: k-color-mix( $kendo-stepper-indicator-done-bg, $kendo-component-bg, 60%) !default;
+$kendo-stepper-indicator-done-disabled-text: k-contrast-legacy( $kendo-stepper-indicator-done-bg ) !default;
+$kendo-stepper-indicator-done-disabled-border: $kendo-stepper-indicator-done-disabled-bg !default;
+
+$kendo-stepper-indicator-current-bg: $kendo-stepper-indicator-done-bg !default;
+$kendo-stepper-indicator-current-text: $kendo-stepper-indicator-done-text !default;
+$kendo-stepper-indicator-current-border: $kendo-stepper-indicator-done-border !default;
+
+$kendo-stepper-indicator-current-hover-bg: $kendo-stepper-indicator-done-hover-bg !default;
+$kendo-stepper-indicator-current-hover-text: $kendo-stepper-indicator-done-hover-text !default;
+$kendo-stepper-indicator-current-hover-border: $kendo-stepper-indicator-done-hover-border !default;
+
+$kendo-stepper-indicator-current-disabled-bg: $kendo-stepper-indicator-done-disabled-bg !default;
+$kendo-stepper-indicator-current-disabled-text: $kendo-stepper-indicator-done-disabled-text !default;
+$kendo-stepper-indicator-current-disabled-border: $kendo-stepper-indicator-done-disabled-border !default;
+
+$kendo-stepper-label-text: null !default;
+$kendo-stepper-label-success-text: $kendo-color-success !default;
+$kendo-stepper-label-error-text: $kendo-color-error !default;
+$kendo-stepper-label-hover-text: k-try-shade( $kendo-stepper-text, 2 ) !default;
+$kendo-stepper-label-disabled-text: $kendo-disabled-text !default;
+
+$kendo-stepper-optional-label-text: $kendo-subtle-text !default;
+$kendo-stepper-optional-label-opacity: null !default;
+$kendo-stepper-optional-label-font-size: null !default;
+$kendo-stepper-optional-label-font-style: italic !default;
+
+$kendo-stepper-progressbar-size: 2px !default;
+$kendo-stepper-progressbar-bg: null !default;
+$kendo-stepper-progressbar-text: null !default;
+$kendo-stepper-progressbar-fill-bg: null !default;
+$kendo-stepper-progressbar-fill-text: null !default;
+
+$kendo-stepper-content-transition-property: height !default;
+$kendo-stepper-content-transition-duration: 300ms !default;
+$kendo-stepper-content-transition-timing-function: cubic-bezier(.4, 0, .2, 1) 0ms !default;
