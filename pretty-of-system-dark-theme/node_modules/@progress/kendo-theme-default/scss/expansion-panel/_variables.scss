@@ -1,0 +1,33 @@
+// Expansion panel
+$kendo-expander-spacing-y: k-map-get( $kendo-spacing, 2 ) !default;
+$kendo-expander-font-family: $kendo-font-family !default;
+$kendo-expander-font-size: $kendo-font-size-md !default;
+$kendo-expander-line-height: $kendo-line-height-md !default;
+$kendo-expander-border-width: 1px !default;
+
+$kendo-expander-header-padding-x: k-map-get( $kendo-spacing, 4 ) !default;
+$kendo-expander-header-padding-y: k-map-get( $kendo-spacing, 3 ) !default;
+
+$kendo-expander-indicator-margin-x: k-map-get( $kendo-spacing, 3 ) !default;
+
+$kendo-expander-bg: $kendo-component-bg !default;
+$kendo-expander-text: $kendo-component-text !default;
+$kendo-expander-border: $kendo-component-border !default;
+
+$kendo-expander-focus-shadow: $kendo-list-item-focus-shadow !default;
+
+$kendo-expander-header-bg: transparent !default;
+$kendo-expander-header-text: $kendo-expander-text !default;
+$kendo-expander-header-border: null !default;
+
+$kendo-expander-header-hover-bg: rgba(0, 0, 0, .04) !default;
+
+$kendo-expander-header-focus-bg: null !default;
+$kendo-expander-header-focus-shadow: $kendo-list-item-focus-shadow !default;
+
+$kendo-expander-title-text: $kendo-color-primary !default;
+
+$kendo-expander-header-sub-title-text: $kendo-subtle-text !default;
+
+$kendo-expander-content-padding-x: k-map-get( $kendo-spacing, 4 ) !default;
+$kendo-expander-content-padding-y: k-map-get( $kendo-spacing, 4 ) !default;

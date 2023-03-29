@@ -1,0 +1,15 @@
+// Message box
+$kendo-message-box-margin: 0 0 k-map-get( $kendo-spacing, 4 ) 0 !default;
+$kendo-message-box-padding-x: $kendo-padding-md-x !default;
+$kendo-message-box-padding-y: $kendo-padding-md-y !default;
+$kendo-message-box-border-width: 0 0 0 4px !default;
+
+$kendo-message-box-font-size: $kendo-font-size-md !default;
+$kendo-message-box-line-height: $kendo-line-height-md !default;
+
+$kendo-message-box-bg-level: -10 !default;
+$kendo-message-box-text-level: 6 !default;
+$kendo-message-box-border-level: -9 !default;
+
+$kendo-message-box-link-font-style: italic !default;
+$kendo-message-box-link-text-decoration: underline !default;

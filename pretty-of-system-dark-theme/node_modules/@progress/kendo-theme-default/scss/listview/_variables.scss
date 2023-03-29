@@ -1,0 +1,25 @@
+// Listview
+$kendo-listview-padding-x: k-map-get( $kendo-spacing, 1 ) !default;
+$kendo-listview-padding-y: k-map-get( $kendo-spacing, 1 ) !default;
+$kendo-listview-border-width: 1px !default;
+$kendo-listview-font-family: $kendo-font-family !default;
+$kendo-listview-font-size: $kendo-font-size-md !default;
+$kendo-listview-line-height: $kendo-line-height-md !default;
+
+$kendo-listview-bg: $kendo-component-bg !default;
+$kendo-listview-text: $kendo-component-text !default;
+$kendo-listview-border: $kendo-component-border !default;
+
+$kendo-listview-grid-gap: 10px !default;
+
+$kendo-listview-item-padding-x: k-map-get( $kendo-spacing, 1 ) !default;
+$kendo-listview-item-padding-y: k-map-get( $kendo-spacing, 1 ) !default;
+
+$kendo-listview-item-selected-bg: rgba( $kendo-selected-bg, .25 ) !default;
+$kendo-listview-item-selected-text: null !default;
+$kendo-listview-item-selected-border: null !default;
+
+$kendo-listview-item-focus-bg: null !default;
+$kendo-listview-item-focus-text: null !default;
+$kendo-listview-item-focus-border: null !default;
+$kendo-listview-item-focus-shadow: inset 0 0 0 2px rgba(0, 0, 0, .13) !default;

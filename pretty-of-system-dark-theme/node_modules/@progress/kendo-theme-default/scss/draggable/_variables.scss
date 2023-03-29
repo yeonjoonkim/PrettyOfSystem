@@ -1,0 +1,27 @@
+// Drag hint
+$kendo-drag-hint-padding-x: $kendo-padding-md-x !default;
+$kendo-drag-hint-padding-y: $kendo-padding-md-y !default;
+$kendo-drag-hint-border-width: 1px !default;
+$kendo-drag-hint-border-radius: $kendo-border-radius-md !default;
+$kendo-drag-hint-font-size: $kendo-font-size-md !default;
+$kendo-drag-hint-font-family: $kendo-font-family !default;
+$kendo-drag-hint-line-height: $kendo-line-height-md !default;
+
+$kendo-drag-hint-bg: $kendo-base-bg !default;
+$kendo-drag-hint-text: $kendo-base-text !default;
+$kendo-drag-hint-border: $kendo-base-border !default;
+$kendo-drag-hint-gradient: null !default;
+$kendo-drag-hint-shadow: null !default;
+
+$kendo-drag-hint-opacity: null !default;
+
+
+// Drop hint
+$kendo-drop-hint-arrow-size: 8px !default;
+$kendo-drop-hint-arrow-spacing: k-math-div( $kendo-drop-hint-arrow-size, 2 ) !default;
+$kendo-drop-hint-line-h-width: 20px !default;
+$kendo-drop-hint-line-h-height: 1px !default;
+$kendo-drop-hint-line-v-width: $kendo-drop-hint-line-h-height !default;
+$kendo-drop-hint-line-v-height: $kendo-drop-hint-line-h-width !default;
+
+$kendo-drop-hint-bg: $kendo-color-primary !default;

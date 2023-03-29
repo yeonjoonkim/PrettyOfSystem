@@ -1,0 +1,91 @@
+// Compatible with @progress/kendo-theme-default v.6.0.3
+
+
+$tb-kendo-border-radius: 2px;
+$tb-kendo-is-dark-theme: true;
+$tb-kendo-color-primary: #ff6358;
+$tb-kendo-color-secondary: #f6f6f6;
+$tb-kendo-color-info: #3e80ed;
+$tb-kendo-color-success: #5ec232;
+$tb-kendo-color-warning: #fdce3e;
+$tb-kendo-color-error: #d51923;
+$tb-kendo-body-bg: #000000;
+$tb-kendo-body-text: #ffffff;
+$tb-kendo-heading-text: #ffffff;
+$tb-kendo-subtle-text: $tb-kendo-body-text;
+$tb-kendo-disabled-text: #d0d0d0;
+$tb-kendo-component-bg: #101010;
+$tb-kendo-component-text: $tb-kendo-body-text;
+$tb-kendo-base-bg: #151515;
+$tb-kendo-base-text: $tb-kendo-body-text;
+$tb-kendo-hover-bg: #151515;
+$tb-kendo-hover-text: $tb-kendo-base-text;
+$tb-kendo-selected-bg: $tb-kendo-color-primary;
+$tb-kendo-selected-text: #ffffff;
+$tb-kendo-button-bg: #404040;
+$tb-kendo-button-text: #ffffff;
+$tb-kendo-link-text: $tb-kendo-color-primary;
+$tb-kendo-link-hover-text: #d6534a;
+$tb-kendo-series-a: #ff6358;
+$tb-kendo-series-b: #ffe162;
+$tb-kendo-series-c: #4cd180;
+$tb-kendo-series-d: #4b5ffa;
+$tb-kendo-series-e: #ac58ff;
+$tb-kendo-series-f: #ff5892;
+
+$kendo-border-radius: $tb-kendo-border-radius;
+$kendo-is-dark-theme: $tb-kendo-is-dark-theme;
+$kendo-color-primary: $tb-kendo-color-primary;
+$kendo-color-secondary: $tb-kendo-color-secondary;
+$kendo-color-info: $tb-kendo-color-info;
+$kendo-color-success: $tb-kendo-color-success;
+$kendo-color-warning: $tb-kendo-color-warning;
+$kendo-color-error: $tb-kendo-color-error;
+$kendo-body-bg: $tb-kendo-body-bg;
+$kendo-body-text: $tb-kendo-body-text;
+$kendo-heading-text: $tb-kendo-heading-text;
+$kendo-subtle-text: $tb-kendo-subtle-text;
+$kendo-disabled-text: $tb-kendo-disabled-text;
+$kendo-component-bg: $tb-kendo-component-bg;
+$kendo-component-text: $tb-kendo-component-text;
+$kendo-base-bg: $tb-kendo-base-bg;
+$kendo-base-text: $tb-kendo-base-text;
+$kendo-hover-bg: $tb-kendo-hover-bg;
+$kendo-hover-text: $tb-kendo-hover-text;
+$kendo-selected-bg: $tb-kendo-selected-bg;
+$kendo-selected-text: $tb-kendo-selected-text;
+$kendo-button-bg: $tb-kendo-button-bg;
+$kendo-button-text: $tb-kendo-button-text;
+$kendo-link-text: $tb-kendo-link-text;
+$kendo-link-hover-text: $tb-kendo-link-hover-text;
+$kendo-series-a: $tb-kendo-series-a;
+$kendo-series-b: $tb-kendo-series-b;
+$kendo-series-c: $tb-kendo-series-c;
+$kendo-series-d: $tb-kendo-series-d;
+$kendo-series-e: $tb-kendo-series-e;
+$kendo-series-f: $tb-kendo-series-f;
+    $kendo-font-family: inherit;
+    $kendo-font-size: 14px;
+    $kendo-font-weight-normal: 400;
+    $kendo-line-height: 1.4285714286;
+    
+$enable-gradients: true;
+
+$tb-typography: (
+  kendo-default-typography: (
+      font-family: 'inherit',
+      font-size: 14px,
+      font-weight: 400,
+      line-height: 1.4285714286,
+  ),
+);
+
+@mixin typography-classes ($typography) {
+  @each $selector, $property in $typography {
+    &-#{$selector} {
+      @each $propName, $propValue in $property {
+        #{$propName}: #{$propValue};
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "pretty-of-system-dark-theme",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@progress/kendo-theme-default": "6.0.3"
+  }
+}
