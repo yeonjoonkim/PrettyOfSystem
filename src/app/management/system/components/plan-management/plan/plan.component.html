@@ -1,0 +1,12 @@
+<!-- Title -->
+<ion-toolbar>
+  <ion-title *ngIf="!editMode">{{'title.name.addplan' | languageTransform | async}}</ion-title>
+  <ion-title *ngIf="editMode">{{'title.name.editplan' | languageTransform | async}}</ion-title>
+  <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="dismiss()"></ion-icon>
+</ion-toolbar>
+
+<!-- Plan Name-->
+<ion-item>
+  <ion-label>{{'label.name.name' | languageTransform | async}}</ion-label>
+  <ion-input type="text" placeholder="{{'label.placeholder.name' | languageTransform | async}}" [(ngModel)]="plan.name"></ion-input>
+</ion-item>

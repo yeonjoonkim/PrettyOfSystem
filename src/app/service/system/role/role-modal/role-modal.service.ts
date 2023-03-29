@@ -16,8 +16,8 @@ export class RoleModalService {
   }
 
   public async presentEditRole(config: IRoleConfiguration){
-    let eidtRole = await this.modalCtrl.create({component: RoleComponent, cssClass: 'modal', componentProps: {role: config, editable: true}});
-    await eidtRole.present();
+    let editRole = await this.modalCtrl.create({component: RoleComponent, cssClass: 'modal', componentProps: {role: config, editable: true}});
+    await editRole.present();
   }
 
   /** This method is to close the opened modal. */

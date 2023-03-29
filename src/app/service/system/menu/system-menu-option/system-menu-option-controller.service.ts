@@ -5,6 +5,7 @@ export interface ISystemMenuOptionAction{
   isLanguageDictionary: boolean;
   isMenuManagement: boolean;
   isRoleManagement: boolean;
+  isPlanManagement: boolean;
 };
 
 
@@ -17,7 +18,8 @@ export class SystemMenuOptionControllerService {
   private readonly menuOption = {
     transformDictionary: this.systemMenu + 'dictionary',
     menuManagement: this.systemMenu + 'menumanagement',
-    roleManagement: this.systemMenu + 'rolemanagement'
+    roleManagement: this.systemMenu + 'rolemanagement',
+    planmanagement: this.systemMenu + 'planmanagement'
   };
 
   constructor(private language: LanguageService) { }
@@ -26,8 +28,9 @@ export class SystemMenuOptionControllerService {
     let dictionary = await this.getLanguageDictionaryOption();
     let menuManagement = await this.getMenuManagementOption();
     let roleManagement = await this.getRoleManagementOption();
+    let planmanagement = await this.getPlanManagementOption();
 
-    return [ menuManagement, roleManagement, dictionary ];
+    return [ menuManagement, roleManagement, planmanagement, dictionary ];
   }
 
 
@@ -55,12 +58,21 @@ export class SystemMenuOptionControllerService {
     return controller;
   }
 
+  private async getPlanManagementOption(){
+    let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
+    controller.name = await this.language.transform(this.menuOption.planmanagement);
+    controller.isPlanManagement = true;
+
+    return controller;
+  }
+
   public setDefaultSystemMenuOptionController(): ISystemMenuOptionAction {
     return {
       name: '',
       isMenuManagement: false,
       isLanguageDictionary: false,
-      isRoleManagement: false
+      isRoleManagement: false,
+      isPlanManagement: false
     };
   }
 }
