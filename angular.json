@@ -19,7 +19,6 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-
             "assets": [
               {
                 "glob": "**/*",
@@ -33,6 +32,9 @@
               }
             ],
             "styles": [
+              {
+                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
+              },
               "src/theme/variables.scss",
               "src/global.scss"
             ],
@@ -112,7 +114,13 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": [
+              {
+                "input": "../prettyOfSystem/pretty-of-system-dark-theme/dist/css/pretty-of-system-dark-theme.css"
+              },
+              "src/theme/variables.scss",
+              "src/global.scss"
+            ],
             "scripts": []
           },
           "configurations": {
