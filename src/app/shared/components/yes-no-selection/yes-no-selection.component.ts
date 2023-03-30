@@ -16,8 +16,8 @@ export class YesNoSelectionComponent implements OnInit {
   ngOnInit() {}
 
   /** Click Toggle event to output the changed and return true or false */
-  public onChangeSelection(event: any): void{
-    this.valueChange.emit(event?.detail?.checked);
+  public onChangeSelection(): void{
+    this.valueChange.emit(this.value);
   }
 
 }

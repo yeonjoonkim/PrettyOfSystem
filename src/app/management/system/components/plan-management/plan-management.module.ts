@@ -12,6 +12,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
 import { YesNoSelectionModule } from 'src/app/shared/components/yes-no-selection/yes-no-selection.module';
 import { KendoUiModuleModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.module';
+
 //Import Component
 import { PlanManagementComponent } from './plan-management/plan-management.component';
 import { PlanComponent } from './plan/plan.component';

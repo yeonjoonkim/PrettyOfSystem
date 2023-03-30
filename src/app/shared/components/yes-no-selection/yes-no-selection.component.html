@@ -1,4 +1,5 @@
 <ion-item>
   <ion-label>{{label | languageTransform | async}}</ion-label>
-  <ion-toggle slot="end" [check]="true" [(ngModel)]="value" (ionChange)="onChangeSelection($event)"></ion-toggle>
+  <ion-toggle slot="end" [check]="true" [(ngModel)]="value" (ionChange)="onChangeSelection()"></ion-toggle>
 </ion-item>
+

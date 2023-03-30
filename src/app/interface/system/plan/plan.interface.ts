@@ -25,6 +25,7 @@ export interface IPlanConfiguration{
   annuallyPrice: IPlanPrice;
   isPremium: boolean;
   limitedService: number;
+  limitedPackage: number;
   limitedProduct: number;
   limitedUser: number;
 }

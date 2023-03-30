@@ -1,0 +1,31 @@
+%tb-typography {
+  @include typography-classes($tb-typography);
+}
+
+.k-input{
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.k-floating-label-container, .k-empty{
+  padding-top: 10px;
+}
+
+.k-checkbox{
+  background-color: #4B4A54;
+  margin-left: 25px;
+}
+
+//Switch
+.k-switch{
+  width: 70px;
+  margin-left: 18px;
+}
+.k-switch-off .k-switch-track{
+  background-color: #4B4A54;
+}
+
+//Number Input
+.k-numerictextbox{
+  margin: 10px;
+}
