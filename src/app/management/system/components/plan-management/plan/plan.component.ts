@@ -17,7 +17,7 @@ export class PlanComponent implements OnInit {
   constructor(private param: NavParams, private planService: PlanService, private textTransform: TextTransformService){
     let selectedPlan: IPlanConfiguration | undefined = this.param.get('plan');
     this.editMode = this.param.get('editMode') !== undefined ? this.param.get('editMode') : false;
-    this.isReadonly = this.param.get('readonly') !== undefined ? this.param.get('readonly') : false;
+    this.isReadonly = this.param.get('readOnly') !== undefined ? this.param.get('readOnly') : false;
     this.plan = (this.editMode && selectedPlan !== undefined) ? selectedPlan : this.planService.getDefaultPlan();
     this.plan = (this.isReadonly && selectedPlan !== undefined) ? selectedPlan : this.planService.getDefaultPlan();
   }
@@ -58,6 +58,12 @@ export class PlanComponent implements OnInit {
 
   public onChangeLimitedUser(){
     this.plan.limitedUser = this.planService.numberValidatation.nullReplaceToZero(this.plan.limitedUser);
+  }
+
+  public async onClickSavePlanButton(){
+    if(this.plan.name){
+      await this.planService.processSaveNewPlan(this.plan);
+    }
   }
 
 }

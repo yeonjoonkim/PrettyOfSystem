@@ -8,6 +8,7 @@ import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 export class YesNoSelectionComponent implements OnInit {
   @Input() label: string = '';
   @Input() value: boolean = false;
+  @Input() readonly: boolean = false;
   @Output() valueChange : EventEmitter<boolean>  = new EventEmitter<boolean>();
 
   constructor() {

@@ -1,5 +1,8 @@
-<ion-item>
-  <ion-label>{{label | languageTransform | async}}</ion-label>
-  <ion-toggle slot="end" [check]="true" [(ngModel)]="value" (ionChange)="onChangeSelection()"></ion-toggle>
-</ion-item>
-
+<kendo-label text="{{label | languageTransform | async}}">
+  <kendo-switch [(ngModel)]="value"
+                (ngModelChange)="onChangeSelection()"
+                [readonly]="readonly"
+                onLabel="{{'label.name.yes' | languageTransform | async}}"
+                offLabel="{{'label.name.no' | languageTransform | async}}">
+  </kendo-switch>
+</kendo-label>

@@ -23,6 +23,7 @@ export interface IPlanConfiguration{
   weeklyPrice: IPlanPrice;
   monthlyPrice: IPlanPrice;
   annuallyPrice: IPlanPrice;
+  isTestPlan: boolean;
   isPremium: boolean;
   limitedService: number;
   limitedPackage: number;

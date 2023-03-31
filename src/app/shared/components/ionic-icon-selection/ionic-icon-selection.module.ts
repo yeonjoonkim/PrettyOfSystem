@@ -12,7 +12,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 //Import Component
 import { IonicIconSelectionComponent } from './ionic-icon-selection.component';
 import { IonicIconListComponent } from './ionic-icon-list/ionic-icon-list.component';
-
+import { KendoUiModule } from '../../kendo-ui-module/kendo-ui-module.module';
 @NgModule({
   declarations: [IonicIconSelectionComponent, IonicIconListComponent],
   imports: [
@@ -20,7 +20,8 @@ import { IonicIconListComponent } from './ionic-icon-list/ionic-icon-list.compon
     IonicModule,
     FormsModule,
     LanguageTransformPipeModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    KendoUiModule
   ],
   exports: [IonicIconSelectionComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

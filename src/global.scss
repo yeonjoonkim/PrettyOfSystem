@@ -73,12 +73,13 @@ ion-button{
   margin-right: 5px;
 }
 
-.modal {
-  align-items: center;
-  justify-content: center;
-  &::part(content){
-    width: fit-content;
-    height: fit-content;
+yes-no-selection-group{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: fit-content;
+  yes-no-selection{
+    align-self: flex-end;
   }
 }
 

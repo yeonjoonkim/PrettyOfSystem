@@ -1,8 +1,9 @@
+
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { LoadingService } from './../loading/loading.service';
 import { ToastService } from 'src/app/shared/services/toast/toast.service';
 import { Injectable } from '@angular/core';
-import {environment } from '../../../../environments/environment';
+import { openAiApi } from './../../../../../openai-key';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,6 @@ import {environment } from '../../../../environments/environment';
 export class OpenAiService {
   //API
   private readonly openAiUrl: string = 'https://api.openai.com/v1/completions';
-  private readonly apiKey: string = environment.packetOne + environment.packetTwo;
 
   //API DEFAULT PARAM
   private readonly defaultParams = {
@@ -27,7 +27,7 @@ export class OpenAiService {
   //API DEFAULT HEADER
   private readonly headers =  {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.apiKey
+        'Authorization': 'Bearer ' + openAiApi.key
   }
 
   constructor(private toast: ToastService, private loading: LoadingService, private language: LanguageService) {}

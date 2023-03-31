@@ -87,4 +87,4 @@ import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
-export class KendoUiModuleModule { }
+export class KendoUiModule { }
