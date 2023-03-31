@@ -1,25 +1,70 @@
-<ion-card id="role-list-card">
-  <!--Header-->
-  <ion-card-header>
-    <ion-card-title>{{'menu.role.title' | languageTransform | async}} </ion-card-title>
-    <p><ion-icon class="ion-card-title-icon" name="add-outline" slot="end" (click)="presentAddRole()"></ion-icon></p>
-  </ion-card-header>
+ <legend> {{'menu.role.title' | languageTransform | async}} </legend>
+<kendo-grid [data]="roles"
+            [height]="300">
+  <!-- Add Button -->
+  <ng-template kendoGridToolbarTemplate>
+    <button kendoGridAddCommand (click)="presentAddRole()">{{'button.name.add' | languageTransform | async}}</button>
+  </ng-template>
 
-  <!--List-->
-  <ion-card-content id="role-list">
-    <ion-list  *ngFor="let role of roles let i = index">
-        <!-- Sliding -->
-        <ion-item-sliding id="role-list-slider">
-          <ion-item lines="full" [ngClass]="role.name === selectedRole.name ? 'active' : ''" (click)="onClickRole(role)">
-            <ion-label> {{role.name | languageTransform | async}}</ion-label>
-          </ion-item>
-          <ion-item-options side="start">
-            <ion-item-option color="danger" (click)="onClickDeleteRole(role)"> <p>{{'button.name.delete' | languageTransform | async }} </p> </ion-item-option>
-          </ion-item-options>
-          <ion-item-options side="end">
-            <ion-item-option (click)="presentEditRole(role)"> <p>{{'button.name.edit' | languageTransform | async }} </p> </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-    </ion-list>
-  </ion-card-content>
-</ion-card>
+  <!--Role Name -->
+  <kendo-grid-column title="{{'label.name.roledescription' | languageTransform | async}}">
+    <ng-template kendoGridCellTemplate let-role>
+      {{role.name | languageTransform | async}}
+    </ng-template>
+  </kendo-grid-column>
+
+<!--Role Configuration Tablet Version-->
+  <!-- Employee -->
+  <kendo-grid-column *ngIf="!isMobile" title="{{'label.name.employee' | languageTransform | async}}">
+    <ng-template kendoGridCellTemplate let-role>
+      <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isEmployee" disabled/>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Manager -->
+  <kendo-grid-column *ngIf="!isMobile" title="{{'label.name.reception' | languageTransform | async}}">
+    <ng-template kendoGridCellTemplate let-role>
+      <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isReception" disabled/>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Manager -->
+  <kendo-grid-column *ngIf="!isMobile" title="{{'label.name.manager' | languageTransform | async}}">
+    <ng-template kendoGridCellTemplate let-role>
+      <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isManager" disabled/>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Admin -->
+  <kendo-grid-column *ngIf="!isMobile" title="{{'label.name.admin' | languageTransform | async}}">
+    <ng-template kendoGridCellTemplate let-role>
+      <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isAdmin" disabled/>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!--System Admin -->
+  <kendo-grid-column *ngIf="!isMobile" title="{{'label.name.systemadmin' | languageTransform | async}}">
+    <ng-template kendoGridCellTemplate let-role>
+      <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isSystemAdmin" disabled/>
+    </ng-template>
+  </kendo-grid-column>
+
+<!--Role Configuration Mobile Version -->
+  <kendo-grid-column *ngIf="isMobile" title="{{'label.name.role' | languageTransform | async}}">
+    <ng-template kendoGridCellTemplate let-role>
+      <p *ngIf="role.accessLevel.isSystemAdmin">{{'label.name.systemadmin' | languageTransform | async}}</p>
+      <p *ngIf="role.accessLevel.isAdmin">{{'label.name.admin' | languageTransform | async}}</p>
+      <p *ngIf="role.accessLevel.isManager">{{'label.name.manager' | languageTransform | async}}</p>
+      <p *ngIf="role.accessLevel.isReception">{{'label.name.reception' | languageTransform | async}}</p>
+      <p *ngIf="role.accessLevel.isEmployee">{{'label.name.employee' | languageTransform | async}}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!--Edit-->
+  <kendo-grid-command-column>
+    <ng-template kendoGridCellTemplate let-role>
+        <button kendoGridEditCommand themeColor="tertiary" icon="edit" (click)="presentEditRole(role)"></button>
+        <button kendoGridRemoveCommand themeColor="error" icon="trash" (click)="onClickDeleteRole(role)"></button>
+    </ng-template>
+  </kendo-grid-command-column>
+</kendo-grid>

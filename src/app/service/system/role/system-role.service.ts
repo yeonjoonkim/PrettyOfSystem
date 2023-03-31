@@ -66,10 +66,12 @@ export class SystemRoleService {
       await this.langaugeTranslationPackage.updateLanguageTranslationResult(prevConfig.name, translated);
       await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
       await this.presentUpdateMsg();
+      await this.modal.dismissModal();
     }
     else{
       await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
       await this.presentUpdateMsg();
+      await this.modal.dismissModal();
     }
   }
 

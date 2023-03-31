@@ -1,5 +1,5 @@
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { SystemRoleService } from 'src/app/service/system/role/system-role.service';
 import { Observable } from 'rxjs';
 
@@ -9,6 +9,11 @@ import { Observable } from 'rxjs';
   styleUrls: ['./role-list-card.component.scss'],
 })
 export class RoleListCardComponent implements OnInit {
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobile = window.innerWidth <= 750;
+  }
+
   @Output() roleChange = new EventEmitter<IRoleConfiguration>();
   @Input()
   get role(): IRoleConfiguration {
@@ -18,7 +23,8 @@ export class RoleListCardComponent implements OnInit {
     this.selectedRole = value;
     this.roleChange.emit(this.selectedRole);
   }
-  @Input() roles: IRoleConfiguration[] | null = [];;
+  @Input() roles: IRoleConfiguration[] | null = [];
+  public isMobile: boolean = false;
   public selectedRole: IRoleConfiguration = {
     id: '',
     name: '',
@@ -34,6 +40,7 @@ export class RoleListCardComponent implements OnInit {
   };
 
   constructor(private systemRole: SystemRoleService) {
+    this.isMobile = window.innerWidth <= 750;
   }
 
   ngOnInit() {}
