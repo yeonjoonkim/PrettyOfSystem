@@ -11,12 +11,12 @@ export class RoleModalService {
 
   /**This will present the Add Role Component as a Modal with modal cssClass */
   public async prsentAddRole(){
-    let addRole = await this.modalCtrl.create({component: RoleComponent, cssClass: 'modal'});
+    let addRole = await this.modalCtrl.create({component: RoleComponent});
     await addRole.present();
   }
 
   public async presentEditRole(config: IRoleConfiguration){
-    let editRole = await this.modalCtrl.create({component: RoleComponent, cssClass: 'modal', componentProps: {role: config, editable: true}});
+    let editRole = await this.modalCtrl.create({component: RoleComponent, componentProps: {role: config, editable: true}});
     await editRole.present();
   }
 

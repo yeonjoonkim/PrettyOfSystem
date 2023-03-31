@@ -11,6 +11,7 @@ export class SystemMenuRepositoryService {
   private readonly systemMenu: string = 'system/menu/';
   private readonly category: string = this.systemMenu + 'category';
   private readonly systemMenuCategories: Observable<IMenuCategory[]> = this.getSystemMenuCategories();
+
   constructor(private afs: AngularFirestore) {
   }
 

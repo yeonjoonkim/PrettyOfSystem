@@ -5,13 +5,11 @@
     <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="dismissAddLanguage()"></ion-icon>
   </ion-toolbar>
   <ion-item>
-    <ion-label>{{'transform.name.key' | languageTransform | async }}</ion-label>
-    <ion-input [(ngModel)]="languageTransform.key" placeholder="path.component.item"></ion-input>
+    <ion-input label="{{'transform.name.key' | languageTransform | async }}" [(ngModel)]="languageTransform.key" placeholder="path.component.item"></ion-input>
   </ion-item>
   <!--Transform Value-->
   <ion-item>
-    <ion-label>{{'transform.name.description' | languageTransform | async }}</ion-label>
-    <ion-input [(ngModel)]="languageTransform.value"  placeholder="Item"></ion-input>
+    <ion-input label="{{'transform.name.description' | languageTransform | async }}" [(ngModel)]="languageTransform.value"  placeholder="Item"></ion-input>
   </ion-item>
   <!--Save Button-->
   <ion-button expand="block" (click)="onClickSaveButton()">{{'button.name.save' | languageTransform | async }}</ion-button>

@@ -11,7 +11,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Component
 import { YesNoSelectionComponent } from './yes-no-selection.component';
-
+import { KendoUiModule } from '../../kendo-ui-module/kendo-ui-module.module';
 @NgModule({
   declarations: [YesNoSelectionComponent],
   imports: [
@@ -19,7 +19,8 @@ import { YesNoSelectionComponent } from './yes-no-selection.component';
     IonicModule,
     FormsModule,
     LanguageTransformPipeModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    KendoUiModule
   ],
   exports: [YesNoSelectionComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

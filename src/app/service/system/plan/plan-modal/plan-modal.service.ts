@@ -11,14 +11,20 @@ export class PlanModalService {
   constructor(private modalCtrl: ModalController) { }
 
   public async presentAddPlan(): Promise<void>{
-    let addPlan = await this.modalCtrl.create({component: PlanComponent, cssClass: 'modal'});
+    let addPlan = await this.modalCtrl.create({component: PlanComponent, componentProps: { readOnly: false, editMode: false}});
     await addPlan.present();
   }
 
   public async presentEditPlan(config: IPlanConfiguration){
-    let editPlan = await this.modalCtrl.create({component: PlanComponent, cssClass: 'modal', componentProps: {plan: config, editMode: true}});
+    let editPlan = await this.modalCtrl.create({component: PlanComponent, componentProps: {plan: config, editMode: true}});
     await editPlan.present();
   }
+
+  public async presentViewPlan(config: IPlanConfiguration){
+    let editPlan = await this.modalCtrl.create({component: PlanComponent, componentProps: {plan: config, readOnly: true}});
+    await editPlan.present();
+  }
+
 
   public async dismissModal(): Promise<void>{
     await this.modalCtrl.dismiss();

@@ -27,6 +27,8 @@ export class RoleManagementComponent implements OnInit {
   constructor(private systemRole: SystemRoleService){
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.systemRole.modal.prsentAddRole();
+  }
 
 }

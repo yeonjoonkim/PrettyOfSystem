@@ -46,5 +46,5 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       window.location.reload();
     });
   }
-  
+
 }

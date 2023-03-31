@@ -19,7 +19,7 @@ export class SystemMenuOptionControllerService {
     transformDictionary: this.systemMenu + 'dictionary',
     menuManagement: this.systemMenu + 'menumanagement',
     roleManagement: this.systemMenu + 'rolemanagement',
-    planmanagement: this.systemMenu + 'planmanagement'
+    planmanagement: this.systemMenu + 'subscriptionmanagement'
   };
 
   constructor(private language: LanguageService) { }

@@ -25,7 +25,7 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-@import "../pretty-of-system-dark-theme/dist/scss";
+@import "./theme/pretty-of-system-dark-theme/dist/scss";
 
 .toolbar-icon{
   font-size: 30px;
@@ -73,11 +73,24 @@ ion-button{
   margin-right: 5px;
 }
 
-.modal {
-  align-items: center;
-  justify-content: center;
-  &::part(content){
-    width: fit-content;
-    height: fit-content;
+yes-no-selection-group{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: fit-content;
+  yes-no-selection{
+    align-self: flex-end;
   }
+}
+
+.modal-container{
+  width: 98%;
+  padding-top: 15px;
+  margin: auto;
+}
+
+legend{
+  font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
