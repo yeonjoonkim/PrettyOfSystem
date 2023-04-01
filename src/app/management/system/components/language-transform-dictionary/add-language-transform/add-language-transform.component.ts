@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { IAddLanguageTransformSaveCommand, ILanguageKey, ILanguageTranslateItem, ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
 import { LanguageTranslateService } from 'src/app/shared/services/language-translate/language-translate.service';
 import { ToastService } from 'src/app/shared/services/toast/toast.service';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, PopoverController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -20,14 +20,14 @@ export class AddLanguageTransformComponent implements OnInit {
   }
 
   constructor(public language: LanguageService, private langugeTranslate: LanguageTranslateService,
-    private actionSheetCtrl: ActionSheetController, private toast: ToastService, private modalCtrl: ModalController) { }
+    private actionSheetCtrl: ActionSheetController, private toast: ToastService, private popOverCtrl: PopoverController) { }
 
   ngOnInit() {}
 
 
   /** This will close the this component as a modal*/
   public async dismissAddLanguage(): Promise<void>{
-    await this.modalCtrl.dismiss({key: this.languageTransform.key, isSaved: this.isSaved});
+    await this.popOverCtrl.dismiss({key: this.languageTransform.key, isSaved: this.isSaved});
   }
 
 

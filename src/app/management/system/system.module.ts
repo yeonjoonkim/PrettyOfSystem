@@ -14,7 +14,6 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 import { LanguageTransformDictionaryModule } from './components/language-transform-dictionary/language-transform-dictionary.module';
-import { LanguageManagementModule } from './components/language-management/language-management.module';
 import { MenuManagementModule } from './components/menu-management/menu-management.module';
 import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
 import { RoleManagementModule } from './components/role-management/role-management.module';
@@ -29,7 +28,6 @@ import { SystemMenuOptionComponent } from './components/system-menu-option/syste
     Ng2SearchPipeModule,
     LanguageTransformPipeModule,
     LanguageTransformDictionaryModule,
-    LanguageManagementModule,
     MenuManagementModule,
     RoleManagementModule,
     PlanManagementModule,
