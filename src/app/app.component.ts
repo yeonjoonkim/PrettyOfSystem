@@ -10,7 +10,7 @@ import { SystemLanguageRepositoryService } from './firebase/system-repository/la
   styleUrls: ['app.component.scss'],
 })
 
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
   public isLoaded: boolean = false;
   private languageChangeActionSubscription: Subscription | undefined;
 
@@ -19,11 +19,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.storage.create();
   }
 
-  ngOnInit(){
+  async ngOnInit(){
     this.subscribeLanguage();
-  }
-
-  async ngAfterViewInit(){
     await this.delay();
   }
 
@@ -33,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   async delay(){
     setTimeout(() => {
       this.isLoaded = true;
-    }, 100);
+    }, 300);
   }
 
   async ngOnDestroy(){

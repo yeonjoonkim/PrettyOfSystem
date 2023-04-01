@@ -1,7 +1,5 @@
 /// <reference types="@angular/localize" />
 
-require('default-passive-events');
-
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';

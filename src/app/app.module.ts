@@ -32,63 +32,9 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Language Package
 import { LanguageTransformPipeModule } from './shared/pipes/language-transform-pipe/language-transform.pipe.module';
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ChartsModule } from '@progress/kendo-angular-charts';
+import { KendoUiModule } from './shared/kendo-ui-module/kendo-ui-module.module';
 import 'hammerjs';
-import { ChatModule } from '@progress/kendo-angular-conversational-ui';
-import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-import { DialogsModule } from '@progress/kendo-angular-dialog';
-import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
-import { EditorModule } from '@progress/kendo-angular-editor';
-import { ExcelExportModule } from '@progress/kendo-angular-excel-export';
-import { FilterModule } from '@progress/kendo-angular-filter';
-import { GaugesModule } from '@progress/kendo-angular-gauges';
-import { GridModule } from '@progress/kendo-angular-grid';
-import { IndicatorsModule } from '@progress/kendo-angular-indicators';
-import { InputsModule } from '@progress/kendo-angular-inputs';
-import { LabelModule } from '@progress/kendo-angular-label';
-import { LayoutModule } from '@progress/kendo-angular-layout';
-import { ListBoxModule } from '@progress/kendo-angular-listbox';
-import { MenuModule } from '@progress/kendo-angular-menu';
-import { NavigationModule } from '@progress/kendo-angular-navigation';
-import { PagerModule } from '@progress/kendo-angular-pager';
-import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
-import { ProgressBarModule } from '@progress/kendo-angular-progressbar';
-import { SchedulerModule } from '@progress/kendo-angular-scheduler';
-import { ScrollViewModule } from '@progress/kendo-angular-scrollview';
-import { TooltipsModule } from '@progress/kendo-angular-tooltip';
-import { ToolBarModule } from '@progress/kendo-angular-toolbar';
-import { UploadsModule } from '@progress/kendo-angular-upload';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, LangaugeSelectionComponent],
@@ -106,33 +52,8 @@ import { UploadsModule } from '@progress/kendo-angular-upload';
     CommonModule,
     FormsModule,
     Ng2SearchPipeModule,
-    ButtonsModule,
+    KendoUiModule,
     BrowserAnimationsModule,
-    ChartsModule,
-    ChatModule,
-    DateInputsModule,
-    DialogsModule,
-    DropDownsModule,
-    EditorModule,
-    ExcelExportModule,
-    FilterModule,
-    GaugesModule,
-    GridModule,
-    IndicatorsModule,
-    InputsModule,
-    LabelModule,
-    LayoutModule,
-    ListBoxModule,
-    MenuModule,
-    NavigationModule,
-    PagerModule,
-    PDFExportModule,
-    ProgressBarModule,
-    SchedulerModule,
-    ScrollViewModule,
-    TooltipsModule,
-    ToolBarModule,
-    UploadsModule,
   ],
   exports: [],
   providers: [

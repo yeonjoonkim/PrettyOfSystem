@@ -1,5 +1,5 @@
 const storageKey = {
-  language: 'lang'
+  language: 'lang',
 };
 
 
