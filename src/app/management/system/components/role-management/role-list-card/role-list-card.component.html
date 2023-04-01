@@ -1,6 +1,6 @@
- <legend> {{'menu.role.title' | languageTransform | async}} </legend>
+<legend> {{'label.name.roleconfiguration' | languageTransform | async}} </legend>
 <kendo-grid [data]="roles"
-            [height]="300">
+            [height]="350">
   <!-- Add Button -->
   <ng-template kendoGridToolbarTemplate>
     <button kendoGridAddCommand (click)="presentAddRole()">{{'button.name.add' | languageTransform | async}}</button>

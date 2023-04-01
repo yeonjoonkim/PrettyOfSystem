@@ -4,4 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  system-role-list-card {
+    min-width: 300px;
+    max-width: 800px;
+  }
 }
