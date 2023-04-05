@@ -1,11 +1,10 @@
 import { AddMenuCategoryContentComponent } from '../add-menu-category-content/add-menu-category-content.component';
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, AlertOptions, PopoverController } from '@ionic/angular';
-import {IMenuCategory, IMenuContent} from './../../../../../interface/menu/menu.interface';
+import {IMenuContent} from './../../../../../interface/menu/menu.interface';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { SystemMenuCategoryService } from 'src/app/service/system/menu/category/system-menu-category.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'menu-category-content-card',

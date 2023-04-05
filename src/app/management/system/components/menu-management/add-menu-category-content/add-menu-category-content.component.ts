@@ -1,6 +1,6 @@
 import { ToastService } from 'src/app/shared/services/toast/toast.service';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
 import { IMenuContent } from 'src/app/interface/menu/menu.interface';
 import { SystemMenuCategoryService } from 'src/app/service/system/menu/category/system-menu-category.service';

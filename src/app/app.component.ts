@@ -16,19 +16,16 @@ export class AppComponent implements OnInit, OnDestroy {
   public isLoaded: boolean = false;
   private languageChangeActionSubscription: Subscription | undefined;
 
-  constructor(private storage: Storage, private language: LanguageService, private sysLanguageRepo: SystemLanguageRepositoryService,
-              private deviceWidth: DeviceWidthService) {
+  constructor(private storage: Storage, private language: LanguageService, private sysLanguageRepo: SystemLanguageRepositoryService, private deviceWidth: DeviceWidthService) {
     this.language.languageSelection = this.sysLanguageRepo.getLanguageSelectionResult();
-    this.deviceTypeSubscription = this.deviceWidth.deviceTypeObservable.subscribe(device => {this.deviceWidth.deviceType = device;});
+
     this.storage.create();
   }
 
   async ngOnInit(){
-    this.subscribeLanguage();
+    this.subscribeDeviceWidth();
+    this.subscribeLanguageChangeAction();
     await this.delay();
-  }
-
-  async IonViewDidEnter(){
   }
 
   async delay(){
@@ -42,11 +39,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.languageChangeActionSubscription?.unsubscribe();
   }
 
-  async subscribeLanguage(){
+  private async subscribeLanguageChangeAction(){
   this.languageChangeActionSubscription = this.language.changeLanguageAction.subscribe(async (i) => {
       this.ngOnDestroy();
       window.location.reload();
     });
+  }
+
+  private async subscribeDeviceWidth(){
+    this.deviceTypeSubscription = this.deviceWidth.deviceTypeObservable.subscribe(device => {this.deviceWidth.deviceType = device;});
   }
 
 }

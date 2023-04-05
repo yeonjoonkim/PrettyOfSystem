@@ -13,15 +13,14 @@ export class SystemPlanRepositoryService {
 
   constructor(private afs: AngularFirestore) { }
 
+  /**This will return as Observalbe to receive the all Plan Options Available */
   public getSystemPlanOptions(): Observable<IPlanConfiguration[]> {
     return this.afs.collection<IPlanConfiguration>(this.systemPlanOption,  ref => ref.orderBy('name'))
     .valueChanges()
     .pipe(
       map((planConfigs: IPlanConfiguration[]) => {
-        // Check if the array is empty or null
         if (!planConfigs || planConfigs.length === 0) {
-          // Return a default value or an empty array
-          return []; // or return null, or return a default value
+          return [];
         }
         // Transform the data here as needed
         return planConfigs;
@@ -29,11 +28,8 @@ export class SystemPlanRepositoryService {
     );
   }
 
-  public async editUpdatePlanOption(config: IPlanConfiguration){
 
-
-  }
-
+  /**This will add new system plan option */
   public async addSystemPlanOption(config: IPlanConfiguration) {
     let isSave = true;
     let newId = this.afs.createId();
@@ -49,7 +45,7 @@ export class SystemPlanRepositoryService {
     return isSave;
   }
 
-
+  /**This will updated selected plan */
   public async updateSystemPlanOption(config: IPlanConfiguration) {
     let isUpdate = true;
     let newOption = {...config, ...this.timeStamp};
@@ -63,6 +59,7 @@ export class SystemPlanRepositoryService {
     return isUpdate;
   }
 
+  /**This will delete the selected plan */
   public async deleteSystemPlanOption(selectedId: string){
     let isDeleted = true;
     try{

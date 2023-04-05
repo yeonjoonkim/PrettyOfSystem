@@ -1,3 +1,4 @@
+import { DeviceWidthService } from './../../../../../shared/services/device-width/device-width.service';
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { SystemRoleService } from 'src/app/service/system/role/system-role.service';
@@ -8,11 +9,6 @@ import { SystemRoleService } from 'src/app/service/system/role/system-role.servi
   styleUrls: ['./role-list-card.component.scss'],
 })
 export class RoleListCardComponent implements OnInit {
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.isMobile = window.innerWidth <= 750;
-  }
-
   @Output() roleChange = new EventEmitter<IRoleConfiguration>();
   @Input()
   get role(): IRoleConfiguration {
@@ -38,8 +34,7 @@ export class RoleListCardComponent implements OnInit {
     rate: 0
   };
 
-  constructor(private systemRole: SystemRoleService) {
-    this.isMobile = window.innerWidth <= 750;
+  constructor(private systemRole: SystemRoleService, public deviceWidth: DeviceWidthService) {
   }
 
   ngOnInit() {}

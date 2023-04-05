@@ -1,10 +1,9 @@
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { Component, OnInit } from '@angular/core';
-import { IAddLanguageTransformSaveCommand, ILanguageKey, ILanguageTranslateItem, ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
+import { IAddLanguageTransformSaveCommand, ILanguageTranslateItem, ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
 import { LanguageTranslateService } from 'src/app/shared/services/language-translate/language-translate.service';
 import { ToastService } from 'src/app/shared/services/toast/toast.service';
 import { ActionSheetController, PopoverController } from '@ionic/angular';
-import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'add-language-transform',

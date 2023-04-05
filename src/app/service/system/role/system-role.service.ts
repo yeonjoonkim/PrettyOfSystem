@@ -75,7 +75,6 @@ export class SystemRoleService {
     }
   }
 
-
   private async presentSaveMsg(){
     let msg = await this.language.transform('message.success.save');
     await this.toast.present(msg);

@@ -48,7 +48,7 @@ export class SystemPage implements OnInit {
     await this.handleSystemMenuOption(systemMenu);
   }
 
-
+  /** will monitor the result from the popover and check if it has option */
   private async handleSystemMenuOption(systemMenu: HTMLIonPopoverElement): Promise<void>{
     let result = await systemMenu.onDidDismiss();
     let option = result?.data?.option;
@@ -58,6 +58,7 @@ export class SystemPage implements OnInit {
     }
   }
 
+  /** This will process the set up the selected system menu */
   public processSystemMenuOption(option: ISystemMenuOptionAction){
     if(option.isLanguageDictionary){
       this.systemModal.presentLanguageDictionary();
