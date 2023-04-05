@@ -2,7 +2,7 @@
   <!-- Title -->
   <ion-toolbar>
     <ion-title>{{'transform.title.name'| languageTransform | async }}</ion-title>
-    <ion-icon class="toolbar-icon" name="add-outline" slot="start" (click)="openAddLanguageTransform()"></ion-icon>
+    <ion-icon class="toolbar-icon" name="add-outline" slot="start" (click)="openAddLanguageTransform($event)"></ion-icon>
     <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="dismissDictonary()"></ion-icon>
   </ion-toolbar>
 

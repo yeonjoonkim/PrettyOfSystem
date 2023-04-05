@@ -66,13 +66,14 @@ export class SystemRoleService {
       await this.langaugeTranslationPackage.updateLanguageTranslationResult(prevConfig.name, translated);
       await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
       await this.presentUpdateMsg();
+      await this.modal.dismissModal();
     }
     else{
       await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
       await this.presentUpdateMsg();
+      await this.modal.dismissModal();
     }
   }
-
 
   private async presentSaveMsg(){
     let msg = await this.language.transform('message.success.save');

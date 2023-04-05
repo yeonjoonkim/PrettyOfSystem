@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { LanguageManagementComponent } from './language-management.component';
+import { PlanListComponent } from './plan-list.component';
 
-describe('LanguageManagementComponent', () => {
-  let component: LanguageManagementComponent;
-  let fixture: ComponentFixture<LanguageManagementComponent>;
+describe('PlanListComponent', () => {
+  let component: PlanListComponent;
+  let fixture: ComponentFixture<PlanListComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LanguageManagementComponent ],
+      declarations: [ PlanListComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LanguageManagementComponent);
+    fixture = TestBed.createComponent(PlanListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

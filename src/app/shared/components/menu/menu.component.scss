@@ -1,8 +1,15 @@
 #selected-shop-info-card, #user-info-card{
-  margin: 0px 0px 10px 0px;
+  margin: 0px 0px 0px 0px;
 }
 
 #user-info-card ion-card-header{
   display: flex;
+  flex-direction: row;
   justify-items: center;
+}
+
+#language-setting-container{
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }

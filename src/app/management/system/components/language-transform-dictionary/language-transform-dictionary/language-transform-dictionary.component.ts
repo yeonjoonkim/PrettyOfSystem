@@ -32,14 +32,15 @@ export class LanguageTransformDictionaryComponent implements OnInit {
 
 
   /** This will open the add component */
-  public async openAddLanguageTransform(): Promise<void>{
-    let addLanguageTransformModal = await this.modalCtrl.create(
+  public async openAddLanguageTransform(event: any): Promise<void>{
+    let addLanguageTransformPopOver = await this.popOverCtrl.create(
       {component: AddLanguageTransformComponent,
-      cssClass: 'modal' },
+       event: event,
+      translucent: true},
     );
 
-    await addLanguageTransformModal.present();
-    let result = await addLanguageTransformModal.onWillDismiss();
+    await addLanguageTransformPopOver.present();
+    let result = await addLanguageTransformPopOver.onWillDismiss();
     if(result.data?.isSaved){
       this.selectedKeyPairValue = result.data.key;
     }

@@ -13,22 +13,23 @@ export class SystemPlanRepositoryService {
 
   constructor(private afs: AngularFirestore) { }
 
+  /**This will return as Observalbe to receive the all Plan Options Available */
   public getSystemPlanOptions(): Observable<IPlanConfiguration[]> {
     return this.afs.collection<IPlanConfiguration>(this.systemPlanOption,  ref => ref.orderBy('name'))
     .valueChanges()
     .pipe(
       map((planConfigs: IPlanConfiguration[]) => {
+        if (!planConfigs || planConfigs.length === 0) {
+          return [];
+        }
         // Transform the data here as needed
         return planConfigs;
       })
-    )
+    );
   }
 
-  public async editUpdatePlanOption(config: IPlanConfiguration){
 
-    
-  }
-
+  /**This will add new system plan option */
   public async addSystemPlanOption(config: IPlanConfiguration) {
     let isSave = true;
     let newId = this.afs.createId();
@@ -42,6 +43,33 @@ export class SystemPlanRepositoryService {
     }
 
     return isSave;
+  }
+
+  /**This will updated selected plan */
+  public async updateSystemPlanOption(config: IPlanConfiguration) {
+    let isUpdate = true;
+    let newOption = {...config, ...this.timeStamp};
+    try {
+      await this.afs.collection(this.systemPlanOption).doc(config.id).set(newOption);
+    } catch (e) {
+      console.error(e);
+      isUpdate = false;
+    }
+
+    return isUpdate;
+  }
+
+  /**This will delete the selected plan */
+  public async deleteSystemPlanOption(selectedId: string){
+    let isDeleted = true;
+    try{
+      this.afs.doc(this.systemPlanOption + '/' + selectedId).delete();
+    }catch(e){
+      console.error(e);
+      isDeleted = false;
+    }
+
+    return isDeleted;
   }
 
 

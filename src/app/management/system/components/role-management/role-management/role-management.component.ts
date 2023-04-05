@@ -28,7 +28,6 @@ export class RoleManagementComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.systemRole.modal.prsentAddRole();
   }
 
 }

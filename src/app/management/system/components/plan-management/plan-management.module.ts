@@ -16,12 +16,13 @@ import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.mo
 //Import Component
 import { PlanManagementComponent } from './plan-management/plan-management.component';
 import { PlanComponent } from './plan/plan.component';
-
+import { PlanListComponent } from './plan-list/plan-list.component';
 
 @NgModule({
   declarations: [
     PlanManagementComponent,
-    PlanComponent
+    PlanComponent,
+    PlanListComponent
   ],
   imports: [
     CommonModule,

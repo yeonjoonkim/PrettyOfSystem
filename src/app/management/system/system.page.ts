@@ -15,11 +15,13 @@ export class SystemPage implements OnInit {
   public isSystemMenuOpen: boolean = false;
   public systemMenuIcon: string = 'chevron-down-outline';
   public selectedSystemMenu: ISystemMenuOptionAction = this.systemMenuOptionCtrl.setDefaultSystemMenuOptionController();
+  public systemMenu: ISystemMenuOptionAction[] = [];
 
   constructor(private popOverCtrl: PopoverController, private systemModal: SystemModalService, private systemMenuOptionCtrl: SystemMenuOptionControllerService) {
   }
 
   async ngOnInit() {
+    this.systemMenu = await this.systemMenuOptionCtrl.getSystemManagementButton();
   }
 
   /** This will open the system menu */
@@ -46,7 +48,7 @@ export class SystemPage implements OnInit {
     await this.handleSystemMenuOption(systemMenu);
   }
 
-
+  /** will monitor the result from the popover and check if it has option */
   private async handleSystemMenuOption(systemMenu: HTMLIonPopoverElement): Promise<void>{
     let result = await systemMenu.onDidDismiss();
     let option = result?.data?.option;
@@ -56,11 +58,11 @@ export class SystemPage implements OnInit {
     }
   }
 
-  private processSystemMenuOption(option: ISystemMenuOptionAction){
+  /** This will process the set up the selected system menu */
+  public processSystemMenuOption(option: ISystemMenuOptionAction){
     if(option.isLanguageDictionary){
       this.systemModal.presentLanguageDictionary();
     }else{
-      option.name = " / " + option.name;
       this.selectedSystemMenu = option;
     }
   }

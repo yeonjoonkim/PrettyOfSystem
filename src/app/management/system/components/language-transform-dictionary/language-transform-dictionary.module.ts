@@ -13,6 +13,9 @@ import { AddLanguageTransformComponent } from './add-language-transform/add-lang
 import { LanguageTransformDictionaryComponent } from './language-transform-dictionary/language-transform-dictionary.component';
 import { LanguageKeyPairSelectOptionComponent } from './language-key-pair-select-option/language-key-pair-select-option.component';
 
+//Import Kendo Ui
+import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.module';
+
 @NgModule({
   declarations: [AddLanguageTransformComponent, LanguageTransformDictionaryComponent, LanguageKeyPairSelectOptionComponent],
   imports: [
@@ -20,7 +23,8 @@ import { LanguageKeyPairSelectOptionComponent } from './language-key-pair-select
     IonicModule,
     FormsModule,
     LanguageTransformPipeModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    KendoUiModule
   ],
   exports: [AddLanguageTransformComponent, LanguageTransformDictionaryComponent, LanguageKeyPairSelectOptionComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

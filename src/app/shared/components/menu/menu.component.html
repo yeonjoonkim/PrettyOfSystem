@@ -1,5 +1,4 @@
 <!--TODO: add user information and menu information from app.component-->
-
 <!--User Info-->
 <ion-card id="user-info-card">
   <ion-card-header>
@@ -7,14 +6,13 @@
       <ion-card-title>{{user.fullName}}</ion-card-title>
       <ion-card-subtitle>{{user.role}}</ion-card-subtitle>
     </div>
-      <ion-button>{{ 'menu.name.edit' | languageTransform | async}}</ion-button>
+    <ion-button>{{ 'menu.name.edit' | languageTransform | async}}</ion-button>
   </ion-card-header>
   <ion-card-content>
     <ion-button expand="block" *ngIf="user">{{ 'menu.name.logout' | languageTransform | async}}</ion-button>
     <ion-button expand="block" *ngIf="!user"> {{ 'menu.name.login' | languageTransform | async}}</ion-button>
   </ion-card-content>
 </ion-card>
-
 
 <!--Menu-->
 <ion-accordion-group>
@@ -38,9 +36,13 @@
     </ion-list>
   </ion-accordion>
 
-  <!--Language Setting-->
-  <langauge-selection></langauge-selection>
 </ion-accordion-group>
+
+
+<!--Language Setting-->
+<section id="language-setting-container">
+  <langauge-selection></langauge-selection>
+</section>
 
 
 

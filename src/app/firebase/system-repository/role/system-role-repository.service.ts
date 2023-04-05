@@ -14,7 +14,7 @@ export class SystemRoleRepositoryService {
   constructor(private afs: AngularFirestore) {
   }
 
-
+  /** This will return as Observalble of all role configs  */
   public getSystemRoleConfigurations(): Observable<IRoleConfiguration[]> {
     return this.afs.collection<IRoleConfiguration>(this.roleConfig, ref => ref.orderBy('rate'))
       .valueChanges()
@@ -25,6 +25,7 @@ export class SystemRoleRepositoryService {
       );
   }
 
+  /** This will add new System Role */
   public async addSystemRoleConfiguration(newConfig: IRoleConfiguration){
     let newId= this.afs.createId();
     newConfig.id = newId;
@@ -36,15 +37,18 @@ export class SystemRoleRepositoryService {
     }
   }
 
+  /** This will get only selectedId */
   public async getSelectedSystemRole(selectedId: string){
     let roles = await firstValueFrom(this.getSystemRoleConfigurations());
     return roles.find(role => role.id === selectedId);
   }
 
+  /** This will update the value of config */
   public async updateSystemRoleConfiguration(config: IRoleConfiguration){
     await this.afs.doc(this.roleConfig + '/' + config.id).update({...config, ...this.timeStamp})
   }
 
+  /** This will delete the value of config*/
   public async deleteSystemRoleConfiguration(id: string){
     await this.afs.doc(this.roleConfig +'/'+ id).delete();
   }

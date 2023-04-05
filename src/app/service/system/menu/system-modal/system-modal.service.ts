@@ -4,7 +4,8 @@ import { ModalController } from '@ionic/angular';
 
 //Import Component
 import { LanguageTransformDictionaryComponent } from '../../../../management/system/components/language-transform-dictionary/language-transform-dictionary/language-transform-dictionary.component';
-import { LanguageManagementComponent } from '../../../../management/system/components/language-management/language-management/language-management.component';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,12 +17,6 @@ export class SystemModalService {
     let languageDictionary = await this.modalCtrl.create({component: LanguageTransformDictionaryComponent});
 
     await languageDictionary.present();
-  }
-
-  public async presentLanguageManagement(): Promise<void>{
-    let languageManagement = await this.modalCtrl.create({component: LanguageManagementComponent});
-
-    await languageManagement.present();
   }
 
   public async dismissModal(): Promise<void>{

@@ -1,7 +1,7 @@
+import { DeviceWidthService } from './../../../../../shared/services/device-width/device-width.service';
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { SystemRoleService } from 'src/app/service/system/role/system-role.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'system-role-list-card',
@@ -18,7 +18,8 @@ export class RoleListCardComponent implements OnInit {
     this.selectedRole = value;
     this.roleChange.emit(this.selectedRole);
   }
-  @Input() roles: IRoleConfiguration[] | null = [];;
+  @Input() roles: IRoleConfiguration[] | null = [];
+  public isMobile: boolean = false;
   public selectedRole: IRoleConfiguration = {
     id: '',
     name: '',
@@ -33,7 +34,7 @@ export class RoleListCardComponent implements OnInit {
     rate: 0
   };
 
-  constructor(private systemRole: SystemRoleService) {
+  constructor(private systemRole: SystemRoleService, public deviceWidth: DeviceWidthService) {
   }
 
   ngOnInit() {}
