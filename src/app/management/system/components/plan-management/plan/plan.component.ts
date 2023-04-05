@@ -66,4 +66,10 @@ export class PlanComponent implements OnInit {
     }
   }
 
+  public async onClickEditPlanButton(){
+    if(this.plan.name){
+      await this.planService.processUpdatePlan(this.plan);
+    }
+  }
+
 }

@@ -18,15 +18,20 @@ export class SystemPlanRepositoryService {
     .valueChanges()
     .pipe(
       map((planConfigs: IPlanConfiguration[]) => {
+        // Check if the array is empty or null
+        if (!planConfigs || planConfigs.length === 0) {
+          // Return a default value or an empty array
+          return []; // or return null, or return a default value
+        }
         // Transform the data here as needed
         return planConfigs;
       })
-    )
+    );
   }
 
   public async editUpdatePlanOption(config: IPlanConfiguration){
 
-    
+
   }
 
   public async addSystemPlanOption(config: IPlanConfiguration) {
@@ -42,6 +47,32 @@ export class SystemPlanRepositoryService {
     }
 
     return isSave;
+  }
+
+
+  public async updateSystemPlanOption(config: IPlanConfiguration) {
+    let isUpdate = true;
+    let newOption = {...config, ...this.timeStamp};
+    try {
+      await this.afs.collection(this.systemPlanOption).doc(config.id).set(newOption);
+    } catch (e) {
+      console.error(e);
+      isUpdate = false;
+    }
+
+    return isUpdate;
+  }
+
+  public async deleteSystemPlanOption(selectedId: string){
+    let isDeleted = true;
+    try{
+      this.afs.doc(this.systemPlanOption + '/' + selectedId).delete();
+    }catch(e){
+      console.error(e);
+      isDeleted = false;
+    }
+
+    return isDeleted;
   }
 
 

@@ -15,11 +15,13 @@ export class SystemPage implements OnInit {
   public isSystemMenuOpen: boolean = false;
   public systemMenuIcon: string = 'chevron-down-outline';
   public selectedSystemMenu: ISystemMenuOptionAction = this.systemMenuOptionCtrl.setDefaultSystemMenuOptionController();
+  public systemMenu: ISystemMenuOptionAction[] = [];
 
   constructor(private popOverCtrl: PopoverController, private systemModal: SystemModalService, private systemMenuOptionCtrl: SystemMenuOptionControllerService) {
   }
 
   async ngOnInit() {
+    this.systemMenu = await this.systemMenuOptionCtrl.getSystemManagementButton();
   }
 
   /** This will open the system menu */
@@ -56,11 +58,10 @@ export class SystemPage implements OnInit {
     }
   }
 
-  private processSystemMenuOption(option: ISystemMenuOptionAction){
+  public processSystemMenuOption(option: ISystemMenuOptionAction){
     if(option.isLanguageDictionary){
       this.systemModal.presentLanguageDictionary();
     }else{
-      option.name = " / " + option.name;
       this.selectedSystemMenu = option;
     }
   }

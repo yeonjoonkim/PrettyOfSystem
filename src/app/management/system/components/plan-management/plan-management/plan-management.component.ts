@@ -19,12 +19,4 @@ export class PlanManagementComponent implements OnInit {
   ngOnInit() {
   }
 
-  public async onClickAddPlan(){
-    await this.planService.modal.presentAddPlan();
-  }
-
-  public async onClickCell(event: CellClickEvent){
-    await this.planService.modal.presentEditPlan(event.dataItem);
-  }
-
 }

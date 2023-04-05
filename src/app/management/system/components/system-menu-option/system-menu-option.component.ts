@@ -16,7 +16,7 @@ export class SystemMenuOptionComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.menuOptions = await this.systemMenuCtrl.getSystemMenuOption();
+    this.menuOptions = await this.systemMenuCtrl.getSystemMenuTop();
   }
 
   async onClickMenuOption(selectedOption: ISystemMenuOptionAction){

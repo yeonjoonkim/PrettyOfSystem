@@ -1,7 +1,6 @@
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { SystemRoleService } from 'src/app/service/system/role/system-role.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'system-role-list-card',

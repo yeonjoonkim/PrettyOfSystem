@@ -1,3 +1,4 @@
+import { DeleteConfirmationAlert } from './../../../shared/services/delete-confirmation-alert/delete-confirmation-alert.service';
 import { ToastService } from './../../../shared/services/toast/toast.service';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { SystemPlanRepositoryService } from './../../../firebase/system-repository/plan/system-plan-repository.service';
@@ -19,7 +20,8 @@ export class PlanService {
     public numberValidatation: NumberValidationService,
     private planRepo: SystemPlanRepositoryService,
     private toast: ToastService,
-    private language: LanguageService) { }
+    private language: LanguageService,
+    private deleteConfirmation: DeleteConfirmationAlert) { }
 
   public subscribeAllPlanOptions(){
     return this.planRepo.getSystemPlanOptions();
@@ -59,6 +61,24 @@ export class PlanService {
     }
   }
 
+  public async processUpdatePlan(planConfig: IPlanConfiguration){
+    let isUpdated = await this.planRepo.updateSystemPlanOption(planConfig);
+
+    if(isUpdated){
+      await this.presentUpdateMsg();
+      await this.modal.dismissModal();
+    }else{
+      await this.presentUpdateError();
+    }
+  }
+
+  public async processDeletePlan(selectedPlanId: string, selectedPlanName: string){
+    let deleteConfirmation = await this.deleteConfirmation.getdeleteConfirmation(selectedPlanName);
+    if(deleteConfirmation){
+      await this.planRepo.deleteSystemPlanOption(selectedPlanId) ? await this.presentDeleteMsg(): await this.presentDeleteError();
+    }
+  }
+
   private async presentSaveMsg(){
     let msg = await this.language.transform('message.success.save');
     await this.toast.present(msg);
@@ -76,6 +96,11 @@ export class PlanService {
 
   private async presentDeleteError(){
     let msg = await this.language.transform('message.error.delete');
+    await this.toast.present(msg);
+  }
+
+  private async presentUpdateError(){
+    let msg = await this.language.transform('message.error.updated');
     await this.toast.present(msg);
   }
 

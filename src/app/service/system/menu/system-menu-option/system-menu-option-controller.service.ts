@@ -24,13 +24,18 @@ export class SystemMenuOptionControllerService {
 
   constructor(private language: LanguageService) { }
 
-  public async getSystemMenuOption(): Promise<ISystemMenuOptionAction[]>{
+  public async getSystemMenuTop(): Promise<ISystemMenuOptionAction[]>{
     let dictionary = await this.getLanguageDictionaryOption();
+
+    return [ dictionary ];
+  }
+
+  public async getSystemManagementButton(): Promise<ISystemMenuOptionAction[]>{
     let menuManagement = await this.getMenuManagementOption();
     let roleManagement = await this.getRoleManagementOption();
     let planmanagement = await this.getPlanManagementOption();
 
-    return [ menuManagement, roleManagement, planmanagement, dictionary ];
+    return [ menuManagement, roleManagement, planmanagement ];
   }
 
 

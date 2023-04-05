@@ -1,0 +1,10 @@
+#plan-management-container{
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  plan-list{
+    min-width: 300px;
+    max-width: 1200px;
+  }
+}
