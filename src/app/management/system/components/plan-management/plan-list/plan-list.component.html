@@ -19,7 +19,7 @@
     </ng-template>
   </kendo-grid-column>
 
-  <kendo-grid-column
+  <kendo-grid-column  *ngIf="deviceWidth.deviceType.isDesktop"
                       field="isTestPlan"
                       title="{{'label.name.test' | languageTransform | async}}">
     <ng-template kendoGridCellTemplate let-plan>
