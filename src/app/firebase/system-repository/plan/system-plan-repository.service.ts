@@ -1,7 +1,7 @@
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { map, Observable } from 'rxjs';
+import { firstValueFrom, map, Observable, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -72,5 +72,10 @@ export class SystemPlanRepositoryService {
     return isDeleted;
   }
 
+  public getSelectedPlan(selectedId: string): Observable<IPlanConfiguration | undefined> {
+    return this.afs.doc<IPlanConfiguration>(`${this.systemPlanOption}/${selectedId}`)
+      .valueChanges()
+      .pipe(take(1));
+  }
 
 }
