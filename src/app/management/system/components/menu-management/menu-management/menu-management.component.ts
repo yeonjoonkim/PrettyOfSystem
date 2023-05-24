@@ -4,7 +4,7 @@ import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'menu-management',
+  selector: 'system-menu-management',
   templateUrl: './menu-management.component.html',
   styleUrls: ['./menu-management.component.scss'],
 })

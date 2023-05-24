@@ -1,11 +1,11 @@
 import { RoleRateService } from '../../../shared/services/authentication/role-rate/role-rate.service';
-import { DeleteConfirmationAlert } from './../../../shared/services/delete-confirmation-alert/delete-confirmation-alert.service';
-import { SystemRoleRepositoryService } from './../../../firebase/system-repository/role/system-role-repository.service';
-import { ToastService } from './../../../shared/services/toast/toast.service';
-import { LanguageTranslationPackageService } from './../../../shared/services/language-translation-package/language-translation-package.service';
-import { LanguageService } from './../../../shared/services/language/language.service';
+import { DeleteConfirmationAlert } from '../../../shared/services/delete-confirmation-alert/delete-confirmation-alert.service';
+import { SystemRoleRepositoryService } from '../../../firebase/system-repository/role/system-role-repository.service';
+import { ToastService } from '../../../shared/services/toast/toast.service';
+import { LanguageTranslationPackageService } from '../../../shared/services/language-translation-package/language-translation-package.service';
+import { LanguageService } from '../../../shared/services/language/language.service';
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
-import { RoleModalService } from 'src/app/service/system/role/role-modal/role-modal.service';
+import { RoleModalService } from 'src/app/service/system/system-role/role-modal/system-role-modal.service';
 import { Injectable } from '@angular/core';
 
 @Injectable({

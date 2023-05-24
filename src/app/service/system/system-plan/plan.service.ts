@@ -1,9 +1,9 @@
-import { DeleteConfirmationAlert } from './../../../shared/services/delete-confirmation-alert/delete-confirmation-alert.service';
-import { ToastService } from './../../../shared/services/toast/toast.service';
+import { DeleteConfirmationAlert } from '../../../shared/services/delete-confirmation-alert/delete-confirmation-alert.service';
+import { ToastService } from '../../../shared/services/toast/toast.service';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
-import { SystemPlanRepositoryService } from './../../../firebase/system-repository/plan/system-plan-repository.service';
+import { SystemPlanRepositoryService } from '../../../firebase/system-repository/plan/system-plan-repository.service';
 import { PlanModalService } from './plan-modal/plan-modal.service';
-import { IPlanConfiguration } from './../../../interface/system/plan/plan.interface';
+import { IPlanConfiguration } from '../../../interface/system/plan/plan.interface';
 import { Injectable } from '@angular/core';
 import { IPlanPrice } from 'src/app/interface/system/plan/plan.interface';
 import { NumberValidationService } from 'src/app/shared/services/number-validation/number-validation.service';

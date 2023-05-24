@@ -1,4 +1,4 @@
-import { PlanService } from './../../../../../service/system/plan/plan.service';
+import { PlanService } from '../../../../../service/system/system-plan/plan.service';
 import { DeviceWidthService } from './../../../../../shared/services/device-width/device-width.service';
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
 import { Component, Input, OnInit } from '@angular/core';

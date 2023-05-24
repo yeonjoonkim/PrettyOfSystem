@@ -1,7 +1,7 @@
 import { DeviceWidthService } from './../../../../../shared/services/device-width/device-width.service';
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { SystemRoleService } from 'src/app/service/system/role/system-role.service';
+import { SystemRoleService } from 'src/app/service/system/system-role/system-system-role.service';
 
 @Component({
   selector: 'system-role-list-card',

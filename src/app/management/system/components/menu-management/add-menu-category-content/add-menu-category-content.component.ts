@@ -3,7 +3,7 @@ import { LanguageService } from 'src/app/shared/services/language/language.servi
 import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
 import { IMenuContent } from 'src/app/interface/menu/menu.interface';
-import { SystemMenuCategoryService } from 'src/app/service/system/menu/category/system-menu-category.service';
+import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/sysytem-menu-category/system-menu-category.service';
 
 @Component({
   selector: 'add-menu-category-content',

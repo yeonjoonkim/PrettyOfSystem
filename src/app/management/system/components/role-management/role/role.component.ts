@@ -1,4 +1,4 @@
-import { SystemRoleService } from '../../../../../service/system/role/system-role.service';
+import { SystemRoleService } from '../../../../../service/system/system-role/system-system-role.service';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { LanguageService } from '../../../../../shared/services/language/language.service';
 import { Component, OnInit } from '@angular/core';

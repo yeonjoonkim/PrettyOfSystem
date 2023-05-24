@@ -1,4 +1,4 @@
-import { SystemMenuCategoryService } from 'src/app/service/system/menu/category/system-menu-category.service';
+import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/sysytem-menu-category/system-menu-category.service';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';

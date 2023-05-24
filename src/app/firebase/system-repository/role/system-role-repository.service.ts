@@ -1,8 +1,7 @@
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { firstValueFrom, map, Observable } from 'rxjs';
-import { IMenuCategory, IMenuContent } from 'src/app/interface/menu/menu.interface';
 
 @Injectable({
   providedIn: 'root'

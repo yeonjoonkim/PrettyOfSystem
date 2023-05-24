@@ -24,7 +24,8 @@
   </section>
 
   <!-- Content -->
-  <menu-management *ngIf="selectedSystemMenu.isMenuManagement"></menu-management>
-  <role-management *ngIf="selectedSystemMenu.isRoleManagement"></role-management>
-  <plan-management *ngIf="selectedSystemMenu.isPlanManagement"></plan-management>
+  <system-menu-management *ngIf="selectedSystemMenu.isMenuManagement"></system-menu-management>
+  <system-role-management *ngIf="selectedSystemMenu.isRoleManagement"></system-role-management>
+  <system-plan-management *ngIf="selectedSystemMenu.isPlanManagement"></system-plan-management>
+  <system-shop-management *ngIf="selectedSystemMenu.isShopManagement"></system-shop-management>
 </ion-content>

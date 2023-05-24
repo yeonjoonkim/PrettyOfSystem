@@ -1,5 +1,5 @@
 import { TextTransformService } from './../../../../../shared/services/text-transform/text-transform.service';
-import { PlanService } from './../../../../../service/system/plan/plan.service';
+import { PlanService } from '../../../../../service/system/system-plan/plan.service';
 import { NavParams } from '@ionic/angular';
 import { Component, Input, OnInit } from '@angular/core';
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';

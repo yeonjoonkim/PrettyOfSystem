@@ -1,6 +1,7 @@
 import { IPlanConfiguration } from "../plan/plan.interface";
 
 export interface IShopCategory{
+  id?: string;
   isHairSalon: boolean;
   isMassageTheraphy: boolean;
   isPersonalTrainning: boolean;
@@ -9,10 +10,11 @@ export interface IShopCategory{
 }
 
 export interface IShopCountry{
+  id?: string;
   currency: "AUD" | "JPY" | "KRW" | "CNY";
   length: string;
   name: string;
-  prefixedPhoneCode: "+82" | "+62" | "+81";
+  prefixedPhoneCode: "+82" | "+62" | "+81" | "+86";
 }
 
 export interface IShopPlan{
@@ -21,20 +23,48 @@ export interface IShopPlan{
   lastPaymentDate: Date;
 }
 
-export interface IShopConfiguration{
-  name: string;
-  phoneNumber: number;
-  emailAddress: string;
-  address1: string;
-  address2: string;
+export interface IShopWorkHours{
+  mon: IShopOperatingDaily;
+  tue: IShopOperatingDaily;
+  wed: IShopOperatingDaily;
+  thu: IShopOperatingDaily;
+  fri: IShopOperatingDaily;
+  sat: IShopOperatingDaily;
+  sun: IShopOperatingDaily;
+}
+
+export interface IShopOperatingDaily{
+  isOpen: boolean;
+  operatingHours: IShopOperatingHours;
+  lunchTime?: IShopOperatingDaily
+}
+
+export interface IShopOperatingHours{
+  openTime: string;
+  closeTime: string;
+}
+
+export interface IShopAddress{
+  line1: string;
+  line2: string;
   suburb: string;
   state: string;
   postCode: number;
-  category: IShopCategory;
-  country: IShopCountry;
-  plan: IShopPlan;
+}
+
+export interface IShopConfiguration{
+  name: string;
+  phoneNumber: number;
+  email: string;
+  taxNumber: string;
+  logoImg: string;
   currentActiveUserCount: number;
   currentActiveProductCount: number;
   currentActiveServiceCount: number;
   active: boolean;
+  address: IShopAddress;
+  operatingHours: IShopWorkHours;
+  category: IShopCategory;
+  country: IShopCountry;
+  plan: IShopPlan;
 }

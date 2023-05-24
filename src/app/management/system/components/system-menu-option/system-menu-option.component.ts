@@ -1,6 +1,6 @@
-import { ISystemMenuOptionAction } from '../../../../service/system/menu/system-menu-option/system-menu-option-controller.service';
+import { ISystemMenuOptionAction } from '../../../../service/system/system-menu/system-menu-option/system-menu-option-controller.service';
 import { Component, OnInit } from '@angular/core';
-import { SystemMenuOptionControllerService } from '../../../../service/system/menu/system-menu-option/system-menu-option-controller.service';
+import { SystemMenuOptionControllerService } from '../../../../service/system/system-menu/system-menu-option/system-menu-option-controller.service';
 import { PopoverController } from '@ionic/angular';
 
 @Component({

@@ -1,7 +1,7 @@
 import { PopoverController, NavParams } from '@ionic/angular';
 import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
 import { Component, OnInit } from '@angular/core';
-import { SystemMenuCategoryService } from 'src/app/service/system/menu/category/system-menu-category.service';
+import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/sysytem-menu-category/system-menu-category.service';
 
 @Component({
   selector: 'add-menu-category',

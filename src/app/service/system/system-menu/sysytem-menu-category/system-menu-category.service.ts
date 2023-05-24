@@ -1,6 +1,6 @@
 import { ToastService } from 'src/app/shared/services/toast/toast.service';
-import { TextTransformService } from './../../../../shared/services/text-transform/text-transform.service';
-import { LanguageService } from './../../../../shared/services/language/language.service';
+import { TextTransformService } from '../../../../shared/services/text-transform/text-transform.service';
+import { LanguageService } from '../../../../shared/services/language/language.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 import { IMenuContent } from 'src/app/interface/menu/menu.interface';
 import { SystemMenuCategoryAddService } from './add-category/system-menu-category-add.service';

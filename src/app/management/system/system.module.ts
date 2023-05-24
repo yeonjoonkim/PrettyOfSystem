@@ -18,6 +18,7 @@ import { MenuManagementModule } from './components/menu-management/menu-manageme
 import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
 import { RoleManagementModule } from './components/role-management/role-management.module';
 import { PlanManagementModule } from './components/plan-management/plan-management.module';
+import { ShopManagementModule } from './components/shop-management/shop-management.module';
 import { SystemMenuOptionComponent } from './components/system-menu-option/system-menu-option.component';
 
 import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.module';
@@ -34,6 +35,7 @@ import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.mo
     MenuManagementModule,
     RoleManagementModule,
     PlanManagementModule,
+    ShopManagementModule,
     IonicIconSelectionModule,
     KendoUiModule
   ],

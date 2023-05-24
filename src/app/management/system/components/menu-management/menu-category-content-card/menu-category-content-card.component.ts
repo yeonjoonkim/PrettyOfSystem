@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, AlertOptions, PopoverController } from '@ionic/angular';
 import {IMenuContent} from './../../../../../interface/menu/menu.interface';
 import { LanguageService } from 'src/app/shared/services/language/language.service';
-import { SystemMenuCategoryService } from 'src/app/service/system/menu/category/system-menu-category.service';
+import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/sysytem-menu-category/system-menu-category.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 
 @Component({

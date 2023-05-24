@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
-import { SystemRoleService } from './../../../../../service/system/role/system-role.service';
+import { SystemRoleService } from '../../../../../service/system/system-role/system-system-role.service';
 import { Component, OnInit } from '@angular/core';
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 
 @Component({
-  selector: 'role-management',
+  selector: 'system-role-management',
   templateUrl: './role-management.component.html',
   styleUrls: ['./role-management.component.scss'],
 })
