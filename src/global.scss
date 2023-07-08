@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -26,44 +26,47 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 @import "./theme/pretty-of-system-dark-theme/dist/scss";
-
-.toolbar-icon{
+@import "./theme/variables.scss";
+$form-background-color: white;
+$title-color: #414d58;
+.toolbar-icon {
   font-size: 30px;
   margin: 5px;
   cursor: pointer;
 }
 
-.active{
-  --background: rgb(54,53,54);
-  --background: linear-gradient(90deg, rgba(54,53,54,1) 0%, rgba(65,70,86,1) 100%);
+.active {
+  --background: rgb(54, 53, 54);
+  --background: linear-gradient(
+    90deg,
+    rgba(54, 53, 54, 1) 0%,
+    rgba(65, 70, 86, 1) 100%
+  );
   font-weight: bold;
 }
+.date-pick-popup-container {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
 
-.pop-over-container{
+.pop-over-container {
   align-items: center;
   display: flex;
   flex-direction: column;
   padding: 80px;
 }
 
-
-.delete-ion-sliding-option{
+.delete-ion-sliding-option {
   color: red;
 }
 
-.error-toast{
+.error-toast {
   --background: red;
 }
 
-ion-button{
-  --background: rgb(54,53,54);
-  --background: linear-gradient(90deg, rgba(54,53,54,1) 0%, rgba(65,70,86,1) 100%);
-  position: relative;
-  margin: auto;
-  color: white;
-}
-
-.ion-card-title-icon{
+.ion-card-title-icon {
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -73,24 +76,85 @@ ion-button{
   margin-right: 5px;
 }
 
-yes-no-selection-group{
+.form-error-container {
+  width: 100%;
+  height: 5px;
+}
+
+.flex-col-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row-container {
+  display: flex;
+  flex-direction: row;
+}
+
+legend {
+  font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-style: normal;
+}
+
+yes-no-selection-group {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   width: fit-content;
-  yes-no-selection{
+  yes-no-selection {
     align-self: flex-end;
   }
 }
 
-.modal-container{
-  width: 98%;
-  padding-top: 15px;
+ion-button {
+  --background: rgb(54, 53, 54);
+  --background: linear-gradient(
+    90deg,
+    rgba(54, 53, 54, 1) 0%,
+    rgba(65, 70, 86, 1) 100%
+  );
+  position: relative;
   margin: auto;
+  color: white;
 }
 
-legend{
-  font-size: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+kendo-textbox,
+kendo-autocomplete,
+kendo-label {
+  font-style: normal;
+}
+
+//Form
+ion-content {
+  form-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}
+
+flex-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-row-item {
+    flex: 1;
+  }
+}
+flex-col {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-col-item {
+    flex: 1;
+  }
+}
+flex-row-item,
+flex-col-item {
+  margin: 0px 15px 10px 15px;
 }

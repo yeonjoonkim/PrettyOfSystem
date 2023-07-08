@@ -1,7 +1,9 @@
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { ModalController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
-import { RoleComponent } from 'src/app/management/system/components/role-management/role/role.component';
+
+
+import { RoleComponent } from 'src/app/component/system/role/role/role.component';
 @Injectable({
   providedIn: 'root'
 })

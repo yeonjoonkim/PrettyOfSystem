@@ -1,5 +1,5 @@
-import { DeviceWidthService } from './shared/services/device-width/device-width.service';
-import { LanguageService } from './shared/services/language/language.service';
+import { DeviceWidthService } from './shared/services/global/device-width/device-width.service';
+import { LanguageService } from './shared/services/global/language/language.service';
 import {  Component, OnDestroy, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Subscription } from 'rxjs';
@@ -17,21 +17,13 @@ export class AppComponent implements OnInit, OnDestroy {
   private languageChangeActionSubscription: Subscription | undefined;
 
   constructor(private storage: Storage, private language: LanguageService, private sysLanguageRepo: SystemLanguageRepositoryService, private deviceWidth: DeviceWidthService) {
-    this.language.languageSelection = this.sysLanguageRepo.getLanguageSelectionResult();
-
     this.storage.create();
   }
 
   async ngOnInit(){
     this.subscribeDeviceWidth();
     this.subscribeLanguageChangeAction();
-    await this.delay();
-  }
-
-  async delay(){
-    setTimeout(() => {
-      this.isLoaded = true;
-    }, 300);
+    await this.loading();
   }
 
   async ngOnDestroy(){
@@ -50,4 +42,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.deviceTypeSubscription = this.deviceWidth.deviceTypeObservable.subscribe(device => {this.deviceWidth.deviceType = device;});
   }
 
+  private async loading(){
+    let landingLanguagePackage = this.language.languageSelection.subscribe(received => {
+       if(received){this.isLoaded = true; landingLanguagePackage.unsubscribe();}
+       });
+  }
 }

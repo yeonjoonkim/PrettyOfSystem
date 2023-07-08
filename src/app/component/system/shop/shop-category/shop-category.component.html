@@ -1,0 +1,18 @@
+<kendo-label
+  [for]="shopCategoryList"
+  text="{{ 'shop.category.title' | languageTransform | async }}"
+>
+  <div class="form-error-container"></div>
+  <kendo-dropdownlist
+    #shopCategoryList
+    [data]="pairValueIdList"
+    textField="value"
+    valueField="id"
+    [(ngModel)]="selectedPairValueId"
+    (valueChange)="onClickCategory()"
+    [readonly]="readOnly"
+    [loading]="loading"
+    defaultItem="{{ 'message.error.option' | languageTransform | async }}"
+  >
+  </kendo-dropdownlist>
+</kendo-label>

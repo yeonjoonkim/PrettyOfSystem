@@ -4,24 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/management/system',
+    redirectTo: '/system',
     pathMatch: 'full'
   },
   {
-    path: 'management/system',
-    loadChildren: () => import('./management/system/system.module').then( m => m.SystemPageModule)
-  },
-  {
-    path: 'management/shop',
-    loadChildren: () => import('./management/shop/shop.module').then( m => m.ShopPageModule)
-  },
-  {
-    path: 'management/user',
-    loadChildren: () => import('./management/user/user.module').then( m => m.UserPageModule)
-  },
-  {
-    path: 'management/payment',
-    loadChildren: () => import('./management/payment/payment.module').then( m => m.PaymentPageModule)
+    path: 'system',
+    loadChildren: () => import('./page/system/system.module').then( m => m.SystemPageModule)
   }
 ];
 

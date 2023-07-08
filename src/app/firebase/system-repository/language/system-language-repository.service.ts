@@ -1,7 +1,7 @@
 import { ILanguageSelection, ILanguageKey } from './../../../interface/system/language/language.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { map } from 'rxjs';
+import { Observable, firstValueFrom, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

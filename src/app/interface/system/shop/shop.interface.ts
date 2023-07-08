@@ -1,7 +1,9 @@
-import { IPlanConfiguration } from "../plan/plan.interface";
+import * as Constant from '../../../shared/services/global/global-constant';
+import { IAddress, ITimeItem } from '../../global/global.interface';
+import { IShopSetting } from './shop-setting.interface';
 
-export interface IShopCategory{
-  id?: string;
+export type IShopCategory = {
+  id: string;
   isHairSalon: boolean;
   isMassageTheraphy: boolean;
   isPersonalTrainning: boolean;
@@ -9,18 +11,28 @@ export interface IShopCategory{
   name: string;
 }
 
-export interface IShopCountry{
-  id?: string;
-  currency: "AUD" | "JPY" | "KRW" | "CNY";
+export type IShopCountry = {
+  id: string;
+  currency: Constant.CurrencyType;
   length: string;
   name: string;
-  prefixedPhoneCode: "+82" | "+62" | "+81" | "+86";
+  prefixedPhoneCode: Constant.PhoneCodeType;
+  dateFormat: Constant.DateFormatType;
+  code: Constant.CountryCodeType;
 }
 
 export interface IShopPlan{
   configurationId: string;
   isOverDue: boolean;
   lastPaymentDate: Date;
+  paymentDate: Date;
+  option: IShopPlanOption;
+}
+
+export interface IShopPlanOption{
+  isWeekly: boolean;
+  isMonthly: boolean;
+  isAnnually: boolean;
 }
 
 export interface IShopWorkHours{
@@ -34,37 +46,35 @@ export interface IShopWorkHours{
 }
 
 export interface IShopOperatingDaily{
+  index: Constant.DayIndexType;
   isOpen: boolean;
   operatingHours: IShopOperatingHours;
-  lunchTime?: IShopOperatingDaily
 }
 
 export interface IShopOperatingHours{
-  openTime: string;
-  closeTime: string;
+  openTime: ITimeItem;
+  closeTime: ITimeItem;
 }
-
-export interface IShopAddress{
-  line1: string;
-  line2: string;
-  suburb: string;
-  state: string;
-  postCode: number;
-}
-
 export interface IShopConfiguration{
+  id: string;
   name: string;
-  phoneNumber: number;
+  phoneNumber: string;
   email: string;
   taxNumber: string;
-  logoImg: string;
-  currentActiveUserCount: number;
-  currentActiveProductCount: number;
-  currentActiveServiceCount: number;
+  logoImg: any;
   active: boolean;
-  address: IShopAddress;
+  address: IAddress;
   operatingHours: IShopWorkHours;
   category: IShopCategory;
   country: IShopCountry;
   plan: IShopPlan;
+  setting: IShopSetting;
+  timezone: string;
+}
+
+export interface IShopConfigurationFilterOption{
+  name: string;
+  email: string;
+  phoneNumber: string;
+  planConfigurationId: string;
 }

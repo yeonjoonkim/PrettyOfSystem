@@ -3,8 +3,8 @@ import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
 import { Observable } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { LanguageService } from '../../services/language/language.service';
-import { StorageService } from '../../services/storage/storage.service';
+import { LanguageService } from '../../services/global/language/language.service';
+import { StorageService } from '../../services/global/storage/storage.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 
 @Component({

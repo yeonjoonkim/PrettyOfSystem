@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LanguageService } from 'src/app/shared/services/language/language.service';
+import { LanguageService } from 'src/app/shared/services/global/language/language.service';
 export interface ISystemMenuOptionAction{
   name: string;
   isLanguageDictionary: boolean;

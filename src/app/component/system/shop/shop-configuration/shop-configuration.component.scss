@@ -1,0 +1,22 @@
+#active-box {
+  position: absolute;
+  right: 0;
+  margin-left: 15px;
+  margin-top: 15px;
+  color: #b3b3b3;
+  font-size: 11px;
+  .k-checkbox {
+    margin-left: 5px;
+  }
+}
+
+#info-container {
+  legend {
+    margin: 15px;
+  }
+}
+
+#country,
+#timezone {
+  margin-top: 10px;
+}

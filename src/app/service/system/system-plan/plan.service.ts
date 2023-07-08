@@ -1,12 +1,9 @@
-import { DeleteConfirmationAlert } from '../../../shared/services/delete-confirmation-alert/delete-confirmation-alert.service';
-import { ToastService } from '../../../shared/services/toast/toast.service';
-import { LanguageService } from 'src/app/shared/services/language/language.service';
 import { SystemPlanRepositoryService } from '../../../firebase/system-repository/plan/system-plan-repository.service';
 import { PlanModalService } from './plan-modal/plan-modal.service';
 import { IPlanConfiguration } from '../../../interface/system/plan/plan.interface';
 import { Injectable } from '@angular/core';
 import { IPlanPrice } from 'src/app/interface/system/plan/plan.interface';
-import { NumberValidationService } from 'src/app/shared/services/number-validation/number-validation.service';
+import { GlobalService } from 'src/app/shared/services/global/global.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +14,8 @@ export class PlanService {
   private readonly netRate: number = this.rateHolder - this.taxRate;
   constructor(
     public modal: PlanModalService,
-    public numberValidatation: NumberValidationService,
     private planRepo: SystemPlanRepositoryService,
-    private toast: ToastService,
-    private language: LanguageService,
-    private deleteConfirmation: DeleteConfirmationAlert) { }
+    private global: GlobalService) { }
 
   public subscribeAllPlanOptions(){
     return this.planRepo.getSystemPlanOptions();
@@ -42,10 +36,10 @@ export class PlanService {
   }
 
   public getTaxAndNetPrice(price: number): IPlanPrice{
-    price = this.numberValidatation.roundToDecimalPlaces(price, 2);
+    price = this.global.numberTransform.roundToDecimalPlaces(price, 2);
     return {
-      tax: price ? this.numberValidatation.roundToDecimalPlaces(price * this.taxRate, 2) : 0,
-      net: price ? this.numberValidatation.roundToDecimalPlaces(price * this.netRate, 2) : 0,
+      tax: price ? this.global.numberTransform.roundToDecimalPlaces(price * this.taxRate, 2) : 0,
+      net: price ? this.global.numberTransform.roundToDecimalPlaces(price * this.netRate, 2) : 0,
       total: price
     }
   }
@@ -54,8 +48,8 @@ export class PlanService {
     let isSaved = await this.planRepo.addSystemPlanOption(planConfig);
 
     if(isSaved){
-      await this.presentSaveMsg();
       await this.modal.dismissModal();
+      await this.presentSaveMsg();
     }else{
       await this.presentSaveError();
     }
@@ -73,39 +67,39 @@ export class PlanService {
   }
 
   public async processDeletePlan(selectedPlanId: string, selectedPlanName: string){
-    let deleteConfirmation = await this.deleteConfirmation.getdeleteConfirmation(selectedPlanName);
+    let deleteConfirmation = await this.global.deleteConfirmAlert.getdeleteConfirmationWithName(selectedPlanName);
     if(deleteConfirmation){
       await this.planRepo.deleteSystemPlanOption(selectedPlanId) ? await this.presentDeleteMsg(): await this.presentDeleteError();
     }
   }
 
   private async presentSaveMsg(){
-    let msg = await this.language.transform('message.success.save');
-    await this.toast.present(msg);
+    let msg = await this.global.language.transform('message.success.save');
+    await this.global.toast.present(msg);
   }
 
   private async presentSaveError(){
-    let msg = await this.language.transform('message.error.unsaved');
-    await this.toast.present(msg);
+    let msg = await this.global.language.transform('message.error.unsaved');
+    await this.global.toast.present(msg);
   }
 
   private async presentDeleteMsg(){
-    let msg = await this.language.transform('message.success.delete');
-    await this.toast.present(msg);
+    let msg = await this.global.language.transform('message.success.delete');
+    await this.global.toast.present(msg);
   }
 
   private async presentDeleteError(){
-    let msg = await this.language.transform('message.error.delete');
-    await this.toast.present(msg);
+    let msg = await this.global.language.transform('message.error.delete');
+    await this.global.toast.present(msg);
   }
 
   private async presentUpdateError(){
-    let msg = await this.language.transform('message.error.updated');
-    await this.toast.present(msg);
+    let msg = await this.global.language.transform('message.error.updated');
+    await this.global.toast.present(msg);
   }
 
   private async presentUpdateMsg(){
-    let msg = await this.language.transform('message.success.update');
-    await this.toast.present(msg);
+    let msg = await this.global.language.transform('message.success.update');
+    await this.global.toast.present(msg);
   }
 }

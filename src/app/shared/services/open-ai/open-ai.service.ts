@@ -1,7 +1,7 @@
 
-import { LanguageService } from 'src/app/shared/services/language/language.service';
-import { LoadingService } from './../loading/loading.service';
-import { ToastService } from 'src/app/shared/services/toast/toast.service';
+import { LanguageService } from 'src/app/shared/services/global/language/language.service';
+import { LoadingService } from '../global/loading/loading.service';
+import { ToastService } from '../global/toast/toast.service';
 import { Injectable } from '@angular/core';
 import { openAiApi } from './../../../../../openai-key';
 

@@ -1,5 +1,5 @@
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
-import { PlanComponent } from '../../../../management/system/components/plan-management/plan/plan.component';
+import { PlanComponent } from '../../../../component/system/plan/plan/plan.component';
 import { ModalController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 

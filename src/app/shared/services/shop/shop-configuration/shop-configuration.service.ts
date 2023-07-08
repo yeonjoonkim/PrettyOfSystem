@@ -1,34 +1,40 @@
 import { Observable, firstValueFrom } from 'rxjs';
 import { SystemPlanRepositoryService } from 'src/app/firebase/system-repository/plan/system-plan-repository.service';
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
-import { IShopAddress, IShopCategory, IShopConfiguration, IShopCountry, IShopPlan, IShopWorkHours } from 'src/app/interface/system/shop/shop.interface';
-
+import { IShopCategory, IShopConfiguration, IShopCountry, IShopPlan, IShopWorkHours } from 'src/app/interface/system/shop/shop.interface';
+import { IAddress } from 'src/app/interface/global/global.interface';
+import * as Constant from './../../global/global-constant';
+import { IShopSetting } from 'src/app/interface/system/shop/shop-setting.interface';
 export class ShopConfiguration implements IShopConfiguration{
   private readonly SystemPlanRepositoryService!: SystemPlanRepositoryService;
   public readonly planConfig: Observable<IPlanConfiguration | undefined> = this.SystemPlanRepositoryService.getSelectedPlan(this.plan.configurationId);
   constructor(
-    public logoImg: string,
+    public id: string,
+    public logoImg: any,
     public taxNumber: string,
     public name: string,
-    public phoneNumber: number,
+    public phoneNumber: string,
     public email: string,
     public active: boolean,
     public currentActiveUserCount: number,
     public currentActiveProductCount: number,
     public currentActiveServiceCount: number,
-    public address: IShopAddress,
+    public address: IAddress,
     public operatingHours: IShopWorkHours,
     public category: IShopCategory,
     public country: IShopCountry,
-    public plan: IShopPlan
+    public plan: IShopPlan,
+    public setting: IShopSetting
   ) {
   }
 
   public fullAddress(): string{
-    let isAsianCountry: boolean = this.country.currency === 'JPY' || this.country.currency === 'CNY' || this.country.currency === 'KRW';
+    let isAsianCountry: boolean = this.country.currency === Constant.Default.CurrencyType.CNY
+                                || this.country.currency === Constant.Default.CurrencyType.JPY
+                                || this.country.currency === Constant.Default.CurrencyType.KRW;
 
-    return isAsianCountry ? this.address.state + " " + this.address.suburb + " " + this.address.line2 + " " + this.address.line1 + " " + this.address.postCode + " "
-                          : this.address.line1 + " " + this.address.line2 + " " + this.address.suburb +" "+this.address.state + " " + this.address.postCode;
+    return isAsianCountry ? this.address.state + " " + this.address.suburb + " " + this.address.street +  " " + this.address.postCode + " "
+                          : this.address.street + " " + this.address.suburb +" "+this.address.state + " " + this.address.postCode;
   }
 
   public callNumber():string{
@@ -57,5 +63,22 @@ export class ShopConfiguration implements IShopConfiguration{
 
   private async getCurrentPlanConfig(): Promise<IPlanConfiguration | undefined>{
     return await firstValueFrom(this.planConfig);
+  }
+
+  private getIShopSetting(): IShopSetting{
+    let setting: IShopSetting = {
+      reservationScheduler: { isEnabled: false, intervalMin: 0}
+    }
+    return setting;
+  }
+
+  private async setDefaultShopSetting(){
+    let setting: IShopSetting = this.getIShopSetting();
+    //General
+    //setting.general.taxRate = setting?.general?.taxRate ?? Constant.Setting.ShopSetting.General.TaxRate;
+        //Reversion Scheduler
+    setting.reservationScheduler.isEnabled = Constant.Setting.ShopSetting.ReservationScheduler.IsEnabled;
+    setting.reservationScheduler.intervalMin = Constant.Setting.ShopSetting.ReservationScheduler.intervalMin;
+    return setting;
   }
 }

@@ -1,0 +1,13 @@
+<kendo-label text="{{title | languageTransform | async}}">
+  <kendo-numerictextbox
+  format="p"
+  [step]="step"
+  [min]="min"
+  [max]="max"
+  [(value)]="currentValue"
+  [autoCorrect]="true"
+  [readonly]="readOnly"
+  [rangeValidation]="true"
+  [spinners]="!readOnly"
+></kendo-numerictextbox>
+</kendo-label>

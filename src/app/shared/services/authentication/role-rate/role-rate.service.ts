@@ -1,16 +1,12 @@
 import { IRoleAccessLevel } from './../../../../interface/system/role/role.interface';
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { Injectable } from '@angular/core';
-
+import * as Constant from '../../global/global-constant';
 @Injectable({
   providedIn: 'root'
 })
 export class RoleRateService {
-  private readonly employeeRate: number = 10;
-  private readonly receptionRate: number = 100;
-  private readonly managerRate: number = 1000;
-  private readonly adminRate: number = 10000;
-  private readonly systemAdminRate: number = 100000;
+  private readonly rate = Constant.Default.RoleAccessRateType
 
   constructor() { }
 
@@ -25,33 +21,33 @@ export class RoleRateService {
     return rate;
   }
 
-  public getSystemRoleRateAccessLevel(level: 'systemAdmin'| 'admin' | 'manager' | 'reception' | 'employee'): number{
-    return level === 'systemAdmin' ? this.systemAdminRate
-    : level === 'admin' ? this.adminRate
-    : level === 'manager' ? this.managerRate
-    : level === 'reception' ? this.receptionRate
-    : level === 'employee' ? this.employeeRate
+  public getSystemRoleRateAccessLevel(level: Constant.RoleAccessType): number{
+    return level === 'systemAdmin' ? this.rate.SystemAdmin
+    : level === 'admin' ? this.rate.Admin
+    : level === 'manager' ? this.rate.Manager
+    : level === 'reception' ? this.rate.Reception
+    : level === 'employee' ? this.rate.Employee
     : 0;
   }
 
   private getEmployeeRate(accessLevel: IRoleAccessLevel, currentRate: number): number{
-    return accessLevel.isEmployee ? this.employeeRate : currentRate;
+    return accessLevel.isEmployee ? this.rate.Employee : currentRate;
   }
 
   private getReceptionRate(accessLevel: IRoleAccessLevel, currentRate: number): number{
-    return accessLevel.isReception ? this.receptionRate : currentRate;
+    return accessLevel.isReception ? this.rate.Reception : currentRate;
   }
 
   private getManagerRate(accessLevel: IRoleAccessLevel, currentRate: number): number{
-    return accessLevel.isManager ? this.managerRate : currentRate;
+    return accessLevel.isManager ? this.rate.Manager : currentRate;
   }
 
   private getAdminRate(accessLevel: IRoleAccessLevel, currentRate: number): number{
-    return accessLevel.isAdmin ? this.adminRate : currentRate;
+    return accessLevel.isAdmin ? this.rate.Admin : currentRate;
   }
 
   private getSystemAdminRate(accessLevel: IRoleAccessLevel, currentRate: number): number{
-    return accessLevel.isSystemAdmin ? this.systemAdminRate : currentRate;
+    return accessLevel.isSystemAdmin ? this.rate.SystemAdmin : currentRate;
   }
 
 }

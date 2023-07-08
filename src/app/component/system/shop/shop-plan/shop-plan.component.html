@@ -1,0 +1,17 @@
+<kendo-label
+  [for]="shopPlan"
+  text="{{ 'shop.plan.title' | languageTransform | async }}"
+>
+  <kendo-dropdownlist
+    #shopPlan
+    [data]="planPairIdValueList"
+    textField="value"
+    valueField="id"
+    [(ngModel)]="selectedPlanPairIdValue"
+    (valueChange)="onClickPlanPairIdValue()"
+    [readonly]="readOnly"
+    [loading]="loading"
+    defaultItem="{{ 'message.error.option' | languageTransform | async }}"
+  >
+  </kendo-dropdownlist>
+</kendo-label>
