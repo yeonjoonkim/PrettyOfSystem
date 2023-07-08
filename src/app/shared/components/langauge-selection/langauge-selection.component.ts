@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ILanguageSelection } from 'src/app/interface/system/language/language.interface';
-import { LanguageService } from '../../services/language/language.service';
+import { LanguageService } from '../../services/global/language/language.service';
 
 
 @Component({

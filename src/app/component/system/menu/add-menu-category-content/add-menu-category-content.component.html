@@ -1,0 +1,19 @@
+<div id="add-menu-container">
+    <!--Label-->
+    <ion-item>
+        <ion-label>{{'label.name.description' | languageTransform | async}}</ion-label>
+        <ion-input [(ngModel)]="categoryContent.description"></ion-input>
+    </ion-item>
+
+    <!--URL-->
+    <ion-item>
+        <ion-label>{{'label.name.url' | languageTransform | async}}</ion-label>
+        <ion-input [(ngModel)]="categoryContent.url"></ion-input>
+    </ion-item>
+    <!--Icon-->
+    <ionic-icon-selection [(icon)]="categoryContent.icon"></ionic-icon-selection>
+
+    <!--Button-->
+    <ion-button *ngIf="!editMode" expand="full" (click)="onClickSaveNewCategoryContent()">{{'button.name.save' | languageTransform | async}}</ion-button>
+    <ion-button *ngIf="editMode" expand="full" (click)="onClickEditCategoryContent()">{{'button.name.edit' | languageTransform | async}}</ion-button>
+</div>

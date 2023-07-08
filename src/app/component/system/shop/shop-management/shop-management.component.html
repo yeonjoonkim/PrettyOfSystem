@@ -1,0 +1,25 @@
+<legend>
+  {{ "label.name.shopconfiguration" | languageTransform | async }}
+</legend>
+<kendo-grid [height]="500">
+  <!-- Add Button -->
+  <ng-template kendoGridToolbarTemplate>
+    <button kendoGridAddCommand (click)="onClickCreateShopConfiguration()">
+      {{ "button.name.add" | languageTransform | async }}
+    </button>
+  </ng-template>
+
+  <kendo-grid-column
+    title="{{ 'label.name.name' | languageTransform | async }}"
+  >
+    <ng-template kendoGridCellTemplate let-shop> </ng-template>
+  </kendo-grid-column>
+
+  <!--Edit-->
+  <kendo-grid-command-column>
+    <ng-template kendoGridCellTemplate>
+      <button kendoGridEditCommand themeColor="tertiary" icon="edit"></button>
+      <button kendoGridRemoveCommand themeColor="error" icon="trash"></button>
+    </ng-template>
+  </kendo-grid-command-column>
+</kendo-grid>

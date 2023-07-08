@@ -2,32 +2,55 @@
   @include typography-classes($tb-typography);
 }
 
-.k-input{
+.k-input {
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
-.k-floating-label-container, .k-empty{
+.k-floating-label-container,
+.k-empty {
   padding-top: 10px;
 }
 
-.k-checkbox{
-  background-color: #4B4A54;
+.k-checkbox {
+  background-color: #4b4a54;
   margin-left: 25px;
 }
 
 //Switch
-.k-switch{
+.k-switch {
   width: 70px;
   margin-left: 18px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
-.k-switch-off .k-switch-track{
-  background-color: #4B4A54;
+.k-switch-off .k-switch-track {
+  background-color: #4b4a54;
 }
 
 //Number Input
-.k-numerictextbox{
+.k-numerictextbox {
   margin: 10px;
 }
 
+.k-picker,
+.k-datepicker {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.k-form-error {
+  margin: 0;
+}
+
+.time-picker .k-input {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.k-animation-container,
+.k-animation-container-shown {
+  z-index: 100000;
+}
+.k-animation-container {
+  z-index: 10003; // set the desired value based on the application requirements
+}

@@ -1,0 +1,225 @@
+<ion-content [scrollable]="true">
+  <form-header
+    [title]="form.headerTitle"
+    [readOnly]="form.readOnly"
+    [enabledSavebutton]="form.enabledSavebutton"
+    [action]="form.action"
+    (onClickDismiss)="dismiss()"
+  >
+  </form-header>
+  <form-container>
+    <!-- Button -->
+    <kendo-buttongroup selection="single" width="100%">
+      <!--Information Button -->
+      <button
+        kendoButton
+        [toggleable]="true"
+        (click)="onClickInfo()"
+        [(selected)]="display.info"
+      >
+        {{ "label.name.info" | languageTransform | async }}
+      </button>
+      <!--Address Button-->
+      <button
+        kendoButton
+        [toggleable]="true"
+        (click)="onClickAddress()"
+        [(selected)]="display.address"
+      >
+        {{ "label.name.address" | languageTransform | async }}
+      </button>
+      <!--Subscription Button-->
+      <button
+        kendoButton
+        [toggleable]="true"
+        (click)="onClickSubscription()"
+        [(selected)]="display.subscription"
+      >
+        {{ "label.name.subscription" | languageTransform | async }}
+      </button>
+    </kendo-buttongroup>
+
+    <!--Information-->
+    <div *ngIf="display.info" id="info-container">
+      <flex-row>
+        <flow-row-item>
+          <legend>{{ "label.name.info" | languageTransform | async }}</legend>
+        </flow-row-item>
+        <!--Active-->
+        <flex-row-item id="active-box">
+          <kendo-label
+            text="{{ 'shop.config.active' | languageTransform | async }}"
+          >
+            <input
+              type="checkbox"
+              kendoCheckBox
+              [checked]="config.active"
+              [readOnly]="form.readOnly"
+            />
+          </kendo-label>
+        </flex-row-item>
+      </flex-row>
+      <flex-row>
+        <flex-row-item>
+          <text-box
+            #businessName
+            title="shop.config.name"
+            [readOnly]="form.readOnly"
+            [(value)]="config.name"
+            [(validate)]="validator.name"
+            [isTitleFormat]="true"
+            [isRequired]="true"
+            [min]="2"
+            (valueChange)="ngAfterViewInit()"
+          >
+          </text-box>
+        </flex-row-item>
+        <flex-row-item>
+          <text-box
+            #taxNumber
+            title="shop.config.taxnumber"
+            [readOnly]="form.readOnly"
+            [(value)]="config.taxNumber"
+            [(validate)]="validator.taxNumber"
+            [isTitleFormat]="true"
+            [maxLength]="15"
+            [isRequired]="true"
+            [showCounter]="false"
+            (valueChange)="ngAfterViewInit()"
+          >
+          </text-box>
+        </flex-row-item>
+      </flex-row>
+      <!--Phone Number and Email-->
+      <flex-row>
+        <flex-row-item>
+          <phone-number
+            #phoneNumber
+            [(phoneNumber)]="config.phoneNumber"
+            [(validate)]="validator.phonNumber"
+            [readOnly]="form.readOnly"
+            [isRequired]="true"
+            (phoneNumberChange)="ngAfterViewInit()"
+          >
+          </phone-number>
+        </flex-row-item>
+        <flex-row-item>
+          <e-mail
+            #email
+            [(email)]="config.email"
+            [(validate)]="validator.email"
+            [readOnly]="form.readOnly"
+            [isRequired]="true"
+            (emailChange)="ngAfterViewInit()"
+          >
+          </e-mail>
+        </flex-row-item>
+      </flex-row>
+      <!--Shop Category and Shop Country-->
+      <flex-row>
+        <flex-row-item>
+          <shop-category
+            #category
+            [readOnly]="form.readOnly"
+            [(shopCategory)]="config.category"
+            [(validate)]="validator.category"
+            (shopCategoryChange)="ngAfterViewInit()"
+          >
+          </shop-category>
+        </flex-row-item>
+      </flex-row>
+    </div>
+
+    <!--Address-->
+    <div *ngIf="display.address">
+      <address
+        [isRequired]="true"
+        [(address)]="config.address"
+        [(validate)]="validator.address"
+        [readOnly]="form.readOnly"
+        (addressChange)="ngAfterViewInit()"
+      ></address>
+      <flex-row>
+        <flex-row-item id="country">
+          <shop-country
+            #country
+            [(shopCountry)]="config.country"
+            [(validate)]="validator.country"
+            (shopCountryChange)="ngAfterViewInit()"
+          >
+          </shop-country>
+        </flex-row-item>
+        <flex-row-item id="timezone">
+          <kendo-label
+            text="{{ 'label.name.timezone' | languageTransform | async }}"
+          >
+            <kendo-dropdownlist
+              #shopCategoryList
+              [data]="timeZoneList"
+              [(ngModel)]="config.timezone"
+              defaultItem="{{
+                'message.error.option' | languageTransform | async
+              }}"
+              (ngModelChange)="ngAfterViewInit()"
+            >
+            </kendo-dropdownlist>
+          </kendo-label>
+        </flex-row-item>
+      </flex-row>
+    </div>
+
+    <!--Subscription-->
+    <flex-row id="subscription-title" *ngIf="display.subscription">
+      <flex-row-item>
+        <legend>
+          {{ "label.name.subscription" | languageTransform | async }}
+        </legend>
+      </flex-row-item>
+      <flex-row-item id="active-box">
+        <kendo-label
+          text="{{ 'shop.config.overdue' | languageTransform | async }}"
+        >
+          <input
+            type="checkbox"
+            kendoCheckBox
+            [checked]="config.plan.isOverDue"
+            [readOnly]="true"
+          />
+        </kendo-label>
+      </flex-row-item>
+    </flex-row>
+
+    <flex-col *ngIf="display.subscription">
+      <flex-col-item>
+        <shop-plan
+          [(planId)]="config.plan.configurationId"
+          [(validate)]="validator.plan"
+          [readOnly]="form.readOnly"
+          (planIdChange)="ngAfterViewInit()"
+        ></shop-plan>
+      </flex-col-item>
+      <flex-row>
+        <flex-row-item>
+          <date-picker
+            title="label.name.lastpaymentdate"
+            [dateFormatter]="config.country.dateFormat"
+            [shopTimeZone]="config.timezone"
+            [(date)]="config.plan.lastPaymentDate"
+            [readOnly]="form.readOnly"
+            [restrictedFromToday]="false"
+          ></date-picker>
+        </flex-row-item>
+        <flex-row-item>
+          <date-picker
+            title="label.name.upcomingpaymentdate"
+            [dateFormatter]="config.country.dateFormat"
+            [shopTimeZone]="config.timezone"
+            [(date)]="config.plan.paymentDate"
+            [readOnly]="form.readOnly"
+            [restrictedFromToday]="false"
+          ></date-picker>
+        </flex-row-item>
+      </flex-row>
+    </flex-col>
+  </form-container>
+</ion-content>

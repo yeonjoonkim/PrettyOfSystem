@@ -16,9 +16,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 //Import Component
-import { MenuComponent } from './shared/components/menu/menu.component';
-import { LangaugeSelectionComponent } from './shared/components/langauge-selection/langauge-selection.component';
-
 
 //Import Firebase
 import { AngularFireModule } from '@angular/fire/compat';
@@ -35,6 +32,10 @@ import { LanguageTransformPipeModule } from './shared/pipes/language-transform-p
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KendoUiModule } from './shared/kendo-ui-module/kendo-ui-module.module';
 import 'hammerjs';
+
+//Delcalration for Shared Component
+import { MenuComponent } from './shared/components/menu/menu.component';
+import { LangaugeSelectionComponent } from './shared/components/langauge-selection/langauge-selection.component';
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, LangaugeSelectionComponent],

@@ -84,6 +84,8 @@
     "localforage-cordovasqlitedriver": "^1.8.0",
     "lodash-es": "^4.17.21",
     "lodash.memoize": "^4.1.2",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
     "ng-packagr": "^15.0.3",
     "ng2-search-filter": "^0.5.1",
     "openai": "^3.1.0",

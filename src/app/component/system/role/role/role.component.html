@@ -1,0 +1,52 @@
+<!-- Title -->
+<ion-toolbar>
+  <kendo-buttongroup slot="start">
+    <!-- Save -->
+    <button
+    *ngIf="!editMode"
+    kendoButton
+    size="large"
+    rounded="large"
+    (click)="onClickSaveRoleConfiguration()">
+    {{'button.name.save' | languageTransform | async }}
+    </button>
+    <!-- Edit -->
+    <button
+    *ngIf="editMode"
+    kendoButton
+    size="large"
+    rounded="large"
+    (click)="onClickEditRoleConfiguration()"
+    themeColor="success">
+    {{'button.name.edit' | languageTransform | async }}
+    </button>
+  </kendo-buttongroup>
+  <ion-title *ngIf="!editMode">{{'title.name.addrole'| languageTransform | async }}</ion-title>
+  <ion-title  *ngIf="editMode">{{editedTitle | languageTransform | async }} {{'title.name.editrole' | languageTransform | async }}</ion-title>
+  <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="dismiss()"></ion-icon>
+</ion-toolbar>
+
+<!--Role Label-->
+<ion-content>
+  <section class="modal-container">
+
+    <!-- Role Description-->
+    <kendo-label text="{{'label.name.roledescription' | languageTransform | async}}">
+      <kendo-textbox
+                    [(ngModel)]="role.description"
+                    size="large"
+                    [clearButton]="true">
+      </kendo-textbox>
+    </kendo-label>
+
+    <!--Role Config -->
+    <yes-no-selection-group>
+      <yes-no-selection label="label.name.systemadmin" [(value)]="role.accessLevel.isSystemAdmin" (valueChange)="onChangeSystemAdminAccessCtrl($event)"></yes-no-selection>
+      <yes-no-selection label="label.name.admin" [(value)]="role.accessLevel.isAdmin" (valueChange)="onChangeAdminAccessCtrl($event)"></yes-no-selection>
+      <yes-no-selection label="label.name.manager" [(value)]="role.accessLevel.isManager" (valueChange)="onChangeManagerAccessCtrl($event)"></yes-no-selection>
+      <yes-no-selection label="label.name.employee" [(value)]="role.accessLevel.isEmployee" (valueChange)="onChangeEmployeeAccessCtrl($event)"></yes-no-selection>
+      <yes-no-selection label="label.name.reception" [(value)]="role.accessLevel.isReception" (valueChange)="onChangeReceptionAccessCtrl($event)"></yes-no-selection>
+    </yes-no-selection-group>
+
+  </section>
+</ion-content>

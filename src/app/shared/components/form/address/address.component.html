@@ -1,0 +1,61 @@
+<!--Title-->
+<flex-row>
+  <flex-row-item>
+    <legend>{{ "form.title.address" | languageTransform | async }}</legend>
+  </flex-row-item>
+</flex-row>
+
+<!--Street-->
+<flex-row>
+  <flex-row-item>
+    <kendo-label text="{{ 'form.title.street' | languageTransform | async }}">
+      <kendo-textbox
+        #street
+        [readonly]="readOnly"
+        [(value)]="address.street"
+        (valueChange)="onChangeStreet()"
+        [clearButton]="true"
+        [placeholder]="placeHolder"
+      >
+      </kendo-textbox>
+    </kendo-label>
+  </flex-row-item>
+</flex-row>
+
+<!--Suburb-->
+<flex-row>
+  <flex-row-item>
+    <kendo-label text="{{ 'form.title.suburb' | languageTransform | async }}">
+      <kendo-autocomplete
+        #suburb
+        [data]="autoCompleteFilter.suburb"
+        [(ngModel)]="address.suburb"
+        [readonly]="readOnly"
+        (ngModelChange)="onChangeSuburb()"
+        [filterable]="true"
+        (filterChange)="onChangeSuburbInput($event)"
+        placeholder="{{
+          'form.placeholder.required' | languageTransform | async
+        }}"
+      >
+      </kendo-autocomplete>
+    </kendo-label>
+  </flex-row-item>
+
+  <!--State-->
+  <flex-row-item>
+    <kendo-label text="{{ 'form.title.state' | languageTransform | async }}">
+      <kendo-autocomplete
+        #state
+        [data]="autoCompleteFilter.state"
+        [(ngModel)]="address.state"
+        [readonly]="readOnly"
+        (ngModelChange)="onChangeState()"
+        [filterable]="true"
+        (filterChange)="onChangeStateInput($event)"
+        [placeholder]="placeHolder"
+      >
+      </kendo-autocomplete>
+    </kendo-label>
+  </flex-row-item>
+</flex-row>

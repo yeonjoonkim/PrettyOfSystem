@@ -1,0 +1,17 @@
+<kendo-label
+  [for]="shopCountryList"
+  text="{{ 'shop.country.title' | languageTransform | async }}"
+>
+  <kendo-dropdownlist
+    #shopCountryList
+    [data]="pairValueIdList"
+    textField="value"
+    valueField="id"
+    [(ngModel)]="selectedPairValueId"
+    (valueChange)="onClickCountry()"
+    [readonly]="readOnly"
+    [loading]="loading"
+    defaultItem="{{ 'message.error.option' | languageTransform | async }}"
+  >
+  </kendo-dropdownlist>
+</kendo-label>

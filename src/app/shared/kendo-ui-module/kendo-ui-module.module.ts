@@ -34,6 +34,7 @@ import { TooltipsModule } from '@progress/kendo-angular-tooltip';
 import { ToolBarModule } from '@progress/kendo-angular-toolbar';
 import { UploadsModule } from '@progress/kendo-angular-upload';
 import { UtilsModule } from '@progress/kendo-angular-utils';
+import { FormFieldModule } from "@progress/kendo-angular-inputs";
 
 //DATA QUERY
 //https://www.telerik.com/kendo-angular-ui/components/data-query/get-started/
@@ -54,8 +55,8 @@ import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
 @NgModule({
   declarations: [],
   exports: [
+    FormFieldModule,
     HttpClientModule,
-    CommonModule,
     ReactiveFormsModule,
     IntlModule,
     LabelModule,

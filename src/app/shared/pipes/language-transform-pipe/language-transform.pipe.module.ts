@@ -1,4 +1,4 @@
-import { LanguageService } from '../../services/language/language.service';
+import { LanguageService } from '../../services/global/language/language.service';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
