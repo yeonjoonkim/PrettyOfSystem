@@ -93,15 +93,7 @@
       <!--Phone Number and Email-->
       <flex-row>
         <flex-row-item>
-          <phone-number
-            #phoneNumber
-            [(phoneNumber)]="config.phoneNumber"
-            [(validate)]="validator.phonNumber"
-            [readOnly]="form.readOnly"
-            [isRequired]="true"
-            (phoneNumberChange)="ngAfterViewInit()"
-          >
-          </phone-number>
+          <phone-number [isRequired]="true"> </phone-number>
         </flex-row-item>
         <flex-row-item>
           <e-mail

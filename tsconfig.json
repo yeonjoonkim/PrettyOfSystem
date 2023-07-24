@@ -19,13 +19,16 @@
     "target": "es2022",
     "module": "es2022",
     "resolveJsonModule": true,
-
     "lib": [
       "es2018",
       "dom"
     ],
     "useDefineForClassFields": false
   },
+  "include": [
+    "src/**/*",
+    "node_modules/ngx-intl-tel-input/**/*"
+  ],
   "angularCompilerOptions": {
     "skipLibCheck": true,
     "enableI18nLegacyMessageIdFormat": false,
