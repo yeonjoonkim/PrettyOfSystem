@@ -13,6 +13,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/shared/components/form/form.module';
 import { SystemShopFormModule } from '../system-shop-copoment.module';
+import {NgxIntlTelInputModule} from 'ngx-intl-tel-input-gg';
 //Import Component
 import {ShopManagementComponent} from './shop-management.component';
 
@@ -28,7 +29,8 @@ import {ShopManagementComponent} from './shop-management.component';
     Ng2SearchPipeModule,
     KendoUiModule,
     SharedFormModule,
-    SystemShopFormModule
+    SystemShopFormModule,
+    NgxIntlTelInputModule
   ],
   exports: [ShopManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

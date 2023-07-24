@@ -1,38 +1,23 @@
-<kendo-label
-  [for]="phoneNumber"
-  text="{{ 'form.title.phone' | languageTransform | async }}"
->
+<kendo-label text="{{ 'form.title.phone' | languageTransform | async }}">
   <div class="form-error-container">
-    <kendo-formerror
-      *ngIf="!validate && mode === 'form' && isRequired && entered"
-      >{{
-        "message.error.invalidphone" | languageTransform | async
-      }}</kendo-formerror
-    >
+    <kendo-formerror *ngIf="!phoneNumberForm.valid && isRequired && entered">{{
+      "message.error.invalidemail" | languageTransform | async
+    }}</kendo-formerror>
   </div>
-  <div class="flex-row-container">
-    <div>
-      <kendo-dropdownlist
-        [readonly]="readOnly"
-        [data]="dropDownSelection"
-        textField="text"
-        valueField="phoneCode"
-        [(ngModel)]="dropDownSelected"
-        (ngModelChange)="onChangeDropDownSelection()"
-      >
-      </kendo-dropdownlist>
-    </div>
-    <div>
-      <kendo-maskedtextbox
-        #phoneNumber
-        input="digits"
-        [readonly]="readOnly"
-        [mask]="options.mask"
-        [(value)]="selectedPhoneNumber"
-        (valueChange)="onChangePhoneNumber($event)"
-        [ariaPlaceholder]="placeHolder"
-      >
-      </kendo-maskedtextbox>
-    </div>
-  </div>
+  <form [formGroup]="phoneNumberForm">
+    <ngx-intl-tel-input
+      formControlName="phone"
+      customPlaceholder="{{ placeholder | languageTransform | async }}"
+      [enableAutoCountrySelect]="true"
+      [enablePlaceholder]="false"
+      [searchCountryFlag]="true"
+      [phoneValidation]="true"
+      [selectedCountryISO]="countryISO"
+      [preferredCountries]="preferredCountries"
+      [separateDialCode]="separateDialCode"
+      [numberFormat]="phoneNumberFormat"
+      [disabled]="readOnly"
+      (ngModelChange)="onChangeValue($event)"
+    ></ngx-intl-tel-input>
+  </form>
 </kendo-label>
