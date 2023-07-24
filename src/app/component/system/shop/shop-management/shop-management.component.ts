@@ -11,10 +11,10 @@ import { GlobalService } from 'src/app/shared/services/global/global.service';
 export class ShopManagementComponent implements OnInit {
 
   constructor(private systemShop:  SystemShopService) {
+    this.onClickCreateShopConfiguration();
   }
 
   ngOnInit() {
-
   }
 
   public async  onClickCreateShopConfiguration(){

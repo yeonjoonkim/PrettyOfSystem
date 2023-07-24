@@ -49,6 +49,8 @@ $title-color: #414d58;
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
+  animation: none !important;
+  transition: none !important;
 }
 
 .pop-over-container {

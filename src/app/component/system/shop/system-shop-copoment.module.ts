@@ -16,6 +16,7 @@ import { ShopCategoryListComponent } from './shop-category/shop-category.compone
 import { ShopCountryComponent } from './shop-country/shop-country.component';
 import { ShopPlanComponent } from './shop-plan/shop-plan.component';
 import { ShopOpenHourComponent } from './shop-open-hour/shop-open-hour.component';
+import { ShopPlanPriceComponent } from './shop-plan-price/shop-plan-price.component';
 import {ShopConfigurationComponent} from './shop-configuration/shop-configuration.component';
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {ShopConfigurationComponent} from './shop-configuration/shop-configuratio
     ShopCountryComponent,
     ShopPlanComponent,
     ShopOpenHourComponent,
-    ShopConfigurationComponent
+    ShopConfigurationComponent,
+    ShopPlanPriceComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +37,7 @@ import {ShopConfigurationComponent} from './shop-configuration/shop-configuratio
     SharedFormModule,
     KendoUiModule
   ],
-  exports: [ShopCategoryListComponent, ShopCountryComponent, ShopPlanComponent, ShopOpenHourComponent, ShopConfigurationComponent],
+  exports: [ShopCategoryListComponent, ShopCountryComponent, ShopPlanComponent, ShopOpenHourComponent, ShopConfigurationComponent, ShopPlanPriceComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class SystemShopFormModule { }

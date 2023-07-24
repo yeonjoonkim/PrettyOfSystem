@@ -1,7 +1,7 @@
 <kendo-label text="{{ title | languageTransform | async }}">
   <kendo-datepicker
     [popupSettings]="{
-      animate: true,
+      animate: false,
       appendTo: 'component',
       popupClass: 'date-pick-popup-container'
     }"
@@ -12,6 +12,7 @@
     [readonly]="readOnly"
     [min]="miniumDate"
     [max]="maxDate"
+    adaptiveMode="auto"
     [focusedDate]="inputDate"
     (valueChange)="transformDate($event)"
   ></kendo-datepicker>

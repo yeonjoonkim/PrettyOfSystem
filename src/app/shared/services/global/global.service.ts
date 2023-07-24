@@ -13,7 +13,8 @@ import { LanguageTranslationPackageService } from './language-translation-packag
 import { ModalService } from './modal/modal.service';
 import { KendoUiService } from './kendo-ui/kendo-ui.service';
 import { FormControllerService } from './form/form-controller.service';
-import { DateTransformService } from './date-transform/date-transform.service';
+import { DateTransformService } from './date/date-transform/date-transform.service';
+import { DateService } from './date/date.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -33,7 +34,7 @@ export class GlobalService {
     public modal: ModalService,
     public kendo: KendoUiService,
     public formCtrl: FormControllerService,
-    public dateTransform: DateTransformService
+    public date: DateService
     ) {
     }
 }

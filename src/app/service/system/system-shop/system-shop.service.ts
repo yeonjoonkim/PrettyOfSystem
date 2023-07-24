@@ -6,8 +6,6 @@ import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface
 import { IShopCategory, IShopCountry } from 'src/app/interface/system/shop/shop.interface';
 import { IPairValueId } from 'src/app/interface/system/system.interface';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
-
-import { ShopConfigurationComponent } from 'src/app/component/system/shop/shop-configuration/shop-configuration.component';
 import { ShopModalService } from './shop-modal/shop-modal.service';
 
 @Injectable({

@@ -1,8 +1,11 @@
+import { TimeZone } from "./timezone";
+
 export const Default = {
    ComponentMode: {
     Filter: 'filter',
     Form: 'form',
   } as const,
+  TimeZone: TimeZone.AustraliaBrisbane,
 
   PhoneCode: {
     KR: "+82",
@@ -106,5 +109,22 @@ export const Date = {
     Thu: 4,
     Fri: 5,
     Sat: 6
-  },
-};
+  } as const,
+  Day:{
+    Sun: "sun",
+    Mon: "mon",
+    Tue: "tue",
+    Wed: "wed",
+    Thu: "thu",
+    Fri: "fri",
+    Sat: "sat"
+  } as const,
+  Period:{
+    Weekly: "Weekly",
+    Monthly: "Monthly",
+    Quarterly: "Quarterly",
+    HalfYear: "HalfYear",
+    Annually: "Annually",
+    Custom: "Custom"
+  } as const
+} as const;

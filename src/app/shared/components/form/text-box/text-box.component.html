@@ -1,11 +1,11 @@
 <kendo-label text="{{ title | languageTransform | async }}">
-  <div class="form-error-container">
-    <kendo-formerror
-      *ngIf="!validate && mode === 'form' && entered && isRequired"
-      >{{
-        "message.error.textbox" | languageTransform | async
-      }}</kendo-formerror
-    >
+  <div
+    class="form-error-container"
+    *ngIf="!validate && mode === 'form' && entered && isRequired"
+  >
+    <kendo-formerror>{{
+      "message.error.textbox" | languageTransform | async
+    }}</kendo-formerror>
   </div>
   <kendo-textbox
     [(ngModel)]="validatedValue"

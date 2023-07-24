@@ -6,9 +6,11 @@ export { TimeZone } from './constant/timezone';
 //Date
 export type TimeZoneType = typeof TimeZone[keyof typeof TimeZone];
 export type DayIndexType = typeof Date.DayIndex[keyof typeof Date.DayIndex];
+export type DayType = typeof Date.Day[keyof typeof Date.Day];
 export type DateDayNightType = typeof Date.DayNightType[keyof typeof Date.DayNightType];
 export type DateFormatType = typeof Date.Format[keyof typeof Date.Format];
 export type DateTimeStatusType = typeof Date.TimeStatus[keyof typeof Date.TimeStatus];
+export type DatePeriodType = typeof Date.Period[keyof typeof Date.Period];
 
 //Country
 export type CountryCodeType = typeof Default.CountryCodeType[keyof typeof Default.CountryCodeType];

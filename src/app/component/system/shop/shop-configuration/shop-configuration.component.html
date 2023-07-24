@@ -54,7 +54,7 @@
               type="checkbox"
               kendoCheckBox
               [checked]="config.active"
-              [readOnly]="form.readOnly"
+              [disabled]="true"
             />
           </kendo-label>
         </flex-row-item>
@@ -137,35 +137,31 @@
         [(address)]="config.address"
         [(validate)]="validator.address"
         [readOnly]="form.readOnly"
+        [excludeStreet]="true"
         (addressChange)="ngAfterViewInit()"
       ></address>
-      <flex-row>
-        <flex-row-item id="country">
+      <flex-col>
+        <flex-col-item id="country">
           <shop-country
             #country
             [(shopCountry)]="config.country"
             [(validate)]="validator.country"
+            [readOnly]="form.readOnly"
             (shopCountryChange)="ngAfterViewInit()"
           >
           </shop-country>
-        </flex-row-item>
-        <flex-row-item id="timezone">
-          <kendo-label
-            text="{{ 'label.name.timezone' | languageTransform | async }}"
+        </flex-col-item>
+        <flex-col-item id="timezone">
+          <time-zone
+            #timezone
+            [(timeZone)]="config.timezone"
+            [(validate)]="validator.timeZone"
+            [readOnly]="form.readOnly"
+            (timeZoneChange)="ngAfterViewInit()"
           >
-            <kendo-dropdownlist
-              #shopCategoryList
-              [data]="timeZoneList"
-              [(ngModel)]="config.timezone"
-              defaultItem="{{
-                'message.error.option' | languageTransform | async
-              }}"
-              (ngModelChange)="ngAfterViewInit()"
-            >
-            </kendo-dropdownlist>
-          </kendo-label>
-        </flex-row-item>
-      </flex-row>
+          </time-zone>
+        </flex-col-item>
+      </flex-col>
     </div>
 
     <!--Subscription-->
@@ -183,7 +179,7 @@
             type="checkbox"
             kendoCheckBox
             [checked]="config.plan.isOverDue"
-            [readOnly]="true"
+            [disabled]="true"
           />
         </kendo-label>
       </flex-row-item>
@@ -195,9 +191,26 @@
           [(planId)]="config.plan.configurationId"
           [(validate)]="validator.plan"
           [readOnly]="form.readOnly"
-          (planIdChange)="ngAfterViewInit()"
+          (planIdChange)="onChangePlan()"
         ></shop-plan>
       </flex-col-item>
+      <flex-row>
+        <flex-row-item>
+          <date-period-picker
+            [isPlanFormat]="true"
+            [(period)]="config.plan.period"
+            [readOnly]="form.readOnly"
+            (periodChange)="onPlanPeriodChange()"
+          ></date-period-picker>
+        </flex-row-item>
+        <flex-row-item>
+          <shop-plan-price
+            [planId]="config.plan.configurationId"
+            [period]="config.plan.period"
+          ></shop-plan-price>
+        </flex-row-item>
+      </flex-row>
+
       <flex-row>
         <flex-row-item>
           <date-picker
@@ -205,6 +218,7 @@
             [dateFormatter]="config.country.dateFormat"
             [shopTimeZone]="config.timezone"
             [(date)]="config.plan.lastPaymentDate"
+            (dateChange)="autoPaymentDateCalculation()"
             [readOnly]="form.readOnly"
             [restrictedFromToday]="false"
           ></date-picker>
@@ -216,7 +230,7 @@
             [shopTimeZone]="config.timezone"
             [(date)]="config.plan.paymentDate"
             [readOnly]="form.readOnly"
-            [restrictedFromToday]="false"
+            [restrictedFromToday]="true"
           ></date-picker>
         </flex-row-item>
       </flex-row>

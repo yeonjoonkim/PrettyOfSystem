@@ -30,9 +30,10 @@ export class DatePickerComponent implements OnInit{
   }
   set date(input: Date){
     //Input based on timeZone
-    this.inputDate =  this.global.dateTransform.convertToLocalShopDateTime(input, this.shopTimeZone);
+    this.inputDate =  this.global.date.transform.convertToLocalShopDateTime(input, this.shopTimeZone);
+    this.inputDate = this.global.date.transform.setLocalStartDate(this.inputDate);
     //Output
-    input = this.global.dateTransform.convertShopTimeZoneDateTime(input, this.shopTimeZone);
+    input = this.global.date.transform.convertShopTimeZoneDateTime(input, this.shopTimeZone);
     this.dateChange.emit(input);
   }
 
@@ -40,8 +41,8 @@ export class DatePickerComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.miniumDate = this.global.dateTransform.getMinumSelectionDate(new Date(), this.shopTimeZone, this.restrictedFromToday, this.displayPreviousDay);
-    this.maxDate = this.global.dateTransform.getMaxiumSelectionDate(new Date(), this.shopTimeZone, this.displayNextDay);
+    this.miniumDate = this.global.date.transform.getMinumSelectionDate(new Date(), this.shopTimeZone, this.restrictedFromToday, this.displayPreviousDay);
+    this.maxDate = this.global.date.transform.getMaxiumSelectionDate(new Date(), this.shopTimeZone, this.displayNextDay);
   }
 
   /**Default Behavior is 00:00:00 */

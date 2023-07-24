@@ -10,22 +10,21 @@ import { LanguageTransformPipeModule } from '../../../pipes/language-transform-p
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Component
-import { TimeFromToComponent } from './time-from-to.component';
+import { TimeZoneComponent } from './time-zone.component';
 import { KendoUiModule } from '../../../kendo-ui-module/kendo-ui-module.module';
-import {TimePickerModule} from '../time-picker/time-picker.module';
+
 @NgModule({
-  declarations: [TimeFromToComponent],
+  declarations: [TimeZoneComponent],
   imports: [
     CommonModule,
     IonicModule,
     FormsModule,
     LanguageTransformPipeModule,
     Ng2SearchPipeModule,
-    KendoUiModule,
-    TimePickerModule
+    KendoUiModule
   ],
-  exports: [TimeFromToComponent],
+  exports: [TimeZoneComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 
-export class TimeFromToModule { }
+export class TimeZoneModule { }

@@ -1,4 +1,4 @@
-import {AustraliaStateType, DateDayNightType, FormActionType} from './../../shared/services/global/global-constant';
+import {AustraliaStateType, DateDayNightType, FormActionType, DayIndexType, DayType, DatePeriodType} from './../../shared/services/global/global-constant';
 
 export interface IComponentAction{
   name: string;
@@ -30,6 +30,18 @@ export interface ITimeItem{
   sec: number,
   DayNightType: DateDayNightType
   strValue: string;
+}
+
+export interface IDateIndexPairDay{
+  index: DayIndexType,
+  day: DayType
+}
+
+export interface IDatePeriod{
+  name: string;
+  type: DatePeriodType;
+  week: number;
+  day: number;
 }
 
 export interface IFormHeaderModalProp{
