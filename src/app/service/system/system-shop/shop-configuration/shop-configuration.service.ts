@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
+import { IDatePeriod, IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
 import * as Constant from './../../../../shared/services/global/global-constant';
-
+import { SystemShopService } from '../system-shop.service';
 export interface IShopConfigurationValidator {
   name: boolean;
   email: boolean;
@@ -13,6 +13,7 @@ export interface IShopConfigurationValidator {
   category: boolean;
   country: boolean;
   plan: boolean;
+  timeZone: boolean;
 }
 export interface IShopConfigurationDisplayOption {
   info: boolean;
@@ -23,7 +24,7 @@ export interface IShopConfigurationDisplayOption {
   providedIn: 'root',
 })
 export class ShopConfigurationService {
-  constructor(public global: GlobalService) {}
+  constructor(public global: GlobalService, private systemShop: SystemShopService) {}
 
   public formInputValidator(validator: IShopConfigurationValidator) {
     return (
@@ -34,203 +35,9 @@ export class ShopConfigurationService {
       validator.address &&
       validator.category &&
       validator.country &&
-      validator.plan
+      validator.plan &&
+      validator.timeZone
     );
-  }
-
-  public defaultShopConfig(): IShopConfiguration {
-    return {
-      id: '',
-      name: '',
-      phoneNumber: '',
-      email: '',
-      taxNumber: '',
-      logoImg: undefined,
-      active: true,
-      timezone: Constant.TimeZone.AustraliaBrisbane,
-      address: {
-        street: '',
-        suburb: 'SUNNYBANK',
-        state: 'QLD',
-        postCode: '',
-      },
-      operatingHours: {
-        mon: {
-          isOpen: false,
-          operatingHours: {
-            openTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-            closeTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-          },
-          index: Constant.Date.DayIndex.Mon
-        },
-        tue: {
-          isOpen: false,
-          operatingHours: {
-            openTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-            closeTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-          },
-          index: Constant.Date.DayIndex.Tue
-        },
-        wed: {
-          isOpen: false,
-          operatingHours: {
-            openTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-            closeTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-          },
-          index: Constant.Date.DayIndex.Wed
-        },
-        thu: {
-          isOpen: false,
-          operatingHours: {
-            openTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-            closeTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-          },
-          index: Constant.Date.DayIndex.Thu
-        },
-        fri: {
-          isOpen: false,
-          operatingHours: {
-            openTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-            closeTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-          },
-          index: Constant.Date.DayIndex.Fri
-        },
-        sat: {
-          isOpen: false,
-          operatingHours: {
-            openTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-            closeTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-          },
-          index: Constant.Date.DayIndex.Sat
-        },
-        sun: {
-          isOpen: false,
-          operatingHours: {
-            openTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-            closeTime: {
-              hr: 0,
-              min: 0,
-              sec: 0,
-              DayNightType: 'PM',
-              strValue: '',
-            },
-          },
-          index: Constant.Date.DayIndex.Sun
-        },
-      },
-      category: {
-        id: '',
-        isHairSalon: false,
-        isMassageTheraphy: false,
-        isPersonalTrainning: false,
-        isSkinCare: false,
-        name: '',
-      },
-      country: {
-        id: '',
-        currency: Constant.Default.CurrencyType.AUD,
-        length: '',
-        name: '',
-        prefixedPhoneCode: Constant.Default.PhoneCode.AU,
-        dateFormat: Constant.Date.Format.Australia,
-        code: Constant.Default.CountryCodeType.Australia
-      },
-      plan: {
-        configurationId: '',
-        isOverDue: false,
-        lastPaymentDate: new Date(),
-        paymentDate: new Date(),
-        option: {
-          isWeekly: false,
-          isMonthly: false,
-          isAnnually: true
-        }
-      },
-      setting: {
-        reservationScheduler: {
-          isEnabled: false,
-          intervalMin: 0,
-        },
-      },
-    };
   }
 
   public defaultShopDisplayOption(): IShopConfigurationDisplayOption {
@@ -251,6 +58,7 @@ export class ShopConfigurationService {
       category: false,
       country: false,
       plan: false,
+      timeZone: false
     };
   }
 
@@ -277,5 +85,16 @@ export class ShopConfigurationService {
       subscription: false,
     };
   }
-  
+  public async getSelectedTotalPrice(selectedId: string, period: IDatePeriod){
+    let selectedPlan = (await this.systemShop.getSystemShopPlanConfigList()).find(p => p.id === selectedId);
+    let price: number = 0;
+    if(selectedPlan !== undefined){
+      price = period.type === Constant.Date.Period.Weekly ? selectedPlan.weeklyPrice.total
+           : period.type === Constant.Date.Period.Monthly ? selectedPlan.monthlyPrice.total
+           : period.type === Constant.Date.Period.Annually ? selectedPlan.annuallyPrice.total
+           : 0
+    }
+    
+    return price;
+  }
 }

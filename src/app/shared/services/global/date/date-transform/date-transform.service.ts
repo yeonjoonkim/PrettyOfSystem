@@ -7,7 +7,7 @@ import {
 
 } from "@progress/kendo-date-math";
 import '@progress/kendo-date-math/tz/all';
-import * as Constant from './../../global/global-constant';
+import * as Constant from '../../global-constant';
 
 
 @Injectable({
@@ -81,13 +81,13 @@ export class DateTransformService {
   }
   
   public getMinumSelectionDate(inputDate: Date, timezone: Constant.TimeZoneType, restrictedFromToday: boolean, displayPreviousDay: number): Date{
-    let date: Date = this.convertShopTimeZoneDateTime(inputDate, timezone);
+    let date: Date = this.toShopDateTime(inputDate, timezone);
     let startDate: Date = this.setLocalStartDate(date);
     return restrictedFromToday ? startDate : displayPreviousDay ? this.addDay(this.setLocalStartDate(inputDate), -displayPreviousDay) : new Date(1900, 0, 1);
   }
 
   public getMaxiumSelectionDate(inputDate: Date, timezone: Constant.TimeZoneType, displayNextday: number): Date{
-    let date: Date = this.convertShopTimeZoneDateTime(inputDate, timezone);
+    let date: Date = this.toShopDateTime(inputDate, timezone);
     let startDate: Date = this.setLocalStartDate(date);
     return displayNextday ? this.addDay(this.setLocalStartDate(startDate), + displayNextday) : new Date(2050, 0, 1);
   }

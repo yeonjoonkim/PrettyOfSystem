@@ -7,8 +7,16 @@
 
 <!--Street-->
 <flex-row>
-  <flex-row-item>
+  <flex-row-item *ngIf="!excludeStreet">
     <kendo-label text="{{ 'form.title.street' | languageTransform | async }}">
+      <div class="form-error-container">
+        <kendo-formerror
+          *ngIf="address.street.length === 0 && entered.street && isRequired"
+          >{{
+            "message.error.street" | languageTransform | async
+          }}</kendo-formerror
+        >
+      </div>
       <kendo-textbox
         #street
         [readonly]="readOnly"
@@ -26,6 +34,14 @@
 <flex-row>
   <flex-row-item>
     <kendo-label text="{{ 'form.title.suburb' | languageTransform | async }}">
+      <div class="form-error-container">
+        <kendo-formerror
+          *ngIf="address.suburb.length === 0 && entered.suburb && isRequired"
+          >{{
+            "message.error.autocomplete" | languageTransform | async
+          }}</kendo-formerror
+        >
+      </div>
       <kendo-autocomplete
         #suburb
         [data]="autoCompleteFilter.suburb"
@@ -45,6 +61,14 @@
   <!--State-->
   <flex-row-item>
     <kendo-label text="{{ 'form.title.state' | languageTransform | async }}">
+      <div class="form-error-container">
+        <kendo-formerror
+          *ngIf="address.state.length === 0 && entered.state && isRequired"
+          >{{
+            "message.error.autocomplete" | languageTransform | async
+          }}</kendo-formerror
+        >
+      </div>
       <kendo-autocomplete
         #state
         [data]="autoCompleteFilter.state"

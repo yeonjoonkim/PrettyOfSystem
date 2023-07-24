@@ -10,7 +10,7 @@ import { LanguageTransformPipeModule } from '../../../pipes/language-transform-p
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //Import Component
-import { TimePickerComponent } from './time-picker.component';
+import { TimePickerComponent } from '../time-picker/time-picker.component';
 import { KendoUiModule } from '../../../kendo-ui-module/kendo-ui-module.module';
 
 @NgModule({

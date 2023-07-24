@@ -12,13 +12,13 @@ import { openAiApi } from './../../../../../openai-key';
 
 export class OpenAiService {
   //API
-  private readonly openAiUrl: string = 'https://api.openai.com/v1/completions';
+  private readonly openAiUrl: string = 'https://api.openai.com/v1/chat/completions';
 
   //API DEFAULT PARAM
   private readonly defaultParams = {
-    model: "text-davinci-003",
+    model: "gpt-3.5-turbo-16k",
     temperature: 0.4,
-    max_tokens: 3800,
+    max_tokens: 4090,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
@@ -35,7 +35,7 @@ export class OpenAiService {
   /**This function is trigger api to receive answer from open ai */
   public async receiveResult(command: string): Promise<string>{
     //Set api request
-    let param = { ...this.defaultParams, ...{prompt: command}};
+    let param = { ...this.defaultParams, ...{messages: [{role: 'system', content: command}]}};
     let requestOptions = this.setReqeustOptions(param);
     let apiResult: string = '';
 
@@ -47,9 +47,10 @@ export class OpenAiService {
         this.toast.presentError(err);
       }else{
         let data = await result.json();
-        apiResult = data.choices[0].text;
+        apiResult = data.choices[0].message.content;
       }
     })
+
     return apiResult;
   }
 

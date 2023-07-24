@@ -9,8 +9,7 @@ import {
 } from '@angular/core';
 import {
   IAddress,
-  IPostCodeFilterOption,
-  IPostCodeItem,
+  IPostCodeFilterOption
 } from 'src/app/interface/global/global.interface';
 import * as Constant from '../../../services/global/global-constant';
 import { PostcodeService } from './service/postcode-service.service';
@@ -30,11 +29,11 @@ export class AddressComponent implements OnInit, OnChanges {
   @Output() addressChange = new EventEmitter<IAddress>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() readOnly: boolean = false;
-  @Input() mode: Constant.ComponentModeType =
-    Constant.Default.ComponentMode.Form;
+  @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input() defaultState: string = Constant.State.AustraliaType.QLD;
   @Input() defaultSuburb: string = 'SUNNYBANK';
   @Input() isRequired: boolean = true;
+  @Input() excludeStreet: boolean = false;
   @Input()
   get address() {
     return this.inputAddress;
@@ -66,11 +65,13 @@ export class AddressComponent implements OnInit, OnChanges {
     defaultSuburb: 'defaultSuburb',
   };
   public placeHolder: string = '';
+  public entered = {
+    street: false,
+    suburb: false,
+    state: false
+  }
 
-  constructor(
-    private postcode: PostcodeService,
-    private global: GlobalService
-  ) {}
+  constructor( private postcode: PostcodeService, private global: GlobalService) {}
 
   async ngOnInit() {
     await this.setDefaultPlaceHolder();
@@ -115,7 +116,7 @@ export class AddressComponent implements OnInit, OnChanges {
 
   private setAddressValidator(): boolean {
     return (
-      this.inputAddress.street.length > 0 &&
+      (!this.excludeStreet ? this.inputAddress.street.length > 0 : true) &&
       this.inputAddress.suburb.length > 0 &&
       this.inputAddress.state.length > 0 &&
       this.inputAddress.postCode.length > 0
@@ -140,6 +141,7 @@ export class AddressComponent implements OnInit, OnChanges {
   }
 
   public onChangeStreet() {
+    this.entered.street = true;
     this.address.street = this.address.street.toUpperCase();
     this.validate = this.setAddressValidator();
     this.addressChange.emit(this.inputAddress);
@@ -147,6 +149,7 @@ export class AddressComponent implements OnInit, OnChanges {
 
   public onChangeState() {
     let isEmpty: boolean = this.address.state.length === 0;
+    this.entered.state = true;
     this.address = {
       street: '',
       state: this.address.state,
@@ -163,6 +166,7 @@ export class AddressComponent implements OnInit, OnChanges {
   }
 
   public onChangeSuburb() {
+    this.entered.suburb = true;
     let selectedPostCode = this.filterOption.postCodeList.find(
       (option) => option.suburb === this.address.suburb
     )?.postCode;

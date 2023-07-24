@@ -1,5 +1,5 @@
 import * as Constant from '../../../shared/services/global/global-constant';
-import { IAddress, ITimeItem } from '../../global/global.interface';
+import { IAddress, IDatePeriod, ITimeItem } from '../../global/global.interface';
 import { IShopSetting } from './shop-setting.interface';
 
 export type IShopCategory = {
@@ -26,7 +26,7 @@ export interface IShopPlan{
   isOverDue: boolean;
   lastPaymentDate: Date;
   paymentDate: Date;
-  option: IShopPlanOption;
+  period: IDatePeriod;
 }
 
 export interface IShopPlanOption{
@@ -47,6 +47,7 @@ export interface IShopWorkHours{
 
 export interface IShopOperatingDaily{
   index: Constant.DayIndexType;
+  day: Constant.DayType;
   isOpen: boolean;
   operatingHours: IShopOperatingHours;
 }

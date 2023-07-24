@@ -31,11 +31,18 @@
 .k-numerictextbox {
   margin: 10px;
 }
-
+.k-input,
+.k-maskedtextbox,
 .k-picker,
+.k-textbox,
 .k-datepicker {
   margin-bottom: 10px;
   margin-top: 10px;
+  height: 32px;
+  .k-input,
+  .k-dateinput {
+    margin: auto;
+  }
 }
 
 .k-form-error {
