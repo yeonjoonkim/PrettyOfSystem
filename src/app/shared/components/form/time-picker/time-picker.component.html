@@ -1,3 +1,38 @@
-<kendo-label  text="{{title | languageTransform | async}}">
-  <kendo-timepicker class="time-picker" [(value)]="date" (valueChange)="onChangeDate()" [readonly]="readOnly"></kendo-timepicker>
+<kendo-label text="{{ title | languageTransform | async }}" *ngIf="title">
+  <kendo-timepicker
+    adaptiveMode="auto"
+    class="time-picker"
+    [popupSettings]="{
+      animate: false,
+      appendTo: 'component',
+      popupClass: 'date-pick-popup-container'
+    }"
+    [readonly]="readOnly"
+    [steps]="steps"
+    [min]="minTime"
+    [max]="maxTime"
+    [readOnly]="readOnly"
+    [readOnlyInput]="true"
+    [(value)]="date"
+    (valueChange)="onChangeDate()"
+  ></kendo-timepicker>
 </kendo-label>
+
+<kendo-timepicker
+  *ngIf="!title"
+  adaptiveMode="auto"
+  class="time-picker"
+  [popupSettings]="{
+    animate: false,
+    appendTo: 'component',
+    popupClass: 'date-pick-popup-container'
+  }"
+  [readonly]="readOnly"
+  [steps]="steps"
+  [min]="minTime"
+  [max]="maxTime"
+  [readOnly]="readOnly"
+  [readOnlyInput]="true"
+  [(value)]="date"
+  (valueChange)="onChangeDate()"
+></kendo-timepicker>

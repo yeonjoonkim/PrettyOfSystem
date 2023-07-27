@@ -1,7 +1,11 @@
 <legend>
   {{ "label.name.shopconfiguration" | languageTransform | async }}
 </legend>
-<kendo-grid [height]="500">
+<kendo-grid
+  [kendoGridBinding]="(configs | async)!"
+  [height]="500"
+  [sortable]="true"
+>
   <!-- Add Button -->
   <ng-template kendoGridToolbarTemplate>
     <button kendoGridAddCommand (click)="onClickCreateShopConfiguration()">
@@ -9,17 +13,65 @@
     </button>
   </ng-template>
 
+  <!-- Name -->
   <kendo-grid-column
     title="{{ 'label.name.name' | languageTransform | async }}"
+    field="name"
   >
-    <ng-template kendoGridCellTemplate let-shop> </ng-template>
+    <ng-template kendoGridCellTemplate let-config>{{
+      config.name
+    }}</ng-template>
+  </kendo-grid-column>
+
+  <!-- Category -->
+  <kendo-grid-column
+    title="{{ 'label.name.category' | languageTransform | async }}"
+    field="category.name"
+  >
+    <ng-template kendoGridCellTemplate let-config>
+      {{ config.category.name | languageTransform | async }}
+    </ng-template>
+  </kendo-grid-column>
+
+  <!--Active-->
+  <kendo-grid-column
+    title="{{ 'label.name.active' | languageTransform | async }}"
+    field="active"
+  >
+    <ng-template kendoGridCellTemplate let-config>
+      <input type="checkbox" kendoCheckBox [checked]="config.active" disabled />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!--Over Due-->
+  <kendo-grid-column
+    title="{{ 'label.name.overdue' | languageTransform | async }}"
+    field="plan.isOverDue"
+  >
+    <ng-template kendoGridCellTemplate let-config>
+      <input
+        type="checkbox"
+        kendoCheckBox
+        [checked]="config.plan.isOverDue"
+        disabled
+      />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Last Payment -->
+  <kendo-grid-column
+    title="{{ 'label.name.paymentdate' | languageTransform | async }}"
+    field="plan.paymentDate"
+  >
+    <ng-template kendoGridCellTemplate let-config>
+      {{ config.plan.paymentDate | date }}
+    </ng-template>
   </kendo-grid-column>
 
   <!--Edit-->
   <kendo-grid-command-column>
     <ng-template kendoGridCellTemplate>
       <button kendoGridEditCommand themeColor="tertiary" icon="edit"></button>
-      <button kendoGridRemoveCommand themeColor="error" icon="trash"></button>
     </ng-template>
   </kendo-grid-command-column>
 </kendo-grid>

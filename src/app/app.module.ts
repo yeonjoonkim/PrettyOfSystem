@@ -11,7 +11,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { IonicStorageModule } from '@ionic/storage-angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -46,7 +45,6 @@ import { LangaugeSelectionComponent } from './shared/components/langauge-selecti
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     LanguageTransformPipeModule.forRoot(),
-    IonicStorageModule.forRoot(),
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,

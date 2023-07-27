@@ -32,19 +32,19 @@ export class LangaugeSelectionComponent implements OnInit {
     });
   }
 
-  private setLanguageSelectionList(languageList: ILanguageSelection[]){
-    languageList.forEach(async lang => {
+  private async setLanguageSelectionList(languageList: ILanguageSelection[]){
+
+    for(let lang of languageList){
       let isExisted = this.languageSelection.filter(selection => selection.code === lang.code).length > 0;
       let isSelectedLanguage = this.language.currentLanguage === lang.code;
       lang.description = await this.language.transform(lang.description);
       if(isSelectedLanguage){
         this.selectedLanguage = lang;
       }
-
       if(!isExisted && !isSelectedLanguage){
         this.languageSelection.push(lang);
       }
-    });
+    }
   }
 
 }

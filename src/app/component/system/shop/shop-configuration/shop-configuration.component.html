@@ -5,6 +5,7 @@
     [enabledSavebutton]="form.enabledSavebutton"
     [action]="form.action"
     (onClickDismiss)="dismiss()"
+    (onClickCreate)="create()"
   >
   </form-header>
   <form-container>
@@ -93,7 +94,15 @@
       <!--Phone Number and Email-->
       <flex-row>
         <flex-row-item>
-          <phone-number [isRequired]="true"> </phone-number>
+          <phone-number
+            mode="form"
+            [isRequired]="true"
+            [readOnly]="form.readOnly"
+            [(phone)]="config.phoneNumber"
+            [(validate)]="validator.phonNumber"
+            (phoneChange)="ngAfterViewInit()"
+          >
+          </phone-number>
         </flex-row-item>
         <flex-row-item>
           <e-mail
@@ -108,8 +117,8 @@
         </flex-row-item>
       </flex-row>
       <!--Shop Category and Shop Country-->
-      <flex-row>
-        <flex-row-item>
+      <flex-col>
+        <flex-col-item>
           <shop-category
             #category
             [readOnly]="form.readOnly"
@@ -118,8 +127,18 @@
             (shopCategoryChange)="ngAfterViewInit()"
           >
           </shop-category>
-        </flex-row-item>
-      </flex-row>
+        </flex-col-item>
+        <flex-col-item id="operating-hours-container">
+          <operating-hours
+            [intervalMin]="config.setting.timePicker.intervalMin"
+            [(workHours)]="config.operatingHours"
+            [readOnly]="form.readOnly"
+            [timezone]="config.timezone"
+            [(validate)]="validator.workHours"
+            (workHoursChange)="ngAfterViewInit()"
+          ></operating-hours>
+        </flex-col-item>
+      </flex-col>
     </div>
 
     <!--Address-->
@@ -129,7 +148,7 @@
         [(address)]="config.address"
         [(validate)]="validator.address"
         [readOnly]="form.readOnly"
-        [excludeStreet]="true"
+        [excludeStreet]="false"
         (addressChange)="ngAfterViewInit()"
       ></address>
       <flex-col>
@@ -157,32 +176,32 @@
     </div>
 
     <!--Subscription-->
-    <flex-row id="subscription-title" *ngIf="display.subscription">
-      <flex-row-item>
-        <legend>
-          {{ "label.name.subscription" | languageTransform | async }}
-        </legend>
-      </flex-row-item>
-      <flex-row-item id="active-box">
-        <kendo-label
-          text="{{ 'shop.config.overdue' | languageTransform | async }}"
-        >
-          <input
-            type="checkbox"
-            kendoCheckBox
-            [checked]="config.plan.isOverDue"
-            [disabled]="true"
-          />
-        </kendo-label>
-      </flex-row-item>
-    </flex-row>
-
     <flex-col *ngIf="display.subscription">
+      <flex-row id="subscription-title">
+        <flex-row-item>
+          <legend>
+            {{ "label.name.subscription" | languageTransform | async }}
+          </legend>
+        </flex-row-item>
+        <flex-row-item id="active-box">
+          <kendo-label
+            text="{{ 'shop.config.overdue' | languageTransform | async }}"
+          >
+            <input
+              type="checkbox"
+              kendoCheckBox
+              [checked]="config.plan.isOverDue"
+              [disabled]="true"
+            />
+          </kendo-label>
+        </flex-row-item>
+      </flex-row>
       <flex-col-item>
         <shop-plan
           [(planId)]="config.plan.configurationId"
           [(validate)]="validator.plan"
           [readOnly]="form.readOnly"
+          (validateChange)="ngAfterViewInit()"
           (planIdChange)="onChangePlan()"
         ></shop-plan>
       </flex-col-item>
@@ -202,7 +221,6 @@
           ></shop-plan-price>
         </flex-row-item>
       </flex-row>
-
       <flex-row>
         <flex-row-item>
           <date-picker
@@ -226,6 +244,7 @@
           ></date-picker>
         </flex-row-item>
       </flex-row>
+      {{ config.plan.lastPaymentDate }}
     </flex-col>
   </form-container>
 </ion-content>

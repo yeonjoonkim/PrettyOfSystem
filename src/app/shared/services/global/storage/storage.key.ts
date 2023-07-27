@@ -1,7 +1,6 @@
 const storageKey = {
   language: 'lang',
-  languageSelection: 'langSelection'
+  languageSelection: 'langSelection',
+  key: 'prettyOfSystem'
 };
-
-
 export default storageKey;

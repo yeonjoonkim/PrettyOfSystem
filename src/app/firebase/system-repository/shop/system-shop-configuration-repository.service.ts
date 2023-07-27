@@ -3,8 +3,10 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { firstValueFrom, map, Observable } from 'rxjs';
 import { IShopCategory, IShopConfiguration, IShopCountry } from 'src/app/interface/system/shop/shop.interface';
+import { DateService } from 'src/app/shared/services/global/date/date.service';
 import { LanguageService } from 'src/app/shared/services/global/language/language.service';
 import { LoadingService } from 'src/app/shared/services/global/loading/loading.service';
+import * as Constant from 'src/app/shared/services/global/global-constant';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +14,10 @@ import { LoadingService } from 'src/app/shared/services/global/loading/loading.s
 export class SystemShopConfigurationRepositoryService {
   private readonly timeStamp = {lastModifiedDate: new Date()};
   private readonly systemShop: string = 'system/shop/';
-  private readonly shop: string = 'shop/'
   private readonly shopCategory: string = this.systemShop + 'category';
   private readonly shopCountry:  string  = this.systemShop + 'country';
-  private readonly shopConfiguration: string = this.shop + 'configuration';
-  private readonly shopLogo: string = this.shop + 'logo';
-  constructor(private afs: AngularFirestore, private language: LanguageService, private afstorage: AngularFireStorage, private loading: LoadingService) { }
+  private readonly shopConfiguration: string = 'shopConfiguration/';
+  constructor(private afs: AngularFirestore, private language: LanguageService, private afstorage: AngularFireStorage, private loading: LoadingService, private date: DateService) { }
 
   public getSystemShopCategories(): Observable<IShopCategory[]> {
     return this.afs.collection<IShopCategory>(this.shopCategory, ref => ref.orderBy('name'))
@@ -49,31 +49,29 @@ export class SystemShopConfigurationRepositoryService {
     return categories.find(countries => countries.id === selectedId);
   }
 
-  public async createNewShopConfiguration(shopConfig: IShopConfiguration){
+  public async createNewShopConfiguration(shopConfig: IShopConfiguration): Promise<boolean>{
+    let result: boolean = false;
     let newId = this.afs.createId();
-    let hasImg: boolean = shopConfig.logoImg != null && shopConfig.logoImg != undefined;
     shopConfig.id = newId;
-    shopConfig.logoImg = hasImg ? await this.createNewShopLogo(shopConfig.logoImg, newId) : '';
     let config = {...shopConfig, ... this.timeStamp};
     try{
       await this.afs.collection(this.shopConfiguration).doc(shopConfig.id).set(config);
+      result = true;
     }
     catch(e){
       console.error(e);
     }
+    return result;
   }
 
-  public async createNewShopLogo(shopLogo: any, newId: string){
-    let id = this.shopLogo + '/' + newId;
-    let uploadTask = await this.afstorage.upload(id, shopLogo);
-    let url = await uploadTask.ref.getDownloadURL();
-    return url;
+  public getAllShopConfiguration(){
+    return this.afs.collection<IShopConfiguration>(this.shopConfiguration, ref => ref.orderBy('name'))
+    .valueChanges()
+    .pipe(
+      map(configs => configs.map(sc => {
+        return sc;
+      }))
+    );
   }
 
-  public async updateNewShopLogo(shopLogo: any, selectedId: string){
-    let id = this.shopLogo + '/' + selectedId;
-    let uploadTask = await this.afstorage.upload(id, shopLogo);
-    let url = await uploadTask.ref.getDownloadURL();
-    return url;
-  }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
 
@@ -9,15 +11,18 @@ import { GlobalService } from 'src/app/shared/services/global/global.service';
   styleUrls: ['./shop-management.component.scss'],
 })
 export class ShopManagementComponent implements OnInit {
+  public readonly configs: Observable<IShopConfiguration[]> = this.systemShop.subscribeAllShopConfiguration();
 
   constructor(private systemShop:  SystemShopService) {
-    this.onClickCreateShopConfiguration();
   }
 
   ngOnInit() {
   }
 
-  public async  onClickCreateShopConfiguration(){
+  public async onClickCreateShopConfiguration(){
     await this.systemShop.modal.presentCreateSystemShopConfiguration();
+  }
+  public async onClickEditShopConfiguration(){
+    
   }
 }

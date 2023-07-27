@@ -14,6 +14,7 @@ import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.mo
 import { SharedFormModule } from 'src/app/shared/components/form/form.module';
 import { SystemShopFormModule } from '../system-shop-copoment.module';
 import {NgxIntlTelInputModule} from 'ngx-intl-tel-input-gg';
+import { LuxonModule } from 'luxon-angular';
 //Import Component
 import {ShopManagementComponent} from './shop-management.component';
 
@@ -30,7 +31,8 @@ import {ShopManagementComponent} from './shop-management.component';
     KendoUiModule,
     SharedFormModule,
     SystemShopFormModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    LuxonModule
   ],
   exports: [ShopManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

@@ -6,6 +6,7 @@ export const Default = {
     Form: 'form',
   } as const,
   TimeZone: TimeZone.AustraliaBrisbane,
+  TimeInterval: 10,
 
   PhoneCode: {
     KR: "+82",
@@ -64,10 +65,9 @@ export const Setting = {
     General: {
       TaxRate: 0.1
     } as const,
-    ReservationScheduler: {
-      IsEnabled: true,
-      intervalMin: 0
-    } as const
+    TimePicker: {
+      intervalMin: 10
+    }
   } as const,
   PersonalSetting: {} as const,
 };

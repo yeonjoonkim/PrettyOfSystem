@@ -26,9 +26,8 @@ export interface IPostCodeFilterOption{
 
 export interface ITimeItem{
   hr: number,
-  min: number,
-  sec: number,
-  DayNightType: DateDayNightType
+  min: number
+  dayNightType: DateDayNightType
   strValue: string;
 }
 

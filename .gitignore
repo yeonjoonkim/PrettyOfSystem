@@ -71,3 +71,4 @@ Thumbs.db
 # API
 .environments
 openai-key.ts
+storage-key.ts

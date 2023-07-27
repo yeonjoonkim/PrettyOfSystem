@@ -8,6 +8,7 @@ import {
 } from "@progress/kendo-date-math";
 import '@progress/kendo-date-math/tz/all';
 import * as Constant from '../../global-constant';
+import { ITimeItem } from 'src/app/interface/global/global.interface';
 
 
 @Injectable({
@@ -15,7 +16,7 @@ import * as Constant from '../../global-constant';
 })
 export class DateTransformService {
 
-  constructor() { }
+  constructor() {}
 
   public toShopDateTime(inputDate: Date, timezone: Constant.TimeZoneType): ZonedDate{
     let tzDate = ZonedDate.fromLocalDate(inputDate, timezone);
@@ -23,7 +24,7 @@ export class DateTransformService {
     return result
   }
   
-  public addDay(inputDate: Date, addDay: number): Date{
+  public addDay(inputDate: Date, addDay: number): ZonedDate{
     let date: ZonedDate = ZonedDate.fromLocalDate(inputDate);
     date = date.addDays(addDay);
     return date;
@@ -48,13 +49,18 @@ export class DateTransformService {
    * ShopDateTime: Fri Jul 7 2023 14:31:16 GMT+0200 (CEST)
    * Local Time (GMT+1000) => Shop Local Time (GMT+0200)
    */
-  public convertShopTimeZoneDateTime(inputDate: Date, timezone: Constant.TimeZoneType): Date{
+  public convertShopTimeZoneDateTime(inputDate: Date, timezone: Constant.TimeZoneType): ZonedDate{
     let shopDateTime: ZonedDate = this.toShopDateTime(inputDate, timezone);
     let offset = shopDateTime.getTimezoneOffset() - inputDate.getTimezoneOffset();
     shopDateTime = shopDateTime.addTime(shopDateTime.getMinutes() + (offset * 60 * 1000));
     return shopDateTime;
   }
 
+  public convertShopTimeZoneDateTimeItem(inputDate: Date, timezone: Constant.TimeZoneType, time: ITimeItem){
+    inputDate.setHours(time.hr, time.min, 0, 0);
+    let shopTime = this.convertShopTimeZoneDateTime(inputDate, timezone);
+    return shopTime;
+  }
   /**This will set the local date time for user */
   public setLocalDateTime(date: Date): Date{
     let year = date.getFullYear();
@@ -66,14 +72,14 @@ export class DateTransformService {
     return new Date(year, month, day, hr, min, sec);
   }
 
-  public setLocalStartDate(date: Date): Date{
+  public setStartDate(date: Date): Date{
     let year = date.getFullYear();
     let month = date.getMonth();
     let day = date.getDate();
     return new Date(year, month, day, 0, 0, 0);
   }
 
-  public setLocalEndDate(date: Date): Date{
+  public setEndDate(date: Date): Date{
     let year = date.getFullYear();
     let month = date.getMonth();
     let day = date.getDate();
@@ -82,14 +88,14 @@ export class DateTransformService {
   
   public getMinumSelectionDate(inputDate: Date, timezone: Constant.TimeZoneType, restrictedFromToday: boolean, displayPreviousDay: number): Date{
     let date: Date = this.toShopDateTime(inputDate, timezone);
-    let startDate: Date = this.setLocalStartDate(date);
-    return restrictedFromToday ? startDate : displayPreviousDay ? this.addDay(this.setLocalStartDate(inputDate), -displayPreviousDay) : new Date(1900, 0, 1);
+    let startDate: Date = this.setStartDate(date);
+    return restrictedFromToday ? startDate : displayPreviousDay ? this.addDay(this.setStartDate(inputDate), -displayPreviousDay) : new Date(1900, 0, 1);
   }
 
   public getMaxiumSelectionDate(inputDate: Date, timezone: Constant.TimeZoneType, displayNextday: number): Date{
     let date: Date = this.toShopDateTime(inputDate, timezone);
-    let startDate: Date = this.setLocalStartDate(date);
-    return displayNextday ? this.addDay(this.setLocalStartDate(startDate), + displayNextday) : new Date(2050, 0, 1);
+    let startDate: Date = this.setStartDate(date);
+    return displayNextday ? this.addDay(this.setStartDate(startDate), + displayNextday) : new Date(2050, 0, 1);
   }
 
   public isStartTime(timeType: Constant.DateTimeStatusType){

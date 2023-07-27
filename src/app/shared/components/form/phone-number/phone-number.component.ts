@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { SearchCountryField, CountryISO, PhoneNumberFormat, ChangeData,  } from 'ngx-intl-tel-input';
+import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 import * as Constant from './../../../services/global/global-constant';
 export interface PhoneNumber {
   countryCode: string;
@@ -16,16 +16,51 @@ export interface PhoneNumber {
   styleUrls: ['./phone-number.component.scss'],
 })
 export class PhoneNumberComponent implements OnInit {
-  @Input()isRequired: boolean = false;
-  @Input()isOptional: boolean = false;
-  @Input()readOnly: boolean = true;
-  @Input()defaultCountry: Constant.CountryCodeType = Constant.Default.CountryCodeType.Australia;
+  @Output() phoneChange = new EventEmitter<string>();
+  @Output() validateChange = new EventEmitter<boolean>();
+  @Input() isRequired: boolean = false;
+  @Input() isOptional: boolean = false;
+  @Input() readOnly: boolean = true;
+  @Input() defaultCountry: Constant.CountryCodeType = Constant.Default.CountryCodeType.Australia;
+  @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
+  @Input() 
+  get phone(){
+    return this.phoneNumberForm.value.phone;
+  }
+  set phone(input: PhoneNumber | string){
+    let isString = typeof input === 'string';
+    let isPhoeNumberType = this.isPhoneNumber(input);
+    if(isString){
+      let str: string = input as string;
+      if(!this.entered){
+        this.assignPhoneNumberForm(str);
+      }
+      this.valueReceived = true;
+    }
+    if(isPhoeNumberType){
+      let phoneType = input as PhoneNumber;
+      this.displayNumber = phoneType.nationalNumber;
+      this.assignPhoneNumberForm(this.displayNumber);
+      this.phoneChange.emit(phoneType.e164Number);
+    }
+  }
+  @Input()
+  get validate(){
+    return this.validated;
+  }
+  set validate(input: boolean){
+    this.validated = input;
+    this.validateChange.emit(input);
+  }
+
+  public validated: boolean = false;
+  private countryLoad: boolean = false;
+  private valueReceived: boolean = false;
+  private validator: RegExp = /[\s-]/;
   public placeholder: string = '';
   public separateDialCode: boolean = false;
   public entered: boolean = false;
-  public phoneNumberForm: FormGroup =new FormGroup({
-    phone: new FormControl('', [Validators.required])
-  });
+
   public searchCountryField = SearchCountryField;
   public countryISO: CountryISO = CountryISO.Australia;
   public phoneNumberFormat: PhoneNumberFormat = PhoneNumberFormat.International;
@@ -37,7 +72,7 @@ export class PhoneNumberComponent implements OnInit {
     CountryISO.Japan,
     CountryISO.SouthKorea
   ];
-  public defaultPhoneNumber: PhoneNumber ={
+  public defaultPhoneNumber: PhoneNumber = {
     countryCode: '',
     dialCode: '',
     e164Number: '',
@@ -45,6 +80,10 @@ export class PhoneNumberComponent implements OnInit {
     nationalNumber: '',
     number: ''
   }
+  public phoneNumberForm: FormGroup = new FormGroup({
+    phone: new FormControl('', [Validators.required])
+  });
+  public displayNumber: string = '';
 
   constructor() {
   }
@@ -54,13 +93,28 @@ export class PhoneNumberComponent implements OnInit {
     this.setDefaultCountry();
   }
 
-  onChangeValue(e: PhoneNumber | null) {
-    console.log(e)
-    if (this.phoneNumberForm.valid) {
-      console.log(this.phoneNumberForm.value);
-    } else {
-      console.log('Form is not valid');
+  onChangeValue(input: PhoneNumber | null) {
+    if(input !== null && this.isPhoneNumber(input) 
+    && this.displayNumber !== input.nationalNumber 
+    && this.displayNumber !== this.phoneNumberForm.value.phone){
+      this.entered = this.valueReceived ? true : false;
+      this.validate = this.validator.test(input.nationalNumber);
+      this.phone = input;
     }
+  }
+
+  public onChangeCountry(){
+    if(this.countryLoad){
+      this.onChangeValue(this.defaultPhoneNumber);
+    }else{
+      this.countryLoad = true;
+    }
+  }
+
+  private assignPhoneNumberForm(input: string){
+    this.phoneNumberForm = new FormGroup({
+      phone: new FormControl(input, [Validators.required])
+    });
   }
 
   private setPlaceholder(){ 
@@ -72,5 +126,15 @@ export class PhoneNumberComponent implements OnInit {
                   :   this.defaultCountry === Constant.Default.CountryCodeType.Japan ? CountryISO.Japan
                   :   this.defaultCountry === Constant.Default.CountryCodeType.Korean ? CountryISO.SouthKorea
                   : CountryISO.Australia;
+  }
+
+  private isPhoneNumber(obj: any): obj is PhoneNumber{
+    return obj &&
+    typeof obj.countryCode === 'string' &&
+    typeof obj.dialCode === 'string' &&
+    typeof obj.e164Number === 'string' &&
+    typeof obj.internationalNumber === 'string' &&
+    typeof obj.nationalNumber === 'string' &&
+    typeof obj.number === 'string';
   }
 }

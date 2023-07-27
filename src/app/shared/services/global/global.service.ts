@@ -37,4 +37,9 @@ export class GlobalService {
     public date: DateService
     ) {
     }
+
+    public isUndefinedOrNull(data: any): boolean{
+      return data === undefined || data === null;
+    }
+
 }

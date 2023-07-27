@@ -1,58 +1,47 @@
-import { ILanguageSelection } from '../../../../interface/system/language/language.interface';
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
 import * as storageKey from './storage.key';
+import { Sha256 } from '@aws-crypto/sha256-js';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class StorageService {
+  constructor() {}
 
-  constructor(private storage: Storage) {
+  public clear() {
+    localStorage.clear();
   }
 
-  public async create(){
-    await this.storage.create();
-  }
-  public async clear(){
-    await this.storage.clear();
+  private async hashKey(key: string): Promise<string> {
+    const hash = new Sha256();
+    hash.update(key);
+    const digest = await hash.digest();
+    return Array.from(digest)
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
   }
 
   public async store(key: string, value: any) {
-    const encryptedValue = btoa(JSON.stringify(value));
-    await this.storage.set(key, encryptedValue);
+    const hashedKey = await this.hashKey(key);
+    localStorage.setItem(hashedKey, JSON.stringify(value));
   }
 
-  public async storeCurrentLanguage(value: string){
-    await this.storage.set(storageKey.default.language, value);
+  public async get(key: string) {
+    const hashedKey = await this.hashKey(key);
+    const value = localStorage.getItem(hashedKey);
+    return value !== null ? JSON.parse(value) : null;
   }
 
-  public async getCurrentLanguage(){
-    let value: string = await this.storage.get(storageKey.default.language);
-    return value;
+  public async removeItem(key: string) {
+    const hashedKey = await this.hashKey(key);
+    localStorage.removeItem(hashedKey);
   }
 
-  public async get(key: string){
-    return new Promise(
-      resolve => {
-        this.storage.get(key).then(
-          (result) => {
-            if(result == null){
-              resolve(false);
-            }else{
-              resolve(JSON.parse(atob(result)));
-            }
-          });
-    });
+  public async getLanguage(){
+    const hashedKey = await this.hashKey(storageKey.default.language);
+    const value = localStorage.getItem(hashedKey);
+    return value !== null ? JSON.parse(value) : null;
   }
 
-  public removeItem(key: string){
-    this.storage.remove(key);
-  }
-
-  public getAllStorageKeyValue(){
-    this.storage.keys();
-  }
-
+  // Other methods for handling specific keys...
 }

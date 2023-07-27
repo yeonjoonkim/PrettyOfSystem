@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DateTransformService } from './date-transform/date-transform.service';
 import * as Constant from '../../global/global-constant';
-import { IDateIndexPairDay, IDatePeriod } from 'src/app/interface/global/global.interface';
+import { IDateIndexPairDay, IDatePeriod, ITimeItem } from 'src/app/interface/global/global.interface';
+import { TimePickerIncrementalSteps } from '@progress/kendo-angular-dateinputs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,23 @@ export class DateService {
   ];
 
   constructor(public transform: DateTransformService) {}
+
+  public differenceTime(start: Date, end: Date, decimal: number): number{
+    let diff: number = (end.getTime() - start.getTime()) / 1000 / 60 / 60;
+    let factor = Math.pow(10, decimal);
+    return Math.round(diff * factor) / factor;
+  }
+
+  public getTimePickerIncrementalSteps(mins: number): TimePickerIncrementalSteps{
+    let mintues = mins % 60;
+    return {minute: mintues};
+  }
+
+  public getTimeItem(date: Date): ITimeItem{
+    let currentDayNightType: Constant.DateDayNightType = date.getHours() > 11 ? Constant.Date.DayNightType.NIGHT : Constant.Date.DayNightType.DAY;
+    let timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    return { hr: date.getHours(),min: date.getMinutes(),dayNightType: currentDayNightType, strValue: timeString};
+  }
 
   public getDateIndexPairDay(date: Date): IDateIndexPairDay{
     let dayIndex = date.getDay();

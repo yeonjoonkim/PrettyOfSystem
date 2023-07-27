@@ -3,7 +3,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { SystemPlanRepositoryService } from 'src/app/firebase/system-repository/plan/system-plan-repository.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
-import { IShopCategory, IShopCountry } from 'src/app/interface/system/shop/shop.interface';
+import { IShopCategory, IShopConfiguration, IShopCountry } from 'src/app/interface/system/shop/shop.interface';
 import { IPairValueId } from 'src/app/interface/system/system.interface';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
 import { ShopModalService } from './shop-modal/shop-modal.service';
@@ -24,6 +24,10 @@ export class SystemShopService {
     this.systemShopCategoryList = this.systemShopConfigRepo.getSystemShopCategories();
     this.systemShopCountryList = this.systemShopConfigRepo.getSystemShopCountries();
     this.systemShopPlanConfigList = this.systemPlanRepo.getSystemPlanOptions();
+  }
+
+  public subscribeAllShopConfiguration(): Observable<IShopConfiguration[]>{
+    return this.systemShopConfigRepo.getAllShopConfiguration();
   }
 
   public async getSystemShopCategoryList(){

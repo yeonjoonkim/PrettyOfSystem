@@ -6,6 +6,7 @@ import { SystemLanguageRepositoryService } from '../../../../firebase/system-rep
 import { TextTransformService } from '../text-transform/text-transform.service';
 import { ILanguageSelection, ILanguageKey, ILanguageTranslateResult, ILanguageTransformKeyPairValue, ILanguageTranslatedCriteria, ILanguageTranslateItem, IAddLanguageTransformSaveCommand } from '../../../../interface/system/language/language.interface';
 import { ToastService } from '../toast/toast.service';
+import * as StorageKey from '../../global/storage/storage.key';
 import getUserLocale from 'get-user-locale';
 
 const localeOption = {
@@ -68,7 +69,7 @@ export class LanguageService{
 
   /** Language Change Event */
   public async onLanguageChange(): Promise<void> {
-    await this.storage.storeCurrentLanguage(this.currentLanguage);
+    await this.storage.store(StorageKey.default.language, this.currentLanguage);
     this.changeLanguageAction.emit(this.currentLanguage);
     await this.getLanguageDescription();
   }
@@ -233,19 +234,19 @@ export class LanguageService{
 
     if(isKorean){
       this.currentLanguage = 'ko';
-      await this.storage.storeCurrentLanguage('ko');
+      await this.storage.store(StorageKey.default.language, this.currentLanguage);
     }
     else if(isChinese){
       this.currentLanguage.includes('zh');
-      await this.storage.storeCurrentLanguage('zh');
+      this.storage.store(StorageKey.default.language, this.currentLanguage);
     }
     else if(isJapanese){
       this.currentLanguage = 'ja';
-      await this.storage.storeCurrentLanguage('ja');
+      this.storage.store(StorageKey.default.language, this.currentLanguage);
     }
     else{
       this.currentLanguage = 'en';
-      await this.storage.storeCurrentLanguage('en');
+      this.storage.store(StorageKey.default.language, this.currentLanguage);
     }
   }
 
@@ -298,9 +299,7 @@ export class LanguageService{
 
     //** This will validate the local storage value then set either default value*/
     private async setDefaultLanguage(): Promise<void> {
-      await this.storage.create();
-
-      let result = await this.storage.getCurrentLanguage();
+      let result = await this.storage.get(StorageKey.default.language);
       if(result){
         this.currentLanguage = result;
       }
