@@ -1,25 +1,79 @@
-<legend>
-  {{ "label.name.shopconfiguration" | languageTransform | async }}
-</legend>
-<kendo-grid [height]="500">
-  <!-- Add Button -->
-  <ng-template kendoGridToolbarTemplate>
-    <button kendoGridAddCommand (click)="onClickCreateShopConfiguration()">
-      {{ "button.name.add" | languageTransform | async }}
-    </button>
-  </ng-template>
-
-  <kendo-grid-column
-    title="{{ 'label.name.name' | languageTransform | async }}"
+<div id="shop-configuration-list">
+  <legend>
+    {{ "label.name.shopconfiguration" | languageTransform | async }}
+  </legend>
+  <kendo-grid
+    [kendoGridBinding]="(configs | async)!"
+    [height]="500"
+    [sortable]="true"
+    [autoSize]="true"
+    [selectable]="true"
+    filterable="menu"
+    (cellClick)="onClickCell($event)"
   >
-    <ng-template kendoGridCellTemplate let-shop> </ng-template>
-  </kendo-grid-column>
-
-  <!--Edit-->
-  <kendo-grid-command-column>
-    <ng-template kendoGridCellTemplate>
-      <button kendoGridEditCommand themeColor="tertiary" icon="edit"></button>
-      <button kendoGridRemoveCommand themeColor="error" icon="trash"></button>
+    <!-- Add Button -->
+    <ng-template kendoGridToolbarTemplate>
+      <button kendoGridAddCommand (click)="onClickCreateShopConfiguration()">
+        {{ "button.name.add" | languageTransform | async }}
+      </button>
     </ng-template>
-  </kendo-grid-command-column>
-</kendo-grid>
+
+    <!-- Name -->
+    <kendo-grid-column
+      title="{{ 'label.name.name' | languageTransform | async }}"
+      [filterable]="true"
+      field="name"
+      [width]="150"
+    >
+      <ng-template kendoGridCellTemplate let-config>{{
+        config.name
+      }}</ng-template>
+    </kendo-grid-column>
+
+    <!-- Category -->
+    <kendo-grid-column
+      title="{{ 'label.name.category' | languageTransform | async }}"
+      field="category.name"
+      [width]="150"
+      [filterable]="false"
+    >
+      <ng-template kendoGridCellTemplate let-config>
+        {{ config.category.name | languageTransform | async }}
+      </ng-template>
+    </kendo-grid-column>
+
+    <!--Active-->
+    <kendo-grid-column
+      *ngIf="!device.deviceType.isMobile"
+      title="{{ 'label.name.active' | languageTransform | async }}"
+      field="active"
+      [filterable]="false"
+    >
+      <ng-template kendoGridCellTemplate let-config>
+        <input
+          type="checkbox"
+          kendoCheckBox
+          [checked]="config.active"
+          disabled
+        />
+      </ng-template>
+    </kendo-grid-column>
+
+    <!--Over Due-->
+    <kendo-grid-column
+      *ngIf="!device.deviceType.isMobile"
+      title="{{ 'label.name.overdue' | languageTransform | async }}"
+      field="plan.isOverDue"
+      [filterable]="false"
+    >
+      <ng-template kendoGridCellTemplate let-config>
+        <input
+          type="checkbox"
+          kendoCheckBox
+          [checked]="config.plan.isOverDue"
+          disabled
+        />
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+</div>

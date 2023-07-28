@@ -1,3 +1,282 @@
-<kendo-label  text="{{title | languageTransform | async}}">
-  <kendo-timepicker class="time-picker" [(value)]="date" (valueChange)="onChangeDate()" [readonly]="readOnly"></kendo-timepicker>
-</kendo-label>
+<flex-col id="work-hours-container">
+  <!--Title-->
+  <legend>{{ "title.name.operatinghours" | languageTransform | async }}</legend>
+  <flex-row-item id="time-container" *ngIf="action === 'create'">
+    <time-picker-group>
+      <time-picker
+        [(time)]="copyValue.openTime"
+        [intervalMin]="intervalMin"
+        [readOnly]="readOnly"
+      ></time-picker>
+      <p id="time-picker-seperator">-</p>
+      <time-picker
+        [(time)]="copyValue.closeTime"
+        [intervalMin]="intervalMin"
+        [readOnly]="readOnly"
+      ></time-picker>
+      <button kendoButton id="copy-button" (click)="onClickCopy()">
+        {{ "button.name.copy" | languageTransform | async }}
+      </button>
+    </time-picker-group>
+  </flex-row-item>
+  <!--Error-->
+  <flex-col-item id="error-container">
+    <div
+      class="form-error-container"
+      *ngIf="!inputValidator && (action === 'create' || action === 'edit')"
+    >
+      <kendo-formerror>{{
+        "message.error.workhours" | languageTransform | async
+      }}</kendo-formerror>
+    </div>
+  </flex-col-item>
+  <!--Monday-->
+  <flex-col-item>
+    <flex-row>
+      <flex-row-item id="title">
+        <legend [ngClass]="{ 'error-text': !validator.mon }">
+          {{ "label.name.mon" | languageTransform | async }}
+          <input
+            id="close-open-button"
+            type="checkbox"
+            kendoCheckBox
+            [(ngModel)]="inputWorkHours.mon.isOpen"
+            (ngModelChange)="onChangeMon()"
+            [disabled]="readOnly"
+          />
+        </legend>
+      </flex-row-item>
+      <flex-row-item id="time-container">
+        <time-picker-group *ngIf="inputWorkHours.mon.isOpen">
+          <time-picker
+            [(time)]="inputWorkHours.mon.operatingHours.openTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeMon()"
+          ></time-picker>
+          <p id="time-picker-seperator">-</p>
+          <time-picker
+            [(time)]="inputWorkHours.mon.operatingHours.closeTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeMon()"
+          ></time-picker>
+        </time-picker-group>
+      </flex-row-item>
+    </flex-row>
+  </flex-col-item>
+  <!-- Tuesday -->
+  <flex-col-item>
+    <flex-row>
+      <flex-row-item id="title">
+        <legend [ngClass]="{ 'error-text': !validator.tue }">
+          {{ "label.name.tue" | languageTransform | async }}
+          <input
+            id="close-open-button"
+            type="checkbox"
+            kendoCheckBox
+            [(ngModel)]="inputWorkHours.tue.isOpen"
+            (ngModelChange)="onChangeTue()"
+            [disabled]="readOnly"
+          />
+        </legend>
+      </flex-row-item>
+      <flex-row-item id="time-container">
+        <time-picker-group *ngIf="inputWorkHours.tue.isOpen">
+          <time-picker
+            [(time)]="inputWorkHours.tue.operatingHours.openTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeTue()"
+          ></time-picker>
+          <p id="time-picker-seperator">-</p>
+          <time-picker
+            [(time)]="inputWorkHours.tue.operatingHours.closeTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeTue()"
+          ></time-picker>
+        </time-picker-group>
+      </flex-row-item>
+    </flex-row>
+  </flex-col-item>
+  <!-- Wednesday -->
+  <flex-col-item>
+    <flex-row>
+      <flex-row-item id="title">
+        <legend [ngClass]="{ 'error-text': !validator.wed }">
+          {{ "label.name.wed" | languageTransform | async }}
+          <input
+            id="close-open-button"
+            type="checkbox"
+            kendoCheckBox
+            [(ngModel)]="inputWorkHours.wed.isOpen"
+            (ngModelChange)="onChangeWed()"
+            [disabled]="readOnly"
+          />
+        </legend>
+      </flex-row-item>
+      <flex-row-item id="time-container">
+        <time-picker-group *ngIf="inputWorkHours.wed.isOpen">
+          <time-picker
+            [(time)]="inputWorkHours.wed.operatingHours.openTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeWed()"
+          ></time-picker>
+          <p id="time-picker-seperator">-</p>
+          <time-picker
+            [(time)]="inputWorkHours.wed.operatingHours.closeTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeWed()"
+          ></time-picker>
+        </time-picker-group>
+      </flex-row-item>
+    </flex-row>
+  </flex-col-item>
+
+  <!-- Thursday -->
+  <flex-col-item>
+    <flex-row>
+      <flex-row-item id="title">
+        <legend [ngClass]="{ 'error-text': !validator.thu }">
+          {{ "label.name.thurs" | languageTransform | async }}
+          <input
+            id="close-open-button"
+            type="checkbox"
+            kendoCheckBox
+            [(ngModel)]="inputWorkHours.thu.isOpen"
+            (ngModelChange)="onChangeThu()"
+            [disabled]="readOnly"
+          />
+        </legend>
+      </flex-row-item>
+      <flex-row-item id="time-container">
+        <time-picker-group *ngIf="inputWorkHours.thu.isOpen">
+          <time-picker
+            [(time)]="inputWorkHours.thu.operatingHours.openTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeThu()"
+          ></time-picker>
+          <p id="time-picker-seperator">-</p>
+          <time-picker
+            [(time)]="inputWorkHours.thu.operatingHours.closeTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeThu()"
+          ></time-picker>
+        </time-picker-group>
+      </flex-row-item>
+    </flex-row>
+  </flex-col-item>
+
+  <!-- Friday -->
+  <flex-col-item>
+    <flex-row>
+      <flex-row-item id="title">
+        <legend [ngClass]="{ 'error-text': !validator.fri }">
+          {{ "label.name.fri" | languageTransform | async }}
+          <input
+            id="close-open-button"
+            type="checkbox"
+            kendoCheckBox
+            [(ngModel)]="inputWorkHours.fri.isOpen"
+            (ngModelChange)="onChangeFri()"
+            [disabled]="readOnly"
+          />
+        </legend>
+      </flex-row-item>
+      <flex-row-item id="time-container">
+        <time-picker-group *ngIf="inputWorkHours.fri.isOpen">
+          <time-picker
+            [(time)]="inputWorkHours.fri.operatingHours.openTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeFri()"
+          ></time-picker>
+          <p id="time-picker-seperator">-</p>
+          <time-picker
+            [(time)]="inputWorkHours.fri.operatingHours.closeTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeFri()"
+          ></time-picker>
+        </time-picker-group>
+      </flex-row-item>
+    </flex-row>
+  </flex-col-item>
+
+  <!-- Saturday -->
+  <flex-col-item>
+    <flex-row>
+      <flex-row-item id="title">
+        <legend [ngClass]="{ 'error-text': !validator.sat }">
+          {{ "label.name.sat" | languageTransform | async }}
+          <input
+            id="close-open-button"
+            type="checkbox"
+            kendoCheckBox
+            [(ngModel)]="inputWorkHours.sat.isOpen"
+            (ngModelChange)="onChangeSat()"
+            [disabled]="readOnly"
+          />
+        </legend>
+      </flex-row-item>
+      <flex-row-item id="time-container">
+        <time-picker-group *ngIf="inputWorkHours.sat.isOpen">
+          <time-picker
+            [(time)]="inputWorkHours.sat.operatingHours.openTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeSat()"
+          ></time-picker>
+          <p id="time-picker-seperator">-</p>
+          <time-picker
+            [(time)]="inputWorkHours.sat.operatingHours.closeTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeSat()"
+          ></time-picker>
+        </time-picker-group>
+      </flex-row-item>
+    </flex-row>
+  </flex-col-item>
+
+  <!-- Sunday -->
+  <flex-col-item>
+    <flex-row>
+      <flex-row-item id="title">
+        <legend [ngClass]="{ 'error-text': !validator.sun }">
+          {{ "label.name.sun" | languageTransform | async }}
+          <input
+            id="close-open-button"
+            type="checkbox"
+            kendoCheckBox
+            [(ngModel)]="inputWorkHours.sun.isOpen"
+            (ngModelChange)="onChangeSun()"
+            [disabled]="readOnly"
+          />
+        </legend>
+      </flex-row-item>
+      <flex-row-item id="time-container">
+        <time-picker-group *ngIf="inputWorkHours.sun.isOpen">
+          <time-picker
+            [(time)]="inputWorkHours.sun.operatingHours.openTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeSun()"
+          ></time-picker>
+          <p id="time-picker-seperator">-</p>
+          <time-picker
+            [(time)]="inputWorkHours.sun.operatingHours.closeTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeSun()"
+          ></time-picker>
+        </time-picker-group>
+      </flex-row-item>
+    </flex-row>
+  </flex-col-item>
+</flex-col>

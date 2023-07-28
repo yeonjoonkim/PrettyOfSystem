@@ -1,5 +1,5 @@
-import { IDatePeriod, IFormHeaderModalProp } from './../../../../interface/global/global.interface';
-import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { IFormHeaderModalProp } from './../../../../interface/global/global.interface';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
 import * as Constant from './../../../../shared/services/global/global-constant';
 import {
@@ -21,206 +21,9 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
   public timeZoneList: Constant.TimeZoneType[] = Object.values(Constant.TimeZone);
   public validator: IShopConfigurationValidator = this.shopConfig.defaultValidator();
   public display: IShopConfigurationDisplayOption = this.shopConfig.defaultShopDisplayOption();
-  public config: IShopConfiguration = {
-    id: '',
-    name: '',
-    phoneNumber: '',
-    email: '',
-    taxNumber: '',
-    logoImg: undefined,
-    active: true,
-    timezone: Constant.TimeZone.AustraliaBrisbane,
-    address: {
-      street: '',
-      suburb: 'SUNNYBANK',
-      state: 'QLD',
-      postCode: '',
-    },
-    operatingHours: {
-      mon: {
-        isOpen: false,
-        operatingHours: {
-          openTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: ''
-          },
-          closeTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-        },
-        index: Constant.Date.DayIndex.Mon,
-        day: Constant.Date.Day.Mon
-      },
-      tue: {
-        isOpen: false,
-        operatingHours: {
-          openTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-          closeTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-        },
-        index: Constant.Date.DayIndex.Tue,
-        day: Constant.Date.Day.Tue
-      },
-      wed: {
-        isOpen: false,
-        operatingHours: {
-          openTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-          closeTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-        },
-        index: Constant.Date.DayIndex.Wed,
-        day: Constant.Date.Day.Wed
-      },
-      thu: {
-        isOpen: false,
-        operatingHours: {
-          openTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-          closeTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-        },
-        index: Constant.Date.DayIndex.Thu,
-        day: Constant.Date.Day.Thu
-      },
-      fri: {
-        isOpen: false,
-        operatingHours: {
-          openTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-          closeTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-        },
-        index: Constant.Date.DayIndex.Fri,
-        day: Constant.Date.Day.Fri
-      },
-      sat: {
-        isOpen: false,
-        operatingHours: {
-          openTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-          closeTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-        },
-        index: Constant.Date.DayIndex.Sat,
-        day: Constant.Date.Day.Fri
-      },
-      sun: {
-        isOpen: false,
-        operatingHours: {
-          openTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-          closeTime: {
-            hr: 0,
-            min: 0,
-            sec: 0,
-            DayNightType: 'PM',
-            strValue: '',
-          },
-        },
-        index: Constant.Date.DayIndex.Sun,
-        day: Constant.Date.Day.Fri
-      },
-    },
-    category: {
-      id: '',
-      isHairSalon: false,
-      isMassageTheraphy: false,
-      isPersonalTrainning: false,
-      isSkinCare: false,
-      name: '',
-    },
-    country: {
-      id: '',
-      currency: Constant.Default.CurrencyType.AUD,
-      length: '',
-      name: '',
-      prefixedPhoneCode: Constant.Default.PhoneCode.AU,
-      dateFormat: Constant.Date.Format.Australia,
-      code: Constant.Default.CountryCodeType.Australia
-    },
-    plan: {
-      configurationId: '',
-      isOverDue: false,
-      lastPaymentDate: new Date(),
-      paymentDate: new Date(),
-      period: {
-        name: 'date.period.weekly',
-        type: 'Weekly',
-        week: 1,
-        day: 7
-      }
-    },
-    setting: {
-      reservationScheduler: {
-        isEnabled: false,
-        intervalMin: 0,
-      },
-    },
-  };
+  public config: IShopConfiguration = this.shopConfig.setDefaultConfig();
+  private selectedconfig!: IShopConfiguration | undefined;
+  private receviedEditValue: boolean = false;
 
   constructor(private shopConfig: ShopConfigurationService, private navParams: NavParams) {
     this.loadingFormCtrl();
@@ -236,16 +39,20 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
 
   private async onChangeForm(): Promise<void>{
     setTimeout(() => {
-      this.form.enabledSavebutton = this.shopConfig.formInputValidator(this.validator);
+        this.form.enabledSavebutton = this.shopConfig.formInputValidator(this.validator);
     });
   }
   private loadingFormCtrl(): void{
     let form: IFormHeaderModalProp = this.navParams.get(Constant.Default.ComponentMode.Form);
+    let config: IShopConfiguration = this.navParams.get('config');
     this.form = form ? form : { readOnly: true, headerTitle: '', action: Constant.Default.FormAction.Read, enabledSavebutton: false};
+    this.config = config ? config : this.shopConfig.setDefaultConfig();
+    this.selectedconfig = config ? config : undefined;
   }
 
   public async onPlanPeriodChange(){
-    this.config.plan.paymentDate = this.shopConfig.global.date.transform.addDay(this.config.plan.lastPaymentDate, this.config.plan.period.day);
+   let newPaymentDate = this.shopConfig.global.date.transform.addDay(this.config.plan.lastPaymentDate, this.config.plan.period.day);
+   this.config.plan.paymentDate =  newPaymentDate.toUTCDate();
   }
 
   public onClickInfo(): void {
@@ -274,5 +81,23 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
 
   public dismiss(){
     this.shopConfig.global.modal.dismiss();
+  }
+
+  public async handleEdit(){
+    this.form.readOnly = false;
+    this.validator = this.shopConfig.editValidator();
+    await this.onChangeForm();
+  }
+
+  public async handleSave(){
+    this.shopConfig.handleSave(this.config);
+  }
+
+  public async handleDelete(){
+    this.shopConfig.handleDelete(this.config)
+  }
+
+  public async handleCreate(){
+    this.shopConfig.handleCreate(this.config);
   }
 }

@@ -21,7 +21,9 @@ export class ShopCategoryListComponent implements OnInit {
   }
   set shopCategory(value: IShopCategory) {
     this.selectedShopCategory = value;
+    if(!this.loading){
     this.shopCategoryChange.emit(this.selectedShopCategory);
+    }
   }
   @Input()
   get validate(): boolean {

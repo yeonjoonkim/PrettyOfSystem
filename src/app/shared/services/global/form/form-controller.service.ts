@@ -11,10 +11,28 @@ export class FormControllerService {
   constructor(public statusValiation: StatusValidationService) { }
 
 
-  public setDefaultFormHeaderModalProp(): IFormHeaderModalProp{
+  public setCreateFormHeaderModalProp(): IFormHeaderModalProp{
     return {
       readOnly: false,
       action: Constant.Default.FormAction.Create,
+      enabledSavebutton: false,
+      headerTitle: ''
+    };
+  }
+
+  public setReadFormHeaderModalProp(): IFormHeaderModalProp{
+    return {
+      readOnly: true,
+      action: Constant.Default.FormAction.Read,
+      enabledSavebutton: false,
+      headerTitle: ''
+    };
+  }
+
+  public setEditFormHeaderModalProp(): IFormHeaderModalProp{
+    return {
+      readOnly: true,
+      action: Constant.Default.FormAction.Edit,
       enabledSavebutton: false,
       headerTitle: ''
     };

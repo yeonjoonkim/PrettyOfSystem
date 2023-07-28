@@ -40,7 +40,7 @@ export class TimeZoneComponent implements OnInit {
 
   private setDefaultValue(){
     let isValidated: boolean = this.setValidator();
-    this.inputTimeZone = isValidated ? this.inputTimeZone : Constant.Default.TimeZone;
+    this.inputTimeZone = isValidated ? this.inputTimeZone : Constant.SystemSetting.TimeZone;
     this.validate = this.setValidator();
   }
 

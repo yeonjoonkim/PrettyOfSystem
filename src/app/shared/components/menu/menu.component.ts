@@ -64,8 +64,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   private async getCurrentLanguage(){
-    let currentLang = await this.storage.getCurrentLanguage();
-    this.selectedLangauge = currentLang;
+    let currentLang = await this.storage.getLanguage();
+    this.selectedLangauge = currentLang !== null ? currentLang : this.language.deafultLanguageCode;
   }
 
   /** Implemented on the ngOnInit to set up the default Title Heading param */

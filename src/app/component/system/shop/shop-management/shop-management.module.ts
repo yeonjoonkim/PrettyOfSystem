@@ -8,12 +8,14 @@ import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,NgModule} from '@angular/core';
 //Import Pipe
 import { LanguageTransformPipeModule } from '../../../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { LuxonModule } from 'luxon-angular';
 
 //Import Module
 import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/shared/components/form/form.module';
 import { SystemShopFormModule } from '../system-shop-copoment.module';
-import {NgxIntlTelInputModule} from 'ngx-intl-tel-input-gg';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
+
 //Import Component
 import {ShopManagementComponent} from './shop-management.component';
 
@@ -30,7 +32,8 @@ import {ShopManagementComponent} from './shop-management.component';
     KendoUiModule,
     SharedFormModule,
     SystemShopFormModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    LuxonModule
   ],
   exports: [ShopManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

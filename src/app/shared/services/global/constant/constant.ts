@@ -1,11 +1,24 @@
 import { TimeZone } from "./timezone";
 
+export const SystemSetting = {
+  TimeZone: TimeZone.AustraliaBrisbane,
+};
+
+export const ShopSetting = {
+  General: {
+    TaxRate: 0.1
+  } as const,
+  TimePicker: {
+    IntervalMin: 15
+  }
+}as const;
+
 export const Default = {
    ComponentMode: {
     Filter: 'filter',
     Form: 'form',
   } as const,
-  TimeZone: TimeZone.AustraliaBrisbane,
+
 
   PhoneCode: {
     KR: "+82",
@@ -61,13 +74,7 @@ export const Default = {
 
 export const Setting = {
   ShopSetting: {
-    General: {
-      TaxRate: 0.1
-    } as const,
-    ReservationScheduler: {
-      IsEnabled: true,
-      intervalMin: 0
-    } as const
+
   } as const,
   PersonalSetting: {} as const,
 };

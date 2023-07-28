@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DeleteConfirmationAlert } from './delete-confirmation-alert.service';
+import { DeleteConfirmationAlert } from './confirmation-alert.service';
 
 describe('DeleteConfirmationAlertService', () => {
   let service: DeleteConfirmationAlert;

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import * as Constant from './../../../services/global/global-constant';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
+import { ZonedDate } from '@progress/kendo-date-math';
 
 /**This Componet will return the datetime value based on shop time zone
    * Local: Fri Jul 07 2023 14:31:16 GMT+1000 (Australian Eastern Standard Time)
@@ -29,12 +30,10 @@ export class DatePickerComponent implements OnInit{
     return this.inputDate;
   }
   set date(input: Date){
-    //Input based on timeZone
-    this.inputDate =  this.global.date.transform.convertToLocalShopDateTime(input, this.shopTimeZone);
-    this.inputDate = this.global.date.transform.setLocalStartDate(this.inputDate);
-    //Output
-    input = this.global.date.transform.convertShopTimeZoneDateTime(input, this.shopTimeZone);
-    this.dateChange.emit(input);
+    //INPUT
+    let inputDate: ZonedDate = this.global.date.transform.toShopDateTime(input, this.shopTimeZone);
+    let shopTime = inputDate.toTimezone(this.shopTimeZone);
+    this.inputDate = this.global.date.transform.convertToLocalShopDateTime(shopTime, this.shopTimeZone);
   }
 
   constructor(private global: GlobalService) {
@@ -48,6 +47,10 @@ export class DatePickerComponent implements OnInit{
   /**Default Behavior is 00:00:00 */
   public transformDate(selectedDate: any){
     this.date = selectedDate;
+    //OUTPUT
+    let outputDate: ZonedDate = this.global.date.transform.convertShopTimeZoneDateTime(selectedDate, this.shopTimeZone);
+    let outputShopTime = outputDate.toUTCDate();
+    this.dateChange.emit(outputShopTime);
   }
 
 }

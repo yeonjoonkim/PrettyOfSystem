@@ -1,9 +1,13 @@
+import firebase from 'firebase/compat/app';
+
+
 import {Default, State, Setting, Date} from './constant/constant';
-export {Default, State, Setting, Date} from './constant/constant';
+export {Default, State, Setting, Date, ShopSetting, SystemSetting} from './constant/constant';
 import { TimeZone } from './constant/timezone';
 export { TimeZone } from './constant/timezone';
 
 //Date
+export type TimeStamp = firebase.firestore.Timestamp;
 export type TimeZoneType = typeof TimeZone[keyof typeof TimeZone];
 export type DayIndexType = typeof Date.DayIndex[keyof typeof Date.DayIndex];
 export type DayType = typeof Date.Day[keyof typeof Date.Day];

@@ -1,7 +1,9 @@
-import { ILanguageSelection } from '../../../../interface/system/language/language.interface';
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
 import * as storageKey from './storage.key';
+import { Sha256 } from '@aws-crypto/sha256-js';
+import * as CryptoJS from 'crypto-js';
+import * as _ from './../../../../../../storage-key';
+import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -9,50 +11,50 @@ import * as storageKey from './storage.key';
 
 export class StorageService {
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage) {}
+  public clear() {
+    this.storage.clear();
   }
 
-  public async create(){
-    await this.storage.create();
+  private async hashKey(key: string): Promise<string> {
+    const hash = new Sha256();
+    hash.update(key);
+    const digest = await hash.digest();
+    return Array.from(digest)
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
   }
-  public async clear(){
-    await this.storage.clear();
+
+  private encryptValue(value: any): string{
+    const str = JSON.stringify(value);
+    return CryptoJS.AES.encrypt(str, _.STORAGE.key).toString();
+  }
+
+  private decryptValue(encryptedValue: string): any{
+    const decryptedValue = CryptoJS.AES.decrypt(encryptedValue, _.STORAGE.key);
+    return JSON.parse(decryptedValue.toString(CryptoJS.enc.Utf8));
   }
 
   public async store(key: string, value: any) {
-    const encryptedValue = btoa(JSON.stringify(value));
-    await this.storage.set(key, encryptedValue);
+    const hashedKey = await this.hashKey(key);
+    const encryptedValue = this.encryptValue(value);
+    this.storage.set(hashedKey, encryptedValue);
   }
 
-  public async storeCurrentLanguage(value: string){
-    await this.storage.set(storageKey.default.language, value);
+  public async get(key: string) {
+    const hashedKey = await this.hashKey(key);
+    const encryptedValue: string | unknown = this.storage.get(hashedKey);
+    const decryptedValue = typeof encryptedValue === 'string' ? this.decryptValue(encryptedValue) : null;
+    return decryptedValue !== null ? decryptedValue : null;
   }
 
-  public async getCurrentLanguage(){
-    let value: string = await this.storage.get(storageKey.default.language);
-    return value;
+  public async removeItem(key: string) {
+    const hashedKey = await this.hashKey(key);
+    this.storage.remove(hashedKey);
   }
 
-  public async get(key: string){
-    return new Promise(
-      resolve => {
-        this.storage.get(key).then(
-          (result) => {
-            if(result == null){
-              resolve(false);
-            }else{
-              resolve(JSON.parse(atob(result)));
-            }
-          });
-    });
+  public async getLanguage(){
+    const hashedKey = await this.hashKey(storageKey.default.language);
+    return this.get(hashedKey);
   }
-
-  public removeItem(key: string){
-    this.storage.remove(key);
-  }
-
-  public getAllStorageKeyValue(){
-    this.storage.keys();
-  }
-
 }

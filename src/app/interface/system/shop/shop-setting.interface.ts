@@ -1,13 +1,12 @@
 export interface IShopSetting{
-  reservationScheduler: IShopReservationScheduler;
-  //general: IShopGeneralSetting;
+  timePicker: IShopTimePicker;
+  general: IShopGeneralSetting;
+}
+
+export interface IShopTimePicker{
+  intervalMin: number;
 }
 
 export interface IShopGeneralSetting{
   taxRate: number;
-}
-
-export interface IShopReservationScheduler{
-  isEnabled: boolean;
-  intervalMin: number;
 }

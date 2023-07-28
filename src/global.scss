@@ -67,6 +67,9 @@ $title-color: #414d58;
 .error-toast {
   --background: red;
 }
+.error-text {
+  color: red;
+}
 
 .ion-card-title-icon {
   cursor: pointer;
@@ -153,27 +156,45 @@ legend {
 .dropdown-menu.country-dropdown.show {
   border: rgba(255, 255, 255, 0.08) 1px solid;
   border-radius: 2px;
-  width: -moz-fit-content;
+  min-width: 200px;
+  max-width: 260px;
   padding: 0px;
   border-collapse: collapse;
   .iti__country {
-    padding: 2px;
+    padding: 5px 0px;
   }
   .search-container,
   .iti__country-list {
-    font-size: 9px;
+    font-size: 14px;
     color: white;
     #country-search-box {
+      padding: 15px;
       background-color: #101010;
       border-bottom: unset;
-      border: #232323 1px solid;
+      border: unset;
       height: 30px;
+      &:hover {
+        border: unset;
+      }
+      &:focus-visible {
+        border-color: unset;
+        box-shadow: unset;
+        outline: unset;
+      }
+    }
+    &:hover {
+      border: unset;
+    }
+    &:focus-visible {
+      border-color: unset;
+      box-shadow: unset;
+      outline: unset;
     }
   }
   .iti__country-list {
     background: #101010;
     color: white;
-    width: inherit;
+    max-width: 300px;
   }
 }
 
@@ -185,6 +206,10 @@ yes-no-selection-group {
   yes-no-selection {
     align-self: flex-end;
   }
+}
+time-picker-group {
+  display: flex;
+  flex-direction: row;
 }
 
 ion-button {
@@ -210,7 +235,7 @@ ion-content {
   form-header {
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 100;
   }
 }
 

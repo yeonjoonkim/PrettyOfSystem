@@ -1,0 +1,40 @@
+#work-hours-container {
+  flex-col-item {
+    margin: 0;
+  }
+}
+#error-container {
+  height: 14px;
+}
+#copy-button {
+  margin: 10px;
+  height: 33px;
+  max-width: 60px;
+}
+#time-container {
+  flex: 4;
+  margin: 0;
+  #time-picker-seperator {
+    margin: 15px 5px;
+  }
+  time-picker {
+    min-width: 0px;
+    max-width: 125px;
+  }
+}
+#title {
+  margin: 0;
+  margin-bottom: 15px;
+  legend {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 85px;
+    margin: 0;
+    margin-top: 15px;
+  }
+  #close-open-button {
+    display: inline-block;
+    margin: 5px;
+  }
+}

@@ -4,7 +4,9 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { firstValueFrom, map, Observable } from 'rxjs';
 import { IShopCategory, IShopConfiguration, IShopCountry } from 'src/app/interface/system/shop/shop.interface';
 import { LanguageService } from 'src/app/shared/services/global/language/language.service';
-import { LoadingService } from 'src/app/shared/services/global/loading/loading.service';
+import { FirebaseService } from 'src/app/shared/services/firebase/firebase.service';
+import { ShopSettingService } from 'src/app/service/system/system-shop/shop-setting/shop-setting.service';
+import { IPairValueId, IShopSettingValiationResult } from 'src/app/interface/system/system.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +14,10 @@ import { LoadingService } from 'src/app/shared/services/global/loading/loading.s
 export class SystemShopConfigurationRepositoryService {
   private readonly timeStamp = {lastModifiedDate: new Date()};
   private readonly systemShop: string = 'system/shop/';
-  private readonly shop: string = 'shop/'
   private readonly shopCategory: string = this.systemShop + 'category';
   private readonly shopCountry:  string  = this.systemShop + 'country';
-  private readonly shopConfiguration: string = this.shop + 'configuration';
-  private readonly shopLogo: string = this.shop + 'logo';
-  constructor(private afs: AngularFirestore, private language: LanguageService, private afstorage: AngularFireStorage, private loading: LoadingService) { }
+  private readonly shopConfiguration: string = 'shopConfiguration/';
+  constructor(private afs: AngularFirestore, private language: LanguageService, private afstorage: AngularFireStorage, private firebaseService: FirebaseService, private setting: ShopSettingService) { }
 
   public getSystemShopCategories(): Observable<IShopCategory[]> {
     return this.afs.collection<IShopCategory>(this.shopCategory, ref => ref.orderBy('name'))
@@ -49,31 +49,99 @@ export class SystemShopConfigurationRepositoryService {
     return categories.find(countries => countries.id === selectedId);
   }
 
-  public async createNewShopConfiguration(shopConfig: IShopConfiguration){
+  public async createNewShopConfiguration(shopConfig: IShopConfiguration): Promise<boolean>{
+    let result: boolean = false;
     let newId = this.afs.createId();
-    let hasImg: boolean = shopConfig.logoImg != null && shopConfig.logoImg != undefined;
     shopConfig.id = newId;
-    shopConfig.logoImg = hasImg ? await this.createNewShopLogo(shopConfig.logoImg, newId) : '';
     let config = {...shopConfig, ... this.timeStamp};
     try{
       await this.afs.collection(this.shopConfiguration).doc(shopConfig.id).set(config);
+      result = true;
     }
     catch(e){
       console.error(e);
     }
+    return result;
   }
 
-  public async createNewShopLogo(shopLogo: any, newId: string){
-    let id = this.shopLogo + '/' + newId;
-    let uploadTask = await this.afstorage.upload(id, shopLogo);
-    let url = await uploadTask.ref.getDownloadURL();
-    return url;
+  public async editExistingShopConfiguration(shopConfig: IShopConfiguration): Promise<boolean>{
+    let result: boolean = false;
+    let updatedConfig = { ...shopConfig, ...this.timeStamp };
+
+    try{
+      await this.afs.collection(this.shopConfiguration).doc(updatedConfig.id).update(updatedConfig);
+      result = true;
+    }
+    catch(e){
+      console.error(e);
+    }
+
+    return result;
   }
 
-  public async updateNewShopLogo(shopLogo: any, selectedId: string){
-    let id = this.shopLogo + '/' + selectedId;
-    let uploadTask = await this.afstorage.upload(id, shopLogo);
-    let url = await uploadTask.ref.getDownloadURL();
-    return url;
+  public async deleteShopConfiguration(shopConfigId: string): Promise<boolean> {
+    let result: boolean = false;
+  
+    try {
+      await this.afs.collection(this.shopConfiguration).doc(shopConfigId).delete();
+      result = true;
+    } catch (e) {
+      console.error(e);
+    }
+  
+    return result;
   }
+
+  private async updateShopSetting(config: IShopConfiguration, validated: IShopSettingValiationResult){
+    if(validated.isModified){
+      config.setting = validated.setting;
+      let updatedConfig = { ...config, ...this.timeStamp };
+      try{
+        this.afs.collection(this.shopConfiguration).doc(updatedConfig.id).update(updatedConfig);
+      }
+      catch(e){
+        console.error(e);
+      }
+    }
+  }
+
+  public subscribeAllConfigPairIdValue(){
+    return this.afs
+      .collection<IShopConfiguration>(this.shopConfiguration, ref => ref.orderBy('name'))
+      .valueChanges()
+      .pipe(
+        map(configs => {
+          return configs.map(sc => {
+            let idKeyPairValue: IPairValueId = {
+              id: sc.id,
+              value: sc.name
+            }
+            return idKeyPairValue;
+          });
+        })
+      );
+  }
+
+  public subscribeAllShopConfiguration() {
+    return this.afs
+      .collection<IShopConfiguration>(this.shopConfiguration, ref => ref.orderBy('name'))
+      .valueChanges()
+      .pipe(
+        map(configs => {
+          return configs.map(sc => {
+            let validated = this.setting.getValidatedResult(sc.setting);
+            sc.setting = validated.setting;
+            sc.plan.lastPaymentDate = this.firebaseService.toDate(sc.plan.lastPaymentDate);
+            sc.plan.paymentDate = this.firebaseService.toDate(sc.plan.paymentDate);
+            sc.activeFrom = this.firebaseService.toDate(sc.activeFrom);
+            if (sc.activeTo) {
+              sc.activeTo = this.firebaseService.toDate(sc.plan.lastPaymentDate);
+            }
+            this.updateShopSetting(sc, validated);
+            return sc;
+          });
+        })
+      );
+  }
+
 }

@@ -1,11 +1,12 @@
 <kendo-label text="{{ 'form.title.phone' | languageTransform | async }}">
   <div class="form-error-container">
-    <kendo-formerror *ngIf="!phoneNumberForm.valid && isRequired && entered">{{
-      "message.error.invalidemail" | languageTransform | async
+    <kendo-formerror *ngIf="!validated && isRequired && entered">{{
+      "message.error.invalidphone" | languageTransform | async
     }}</kendo-formerror>
   </div>
   <form [formGroup]="phoneNumberForm">
     <ngx-intl-tel-input
+      [cssClass]="'custom-tel-input'"
       formControlName="phone"
       customPlaceholder="{{ placeholder | languageTransform | async }}"
       [enableAutoCountrySelect]="true"
@@ -18,6 +19,7 @@
       [numberFormat]="phoneNumberFormat"
       [disabled]="readOnly"
       (ngModelChange)="onChangeValue($event)"
+      (countryChange)="onChangeCountry()"
     ></ngx-intl-tel-input>
   </form>
 </kendo-label>

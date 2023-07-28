@@ -39,7 +39,7 @@ export class SystemRoleService {
 
 
   public async processDeleteRoleConfiguration(config: IRoleConfiguration){
-    let deleteConfirmation = await this.global.deleteConfirmAlert.getdeleteConfirmationWithName(config.name);
+    let deleteConfirmation = await this.global.confirmAlert.getDeleteConfirmationWithName(config.name);
 
     if(deleteConfirmation){
       await this.global.language.deleteKeyPairValue(config.name);

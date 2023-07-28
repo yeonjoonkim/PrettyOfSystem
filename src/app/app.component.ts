@@ -1,10 +1,9 @@
 import { DeviceWidthService } from './shared/services/global/device-width/device-width.service';
 import { LanguageService } from './shared/services/global/language/language.service';
 import {  Component, OnDestroy, OnInit } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
 import { Subscription } from 'rxjs';
 import { SystemLanguageRepositoryService } from './firebase/system-repository/language/system-language-repository.service';
-
+import { Storage } from '@ionic/storage-angular';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -16,7 +15,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public isLoaded: boolean = false;
   private languageChangeActionSubscription: Subscription | undefined;
 
-  constructor(private storage: Storage, private language: LanguageService, private sysLanguageRepo: SystemLanguageRepositoryService, private deviceWidth: DeviceWidthService) {
+  constructor(private language: LanguageService, private deviceWidth: DeviceWidthService, private storage: Storage) {
     this.storage.create();
   }
 
