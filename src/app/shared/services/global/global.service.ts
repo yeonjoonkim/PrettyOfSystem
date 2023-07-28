@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DeleteConfirmationAlert } from './delete-confirmation-alert/delete-confirmation-alert.service';
+import { DeleteConfirmationAlert } from './confirmation-alert/confirmation-alert.service';
 import { DeviceWidthService } from './device-width/device-width.service';
 import { ErrorReporterService } from './error-reporter/error-reporter.service';
 import { LanguageService } from './language/language.service';
@@ -13,14 +13,13 @@ import { LanguageTranslationPackageService } from './language-translation-packag
 import { ModalService } from './modal/modal.service';
 import { KendoUiService } from './kendo-ui/kendo-ui.service';
 import { FormControllerService } from './form/form-controller.service';
-import { DateTransformService } from './date/date-transform/date-transform.service';
 import { DateService } from './date/date.service';
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalService {
   constructor(
-    public deleteConfirmAlert: DeleteConfirmationAlert,
+    public confirmAlert: DeleteConfirmationAlert,
     public deviceWidth: DeviceWidthService,
     public errorReport: ErrorReporterService,
     public language: LanguageService,

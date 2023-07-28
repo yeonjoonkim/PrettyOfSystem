@@ -19,6 +19,9 @@ export class DateTransformService {
   constructor() {}
 
   public toShopDateTime(inputDate: Date, timezone: Constant.TimeZoneType): ZonedDate{
+    if (!(inputDate instanceof Date)) {
+      inputDate
+    }
     let tzDate = ZonedDate.fromLocalDate(inputDate, timezone);
     let result: ZonedDate = tzDate.toTimezone(timezone);
     return result

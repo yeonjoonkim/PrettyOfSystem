@@ -25,8 +25,8 @@ export type IShopCountry = {
 export interface IShopPlan{
   configurationId: string;
   isOverDue: boolean;
-  lastPaymentDate: Date;
-  paymentDate: Date;
+  lastPaymentDate: Date
+  paymentDate: Date
   period: IDatePeriod;
 }
 

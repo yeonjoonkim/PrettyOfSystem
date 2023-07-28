@@ -30,7 +30,7 @@ export class EmailComponent implements OnInit {
     return this.validated;
   }
   set validate(value: boolean) {
-    this.validated = value;
+    this.validated = this.emailValidatorRules.test(this.validEmail);
     this.validateChange.emit(this.validated);
   }
   public placeHolder: string = '';

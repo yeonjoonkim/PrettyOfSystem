@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 import * as Constant from './../../../services/global/global-constant';
@@ -15,12 +15,12 @@ export interface PhoneNumber {
   templateUrl: './phone-number.component.html',
   styleUrls: ['./phone-number.component.scss'],
 })
-export class PhoneNumberComponent implements OnInit {
+export class PhoneNumberComponent implements OnInit, OnChanges {
   @Output() phoneChange = new EventEmitter<string>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() isRequired: boolean = false;
   @Input() isOptional: boolean = false;
-  @Input() readOnly: boolean = true;
+  @Input() readOnly: boolean = false;
   @Input() defaultCountry: Constant.CountryCodeType = Constant.Default.CountryCodeType.Australia;
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input() 
@@ -60,7 +60,6 @@ export class PhoneNumberComponent implements OnInit {
   public placeholder: string = '';
   public separateDialCode: boolean = false;
   public entered: boolean = false;
-
   public searchCountryField = SearchCountryField;
   public countryISO: CountryISO = CountryISO.Australia;
   public phoneNumberFormat: PhoneNumberFormat = PhoneNumberFormat.International;
@@ -87,10 +86,20 @@ export class PhoneNumberComponent implements OnInit {
 
   constructor() {
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    let readOnlyChange = changes['readOnly'];
+    if(readOnlyChange){
+      this.onChangeReadOnly();
+    }
+  }
 
   ngOnInit() {
     this.setPlaceholder();
     this.setDefaultCountry();
+  }
+
+  private onChangeReadOnly(){
+    this.assignPhoneNumberForm(this.phoneNumberForm.value.phone);
   }
 
   onChangeValue(input: PhoneNumber | null) {
@@ -112,8 +121,9 @@ export class PhoneNumberComponent implements OnInit {
   }
 
   private assignPhoneNumberForm(input: string){
+    let disabled = this.readOnly;
     this.phoneNumberForm = new FormGroup({
-      phone: new FormControl(input, [Validators.required])
+      phone: new FormControl({value: input, disabled: this.readOnly}, [Validators.required])
     });
   }
 

@@ -19,7 +19,9 @@ export class ShopPlanComponent implements OnInit {
   }
   set planId(value: string) {
     this.selectedPlanId = value;
-    this.planIdChange.emit(this.selectedPlanId);
+    if(!this.loading){
+      this.planIdChange.emit(this.selectedPlanId);
+    }
   }
   @Input()
   get validate() {

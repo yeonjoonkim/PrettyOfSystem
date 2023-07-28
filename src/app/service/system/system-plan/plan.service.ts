@@ -67,7 +67,7 @@ export class PlanService {
   }
 
   public async processDeletePlan(selectedPlanId: string, selectedPlanName: string){
-    let deleteConfirmation = await this.global.deleteConfirmAlert.getdeleteConfirmationWithName(selectedPlanName);
+    let deleteConfirmation = await this.global.confirmAlert.getDeleteConfirmationWithName(selectedPlanName);
     if(deleteConfirmation){
       await this.planRepo.deleteSystemPlanOption(selectedPlanId) ? await this.presentDeleteMsg(): await this.presentDeleteError();
     }

@@ -1,5 +1,5 @@
-import { IDatePeriod, IFormHeaderModalProp } from './../../../../interface/global/global.interface';
-import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { IFormHeaderModalProp } from './../../../../interface/global/global.interface';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
 import * as Constant from './../../../../shared/services/global/global-constant';
 import {
@@ -22,6 +22,8 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
   public validator: IShopConfigurationValidator = this.shopConfig.defaultValidator();
   public display: IShopConfigurationDisplayOption = this.shopConfig.defaultShopDisplayOption();
   public config: IShopConfiguration = this.shopConfig.setDefaultConfig();
+  private selectedconfig!: IShopConfiguration | undefined;
+  private receviedEditValue: boolean = false;
 
   constructor(private shopConfig: ShopConfigurationService, private navParams: NavParams) {
     this.loadingFormCtrl();
@@ -37,12 +39,15 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
 
   private async onChangeForm(): Promise<void>{
     setTimeout(() => {
-      this.form.enabledSavebutton = this.shopConfig.formInputValidator(this.validator);
+        this.form.enabledSavebutton = this.shopConfig.formInputValidator(this.validator);
     });
   }
   private loadingFormCtrl(): void{
     let form: IFormHeaderModalProp = this.navParams.get(Constant.Default.ComponentMode.Form);
+    let config: IShopConfiguration = this.navParams.get('config');
     this.form = form ? form : { readOnly: true, headerTitle: '', action: Constant.Default.FormAction.Read, enabledSavebutton: false};
+    this.config = config ? config : this.shopConfig.setDefaultConfig();
+    this.selectedconfig = config ? config : undefined;
   }
 
   public async onPlanPeriodChange(){
@@ -77,8 +82,22 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
   public dismiss(){
     this.shopConfig.global.modal.dismiss();
   }
-  
-  public async create(){
+
+  public async handleEdit(){
+    this.form.readOnly = false;
+    this.validator = this.shopConfig.editValidator();
+    await this.onChangeForm();
+  }
+
+  public async handleSave(){
+    this.shopConfig.handleSave(this.config);
+  }
+
+  public async handleDelete(){
+    this.shopConfig.handleDelete(this.config)
+  }
+
+  public async handleCreate(){
     this.shopConfig.handleCreate(this.config);
   }
 }

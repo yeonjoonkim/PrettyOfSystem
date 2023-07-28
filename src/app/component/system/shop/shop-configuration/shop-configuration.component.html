@@ -5,7 +5,10 @@
     [enabledSavebutton]="form.enabledSavebutton"
     [action]="form.action"
     (onClickDismiss)="dismiss()"
-    (onClickCreate)="create()"
+    (onClickCreate)="handleCreate()"
+    (onClickEdit)="handleEdit()"
+    (onClickSave)="handleSave()"
+    (onClickDelete)="handleDelete()"
   >
   </form-header>
   <form-container>
@@ -72,6 +75,7 @@
             [isRequired]="true"
             [min]="2"
             (valueChange)="ngAfterViewInit()"
+            (validateChange)="ngAfterViewInit()"
           >
           </text-box>
         </flex-row-item>
@@ -87,6 +91,7 @@
             [isRequired]="true"
             [showCounter]="false"
             (valueChange)="ngAfterViewInit()"
+            (validateChange)="ngAfterViewInit()"
           >
           </text-box>
         </flex-row-item>
@@ -96,11 +101,11 @@
         <flex-row-item>
           <phone-number
             mode="form"
-            [isRequired]="true"
             [readOnly]="form.readOnly"
             [(phone)]="config.phoneNumber"
             [(validate)]="validator.phonNumber"
             (phoneChange)="ngAfterViewInit()"
+            (validateChange)="ngAfterViewInit()"
           >
           </phone-number>
         </flex-row-item>
@@ -112,6 +117,7 @@
             [readOnly]="form.readOnly"
             [isRequired]="true"
             (emailChange)="ngAfterViewInit()"
+            (validateChange)="ngAfterViewInit()"
           >
           </e-mail>
         </flex-row-item>
@@ -133,6 +139,7 @@
             [intervalMin]="config.setting.timePicker.intervalMin"
             [(workHours)]="config.operatingHours"
             [readOnly]="form.readOnly"
+            [action]="form.action"
             [timezone]="config.timezone"
             [(validate)]="validator.workHours"
             (workHoursChange)="ngAfterViewInit()"
@@ -244,7 +251,6 @@
           ></date-picker>
         </flex-row-item>
       </flex-row>
-      {{ config.plan.lastPaymentDate }}
     </flex-col>
   </form-container>
 </ion-content>

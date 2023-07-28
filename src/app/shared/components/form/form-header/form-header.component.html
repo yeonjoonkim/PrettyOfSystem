@@ -14,21 +14,6 @@
       themeColor="error"
       (click)="onClickDeleteButton()"
     ></kendo-button>
-    <!--Save-->
-    <kendo-button
-      id="start-btn"
-      *ngIf="
-        (status === 'editing' ||
-          status === 'creating' ||
-          status === 'saving' ||
-          status === 'deleting') &&
-        !readOnly
-      "
-      [disabled]="!enabledSavebutton"
-      icon="save"
-      themeColor="success"
-      (click)="onClickSaveButton()"
-    ></kendo-button>
   </kendo-buttongroup>
 
   <!--Title-->
@@ -41,11 +26,27 @@
     <!-- Edit -->
     <kendo-button
       id="end-btn"
-      *ngIf="status === 'reading' && !readOnly"
+      *ngIf="status === 'editing' && readOnly"
       icon="edit"
       themeColor="success"
       (click)="onClickEditButton()"
     ></kendo-button>
+
+    <kendo-button
+      id="end-btn"
+      *ngIf="
+        (status === 'editing' ||
+          status === 'creating' ||
+          status === 'saving' ||
+          status === 'deleting') &&
+        !readOnly
+      "
+      [disabled]="!enabledSavebutton"
+      icon="save"
+      themeColor="success"
+      (click)="onClickSaveButton()"
+    ></kendo-button>
+    {{ status }}
   </kendo-buttongroup>
 
   <!--Close-->

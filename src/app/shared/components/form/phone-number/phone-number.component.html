@@ -6,6 +6,7 @@
   </div>
   <form [formGroup]="phoneNumberForm">
     <ngx-intl-tel-input
+      [cssClass]="'custom-tel-input'"
       formControlName="phone"
       customPlaceholder="{{ placeholder | languageTransform | async }}"
       [enableAutoCountrySelect]="true"

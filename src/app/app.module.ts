@@ -13,8 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-//Import Component
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 //Import Firebase
 import { AngularFireModule } from '@angular/fire/compat';
@@ -35,6 +34,7 @@ import 'hammerjs';
 //Delcalration for Shared Component
 import { MenuComponent } from './shared/components/menu/menu.component';
 import { LangaugeSelectionComponent } from './shared/components/langauge-selection/langauge-selection.component';
+import { StorageService } from './shared/services/global/storage/storage.service';
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, LangaugeSelectionComponent],
@@ -45,6 +45,7 @@ import { LangaugeSelectionComponent } from './shared/components/langauge-selecti
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     LanguageTransformPipeModule.forRoot(),
+    IonicStorageModule.forRoot(),
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
@@ -56,7 +57,7 @@ import { LangaugeSelectionComponent } from './shared/components/langauge-selecti
   ],
   exports: [],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

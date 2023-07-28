@@ -1,6 +1,6 @@
 export interface IShopSetting{
   timePicker: IShopTimePicker;
-  //general: IShopGeneralSetting;
+  general: IShopGeneralSetting;
 }
 
 export interface IShopTimePicker{

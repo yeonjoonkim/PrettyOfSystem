@@ -27,7 +27,11 @@ export class SystemShopService {
   }
 
   public subscribeAllShopConfiguration(): Observable<IShopConfiguration[]>{
-    return this.systemShopConfigRepo.getAllShopConfiguration();
+    return this.systemShopConfigRepo.subscribeAllShopConfiguration();
+  }
+
+  public subscribeAllShopConfigurationIdPairValue(): Observable<IPairValueId[]>{
+    return this.systemShopConfigRepo.subscribeAllConfigPairIdValue();
   }
 
   public async getSystemShopCategoryList(){

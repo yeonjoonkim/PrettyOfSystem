@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { GlobalService} from './../../../../shared/services/global/global.service';
 import { ITimeItem } from 'src/app/interface/global/global.interface';
 import * as Constant from './../../../../shared/services/global/global-constant';
@@ -8,11 +8,11 @@ import { TimePickerIncrementalSteps } from '@progress/kendo-angular-dateinputs';
   templateUrl: './time-picker.component.html',
   styleUrls: ['./time-picker.component.scss'],
 })
-export class TimePickerComponent implements OnInit {
+export class TimePickerComponent implements OnInit, OnChanges {
   @Output() timeChange = new EventEmitter<ITimeItem>();
   @Input() readOnly: boolean = false;
   @Input() timezone: Constant.TimeZoneType = Constant.TimeZone.EuropeRiga;
-  @Input() intervalMin: number = Constant.Default.TimeInterval;
+  @Input() intervalMin: number = Constant.ShopSetting.TimePicker.IntervalMin
   @Input() title: string = '';
   @Input() openTime!: ITimeItem;
   @Input() closeTime!: ITimeItem;
@@ -32,11 +32,21 @@ export class TimePickerComponent implements OnInit {
   public steps: TimePickerIncrementalSteps = {minute: 0};
   
   constructor(private global: GlobalService) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    let timeChanges = changes['time'];
+    this.handleChange(timeChanges);
+  }
 
   async ngOnInit() {
     this.setDefault();
   }
 
+  private handleChange(change: SimpleChange){
+    if(!change.isFirstChange()){
+      this.date = new Date();
+      this.handReceivingEvent();
+    }
+  }
   public onChangeDate(){
     this.time = this.global.date.getTimeItem(this.date);
   }

@@ -310,9 +310,9 @@
     yargs "^17.2.1"
 
 "@angular/platform-browser-dynamic@^15.2.4":
-  version "15.2.5"
-  resolved "https://registry.npmjs.org/@angular/platform-browser-dynamic/-/platform-browser-dynamic-15.2.5.tgz"
-  integrity sha512-NoGVeaR7K+RMcLpS2gI4hyMVeUqP057rw8Yfk15dHy3cM8icj5zVfyez3AADcO1XthNhE1sI1d+2LD4/GxwIKQ==
+  version "15.2.9"
+  resolved "https://registry.npmjs.org/@angular/platform-browser-dynamic/-/platform-browser-dynamic-15.2.9.tgz"
+  integrity sha512-ZIYDM6MShblb8OyV1m4+18lJJ2LCeICmeg2uSbpFYptYBSOClrTiYOOFVDJvn7HLvNzljLs16XPrgyaYVqNpcw==
   dependencies:
     tslib "^2.3.0"
 
@@ -2855,6 +2855,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/crypto-js@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/@types/crypto-js/-/crypto-js-4.1.1.tgz"
+  integrity sha512-BG7fQKZ689HIoc5h+6D2Dgq1fABRa0RbBWKBd9SP/MVRVXROflpm5fhwyATX5duFmbStzyzyycPB8qUYKDH3NA==
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
   resolved "https://registry.npmjs.org/@types/eslint-scope/-/eslint-scope-3.7.4.tgz"
@@ -3344,20 +3349,10 @@ acorn@^7.4.0:
   resolved "https://registry.npmjs.org/acorn/-/acorn-7.4.1.tgz"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-acorn@^8.4.1:
-  version "8.8.2"
-  resolved "https://registry.npmjs.org/acorn/-/acorn-8.8.2.tgz"
-  integrity sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==
-
-acorn@^8.5.0:
-  version "8.8.2"
-  resolved "https://registry.npmjs.org/acorn/-/acorn-8.8.2.tgz"
-  integrity sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==
-
-acorn@^8.7.1:
-  version "8.8.2"
-  resolved "https://registry.npmjs.org/acorn/-/acorn-8.8.2.tgz"
-  integrity sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==
+acorn@^8.4.1, acorn@^8.5.0, acorn@^8.7.1:
+  version "8.10.0"
+  resolved "https://registry.npmjs.org/acorn/-/acorn-8.10.0.tgz"
+  integrity sha512-F0SAmZ8iUtS//m8DmCTA0jlh6TDKkHQyK6xc6V4KDTyZKA9dnvX9/3sRTVQrWm79glUAZbnmmNcdYwUIHWVybw==
 
 add@^2.0.6:
   version "2.0.6"
@@ -7654,6 +7649,13 @@ ngx-intl-tel-input@^3.2.0:
   dependencies:
     tslib "^2.3.0"
 
+ngx-localstorage@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/ngx-localstorage/-/ngx-localstorage-5.0.0.tgz"
+  integrity sha512-Cm6n+dMKScN/yYsO+HM5XkQ60enAK98Gj9DHWtqLJNQZKlrzGQgGgk5Vlg6cn/gbFGJPrqdjcAbJwfSf0HzZlg==
+  dependencies:
+    tslib "^2.3.0"
+
 nice-napi@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/nice-napi/-/nice-napi-1.0.2.tgz"
@@ -8906,24 +8908,10 @@ rxjs@^6.6.2:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^7.5.0:
-  version "7.5.0"
-  resolved "https://registry.npmjs.org/rxjs/-/rxjs-7.5.0.tgz"
-  integrity sha512-fuCKAfFawVYX0pyFlETtYnXI+5iiY9Dftgk+VdgeOq+Qyi9ZDWckHZRDaXRt5WCNbbLkmAheoSGDiceyCIKNZA==
-  dependencies:
-    tslib "^2.1.0"
-
-rxjs@^7.5.5:
-  version "7.8.0"
-  resolved "https://registry.npmjs.org/rxjs/-/rxjs-7.8.0.tgz"
-  integrity sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==
-  dependencies:
-    tslib "^2.1.0"
-
-rxjs@^7.5.6:
-  version "7.8.0"
-  resolved "https://registry.npmjs.org/rxjs/-/rxjs-7.8.0.tgz"
-  integrity sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==
+rxjs@^7.5.0, rxjs@^7.5.5, rxjs@^7.5.6:
+  version "7.8.1"
+  resolved "https://registry.npmjs.org/rxjs/-/rxjs-7.8.1.tgz"
+  integrity sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==
   dependencies:
     tslib "^2.1.0"
 
