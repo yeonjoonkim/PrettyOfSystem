@@ -27,7 +27,8 @@
         kendoButton
         *ngFor="let button of systemMenu"
         [toggleable]="true"
-        (click)="processSystemMenuOption(button)"
+        [selected]="button.name === selectedSystemMenu.name"
+        (selectedChange)="processSystemMenuOption(button)"
       >
         {{button.name}}
       </button>

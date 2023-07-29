@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as storageKey from './storage.key';
-import { Sha256 } from '@aws-crypto/sha256-js';
 import * as CryptoJS from 'crypto-js';
 import * as _ from './../../../../../../storage-key';
 import { Storage } from '@ionic/storage-angular';
@@ -16,45 +15,39 @@ export class StorageService {
     this.storage.clear();
   }
 
-  private async hashKey(key: string): Promise<string> {
-    const hash = new Sha256();
-    hash.update(key);
-    const digest = await hash.digest();
-    return Array.from(digest)
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('');
+  private encrypt(value: any){
+    return CryptoJS.AES.encrypt(JSON.stringify(value),  _.STORAGE.key).toString();
   }
 
-  private encryptValue(value: any): string{
-    const str = JSON.stringify(value);
-    return CryptoJS.AES.encrypt(str, _.STORAGE.key).toString();
-  }
-
-  private decryptValue(encryptedValue: string): any{
-    const decryptedValue = CryptoJS.AES.decrypt(encryptedValue, _.STORAGE.key);
-    return JSON.parse(decryptedValue.toString(CryptoJS.enc.Utf8));
+  private decrypt(encryptedValue: any){
+    let bytes = CryptoJS.AES.decrypt(encryptedValue, _.STORAGE.key);
+    if (bytes.toString()) {
+      return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    }
+    return null;
   }
 
   public async store(key: string, value: any) {
-    const hashedKey = await this.hashKey(key);
-    const encryptedValue = this.encryptValue(value);
-    this.storage.set(hashedKey, encryptedValue);
+    let encryptedValue =  this.encrypt(value);
+    await this.storage.set(key, encryptedValue);
   }
 
   public async get(key: string) {
-    const hashedKey = await this.hashKey(key);
-    const encryptedValue: string | unknown = this.storage.get(hashedKey);
-    const decryptedValue = typeof encryptedValue === 'string' ? this.decryptValue(encryptedValue) : null;
-    return decryptedValue !== null ? decryptedValue : null;
+    let encryptedValue = await this.storage.get(key);
+    if (encryptedValue !== null) {
+      let decrypted = this.decrypt(encryptedValue);
+      return decrypted;
+    }
+    return null;
   }
 
-  public async removeItem(key: string) {
-    const hashedKey = await this.hashKey(key);
-    this.storage.remove(hashedKey);
+  public removeItem(key: string) {
+    const encryptedKey =  this.encrypt(key);
+    this.storage.remove(encryptedKey);
   }
 
   public async getLanguage(){
-    const hashedKey = await this.hashKey(storageKey.default.language);
-    return this.get(hashedKey);
+    let result = await this.get(storageKey.default.language);
+    return result;
   }
 }
