@@ -28,13 +28,14 @@ export class LanguageService{
   public changeLanguageAction = new EventEmitter<string>();
   public languageSelectionKey!: Observable<ILanguageKey[]>;
   public languageSelection!: Observable<ILanguageSelection[]>;
+  public userLocale = getUserLocale(localeOption);
 
 
   /** At the start of the build, It will listen to the languageRepo then set the default language to avoid any errors. */
   constructor( private textTransform: TextTransformService, private storage: StorageService,
      private systemLanguageRepository: SystemLanguageRepositoryService, private languagePackage: LanguagePackageService,
      private toast: ToastService) {
-      this.subscribeLanguageRepository().then(() => {
+      this.subscribeLanguageRepository().then(() => { 
         this.setDefaultLanguage();
       });
   }
@@ -237,7 +238,7 @@ export class LanguageService{
       await this.storage.store(StorageKey.default.language, this.currentLanguage);
     }
     else if(isChinese){
-      this.currentLanguage.includes('zh');
+      this.currentLanguage = 'zh-hans';
       this.storage.store(StorageKey.default.language, this.currentLanguage);
     }
     else if(isJapanese){
@@ -299,7 +300,7 @@ export class LanguageService{
 
     //** This will validate the local storage value then set either default value*/
     private async setDefaultLanguage(): Promise<void> {
-      let result = await this.storage.get(StorageKey.default.language);
+      let result = await this.storage.getLanguage();
       if(result){
         this.currentLanguage = result;
       }

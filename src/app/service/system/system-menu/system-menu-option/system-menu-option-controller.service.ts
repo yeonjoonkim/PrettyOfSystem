@@ -7,6 +7,7 @@ export interface ISystemMenuOptionAction{
   isRoleManagement: boolean;
   isPlanManagement: boolean;
   isShopManagement: boolean;
+  isUserManagement: boolean;
 };
 
 
@@ -21,7 +22,8 @@ export class SystemMenuOptionControllerService {
     menuManagement: this.systemMenu + 'menumanagement',
     roleManagement: this.systemMenu + 'rolemanagement',
     planManagement: this.systemMenu + 'subscriptionmanagement',
-    shopmanagement: this.systemMenu + 'shopmanagement'
+    shopManagement: this.systemMenu + 'shopmanagement',
+    userManagement: this.systemMenu + 'usermanagement'
   };
 
   constructor(private language: LanguageService) { }
@@ -37,10 +39,10 @@ export class SystemMenuOptionControllerService {
     let roleManagement = await this.getRoleManagementOption();
     let planManagement = await this.getPlanManagementOption();
     let shopManagement = await this.getShopManagementOption();
+    let userManagement = await this.getUserManagementOption();
 
-    return [ menuManagement, roleManagement, planManagement, shopManagement ];
+    return [ menuManagement, roleManagement, planManagement, shopManagement, userManagement ];
   }
-
 
   private async getLanguageDictionaryOption(){
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
@@ -76,8 +78,16 @@ export class SystemMenuOptionControllerService {
 
   private async getShopManagementOption(){
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this.menuOption.shopmanagement);
+    controller.name = await this.language.transform(this.menuOption.shopManagement);
     controller.isShopManagement = true;
+
+    return controller;
+  }
+
+  private async getUserManagementOption(){
+    let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
+    controller.name = await this.language.transform(this.menuOption.userManagement);
+    controller.isUserManagement = true;
 
     return controller;
   }
@@ -89,7 +99,8 @@ export class SystemMenuOptionControllerService {
       isLanguageDictionary: false,
       isRoleManagement: false,
       isPlanManagement: false,
-      isShopManagement: false
+      isShopManagement: false,
+      isUserManagement: false
     };
   }
 }

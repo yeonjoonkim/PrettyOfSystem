@@ -22,7 +22,7 @@ export class SystemPage implements OnInit {
 
   async ngOnInit() {
     this.systemMenu = await this.systemMenuOptionCtrl.getSystemManagementButton();
-    this.selectedSystemMenu.isShopManagement = true;
+    await this.processSystemMenuOption(this.systemMenu[0]);
   }
 
   /** This will open the system menu */

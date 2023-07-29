@@ -16,10 +16,10 @@ export class AppComponent implements OnInit, OnDestroy {
   private languageChangeActionSubscription: Subscription | undefined;
 
   constructor(private language: LanguageService, private deviceWidth: DeviceWidthService, private storage: Storage) {
-    this.storage.create();
   }
 
   async ngOnInit(){
+    await this.storage.create();
     this.subscribeDeviceWidth();
     this.subscribeLanguageChangeAction();
     await this.loading();
