@@ -26,7 +26,7 @@ export class DictonaryComponent implements OnInit {
   public async onChangeLanguageSelection(){
     this.selectedLangValue = this.selectedLang.value;
     this.selectedKeyPairValueList = await this.systemlanguage.getSelectedLanguageKeyPairValueList(this.selectedLang.key);
-    this.gridData = this.selectedKeyPairValueList;
+    this.onChangeQuery();
   }
 
   public async openAddLanguageTransform(event: any): Promise<void>{
@@ -45,7 +45,7 @@ export class DictonaryComponent implements OnInit {
 
   public onChangeQuery() {
     this.gridData = this.query.length === 0 ? this.selectedKeyPairValueList : this.selectedKeyPairValueList.filter(q => {
-      return (typeof q.key === 'string' && q.key.includes(this.query)) || (typeof q.value === 'string' && q.value.includes(this.query));
+      return (typeof q.key === 'string' && q.key.toLowerCase().includes(this.query.toLowerCase())) || (typeof q.value === 'string' && q.value.toLowerCase().includes(this.query.toLowerCase()));
     });
   }
 

@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'language',
     loadChildren: () => import('./system-language/system-language.module').then( m => m.SystemLanguagePageModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./system-user/system-user.module').then( m => m.SystemUserPageModule)
   }
 ];
 
