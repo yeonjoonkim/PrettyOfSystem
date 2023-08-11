@@ -45,6 +45,10 @@
   }
 }
 
+.k-textbox {
+  margin-top: 12px;
+}
+
 .k-form-error {
   margin: 0;
 }
@@ -60,4 +64,11 @@
 }
 .k-animation-container {
   z-index: 10003; // set the desired value based on the application requirements
+}
+
+.k-button-solid-base.k-selected {
+  background-color: #8685ef;
+  border-color: #8685ef;
+
+  font-weight: bold;
 }

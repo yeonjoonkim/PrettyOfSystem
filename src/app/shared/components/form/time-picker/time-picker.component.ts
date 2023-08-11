@@ -42,7 +42,8 @@ export class TimePickerComponent implements OnInit, OnChanges {
   }
 
   private handleChange(change: SimpleChange){
-    if(!change.isFirstChange()){
+    let firstChange = change?.firstChange;
+    if(!firstChange){
       this.date = new Date();
       this.handReceivingEvent();
     }

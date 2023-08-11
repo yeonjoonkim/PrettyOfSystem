@@ -7,7 +7,7 @@ import {
   IShopConfigurationValidator,
   ShopConfigurationService,
 } from 'src/app/service/system/system-shop/shop-configuration/shop-configuration.service';
-import { NavParams } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'shop-configuration',
@@ -23,9 +23,8 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
   public display: IShopConfigurationDisplayOption = this.shopConfig.defaultShopDisplayOption();
   public config: IShopConfiguration = this.shopConfig.setDefaultConfig();
   private selectedconfig!: IShopConfiguration | undefined;
-  private receviedEditValue: boolean = false;
 
-  constructor(private shopConfig: ShopConfigurationService, private navParams: NavParams) {
+  constructor(private shopConfig: ShopConfigurationService, private navParams: NavParams, private modalCtrl: ModalController) {
     this.loadingFormCtrl();
   }
 
@@ -44,10 +43,9 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
   }
   private loadingFormCtrl(): void{
     let form: IFormHeaderModalProp = this.navParams.get(Constant.Default.ComponentMode.Form);
-    let config: IShopConfiguration = this.navParams.get('config');
+    this.selectedconfig = this.navParams.get('config');
     this.form = form ? form : { readOnly: true, headerTitle: '', action: Constant.Default.FormAction.Read, enabledSavebutton: false};
-    this.config = config ? config : this.shopConfig.setDefaultConfig();
-    this.selectedconfig = config ? config : undefined;
+    this.config = this.selectedconfig ? this.selectedconfig : this.shopConfig.setDefaultConfig();
   }
 
   public async onPlanPeriodChange(){
@@ -57,6 +55,10 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
 
   public onClickInfo(): void {
     this.display = this.shopConfig.displayInfo();
+  }
+
+  public onClickHours(): void{
+    this.display = this.shopConfig.displayWorkHours();
   }
 
   public onClickAddress(): void {
@@ -80,7 +82,7 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
   }
 
   public dismiss(){
-    this.shopConfig.global.modal.dismiss();
+    this.modalCtrl.dismiss(this.config, 'cancel');
   }
 
   public async handleEdit(){
@@ -90,14 +92,14 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
   }
 
   public async handleSave(){
-    this.shopConfig.handleSave(this.config);
+    this.shopConfig.handleSave(this.config, this.form);
   }
 
   public async handleDelete(){
-    this.shopConfig.handleDelete(this.config)
+    this.shopConfig.handleDelete(this.config, this.form)
   }
 
   public async handleCreate(){
-    this.shopConfig.handleCreate(this.config);
+    this.shopConfig.handleCreate(this.config, this.form);
   }
 }

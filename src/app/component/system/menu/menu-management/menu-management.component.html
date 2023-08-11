@@ -1,4 +1,12 @@
 <div id="menu-management-container">
-<menu-category-card [menuCategories]="menuCategories | async" [(category)]="selectedCategory"></menu-category-card>
-<menu-category-content-card *ngIf="selectedCategory.id" [selectedMenuContents]="selectedCategory.content" [selectedMenuCategoryId]="selectedCategory.id" [selectedCategoryName]="selectedCategory.name"></menu-category-content-card>
+  <menu-category-card
+    [menuCategories]="menuCategories | async"
+    [(category)]="selectedCategory"
+  ></menu-category-card>
+  <menu-category-content-card
+    *ngIf="selectedCategory.id"
+    [selectedMenuContents]="selectedCategory.content"
+    [selectedMenuCategoryId]="selectedCategory.id"
+    [selectedCategoryName]="selectedCategory.name"
+  ></menu-category-content-card>
 </div>

@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "prettyofsystem"
-  }
+    "default": "prettyofsystem",
+    "test": "prettyofsystem"
+  },
+  "targets": {},
+  "etags": {}
 }

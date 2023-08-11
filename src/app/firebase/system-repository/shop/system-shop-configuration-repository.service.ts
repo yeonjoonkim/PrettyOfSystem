@@ -7,20 +7,19 @@ import { LanguageService } from 'src/app/shared/services/global/language/languag
 import { FirebaseService } from 'src/app/shared/services/firebase/firebase.service';
 import { ShopSettingService } from 'src/app/service/system/system-shop/shop-setting/shop-setting.service';
 import { IPairValueId, IShopSettingValiationResult } from 'src/app/interface/system/system.interface';
+import * as Db from './../../../shared/services/global/constant/firebase-path'; 
+import { IUserAssociatedShop } from 'src/app/interface/user/user.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SystemShopConfigurationRepositoryService {
   private readonly timeStamp = {lastModifiedDate: new Date()};
-  private readonly systemShop: string = 'system/shop/';
-  private readonly shopCategory: string = this.systemShop + 'category';
-  private readonly shopCountry:  string  = this.systemShop + 'country';
-  private readonly shopConfiguration: string = 'shopConfiguration/';
+  
   constructor(private afs: AngularFirestore, private language: LanguageService, private afstorage: AngularFireStorage, private firebaseService: FirebaseService, private setting: ShopSettingService) { }
 
   public getSystemShopCategories(): Observable<IShopCategory[]> {
-    return this.afs.collection<IShopCategory>(this.shopCategory, ref => ref.orderBy('name'))
+    return this.afs.collection<IShopCategory>(Db.Context.System.Shop.Category, ref => ref.orderBy('name'))
       .valueChanges()
       .pipe(
         map(shopCategories => shopCategories.map(sc => {
@@ -35,7 +34,7 @@ export class SystemShopConfigurationRepositoryService {
   }
 
   public getSystemShopCountries(): Observable<IShopCountry[]> {
-    return this.afs.collection<IShopCountry>(this.shopCountry, ref => ref.orderBy('name'))
+    return this.afs.collection<IShopCountry>(Db.Context.System.Shop.Country, ref => ref.orderBy('name'))
       .valueChanges()
       .pipe(
         map(shopCountries => shopCountries.map(sc => {
@@ -55,7 +54,7 @@ export class SystemShopConfigurationRepositoryService {
     shopConfig.id = newId;
     let config = {...shopConfig, ... this.timeStamp};
     try{
-      await this.afs.collection(this.shopConfiguration).doc(shopConfig.id).set(config);
+      await this.afs.collection(Db.Context.ShopConfiguration).doc(shopConfig.id).set(config);
       result = true;
     }
     catch(e){
@@ -69,7 +68,7 @@ export class SystemShopConfigurationRepositoryService {
     let updatedConfig = { ...shopConfig, ...this.timeStamp };
 
     try{
-      await this.afs.collection(this.shopConfiguration).doc(updatedConfig.id).update(updatedConfig);
+      await this.afs.collection(Db.Context.ShopConfiguration).doc(updatedConfig.id).update(updatedConfig);
       result = true;
     }
     catch(e){
@@ -83,7 +82,7 @@ export class SystemShopConfigurationRepositoryService {
     let result: boolean = false;
   
     try {
-      await this.afs.collection(this.shopConfiguration).doc(shopConfigId).delete();
+      await this.afs.collection(Db.Context.ShopConfiguration).doc(shopConfigId).delete();
       result = true;
     } catch (e) {
       console.error(e);
@@ -97,7 +96,7 @@ export class SystemShopConfigurationRepositoryService {
       config.setting = validated.setting;
       let updatedConfig = { ...config, ...this.timeStamp };
       try{
-        this.afs.collection(this.shopConfiguration).doc(updatedConfig.id).update(updatedConfig);
+        this.afs.collection(Db.Context.ShopConfiguration).doc(updatedConfig.id).update(updatedConfig);
       }
       catch(e){
         console.error(e);
@@ -105,26 +104,9 @@ export class SystemShopConfigurationRepositoryService {
     }
   }
 
-  public subscribeAllConfigPairIdValue(){
-    return this.afs
-      .collection<IShopConfiguration>(this.shopConfiguration, ref => ref.orderBy('name'))
-      .valueChanges()
-      .pipe(
-        map(configs => {
-          return configs.map(sc => {
-            let idKeyPairValue: IPairValueId = {
-              id: sc.id,
-              value: sc.name
-            }
-            return idKeyPairValue;
-          });
-        })
-      );
-  }
-
   public subscribeAllShopConfiguration() {
     return this.afs
-      .collection<IShopConfiguration>(this.shopConfiguration, ref => ref.orderBy('name'))
+      .collection<IShopConfiguration>(Db.Context.ShopConfiguration, ref => ref.orderBy('name'))
       .valueChanges()
       .pipe(
         map(configs => {

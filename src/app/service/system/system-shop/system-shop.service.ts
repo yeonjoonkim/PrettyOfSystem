@@ -7,6 +7,8 @@ import { IShopCategory, IShopConfiguration, IShopCountry } from 'src/app/interfa
 import { IPairValueId } from 'src/app/interface/system/system.interface';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
 import { ShopModalService } from './shop-modal/shop-modal.service';
+import { IUserAssociatedShop } from 'src/app/interface/user/user.interface';
+import { SystemUserService } from '../system-user/system-user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class SystemShopService {
   private readonly systemShopCategoryList!: Observable<IShopCategory[]>;
   private readonly systemShopCountryList!: Observable<IShopCountry[]>;
   private readonly systemShopPlanConfigList!: Observable<IPlanConfiguration[]>;
-
+  public readonly shopConfigurationList!: Observable<IShopConfiguration[]>;
   constructor(
     public modal: ShopModalService,
     private systemShopConfigRepo: SystemShopConfigurationRepositoryService,
@@ -24,26 +26,27 @@ export class SystemShopService {
     this.systemShopCategoryList = this.systemShopConfigRepo.getSystemShopCategories();
     this.systemShopCountryList = this.systemShopConfigRepo.getSystemShopCountries();
     this.systemShopPlanConfigList = this.systemPlanRepo.getSystemPlanOptions();
+    this.shopConfigurationList = this.subscribeAllShopConfiguration();
   }
 
   public subscribeAllShopConfiguration(): Observable<IShopConfiguration[]>{
     return this.systemShopConfigRepo.subscribeAllShopConfiguration();
   }
 
-  public subscribeAllShopConfigurationIdPairValue(): Observable<IPairValueId[]>{
-    return this.systemShopConfigRepo.subscribeAllConfigPairIdValue();
+  public async getAllShopConfigList(){
+    return await firstValueFrom(this.shopConfigurationList);
   }
 
   public async getSystemShopCategoryList(){
-    return firstValueFrom(this.systemShopCategoryList);
+    return await firstValueFrom(this.systemShopCategoryList);
   }
 
   public async getSystemShopCountryList(){
-    return firstValueFrom(this.systemShopCountryList);
+    return await firstValueFrom(this.systemShopCountryList);
   }
 
   public async getSystemShopPlanConfigList(){
-    return firstValueFrom(this.systemShopPlanConfigList);
+    return await firstValueFrom(this.systemShopPlanConfigList);
   }
 
   public async getCategoryPairValueIdList(): Promise<IPairValueId[]> {
@@ -67,7 +70,7 @@ export class SystemShopService {
       p => { return {value: p.name, id: p.id }}
       );
   }
-
+  
   public async getCountryPairValueIdList(){
     let countryList: IShopCountry[] = [];
     let systemCountryList = await this.getSystemShopCountryList();

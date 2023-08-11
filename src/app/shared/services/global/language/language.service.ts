@@ -22,14 +22,13 @@ const currentLocale = getUserLocale(localeOption) === null ? 'en' : getUserLocal
 })
 
 export class LanguageService{
-  public deafultLanguageCode: string = 'en';
-  public currentLanguage: string = '';
-  public currentLanguageDescription: string = '';
   public changeLanguageAction = new EventEmitter<string>();
   public languageSelectionKey!: Observable<ILanguageKey[]>;
   public languageSelection!: Observable<ILanguageSelection[]>;
+  public deafultLanguageCode: string = 'en';
+  public currentLanguage: string = '';
+  public currentLanguageDescription: string = '';
   public userLocale = getUserLocale(localeOption);
-
 
   /** At the start of the build, It will listen to the languageRepo then set the default language to avoid any errors. */
   constructor( private textTransform: TextTransformService, private storage: StorageService,
@@ -47,16 +46,6 @@ export class LanguageService{
     let keyPairValueList: ILanguageTransformKeyPairValue[] = this.languagePackage.getKeyPairValue(key.used, defaultLanguage.package);
     return keyPairValueList;
   }
-
-
-  /** This will retreive the list of key pair value in selected language package. */
-  public async getSelectedLanguageKeyPairValueList(selectedLangCode: string): Promise<ILanguageTransformKeyPairValue[]>{
-    let selectedLanguage = await this.getSelectedLanguageSelection(selectedLangCode);
-    let key = await this.getLanguageSelectionKey();
-    let keyPairValueList: ILanguageTransformKeyPairValue[] = this.languagePackage.getKeyPairValue(key?.used, selectedLanguage.package);
-    return keyPairValueList;
-  }
-
 
   /** This will set the all language translate criteria list to query the JSON format. */
   public async getAllLanguageTranslateCriteria(): Promise<ILanguageTranslatedCriteria>{
@@ -196,7 +185,6 @@ export class LanguageService{
     return await firstValueFrom(this.languageSelection);
   }
 
-
   /** Update Transform language selection key in db */
   private async updateLanguageKey(newKeyValue: string): Promise<void>{
     let key = await this.getLanguageSelectionKey();
@@ -260,14 +248,14 @@ export class LanguageService{
 
 
   /** This will retreive selected language selection by language code */
-  private async getSelectedLanguageSelection(selectedLangCode: string): Promise<ILanguageSelection>{
+  public async getSelectedLanguageSelection(selectedLangCode: string): Promise<ILanguageSelection>{
     let selection = await firstValueFrom(this.languageSelection);
     return selection.filter(lang => lang.code === selectedLangCode)[0];
   }
 
 
   /** Retreive used languageSelection package keys */
-  private async getLanguageSelectionKey(): Promise<ILanguageKey>{
+  public async getLanguageSelectionKey(): Promise<ILanguageKey>{
     let key = await firstValueFrom(this.languageSelectionKey);
     return key[0];
   }

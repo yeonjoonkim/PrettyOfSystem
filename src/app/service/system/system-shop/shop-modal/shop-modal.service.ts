@@ -4,6 +4,7 @@ import { ShopConfigurationComponent } from 'src/app/component/system/shop/shop-c
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
 import { FormControllerService } from 'src/app/shared/services/global/form/form-controller.service';
+import { cloneDeep } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,10 @@ export class ShopModalService {
       {
         component: ShopConfigurationComponent,
         presentingElement: await this.modal.getTop(),
-        componentProps: {form: form, config: config}
+        componentProps: {
+          form: cloneDeep(form),
+          config: cloneDeep(config)
+      }
       });
 
    await modal.present();
@@ -46,11 +50,13 @@ export class ShopModalService {
       {
         component: ShopConfigurationComponent,
         presentingElement: await this.modal.getTop(),
-        componentProps: {form: form, config: config}
+        componentProps: {
+          form: cloneDeep(form),
+          config: cloneDeep(config)
+      }
       });
 
-   await modal.present();
+      return modal;
   }
-
 
 }

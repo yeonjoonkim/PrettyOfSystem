@@ -10,15 +10,20 @@ export const ShopSetting = {
   } as const,
   TimePicker: {
     IntervalMin: 15
-  }
+  } as const
 }as const;
 
 export const Default = {
-   ComponentMode: {
-    Filter: 'filter',
-    Form: 'form',
+  Gender: {
+    Male: "Male",
+    Female: "Female",
+    Any: "Any"
   } as const,
 
+   ComponentMode: {
+    Filter: "filter",
+    Form: "form",
+  } as const,
 
   PhoneCode: {
     KR: "+82",
@@ -42,10 +47,10 @@ export const Default = {
   } as const,
 
   CountryCodeType:{
-    Korean: 'KR',
-    China: 'CN',
-    Japan: 'JP',
-    Australia: 'AU'
+    Korean: "KR",
+    China: "CN",
+    Japan: "JP",
+    Australia: "AU"
   } as const,
 
   CurrencyType: {
@@ -56,14 +61,15 @@ export const Default = {
   } as const,
 
   RoleAccessType: {
-    SystemAdmin: "systemAdmin",
-    Admin: "admin",
-    Manager: "manager",
-    Reception: "reception",
-    Employee: "employee"
+    SystemAdmin: "System Administrator",
+    Admin: "Administrator",
+    Manager: "Manager",
+    Reception: "Pos",
+    Employee: "Employee"
   } as const,
 
   RoleAccessRateType: {
+    Client: 1,
     Employee: 10,
     Reception: 100,
     Manager: 1000,
@@ -79,7 +85,6 @@ export const Setting = {
   PersonalSetting: {} as const,
 };
 
-
 export const State  = {
   AustraliaType: {
     NT: "NT" ,
@@ -94,19 +99,19 @@ export const State  = {
 
 export const Date = {
   DayNightType: {
-    NIGHT: 'PM',
-    DAY: 'AM'
+    NIGHT: "PM",
+    DAY: "AM"
   } as const,
   Format:{
-    Korean: 'yyyy-MM-dd',
-    Japan: 'yyyy-MM-dd',
-    China: 'yyyy-MM-dd',
+    Korean: "yyyy-MM-dd",
+    Japan: "yyyy-MM-dd",
+    China: "yyyy-MM-dd",
     Australia: "dd-MMM-yyyy"
   } as const,
   TimeStatus: {
-    Current: 'current',
-    Start: 'start',
-    End: 'end'
+    Current: "current",
+    Start: "start",
+    End: "end"
   } as const,
   DayIndex: {
     Sun: 0,

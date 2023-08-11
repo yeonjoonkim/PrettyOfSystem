@@ -47,7 +47,8 @@ export class MenuCategoryCardComponent implements OnInit {
     let addMenuCategory = await this.popoverCtrl.create({
       component: AddMenuCategoryComponent,
       event: event,
-      translucent: true
+      translucent: true,
+      cssClass: 'pop-over-container'
     });
 
     await addMenuCategory.present();
@@ -89,6 +90,7 @@ export class MenuCategoryCardComponent implements OnInit {
       component: AddMenuCategoryComponent,
       event: event,
       translucent: true,
+      cssClass: 'pop-over-container',
       componentProps: {
         selectedCategory: selectedCategory
       }

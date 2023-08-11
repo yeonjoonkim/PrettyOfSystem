@@ -1,15 +1,47 @@
-#selected-shop-info-card, #user-info-card{
+#selected-shop-info-card,
+#user-info-card {
   margin: 0px 0px 0px 0px;
 }
 
-#user-info-card ion-card-header{
+#menu-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#user-info-card ion-card-header {
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-items: center;
+  p {
+    margin: 0;
+  }
+  #user-name {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
-#language-setting-container{
+#language-setting-container {
   width: 100%;
   padding-top: 10px;
   padding-bottom: 20px;
+}
+
+ion-list {
+  padding: 0;
+}
+
+#user-shop-list {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+#log-out {
+  margin: auto;
+  #log-out-btn {
+    --background: #121212;
+  }
 }

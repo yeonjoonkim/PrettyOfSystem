@@ -1,0 +1,26 @@
+#dictonary-container {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+  flex-direction: column;
+}
+
+#language-selection-container,
+#language-key-pair-container {
+  min-width: 300px;
+  max-width: 800px;
+}
+
+#language-selection-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+#language-key-pair-container {
+  language-key-pair-select-option {
+    display: flex;
+    justify-content: space-around;
+  }
+}

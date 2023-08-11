@@ -1,10 +1,9 @@
 import firebase from 'firebase/compat/app';
-
-
-import {Default, State, Setting, Date} from './constant/constant';
+import {Default, State, Date} from './constant/constant';
 export {Default, State, Setting, Date, ShopSetting, SystemSetting} from './constant/constant';
 import { TimeZone } from './constant/timezone';
 export { TimeZone } from './constant/timezone';
+
 
 //Date
 export type TimeStamp = firebase.firestore.Timestamp;
@@ -20,6 +19,8 @@ export type DatePeriodType = typeof Date.Period[keyof typeof Date.Period];
 export type CountryCodeType = typeof Default.CountryCodeType[keyof typeof Default.CountryCodeType];
 
 //Role
+export type GenderType = typeof Default.Gender[keyof typeof Default.Gender];
+
 export type RoleAccessType = typeof Default.RoleAccessType[keyof typeof Default.RoleAccessType];
 export type RoleAccessRateType = typeof Default.RoleAccessRateType[keyof typeof Default.RoleAccessRateType];
 
