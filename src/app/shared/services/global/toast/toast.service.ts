@@ -5,8 +5,8 @@ import { ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class ToastService {
-  private duration: number = 3000;
-  private position: "top" | "bottom" | "middle" | undefined = "middle";
+  private duration: number = 2000;
+  private position: "top" | "bottom" | "middle" | undefined = "top";
 
   constructor(private toastCtrl: ToastController) { }
 

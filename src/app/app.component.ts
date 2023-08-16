@@ -2,8 +2,8 @@ import { DeviceWidthService } from './shared/services/global/device-width/device
 import { LanguageService } from './shared/services/global/language/language.service';
 import {  Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SystemLanguageRepositoryService } from './firebase/system-repository/language/system-language-repository.service';
 import { Storage } from '@ionic/storage-angular';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -42,8 +42,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private async loading(){
-    let landingLanguagePackage = this.language.languageSelection.subscribe(received => {
-       if(received){this.isLoaded = true; landingLanguagePackage.unsubscribe();}
-       });
+    await this.language.setLocalLanguageSelection();
+    await this.language.setDefaultLanguage();
+    this.isLoaded = true;
   }
+
 }

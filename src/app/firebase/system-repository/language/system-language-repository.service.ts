@@ -1,38 +1,38 @@
 import { ILanguageSelection, ILanguageKey } from './../../../interface/system/language/language.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, firstValueFrom, map } from 'rxjs';
+import { map } from 'rxjs';
+import * as Db from './../../../shared/services/global/constant/firebase-path';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SystemLanguageRepositoryService {
   private readonly timeStamp = {lastModifiedDate: new Date()};
-  private readonly systemLanguage: string = 'system/language/';
-  private readonly languageSelectionCollectionPath: string = this.systemLanguage + 'selection';
-  private readonly languageKeyPath: string = this.systemLanguage + 'key';
-
+  
   constructor(private afs: AngularFirestore) {}
 
-  public getLanguageSelectionResult(){
-    return this.afs.collection(this.languageSelectionCollectionPath)
-    .snapshotChanges()
-    .pipe(
-      map(collection => {
-        return collection.map(ref =>{
-          let result = this.setILanuageSelection(ref.payload.doc.data(), ref.payload.doc.id);
-          return result;
-        })
-      }));
-  }
+
+public getLanguageSelectionResult() {
+  return this.afs.collection(Db.Context.System.Language.Selection)
+  .get()
+  .pipe(
+    map(snapshot => {
+      return snapshot.docs.map(doc => {
+        let result = this.setILanuageSelection(doc.data(), doc.id);
+        return result;
+      });
+    })
+  );
+}
 
   public getLanguageKeyResult(){
-    return this.afs.collection(this.languageKeyPath)
-    .snapshotChanges()
+    return this.afs.collection(Db.Context.System.Language.Key)
+    .get()
     .pipe(
-      map(collection => {
-        return collection.map(ref =>{
-          let result = this.setILanguageKey(ref.payload.doc.data(), ref.payload.doc.id);
+      map(snapshot => {
+        return snapshot.docs.map(doc =>{
+          let result = this.setILanguageKey(doc.data(), doc.id);
           return result;
         })
       }));
@@ -40,15 +40,15 @@ export class SystemLanguageRepositoryService {
 
   public async updateLanguageSelection(criteria: ILanguageSelection){
     let updateCommand = {...criteria, ...this.timeStamp};
-    this.afs.collection(this.languageSelectionCollectionPath).doc(criteria.id).update(updateCommand);
+    this.afs.collection(Db.Context.System.Language.Selection).doc(criteria.id).update(updateCommand);
   }
 
   public async updateLanguageKey(criteria: ILanguageKey){
     let updateCommand = {...criteria, ...this.timeStamp};
-    this.afs.collection(this.languageKeyPath).doc(criteria.id).update(updateCommand);
+    this.afs.collection(Db.Context.System.Language.Key).doc(criteria.id).update(updateCommand);
   }
 
-  private setILanuageSelection(response: any, id: string){
+  private setILanuageSelection(response: any, id?: string){
     let selection: ILanguageSelection = response;
     selection.id = id;
     return selection;
@@ -66,7 +66,7 @@ export class SystemLanguageRepositoryService {
     let id = this.afs.createId();
     let newSelection = {...criteria, ...this.timeStamp, id: id};
     try{
-      await this.afs.collection(this.languageSelectionCollectionPath).doc(id).set(newSelection);
+      await this.afs.collection(Db.Context.System.Language.Selection).doc(id).set(newSelection);
     }
     catch(e){
       console.error(e);

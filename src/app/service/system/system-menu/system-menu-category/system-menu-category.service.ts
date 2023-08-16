@@ -79,7 +79,7 @@ export class SystemMenuCategoryService {
       }
 
       if(add){
-        await this.addNewSystemMenuContent(newSystemMenuCategoryContent, selectedSystemMenuCategory)
+        await this.addNewSystemMenuContent(newSystemMenuCategoryContent, selectedSystemMenuCategory);
       }
     }
   }

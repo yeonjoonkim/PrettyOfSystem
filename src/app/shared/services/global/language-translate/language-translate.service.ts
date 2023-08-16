@@ -20,35 +20,57 @@ export class LanguageTranslateService {
   private readonly returnAsSingleString: string = this.returnAs + this.singleString;
   private readonly convertJSON: string = " must convert into exact same JSON format";
 
+
   constructor(private openAi: OpenAiService, private textTransform: TextTransformService, private language: LanguageService, private loading: LoadingService) {
   }
 
   public async getTranslatedLanguagePackage(value: string, criteria: ILanguageTranslatedCriteria): Promise<ILanguageTranslateItem>{
+    let loading = true;
     let translated: ILanguageTranslateResult = criteria.isTitle
-                  ? await this.getTitleFormatTranslatedLanguagePackage(value, criteria)
-                  : await this.getDescriptionFormatTranslatedLanguagePackage(value, criteria);
+                  ? await this.getTitleFormatTranslatedLanguagePackage(value, criteria, loading)
+                  : await this.getDescriptionFormatTranslatedLanguagePackage(value, criteria, loading);
     let validated = this.validatedTranslated(translated);
 
     return {isEmpty: validated, translated: translated};
   }
 
-  public async getTitleFormatTranslatedLanguagePackage(value: string, criteria: ILanguageTranslatedCriteria){
-    await this.translateLoading();
+  public async getTranslatedLanguagePackageWithOutLoading(value: string, criteria: ILanguageTranslatedCriteria): Promise<ILanguageTranslateItem>{
+    let loading = false;
+    let translated: ILanguageTranslateResult = criteria.isTitle
+                  ? await this.getTitleFormatTranslatedLanguagePackage(value, criteria, loading)
+                  : await this.getDescriptionFormatTranslatedLanguagePackage(value, criteria, loading);
+    let validated = this.validatedTranslated(translated);
+
+    return {isEmpty: validated, translated: translated};
+  }
+
+
+  public async getTitleFormatTranslatedLanguagePackage(value: string, criteria: ILanguageTranslatedCriteria, loading: boolean){
+    if(loading){
+      await this.translateLoading();
+    }
     let command = this.getTranslatedCommand(value, criteria);
     let response: string = await this.openAi.receiveResult(command);
     let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
     let titleFormat: ILanguageTranslateResult = this.textTransform.getTranslatedTitleFormat(jsonFormat);
-    await this.loading.dismiss();
+    if(loading){
+      await this.loading.dismiss();
+    }
     return titleFormat;
   }
 
-  public async getDescriptionFormatTranslatedLanguagePackage(value: string, criteria: ILanguageTranslatedCriteria){
-    await this.translateLoading();
+  public async getDescriptionFormatTranslatedLanguagePackage(value: string, criteria: ILanguageTranslatedCriteria, loading: boolean){
+    if(loading){
+      await this.translateLoading();
+    }
+
     let command = this.getTranslatedCommand(value, criteria);
     let response: string = await this.openAi.receiveResult(command);
     let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
     let descriptionFormat: ILanguageTranslateResult = this.textTransform.getTranslatedDescrptionFormat(jsonFormat);
-    await this.loading.dismiss();
+    if(loading){
+      await this.loading.dismiss();
+    }
     return descriptionFormat;
   }
 
@@ -56,10 +78,18 @@ export class LanguageTranslateService {
   /** This will trigger open ai api to retreive the translate the sentence to selected language */
   public async getTranslatedSelectedLanguage(selectedLanguage: string, value: string): Promise<string>{
     await this.translateLoading();
-    let command = this.correctGrammerThenTranslateTo + selectedLanguage + this.setCommandSentenceFormat(value) + this.returnAsSingleString;
+    let command = selectedLanguage + this.setCommandSentenceFormat(value) + this.returnAsSingleString;
     let response = await this.openAi.receiveResult(command);
     let result: string = this.deleteSpaces(response);
     await this.loading.dismiss();
+    return result;
+  }
+
+    /** This will trigger open ai api to retreive the translate the sentence to selected language */
+  public async getTranslatedNewLanguage(selectedLanguage: string, value: string): Promise<string>{
+    let command = selectedLanguage + this.setCommandSentenceFormat(value) + this.returnAsSingleString;
+    let response = await this.openAi.receiveResult(command);
+    let result: string = this.deleteSpaces(response);
     return result;
   }
 
@@ -109,10 +139,12 @@ export class LanguageTranslateService {
       resultItem[languageCode] = '';
     }
 
-    if(response){
+    try {
       resultItem = JSON.parse(response);
+    } catch (error) {
+      console.error('Failed to parse JSON:', error);
+      // Handle error accordingly, maybe set a default value or take another action.
     }
-
     return resultItem;
   }
 
@@ -125,7 +157,7 @@ export class LanguageTranslateService {
   }
 
   private  setJSONFormatCommand(codes: string[]){
-    let command = 'as ';
+    let command = 'Here is Output Example: ';
 
     codes.forEach((code, index) => {
       if(index === 0){
@@ -138,8 +170,11 @@ export class LanguageTranslateService {
           command +=  '"' + code + '":"translatedValue",';
         }
       }
+      if(codes.length === 1){
+        command = command.slice(0,  command.length - 1);
+        command += "}";
+      }
     })
-
     return command;
   }
 

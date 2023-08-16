@@ -1,5 +1,5 @@
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { SystemRoleService } from 'src/app/service/system/system-role/system-system-role.service';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
 @Component({
@@ -7,7 +7,7 @@ import { GlobalService } from 'src/app/shared/services/global/global.service';
   templateUrl: './role-list-card.component.html',
   styleUrls: ['./role-list-card.component.scss'],
 })
-export class RoleListCardComponent implements OnInit {
+export class RoleListCardComponent implements OnInit, OnChanges {
   @Output() roleChange = new EventEmitter<IRoleConfiguration>();
   @Input()
   get role(): IRoleConfiguration {
@@ -19,6 +19,7 @@ export class RoleListCardComponent implements OnInit {
   }
   @Input() roles: IRoleConfiguration[] | null = [];
   public isMobile: boolean = false;
+  public gridData: IRoleConfiguration[] = [];
   public selectedRole: IRoleConfiguration = {
     id: '',
     name: '',
@@ -35,14 +36,34 @@ export class RoleListCardComponent implements OnInit {
 
   constructor(private systemRole: SystemRoleService, public global: GlobalService) {
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    let roleList: IRoleConfiguration[] | null = changes['roles'].currentValue;
+    this.setGridDataList(roleList);
+  }
 
   ngOnInit() {}
 
+  public setGridDataList(roleList: IRoleConfiguration[] | null){
+    this.gridData = [];
+    if(roleList !== null && roleList?.length > 0){
+      roleList.forEach(async r => {
+        r.name = await this.global.language.transform(r.name);
+        this.gridData.push(r);
+      });
+    }
+  }
   public onClickRole(selectedRole: IRoleConfiguration){
-    this.role = selectedRole;
+    this.role = this.findRole(selectedRole);
+  }
+
+  private findRole(selectedRole: IRoleConfiguration){
+    let result = this.roles?.find(r => r.id === selectedRole.id);
+
+    return result !== undefined ? result : selectedRole;
   }
 
   public async onClickDeleteRole(selectedRole: IRoleConfiguration){
+    selectedRole = this.findRole(selectedRole);
     await this.systemRole.processDeleteRoleConfiguration(selectedRole);
   }
 
@@ -51,6 +72,7 @@ export class RoleListCardComponent implements OnInit {
   }
 
   public async presentEditRole(selectedRole: IRoleConfiguration){
+    selectedRole = this.findRole(selectedRole);
     await this.systemRole.modal.presentEditRole(selectedRole);
   }
 

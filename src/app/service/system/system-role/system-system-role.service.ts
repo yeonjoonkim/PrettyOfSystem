@@ -18,8 +18,12 @@ export class SystemRoleService {
     private roleRate: RoleRateService) {}
 
 
-  public subscribeSystemRepo(){
+  public getAllRoles(){
     return this.systemRoleRepo.getSystemRoleConfigurations();
+  }
+
+  public valueChangeListener(){
+    return this.systemRoleRepo.valueChangeListener();
   }
 
   public async processNewSaveRoleConfiguration(newConfig: IRoleConfiguration): Promise<void>{

@@ -22,11 +22,11 @@ export class RoleRateService {
   }
 
   public getSystemRoleRateAccessLevel(level: Constant.RoleAccessType): number{
-    return level === 'systemAdmin' ? this.rate.SystemAdmin
-    : level === 'admin' ? this.rate.Admin
-    : level === 'manager' ? this.rate.Manager
-    : level === 'reception' ? this.rate.Reception
-    : level === 'employee' ? this.rate.Employee
+    return level === Constant.Default.RoleAccessType.SystemAdmin ? this.rate.SystemAdmin
+    : level === Constant.Default.RoleAccessType.Admin ? this.rate.Admin
+    : level === Constant.Default.RoleAccessType.Manager ? this.rate.Manager
+    : level === Constant.Default.RoleAccessType.Reception ? this.rate.Reception
+    : level === Constant.Default.RoleAccessType.Employee ? this.rate.Employee
     : 0;
   }
 

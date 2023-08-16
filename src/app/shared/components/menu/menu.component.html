@@ -1,48 +1,63 @@
 <!--TODO: add user information and menu information from app.component-->
 <!--User Info-->
-<ion-card id="user-info-card">
-  <ion-card-header>
-    <div id="user-info-title">
-      <ion-card-title>{{user.fullName}}</ion-card-title>
-      <ion-card-subtitle>{{user.role}}</ion-card-subtitle>
-    </div>
-    <ion-button>{{ 'menu.name.edit' | languageTransform | async}}</ion-button>
-  </ion-card-header>
-  <ion-card-content>
-    <ion-button expand="block" *ngIf="user">{{ 'menu.name.logout' | languageTransform | async}}</ion-button>
-    <ion-button expand="block" *ngIf="!user"> {{ 'menu.name.login' | languageTransform | async}}</ion-button>
-  </ion-card-content>
-</ion-card>
+<section id="menu-container">
+  <ion-card id="user-info-card">
+    <ion-card-header>
+      <div id="user-info-title">
+        <ion-card-title
+          ><u id="user-name"
+            >{{ user.firstName }} {{ user.lastName }}</u
+          ></ion-card-title
+        >
+        <ion-card-subtitle
+          ><p>
+            {{ user.currentShop.role.name | languageTransform | async }}
+          </p></ion-card-subtitle
+        >
+      </div>
+    </ion-card-header>
+    <ion-card-content>
+      <kendo-dropdownlist id="user-shop-list"></kendo-dropdownlist>
+    </ion-card-content>
+  </ion-card>
 
-<!--Menu-->
-<ion-accordion-group>
+  <!--Menu-->
+  <ion-accordion-group>
+    <!--Route Link-->
+    <ion-accordion *ngFor="let menu of menus">
+      <!--Header-->
+      <ion-item
+        slot="header"
+        [ngClass]="menu.name === selectedTitleHeading ? 'active' : ''"
+      >
+        <ion-icon slot="start" [name]="menu.icon"></ion-icon>
+        {{ menu.name | languageTransform | async }}
+      </ion-item>
 
-  <!--Route Link-->
-  <ion-accordion *ngFor="let menu of menus">
-    <!--Header-->
-    <ion-item slot="header" [ngClass]="menu.name === selectedTitleHeading ? 'active' : ''">
-      <ion-icon slot="start" [name]="menu.icon"></ion-icon>
-      {{ menu.name | languageTransform | async }}
-    </ion-item>
-
-    <!--Content-->
-    <ion-list slot="content" *ngFor="let content of menu.content">
-        <ion-item button routerLink="{{content.url}}" routerLinkActive="active" (click)="onChangeMenu(content.url)">
+      <!--Content-->
+      <ion-list slot="content" *ngFor="let content of menu.content">
+        <ion-item
+          button
+          routerLink="{{ content.url }}"
+          routerLinkActive="active"
+          (click)="onChangeMenu(content.url)"
+        >
           <ion-label>
-            <ion-icon slot="start" name="{{content.icon}}"></ion-icon>
-            {{ content.name | languageTransform | async}}
+            <ion-icon slot="start" name="{{ content.icon }}"></ion-icon>
+            {{ content.name | languageTransform | async }}
           </ion-label>
         </ion-item>
-    </ion-list>
-  </ion-accordion>
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
 
-</ion-accordion-group>
-
-
-<!--Language Setting-->
-<section id="language-setting-container">
-  <langauge-selection></langauge-selection>
+  <!--Language Setting-->
+  <section id="language-setting-container">
+    <langauge-selection></langauge-selection>
+  </section>
+  <section id="log-out" *ngIf="user">
+    <ion-button expand="block" id="log-out-btn">
+      {{ "menu.name.logout" | languageTransform | async }}</ion-button
+    >
+  </section>
 </section>
-
-
-

@@ -17,8 +17,12 @@ export class PlanService {
     private planRepo: SystemPlanRepositoryService,
     private global: GlobalService) { }
 
-  public subscribeAllPlanOptions(){
+  public getPlanOptions(){
     return this.planRepo.getSystemPlanOptions();
+  }
+
+  public valueChangeListener(){
+    return this.planRepo.valueChangeListener();
   }
 
   public getDefaultPlan(): IPlanConfiguration{

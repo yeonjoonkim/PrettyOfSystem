@@ -1,11 +1,14 @@
 import { AccessControlService } from './../../services/authentication/access-control/access-control.service';
 import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { LanguageService } from '../../services/global/language/language.service';
 import { StorageService } from '../../services/global/storage/storage.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
+import { UserService } from 'src/app/service/user/user.service';
+import { IUser } from 'src/app/interface/user/user.interface';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'side-menu',
@@ -19,48 +22,38 @@ export class MenuComponent implements OnInit, OnDestroy {
   public selectedLangauge: string = '';
   public selectedTitleHeading: string = '';
   public selectedCategory: string = '';
-  public user = {
-    fullName: "Yeon Joon Kim",
-    role: "Software Developer",
-    roleConfig: {
-      id: '',
-      name: '',
-      description: '',
-      accessLevel: {
-        isSystemAdmin: true,
-        isAdmin: false,
-        isManager: false,
-        isEmployee: false,
-        isReception: false
-      },
-      rate: 100000
-    }
-  };
+  public user: IUser = this.userService.defaultUser();
   public menus: IMenuCategory[] = [];
 
 
   constructor(public language: LanguageService,
     private storage: StorageService,
     private location: Location,
-    private accessControl: AccessControlService,
-    private systemMenuRepository: SystemMenuRepositoryService) {
+    private systemMenuRepository: SystemMenuRepositoryService,
+    private userService: UserService,
+    private menuCtrl: MenuController) {
+      this.testing();
       this.getCurrentLanguage();
       this.getAccessGrantedMenu();
   }
 
-  async ngOnInit() {
-    await this.setDefaultTitleHeading();
+  ngOnInit() {
   }
 
   ngOnDestroy(){
   }
 
+  private testing(){
+    this.user.firstName = "Yeon Joon";
+    this.user.lastName = "Kim";
+    this.user.currentShop.role.name = "role.name.systemadministrator";
+    this.user.currentShop.shopName = "So Thai Massage & Spa Market Square";
+    this.user.currentShop.role.accessLevel.isSystemAdmin = true;
+  }
+
   private async getAccessGrantedMenu(){
-    this.systemMenuRepository.getSystemMenuCategories(
-    ).subscribe(menu => {
-      this.menus = this.accessControl.getAccessGrantedMenu(this.user.roleConfig, menu);
-      this.setDefaultTitleHeading();
-    });
+    this.menus = await this.systemMenuRepository.getAccessGrantedMenu(this.user.currentShop.role.accessLevel);
+    await this.setDefaultTitleHeading();
   }
 
   private async getCurrentLanguage(){
@@ -77,13 +70,12 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   /** This function will change the title heading param based on current url.*/
   async onChangeMenu(url: string){
-      if(this.menus.length > 0){
-        this.menus.forEach(m => {
-          if(m.content.length > 0){
-            let currentMenu = m.content.filter(content => content.url === url)[0];
-            this.selectedTitleHeading =  currentMenu ? m.name : this.selectedTitleHeading;
-          }
-        });
-      };
+    let selectedMenu = this.menus.find(
+      s => {
+        let menu = s.content.find(c => c.url === url);
+        return menu;
+    });
+    this.selectedTitleHeading = selectedMenu !== undefined ? selectedMenu.name : '';
+    this.menuCtrl.close();
   }
 }

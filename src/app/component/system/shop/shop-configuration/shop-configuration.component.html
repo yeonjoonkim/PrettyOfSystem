@@ -23,6 +23,15 @@
       >
         {{ "label.name.info" | languageTransform | async }}
       </button>
+      <!--Subscription Button-->
+      <button
+        kendoButton
+        [toggleable]="true"
+        (click)="onClickHours()"
+        [(selected)]="display.workHours"
+      >
+        {{ "label.name.workhours" | languageTransform | async }}
+      </button>
       <!--Address Button-->
       <button
         kendoButton
@@ -134,7 +143,12 @@
           >
           </shop-category>
         </flex-col-item>
-        <flex-col-item id="operating-hours-container">
+      </flex-col>
+    </div>
+    <!-- Operating Hours -->
+    <div *ngIf="display.workHours">
+      <flex-col>
+        <flex-col-item>
           <operating-hours
             [intervalMin]="config.setting.timePicker.intervalMin"
             [(workHours)]="config.operatingHours"

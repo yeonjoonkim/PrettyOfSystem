@@ -1,0 +1,11 @@
+<ion-content>
+  <section class="modal-container">
+    <ion-button
+      id="system-menu-option-button"
+      *ngFor="let option of menuOptions"
+      expand="block"
+      (click)="onClickMenuOption(option)"
+      >{{ option.name }}</ion-button
+    >
+  </section>
+</ion-content>

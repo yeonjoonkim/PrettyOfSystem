@@ -1,0 +1,89 @@
+<ion-content [scrollable]="true">
+  <!--(onClickDismiss)="dismiss()"
+    (onClickCreate)="handleCreate()"
+    (onClickEdit)="handleEdit()"
+    (onClickSave)="handleSave()"
+    (onClickDelete)="handleDelete()" -->
+  <form-header
+    [title]="form.headerTitle"
+    [readOnly]="form.readOnly"
+    [enabledSavebutton]="form.enabledSavebutton"
+    [action]="form.action"
+    (onClickDismiss)="dismiss()"
+    (onClickEdit)="handleEdit()"
+    (onClickCreate)="handleCreate()"
+  ></form-header>
+  <div id="form-container">
+    <flex-col>
+      <flex-col-item *ngIf="createStatus">
+        <kendo-progressbar
+          [value]="createStatus.current"
+          [max]="createStatus.end"
+          [title]="createStatus.currentKeyPair.value"
+          [animation]="true"
+        ></kendo-progressbar>
+        <p>Error: {{ createStatus.errorKeyPairList.length }}</p>
+        <p>{{ createStatus.currentKeyPair | json }}</p>
+      </flex-col-item>
+    </flex-col>
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          title="label.name.name"
+          [readOnly]="form.readOnly"
+          [(validate)]="validator.name"
+          [(value)]="language.name"
+          [isRequired]="true"
+          [isTitleFormat]="true"
+          [min]="2"
+          (valueChange)="ngAfterViewInit()"
+        ></text-box>
+      </flex-row-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          title="label.name.description"
+          [readOnly]="form.readOnly"
+          [(validate)]="validator.description"
+          [(value)]="language.description"
+          [isRequired]="true"
+          [isLowCaseFormat]="true"
+          [min]="14"
+          (valueChange)="ngAfterViewInit()"
+        ></text-box>
+      </flex-row-item>
+      <flex-row-item>
+        <text-box
+          title="label.name.code"
+          [readOnly]="form.readOnly"
+          [(validate)]="validator.code"
+          [(value)]="language.code"
+          [isRequired]="true"
+          [isLowCaseFormat]="true"
+          [min]="1"
+          (valueChange)="ngAfterViewInit()"
+        ></text-box>
+      </flex-row-item>
+    </flex-row>
+    <flex-col>
+      <flex-col-item>
+        <kendo-grid [kendoGridBinding]="keyPairValueList" [height]="200">
+          <kendo-grid-column
+            title="{{ 'transform.name.key' | languageTransform | async }}"
+            [filterable]="true"
+            field="key"
+          >
+          </kendo-grid-column>
+
+          <kendo-grid-column
+            title="{{ 'transform.name.value' | languageTransform | async }}"
+            [filterable]="true"
+            field="value"
+          >
+          </kendo-grid-column>
+        </kendo-grid>
+      </flex-col-item>
+    </flex-col>
+  </div>
+</ion-content>

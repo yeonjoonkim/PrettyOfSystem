@@ -1,33 +1,42 @@
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { firstValueFrom, map, Observable, take } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
+import * as Db from './../../../shared/services/global/constant/firebase-path'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SystemPlanRepositoryService {
   private readonly timeStamp = {lastModifiedDate: new Date()};
-  private readonly systemPlan: string = 'system/plan/';
-  private readonly systemPlanOption: string = this.systemPlan + 'option';
 
   constructor(private afs: AngularFirestore) { }
 
   /**This will return as Observalbe to receive the all Plan Options Available */
-  public getSystemPlanOptions(): Observable<IPlanConfiguration[]> {
-    return this.afs.collection<IPlanConfiguration>(this.systemPlanOption,  ref => ref.orderBy('name'))
+  public valueChangeListener(): Observable<IPlanConfiguration[]> {
+    return this.afs.collection<IPlanConfiguration>(Db.Context.System.Plan.Option,  ref => ref.orderBy('name'))
     .valueChanges()
     .pipe(
       map((planConfigs: IPlanConfiguration[]) => {
         if (!planConfigs || planConfigs.length === 0) {
           return [];
         }
-        // Transform the data here as needed
         return planConfigs;
       })
     );
   }
 
+  public getSystemPlanOptions(): Observable<IPlanConfiguration[]>{
+    return this.afs.collection<IPlanConfiguration>(Db.Context.System.Plan.Option)
+    .get()
+    .pipe(
+      map(snapshot => {
+        return snapshot.docs.map(doc => {
+          return doc.data();
+        });
+      })
+    );
+  }
 
   /**This will add new system plan option */
   public async addSystemPlanOption(config: IPlanConfiguration) {
@@ -36,7 +45,7 @@ export class SystemPlanRepositoryService {
     config.id = newId;
     let newOption = {...config, ...this.timeStamp};
     try {
-      await this.afs.collection(this.systemPlanOption).doc(newId).set(newOption);
+      await this.afs.collection(Db.Context.System.Plan.Option).doc(newId).set(newOption);
     } catch (e) {
       console.error(e);
       isSave = false;
@@ -50,7 +59,7 @@ export class SystemPlanRepositoryService {
     let isUpdate = true;
     let newOption = {...config, ...this.timeStamp};
     try {
-      await this.afs.collection(this.systemPlanOption).doc(config.id).set(newOption);
+      await this.afs.collection(Db.Context.System.Plan.Option).doc(config.id).set(newOption);
     } catch (e) {
       console.error(e);
       isUpdate = false;
@@ -63,7 +72,7 @@ export class SystemPlanRepositoryService {
   public async deleteSystemPlanOption(selectedId: string){
     let isDeleted = true;
     try{
-      this.afs.doc(this.systemPlanOption + '/' + selectedId).delete();
+      this.afs.doc(Db.Context.System.Plan.Option + '/' + selectedId).delete();
     }catch(e){
       console.error(e);
       isDeleted = false;
@@ -73,9 +82,13 @@ export class SystemPlanRepositoryService {
   }
 
   public getSelectedPlan(selectedId: string): Observable<IPlanConfiguration | undefined> {
-    return this.afs.doc<IPlanConfiguration>(`${this.systemPlanOption}/${selectedId}`)
-      .valueChanges()
-      .pipe(take(1));
+    return this.afs.doc<IPlanConfiguration>(`${Db.Context.System.Plan.Option}/${selectedId}`)
+    .get()
+    .pipe(
+      map(snapshot => {
+        return snapshot.data();
+      })
+    );
   }
 
 }

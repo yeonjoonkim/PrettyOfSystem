@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Menu -->
+    <ion-buttons slot="start">
+      <ion-menu-button auto-hide="true"></ion-menu-button>
+    </ion-buttons>
+    <!-- Title -->
+    <ion-title
+      >{{'menu.content.shopmanagement'| languageTransform | async }}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!--
+  <kendo-buttongroup selection="single" width="100%">
+    <button
+      kendoButton
+      *ngFor="let button of systemMenu"
+      [toggleable]="true"
+      [selected]="button.name === selectedSystemMenu.name"
+      (selectedChange)="processSystemMenuOption(button)"
+    >
+      {{button.name}}
+    </button>
+  </kendo-buttongroup>
+  -->
+  <system-shop-management></system-shop-management>
+</ion-content>

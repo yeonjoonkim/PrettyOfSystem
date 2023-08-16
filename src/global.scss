@@ -29,6 +29,8 @@
 @import "./theme/variables.scss";
 $form-background-color: white;
 $title-color: #414d58;
+$background-color: #8685ef;
+
 .toolbar-icon {
   font-size: 30px;
   margin: 5px;
@@ -36,14 +38,10 @@ $title-color: #414d58;
 }
 
 .active {
-  --background: rgb(54, 53, 54);
-  --background: linear-gradient(
-    90deg,
-    rgba(54, 53, 54, 1) 0%,
-    rgba(65, 70, 86, 1) 100%
-  );
+  --background: #8685ef;
   font-weight: bold;
 }
+
 .date-pick-popup-container {
   position: fixed !important;
   top: 50% !important;
@@ -58,6 +56,8 @@ $title-color: #414d58;
   display: flex;
   flex-direction: column;
   padding: 80px;
+  --width: fit-content;
+  max-width: calc(100vw - 40px);
 }
 
 .delete-ion-sliding-option {
@@ -104,8 +104,67 @@ legend {
   font-style: normal;
 }
 
+yes-no-selection-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: fit-content;
+  yes-no-selection {
+    align-self: flex-end;
+  }
+}
+time-picker-group {
+  display: flex;
+  flex-direction: row;
+}
+
+ion-button {
+  --background: #8685ef;
+  position: relative;
+  color: white;
+}
+
+kendo-textbox,
+kendo-autocomplete,
+kendo-label {
+  font-style: normal;
+}
+
+//Form
+ion-content {
+  form-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+}
+
+flex-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-row-item {
+    flex: 1;
+  }
+}
+flex-col {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-col-item {
+    flex: 1;
+  }
+}
+flex-row-item,
+flex-col-item {
+  margin: 0px 15px 10px 15px;
+}
+
+/*itl-phone*/
 .iti--allow-dropdown {
-  margin-top: 10px;
+  margin-top: 12px;
   margin-bottom: 10px;
   max-width: 100%;
   min-width: 100px;
@@ -113,7 +172,6 @@ legend {
   flex-direction: row;
   width: 100%;
   background-color: #101010;
-  border-radius: 2px;
   border: #232323 1px solid;
   &:hover {
     border: #333333 1px solid;
@@ -124,12 +182,18 @@ legend {
     outline: unset;
   }
 }
+
+/*itl-phone*/
 .iti__flag-container {
   position: relative;
 }
+
+/*itl-phone*/
 .iti__selected-flag {
   padding: 0px 5px;
 }
+
+/*itl-phone*/
 .iti--allow-dropdown input[type="tel"] {
   height: 30px;
   width: 100%;
@@ -147,15 +211,23 @@ legend {
     box-shadow: unset;
     outline: unset;
   }
+  &:disabled {
+    color: white;
+  }
 }
-.iti--allow-dropdown input::placeholder {
+
+/*itl-phone*/
+.iti--allow-dropdown input::placeholder,
+.iti--allow-dropdown input:disabled {
   color: white;
   font-size: 14px;
 }
 
+/*itl-phone*/
 .dropdown-menu.country-dropdown.show {
   border: rgba(255, 255, 255, 0.08) 1px solid;
-  border-radius: 2px;
+  border-radius: 0px;
+  background-color: #101010;
   min-width: 200px;
   max-width: 260px;
   padding: 0px;
@@ -196,68 +268,4 @@ legend {
     color: white;
     max-width: 300px;
   }
-}
-
-yes-no-selection-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  width: fit-content;
-  yes-no-selection {
-    align-self: flex-end;
-  }
-}
-time-picker-group {
-  display: flex;
-  flex-direction: row;
-}
-
-ion-button {
-  --background: rgb(54, 53, 54);
-  --background: linear-gradient(
-    90deg,
-    rgba(54, 53, 54, 1) 0%,
-    rgba(65, 70, 86, 1) 100%
-  );
-  position: relative;
-  margin: auto;
-  color: white;
-}
-
-kendo-textbox,
-kendo-autocomplete,
-kendo-label {
-  font-style: normal;
-}
-
-//Form
-ion-content {
-  form-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-}
-
-flex-row {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-row-item {
-    flex: 1;
-  }
-}
-flex-col {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-col-item {
-    flex: 1;
-  }
-}
-flex-row-item,
-flex-col-item {
-  margin: 0px 15px 10px 15px;
 }
