@@ -12,25 +12,27 @@ export class SystemLanguageRepositoryService {
   
   constructor(private afs: AngularFirestore) {}
 
-  public getLanguageSelectionResult(){
-    return this.afs.collection(Db.Context.System.Language.Selection)
-    .snapshotChanges()
-    .pipe(
-      map(collection => {
-        return collection.map(ref =>{
-          let result = this.setILanuageSelection(ref.payload.doc.data(), ref.payload.doc.id);
-          return result;
-        })
-      }));
-  }
+
+public getLanguageSelectionResult() {
+  return this.afs.collection(Db.Context.System.Language.Selection)
+  .get()
+  .pipe(
+    map(snapshot => {
+      return snapshot.docs.map(doc => {
+        let result = this.setILanuageSelection(doc.data(), doc.id);
+        return result;
+      });
+    })
+  );
+}
 
   public getLanguageKeyResult(){
     return this.afs.collection(Db.Context.System.Language.Key)
-    .snapshotChanges()
+    .get()
     .pipe(
-      map(collection => {
-        return collection.map(ref =>{
-          let result = this.setILanguageKey(ref.payload.doc.data(), ref.payload.doc.id);
+      map(snapshot => {
+        return snapshot.docs.map(doc =>{
+          let result = this.setILanguageKey(doc.data(), doc.id);
           return result;
         })
       }));
@@ -46,7 +48,7 @@ export class SystemLanguageRepositoryService {
     this.afs.collection(Db.Context.System.Language.Key).doc(criteria.id).update(updateCommand);
   }
 
-  private setILanuageSelection(response: any, id: string){
+  private setILanuageSelection(response: any, id?: string){
     let selection: ILanguageSelection = response;
     selection.id = id;
     return selection;

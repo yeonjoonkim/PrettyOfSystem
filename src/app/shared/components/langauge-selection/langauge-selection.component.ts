@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ILanguageSelection } from 'src/app/interface/system/language/language.interface';
 import { LanguageService } from '../../services/global/language/language.service';
+import { Observable, firstValueFrom } from 'rxjs';
+import { IPairValueId } from 'src/app/interface/system/system.interface';
 
 
 @Component({
@@ -9,42 +11,39 @@ import { LanguageService } from '../../services/global/language/language.service
   styleUrls: ['./langauge-selection.component.scss'],
 })
 export class LangaugeSelectionComponent implements OnInit {
-  public selectedLanguage!:  ILanguageSelection;
-  public languageSelection: ILanguageSelection[] = [];
+  public selectedLanguage:  IPairValueId = {id: '', value: ''};
+  public languageSelection: IPairValueId[] = [];
 
   constructor(public language: LanguageService) {
-    this.subscribeLanguageSelection();
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.setDefault();
+  }
+
+  private async setDefault(){
+    this.languageSelection = await this.setLanguageSelectionList();
+    let currentValue = this.languageSelection.find(s => s.id === this.language.currentLanguage);
+    this.selectedLanguage = currentValue !== undefined ? currentValue : {id: '', value: ''};
+  }
 
   /** This function will set the global language by using language service. */
   public async onChangeLanguage(){
-    this.language.currentLanguage = this.selectedLanguage.code;
+    this.language.currentLanguage = this.selectedLanguage.id;
     this.language.onLanguageChange();
   }
 
-  private subscribeLanguageSelection(){
-    this.language.languageSelection.subscribe(languageList => {
-      if(languageList){
-        this.setLanguageSelectionList(languageList);
-      }
+  private async setLanguageSelectionList() {
+    let selections: ILanguageSelection[] = await this.language.getLanguageSelection();
+    
+    let promises: Promise<IPairValueId>[] = selections.map(async s => {
+        let name = await this.language.transform(s.description);
+        return { id: s.code, value: name };
     });
-  }
 
-  private async setLanguageSelectionList(languageList: ILanguageSelection[]){
+    let keyPairList: IPairValueId[] = await Promise.all(promises);
 
-    for(let lang of languageList){
-      let isExisted = this.languageSelection.filter(selection => selection.code === lang.code).length > 0;
-      let isSelectedLanguage = this.language.currentLanguage === lang.code;
-      lang.description = await this.language.transform(lang.description);
-      if(isSelectedLanguage){
-        this.selectedLanguage = lang;
-      }
-      if(!isExisted && !isSelectedLanguage){
-        this.languageSelection.push(lang);
-      }
-    }
-  }
+    return keyPairList;
+}
 
 }

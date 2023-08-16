@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CellClickEvent } from '@progress/kendo-angular-grid';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import { DeviceWidthService } from 'src/app/shared/services/global/device-width/device-width.service';
-import { GlobalService } from 'src/app/shared/services/global/global.service';
-
 
 @Component({
   selector: 'system-shop-management',
@@ -13,7 +11,7 @@ import { GlobalService } from 'src/app/shared/services/global/global.service';
   styleUrls: ['./shop-management.component.scss'],
 })
 export class ShopManagementComponent implements OnInit, OnDestroy {
-  public configs: Observable<IShopConfiguration[]> = this.systemShop.shopConfigurationList;
+  public configs: Observable<IShopConfiguration[]> = this.systemShop.shopConfigurationValueChangeListener();
   private selectedConfig!: IShopConfiguration;
   constructor(private systemShop:  SystemShopService, public device: DeviceWidthService) {
   }

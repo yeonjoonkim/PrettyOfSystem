@@ -7,8 +7,9 @@
     [height]="500"
     [sortable]="true"
     [autoSize]="true"
+    scrollable="virtual"
     [selectable]="true"
-    filterable="menu"
+    filterable="row"
     (cellClick)="onClickCell($event)"
   >
     <!-- Add Button -->
@@ -23,18 +24,40 @@
       title="{{ 'label.name.name' | languageTransform | async }}"
       [filterable]="true"
       field="name"
-      [width]="150"
     >
       <ng-template kendoGridCellTemplate let-config>{{
         config.name
       }}</ng-template>
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <kendo-grid-string-filter-cell
+          [showOperators]="false"
+          [column]="column"
+          [filter]="filter"
+        >
+        </kendo-grid-string-filter-cell>
+      </ng-template>
+    </kendo-grid-column>
+
+    <!-- Suburb -->
+    <kendo-grid-column
+      title="{{ 'form.title.suburb' | languageTransform | async }}"
+      field="address.suburb"
+      [filterable]="true"
+    >
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <kendo-grid-string-filter-cell
+          [showOperators]="false"
+          [column]="column"
+          [filter]="filter"
+        >
+        </kendo-grid-string-filter-cell>
+      </ng-template>
     </kendo-grid-column>
 
     <!-- Category -->
     <kendo-grid-column
       title="{{ 'label.name.category' | languageTransform | async }}"
       field="category.name"
-      [width]="150"
       [filterable]="false"
     >
       <ng-template kendoGridCellTemplate let-config>

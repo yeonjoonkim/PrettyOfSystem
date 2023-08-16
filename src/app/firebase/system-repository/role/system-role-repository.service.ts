@@ -1,7 +1,7 @@
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { firstValueFrom, map, Observable } from 'rxjs';
+import { lastValueFrom, map, Observable } from 'rxjs';
 import * as Db from './../../../shared/services/global/constant/firebase-path'; 
 
 @Injectable({
@@ -15,6 +15,18 @@ export class SystemRoleRepositoryService {
 
   /** This will return as Observalble of all role configs  */
   public getSystemRoleConfigurations(): Observable<IRoleConfiguration[]> {
+    return this.afs.collection<IRoleConfiguration>(Db.Context.System.Role.Configuration, ref => ref.orderBy('rate'))
+      .get()
+      .pipe(
+        map(snapshot => {
+          return snapshot.docs.map(doc => {
+            return doc.data();
+          });
+        })
+      );
+  }
+
+  public valueChangeListener(): Observable<IRoleConfiguration[]> {
     return this.afs.collection<IRoleConfiguration>(Db.Context.System.Role.Configuration, ref => ref.orderBy('rate'))
       .valueChanges()
       .pipe(
@@ -38,7 +50,7 @@ export class SystemRoleRepositoryService {
 
   /** This will get only selectedId */
   public async getSelectedSystemRole(selectedId: string){
-    let roles = await firstValueFrom(this.getSystemRoleConfigurations());
+    let roles = await lastValueFrom(this.getSystemRoleConfigurations());
     return roles.find(role => role.id === selectedId);
   }
 

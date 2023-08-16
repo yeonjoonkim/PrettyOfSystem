@@ -21,9 +21,7 @@ export class ShopCategoryListComponent implements OnInit {
   }
   set shopCategory(value: IShopCategory) {
     this.selectedShopCategory = value;
-    if(!this.loading){
     this.shopCategoryChange.emit(this.selectedShopCategory);
-    }
   }
   @Input()
   get validate(): boolean {
@@ -36,7 +34,7 @@ export class ShopCategoryListComponent implements OnInit {
   private defaultShopCategoryList: IShopCategory[] = [];
   public loading: boolean = true;
   public pairValueIdList: IPairValueId[] = [];
-  public selectedPairValueId: IPairValueId | undefined;
+  public selectedPairValueId: IPairValueId = {id: '', value: ''};
   private validated: boolean = false;
   private selectedShopCategory: IShopCategory = {
     id: '',
@@ -50,11 +48,8 @@ export class ShopCategoryListComponent implements OnInit {
   constructor(private systemShopService: SystemShopService) {}
 
   async ngOnInit() {
-    this.defaultShopCategoryList = !this.readOnly
-      ? await this.systemShopService.getSystemShopCategoryList()
-      : [];
-    this.pairValueIdList =
-      await this.systemShopService.getCategoryPairValueIdList();
+    this.defaultShopCategoryList = await this.systemShopService.getSystemShopCategoryList();
+    this.pairValueIdList = await this.systemShopService.getCategoryPairValueIdList();
     this.setDefaultPairValueId();
   }
 
@@ -62,18 +57,17 @@ export class ShopCategoryListComponent implements OnInit {
     let defaultPair: IPairValueId | undefined = this.pairValueIdList.find(
       (p) => p.id === this.selectedShopCategory.id
     );
-    this.selectedPairValueId = defaultPair;
+    this.selectedPairValueId = defaultPair !== undefined ? defaultPair : {id: '', value: ''};
     this.validate = defaultPair !== undefined;
     this.loading = false;
   }
 
   public onClickCategory() {
-    let category: IShopCategory | undefined = this.defaultShopCategoryList.find(
-      (c) => c.id === this.selectedPairValueId?.id
-    );
+    let id: string = this.selectedPairValueId.id;
+    let category: IShopCategory | undefined = this.defaultShopCategoryList.find((c) => c.id === id);
+    this.validate = category !== undefined;
     if (category) {
       this.shopCategory = category;
-      this.validate = category !== undefined;
     }
   }
 }

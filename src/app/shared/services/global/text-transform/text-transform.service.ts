@@ -27,9 +27,14 @@ export class TextTransformService {
     let formatter = translated;
 
     for(let key in formatter){
-      formatter[key] = formatter[key].endsWith('.') ? formatter[key].slice(0, formatter[key].length -1) : formatter[key];
-      formatter[key] = formatter[key].endsWith('。') ? formatter[key].slice(0, formatter[key].length -1) : formatter[key];
-      formatter[key] = this.getTitleFormat(formatter[key]);
+      if(typeof formatter[key] === "string"){
+        formatter[key] = formatter[key].endsWith('.') ? formatter[key].slice(0, formatter[key].length -1) : formatter[key];
+        formatter[key] = formatter[key].endsWith('。') ? formatter[key].slice(0, formatter[key].length -1) : formatter[key];
+        formatter[key] = this.getTitleFormat(formatter[key]);
+      }else{
+        formatter[key] = "";
+      }
+
     }
 
     return formatter;
@@ -118,6 +123,10 @@ export class TextTransformService {
 
   public deleteSpaces(str: string): string{
     return str.replace(/(\r\n|\n|\r|\"|)/gm,"");
+  }
+
+  public isDescriptionFormat(str: string){
+    return str.endsWith('.');
   }
 
   public getContainWordList(str: string):  Array<string> {

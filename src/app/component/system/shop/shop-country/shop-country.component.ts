@@ -15,6 +15,7 @@ export class ShopCountryComponent implements OnInit {
   @Input() mode: Constant.ComponentModeType =
     Constant.Default.ComponentMode.Form;
   @Input() readOnly: boolean = false;
+  @Input() defaultShopCountryList: IShopCountry[] = [];
   @Input()
   get shopCountry(): IShopCountry {
     return this.selectedShopCountry;
@@ -35,7 +36,7 @@ export class ShopCountryComponent implements OnInit {
   public pairValueIdList: IPairValueId[] = [];
   public selectedPairValueId: IPairValueId | undefined;
   private selectedShopCountry!: IShopCountry;
-  private defaultShopCountryList: IShopCountry[] = [];
+
   private validated: boolean = false;
 
   constructor(private systemShopService: SystemShopService) {}

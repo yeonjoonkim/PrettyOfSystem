@@ -37,4 +37,15 @@ export class StorageService {
     let result = await this.get(storageKey.default.language);
     return result;
   }
+
+  public async getLanguageSelection(){
+    let result = await this.get(storageKey.default.languageSelection);
+    return result;
+  }
+
+  public async getLanguageSelectionKey(){
+    let result = await this.get(storageKey.default.languageSelectionKey);
+    return result;
+  }
+
 }

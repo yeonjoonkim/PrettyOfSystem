@@ -3,6 +3,7 @@ import { ILanguageTransformKeyPairValue } from 'src/app/interface/system/languag
 import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
 import { AddLanguageTransformComponent } from './add-language-transform/add-language-transform.component';
 import { PopoverController } from '@ionic/angular';
+import { GlobalService } from 'src/app/shared/services/global/global.service';
 
 @Component({
   selector: 'language-dictonary',
@@ -10,22 +11,20 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['./dictonary.component.scss'],
 })
 export class DictonaryComponent implements OnInit {
-  public selectedLangValue: string = '';
   public selectedLang: ILanguageTransformKeyPairValue = {key: '', value: ''};
   public languageSelectionList: ILanguageTransformKeyPairValue[] = [];
   public selectedKeyPairValueList: ILanguageTransformKeyPairValue[] = [];
   public gridData: ILanguageTransformKeyPairValue[] = [];
   public query: string = "";
 
-  constructor(public systemlanguage: SystemLanguageService, private popOverCtrl: PopoverController) {}
+  constructor(public systemLanguage: SystemLanguageService, private popOverCtrl: PopoverController, private global: GlobalService) {}
 
   async ngOnInit() {
-    this.subscribeLanguageSelection();
+    await this.setLanguageSelection();
   }
 
   public async onChangeLanguageSelection(){
-    this.selectedLangValue = this.selectedLang.value;
-    this.selectedKeyPairValueList = await this.systemlanguage.getSelectedLanguageKeyPairValueList(this.selectedLang.key);
+    this.selectedKeyPairValueList = await this.systemLanguage.getSelectedLanguageKeyPairValueList(this.selectedLang.key);
     this.onChangeQuery();
   }
 
@@ -40,6 +39,7 @@ export class DictonaryComponent implements OnInit {
     let result = await addLanguageTransformPopOver.onWillDismiss();
     if(result.data?.isSaved){
       this.query = result.data.key;
+      await this.setLanguageSelection();
     }
   }
 
@@ -49,18 +49,14 @@ export class DictonaryComponent implements OnInit {
     });
   }
 
-  public async onChangeLanguage(event: ILanguageTransformKeyPairValue){
-    this.selectedLang = event;
+  public async setLanguageSelection(){
+    this.global.loading.show('Refreshing');
+    let languageSelection = await this.systemLanguage.get();
+    await this.systemLanguage.refreshLocalStorage();
+    this.languageSelectionList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(languageSelection);
+    this.selectedLang = this.selectedLang.key ? this.selectedLang : this.languageSelectionList[0];
     await this.onChangeLanguageSelection();
-  }
-
-  private subscribeLanguageSelection(){
-    this.systemlanguage.subscription().subscribe(async langSelection => {
-      this.languageSelectionList = await this.systemlanguage.getLanguageSelectionKeyPairValueList(langSelection);
-      this.selectedLang = this.selectedLang.key ? this.selectedLang : this.languageSelectionList[0];
-      this.selectedLangValue = this.selectedLang.value;
-      await this.onChangeLanguageSelection();
-      this.onChangeQuery();
-    });
+    this.onChangeQuery();
+    this.global.loading.dismiss();
   }
 }

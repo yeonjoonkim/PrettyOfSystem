@@ -3,10 +3,12 @@
     [menuCategories]="menuCategories | async"
     [(category)]="selectedCategory"
   ></menu-category-card>
-  <menu-category-content-card
-    *ngIf="selectedCategory.id"
-    [selectedMenuContents]="selectedCategory.content"
-    [selectedMenuCategoryId]="selectedCategory.id"
-    [selectedCategoryName]="selectedCategory.name"
-  ></menu-category-content-card>
+  <ng-container *ngFor="let category of menuCategories | async">
+    <menu-category-content-card
+      *ngIf="selectedCategory.id === category.id"
+      [selectedMenuContents]="category.content"
+      [selectedMenuCategoryId]="category.id"
+      [selectedCategoryName]="category.name"
+    ></menu-category-content-card>
+  </ng-container>
 </div>

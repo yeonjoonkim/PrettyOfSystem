@@ -16,8 +16,7 @@ export class AddLanguageTransformComponent implements OnInit {
     value: ''
   }
 
-  constructor(private global: GlobalService,
-    private actionSheetCtrl: ActionSheetController, private popOverCtrl: PopoverController) { }
+  constructor(private global: GlobalService, private actionSheetCtrl: ActionSheetController, private popOverCtrl: PopoverController) { }
 
   ngOnInit() {}
 
@@ -38,6 +37,7 @@ export class AddLanguageTransformComponent implements OnInit {
         let translateCriteria = await this.global.language.getAllLanguageTranslateCriteria();
         translateCriteria.isTitle = selectionFormat.data.isTitle;
         let result = await this.global.languageTranslate.getTranslatedLanguagePackage(this.languageTransform.value, translateCriteria);
+        result.isEmpty
         await this.updateLanguagePackage(result);
       }
     }

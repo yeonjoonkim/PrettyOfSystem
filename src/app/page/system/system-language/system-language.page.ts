@@ -19,8 +19,6 @@ export class SystemLanguagePage implements OnInit {
 
   private async setDefaultSystemMenuOption(){
     this.systemMenu = await this.systemMenuOptionCtrl.getSystemLanguageButtons();
-    let dictionary = this.systemMenu.find(r => r.isLanguageDictionary);
-    this.selectedSystemMenu = dictionary !== undefined ? dictionary : this.systemMenuOptionCtrl.setDefaultSystemMenuOptionController();
   }
 
   /** This will process the set up the selected system menu */

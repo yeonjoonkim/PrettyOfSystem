@@ -87,8 +87,7 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
 
   public async handleEdit(){
     this.form.readOnly = false;
-    this.validator = this.shopConfig.editValidator();
-    await this.onChangeForm();
+    this.form.enabledSavebutton = false;
   }
 
   public async handleSave(){

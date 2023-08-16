@@ -8,6 +8,7 @@ import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/syste
 import { ShopSettingService } from '../shop-setting/shop-setting.service';
 import { SystemShopWorkHoursService } from '../system-shop-work-hours/system-shop-work-hours.service';
 import { ModalController } from '@ionic/angular';
+import { lastValueFrom } from 'rxjs';
 export interface IShopConfigurationValidator {
   name: boolean;
   email: boolean;
@@ -37,25 +38,43 @@ export class ShopConfigurationService {
 
   public async handleCreate(config: IShopConfiguration, form: IFormHeaderModalProp){
     let loadingMsg: string = await this.global.language.transform('loading.name.saving');
+    let isExistingBusinessName: boolean = await this.isExistingBusinessName(config);
     await this.global.loading.show(loadingMsg);
-    let saved = await this.systemShopConfigRepo.createNewShopConfiguration(config);
-
+    let saved = !isExistingBusinessName ?  await this.systemShopConfigRepo.createNewShopConfiguration(config) : false;
+    
     if(saved){
       let successfulMsg: string = await this.global.language.transform('message.success.save');
       await this.global.loading.dismiss();
       await this.global.toast.present(successfulMsg);
       await this.modalCtrl.dismiss(config, form.action);
     }else{
-      let errorMsg: string = await this.global.language.transform('message.error.unsaved');
+      let msg: string = this.handleErrorMessage(isExistingBusinessName);
+      let errorMsg: string = await this.global.language.transform(msg);
       await this.global.loading.dismiss();
       await this.global.toast.presentError(errorMsg);
     }
   }
 
+  private async isExistingBusinessName(config: IShopConfiguration): Promise<boolean>{
+    let existingConfig: IShopConfiguration[] = await this.getAllSystemShopConfiguration();
+    let existingBusinessName: string [] = existingConfig.filter(c => c.id !== config.id).map(c => c.name);
+
+    return existingBusinessName.includes(config.name);
+  }
+
+  private async getAllSystemShopConfiguration(): Promise<IShopConfiguration[]>{
+    return await lastValueFrom(this.systemShopConfigRepo.getAllShopConfigurations());
+  }
+
+  private handleErrorMessage(isExistingBusinessName: boolean): string{
+    return isExistingBusinessName ? 'message.error.existedbusinessname' : 'message.error.unsaved';
+  }
+
   public async handleSave(config: IShopConfiguration, form: IFormHeaderModalProp){
     let loadingMsg: string = await this.global.language.transform('loading.name.saving');
+    let isExistingBusinessName: boolean = await this.isExistingBusinessName(config);
     await this.global.loading.show(loadingMsg);
-    let saved = await this.systemShopConfigRepo.editExistingShopConfiguration(config);
+    let saved = !isExistingBusinessName ? await this.systemShopConfigRepo.editExistingShopConfiguration(config) : false;
 
     if(saved){
       let successfulMsg: string = await this.global.language.transform('message.success.save');
@@ -63,7 +82,8 @@ export class ShopConfigurationService {
       await this.global.toast.present(successfulMsg);
       await this.modalCtrl.dismiss(config, form.action);
     }else{
-      let errorMsg: string = await this.global.language.transform('message.error.unsaved');
+      let msg: string = this.handleErrorMessage(isExistingBusinessName);
+      let errorMsg: string = await this.global.language.transform(msg);
       await this.global.loading.dismiss();
       await this.global.toast.presentError(errorMsg);
     }

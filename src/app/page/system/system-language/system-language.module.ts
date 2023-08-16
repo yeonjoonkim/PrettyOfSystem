@@ -12,7 +12,7 @@ import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.mo
 import { SharedFormModule } from 'src/app/shared/components/form/form.module';
 
 import { DictionaryModule } from 'src/app/component/system/language/dictonary/dictionary.module';
-
+import { LanguageMangementModule } from 'src/app/component/system/language/language-management/language-management.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +22,8 @@ import { DictionaryModule } from 'src/app/component/system/language/dictonary/di
     LanguageTransformPipeModule,
     KendoUiModule,
     SharedFormModule,
-    DictionaryModule
+    DictionaryModule,
+    LanguageMangementModule
   ],
   declarations: [SystemLanguagePage]
 })

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 
 export class MenuManagementComponent implements OnInit {
-  public readonly menuCategories: Observable<IMenuCategory[]> = this.systemMenuRepository.getSystemMenuCategories();
+  public readonly menuCategories: Observable<IMenuCategory[]> = this.systemMenuRepository.valueChangeListener();
   public selectedCategory: IMenuCategory = {
     description: '',
     name: '',

@@ -13,7 +13,7 @@ export class SystemPlanRepositoryService {
   constructor(private afs: AngularFirestore) { }
 
   /**This will return as Observalbe to receive the all Plan Options Available */
-  public getSystemPlanOptions(): Observable<IPlanConfiguration[]> {
+  public valueChangeListener(): Observable<IPlanConfiguration[]> {
     return this.afs.collection<IPlanConfiguration>(Db.Context.System.Plan.Option,  ref => ref.orderBy('name'))
     .valueChanges()
     .pipe(
@@ -21,12 +21,22 @@ export class SystemPlanRepositoryService {
         if (!planConfigs || planConfigs.length === 0) {
           return [];
         }
-        // Transform the data here as needed
         return planConfigs;
       })
     );
   }
 
+  public getSystemPlanOptions(): Observable<IPlanConfiguration[]>{
+    return this.afs.collection<IPlanConfiguration>(Db.Context.System.Plan.Option)
+    .get()
+    .pipe(
+      map(snapshot => {
+        return snapshot.docs.map(doc => {
+          return doc.data();
+        });
+      })
+    );
+  }
 
   /**This will add new system plan option */
   public async addSystemPlanOption(config: IPlanConfiguration) {
@@ -73,8 +83,12 @@ export class SystemPlanRepositoryService {
 
   public getSelectedPlan(selectedId: string): Observable<IPlanConfiguration | undefined> {
     return this.afs.doc<IPlanConfiguration>(`${Db.Context.System.Plan.Option}/${selectedId}`)
-      .valueChanges()
-      .pipe(take(1));
+    .get()
+    .pipe(
+      map(snapshot => {
+        return snapshot.data();
+      })
+    );
   }
 
 }

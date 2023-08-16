@@ -8,6 +8,7 @@ import { StorageService } from '../../services/global/storage/storage.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 import { UserService } from 'src/app/service/user/user.service';
 import { IUser } from 'src/app/interface/user/user.interface';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'side-menu',
@@ -29,7 +30,8 @@ export class MenuComponent implements OnInit, OnDestroy {
     private storage: StorageService,
     private location: Location,
     private systemMenuRepository: SystemMenuRepositoryService,
-    private userService: UserService) {
+    private userService: UserService,
+    private menuCtrl: MenuController) {
       this.testing();
       this.getCurrentLanguage();
       this.getAccessGrantedMenu();
@@ -74,5 +76,6 @@ export class MenuComponent implements OnInit, OnDestroy {
         return menu;
     });
     this.selectedTitleHeading = selectedMenu !== undefined ? selectedMenu.name : '';
+    this.menuCtrl.close();
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IMenuCategory, IMenuContent} from '../../../interface/menu/menu.interface';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { firstValueFrom, map, Observable } from 'rxjs';
+import { firstValueFrom, from, map, Observable } from 'rxjs';
 import * as Db from './../../../shared/services/global/constant/firebase-path';
 import { IRoleAccessLevel, IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { RoleRateService } from 'src/app/shared/services/authentication/role-rate/role-rate.service';
@@ -29,7 +29,7 @@ export class SystemMenuRepositoryService {
   }
 
   /**This will return the category */
-  public getSystemMenuCategories(): Observable<IMenuCategory[]> {
+  public valueChangeListener(): Observable<IMenuCategory[]> {
     return this.afs.collection<IMenuCategory>(Db.Context.System.Menu.Category)
       .valueChanges()
       .pipe(
@@ -39,6 +39,17 @@ export class SystemMenuRepositoryService {
           return cat;
         }))
       );
+  }
+
+  public getSystemMenuCategories(): Observable<IMenuCategory[]> {
+    return from(this.afs.collection<IMenuCategory>(Db.Context.System.Menu.Category).get()).pipe(
+      map(querySnapshot => querySnapshot.docs.map(doc => doc.data() as IMenuCategory)),
+      map(categories => categories.sort(this.compareByContentName)),
+      map(categories => categories.map(cat => {
+        cat.content.sort(this.compareByName);
+        return cat;
+      }))
+    );
   }
 
 

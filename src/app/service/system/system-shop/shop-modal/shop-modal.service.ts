@@ -16,7 +16,7 @@ export class ShopModalService {
   
   public async presentCreateSystemShopConfiguration(){
     let form: IFormHeaderModalProp = this.formCtrl.setCreateFormHeaderModalProp();
-    form.headerTitle = 'form.header.createshopconfig'
+    form.headerTitle = 'form.header.createshopconfig';
     let modal = await this.modal.create(
       {
         component: ShopConfigurationComponent,

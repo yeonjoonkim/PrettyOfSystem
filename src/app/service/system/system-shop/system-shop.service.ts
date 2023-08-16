@@ -1,5 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import { Observable, firstValueFrom } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { SystemPlanRepositoryService } from 'src/app/firebase/system-repository/plan/system-plan-repository.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
@@ -17,36 +17,30 @@ export class SystemShopService {
   private readonly systemShopCategoryList!: Observable<IShopCategory[]>;
   private readonly systemShopCountryList!: Observable<IShopCountry[]>;
   private readonly systemShopPlanConfigList!: Observable<IPlanConfiguration[]>;
-  public readonly shopConfigurationList!: Observable<IShopConfiguration[]>;
   constructor(
     public modal: ShopModalService,
     private systemShopConfigRepo: SystemShopConfigurationRepositoryService,
     private systemPlanRepo: SystemPlanRepositoryService,
     private global: GlobalService) {
-    this.systemShopCategoryList = this.systemShopConfigRepo.getSystemShopCategories();
+    this.systemShopCategoryList = this.systemShopConfigRepo.getShopCategories();
     this.systemShopCountryList = this.systemShopConfigRepo.getSystemShopCountries();
     this.systemShopPlanConfigList = this.systemPlanRepo.getSystemPlanOptions();
-    this.shopConfigurationList = this.subscribeAllShopConfiguration();
   }
 
-  public subscribeAllShopConfiguration(): Observable<IShopConfiguration[]>{
-    return this.systemShopConfigRepo.subscribeAllShopConfiguration();
-  }
-
-  public async getAllShopConfigList(){
-    return await firstValueFrom(this.shopConfigurationList);
+  public shopConfigurationValueChangeListener(): Observable<IShopConfiguration[]>{
+    return this.systemShopConfigRepo.shopConfigurationValueChangeListener();
   }
 
   public async getSystemShopCategoryList(){
-    return await firstValueFrom(this.systemShopCategoryList);
+    return await lastValueFrom(this.systemShopCategoryList);
   }
 
   public async getSystemShopCountryList(){
-    return await firstValueFrom(this.systemShopCountryList);
+    return await lastValueFrom(this.systemShopCountryList);
   }
 
   public async getSystemShopPlanConfigList(){
-    return await firstValueFrom(this.systemShopPlanConfigList);
+    return await lastValueFrom(this.systemShopPlanConfigList);
   }
 
   public async getCategoryPairValueIdList(): Promise<IPairValueId[]> {

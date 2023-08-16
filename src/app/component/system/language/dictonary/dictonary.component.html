@@ -8,9 +8,8 @@
           <kendo-dropdownlist
             [data]="languageSelectionList"
             textField="value"
-            valueField="id"
-            [(ngModel)]="selectedLangValue"
-            (ngModelChange)="onChangeLanguage($event)"
+            [(ngModel)]="selectedLang"
+            (ngModelChange)="onChangeLanguageSelection()"
           >
           </kendo-dropdownlist>
         </kendo-label>
@@ -60,6 +59,7 @@
               <language-key-pair-select-option
                 [keyPairValue]="data"
                 [languageCode]="selectedLang.key"
+                (keyPairValueChange)="setLanguageSelection()"
               ></language-key-pair-select-option>
             </ng-template>
           </kendo-grid-column>

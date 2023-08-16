@@ -1,5 +1,5 @@
 import { AddMenuCategoryContentComponent } from '../add-menu-category-content/add-menu-category-content.component';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AlertController, AlertOptions, PopoverController } from '@ionic/angular';
 import {IMenuContent} from '../../../../interface/menu/menu.interface';
 import { LanguageService } from 'src/app/shared/services/global/language/language.service';
@@ -11,12 +11,12 @@ import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/
   templateUrl: './menu-category-content-card.component.html',
   styleUrls: ['./menu-category-content-card.component.scss'],
 })
-export class MenuCategoryContentCardComponent implements OnInit {
+export class MenuCategoryContentCardComponent implements OnInit, OnChanges {
   public editMode: boolean = false;
   private isOpen: boolean = false;
   @Input() selectedMenuContents: IMenuContent[] = [];
-  @Input() selectedMenuCategoryId: string = '';
-  @Input() selectedCategoryName: string = '';
+  @Input() selectedMenuCategoryId: string | undefined = '';
+  @Input() selectedCategoryName: string | undefined = '';
 
   constructor(private popoverCtrl: PopoverController, private alertCtrl: AlertController, private language: LanguageService, private systemMenuCategoryService: SystemMenuCategoryService,
     private systemMenuRepository: SystemMenuRepositoryService) {
@@ -27,6 +27,9 @@ export class MenuCategoryContentCardComponent implements OnInit {
           this.selectedMenuContents = selected.content;
         }
       });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
   }
 
   ngOnInit() {}
@@ -55,7 +58,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
     await confirmAlert.present();
     let action = await confirmAlert.onWillDismiss();
 
-    if(action?.role === 'delete'){
+    if(action?.role === 'delete' && this.selectedMenuCategoryId !== undefined){
       await this.systemMenuCategoryService.processDeleteSystemMenuCategoryContent(this.selectedMenuCategoryId, content)
     }
   }

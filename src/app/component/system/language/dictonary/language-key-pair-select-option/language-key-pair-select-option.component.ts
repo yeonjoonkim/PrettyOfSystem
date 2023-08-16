@@ -1,6 +1,6 @@
 import { AlertController, AlertOptions } from '@ionic/angular';
 import { ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
 
 
@@ -12,7 +12,7 @@ import { GlobalService } from 'src/app/shared/services/global/global.service';
 export class LanguageKeyPairSelectOptionComponent implements OnInit {
   @Input() keyPairValue!: ILanguageTransformKeyPairValue;
   @Input() languageCode!: string;
-
+  @Output() keyPairValueChange = new EventEmitter<boolean>();
 
   constructor(private global: GlobalService, private alertCtrl: AlertController) {
   }
@@ -28,6 +28,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
     if(action?.role === 'delete'){
       await this.deleteKeyPairValue();
+      this.keyPairValueChange.emit(true);
     }
   }
 
@@ -43,6 +44,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
     if(result?.role === 'edit' && editedValue !== undefined){
       this.keyPairValue.value = editedValue[0];
       await this.editKeyPairValue();
+      this.keyPairValueChange.emit(true);
     }
   }
 

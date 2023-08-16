@@ -104,100 +104,6 @@ legend {
   font-style: normal;
 }
 
-.iti--allow-dropdown {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  max-width: 100%;
-  min-width: 100px;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  background-color: #101010;
-  border-radius: 2px;
-  border: #232323 1px solid;
-  &:hover {
-    border: #333333 1px solid;
-  }
-  &:focus-within {
-    border-color: rgba(255, 255, 255, 0.16);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
-    outline: unset;
-  }
-}
-.iti__flag-container {
-  position: relative;
-}
-.iti__selected-flag {
-  padding: 0px 5px;
-}
-.iti--allow-dropdown input[type="tel"] {
-  height: 30px;
-  width: 100%;
-  padding-right: 0px;
-  padding-left: 0px;
-  margin-left: 0px;
-  background-color: unset;
-  border-radius: unset;
-  border: unset;
-  &:hover {
-    border: unset;
-  }
-  &:focus-visible {
-    border-color: unset;
-    box-shadow: unset;
-    outline: unset;
-  }
-}
-.iti--allow-dropdown input::placeholder {
-  color: white;
-  font-size: 14px;
-}
-
-.dropdown-menu.country-dropdown.show {
-  border: rgba(255, 255, 255, 0.08) 1px solid;
-  border-radius: 2px;
-  min-width: 200px;
-  max-width: 260px;
-  padding: 0px;
-  border-collapse: collapse;
-  .iti__country {
-    padding: 5px 0px;
-  }
-  .search-container,
-  .iti__country-list {
-    font-size: 14px;
-    color: white;
-    #country-search-box {
-      padding: 15px;
-      background-color: #101010;
-      border-bottom: unset;
-      border: unset;
-      height: 30px;
-      &:hover {
-        border: unset;
-      }
-      &:focus-visible {
-        border-color: unset;
-        box-shadow: unset;
-        outline: unset;
-      }
-    }
-    &:hover {
-      border: unset;
-    }
-    &:focus-visible {
-      border-color: unset;
-      box-shadow: unset;
-      outline: unset;
-    }
-  }
-  .iti__country-list {
-    background: #101010;
-    color: white;
-    max-width: 300px;
-  }
-}
-
 yes-no-selection-group {
   display: flex;
   flex-direction: column;
@@ -254,4 +160,112 @@ flex-col {
 flex-row-item,
 flex-col-item {
   margin: 0px 15px 10px 15px;
+}
+
+/*itl-phone*/
+.iti--allow-dropdown {
+  margin-top: 12px;
+  margin-bottom: 10px;
+  max-width: 100%;
+  min-width: 100px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: #101010;
+  border: #232323 1px solid;
+  &:hover {
+    border: #333333 1px solid;
+  }
+  &:focus-within {
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+    outline: unset;
+  }
+}
+
+/*itl-phone*/
+.iti__flag-container {
+  position: relative;
+}
+
+/*itl-phone*/
+.iti__selected-flag {
+  padding: 0px 5px;
+}
+
+/*itl-phone*/
+.iti--allow-dropdown input[type="tel"] {
+  height: 30px;
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-left: 0px;
+  background-color: unset;
+  border-radius: unset;
+  border: unset;
+  &:hover {
+    border: unset;
+  }
+  &:focus-visible {
+    border-color: unset;
+    box-shadow: unset;
+    outline: unset;
+  }
+  &:disabled {
+    color: white;
+  }
+}
+
+/*itl-phone*/
+.iti--allow-dropdown input::placeholder,
+.iti--allow-dropdown input:disabled {
+  color: white;
+  font-size: 14px;
+}
+
+/*itl-phone*/
+.dropdown-menu.country-dropdown.show {
+  border: rgba(255, 255, 255, 0.08) 1px solid;
+  border-radius: 0px;
+  background-color: #101010;
+  min-width: 200px;
+  max-width: 260px;
+  padding: 0px;
+  border-collapse: collapse;
+  .iti__country {
+    padding: 5px 0px;
+  }
+  .search-container,
+  .iti__country-list {
+    font-size: 14px;
+    color: white;
+    #country-search-box {
+      padding: 15px;
+      background-color: #101010;
+      border-bottom: unset;
+      border: unset;
+      height: 30px;
+      &:hover {
+        border: unset;
+      }
+      &:focus-visible {
+        border-color: unset;
+        box-shadow: unset;
+        outline: unset;
+      }
+    }
+    &:hover {
+      border: unset;
+    }
+    &:focus-visible {
+      border-color: unset;
+      box-shadow: unset;
+      outline: unset;
+    }
+  }
+  .iti__country-list {
+    background: #101010;
+    color: white;
+    max-width: 300px;
+  }
 }

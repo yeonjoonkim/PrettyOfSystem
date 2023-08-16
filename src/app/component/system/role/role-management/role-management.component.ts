@@ -10,7 +10,7 @@ import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface
 })
 
 export class RoleManagementComponent implements OnInit {
-  public readonly roles: Observable<IRoleConfiguration[]> = this.systemRole.subscribeSystemRepo();
+  public readonly roles: Observable<IRoleConfiguration[]> = this.systemRole.valueChangeListener();
   public selectedRole: IRoleConfiguration = {
     id: '',
     name: '',
