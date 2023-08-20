@@ -6,18 +6,17 @@ import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,NgModule} from '@angular/core';
 //Import Pipe
 import { LanguageTransformPipeModule } from '../../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { LanguageTransformDictionaryModule } from '../language/language-transform-dictionary/language-transform-dictionary.module';
 
 //Import Module
 import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/shared/components/form/form.module';
 
 //Import Component
-import { SystemMenuOptionComponent } from './system-menu-option.component';
+import { GenderSelectionComponent } from './gender-selection.component';
 
 @NgModule({
   declarations: [
-    SystemMenuOptionComponent
+    GenderSelectionComponent
   ],
   imports: [
     CommonModule,
@@ -27,10 +26,9 @@ import { SystemMenuOptionComponent } from './system-menu-option.component';
     LanguageTransformPipeModule,
     Ng2SearchPipeModule,
     SharedFormModule,
-    KendoUiModule,
-    LanguageTransformDictionaryModule
+    KendoUiModule
   ],
-  exports: [SystemMenuOptionComponent],
+  exports: [GenderSelectionComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
-export class SystemMenuOptionModule { }
+export class GenderSelectionModule { }

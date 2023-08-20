@@ -1,14 +1,15 @@
-#menu-management-container{
+#menu-management-container {
   height: fit-content;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
 
-  menu-category-card{
+  menu-category-card {
     height: 300px;
     width: 50%;
   }
-  menu-category-content-card{
+  menu-category-content-card {
     height: 300px;
     width: 50%;
   }
@@ -16,15 +17,15 @@
 
 // For iPhone devices
 @media screen and (max-width: 414px) {
-  #menu-management-container{
+  #menu-management-container {
     margin-top: 50px;
     flex-direction: column;
-    menu-category-card{
+    menu-category-card {
       margin-bottom: 20px;
       width: 100%;
       height: 300px;
     }
-    menu-category-content-card{
+    menu-category-content-card {
       width: 100%;
       height: 300px;
     }

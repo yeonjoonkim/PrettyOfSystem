@@ -11,6 +11,7 @@ export class UserService {
   
   public defaultUser(): IUser{
     return {
+      id: '',
       firstName: '',
       lastName: '',
       isSystemAdmin: false,
@@ -39,10 +40,11 @@ export class UserService {
         },
         workHours: this.systemShop.setWorkHours(),
         shopName: '',
-        gender: 'Male'
+        gender: 'Male',
+        loginOption: {email: false, phoneNumber: true, loginId: ''},
       },
       setting: this.setDefaultUserSetting(),
-      authOption: {email: false, phoneNumber: true},
+      loginIds: [],
       phoneNumber: '',
       email: ''
     }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IAddLanguageTransformSaveCommand, ILanguageTranslateItem, ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
+import { IAddLanguageTransformSaveCommand, ILanguageTranslateItem } from 'src/app/interface/system/language/language.interface';
+import { IPairKeyValue } from 'src/app/interface/global/global.interface';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
 import { ActionSheetController, PopoverController } from '@ionic/angular';
 
@@ -11,7 +12,7 @@ import { ActionSheetController, PopoverController } from '@ionic/angular';
 
 export class AddLanguageTransformComponent implements OnInit {
   private isSaved: boolean = false;
-  public languageTransform: ILanguageTransformKeyPairValue = {
+  public languageTransform: IPairKeyValue = {
     key: '',
     value: ''
   }

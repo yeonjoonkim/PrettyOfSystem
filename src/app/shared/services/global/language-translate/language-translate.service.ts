@@ -128,6 +128,11 @@ export class LanguageTranslateService {
       validatedValue.push(validated);
     }
 
+    for(let langCode in translated){
+      let validated = translated[langCode] !== "Translatedvalue"
+      validatedValue.push(validated);
+    }
+
     return validatedValue.includes(false);
   }
 

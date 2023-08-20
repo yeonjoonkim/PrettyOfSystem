@@ -1,5 +1,5 @@
 import { AlertController, AlertOptions } from '@ionic/angular';
-import { ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
+import { IPairKeyValue } from 'src/app/interface/global/global.interface';
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
 
@@ -10,7 +10,7 @@ import { GlobalService } from 'src/app/shared/services/global/global.service';
   styleUrls: ['./language-key-pair-select-option.component.scss'],
 })
 export class LanguageKeyPairSelectOptionComponent implements OnInit {
-  @Input() keyPairValue!: ILanguageTransformKeyPairValue;
+  @Input() keyPairValue!: IPairKeyValue;
   @Input() languageCode!: string;
   @Output() keyPairValueChange = new EventEmitter<boolean>();
 

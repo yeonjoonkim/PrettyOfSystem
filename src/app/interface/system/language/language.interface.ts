@@ -41,11 +41,6 @@ export interface ILanguageTranslateResult{
   [key: string]: string;
 }
 
-export interface ILanguageTransformKeyPairValue{
-  key: string;
-  value: string;
-}
-
 export interface ILanugaeTransformPopOverCriteria{
   key: string;
   value: string;
