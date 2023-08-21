@@ -2,11 +2,12 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import * as Constant from '../../../../../shared/services/global/global-constant';
 import { ModalController, NavParams } from '@ionic/angular';
-import { ILanguageSelection, ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
+import { ILanguageSelection } from 'src/app/interface/system/language/language.interface';
+import { IPairKeyValue } from 'src/app/interface/global/global.interface';
 import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
-import { GlobalService } from 'src/app/shared/services/global/global.service';
 import { ICreateNewPackageCommand, LanguageSaveService } from 'src/app/service/system/system-language/language-save/language-save.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'language',
   templateUrl: './language.component.html',
@@ -18,7 +19,7 @@ export class LanguageComponent  implements OnInit, AfterViewInit, OnDestroy {
   public isSaving: boolean = false;
   public form!: IFormHeaderModalProp;
   private selectedlanguage!: ILanguageSelection | undefined;
-  public keyPairValueList: ILanguageTransformKeyPairValue[] = [];
+  public keyPairValueList: IPairKeyValue[] = [];
 
   public language: ILanguageSelection = {
     id: '',

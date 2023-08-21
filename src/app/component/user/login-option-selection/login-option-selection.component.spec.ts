@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SystemMenuOptionComponent } from './system-menu-option.component';
+import { LoginOptionSelectionComponent } from './login-option-selection.component';
 
-describe('SystemMenuOptionComponent', () => {
-  let component: SystemMenuOptionComponent;
-  let fixture: ComponentFixture<SystemMenuOptionComponent>;
+describe('LoginOptionSelectionComponent', () => {
+  let component: LoginOptionSelectionComponent;
+  let fixture: ComponentFixture<LoginOptionSelectionComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SystemMenuOptionComponent ],
+      declarations: [ LoginOptionSelectionComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SystemMenuOptionComponent);
+    fixture = TestBed.createComponent(LoginOptionSelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

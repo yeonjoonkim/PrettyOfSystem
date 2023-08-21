@@ -4,11 +4,11 @@ import { Observable, firstValueFrom, lastValueFrom } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { SystemLanguageRepositoryService } from '../../../../firebase/system-repository/language/system-language-repository.service';
 import { TextTransformService } from '../text-transform/text-transform.service';
-import { ILanguageSelection, ILanguageKey, ILanguageTranslateResult, ILanguageTransformKeyPairValue, ILanguageTranslatedCriteria, ILanguageTranslateItem, IAddLanguageTransformSaveCommand } from '../../../../interface/system/language/language.interface';
+import { ILanguageSelection, ILanguageKey, ILanguageTranslateResult, ILanguageTranslatedCriteria, ILanguageTranslateItem, IAddLanguageTransformSaveCommand } from '../../../../interface/system/language/language.interface';
 import { ToastService } from '../toast/toast.service';
 import storageKey, * as StorageKey from '../../global/storage/storage.key';
 import getUserLocale from 'get-user-locale';
-
+import { IPairKeyValue } from 'src/app/interface/global/global.interface';
 const localeOption = {
     useFallbackLocale: false,
     fallbackLocale: 'en-US',
@@ -35,10 +35,10 @@ export class LanguageService{
   }
 
   /** This will return list of key pair value in default language*/
-  public async getDefaultKeyPairValueList(): Promise<ILanguageTransformKeyPairValue[]>{
+  public async getDefaultKeyPairValueList(): Promise<IPairKeyValue[]>{
     let defaultLanguage = await this.getDefaultLanguageSelection();
     let key = await this.getLanguageSelectionKey();
-    let keyPairValueList: ILanguageTransformKeyPairValue[] = this.languagePackage.getKeyPairValue(key.used, defaultLanguage.package);
+    let keyPairValueList: IPairKeyValue[] = this.languagePackage.getKeyPairValue(key.used, defaultLanguage.package);
     return keyPairValueList;
   }
 
@@ -71,7 +71,7 @@ export class LanguageService{
 
 
   /** This will validate new Key and Value */
-  public async validateNewKeyPairValue(keyPairValue: ILanguageTransformKeyPairValue){
+  public async validateNewKeyPairValue(keyPairValue: IPairKeyValue){
     let key: ILanguageKey = await this.getLanguageSelectionKey();
     let validated: IAddLanguageTransformSaveCommand  = {
       hasValue: keyPairValue.value.length > 0,
@@ -150,7 +150,7 @@ export class LanguageService{
         let languageCode = language.code.toLowerCase();
         for(let translatedLanguageCode in translated){
           if(languageCode === translatedLanguageCode){
-            let keyPairValue: ILanguageTransformKeyPairValue = {key: keyValue, value: translated[translatedLanguageCode]}
+            let keyPairValue: IPairKeyValue = {key: keyValue, value: translated[translatedLanguageCode]}
             language.package = this.languagePackage.updateKeyValuePackage(language.package, keyPairValue);
             await this.systemLanguageRepository.updateLanguageSelection(language);
           }
@@ -159,7 +159,7 @@ export class LanguageService{
   }
 
   /** Edit the key pair value in selected language package. */
-  public async editSelectedPackage(selectedLanguageCode: string, keyPairValue: ILanguageTransformKeyPairValue): Promise<void>{
+  public async editSelectedPackage(selectedLanguageCode: string, keyPairValue: IPairKeyValue): Promise<void>{
     let language = (await this.getLanguageSelection()).filter(lang => lang.code === selectedLanguageCode)[0];
     language.package = this.languagePackage.updateKeyValuePackage(language.package, keyPairValue);
     await this.systemLanguageRepository.updateLanguageSelection(language);

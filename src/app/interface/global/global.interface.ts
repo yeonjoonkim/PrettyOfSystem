@@ -1,5 +1,10 @@
 import {AustraliaStateType, DateDayNightType, FormActionType, DayIndexType, DayType, DatePeriodType} from './../../shared/services/global/global-constant';
 
+export interface IPairKeyValue{
+  key: string;
+  value: string;
+}
+
 export interface IComponentAction{
   name: string;
   isEdit: boolean;

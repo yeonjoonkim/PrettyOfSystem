@@ -1,5 +1,5 @@
 import { AddMenuCategoryContentComponent } from '../add-menu-category-content/add-menu-category-content.component';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, AlertOptions, PopoverController } from '@ionic/angular';
 import {IMenuContent} from '../../../../interface/menu/menu.interface';
 import { LanguageService } from 'src/app/shared/services/global/language/language.service';
@@ -11,7 +11,7 @@ import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/
   templateUrl: './menu-category-content-card.component.html',
   styleUrls: ['./menu-category-content-card.component.scss'],
 })
-export class MenuCategoryContentCardComponent implements OnInit, OnChanges {
+export class MenuCategoryContentCardComponent implements OnInit {
   public editMode: boolean = false;
   private isOpen: boolean = false;
   @Input() selectedMenuContents: IMenuContent[] = [];
@@ -27,9 +27,6 @@ export class MenuCategoryContentCardComponent implements OnInit, OnChanges {
           this.selectedMenuContents = selected.content;
         }
       });
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
   }
 
   ngOnInit() {}

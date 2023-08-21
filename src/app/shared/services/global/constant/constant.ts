@@ -17,7 +17,8 @@ export const Default = {
   Gender: {
     Male: "Male",
     Female: "Female",
-    Any: "Any"
+    Other: "Other",
+    All: "All"
   } as const,
 
    ComponentMode: {

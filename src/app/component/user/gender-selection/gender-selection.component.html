@@ -1,0 +1,15 @@
+<kendo-label text="{{ 'label.name.gender' | languageTransform | async }}">
+  <kendo-buttongroup selection="single" width="100%">
+    <button
+      kendoButton
+      *ngFor="let button of genderSelection"
+      [toggleable]="true"
+      [disabled]="readOnly"
+      [readOnly]="readOnly"
+      [selected]="button.key === selectedGender.key"
+      (selectedChange)="onChangeGender(button)"
+    >
+      {{ button.key | languageTransform | async }}
+    </button>
+  </kendo-buttongroup>
+</kendo-label>

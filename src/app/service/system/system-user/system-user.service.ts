@@ -35,6 +35,11 @@ export class SystemUserService {
       shopId: '',
       shopName: '',
       role: systemAdminRole,
+      loginOption: {
+        email: false,
+        phoneNumber: false,
+        loginId: ''
+      },
       gender: Constant.Default.Gender.Male,
       userInfo: this.setDefaultUserInfo(),
       workHours: this.systemWorkHoursService.setDefaultWorkHours()

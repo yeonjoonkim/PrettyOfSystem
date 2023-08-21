@@ -15,6 +15,7 @@ import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.mo
 import { SharedFormModule } from 'src/app/shared/components/form/form.module';
 
 
+import { GenderSelectionModule } from 'src/app/component/user/gender-selection/gender-selection.module';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { SharedFormModule } from 'src/app/shared/components/form/form.module';
     KendoUiModule,
     SharedFormModule,
     LanguageTransformPipeModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    GenderSelectionModule
   ],
   declarations: [SystemUserPage]
 })

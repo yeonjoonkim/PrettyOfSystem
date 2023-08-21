@@ -1,6 +1,5 @@
-import { firstValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ILanguageTransformKeyPairValue } from 'src/app/interface/system/language/language.interface';
+import { IPairKeyValue } from 'src/app/interface/global/global.interface';
 import { ITextTransformObject, TextTransformService } from '../text-transform/text-transform.service';
 
 @Injectable({
@@ -11,8 +10,8 @@ export class LanguagePackageService {
   constructor(private textTransform: TextTransformService) { }
 
   /** This will retreive list of key pair value.*/
-  public getKeyPairValue(usedKeyList: string[], pack: any): ILanguageTransformKeyPairValue[] {
-    let keyPairValueList: ILanguageTransformKeyPairValue[] = [];
+  public getKeyPairValue(usedKeyList: string[], pack: any): IPairKeyValue[] {
+    let keyPairValueList: IPairKeyValue[] = [];
 
     if (usedKeyList.length > 0) {
       keyPairValueList = usedKeyList.map(
@@ -27,7 +26,7 @@ export class LanguagePackageService {
 
 
   /** This will return edited key value in the package to update in db */
-  public updateKeyValuePackage(pack: ITextTransformObject, keyPairValue: ILanguageTransformKeyPairValue) {
+  public updateKeyValuePackage(pack: ITextTransformObject, keyPairValue: IPairKeyValue) {
     let path: string[] = this.textTransform.setLanguageTransformCodeList(keyPairValue.key);
     let hasFirstPath: boolean = this.hasFirstPath(pack, path);
     let hasSecondPath: boolean = this.hasSecondPath(pack, path);

@@ -2,20 +2,22 @@ import { IRoleAccessLevel, IRoleConfiguration } from "../system/role/role.interf
 import { IShopWorkHours } from "../system/shop/shop.interface";
 import * as Constant from "../../shared/services/global/global-constant";
 export interface IUser{
+  id: string;
   firstName: string;
   lastName: string;
   isSystemAdmin: boolean;
   associatedShops: IUserAssociatedShop[];
   currentShop: IUserAssociatedShop;
   setting: IUserSetting;
-  authOption: IUserAuthOption;
   phoneNumber: string;
   email: string;
+  loginIds: string[];
 }
 
-export interface IUserAuthOption{
+export interface IUserLoginOption{
   email: boolean;
   phoneNumber: boolean;
+  loginId: string;
 }
 
 export interface IUserSetting{
@@ -29,6 +31,7 @@ export interface IUserAssociatedShop{
   role: IRoleConfiguration;
   userInfo: IUserInformation;
   workHours: IShopWorkHours;
+  loginOption: IUserLoginOption;
 }
 
 export interface IUserInformation{

@@ -2,20 +2,21 @@ import { Injectable } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
-import { IAddLanguageTransformSaveCommand, ILanguageSelection, ILanguageTransformKeyPairValue, ILanguageTranslateItem, ILanguageTranslatedCriteria } from 'src/app/interface/system/language/language.interface';
+import { IAddLanguageTransformSaveCommand, ILanguageSelection, ILanguageTranslateItem, ILanguageTranslatedCriteria } from 'src/app/interface/system/language/language.interface';
+import { IPairKeyValue } from 'src/app/interface/global/global.interface';
 import { GlobalService } from 'src/app/shared/services/global/global.service';
 import { LanguagePackageService } from 'src/app/shared/services/global/language-package/language-package.service';
 import { LanguageTranslateService } from 'src/app/shared/services/global/language-translate/language-translate.service';
 import { ITextTransformObject } from 'src/app/shared/services/global/text-transform/text-transform.service';
 export interface ICreateNewPackageCommand{
   code: string;
-  defaultKeyPairList: ILanguageTransformKeyPairValue[],
+  defaultKeyPairList: IPairKeyValue[],
   newPackage: ITextTransformObject,
-  errorKeyPairList: ILanguageTransformKeyPairValue[],
+  errorKeyPairList: IPairKeyValue[],
   translateTo: string;
   end: number;
   current: number;
-  currentKeyPair: ILanguageTransformKeyPairValue;
+  currentKeyPair: IPairKeyValue;
   inProgress: boolean;
   endTransaction: boolean;
   attemptError: boolean;
@@ -34,7 +35,7 @@ export class LanguageSaveService {
     await this.languageRepo.addNewLanguageSelection(command);
   }
 
-  public async saveNewTitleTransformValue(command: ILanguageTransformKeyPairValue): Promise<boolean>{
+  public async saveNewTitleTransformValue(command: IPairKeyValue): Promise<boolean>{
     let validated: IAddLanguageTransformSaveCommand = await this.global.language.validateNewKeyPairValue(command);
     if(validated.hasValue && validated.isKeyNotExisted && validated.isTransformKeyValueFormat){
         let translateCriteria = await this.global.language.getAllLanguageTranslateCriteria();
@@ -137,7 +138,7 @@ export class LanguageSaveService {
     return result;
   }
 
-  private async updateLanguagePackage(result: ILanguageTranslateItem, command: ILanguageTransformKeyPairValue): Promise<void>{
+  private async updateLanguagePackage(result: ILanguageTranslateItem, command: IPairKeyValue): Promise<void>{
     if(!result.isEmpty){
       let sccuess = await this.global.language.transform('message.success.save');
       await this.global.language.editLanguagePackage(result, command.key.toLowerCase());
