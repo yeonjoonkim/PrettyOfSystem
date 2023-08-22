@@ -1,7 +1,8 @@
 import { ZonedDate } from '@progress/kendo-date-math';
 import * as Constant from 'src/app/service/global/global-constant';
-import { IAddress, IDatePeriod, ITimeItem } from '../../global/global.interface';
+import { IAddress, IDatePeriod, ITimeItem } from '../global/global.interface';
 import { IShopSetting } from './shop-setting.interface';
+import { IUserAssociatedShop } from '../user/user.interface';
 
 export type IShopCategory = {
   id: string;
@@ -9,6 +10,7 @@ export type IShopCategory = {
   isMassageTheraphy: boolean;
   isPersonalTrainning: boolean;
   isSkinCare: boolean;
+  isMobileShop: boolean;
   name: string;
 };
 
@@ -75,6 +77,7 @@ export interface IShopConfiguration {
   activeTo: Date | null;
   setting: IShopSetting;
   timezone: string;
+  associatedUser: IUserAssociatedShop[];
 }
 
 export interface IShopConfigurationFilterOption {

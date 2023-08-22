@@ -6,7 +6,7 @@ import {
   IShopCategory,
   IShopConfiguration,
   IShopCountry,
-} from 'src/app/interface/system/shop/shop.interface';
+} from 'src/app/interface/shop/shop.interface';
 import { IPairValueId } from 'src/app/interface/system/system.interface';
 import { GlobalService } from '../../../service/global/global.service';
 import { ShopModalService } from './shop-modal/shop-modal.service';

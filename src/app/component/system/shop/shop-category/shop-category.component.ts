@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IShopCategory } from 'src/app/interface/system/shop/shop.interface';
+import { IShopCategory } from 'src/app/interface/shop/shop.interface';
 import { IPairValueId } from 'src/app/interface/system/system.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/service/global/global-constant';
@@ -42,6 +42,7 @@ export class ShopCategoryListComponent implements OnInit {
     isMassageTheraphy: false,
     isPersonalTrainning: false,
     isSkinCare: false,
+    isMobileShop: false,
   };
 
   constructor(private systemShopService: SystemShopService) {}

@@ -40,6 +40,7 @@ export class UserService {
         active: false,
         phoneNumber: '',
         email: '',
+        displayInSystem: true,
       },
       setting: this.setDefaultUserSetting(),
       loginIds: [],

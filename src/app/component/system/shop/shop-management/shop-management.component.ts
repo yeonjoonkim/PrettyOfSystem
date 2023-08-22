@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CellClickEvent } from '@progress/kendo-angular-grid';
 import { lastValueFrom } from 'rxjs';
-import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
+import { IShopConfiguration } from 'src/app/interface/shop/shop.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
 

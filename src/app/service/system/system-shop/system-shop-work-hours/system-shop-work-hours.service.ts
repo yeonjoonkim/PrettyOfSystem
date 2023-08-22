@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IShopOperatingHours } from 'src/app/interface/system/shop/shop.interface';
+import { IShopOperatingHours } from 'src/app/interface/shop/shop.interface';
 import * as Constant from './../../../../service/global/global-constant';
 
 @Injectable({

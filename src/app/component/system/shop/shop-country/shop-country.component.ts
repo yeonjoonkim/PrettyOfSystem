@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IShopCountry } from 'src/app/interface/system/shop/shop.interface';
+import { IShopCountry } from 'src/app/interface/shop/shop.interface';
 import { IPairValueId } from 'src/app/interface/system/system.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/service/global/global-constant';

@@ -58,6 +58,7 @@ export class SystemUserService {
       activeFrom: new Date(),
       activeTo: null,
       active: true,
+      displayInSystem: false,
     };
   }
 

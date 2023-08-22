@@ -6,7 +6,7 @@ import {
   IShopCategory,
   IShopConfiguration,
   IShopCountry,
-} from 'src/app/interface/system/shop/shop.interface';
+} from 'src/app/interface/shop/shop.interface';
 import { LanguageService } from '../../../service/global/language/language.service';
 import { FirebaseService } from '../../../service/firebase/firebase.service';
 import { ShopSettingService } from 'src/app/service/system/system-shop/shop-setting/shop-setting.service';

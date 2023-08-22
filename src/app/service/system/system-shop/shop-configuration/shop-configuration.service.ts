@@ -6,7 +6,7 @@ import {
   IShopCountry,
   IShopPlan,
   IShopWorkHours,
-} from 'src/app/interface/system/shop/shop.interface';
+} from 'src/app/interface/shop/shop.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/service/global/global-constant';
 import { SystemShopService } from '../system-shop.service';
@@ -144,6 +144,7 @@ export class ShopConfigurationService {
       setting: this.systemShopSetting.getDefaultShopSetting(),
       activeFrom: new Date(),
       activeTo: null,
+      associatedUser: [],
     };
   }
 
@@ -158,6 +159,7 @@ export class ShopConfigurationService {
       isMassageTheraphy: false,
       isPersonalTrainning: false,
       isSkinCare: false,
+      isMobileShop: false,
       name: '',
     };
   }

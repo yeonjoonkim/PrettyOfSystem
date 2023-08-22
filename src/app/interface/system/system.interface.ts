@@ -1,4 +1,4 @@
-import { IShopSetting } from './shop/shop-setting.interface';
+import { IShopSetting } from '../shop/shop-setting.interface';
 
 export interface IPairValueId {
   id: string;
