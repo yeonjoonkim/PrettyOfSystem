@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 //Import Ionic Angular
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule,  NO_ERRORS_SCHEMA} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -22,19 +22,15 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
-//Import Pipe
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
-
 //Import Language Package
-import { LanguageTransformPipeModule } from './shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from './pipe/language-transform-pipe/language-transform.pipe.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { KendoUiModule } from './shared/kendo-ui-module/kendo-ui-module.module';
+import { KendoUiModule } from './component/global/kendo-ui-module/kendo-ui-module.module';
 import 'hammerjs';
 
 //Delcalration for Shared Component
-import { MenuComponent } from './shared/components/menu/menu.component';
-import { LangaugeSelectionComponent } from './shared/components/langauge-selection/langauge-selection.component';
-import { StorageService } from './shared/services/global/storage/storage.service';
+import { MenuComponent } from './component/global/menu/menu.component';
+import { LangaugeSelectionComponent } from './component/global/langauge-selection/langauge-selection.component';
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, LangaugeSelectionComponent],
@@ -51,16 +47,12 @@ import { StorageService } from './shared/services/global/storage/storage.service
     AppRoutingModule,
     CommonModule,
     FormsModule,
-    Ng2SearchPipeModule,
     KendoUiModule,
     BrowserAnimationsModule,
   ],
   exports: [],
-  providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-  ],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class AppModule {
-}
+export class AppModule {}

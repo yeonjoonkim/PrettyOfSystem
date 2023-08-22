@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import * as Constant from '../../../shared/services/global/global-constant';
+import * as Constant from 'src/app/service/global/global-constant';
+import { IUserLoginOption } from 'src/app/interface/user/user.interface';
 @Component({
   selector: 'app-system-user',
   templateUrl: './system-user.page.html',
   styleUrls: ['./system-user.page.scss'],
 })
 export class SystemUserPage implements OnInit {
+  rate: Constant.RoleAccessRateType = 0;
+  gender: Constant.GenderType = 'Other';
+  loginOption!: IUserLoginOption;
+  constructor() {}
 
-  gender: Constant.GenderType = "Other";
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

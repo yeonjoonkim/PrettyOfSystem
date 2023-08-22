@@ -1,12 +1,12 @@
-export interface IShopSetting{
+export interface IShopSetting {
   timePicker: IShopTimePicker;
   general: IShopGeneralSetting;
 }
 
-export interface IShopTimePicker{
+export interface IShopTimePicker {
   intervalMin: number;
 }
 
-export interface IShopGeneralSetting{
+export interface IShopGeneralSetting {
   taxRate: number;
 }

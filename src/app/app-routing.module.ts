@@ -5,18 +5,16 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: '/system/configuration',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'system',
-    loadChildren: () => import('./page/system/system.module').then( m => m.SystemPageModule)
-  }
+    loadChildren: () => import('./page/system/system.module').then(m => m.SystemPageModule),
+  },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
-  ],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

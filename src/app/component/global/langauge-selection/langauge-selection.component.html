@@ -1,0 +1,11 @@
+<kendo-label text="{{ 'menu.name.language' | languageTransform | async }}">
+  <kendo-dropdownlist
+    #dropdownlist
+    adaptiveMode="auto"
+    [data]="languageSelection"
+    textField="value"
+    [(ngModel)]="selectedLanguage"
+    (close)="onClose($event)"
+    (ngModelChange)="onChangeLanguage()">
+  </kendo-dropdownlist>
+</kendo-label>

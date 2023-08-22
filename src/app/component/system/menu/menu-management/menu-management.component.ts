@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
-import { Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'system-menu-management',
   templateUrl: './menu-management.component.html',
   styleUrls: ['./menu-management.component.scss'],
 })
-
 export class MenuManagementComponent implements OnInit {
-  public readonly menuCategories: Observable<IMenuCategory[]> = this.systemMenuRepository.valueChangeListener();
+  public menuCategories!: IMenuCategory[];
   public selectedCategory: IMenuCategory = {
     description: '',
     name: '',
@@ -21,14 +20,22 @@ export class MenuManagementComponent implements OnInit {
       isAdmin: false,
       isManager: false,
       isEmployee: false,
-      isReception: false
-      }
+      isReception: false,
+    },
   };
 
-  constructor(private systemMenuRepository: SystemMenuRepositoryService) {
-  }
+  constructor(private systemMenuRepository: SystemMenuRepositoryService) {}
 
   async ngOnInit() {
+    await this.setMenuCategory();
   }
 
+  private async setMenuCategory() {
+    let menuCategory = await lastValueFrom(this.systemMenuRepository.getSystemMenuCategories());
+    this.menuCategories = menuCategory;
+  }
+
+  async onUpdate() {
+    await this.setMenuCategory();
+  }
 }

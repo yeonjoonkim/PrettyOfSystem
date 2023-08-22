@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { LanguageService } from 'src/app/shared/services/global/language/language.service';
+import { LanguageService } from 'src/app/service/global/language/language.service';
 
-export interface ISystemMenuOptionAction{
+export interface ISystemMenuOptionAction {
   name: string;
   //Configuration
   isMenuManagement: boolean;
@@ -14,14 +14,12 @@ export interface ISystemMenuOptionAction{
   //Language
   isLanguageDictionary: boolean;
   isLanguageManagement: boolean;
-};
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class SystemMenuOptionControllerService {
-
   private readonly systemMenu: string = 'system.menu.';
   private readonly menuOption = {
     //Configuration
@@ -34,55 +32,55 @@ export class SystemMenuOptionControllerService {
     userManagement: this.systemMenu + 'usermanagement',
     //Language
     transformDictionary: this.systemMenu + 'dictionary',
-    languageManagement: this.systemMenu + 'language'
+    languageManagement: this.systemMenu + 'language',
   };
 
-  constructor(private language: LanguageService) { }
+  constructor(private language: LanguageService) {}
 
   /**Used in page/system/configuration */
-  public async getSystemConfigurationButtons(): Promise<ISystemMenuOptionAction[]>{
+  public async getSystemConfigurationButtons(): Promise<ISystemMenuOptionAction[]> {
     let menuManagement = await this.getMenuManagementOption();
     let roleManagement = await this.getRoleManagementOption();
     let planManagement = await this.getPlanManagementOption();
 
-    return [ menuManagement, roleManagement, planManagement ];
+    return [menuManagement, roleManagement, planManagement];
   }
 
   /**Used in page/system/shop */
-  public async getSystemShopButtons(): Promise<ISystemMenuOptionAction[]>{
+  public async getSystemShopButtons(): Promise<ISystemMenuOptionAction[]> {
     let shopManagement = await this.getShopManagementOption();
 
     return [shopManagement];
   }
 
   /**Used in page/system/user */
-  public async getSystemUserButtons(): Promise<ISystemMenuOptionAction[]>{
+  public async getSystemUserButtons(): Promise<ISystemMenuOptionAction[]> {
     let userManagement = await this.getUserManagementOption();
 
     return [userManagement];
   }
-  
-  public async getSystemLanguageButtons(): Promise<ISystemMenuOptionAction[]>{
+
+  public async getSystemLanguageButtons(): Promise<ISystemMenuOptionAction[]> {
     let dictionary = await this.getLanguageDictionaryOption();
     let management = await this.getLanguageManagementOption();
 
-    return [ dictionary, management ];
+    return [dictionary, management];
   }
 
-  public async getSystemMenuTop(): Promise<ISystemMenuOptionAction[]>{
+  public async getSystemMenuTop(): Promise<ISystemMenuOptionAction[]> {
     let dictionary = await this.getLanguageDictionaryOption();
 
-    return [ dictionary ];
+    return [dictionary];
   }
 
-  private async getLanguageDictionaryOption(){
+  private async getLanguageDictionaryOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this.menuOption.transformDictionary);
     controller.isLanguageDictionary = true;
     return controller;
   }
 
-  private async getLanguageManagementOption(){
+  private async getLanguageManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this.menuOption.languageManagement);
 
@@ -91,7 +89,7 @@ export class SystemMenuOptionControllerService {
     return controller;
   }
 
-  private async getRoleManagementOption(){
+  private async getRoleManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this.menuOption.roleManagement);
     controller.isRoleManagement = true;
@@ -99,7 +97,7 @@ export class SystemMenuOptionControllerService {
     return controller;
   }
 
-  private async getMenuManagementOption(){
+  private async getMenuManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this.menuOption.menuManagement);
     controller.isMenuManagement = true;
@@ -107,7 +105,7 @@ export class SystemMenuOptionControllerService {
     return controller;
   }
 
-  private async getPlanManagementOption(){
+  private async getPlanManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this.menuOption.planManagement);
     controller.isPlanManagement = true;
@@ -115,7 +113,7 @@ export class SystemMenuOptionControllerService {
     return controller;
   }
 
-  private async getShopManagementOption(){
+  private async getShopManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this.menuOption.shopManagement);
     controller.isShopManagement = true;
@@ -123,7 +121,7 @@ export class SystemMenuOptionControllerService {
     return controller;
   }
 
-  private async getUserManagementOption(){
+  private async getUserManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this.menuOption.userManagement);
     controller.isUserManagement = true;
@@ -144,7 +142,7 @@ export class SystemMenuOptionControllerService {
       isUserManagement: false,
       //Language
       isLanguageDictionary: false,
-      isLanguageManagement: false
+      isLanguageManagement: false,
     };
   }
 }

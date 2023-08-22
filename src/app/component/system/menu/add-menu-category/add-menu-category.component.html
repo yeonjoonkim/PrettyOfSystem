@@ -1,13 +1,7 @@
 <div id="add-menu-container">
   <!--Label-->
-  <kendo-label
-    text="{{ 'label.name.description' | languageTransform | async }}"
-  >
-    <kendo-textbox
-      [(ngModel)]="category.description"
-      size="large"
-      [clearButton]="true"
-    >
+  <kendo-label text="{{ 'label.name.description' | languageTransform | async }}">
+    <kendo-textbox [(ngModel)]="category.description" size="large" [clearButton]="true">
     </kendo-textbox>
   </kendo-label>
 
@@ -19,38 +13,30 @@
     <yes-no-selection
       label="label.name.systemadmin"
       [(value)]="category.accessLevel.isSystemAdmin"
-      (valueChange)="onChangeSystemAdminAccessCtrl($event)"
-    ></yes-no-selection>
+      (valueChange)="onChangeSystemAdminAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
       label="label.name.admin"
       [(value)]="category.accessLevel.isAdmin"
-      (valueChange)="onChangeAdminAccessCtrl($event)"
-    ></yes-no-selection>
+      (valueChange)="onChangeAdminAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
       label="label.name.manager"
       [(value)]="category.accessLevel.isManager"
-      (valueChange)="onChangeManagerAccessCtrl($event)"
-    ></yes-no-selection>
+      (valueChange)="onChangeManagerAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
       label="label.name.employee"
       [(value)]="category.accessLevel.isEmployee"
-      (valueChange)="onChangeEmployeeAccessCtrl($event)"
-    ></yes-no-selection>
+      (valueChange)="onChangeEmployeeAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
       label="label.name.reception"
       [(value)]="category.accessLevel.isReception"
-      (valueChange)="onChangeReceptionAccessCtrl($event)"
-    ></yes-no-selection>
+      (valueChange)="onChangeReceptionAccessCtrl($event)"></yes-no-selection>
   </yes-no-selection-group>
 
   <!--Button-->
-  <ion-button
-    *ngIf="!editMode"
-    expand="full"
-    (click)="onClickSaveNewCategory()"
-    >{{ "button.name.save" | languageTransform | async }}</ion-button
-  >
+  <ion-button *ngIf="!editMode" expand="full" (click)="onClickSaveNewCategory()">{{
+    'button.name.save' | languageTransform | async
+  }}</ion-button>
   <ion-button *ngIf="editMode" expand="full" (click)="onClickEditCategory()">{{
-    "button.name.edit" | languageTransform | async
+    'button.name.edit' | languageTransform | async
   }}</ion-button>
 </div>

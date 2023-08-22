@@ -8,37 +8,36 @@ import { SystemLanguageService } from 'src/app/service/system/system-language/sy
   templateUrl: './language-management.component.html',
   styleUrls: ['./language-management.component.scss'],
 })
-export class LanguageManagementComponent  implements OnInit {
+export class LanguageManagementComponent implements OnInit {
   public languageSelection: ILanguageSelection[] = [];
   private readOnly = true;
 
   constructor(private systemLanguage: SystemLanguageService) {}
 
-
   async ngOnInit() {
     await this.setLanguageSelection();
   }
 
-  private async setLanguageSelection(){
+  private async setLanguageSelection() {
     this.languageSelection = await this.systemLanguage.get();
   }
 
-  public async onClickLanguage(selected: CellClickEvent){
+  public async onClickLanguage(selected: CellClickEvent) {
     let selectedLanguageSelection: ILanguageSelection = selected.dataItem;
-    let modal = this.readOnly ? await this.systemLanguage.modal.read(selectedLanguageSelection): await this.systemLanguage.modal.edit(selectedLanguageSelection);
+    let modal = this.readOnly
+      ? await this.systemLanguage.modal.read(selectedLanguageSelection)
+      : await this.systemLanguage.modal.edit(selectedLanguageSelection);
     await modal.present();
     let result = await modal.onDidDismiss();
-    if(result.data){
-
+    if (result.data) {
     }
   }
 
-  public async onClickCreate(){
+  public async onClickCreate() {
     let modal = await this.systemLanguage.modal.create();
     await modal.present();
     let result = await modal.onDidDismiss();
-    if(result.data){
-
+    if (result.data) {
     }
   }
 }

@@ -1,14 +1,14 @@
 <div id="menu-management-container">
   <menu-category-card
-    [menuCategories]="menuCategories | async"
+    [menuCategories]="menuCategories"
     [(category)]="selectedCategory"
-  ></menu-category-card>
-  <ng-container *ngFor="let category of menuCategories | async">
+    (onUpdate)="onUpdate()"></menu-category-card>
+  <ng-container *ngFor="let category of menuCategories">
     <menu-category-content-card
       *ngIf="selectedCategory.id === category.id"
       [selectedMenuContents]="category.content"
       [selectedMenuCategoryId]="category.id"
       [selectedCategoryName]="category.name"
-    ></menu-category-content-card>
+      (onUpdate)="onUpdate()"></menu-category-content-card>
   </ng-container>
 </div>

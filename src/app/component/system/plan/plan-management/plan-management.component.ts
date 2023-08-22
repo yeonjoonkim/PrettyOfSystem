@@ -9,12 +9,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./plan-management.component.scss'],
 })
 export class PlanManagementComponent implements OnInit {
-  public readonly planOptions: Observable<IPlanConfiguration[]> = this.planService.valueChangeListener();
+  public readonly planOptions: Observable<IPlanConfiguration[]> =
+    this.planService.valueChangeListener();
 
-  constructor(private planService: PlanService) {
-  }
+  constructor(private planService: PlanService) {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

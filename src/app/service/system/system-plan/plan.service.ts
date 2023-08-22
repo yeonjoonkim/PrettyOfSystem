@@ -3,10 +3,10 @@ import { PlanModalService } from './plan-modal/plan-modal.service';
 import { IPlanConfiguration } from '../../../interface/system/plan/plan.interface';
 import { Injectable } from '@angular/core';
 import { IPlanPrice } from 'src/app/interface/system/plan/plan.interface';
-import { GlobalService } from 'src/app/shared/services/global/global.service';
+import { GlobalService } from 'src/app/service/global/global.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlanService {
   private readonly rateHolder: number = 1;
@@ -15,18 +15,21 @@ export class PlanService {
   constructor(
     public modal: PlanModalService,
     private planRepo: SystemPlanRepositoryService,
-    private global: GlobalService) { }
+    private global: GlobalService
+  ) {}
 
-  public getPlanOptions(){
+  public getPlanOptions() {
     return this.planRepo.getSystemPlanOptions();
   }
 
-  public valueChangeListener(){
+  public valueChangeListener() {
     return this.planRepo.valueChangeListener();
   }
 
-  public getDefaultPlan(): IPlanConfiguration{
-    return { id: '', name: '',
+  public getDefaultPlan(): IPlanConfiguration {
+    return {
+      id: '',
+      name: '',
       weeklyPrice: { tax: 0, net: 0, total: 0 },
       monthlyPrice: { tax: 0, net: 0, total: 0 },
       annuallyPrice: { tax: 0, net: 0, total: 0 },
@@ -39,70 +42,74 @@ export class PlanService {
     };
   }
 
-  public getTaxAndNetPrice(price: number): IPlanPrice{
+  public getTaxAndNetPrice(price: number): IPlanPrice {
     price = this.global.numberTransform.roundToDecimalPlaces(price, 2);
     return {
       tax: price ? this.global.numberTransform.roundToDecimalPlaces(price * this.taxRate, 2) : 0,
       net: price ? this.global.numberTransform.roundToDecimalPlaces(price * this.netRate, 2) : 0,
-      total: price
-    }
+      total: price,
+    };
   }
 
-  public async processSaveNewPlan(planConfig: IPlanConfiguration){
+  public async processSaveNewPlan(planConfig: IPlanConfiguration) {
     let isSaved = await this.planRepo.addSystemPlanOption(planConfig);
 
-    if(isSaved){
+    if (isSaved) {
       await this.modal.dismissModal();
       await this.presentSaveMsg();
-    }else{
+    } else {
       await this.presentSaveError();
     }
   }
 
-  public async processUpdatePlan(planConfig: IPlanConfiguration){
+  public async processUpdatePlan(planConfig: IPlanConfiguration) {
     let isUpdated = await this.planRepo.updateSystemPlanOption(planConfig);
 
-    if(isUpdated){
+    if (isUpdated) {
       await this.presentUpdateMsg();
       await this.modal.dismissModal();
-    }else{
+    } else {
       await this.presentUpdateError();
     }
   }
 
-  public async processDeletePlan(selectedPlanId: string, selectedPlanName: string){
-    let deleteConfirmation = await this.global.confirmAlert.getDeleteConfirmationWithName(selectedPlanName);
-    if(deleteConfirmation){
-      await this.planRepo.deleteSystemPlanOption(selectedPlanId) ? await this.presentDeleteMsg(): await this.presentDeleteError();
+  public async processDeletePlan(selectedPlanId: string, selectedPlanName: string) {
+    let deleteConfirmation = await this.global.confirmAlert.getDeleteConfirmationWithName(
+      selectedPlanName
+    );
+    if (deleteConfirmation) {
+      (await this.planRepo.deleteSystemPlanOption(selectedPlanId))
+        ? await this.presentDeleteMsg()
+        : await this.presentDeleteError();
     }
   }
 
-  private async presentSaveMsg(){
+  private async presentSaveMsg() {
     let msg = await this.global.language.transform('message.success.save');
     await this.global.toast.present(msg);
   }
 
-  private async presentSaveError(){
+  private async presentSaveError() {
     let msg = await this.global.language.transform('message.error.unsaved');
     await this.global.toast.present(msg);
   }
 
-  private async presentDeleteMsg(){
+  private async presentDeleteMsg() {
     let msg = await this.global.language.transform('message.success.delete');
     await this.global.toast.present(msg);
   }
 
-  private async presentDeleteError(){
+  private async presentDeleteError() {
     let msg = await this.global.language.transform('message.error.delete');
     await this.global.toast.present(msg);
   }
 
-  private async presentUpdateError(){
+  private async presentUpdateError() {
     let msg = await this.global.language.transform('message.error.updated');
     await this.global.toast.present(msg);
   }
 
-  private async presentUpdateMsg(){
+  private async presentUpdateMsg() {
     let msg = await this.global.language.transform('message.success.update');
     await this.global.toast.present(msg);
   }

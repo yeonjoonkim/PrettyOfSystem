@@ -1,54 +1,61 @@
-import {AustraliaStateType, DateDayNightType, FormActionType, DayIndexType, DayType, DatePeriodType} from './../../shared/services/global/global-constant';
+import {
+  AustraliaStateType,
+  DateDayNightType,
+  FormActionType,
+  DayIndexType,
+  DayType,
+  DatePeriodType,
+} from 'src/app/service/global/global-constant';
 
-export interface IPairKeyValue{
+export interface IPairKeyValue {
   key: string;
   value: string;
 }
 
-export interface IComponentAction{
+export interface IComponentAction {
   name: string;
   isEdit: boolean;
   isCancel: boolean;
   isSave: boolean;
 }
 
-export interface IAddress{
+export interface IAddress {
   street: string;
   suburb: string;
   state: string;
   postCode: string;
 }
 
-export interface IPostCodeItem{
+export interface IPostCodeItem {
   postCode: string;
   suburb: string;
 }
 
-export interface IPostCodeFilterOption{
+export interface IPostCodeFilterOption {
   postCodeList: IPostCodeItem[];
-  stateList: AustraliaStateType[]
+  stateList: AustraliaStateType[];
 }
 
-export interface ITimeItem{
-  hr: number,
-  min: number
-  dayNightType: DateDayNightType
+export interface ITimeItem {
+  hr: number;
+  min: number;
+  dayNightType: DateDayNightType;
   strValue: string;
 }
 
-export interface IDateIndexPairDay{
-  index: DayIndexType,
-  day: DayType
+export interface IDateIndexPairDay {
+  index: DayIndexType;
+  day: DayType;
 }
 
-export interface IDatePeriod{
+export interface IDatePeriod {
   name: string;
   type: DatePeriodType;
   week: number;
   day: number;
 }
 
-export interface IFormHeaderModalProp{
+export interface IFormHeaderModalProp {
   readOnly: boolean;
   action: FormActionType;
   enabledSavebutton: boolean;

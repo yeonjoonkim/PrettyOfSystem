@@ -1,0 +1,20 @@
+<kendo-label text="{{ label | languageTransform | async }}" *ngIf="!simpleMode">
+  <kendo-switch
+    [(ngModel)]="value"
+    (ngModelChange)="onChangeSelection()"
+    [readonly]="readOnly"
+    [size]="size"
+    onLabel="{{ 'label.name.yes' | languageTransform | async }}"
+    offLabel="{{ 'label.name.no' | languageTransform | async }}">
+  </kendo-switch>
+</kendo-label>
+
+<kendo-switch
+  *ngIf="simpleMode"
+  [(ngModel)]="value"
+  (ngModelChange)="onChangeSelection()"
+  [readonly]="readOnly"
+  onLabel=" "
+  offLabel=" "
+  [size]="size">
+</kendo-switch>

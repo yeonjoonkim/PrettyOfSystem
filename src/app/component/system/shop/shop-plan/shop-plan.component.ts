@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IPairValueId } from 'src/app/interface/system/system.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
-import * as Constant from '../../../../shared/services/global/global-constant';
+import * as Constant from 'src/app/service/global/global-constant';
 @Component({
   selector: 'shop-plan',
   templateUrl: './shop-plan.component.html',
@@ -11,15 +11,14 @@ export class ShopPlanComponent implements OnInit {
   @Output() planIdChange = new EventEmitter<string>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() readOnly: boolean = false;
-  @Input() mode: Constant.ComponentModeType =
-    Constant.Default.ComponentMode.Form;
+  @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input()
   get planId() {
     return this.selectedPlanId;
   }
   set planId(value: string) {
     this.selectedPlanId = value;
-    if(!this.loading){
+    if (!this.loading) {
       this.planIdChange.emit(this.selectedPlanId);
     }
   }
@@ -40,15 +39,12 @@ export class ShopPlanComponent implements OnInit {
   constructor(private systemShopService: SystemShopService) {}
 
   async ngOnInit() {
-    this.planPairIdValueList =
-      await this.systemShopService.getPlanPairValueIdList();
+    this.planPairIdValueList = await this.systemShopService.getPlanPairValueIdList();
     this.setDefaultPlanPairIdValue();
   }
 
   private setDefaultPlanPairIdValue() {
-    let defaultPair = this.planPairIdValueList.find(
-      (p) => p.id === this.selectedPlanId
-    );
+    let defaultPair = this.planPairIdValueList.find(p => p.id === this.selectedPlanId);
     this.validate = defaultPair !== undefined;
     if (defaultPair) {
       this.selectedPlanPairIdValue = defaultPair;

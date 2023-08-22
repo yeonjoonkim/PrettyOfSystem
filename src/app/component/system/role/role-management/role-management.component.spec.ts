@@ -9,8 +9,8 @@ describe('RoleManagementComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoleManagementComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [RoleManagementComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RoleManagementComponent);

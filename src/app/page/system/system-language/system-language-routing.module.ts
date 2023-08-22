@@ -6,8 +6,8 @@ import { SystemLanguagePage } from './system-language.page';
 const routes: Routes = [
   {
     path: '',
-    component: SystemLanguagePage
-  }
+    component: SystemLanguagePage,
+  },
 ];
 
 @NgModule({

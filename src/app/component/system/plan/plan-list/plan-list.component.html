@@ -1,68 +1,99 @@
-<legend>{{'label.name.subscriptionservice' | languageTransform | async }}</legend>
+<legend>{{ 'label.name.subscriptionservice' | languageTransform | async }}</legend>
 
-<kendo-grid [kendoGridBinding]="(planOptions | async)!"
-            [sortable]="true">
+<kendo-grid [kendoGridBinding]="(planOptions | async)!" [sortable]="true">
   <!-- Add Button -->
   <ng-template kendoGridToolbarTemplate>
-    <button kendoGridAddCommand (click)="onClickAddPlan()">{{'button.name.add' | languageTransform | async}}</button>
+    <button kendoGridAddCommand (click)="onClickAddPlan()">
+      {{ 'button.name.add' | languageTransform | async }}
+    </button>
   </ng-template>
 
-  <kendo-grid-column field="name"
-                      title="{{'label.name.name' | languageTransform | async}}">
+  <kendo-grid-column field="name" title="{{ 'label.name.name' | languageTransform | async }}">
   </kendo-grid-column>
 
   <kendo-grid-column
-                      field="isPlanManagement"
-                      title="{{'label.name.premium' | languageTransform | async}}">
+    field="isPlanManagement"
+    title="{{ 'label.name.premium' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-plan>
-      <input type="checkbox" kendoCheckBox [checked]="plan.isPremium" disabled/>
+      <input type="checkbox" kendoCheckBox [checked]="plan.isPremium" disabled />
     </ng-template>
   </kendo-grid-column>
 
-  <kendo-grid-column  *ngIf="global.deviceWidth.deviceType.isDesktop"
-                      field="isTestPlan"
-                      title="{{'label.name.test' | languageTransform | async}}">
+  <kendo-grid-column
+    *ngIf="global.deviceWidth.deviceType.isDesktop"
+    field="isTestPlan"
+    title="{{ 'label.name.test' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-plan>
-      <input type="checkbox" kendoCheckBox [checked]="plan.isTestPlan" disabled/>
+      <input type="checkbox" kendoCheckBox [checked]="plan.isTestPlan" disabled />
     </ng-template>
   </kendo-grid-column>
 
-  <kendo-grid-column *ngIf="global.deviceWidth.deviceType.isDesktop"
-                      field="limitedService"
-                      title="{{'label.name.service' | languageTransform | async}}"
-                      >
+  <kendo-grid-column
+    *ngIf="global.deviceWidth.deviceType.isDesktop"
+    field="limitedService"
+    title="{{ 'label.name.service' | languageTransform | async }}">
   </kendo-grid-column>
 
-  <kendo-grid-column *ngIf="global.deviceWidth.deviceType.isDesktop"
-                      field="limitedProduct"
-                      title="{{'label.name.product' | languageTransform | async}}"
-                      >
+  <kendo-grid-column
+    *ngIf="global.deviceWidth.deviceType.isDesktop"
+    field="limitedProduct"
+    title="{{ 'label.name.product' | languageTransform | async }}">
   </kendo-grid-column>
 
-  <kendo-grid-column *ngIf="global.deviceWidth.deviceType.isDesktop"
-                      field="limitedPackage"
-                      title="{{'label.name.package' | languageTransform | async}}"
-                      >
+  <kendo-grid-column
+    *ngIf="global.deviceWidth.deviceType.isDesktop"
+    field="limitedPackage"
+    title="{{ 'label.name.package' | languageTransform | async }}">
   </kendo-grid-column>
 
-  <kendo-grid-column *ngIf="global.deviceWidth.deviceType.isDesktop"
-                      field="limitedUser"
-                      title="{{'label.name.user' | languageTransform | async}}"
-                      >
+  <kendo-grid-column
+    *ngIf="global.deviceWidth.deviceType.isDesktop"
+    field="limitedUser"
+    title="{{ 'label.name.user' | languageTransform | async }}">
   </kendo-grid-column>
 
   <ng-template kendoGridDetailTemplate let-plan let-rowIndex="rowIndex">
     <category-details [category]="plan">
-    <p>({{'label.name.weekly' | languageTransform | async}}) {{'label.name.total' | languageTransform| async }}: {{plan.weeklyPrice.total | currency}} | {{'label.name.tax' | languageTransform |async }}: {{plan.weeklyPrice.tax | currency}} | {{'label.name.excludingtax' | languageTransform |async }}: {{plan.weeklyPrice.net | currency}}</p>
-    <p>({{'label.name.monthly' | languageTransform | async}}) {{'label.name.total' | languageTransform| async }}: {{plan.monthlyPrice.total | currency}} | {{'label.name.tax' | languageTransform |async }}: {{plan.monthlyPrice.tax | currency}} | {{'label.name.excludingtax' | languageTransform |async }}: {{plan.monthlyPrice.net | currency}}</p>
-    <p>({{'label.name.annually' | languageTransform | async}}) {{'label.name.total' | languageTransform| async }}: {{plan.annuallyPrice.total | currency}} | {{'label.name.tax' | languageTransform |async }}: {{plan.annuallyPrice.tax | currency}} | {{'label.name.excludingtax' | languageTransform |async }}: {{plan.annuallyPrice.net | currency}}</p>
+      <p>
+        ({{ 'label.name.weekly' | languageTransform | async }})
+        {{ 'label.name.total' | languageTransform | async }}:
+        {{ plan.weeklyPrice.total | currency }} |
+        {{ 'label.name.tax' | languageTransform | async }}: {{ plan.weeklyPrice.tax | currency }} |
+        {{ 'label.name.excludingtax' | languageTransform | async }}:
+        {{ plan.weeklyPrice.net | currency }}
+      </p>
+      <p>
+        ({{ 'label.name.monthly' | languageTransform | async }})
+        {{ 'label.name.total' | languageTransform | async }}:
+        {{ plan.monthlyPrice.total | currency }} |
+        {{ 'label.name.tax' | languageTransform | async }}: {{ plan.monthlyPrice.tax | currency }} |
+        {{ 'label.name.excludingtax' | languageTransform | async }}:
+        {{ plan.monthlyPrice.net | currency }}
+      </p>
+      <p>
+        ({{ 'label.name.annually' | languageTransform | async }})
+        {{ 'label.name.total' | languageTransform | async }}:
+        {{ plan.annuallyPrice.total | currency }} |
+        {{ 'label.name.tax' | languageTransform | async }}:
+        {{ plan.annuallyPrice.tax | currency }} |
+        {{ 'label.name.excludingtax' | languageTransform | async }}:
+        {{ plan.annuallyPrice.net | currency }}
+      </p>
     </category-details>
   </ng-template>
 
   <kendo-grid-command-column>
     <ng-template kendoGridCellTemplate let-plan>
-        <button kendoGridEditCommand themeColor="tertiary" icon="edit" (click)="onClickEdit(plan)"></button>
-        <button kendoGridRemoveCommand themeColor="error" icon="trash" (click)="onClickDelete(plan.id, plan.name)"></button>
+      <button
+        kendoGridEditCommand
+        themeColor="tertiary"
+        icon="edit"
+        (click)="onClickEdit(plan)"></button>
+      <button
+        kendoGridRemoveCommand
+        themeColor="error"
+        icon="trash"
+        (click)="onClickDelete(plan.id, plan.name)"></button>
     </ng-template>
   </kendo-grid-command-column>
 </kendo-grid>

@@ -5,9 +5,7 @@
       <ion-menu-button auto-hide="true"></ion-menu-button>
     </ion-buttons>
     <!-- Title -->
-    <ion-title
-      >{{'menu.content.usermanagement'| languageTransform | async }}</ion-title
-    >
+    <ion-title>{{'menu.content.usermanagement'| languageTransform | async }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -25,9 +23,11 @@
     </button>
   </kendo-buttongroup>
   -->
-  <gender-selection
-    [(gender)]="gender"
-    mode="filter"
-    [readOnly]="false"
-  ></gender-selection>
+  <gender-selection [(gender)]="gender" mode="filter" [readOnly]="false"></gender-selection>
+  <login-option-selection
+    [componentMode]="'login'"
+    [roleRate]="rate"
+    [(loginOption)]="loginOption"></login-option-selection>
+  <input [(ngModel)]="rate" type="number" />
+  {{loginOption | json}}
 </ion-content>

@@ -9,8 +9,8 @@ describe('PlanManagementComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlanManagementComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PlanManagementComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PlanManagementComponent);

@@ -9,8 +9,8 @@ describe('AddRoleComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoleComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [RoleComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RoleComponent);

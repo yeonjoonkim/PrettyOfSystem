@@ -1,10 +1,10 @@
-export interface IPlanPrice{
+export interface IPlanPrice {
   tax: number;
   net: number;
   total: number;
 }
 
-export interface IPlanConfiguration{
+export interface IPlanConfiguration {
   id: string;
   name: string;
   weeklyPrice: IPlanPrice;

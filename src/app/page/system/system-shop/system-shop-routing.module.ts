@@ -6,8 +6,8 @@ import { SystemShopPage } from './system-shop.page';
 const routes: Routes = [
   {
     path: '',
-    component: SystemShopPage
-  }
+    component: SystemShopPage,
+  },
 ];
 
 @NgModule({

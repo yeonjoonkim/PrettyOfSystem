@@ -5,31 +5,38 @@ import { Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlanModalService {
+  constructor(private modalCtrl: ModalController) {}
 
-  constructor(private modalCtrl: ModalController) { }
-
-  public async presentAddPlan(): Promise<void>{
-    let addPlan = await this.modalCtrl.create({component: PlanComponent, componentProps: { readOnly: false, editMode: false}});
+  public async presentAddPlan(): Promise<void> {
+    let addPlan = await this.modalCtrl.create({
+      component: PlanComponent,
+      componentProps: { readOnly: false, editMode: false },
+    });
     await addPlan.present();
   }
 
-  public async presentEditPlan(config: IPlanConfiguration){
+  public async presentEditPlan(config: IPlanConfiguration) {
     let selectedConfig: IPlanConfiguration = cloneDeep(config);
-    let editPlan = await this.modalCtrl.create({component: PlanComponent, componentProps: {plan: selectedConfig, editMode: true}});
+    let editPlan = await this.modalCtrl.create({
+      component: PlanComponent,
+      componentProps: { plan: selectedConfig, editMode: true },
+    });
     await editPlan.present();
   }
 
-  public async presentViewPlan(config: IPlanConfiguration){
+  public async presentViewPlan(config: IPlanConfiguration) {
     let selectedConfig: IPlanConfiguration = cloneDeep(config);
-    let editPlan = await this.modalCtrl.create({component: PlanComponent, componentProps: {plan: selectedConfig, readOnly: true}});
+    let editPlan = await this.modalCtrl.create({
+      component: PlanComponent,
+      componentProps: { plan: selectedConfig, readOnly: true },
+    });
     await editPlan.present();
   }
 
-
-  public async dismissModal(): Promise<void>{
+  public async dismissModal(): Promise<void> {
     await this.modalCtrl.dismiss();
   }
 }

@@ -8,7 +8,6 @@ import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface
   templateUrl: './role-management.component.html',
   styleUrls: ['./role-management.component.scss'],
 })
-
 export class RoleManagementComponent implements OnInit {
   public readonly roles: Observable<IRoleConfiguration[]> = this.systemRole.valueChangeListener();
   public selectedRole: IRoleConfiguration = {
@@ -20,14 +19,11 @@ export class RoleManagementComponent implements OnInit {
       isAdmin: false,
       isManager: false,
       isEmployee: false,
-      isReception: false
+      isReception: false,
     },
-    rate: 0
+    rate: 0,
   };
-  constructor(private systemRole: SystemRoleService){
-  }
+  constructor(private systemRole: SystemRoleService) {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

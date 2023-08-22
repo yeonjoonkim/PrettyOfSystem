@@ -1,6 +1,6 @@
 <div id="shop-configuration-list">
   <legend>
-    {{ "label.name.shopconfiguration" | languageTransform | async }}
+    {{ 'label.name.shopconfiguration' | languageTransform | async }}
   </legend>
   <kendo-grid
     [kendoGridBinding]="(configs | async)!"
@@ -10,12 +10,11 @@
     scrollable="virtual"
     [selectable]="true"
     filterable="row"
-    (cellClick)="onClickCell($event)"
-  >
+    (cellClick)="onClickCell($event)">
     <!-- Add Button -->
     <ng-template kendoGridToolbarTemplate>
       <button kendoGridAddCommand (click)="onClickCreateShopConfiguration()">
-        {{ "button.name.add" | languageTransform | async }}
+        {{ 'button.name.add' | languageTransform | async }}
       </button>
     </ng-template>
 
@@ -23,17 +22,10 @@
     <kendo-grid-column
       title="{{ 'label.name.name' | languageTransform | async }}"
       [filterable]="true"
-      field="name"
-    >
-      <ng-template kendoGridCellTemplate let-config>{{
-        config.name
-      }}</ng-template>
+      field="name">
+      <ng-template kendoGridCellTemplate let-config>{{ config.name }}</ng-template>
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-        <kendo-grid-string-filter-cell
-          [showOperators]="false"
-          [column]="column"
-          [filter]="filter"
-        >
+        <kendo-grid-string-filter-cell [showOperators]="false" [column]="column" [filter]="filter">
         </kendo-grid-string-filter-cell>
       </ng-template>
     </kendo-grid-column>
@@ -42,14 +34,9 @@
     <kendo-grid-column
       title="{{ 'form.title.suburb' | languageTransform | async }}"
       field="address.suburb"
-      [filterable]="true"
-    >
+      [filterable]="true">
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-        <kendo-grid-string-filter-cell
-          [showOperators]="false"
-          [column]="column"
-          [filter]="filter"
-        >
+        <kendo-grid-string-filter-cell [showOperators]="false" [column]="column" [filter]="filter">
         </kendo-grid-string-filter-cell>
       </ng-template>
     </kendo-grid-column>
@@ -58,8 +45,7 @@
     <kendo-grid-column
       title="{{ 'label.name.category' | languageTransform | async }}"
       field="category.name"
-      [filterable]="false"
-    >
+      [filterable]="false">
       <ng-template kendoGridCellTemplate let-config>
         {{ config.category.name | languageTransform | async }}
       </ng-template>
@@ -70,15 +56,9 @@
       *ngIf="!device.deviceType.isMobile"
       title="{{ 'label.name.active' | languageTransform | async }}"
       field="active"
-      [filterable]="false"
-    >
+      [filterable]="false">
       <ng-template kendoGridCellTemplate let-config>
-        <input
-          type="checkbox"
-          kendoCheckBox
-          [checked]="config.active"
-          disabled
-        />
+        <input type="checkbox" kendoCheckBox [checked]="config.active" disabled />
       </ng-template>
     </kendo-grid-column>
 
@@ -87,15 +67,9 @@
       *ngIf="!device.deviceType.isMobile"
       title="{{ 'label.name.overdue' | languageTransform | async }}"
       field="plan.isOverDue"
-      [filterable]="false"
-    >
+      [filterable]="false">
       <ng-template kendoGridCellTemplate let-config>
-        <input
-          type="checkbox"
-          kendoCheckBox
-          [checked]="config.plan.isOverDue"
-          disabled
-        />
+        <input type="checkbox" kendoCheckBox [checked]="config.plan.isOverDue" disabled />
       </ng-template>
     </kendo-grid-column>
   </kendo-grid>
