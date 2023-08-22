@@ -3,60 +3,54 @@ import { ModalController } from '@ionic/angular';
 import { ShopConfigurationComponent } from 'src/app/component/system/shop/shop-configuration/shop-configuration.component';
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
-import { FormControllerService } from 'src/app/shared/services/global/form/form-controller.service';
+import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { cloneDeep } from 'lodash';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShopModalService {
+  constructor(private modal: ModalController, private formCtrl: FormControllerService) {}
 
-  constructor(private modal: ModalController, private formCtrl: FormControllerService) { }
-  
-  
-  public async presentCreateSystemShopConfiguration(){
+  public async presentCreateSystemShopConfiguration() {
     let form: IFormHeaderModalProp = this.formCtrl.setCreateFormHeaderModalProp();
     form.headerTitle = 'form.header.createshopconfig';
-    let modal = await this.modal.create(
-      {
-        component: ShopConfigurationComponent,
-        presentingElement: await this.modal.getTop(),
-        componentProps: {form: form}
-      });
+    let modal = await this.modal.create({
+      component: ShopConfigurationComponent,
+      presentingElement: await this.modal.getTop(),
+      componentProps: { form: form },
+    });
 
-   await modal.present();
+    return modal;
   }
 
-  public async presentReadShopConfiguration(config: IShopConfiguration){
+  public async presentReadShopConfiguration(config: IShopConfiguration) {
     let form: IFormHeaderModalProp = this.formCtrl.setReadFormHeaderModalProp();
     form.headerTitle = config.name;
-    let modal = await this.modal.create(
-      {
-        component: ShopConfigurationComponent,
-        presentingElement: await this.modal.getTop(),
-        componentProps: {
-          form: cloneDeep(form),
-          config: cloneDeep(config)
-      }
-      });
+    let modal = await this.modal.create({
+      component: ShopConfigurationComponent,
+      presentingElement: await this.modal.getTop(),
+      componentProps: {
+        form: cloneDeep(form),
+        config: cloneDeep(config),
+      },
+    });
 
-   await modal.present();
+    await modal.present();
   }
 
-  public async presentEditShopConfiguration(config: IShopConfiguration){
+  public async presentEditShopConfiguration(config: IShopConfiguration) {
     let form: IFormHeaderModalProp = this.formCtrl.setEditFormHeaderModalProp();
     form.headerTitle = config.name;
-    let modal = await this.modal.create(
-      {
-        component: ShopConfigurationComponent,
-        presentingElement: await this.modal.getTop(),
-        componentProps: {
-          form: cloneDeep(form),
-          config: cloneDeep(config)
-      }
-      });
+    let modal = await this.modal.create({
+      component: ShopConfigurationComponent,
+      presentingElement: await this.modal.getTop(),
+      componentProps: {
+        form: cloneDeep(form),
+        config: cloneDeep(config),
+      },
+    });
 
-      return modal;
+    return modal;
   }
-
 }

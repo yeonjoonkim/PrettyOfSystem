@@ -5,24 +5,30 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'configuration',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'configuration',
-    loadChildren: () => import('./system-configuration/system-configuration.module').then( m => m.SystemConfigurationPageModule)
+    loadChildren: () =>
+      import('./system-configuration/system-configuration.module').then(
+        m => m.SystemConfigurationPageModule
+      ),
   },
   {
     path: 'shop',
-    loadChildren: () => import('./system-shop/system-shop.module').then( m => m.SystemShopPageModule)
+    loadChildren: () =>
+      import('./system-shop/system-shop.module').then(m => m.SystemShopPageModule),
   },
   {
     path: 'language',
-    loadChildren: () => import('./system-language/system-language.module').then( m => m.SystemLanguagePageModule)
+    loadChildren: () =>
+      import('./system-language/system-language.module').then(m => m.SystemLanguagePageModule),
   },
   {
     path: 'user',
-    loadChildren: () => import('./system-user/system-user.module').then( m => m.SystemUserPageModule)
-  }
+    loadChildren: () =>
+      import('./system-user/system-user.module').then(m => m.SystemUserPageModule),
+  },
 ];
 
 @NgModule({

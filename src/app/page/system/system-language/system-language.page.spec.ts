@@ -9,8 +9,8 @@ describe('SystemLanguagePage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SystemLanguagePage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [SystemLanguagePage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SystemLanguagePage);

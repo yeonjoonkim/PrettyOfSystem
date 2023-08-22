@@ -9,8 +9,8 @@ describe('MenuManagementComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MenuManagementComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [MenuManagementComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MenuManagementComponent);

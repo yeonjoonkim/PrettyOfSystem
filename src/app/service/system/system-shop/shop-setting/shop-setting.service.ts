@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IShopGeneralSetting, IShopSetting, IShopTimePicker } from 'src/app/interface/system/shop/shop-setting.interface';
-import * as Constant from '../../../../shared/services/global/global-constant';
+import * as Constant from '../../../../service/global/global-constant';
 import { ShopSettingValidatorService } from './shop-setting-validator/shop-setting-validator.service';
 import { IShopSettingValiationResult } from 'src/app/interface/system/system.interface';
 
@@ -10,8 +10,10 @@ import { IShopSettingValiationResult } from 'src/app/interface/system/system.int
 export class ShopSettingService {
   private timePicker: IShopTimePicker = {intervalMin: Constant.ShopSetting.TimePicker.IntervalMin};
   private general: IShopGeneralSetting = {taxRate: Constant.ShopSetting.General.TaxRate};
-
-  constructor(private validator: ShopSettingValidatorService) { }
+  private validator: ShopSettingValidatorService
+  constructor() {
+    this.validator = new ShopSettingValidatorService();
+  }
 
   public getDefaultShopSetting(): IShopSetting{
     return {

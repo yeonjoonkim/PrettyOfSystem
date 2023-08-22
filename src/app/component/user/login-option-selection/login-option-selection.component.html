@@ -1,3 +1,18 @@
-<p>
-  login-option-selection works!
-</p>
+<kendo-label text="{{ 'label.name.loginoption' | languageTransform | async }}">
+  <kendo-buttongroup selection="single" width="100%">
+    <button
+      kendoButton
+      [disabled]="readOnly"
+      [selected]="inputLoginOption.phoneNumber"
+      (click)="onClickPhoneButton()">
+      {{ 'label.name.phone' | languageTransform | async }}
+    </button>
+    <button
+      kendoButton
+      [disabled]="readOnly"
+      [selected]="inputLoginOption.email"
+      (click)="onClickEmailButton()">
+      {{ 'label.name.email' | languageTransform | async }}
+    </button>
+  </kendo-buttongroup>
+</kendo-label>

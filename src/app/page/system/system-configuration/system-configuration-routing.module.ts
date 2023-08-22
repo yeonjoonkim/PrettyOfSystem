@@ -6,8 +6,8 @@ import { SystemConfigurationPage } from './system-configuration.page';
 const routes: Routes = [
   {
     path: '',
-    component: SystemConfigurationPage
-  }
+    component: SystemConfigurationPage,
+  },
 ];
 
 @NgModule({

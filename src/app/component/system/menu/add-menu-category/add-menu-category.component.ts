@@ -8,8 +8,7 @@ import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/sy
   templateUrl: './add-menu-category.component.html',
   styleUrls: ['./add-menu-category.component.scss'],
 })
-
-export class AddMenuCategoryComponent implements OnInit{
+export class AddMenuCategoryComponent implements OnInit {
   public editMode: boolean = false;
   public category: IMenuCategory = {
     id: '',
@@ -22,45 +21,58 @@ export class AddMenuCategoryComponent implements OnInit{
       isAdmin: false,
       isManager: false,
       isEmployee: false,
-      isReception: false
+      isReception: false,
     },
+  };
+  private readonly _behaviourDismiss = {
+    delete: 'delete',
+    create: 'create',
+    edit: 'edit',
   };
 
   /**This will retreive the category by using pop over action*/
-  constructor(private systemMenuCategoryService: SystemMenuCategoryService, private popoverCtrl: PopoverController, private navParams: NavParams) {
+  constructor(
+    private systemMenuCategoryService: SystemMenuCategoryService,
+    private popoverCtrl: PopoverController,
+    private navParams: NavParams
+  ) {
     let selectedCategory = this.navParams.get('selectedCategory');
-    if(selectedCategory){
+    if (selectedCategory) {
       this.editMode = true;
       this.category = selectedCategory;
     }
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**This event will validate and save into language package and will modify the category name to language transform object value */
-  public async onClickSaveNewCategory(): Promise<void>{
-    if(this.category.icon && this.category.description, this.hasAccessLevel()){
+  public async onClickSaveNewCategory(): Promise<void> {
+    if ((this.category.icon && this.category.description, this.hasAccessLevel())) {
       await this.systemMenuCategoryService.processSaveNewSystemMenuCategory(this.category);
-      await this.popoverCtrl.dismiss();
+      await this.popoverCtrl.dismiss({ data: this._behaviourDismiss.create });
     }
   }
 
-  private hasAccessLevel(): boolean{
-    return this.category.accessLevel.isSystemAdmin  || this.category.accessLevel.isAdmin || this.category.accessLevel.isManager || this.category.accessLevel.isEmployee || this.category.accessLevel.isReception;
+  private hasAccessLevel(): boolean {
+    return (
+      this.category.accessLevel.isSystemAdmin ||
+      this.category.accessLevel.isAdmin ||
+      this.category.accessLevel.isManager ||
+      this.category.accessLevel.isEmployee ||
+      this.category.accessLevel.isReception
+    );
   }
 
   /**This event will attempt to edit the value and pass to the component */
-  public async onClickEditCategory(){
-    if(this.category.icon && this.category.description){
-      await this.popoverCtrl.dismiss({result: this.category});
+  public async onClickEditCategory() {
+    if (this.category.icon && this.category.description) {
+      await this.popoverCtrl.dismiss({ result: this.category });
     }
   }
 
-
   /** When the system admin toggle is changed, modify the Configuration */
-  public onChangeSystemAdminAccessCtrl(newAccessCtrl: boolean): void{
-    if(newAccessCtrl){
+  public onChangeSystemAdminAccessCtrl(newAccessCtrl: boolean): void {
+    if (newAccessCtrl) {
       this.category.accessLevel.isSystemAdmin = true;
       this.category.accessLevel.isAdmin = false;
       this.category.accessLevel.isManager = false;
@@ -69,10 +81,9 @@ export class AddMenuCategoryComponent implements OnInit{
     }
   }
 
-
   /** When the admin toggle is changed, modify the Configuration */
-  public onChangeAdminAccessCtrl(newAccessCtrl: boolean): void{
-    if(newAccessCtrl){
+  public onChangeAdminAccessCtrl(newAccessCtrl: boolean): void {
+    if (newAccessCtrl) {
       this.category.accessLevel.isSystemAdmin = false;
       this.category.accessLevel.isAdmin = true;
       this.category.accessLevel.isManager = false;
@@ -81,10 +92,9 @@ export class AddMenuCategoryComponent implements OnInit{
     }
   }
 
-
   /** When the manager toggle is changed, modify the Configuration */
-  public onChangeManagerAccessCtrl(newAccessCtrl: boolean){
-    if(newAccessCtrl){
+  public onChangeManagerAccessCtrl(newAccessCtrl: boolean) {
+    if (newAccessCtrl) {
       this.category.accessLevel.isSystemAdmin = false;
       this.category.accessLevel.isAdmin = false;
       this.category.accessLevel.isManager = true;
@@ -93,10 +103,9 @@ export class AddMenuCategoryComponent implements OnInit{
     }
   }
 
-
   /** When the reception toggle is changed, modify the Configuration */
-  public onChangeReceptionAccessCtrl(newAccessCtrl: boolean): void{
-    if(newAccessCtrl){
+  public onChangeReceptionAccessCtrl(newAccessCtrl: boolean): void {
+    if (newAccessCtrl) {
       this.category.accessLevel.isSystemAdmin = false;
       this.category.accessLevel.isAdmin = false;
       this.category.accessLevel.isManager = false;
@@ -105,10 +114,9 @@ export class AddMenuCategoryComponent implements OnInit{
     }
   }
 
-
   /** When the employee toggle is changed, modify the Configuration */
-  public onChangeEmployeeAccessCtrl(newAccessCtrl: boolean): void{
-    if(newAccessCtrl){
+  public onChangeEmployeeAccessCtrl(newAccessCtrl: boolean): void {
+    if (newAccessCtrl) {
       this.category.accessLevel.isSystemAdmin = false;
       this.category.accessLevel.isAdmin = false;
       this.category.accessLevel.isManager = false;
@@ -116,5 +124,4 @@ export class AddMenuCategoryComponent implements OnInit{
       this.category.accessLevel.isReception = false;
     }
   }
-
 }

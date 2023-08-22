@@ -1,6 +1,6 @@
 import { IRoleAccessLevel } from './../system/role/role.interface';
 
-export interface IMenuCategory{
+export interface IMenuCategory {
   id?: string;
   name: string;
   description: string;
@@ -9,7 +9,7 @@ export interface IMenuCategory{
   accessLevel: IRoleAccessLevel;
 }
 
-export interface IMenuContent{
+export interface IMenuContent {
   name: string;
   description: string;
   url: string;

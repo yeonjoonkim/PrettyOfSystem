@@ -9,11 +9,10 @@ import { SystemConfigurationPage } from './system-configuration.page';
 import { NgModule } from '@angular/core';
 
 //Import Pipe
-import { LanguageTransformPipeModule } from '../../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
 
-import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.module';
-import { SharedFormModule } from 'src/app/shared/components/form/form.module';
-import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
+import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
+import { SharedFormModule } from 'src/app/component/global/form/form.module';
 
 import { SystemPlanManagementModule } from '../../../component/system/plan/plan-management/plan-management.module';
 import { SystemMenuManagementModule } from '../../../component/system/menu/menu-management/menu-management.module';
@@ -28,11 +27,10 @@ import { SystemRoleManagementModule } from 'src/app/component/system/role/role-m
     SystemPlanManagementModule,
     SystemMenuManagementModule,
     SystemRoleManagementModule,
-    IonicIconSelectionModule,
     SharedFormModule,
     KendoUiModule,
-    LanguageTransformPipeModule
+    LanguageTransformPipeModule,
   ],
-  declarations: [SystemConfigurationPage]
+  declarations: [SystemConfigurationPage],
 })
 export class SystemConfigurationPageModule {}

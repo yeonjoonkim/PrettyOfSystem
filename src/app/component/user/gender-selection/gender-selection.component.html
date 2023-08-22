@@ -7,8 +7,7 @@
       [disabled]="readOnly"
       [readOnly]="readOnly"
       [selected]="button.key === selectedGender.key"
-      (selectedChange)="onChangeGender(button)"
-    >
+      (selectedChange)="onChangeGender(button)">
       {{ button.key | languageTransform | async }}
     </button>
   </kendo-buttongroup>

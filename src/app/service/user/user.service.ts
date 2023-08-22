@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { IUser, IUserSetting } from 'src/app/interface/user/user.interface';
 import { ShopConfigurationService } from '../system/system-shop/shop-configuration/shop-configuration.service';
-import * as Constant from './../../shared/services/global/global-constant';
+import * as Constant from './../global/global-constant';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   constructor(private systemShop: ShopConfigurationService) {}
-  
-  public defaultUser(): IUser{
+
+  public defaultUser(): IUser {
     return {
       id: '',
       firstName: '',
@@ -17,7 +17,7 @@ export class UserService {
       isSystemAdmin: false,
       associatedShops: [],
       currentShop: {
-        shopId: "",
+        shopId: '',
         role: {
           id: '',
           name: '',
@@ -27,32 +27,30 @@ export class UserService {
             isAdmin: false,
             isManager: false,
             isEmployee: false,
-            isReception: false
+            isReception: false,
           },
-          rate: 0
-        },
-        userInfo: {
-          phoneNumber: '',
-          email: '',
-          activeFrom: new Date(),
-          activeTo: null,
-          active: false
+          rate: 0,
         },
         workHours: this.systemShop.setWorkHours(),
         shopName: '',
         gender: 'Male',
-        loginOption: {email: false, phoneNumber: true, loginId: ''},
+        loginOption: { email: false, phoneNumber: true, id: '' },
+        activeFrom: new Date(),
+        activeTo: null,
+        active: false,
+        phoneNumber: '',
+        email: '',
       },
       setting: this.setDefaultUserSetting(),
       loginIds: [],
       phoneNumber: '',
-      email: ''
-    }
+      email: '',
+    };
   }
 
-  public setDefaultUserSetting(): IUserSetting{
+  public setDefaultUserSetting(): IUserSetting {
     return {
-        preferLanguage: ''
-    }
+      preferLanguage: '',
+    };
   }
 }

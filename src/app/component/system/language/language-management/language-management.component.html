@@ -1,6 +1,6 @@
 <div id="language-selection-list">
   <legend>
-    {{ "label.name.languageselection" | languageTransform | async }}
+    {{ 'label.name.languageselection' | languageTransform | async }}
   </legend>
   <!--Grid-->
   <kendo-grid
@@ -9,8 +9,7 @@
     [sortable]="true"
     [autoSize]="true"
     [selectable]="true"
-    (cellClick)="onClickLanguage($event)"
-  >
+    (cellClick)="onClickLanguage($event)">
     <!--
     <ng-template kendoGridToolbarTemplate>
       <button kendoGridAddCommand (click)="onClickCreate()">
@@ -20,30 +19,18 @@
     -->
 
     <!-- Name -->
-    <kendo-grid-column
-      title="{{ 'label.name.name' | languageTransform | async }}"
-      field="name"
-    >
+    <kendo-grid-column title="{{ 'label.name.name' | languageTransform | async }}" field="name">
     </kendo-grid-column>
     <!-- Code -->
-    <kendo-grid-column
-      title="{{ 'label.name.code' | languageTransform | async }}"
-      field="code"
-    >
+    <kendo-grid-column title="{{ 'label.name.code' | languageTransform | async }}" field="code">
     </kendo-grid-column>
 
     <!--Default-->
     <kendo-grid-column
       title="{{ 'language.managment.default' | languageTransform | async }}"
-      field="isDefault"
-    >
+      field="isDefault">
       <ng-template kendoGridCellTemplate let-selection>
-        <input
-          type="checkbox"
-          kendoCheckBox
-          [checked]="selection.isDefault"
-          disabled
-        />
+        <input type="checkbox" kendoCheckBox [checked]="selection.isDefault" disabled />
       </ng-template>
     </kendo-grid-column>
   </kendo-grid>

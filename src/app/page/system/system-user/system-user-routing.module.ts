@@ -6,8 +6,8 @@ import { SystemUserPage } from './system-user.page';
 const routes: Routes = [
   {
     path: '',
-    component: SystemUserPage
-  }
+    component: SystemUserPage,
+  },
 ];
 
 @NgModule({

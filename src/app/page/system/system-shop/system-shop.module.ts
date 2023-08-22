@@ -7,12 +7,10 @@ import { NgModule } from '@angular/core';
 import { SystemShopPageRoutingModule } from './system-shop-routing.module';
 import { SystemShopPage } from './system-shop.page';
 
-import { LanguageTransformPipeModule } from '../../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
 
-import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.module';
-import { SharedFormModule } from 'src/app/shared/components/form/form.module';
-import { IonicIconSelectionModule } from 'src/app/shared/components/ionic-icon-selection/ionic-icon-selection.module';
+import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
+import { SharedFormModule } from 'src/app/component/global/form/form.module';
 
 import { SystemShopManagementModule } from '../../../component/system/shop/shop-management/shop-management.module';
 
@@ -24,11 +22,9 @@ import { SystemShopManagementModule } from '../../../component/system/shop/shop-
     SystemShopPageRoutingModule,
     KendoUiModule,
     SharedFormModule,
-    IonicIconSelectionModule,
     SystemShopManagementModule,
     LanguageTransformPipeModule,
-    Ng2SearchPipeModule
   ],
-  declarations: [SystemShopPage]
+  declarations: [SystemShopPage],
 })
 export class SystemShopPageModule {}

@@ -1,3 +1,6 @@
 <div id="role-management-container">
-  <system-role-list-card [roles]="roles | async" [(role)]="selectedRole"></system-role-list-card>
+  <system-role-list-card
+    [roles]="roles"
+    [(role)]="selectedRole"
+    (onUpdate)="refresh()"></system-role-list-card>
 </div>

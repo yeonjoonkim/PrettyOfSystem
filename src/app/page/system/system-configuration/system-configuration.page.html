@@ -5,10 +5,7 @@
       <ion-menu-button auto-hide="true"></ion-menu-button>
     </ion-buttons>
     <!-- Title -->
-    <ion-title
-      >{{'menu.name.systemconfiguration'| languageTransform | async
-      }}</ion-title
-    >
+    <ion-title>{{'menu.name.systemconfiguration'| languageTransform | async }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -20,18 +17,11 @@
       *ngFor="let button of systemMenu"
       [toggleable]="true"
       [selected]="button.name === selectedSystemMenu.name"
-      (selectedChange)="processSystemMenuOption(button)"
-    >
+      (selectedChange)="processSystemMenuOption(button)">
       {{button.name}}
     </button>
   </kendo-buttongroup>
-  <system-menu-management
-    *ngIf="selectedSystemMenu.isMenuManagement"
-  ></system-menu-management>
-  <system-role-management
-    *ngIf="selectedSystemMenu.isRoleManagement"
-  ></system-role-management>
-  <system-plan-management
-    *ngIf="selectedSystemMenu.isPlanManagement"
-  ></system-plan-management>
+  <system-menu-management *ngIf="selectedSystemMenu.isMenuManagement"></system-menu-management>
+  <system-role-management *ngIf="selectedSystemMenu.isRoleManagement"></system-role-management>
+  <system-plan-management *ngIf="selectedSystemMenu.isPlanManagement"></system-plan-management>
 </ion-content>

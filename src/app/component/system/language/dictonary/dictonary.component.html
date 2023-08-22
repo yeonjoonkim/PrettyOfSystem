@@ -2,15 +2,17 @@
   <section id="language-selection-container">
     <flex-row>
       <flex-row-item>
-        <kendo-label
-          text="{{ 'language.name.language' | languageTransform | async }}"
-        >
+        <kendo-label text="{{ 'language.name.language' | languageTransform | async }}">
           <kendo-dropdownlist
+            #dropdownlist
+            adaptiveMode="auto"
             [data]="languageSelectionList"
             textField="value"
             [(ngModel)]="selectedLang"
+            [filterable]="true"
             (ngModelChange)="onChangeLanguageSelection()"
-          >
+            (opened)="onOpen($event)"
+            (filterChange)="handleFilter($event)">
           </kendo-dropdownlist>
         </kendo-label>
       </flex-row-item>
@@ -18,40 +20,29 @@
         <text-box
           title="label.name.search"
           [(value)]="query"
-          (valueChange)="onChangeQuery()"
-        ></text-box>
+          (valueChange)="onChangeQuery()"></text-box>
       </flex-row-item>
     </flex-row>
   </section>
   <section id="language-key-pair-container">
     <flex-col>
       <flex-col-item>
-        <kendo-grid
-          [data]="gridData"
-          [height]="400"
-          [sortable]="true"
-          [autoSize]="true"
-        >
+        <kendo-grid [data]="gridData" [height]="400" [sortable]="true" [autoSize]="true">
           <ng-template kendoGridToolbarTemplate>
-            <button
-              kendoGridAddCommand
-              (click)="openAddLanguageTransform($event)"
-            >
-              {{ "button.name.add" | languageTransform | async }}
+            <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
+              {{ 'button.name.add' | languageTransform | async }}
             </button>
           </ng-template>
           <kendo-grid-column
             title="{{ 'transform.name.key' | languageTransform | async }}"
             [filterable]="true"
-            field="key"
-          >
+            field="key">
           </kendo-grid-column>
 
           <kendo-grid-column
             title="{{ 'transform.name.value' | languageTransform | async }}"
             [filterable]="true"
-            field="value"
-          >
+            field="value">
           </kendo-grid-column>
 
           <kendo-grid-column [filterable]="false" [width]="100">
@@ -59,8 +50,7 @@
               <language-key-pair-select-option
                 [keyPairValue]="data"
                 [languageCode]="selectedLang.key"
-                (keyPairValueChange)="setLanguageSelection()"
-              ></language-key-pair-select-option>
+                (keyPairValueChange)="setLanguageSelection()"></language-key-pair-select-option>
             </ng-template>
           </kendo-grid-column>
         </kendo-grid>

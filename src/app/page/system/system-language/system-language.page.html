@@ -5,9 +5,7 @@
       <ion-menu-button auto-hide="true"></ion-menu-button>
     </ion-buttons>
     <!-- Title -->
-    <ion-title
-      >{{'menu.content.languagemanagement'| languageTransform | async }}
-    </ion-title>
+    <ion-title>{{'menu.content.languagemanagement'| languageTransform | async }} </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -19,16 +17,11 @@
       *ngFor="let button of systemMenu"
       [toggleable]="true"
       [selected]="button.name === selectedSystemMenu.name"
-      (selectedChange)="processSystemMenuOption(button)"
-    >
+      (selectedChange)="processSystemMenuOption(button)">
       {{button.name}}
     </button>
   </kendo-buttongroup>
 
-  <language-dictonary
-    *ngIf="selectedSystemMenu.isLanguageDictionary"
-  ></language-dictonary>
-  <language-management
-    *ngIf="selectedSystemMenu.isLanguageManagement"
-  ></language-management>
+  <language-dictonary *ngIf="selectedSystemMenu.isLanguageDictionary"></language-dictonary>
+  <language-management *ngIf="selectedSystemMenu.isLanguageManagement"></language-management>
 </ion-content>

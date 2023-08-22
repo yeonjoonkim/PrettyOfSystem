@@ -6,10 +6,10 @@ import { IonicModule } from '@ionic/angular';
 import { SystemLanguagePageRoutingModule } from './system-language-routing.module';
 import { SystemLanguagePage } from './system-language.page';
 
-import { LanguageTransformPipeModule } from '../../../shared/pipes/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
 
-import { KendoUiModule } from 'src/app/shared/kendo-ui-module/kendo-ui-module.module';
-import { SharedFormModule } from 'src/app/shared/components/form/form.module';
+import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
+import { SharedFormModule } from 'src/app/component/global/form/form.module';
 
 import { DictionaryModule } from 'src/app/component/system/language/dictonary/dictionary.module';
 import { LanguageMangementModule } from 'src/app/component/system/language/language-management/language-management.module';
@@ -23,8 +23,8 @@ import { LanguageMangementModule } from 'src/app/component/system/language/langu
     KendoUiModule,
     SharedFormModule,
     DictionaryModule,
-    LanguageMangementModule
+    LanguageMangementModule,
   ],
-  declarations: [SystemLanguagePage]
+  declarations: [SystemLanguagePage],
 })
 export class SystemLanguagePageModule {}

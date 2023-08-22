@@ -9,8 +9,8 @@ describe('LoginOptionSelectionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginOptionSelectionComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [LoginOptionSelectionComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginOptionSelectionComponent);

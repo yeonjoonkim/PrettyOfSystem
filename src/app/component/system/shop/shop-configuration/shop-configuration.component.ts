@@ -1,7 +1,7 @@
 import { IFormHeaderModalProp } from './../../../../interface/global/global.interface';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
-import * as Constant from './../../../../shared/services/global/global-constant';
+import * as Constant from 'src/app/service/global/global-constant';
 import {
   IShopConfigurationDisplayOption,
   IShopConfigurationValidator,
@@ -24,7 +24,11 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
   public config: IShopConfiguration = this.shopConfig.setDefaultConfig();
   private selectedconfig!: IShopConfiguration | undefined;
 
-  constructor(private shopConfig: ShopConfigurationService, private navParams: NavParams, private modalCtrl: ModalController) {
+  constructor(
+    private shopConfig: ShopConfigurationService,
+    private navParams: NavParams,
+    private modalCtrl: ModalController
+  ) {
     this.loadingFormCtrl();
   }
 
@@ -36,28 +40,38 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
     await this.onChangeForm();
   }
 
-  private async onChangeForm(): Promise<void>{
+  private async onChangeForm(): Promise<void> {
     setTimeout(() => {
-        this.form.enabledSavebutton = this.shopConfig.formInputValidator(this.validator);
+      this.form.enabledSavebutton = this.shopConfig.formInputValidator(this.validator);
     });
   }
-  private loadingFormCtrl(): void{
+  private loadingFormCtrl(): void {
     let form: IFormHeaderModalProp = this.navParams.get(Constant.Default.ComponentMode.Form);
     this.selectedconfig = this.navParams.get('config');
-    this.form = form ? form : { readOnly: true, headerTitle: '', action: Constant.Default.FormAction.Read, enabledSavebutton: false};
+    this.form = form
+      ? form
+      : {
+          readOnly: true,
+          headerTitle: '',
+          action: Constant.Default.FormAction.Read,
+          enabledSavebutton: false,
+        };
     this.config = this.selectedconfig ? this.selectedconfig : this.shopConfig.setDefaultConfig();
   }
 
-  public async onPlanPeriodChange(){
-   let newPaymentDate = this.shopConfig.global.date.transform.addDay(this.config.plan.lastPaymentDate, this.config.plan.period.day);
-   this.config.plan.paymentDate =  newPaymentDate.toUTCDate();
+  public async onPlanPeriodChange() {
+    let newPaymentDate = this.shopConfig.global.date.transform.addDay(
+      this.config.plan.lastPaymentDate,
+      this.config.plan.period.day
+    );
+    this.config.plan.paymentDate = newPaymentDate.toUTCDate();
   }
 
   public onClickInfo(): void {
     this.display = this.shopConfig.displayInfo();
   }
 
-  public onClickHours(): void{
+  public onClickHours(): void {
     this.display = this.shopConfig.displayWorkHours();
   }
 
@@ -69,36 +83,39 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
     this.display = this.shopConfig.displaySubscription();
   }
 
-  public autoPaymentDateCalculation(){
-    if(this.form.action === Constant.Default.FormAction.Create){
+  public autoPaymentDateCalculation() {
+    if (this.form.action === Constant.Default.FormAction.Create) {
       this.onPlanPeriodChange();
     }
   }
 
-  public async onChangePlan(){
-    if(this.config.plan.configurationId){
-      this.planPrice = await this.shopConfig.getSelectedTotalPrice(this.config.plan.configurationId, this.config.plan.period);
+  public async onChangePlan() {
+    if (this.config.plan.configurationId) {
+      this.planPrice = await this.shopConfig.getSelectedTotalPrice(
+        this.config.plan.configurationId,
+        this.config.plan.period
+      );
     }
   }
 
-  public dismiss(){
+  public dismiss() {
     this.modalCtrl.dismiss(this.config, 'cancel');
   }
 
-  public async handleEdit(){
+  public async handleEdit() {
     this.form.readOnly = false;
     this.form.enabledSavebutton = false;
   }
 
-  public async handleSave(){
+  public async handleSave() {
     this.shopConfig.handleSave(this.config, this.form);
   }
 
-  public async handleDelete(){
-    this.shopConfig.handleDelete(this.config, this.form)
+  public async handleDelete() {
+    this.shopConfig.handleDelete(this.config, this.form);
   }
 
-  public async handleCreate(){
+  public async handleCreate() {
     this.shopConfig.handleCreate(this.config, this.form);
   }
 }

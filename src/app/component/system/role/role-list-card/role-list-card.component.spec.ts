@@ -9,8 +9,8 @@ describe('RoleListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoleListCardComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [RoleListCardComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RoleListCardComponent);

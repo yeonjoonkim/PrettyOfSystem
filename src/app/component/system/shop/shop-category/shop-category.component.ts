@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IShopCategory } from 'src/app/interface/system/shop/shop.interface';
 import { IPairValueId } from 'src/app/interface/system/system.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
-import * as Constant from '../../../../shared/services/global/global-constant';
+import * as Constant from 'src/app/service/global/global-constant';
 
 @Component({
   selector: 'shop-category',
@@ -12,8 +12,7 @@ import * as Constant from '../../../../shared/services/global/global-constant';
 export class ShopCategoryListComponent implements OnInit {
   @Output() shopCategoryChange = new EventEmitter<IShopCategory>();
   @Output() validateChange = new EventEmitter<boolean>();
-  @Input() mode: Constant.ComponentModeType =
-    Constant.Default.ComponentMode.Form;
+  @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input() readOnly: boolean = false;
   @Input()
   get shopCategory(): IShopCategory {
@@ -34,7 +33,7 @@ export class ShopCategoryListComponent implements OnInit {
   private defaultShopCategoryList: IShopCategory[] = [];
   public loading: boolean = true;
   public pairValueIdList: IPairValueId[] = [];
-  public selectedPairValueId: IPairValueId = {id: '', value: ''};
+  public selectedPairValueId: IPairValueId = { id: '', value: '' };
   private validated: boolean = false;
   private selectedShopCategory: IShopCategory = {
     id: '',
@@ -55,16 +54,16 @@ export class ShopCategoryListComponent implements OnInit {
 
   private setDefaultPairValueId() {
     let defaultPair: IPairValueId | undefined = this.pairValueIdList.find(
-      (p) => p.id === this.selectedShopCategory.id
+      p => p.id === this.selectedShopCategory.id
     );
-    this.selectedPairValueId = defaultPair !== undefined ? defaultPair : {id: '', value: ''};
+    this.selectedPairValueId = defaultPair !== undefined ? defaultPair : { id: '', value: '' };
     this.validate = defaultPair !== undefined;
     this.loading = false;
   }
 
   public onClickCategory() {
     let id: string = this.selectedPairValueId.id;
-    let category: IShopCategory | undefined = this.defaultShopCategoryList.find((c) => c.id === id);
+    let category: IShopCategory | undefined = this.defaultShopCategoryList.find(c => c.id === id);
     this.validate = category !== undefined;
     if (category) {
       this.shopCategory = category;

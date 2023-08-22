@@ -10,6 +10,8 @@
         "createDefaultProgram": true
       },
       "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
@@ -40,7 +42,12 @@
     },
     {
       "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+      ],
+      "plugins": ["@angular-eslint", "@typescript-eslint"],
       "rules": {}
     }
   ]

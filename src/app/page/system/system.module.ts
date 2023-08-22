@@ -1,16 +1,13 @@
 //Import Ionic Angular Module
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
 //Import System Routing
 import { SystemPageRoutingModule } from './system-routing.module';
 
 @NgModule({
-  imports: [
-    SystemPageRoutingModule
-  ],
+  imports: [SystemPageRoutingModule],
   declarations: [],
-  entryComponents: [
-  ],
-  exports: []
+  entryComponents: [],
+  exports: [],
 })
 export class SystemPageModule {}

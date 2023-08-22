@@ -1,25 +1,22 @@
-
 <section class="modal-container">
   <!-- Transform Key -->
-  <kendo-label text="{{'transform.name.key' | languageTransform | async}}">
+  <kendo-label text="{{ 'transform.name.key' | languageTransform | async }}">
     <kendo-textbox
-                  [(ngModel)]="languageTransform.key"
-                  size="large"
-                  placeholder="{{'path.component.item' | languageTransform | async}}"
-                  [clearButton]="true">
+      [(ngModel)]="languageTransform.key"
+      size="large"
+      placeholder="{{ 'path.component.item' | languageTransform | async }}"
+      [clearButton]="true">
     </kendo-textbox>
   </kendo-label>
 
   <!-- Transform Valuie -->
-  <kendo-label text="{{'transform.name.value' | languageTransform | async}}">
-    <kendo-textbox
-                  [(ngModel)]="languageTransform.value"
-                  size="large"
-                  [clearButton]="true">
+  <kendo-label text="{{ 'transform.name.value' | languageTransform | async }}">
+    <kendo-textbox [(ngModel)]="languageTransform.value" size="large" [clearButton]="true">
     </kendo-textbox>
   </kendo-label>
 
   <!--Save Button-->
-  <ion-button expand="block" (click)="onClickSaveButton()">{{'button.name.save' | languageTransform | async }}</ion-button>
+  <ion-button expand="block" (click)="onClickSaveButton()">{{
+    'button.name.save' | languageTransform | async
+  }}</ion-button>
 </section>
-

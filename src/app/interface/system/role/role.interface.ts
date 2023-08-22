@@ -1,6 +1,6 @@
-import { IMenuCategory } from "../../menu/menu.interface";
+import { IMenuCategory } from '../../menu/menu.interface';
 
-export interface IRoleConfiguration{
+export interface IRoleConfiguration {
   id: string;
   name: string;
   description: string;
@@ -8,7 +8,7 @@ export interface IRoleConfiguration{
   rate: number;
 }
 
-export interface IRoleAccessLevel{
+export interface IRoleAccessLevel {
   isSystemAdmin: boolean;
   isAdmin: boolean;
   isManager: boolean;

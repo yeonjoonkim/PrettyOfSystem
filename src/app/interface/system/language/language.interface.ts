@@ -7,12 +7,12 @@ export interface ILanguageSelection {
   isDefault: boolean;
 }
 
-export interface ILanguageKey{
+export interface ILanguageKey {
   id?: string;
   used: string[];
 }
 
-export interface ILanguageTrasnlationResult{
+export interface ILanguageTrasnlationResult {
   description: string;
   name: string;
   isSaved: boolean;
@@ -20,12 +20,12 @@ export interface ILanguageTrasnlationResult{
   isKeyNotExisited: boolean;
 }
 
-export interface ILanguageTranslateItem{
+export interface ILanguageTranslateItem {
   isEmpty: boolean;
   translated: ILanguageTranslateResult;
 }
 
-export interface IAddLanguageTransformSaveCommand{
+export interface IAddLanguageTransformSaveCommand {
   hasValue: boolean;
   isKeyNotExisted: boolean;
   isTransformKeyValueFormat: boolean;
@@ -37,11 +37,11 @@ export interface ILanguageTranslatedCriteria {
   isTitle: boolean;
 }
 
-export interface ILanguageTranslateResult{
+export interface ILanguageTranslateResult {
   [key: string]: string;
 }
 
-export interface ILanugaeTransformPopOverCriteria{
+export interface ILanugaeTransformPopOverCriteria {
   key: string;
   value: string;
   selectedLangCode: string;

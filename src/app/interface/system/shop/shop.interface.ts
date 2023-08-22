@@ -1,5 +1,5 @@
 import { ZonedDate } from '@progress/kendo-date-math';
-import * as Constant from '../../../shared/services/global/global-constant';
+import * as Constant from 'src/app/service/global/global-constant';
 import { IAddress, IDatePeriod, ITimeItem } from '../../global/global.interface';
 import { IShopSetting } from './shop-setting.interface';
 
@@ -10,7 +10,7 @@ export type IShopCategory = {
   isPersonalTrainning: boolean;
   isSkinCare: boolean;
   name: string;
-}
+};
 
 export type IShopCountry = {
   id: string;
@@ -20,23 +20,23 @@ export type IShopCountry = {
   prefixedPhoneCode: Constant.PhoneCodeType;
   dateFormat: Constant.DateFormatType;
   code: Constant.CountryCodeType;
-}
+};
 
-export interface IShopPlan{
+export interface IShopPlan {
   configurationId: string;
   isOverDue: boolean;
-  lastPaymentDate: Date
-  paymentDate: Date
+  lastPaymentDate: Date;
+  paymentDate: Date;
   period: IDatePeriod;
 }
 
-export interface IShopPlanOption{
+export interface IShopPlanOption {
   isWeekly: boolean;
   isMonthly: boolean;
   isAnnually: boolean;
 }
 
-export interface IShopWorkHours{
+export interface IShopWorkHours {
   mon: IShopOperatingDaily;
   tue: IShopOperatingDaily;
   wed: IShopOperatingDaily;
@@ -47,7 +47,7 @@ export interface IShopWorkHours{
   closeDay: Constant.DayIndexType[];
 }
 
-export interface IShopOperatingDaily{
+export interface IShopOperatingDaily {
   index: Constant.DayIndexType;
   day: Constant.DayType;
   isOpen: boolean;
@@ -55,11 +55,11 @@ export interface IShopOperatingDaily{
   operatingHours: IShopOperatingHours;
 }
 
-export interface IShopOperatingHours{
+export interface IShopOperatingHours {
   openTime: ITimeItem;
   closeTime: ITimeItem;
 }
-export interface IShopConfiguration{
+export interface IShopConfiguration {
   id: string;
   name: string;
   phoneNumber: string;
@@ -77,7 +77,7 @@ export interface IShopConfiguration{
   timezone: string;
 }
 
-export interface IShopConfigurationFilterOption{
+export interface IShopConfigurationFilterOption {
   name: string;
   email: string;
   phoneNumber: string;
