@@ -3,7 +3,7 @@
     {{ 'label.name.shopconfiguration' | languageTransform | async }}
   </legend>
   <kendo-grid
-    [kendoGridBinding]="(configs | async)!"
+    [kendoGridBinding]="configs"
     [height]="500"
     [sortable]="true"
     [autoSize]="true"

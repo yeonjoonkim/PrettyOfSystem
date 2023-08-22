@@ -1,6 +1,6 @@
 <legend>{{ 'label.name.subscriptionservice' | languageTransform | async }}</legend>
 
-<kendo-grid [kendoGridBinding]="(planOptions | async)!" [sortable]="true">
+<kendo-grid [kendoGridBinding]="planOptions" [sortable]="true">
   <!-- Add Button -->
   <ng-template kendoGridToolbarTemplate>
     <button kendoGridAddCommand (click)="onClickAddPlan()">

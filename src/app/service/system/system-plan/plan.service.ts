@@ -55,7 +55,7 @@ export class PlanService {
     let isSaved = await this.planRepo.addSystemPlanOption(planConfig);
 
     if (isSaved) {
-      await this.modal.dismissModal();
+      await this.modal.dissmissModalWithRefresh();
       await this.presentSaveMsg();
     } else {
       await this.presentSaveError();
@@ -67,7 +67,7 @@ export class PlanService {
 
     if (isUpdated) {
       await this.presentUpdateMsg();
-      await this.modal.dismissModal();
+      await this.modal.dissmissModalWithRefresh();
     } else {
       await this.presentUpdateError();
     }

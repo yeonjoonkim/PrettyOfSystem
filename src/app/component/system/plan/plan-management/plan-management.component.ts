@@ -1,5 +1,5 @@
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
-import { Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { PlanService } from '../../../../service/system/system-plan/plan.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -9,10 +9,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./plan-management.component.scss'],
 })
 export class PlanManagementComponent implements OnInit {
-  public readonly planOptions: Observable<IPlanConfiguration[]> =
-    this.planService.valueChangeListener();
+  public planOptions: IPlanConfiguration[] = [];
 
   constructor(private planService: PlanService) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.setPlanOptions();
+  }
+
+  private async setPlanOptions() {
+    let result = await lastValueFrom(this.planService.getPlanOptions());
+    this.planOptions = result.sort(r => r.monthlyPrice.total);
+  }
+
+  public async refresh() {
+    await this.setPlanOptions();
+  }
 }

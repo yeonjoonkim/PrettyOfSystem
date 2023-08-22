@@ -16,6 +16,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
   styleUrls: ['./role-list-card.component.scss'],
 })
 export class RoleListCardComponent implements OnInit, OnChanges {
+  @Output() onUpdate = new EventEmitter<boolean>();
   @Output() roleChange = new EventEmitter<IRoleConfiguration>();
   @Input()
   get role(): IRoleConfiguration {
@@ -72,14 +73,27 @@ export class RoleListCardComponent implements OnInit, OnChanges {
   public async onClickDeleteRole(selectedRole: IRoleConfiguration) {
     selectedRole = this.findRole(selectedRole);
     await this.systemRole.processDeleteRoleConfiguration(selectedRole);
+    this.onUpdate.emit(true);
   }
 
   public async presentAddRole() {
-    await this.systemRole.modal.prsentAddRole();
+    let modal = await this.systemRole.modal.prsentAddRole();
+    await modal.present();
+    await this.handleDismissModal(modal);
   }
 
   public async presentEditRole(selectedRole: IRoleConfiguration) {
     selectedRole = this.findRole(selectedRole);
-    await this.systemRole.modal.presentEditRole(selectedRole);
+    let modal = await this.systemRole.modal.presentEditRole(selectedRole);
+    await modal.present();
+    await this.handleDismissModal(modal);
+  }
+
+  private async handleDismissModal(modal: HTMLIonModalElement) {
+    let result = await modal.onWillDismiss();
+    console.log(result);
+    if (result?.data === 'refresh') {
+      this.onUpdate.emit(true);
+    }
   }
 }

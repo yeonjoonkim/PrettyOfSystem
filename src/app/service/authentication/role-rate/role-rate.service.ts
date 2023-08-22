@@ -1,6 +1,7 @@
 import { IRoleAccessLevel } from '../../../interface/system/role/role.interface';
 import { Injectable } from '@angular/core';
 import * as Constant from '../../global/global-constant';
+import { IUserLoginOption } from 'src/app/interface/user/user.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -8,6 +9,12 @@ export class RoleRateService {
   private readonly rate = Constant.Default.RoleAccessRateType;
 
   constructor() {}
+
+  public setLoginOptionByRate(rate: Constant.RoleAccessRateType): IUserLoginOption {
+    return Constant.Default.RoleAccessRateType.Reception === rate
+      ? { id: '', phoneNumber: false, email: true }
+      : { id: '', phoneNumber: true, email: false };
+  }
 
   public getSystemRoleRateSettingByConfiguration(accessLevel: IRoleAccessLevel): number {
     let rate: number = 0;

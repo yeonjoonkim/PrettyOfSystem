@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 import { lastValueFrom } from 'rxjs';
+import { LanguageService } from 'src/app/service/global/language/language.service';
 
 @Component({
   selector: 'system-menu-management',
@@ -24,7 +25,10 @@ export class MenuManagementComponent implements OnInit {
     },
   };
 
-  constructor(private systemMenuRepository: SystemMenuRepositoryService) {}
+  constructor(
+    private systemMenuRepository: SystemMenuRepositoryService,
+    private language: LanguageService
+  ) {}
 
   async ngOnInit() {
     await this.setMenuCategory();
@@ -36,6 +40,8 @@ export class MenuManagementComponent implements OnInit {
   }
 
   async onUpdate() {
-    await this.setMenuCategory();
+    await this.language.refreshLanguageSelection().then(async () => {
+      await this.setMenuCategory();
+    });
   }
 }

@@ -4,18 +4,16 @@ import { Storage } from '@ionic/storage-angular';
 import { CryptService } from '../crypt/crypt.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class StorageService {
-
   constructor(private storage: Storage, private crypt: CryptService) {}
   public clear() {
     this.storage.clear();
   }
 
   public async store(key: string, value: any) {
-    let encryptedValue =  this.crypt.encrypt(value);
+    let encryptedValue = this.crypt.encrypt(value);
     await this.storage.set(key, encryptedValue);
   }
 
@@ -28,24 +26,27 @@ export class StorageService {
     return null;
   }
 
-  public removeItem(key: string) {
-    const encryptedKey =  this.crypt.encrypt(key);
-    this.storage.remove(encryptedKey);
+  public async removeItem(key: string) {
+    this.storage.remove(key);
   }
 
-  public async getLanguage(){
+  public async getLanguage() {
     let result = await this.get(storageKey.default.language);
     return result;
   }
 
-  public async getLanguageSelection(){
+  public async getLanguageSelection() {
     let result = await this.get(storageKey.default.languageSelection);
     return result;
   }
 
-  public async getLanguageSelectionKey(){
+  public async getLanguageSelectionKey() {
     let result = await this.get(storageKey.default.languageSelectionKey);
     return result;
   }
 
+  public async clearLanguage() {
+    await this.removeItem(storageKey.default.languageSelection);
+    await this.removeItem(storageKey.default.languageSelectionKey);
+  }
 }

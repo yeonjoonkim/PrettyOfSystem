@@ -22,8 +22,8 @@ export class SystemShopService {
     private global: GlobalService
   ) {}
 
-  public shopConfigurationValueChangeListener(): Observable<IShopConfiguration[]> {
-    return this.systemShopConfigRepo.shopConfigurationValueChangeListener();
+  public getAllShopConfigurations(): Observable<IShopConfiguration[]> {
+    return this.systemShopConfigRepo.getAllShopConfigurations();
   }
 
   public async getSystemShopCategoryList() {

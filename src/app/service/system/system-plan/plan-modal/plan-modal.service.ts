@@ -10,33 +10,37 @@ import { cloneDeep } from 'lodash';
 export class PlanModalService {
   constructor(private modalCtrl: ModalController) {}
 
-  public async presentAddPlan(): Promise<void> {
+  public async presentAddPlan(): Promise<HTMLIonModalElement> {
     let addPlan = await this.modalCtrl.create({
       component: PlanComponent,
       componentProps: { readOnly: false, editMode: false },
     });
-    await addPlan.present();
+    return addPlan;
   }
 
-  public async presentEditPlan(config: IPlanConfiguration) {
+  public async presentEditPlan(config: IPlanConfiguration): Promise<HTMLIonModalElement> {
     let selectedConfig: IPlanConfiguration = cloneDeep(config);
     let editPlan = await this.modalCtrl.create({
       component: PlanComponent,
       componentProps: { plan: selectedConfig, editMode: true },
     });
-    await editPlan.present();
+    return editPlan;
   }
 
-  public async presentViewPlan(config: IPlanConfiguration) {
+  public async presentViewPlan(config: IPlanConfiguration): Promise<HTMLIonModalElement> {
     let selectedConfig: IPlanConfiguration = cloneDeep(config);
-    let editPlan = await this.modalCtrl.create({
+    let viewPlan = await this.modalCtrl.create({
       component: PlanComponent,
       componentProps: { plan: selectedConfig, readOnly: true },
     });
-    await editPlan.present();
+
+    return viewPlan;
   }
 
   public async dismissModal(): Promise<void> {
     await this.modalCtrl.dismiss();
+  }
+  public async dissmissModalWithRefresh() {
+    await this.modalCtrl.dismiss('refresh');
   }
 }

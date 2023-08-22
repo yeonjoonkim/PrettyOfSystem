@@ -138,17 +138,21 @@ export class SystemShopConfigurationRepositoryService {
       );
   }
 
-  public getAllShopConfigurations() {
+  public getAllShopConfigurations(): Observable<IShopConfiguration[]> {
     return this.afs
       .collection<IShopConfiguration>(Db.Context.ShopConfiguration, ref => ref.orderBy('name'))
       .get()
       .pipe(
-        map(configs => {
-          return configs.docs.map(snapshot => {
-            let shopconfig = snapshot.data();
-            return shopconfig;
-          });
-        })
+        switchMap(configs =>
+          from(
+            Promise.all(
+              configs.docs.map(snapshot => {
+                let shopconfig = snapshot.data();
+                return this.validatedShopConfiguration(shopconfig);
+              })
+            )
+          )
+        )
       );
   }
 
@@ -177,6 +181,7 @@ export class SystemShopConfigurationRepositoryService {
     if (sc.activeTo) {
       sc.activeTo = this.firebaseService.toDate(sc.plan.lastPaymentDate);
     }
+
     await this.updateShopSetting(sc, validated);
 
     return sc;

@@ -1,6 +1,6 @@
 import { IRoleAccessLevel, IRoleConfiguration } from '../system/role/role.interface';
 import { IShopWorkHours } from '../system/shop/shop.interface';
-import * as Constant from '../../shared/services/global/global-constant';
+import * as Constant from 'src/app/service/global/global-constant';
 export interface IUser {
   id: string;
   firstName: string;

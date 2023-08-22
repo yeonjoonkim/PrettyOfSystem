@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CellClickEvent } from '@progress/kendo-angular-grid';
-import { Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
@@ -11,22 +11,38 @@ import { DeviceWidthService } from 'src/app/service/global/device-width/device-w
   styleUrls: ['./shop-management.component.scss'],
 })
 export class ShopManagementComponent implements OnInit, OnDestroy {
-  public configs: Observable<IShopConfiguration[]> =
-    this.systemShop.shopConfigurationValueChangeListener();
+  public configs: IShopConfiguration[] = [];
   private selectedConfig!: IShopConfiguration;
   constructor(private systemShop: SystemShopService, public device: DeviceWidthService) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.setConfigs();
+  }
 
   ngOnDestroy() {}
 
   public async onClickCreateShopConfiguration() {
-    await this.systemShop.modal.presentCreateSystemShopConfiguration();
+    let modal = await this.systemShop.modal.presentCreateSystemShopConfiguration();
+    await modal.present();
+    await this.handleDissmissModal(modal);
   }
 
   public async onClickCell(selected: CellClickEvent) {
     this.selectedConfig = selected.dataItem;
     let modal = await this.systemShop.modal.presentEditShopConfiguration(this.selectedConfig);
     await modal.present();
+    await this.handleDissmissModal(modal);
+  }
+
+  private async handleDissmissModal(modal: HTMLIonModalElement) {
+    let result = await modal.onWillDismiss();
+    if (result?.role !== 'cancel') {
+      await this.setConfigs();
+    }
+  }
+
+  private async setConfigs() {
+    let result = await lastValueFrom(this.systemShop.getAllShopConfigurations());
+    this.configs = result.sort((a, b) => a.name.localeCompare(b.name));
   }
 }

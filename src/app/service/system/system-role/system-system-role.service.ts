@@ -43,7 +43,7 @@ export class SystemRoleService {
       await this.systemRoleRepo.addSystemRoleConfiguration(newConfig);
       await this.presentSaveMsg();
       translate.validated.isSaved = true;
-      this.modal.dismissModal();
+      this.modal.dissmissModalWithRefresh();
     }
   }
 
@@ -81,7 +81,7 @@ export class SystemRoleService {
       );
       await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
       await this.presentUpdateMsg();
-      await this.modal.dismissModal();
+      await this.modal.dissmissModalWithRefresh();
     } else {
       await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
       await this.presentUpdateMsg();

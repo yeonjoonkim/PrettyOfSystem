@@ -21,7 +21,7 @@ export class ShopModalService {
       componentProps: { form: form },
     });
 
-    await modal.present();
+    return modal;
   }
 
   public async presentReadShopConfiguration(config: IShopConfiguration) {

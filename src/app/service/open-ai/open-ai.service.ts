@@ -2,7 +2,7 @@ import { LanguageService } from 'src/app/service/global/language/language.servic
 import { LoadingService } from '../global/loading/loading.service';
 import { ToastService } from '../global/toast/toast.service';
 import { Injectable } from '@angular/core';
-import { openAiApi } from './../../../../../openai-key';
+import { openAiApi } from './../../../../openai-key';
 
 @Injectable({
   providedIn: 'root',

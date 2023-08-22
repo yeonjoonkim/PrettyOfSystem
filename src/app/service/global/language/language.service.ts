@@ -262,8 +262,10 @@ export class LanguageService {
   }
 
   private async getLanguagSelectionKey(): Promise<ILanguageKey[]> {
-    let subscription = this.subscribeLanguageKeyResult();
-    return await lastValueFrom(subscription);
+    let currentKey: ILanguageKey[] | null = await this.storage.getLanguageSelectionKey();
+    return currentKey !== null
+      ? currentKey
+      : await lastValueFrom(this.subscribeLanguageKeyResult());
   }
 
   /** This will retreive selected language selection by language code */
@@ -298,6 +300,11 @@ export class LanguageService {
         });
       }
     }
+  }
+
+  public async refreshLanguageSelection() {
+    await this.storage.clearLanguage();
+    await this.setLocalLanguageSelection();
   }
 
   public async getLanguageSelectionResult(): Promise<ILanguageSelection[]> {

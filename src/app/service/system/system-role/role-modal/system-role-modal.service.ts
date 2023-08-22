@@ -12,7 +12,8 @@ export class RoleModalService {
   /**This will present the Add Role Component as a Modal with modal cssClass */
   public async prsentAddRole() {
     let addRole = await this.modalCtrl.create({ component: RoleComponent });
-    await addRole.present();
+
+    return addRole;
   }
 
   public async presentEditRole(config: IRoleConfiguration) {
@@ -20,11 +21,16 @@ export class RoleModalService {
       component: RoleComponent,
       componentProps: { role: config, editable: true },
     });
-    await editRole.present();
+
+    return editRole;
   }
 
   /** This method is to close the opened modal. */
   public async dismissModal(): Promise<void> {
     await this.modalCtrl.dismiss();
+  }
+
+  public async dissmissModalWithRefresh() {
+    await this.modalCtrl.dismiss('refresh');
   }
 }
