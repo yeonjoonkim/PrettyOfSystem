@@ -1,4 +1,3 @@
-import { LanguageService } from 'src/app/service/global/language/language.service';
 import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 

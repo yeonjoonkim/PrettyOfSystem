@@ -1,13 +1,13 @@
 import { IRoleConfiguration } from '../system/role/role.interface';
 import { IShopWorkHours } from '../shop/shop.interface';
-import * as Constant from 'src/app/service/global/global-constant';
+import * as Constant from '../../constant/constant';
 export interface IUser {
   id: string;
   firstName: string;
   lastName: string;
   isSystemAdmin: boolean;
   associatedShops: IUserAssociatedShop[];
-  currentShop: IUserAssociatedShop;
+  currentShop: IUserAssociatedShop | null;
   setting: IUserSetting;
   loginIds: string[];
   phoneNumber: string;
@@ -22,6 +22,13 @@ export interface IUserLoginOption {
 
 export interface IUserSetting {
   preferLanguage: string;
+}
+
+export interface IUserLogin {
+  phoneNumber: string | null;
+  emailAddress: string | null;
+  password: string | null;
+  confirmedPassword: string | null;
 }
 
 export interface IUserAssociatedShop {

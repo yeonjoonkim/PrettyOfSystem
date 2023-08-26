@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IShopOperatingHours } from 'src/app/interface/shop/shop.interface';
-import * as Constant from './../../../../service/global/global-constant';
+import * as Constant from 'src/app/constant/constant';
 
 @Injectable({
   providedIn: 'root',

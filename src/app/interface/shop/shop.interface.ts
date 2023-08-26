@@ -1,10 +1,9 @@
-import { ZonedDate } from '@progress/kendo-date-math';
-import * as Constant from 'src/app/service/global/global-constant';
+import * as Constant from '../../constant/constant';
 import { IAddress, IDatePeriod, ITimeItem } from '../global/global.interface';
 import { IShopSetting } from './shop-setting.interface';
 import { IUserAssociatedShop } from '../user/user.interface';
 
-export type IShopCategory = {
+export interface IShopCategory {
   id: string;
   isHairSalon: boolean;
   isMassageTheraphy: boolean;
@@ -12,9 +11,9 @@ export type IShopCategory = {
   isSkinCare: boolean;
   isMobileShop: boolean;
   name: string;
-};
+}
 
-export type IShopCountry = {
+export interface IShopCountry {
   id: string;
   currency: Constant.CurrencyType;
   length: string;
@@ -22,7 +21,7 @@ export type IShopCountry = {
   prefixedPhoneCode: Constant.PhoneCodeType;
   dateFormat: Constant.DateFormatType;
   code: Constant.CountryCodeType;
-};
+}
 
 export interface IShopPlan {
   configurationId: string;

@@ -4,9 +4,9 @@ import {
   IShopSetting,
   IShopTimePicker,
 } from 'src/app/interface/shop/shop-setting.interface';
-import * as Constant from '../../../../service/global/global-constant';
+import * as Constant from 'src/app/constant/constant';
 import { ShopSettingValidatorService } from './shop-setting-validator/shop-setting-validator.service';
-import { IShopSettingValiationResult } from 'src/app/interface/system/system.interface';
+import { IShopSettingValiationResult } from 'src/app/interface/shop/shop-setting.interface';
 
 @Injectable({
   providedIn: 'root',

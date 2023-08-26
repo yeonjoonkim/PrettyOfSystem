@@ -1,4 +1,4 @@
-import { PlanService } from '../../../../service/system/system-plan/plan.service';
+import { PlanService } from 'src/app/service/system/system-plan/plan.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';

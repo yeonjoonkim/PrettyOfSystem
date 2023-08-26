@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { IMenuCategory, IMenuContent } from '../../../interface/menu/menu.interface';
+import { IMenuCategory, IMenuContent } from 'src/app/interface/menu/menu.interface';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { firstValueFrom, from, lastValueFrom, map, Observable } from 'rxjs';
-import * as Db from 'src/app/service/global/constant/firebase-path';
+import * as Db from 'src/app/constant/firebase-path';
 import { IRoleAccessLevel } from 'src/app/interface/system/role/role.interface';
 import { RoleRateService } from 'src/app/service/authentication/role-rate/role-rate.service';
 

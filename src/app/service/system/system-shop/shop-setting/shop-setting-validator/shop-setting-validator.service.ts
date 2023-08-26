@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IShopSetting } from 'src/app/interface/shop/shop-setting.interface';
 import { ShopSettingGeneral } from './shop-setting-general/shop-setting-general.service';
-import { IShopSettingValiationResult } from 'src/app/interface/system/system.interface';
+import { IShopSettingValiationResult } from 'src/app/interface/shop/shop-setting.interface';
 import { ShopSettingTimePicker } from './shop-setting-time-picker/shop-setting-time-picker.service';
 
 @Injectable({

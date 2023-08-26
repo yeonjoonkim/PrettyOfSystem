@@ -22,7 +22,11 @@
     "lib": ["ES2022.Intl", "dom"],
     "useDefineForClassFields": false
   },
-  "include": ["src/**/*", "node_modules/ngx-intl-tel-input/**/*"],
+  "include": [
+    "src/**/*",
+    "node_modules/ngx-intl-tel-input/**/*",
+    "functions/src/app/interface/index copy.ts"
+  ],
   "angularCompilerOptions": {
     "skipLibCheck": true,
     "enableI18nLegacyMessageIdFormat": false,

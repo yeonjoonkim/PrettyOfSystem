@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import * as Constant from './../../global/global-constant';
+import * as Constant from '../../../constant/constant';
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import { FormControllerService } from '../form/form-controller.service';
 @Injectable({

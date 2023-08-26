@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IShopCategory } from 'src/app/interface/shop/shop.interface';
-import { IPairValueId } from 'src/app/interface/system/system.interface';
+import { IPairValueId } from 'src/app/interface/global/global.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
-import * as Constant from 'src/app/service/global/global-constant';
+import * as Constant from 'src/app/constant/constant';
 
 @Component({
   selector: 'shop-category',

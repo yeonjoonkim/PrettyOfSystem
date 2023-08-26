@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 
 //Import Pipe
-import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
 import { FilterPipeModule } from 'src/app/pipe/filter/filter.pipe.module';
 
 //Import Component

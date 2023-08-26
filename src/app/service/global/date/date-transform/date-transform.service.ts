@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 //https://www.telerik.com/kendo-angular-ui/components/date-math/get-started/
 import { createDate, ZonedDate } from '@progress/kendo-date-math';
 import '@progress/kendo-date-math/tz/all';
-import * as Constant from '../../global-constant';
+import * as Constant from 'src/app/constant/constant';
 import { ITimeItem } from 'src/app/interface/global/global.interface';
 
 @Injectable({

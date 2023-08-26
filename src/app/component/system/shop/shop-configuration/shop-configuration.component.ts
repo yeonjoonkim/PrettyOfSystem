@@ -1,7 +1,7 @@
-import { IFormHeaderModalProp } from './../../../../interface/global/global.interface';
+import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { IShopConfiguration } from 'src/app/interface/shop/shop.interface';
-import * as Constant from 'src/app/service/global/global-constant';
+import * as Constant from 'src/app/constant/constant';
 import {
   IShopConfigurationDisplayOption,
   IShopConfigurationValidator,

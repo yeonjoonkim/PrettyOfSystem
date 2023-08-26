@@ -3,6 +3,11 @@ export interface IShopSetting {
   general: IShopGeneralSetting;
 }
 
+export interface IShopSettingValiationResult {
+  isModified: boolean;
+  setting: IShopSetting;
+}
+
 export interface IShopTimePicker {
   intervalMin: number;
 }

@@ -5,11 +5,16 @@ import {
   DayIndexType,
   DayType,
   DatePeriodType,
-} from 'src/app/service/global/global-constant';
+} from '../../constant/constant';
 
 export interface IPairKeyValue {
   key: string;
   value: string;
+}
+
+export interface IPairValueId {
+  id: string;
+  value: string | number;
 }
 
 export interface IComponentAction {

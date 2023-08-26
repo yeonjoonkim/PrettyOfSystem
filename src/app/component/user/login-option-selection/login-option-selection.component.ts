@@ -8,7 +8,7 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import * as Constant from 'src/app/service/global/global-constant';
+import * as Constant from 'src/app/constant/constant';
 import { RoleRateService } from 'src/app/service/authentication/role-rate/role-rate.service';
 import { IUserLoginOption } from 'src/app/interface/user/user.interface';
 @Component({

@@ -1,5 +1,3 @@
-import { IMenuCategory } from '../../menu/menu.interface';
-
 export interface IRoleConfiguration {
   id: string;
   name: string;

@@ -1,6 +1,6 @@
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
 import { lastValueFrom } from 'rxjs';
-import { PlanService } from '../../../../service/system/system-plan/plan.service';
+import { PlanService } from 'src/app/service/system/system-plan/plan.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

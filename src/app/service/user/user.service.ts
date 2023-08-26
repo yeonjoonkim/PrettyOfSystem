@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IUser, IUserSetting } from 'src/app/interface/user/user.interface';
 import { ShopConfigurationService } from '../system/system-shop/shop-configuration/shop-configuration.service';
-import * as Constant from './../global/global-constant';
+import * as Constant from '../../constant/constant';
 
 @Injectable({
   providedIn: 'root',

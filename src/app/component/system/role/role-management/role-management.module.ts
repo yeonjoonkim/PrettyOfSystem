@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 
 //Import Pipe
-import { LanguageTransformPipeModule } from '../../../../pipe/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
 
 //Import Module
-import { SharedFormModule } from 'src/app/component/global/form/form.module';
+import { SharedFormModule } from 'src/app/component/form/form.module';
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SystemRoleModule } from '../role/role.module';
 import { SystemRoleListCardModule } from '../role-list-card/role-list-card.module';

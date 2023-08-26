@@ -9,8 +9,8 @@ describe('IonicIconListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ IonicIconListComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [IonicIconListComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(IonicIconListComponent);

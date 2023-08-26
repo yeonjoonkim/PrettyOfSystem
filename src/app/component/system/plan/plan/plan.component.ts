@@ -1,4 +1,4 @@
-import { PlanService } from '../../../../service/system/system-plan/plan.service';
+import { PlanService } from 'src/app/service/system/system-plan/plan.service';
 import { NavParams } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';

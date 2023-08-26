@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
-import * as Constant from 'src/app/service/global/global-constant';
+import * as Constant from 'src/app/constant/constant';
 import { ModalController, NavParams } from '@ionic/angular';
 import { ILanguageSelection } from 'src/app/interface/system/language/language.interface';
 import { IPairKeyValue } from 'src/app/interface/global/global.interface';

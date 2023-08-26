@@ -1,5 +1,5 @@
-import { DeviceWidthService } from './service/global/device-width/device-width.service';
-import { LanguageService } from './service/global/language/language.service';
+import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
+import { LanguageService } from 'src/app/service/global/language/language.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Storage } from '@ionic/storage-angular';
@@ -48,8 +48,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private async loading() {
-    await this.language.setLocalLanguageSelection();
-    await this.language.setDefaultLanguage();
-    this.isLoaded = true;
+    await this.language.setLocalLanguageSelection().then(async () => {
+      await this.language.setDefaultLanguage();
+      this.isLoaded = true;
+    });
   }
 }

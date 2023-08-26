@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as Constant from 'src/app/service/global/global-constant';
+import * as Constant from 'src/app/constant/constant';
 import { IUserLoginOption } from 'src/app/interface/user/user.interface';
 @Component({
   selector: 'app-system-user',

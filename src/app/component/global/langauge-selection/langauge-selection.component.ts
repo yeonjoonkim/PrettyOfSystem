@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ILanguageSelection } from 'src/app/interface/system/language/language.interface';
-import { LanguageService } from '../../../service/global/language/language.service';
-import { IPairValueId } from 'src/app/interface/system/system.interface';
+import { LanguageService } from 'src/app/service/global/language/language.service';
+import { IPairValueId } from 'src/app/interface/global/global.interface';
 import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 
 @Component({

@@ -31,8 +31,11 @@ export class SystemMenuCategoryService {
           ? systemMenuCategory?.content.map(content => content.name)
           : []
       );
-      await this.global.language.deleteKeyPairValueList(selectedCategoryLanguageKeyList);
-      this.systemMenuRepo.deleteSystemMenuCategory(selectedMenuCategoryId);
+      await this.global.language
+        .deleteKeyPairValueList(selectedCategoryLanguageKeyList)
+        .then(() => {
+          this.systemMenuRepo.deleteSystemMenuCategory(selectedMenuCategoryId);
+        });
     }
   }
 
@@ -56,9 +59,10 @@ export class SystemMenuCategoryService {
             this.systemMenuCategoryAddService.prefixedCategoryOjbectName,
             edited.description
           );
-          await this.global.language.editLanguagePackage(result, edited.name.toLowerCase());
-          await this.global.toast.present(success);
-          await this.global.language.deleteKeyPairValue(previous.name);
+          await this.global.language.deleteKeyPairValue(previous.name).then(async () => {
+            await this.global.language.editLanguagePackage(result, edited.name.toLowerCase());
+            await this.global.toast.present(success);
+          });
         }
       }
 
@@ -78,6 +82,7 @@ export class SystemMenuCategoryService {
       selectedSystemMenuCategory.content = selectedSystemMenuCategory?.content.filter(
         content => content?.name !== selectedSystemMenuCategoryContent?.name
       );
+      await this.global.language.deleteKeyPairValue(selectedSystemMenuCategoryContent.name);
       await this.processUpdateSystemMenuCategory(selectedSystemMenuCategory);
     }
   }
@@ -136,6 +141,7 @@ export class SystemMenuCategoryService {
         this.systemMenuCategoryAddService.prefixedCategoryContentObjectName,
         newCategoryContent.description.toLowerCase()
       );
+
       await this.global.language.editLanguagePackage(result, newCategoryContent.name.toLowerCase());
       systemMenuCategory.content.push(newCategoryContent);
       this.systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
@@ -166,12 +172,13 @@ export class SystemMenuCategoryService {
           this.systemMenuCategoryAddService.prefixedCategoryContentObjectName,
           newContent.description.toLowerCase()
         );
-        await this.global.language.editLanguagePackage(result, newContent.name.toLowerCase());
-        systemMenuCategory.content.push(newContent);
-        this.systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
-        await this.global.language.deleteKeyPairValue(previousContent.name);
-        let success = await this.global.language.transform('message.success.edit');
-        await this.global.toast.present(success);
+        await this.global.language.deleteKeyPairValue(previousContent.name).then(async () => {
+          await this.global.language.editLanguagePackage(result, newContent.name.toLowerCase());
+          systemMenuCategory.content.push(newContent);
+          this.systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
+          let success = await this.global.language.transform('message.success.edit');
+          await this.global.toast.present(success);
+        });
       }
     } else {
       systemMenuCategory.content.push(newContent);

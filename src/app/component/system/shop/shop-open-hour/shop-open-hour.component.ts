@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GlobalService } from 'src/app/service/global/global.service';
-import * as Constant from 'src/app/service/global/global-constant';
+import * as Constant from 'src/app/constant/constant';
 import { IShopOperatingHours, IShopWorkHours } from 'src/app/interface/shop/shop.interface';
 import { ITimeItem } from 'src/app/interface/global/global.interface';
 export interface IShopOpenHoursValidator {
