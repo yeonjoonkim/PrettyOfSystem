@@ -113,7 +113,6 @@ export class LanguageService {
     if (!result.isEmpty) {
       await this.updateLanguagePackage(result.translated, keyValue);
       await this.updateLanguageKey(keyValue);
-      await this.refreshLanguageSelection();
     } else {
       let errorMsg = await this.transform('message.error.unsaved');
       await this.toast.presentError(errorMsg);

@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "prettyofsystem"
+    "default": "prettyofsystem",
+    "functions": "prettyofsystem"
   },
   "targets": {},
   "etags": {}
