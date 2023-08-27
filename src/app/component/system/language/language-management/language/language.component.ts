@@ -26,9 +26,9 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public language: ILanguageSelection = {
     id: '',
-    code: 'zh-hant',
-    name: 'Traditional Chinese',
-    description: 'language.name.traditionalchinese',
+    code: '',
+    name: '',
+    description: 'language.name.',
     package: {},
     isDefault: false,
   };
