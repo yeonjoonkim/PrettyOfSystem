@@ -1,5 +1,5 @@
 import { Observable, lastValueFrom } from 'rxjs';
-import { SystemRoleService } from '../../../../service/system/system-role/system-system-role.service';
+import { SystemRoleService } from 'src/app/service/system/system-role/system-system-role.service';
 import { Component, OnInit } from '@angular/core';
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { LanguageService } from 'src/app/service/global/language/language.service';

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { IRoleAccessLevel, IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { IUser, IUserAssociatedShop } from 'src/app/interface/user/user.interface';
 import { SystemShopWorkHoursService } from '../system-shop/system-shop-work-hours/system-shop-work-hours.service';
-import * as Constant from '../../global/global-constant';
+import * as Constant from '../../../constant/constant';
 @Injectable({
   providedIn: 'root',
 })
@@ -58,6 +58,7 @@ export class SystemUserService {
       activeFrom: new Date(),
       activeTo: null,
       active: true,
+      displayInSystem: false,
     };
   }
 

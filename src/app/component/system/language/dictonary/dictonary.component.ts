@@ -68,8 +68,8 @@ export class DictonaryComponent implements OnInit {
 
   public async setLanguageSelection() {
     this.global.loading.show('Refreshing');
-    let languageSelection = await this.systemLanguage.get();
     await this.systemLanguage.refreshLocalStorage();
+    let languageSelection = await this.systemLanguage.get();
     this.languageSelectionList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(
       languageSelection
     );

@@ -1,4 +1,4 @@
-import { SystemPlanRepositoryService } from '../../../firebase/system-repository/plan/system-plan-repository.service';
+import { SystemPlanRepositoryService } from 'src/app/firebase/system-repository/plan/system-plan-repository.service';
 import { PlanModalService } from './plan-modal/plan-modal.service';
 import { IPlanConfiguration } from '../../../interface/system/plan/plan.interface';
 import { Injectable } from '@angular/core';

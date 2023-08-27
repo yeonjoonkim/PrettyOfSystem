@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DateTransformService } from './date-transform/date-transform.service';
-import * as Constant from '../../global/global-constant';
+import * as Constant from '../../../constant/constant';
 import {
   IDateIndexPairDay,
   IDatePeriod,

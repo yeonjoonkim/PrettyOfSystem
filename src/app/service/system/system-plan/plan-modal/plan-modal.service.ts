@@ -1,5 +1,5 @@
 import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
-import { PlanComponent } from '../../../../component/system/plan/plan/plan.component';
+import { PlanComponent } from 'src/app/component/system/plan/plan/plan.component';
 import { ModalController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash';

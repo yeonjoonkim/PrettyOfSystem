@@ -11,7 +11,7 @@ import { SystemUserPage } from './system-user.page';
 import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
 
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
-import { SharedFormModule } from 'src/app/component/global/form/form.module';
+import { SharedFormModule } from 'src/app/component/form/form.module';
 
 import { GenderSelectionModule } from 'src/app/component/user/gender-selection/gender-selection.module';
 import { LoginOptionSelectionModule } from 'src/app/component/user/login-option-selection/login-option-selection.module';

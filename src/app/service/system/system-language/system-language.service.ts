@@ -33,7 +33,7 @@ export class SystemLanguageService {
   }
 
   public async refreshLocalStorage() {
-    await this.language.setLocalLanguageSelection();
+    await this.language.refreshLanguageSelection();
   }
 
   public async getLanguageSelectionKeyPairValueList(

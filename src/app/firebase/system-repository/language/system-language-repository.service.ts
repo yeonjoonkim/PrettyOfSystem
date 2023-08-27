@@ -1,11 +1,11 @@
 import {
   ILanguageSelection,
   ILanguageKey,
-} from './../../../interface/system/language/language.interface';
+} from 'src/app/interface/system/language/language.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs';
-import * as Db from 'src/app/service/global/constant/firebase-path';
+import * as Db from 'src/app/constant/firebase-path';
 
 @Injectable({
   providedIn: 'root',

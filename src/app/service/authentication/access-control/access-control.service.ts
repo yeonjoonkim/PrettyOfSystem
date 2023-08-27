@@ -3,7 +3,7 @@ import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/
 import { IRoleAccessLevel, IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { RoleRateService } from '../role-rate/role-rate.service';
 import { Injectable } from '@angular/core';
-import * as Constant from '../../global/global-constant';
+import * as Constant from '../../../constant/constant';
 
 @Injectable({
   providedIn: 'root',

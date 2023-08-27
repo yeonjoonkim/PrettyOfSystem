@@ -10,13 +10,11 @@
     [autoSize]="true"
     [selectable]="true"
     (cellClick)="onClickLanguage($event)">
-    <!--
     <ng-template kendoGridToolbarTemplate>
       <button kendoGridAddCommand (click)="onClickCreate()">
-        {{ "button.name.add" | languageTransform | async }}
+        {{ 'button.name.add' | languageTransform | async }}
       </button>
     </ng-template>
-    -->
 
     <!-- Name -->
     <kendo-grid-column title="{{ 'label.name.name' | languageTransform | async }}" field="name">

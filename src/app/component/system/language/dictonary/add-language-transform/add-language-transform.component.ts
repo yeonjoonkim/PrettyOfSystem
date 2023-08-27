@@ -46,7 +46,6 @@ export class AddLanguageTransformComponent implements OnInit {
           this.languageTransform.value,
           translateCriteria
         );
-        result.isEmpty;
         await this.updateLanguagePackage(result);
       }
     }

@@ -4,11 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 
 //Import Pipe
-import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
 
 //Import Module
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
-import { SharedFormModule } from 'src/app/component/global/form/form.module';
+import { SharedFormModule } from 'src/app/component/form/form.module';
 
 //Import Component
 import { GenderSelectionComponent } from './gender-selection.component';

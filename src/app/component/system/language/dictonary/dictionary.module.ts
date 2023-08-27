@@ -4,13 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 
 //Import Pipe
-import { LanguageTransformPipeModule } from '../../../../pipe/language-transform-pipe/language-transform.pipe.module';
+import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
 
 import { DictonaryComponent } from './dictonary.component';
 import { AddLanguageTransformComponent } from './add-language-transform/add-language-transform.component';
 import { LanguageKeyPairSelectOptionComponent } from './language-key-pair-select-option/language-key-pair-select-option.component';
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
-import { SharedFormModule } from 'src/app/component/global/form/form.module';
+import { SharedFormModule } from 'src/app/component/form/form.module';
 
 @NgModule({
   declarations: [

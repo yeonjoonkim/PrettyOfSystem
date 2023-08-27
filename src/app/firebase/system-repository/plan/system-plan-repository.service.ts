@@ -2,7 +2,7 @@ import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map, Observable } from 'rxjs';
-import * as Db from 'src/app/service/global/constant/firebase-path';
+import * as Db from 'src/app/constant/firebase-path';
 
 @Injectable({
   providedIn: 'root',

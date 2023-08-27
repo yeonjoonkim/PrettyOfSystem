@@ -1,9 +1,9 @@
-import { AccessControlService } from '../../../service/authentication/access-control/access-control.service';
+import { AccessControlService } from 'src/app/service/authentication/access-control/access-control.service';
 import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { LanguageService } from '../../../service/global/language/language.service';
-import { StorageService } from '../../../service/global/storage/storage.service';
+import { LanguageService } from 'src/app/service/global/language/language.service';
+import { StorageService } from 'src/app/service/global/storage/storage.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 import { UserService } from 'src/app/service/user/user.service';
 import { IUser } from 'src/app/interface/user/user.interface';
@@ -44,15 +44,19 @@ export class MenuComponent implements OnInit, OnDestroy {
   private testing() {
     this.user.firstName = 'Yeon Joon';
     this.user.lastName = 'Kim';
-    this.user.currentShop.role.name = 'role.name.systemadministrator';
-    this.user.currentShop.shopName = 'So Thai Massage & Spa Market Square';
-    this.user.currentShop.role.accessLevel.isSystemAdmin = true;
+    if (this.user.currentShop !== null) {
+      this.user.currentShop.role.name = 'role.name.systemadministrator';
+      this.user.currentShop.shopName = 'So Thai Massage & Spa Market Square';
+      this.user.currentShop.role.accessLevel.isSystemAdmin = true;
+    }
   }
 
   private async getAccessGrantedMenu() {
-    this.menus = await this.systemMenuRepository.getAccessGrantedMenu(
-      this.user.currentShop.role.accessLevel
-    );
+    if (this.user.currentShop?.role?.accessLevel) {
+      this.menus = await this.systemMenuRepository.getAccessGrantedMenu(
+        this.user.currentShop?.role?.accessLevel
+      );
+    }
     await this.setDefaultTitleHeading();
   }
 

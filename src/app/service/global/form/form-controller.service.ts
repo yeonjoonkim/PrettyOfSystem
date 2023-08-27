@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StatusValidationService } from './status-validation/status-validation.service';
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
-import * as Constant from './../../global/global-constant';
+import * as Constant from '../../../constant/constant';
 
 @Injectable({
   providedIn: 'root',

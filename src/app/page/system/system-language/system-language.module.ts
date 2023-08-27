@@ -9,10 +9,11 @@ import { SystemLanguagePage } from './system-language.page';
 import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
 
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
-import { SharedFormModule } from 'src/app/component/global/form/form.module';
+import { SharedFormModule } from 'src/app/component/form/form.module';
 
 import { DictionaryModule } from 'src/app/component/system/language/dictonary/dictionary.module';
 import { LanguageMangementModule } from 'src/app/component/system/language/language-management/language-management.module';
+
 @NgModule({
   imports: [
     CommonModule,

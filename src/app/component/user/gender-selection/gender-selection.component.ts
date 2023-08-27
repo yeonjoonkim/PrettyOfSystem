@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import * as Constant from 'src/app/service/global/global-constant';
+import * as Constant from 'src/app/constant/constant';
 import { IPairKeyValue } from 'src/app/interface/global/global.interface';
 
 @Component({

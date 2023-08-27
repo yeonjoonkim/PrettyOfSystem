@@ -6,12 +6,12 @@ import {
   IShopCategory,
   IShopConfiguration,
   IShopCountry,
-} from 'src/app/interface/system/shop/shop.interface';
-import { LanguageService } from '../../../service/global/language/language.service';
-import { FirebaseService } from '../../../service/firebase/firebase.service';
+} from 'src/app/interface/shop/shop.interface';
+import { LanguageService } from 'src/app/service/global/language/language.service';
+import { FirebaseService } from 'src/app/service/firebase/firebase.service';
 import { ShopSettingService } from 'src/app/service/system/system-shop/shop-setting/shop-setting.service';
-import { IShopSettingValiationResult } from 'src/app/interface/system/system.interface';
-import * as Db from '../../../service/global/constant/firebase-path';
+import { IShopSettingValiationResult } from 'src/app/interface/shop/shop-setting.interface';
+import * as Db from 'src/app/constant/firebase-path';
 
 @Injectable({
   providedIn: 'root',

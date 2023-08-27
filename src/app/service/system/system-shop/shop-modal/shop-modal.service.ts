@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ShopConfigurationComponent } from 'src/app/component/system/shop/shop-configuration/shop-configuration.component';
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
-import { IShopConfiguration } from 'src/app/interface/system/shop/shop.interface';
+import { IShopConfiguration } from 'src/app/interface/shop/shop.interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { cloneDeep } from 'lodash';
 

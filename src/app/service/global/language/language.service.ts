@@ -2,7 +2,7 @@ import { LanguagePackageService } from './../language-package/language-package.s
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable, lastValueFrom } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
-import { SystemLanguageRepositoryService } from '../../../firebase/system-repository/language/system-language-repository.service';
+import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
 import { TextTransformService } from '../text-transform/text-transform.service';
 import {
   ILanguageSelection,
@@ -113,7 +113,6 @@ export class LanguageService {
     if (!result.isEmpty) {
       await this.updateLanguagePackage(result.translated, keyValue);
       await this.updateLanguageKey(keyValue);
-      await this.setLocalLanguageSelection();
     } else {
       let errorMsg = await this.transform('message.error.unsaved');
       await this.toast.presentError(errorMsg);
@@ -124,6 +123,7 @@ export class LanguageService {
   public async deleteKeyPairValue(selectedKey: string): Promise<void> {
     await this.deletePackageKeyValue(selectedKey);
     await this.deleteUsedKey(selectedKey);
+    await this.refreshLanguageSelection();
   }
 
   public async deleteKeyPairValueList(selectedDeleteKeyList: string[]): Promise<void> {

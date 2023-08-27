@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  IShopGeneralSetting,
-  IShopSetting,
-} from 'src/app/interface/system/shop/shop-setting.interface';
+import { IShopGeneralSetting, IShopSetting } from 'src/app/interface/shop/shop-setting.interface';
 
 @Injectable({
   providedIn: 'root',

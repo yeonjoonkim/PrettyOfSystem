@@ -1,6 +1,6 @@
 import { RoleRateService } from '../../authentication/role-rate/role-rate.service';
 import { GlobalService } from 'src/app/service/global/global.service';
-import { SystemRoleRepositoryService } from '../../../firebase/system-repository/role/system-role-repository.service';
+import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/role/system-role-repository.service';
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { RoleModalService } from 'src/app/service/system/system-role/role-modal/system-role-modal.service';
 import { Injectable } from '@angular/core';
@@ -20,6 +20,10 @@ export class SystemRoleService {
 
   public getAllRoles() {
     return this.systemRoleRepo.getSystemRoleConfigurations();
+  }
+
+  private async selectedRole(configId: string) {
+    return await this.systemRoleRepo.getSelectedSystemRole(configId);
   }
 
   public valueChangeListener() {
@@ -53,9 +57,13 @@ export class SystemRoleService {
     );
 
     if (deleteConfirmation) {
-      await this.global.language.deleteKeyPairValue(config.name);
-      await this.systemRoleRepo.deleteSystemRoleConfiguration(config.id);
-      await this.presentDeleteMsg();
+      let selectedRole = await this.selectedRole(config.id);
+      if (selectedRole !== undefined) {
+        await this.global.language.deleteKeyPairValue(selectedRole.name).then(async () => {
+          await this.systemRoleRepo.deleteSystemRoleConfiguration(config.id);
+          await this.presentDeleteMsg();
+        });
+      }
     }
   }
 

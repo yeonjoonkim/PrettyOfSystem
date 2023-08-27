@@ -1,6 +1,6 @@
 import { IRoleAccessLevel } from '../../../interface/system/role/role.interface';
 import { Injectable } from '@angular/core';
-import * as Constant from '../../global/global-constant';
+import * as Constant from '../../../constant/constant';
 import { IUserLoginOption } from 'src/app/interface/user/user.interface';
 @Injectable({
   providedIn: 'root',
