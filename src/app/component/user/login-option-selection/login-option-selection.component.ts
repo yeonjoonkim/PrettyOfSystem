@@ -18,7 +18,7 @@ import { IUserLoginOption } from 'src/app/interface/user/user.interface';
 })
 export class LoginOptionSelectionComponent implements OnInit, OnChanges {
   @Output() loginOptionChange = new EventEmitter<IUserLoginOption>();
-  @Input() componentMode: 'login' | 'form' = 'form';
+  @Input() mode: 'login' | 'form' = 'form';
   @Input() roleRate: Constant.RoleAccessRateType = Constant.Default.RoleAccessRateType.Reception;
   @Input()
   get loginOption(): IUserLoginOption {
@@ -31,11 +31,13 @@ export class LoginOptionSelectionComponent implements OnInit, OnChanges {
 
   public inputLoginOption: IUserLoginOption = { id: '', phoneNumber: true, email: false };
   public readOnly: boolean = true;
+  public title: string = 'label.name.loginoption';
 
   constructor(private roleRateService: RoleRateService) {}
 
   ngOnInit() {
     this.setReadOnlyByComponentMode();
+    this.setTitle();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -71,9 +73,10 @@ export class LoginOptionSelectionComponent implements OnInit, OnChanges {
   private onComponentModeChange(modeChange: SimpleChange) {
     let changes: boolean =
       modeChange?.currentValue !== modeChange?.previousValue || modeChange?.firstChange;
-    console.log(changes);
+
     if (changes) {
       this.setReadOnlyByComponentMode();
+      this.setTitle();
     }
   }
 
@@ -83,6 +86,10 @@ export class LoginOptionSelectionComponent implements OnInit, OnChanges {
   }
 
   private setReadOnlyByComponentMode() {
-    this.readOnly = this.componentMode === 'login' ? false : true;
+    this.readOnly = this.mode === 'login' ? false : true;
+  }
+
+  private setTitle() {
+    this.title = this.mode !== 'login' ? 'label.name.loginoption' : '';
   }
 }

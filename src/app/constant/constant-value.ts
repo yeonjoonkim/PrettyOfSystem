@@ -13,6 +13,15 @@ export const ShopSetting = {
   } as const,
 } as const;
 
+export const Login = {
+  Status: {
+    Selection: 'Selection',
+    PhoneVerification: 'PhoneVerification',
+    OTPVerification: 'OTPVerification',
+    EmailVerification: 'EmailVerification',
+  } as const,
+} as const;
+
 export const Default = {
   Gender: {
     Male: 'Male',

@@ -1,0 +1,52 @@
+button {
+  width: 100%;
+}
+
+#otp-tool {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#otp-tool-btn {
+  min-width: 0px;
+  max-width: 100px;
+  background-color: transparent;
+}
+
+#otp-verification-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  legend {
+    margin: auto;
+    font-size: large;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  p {
+    margin: auto;
+    font-size: small;
+  }
+}
+
+#otp-verification-timer {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  margin-left: 10px;
+  margin-top: 2px;
+  font-weight: 900;
+  font-size: small;
+}
+
+#otp-verification-phone-number {
+  font-size: small;
+}
+
+#error-col-item {
+  margin: 0;
+  error-message-item {
+    margin: 0;
+  }
+}

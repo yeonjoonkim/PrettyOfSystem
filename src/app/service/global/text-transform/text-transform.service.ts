@@ -124,7 +124,8 @@ export class TextTransformService {
   }
 
   public isDescriptionFormat(str: string) {
-    return str.endsWith('.');
+    let titleFormat: string = this.getTitleFormat(str);
+    return str !== titleFormat;
   }
 
   public getContainWordList(str: string): Array<string> {

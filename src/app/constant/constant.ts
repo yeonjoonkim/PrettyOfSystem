@@ -1,10 +1,13 @@
 import firebase from 'firebase/compat/app';
-import { Default, State, Date } from './constant-value';
-export { Default, State, Setting, Date, ShopSetting, SystemSetting } from './constant-value';
+import { Default, State, Date, Login } from './constant-value';
+export { Default, State, Setting, Date, ShopSetting, SystemSetting, Login } from './constant-value';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
 import { API } from './constant-api';
 export { API } from './constant-api';
+
+//Login
+export type LoginStatusType = (typeof Login.Status)[keyof typeof Login.Status];
 
 //API
 export type APIResponseType = (typeof API.Response)[keyof typeof API.Response];
