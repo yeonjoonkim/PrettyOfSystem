@@ -154,7 +154,12 @@ export class LanguageTranslateService {
     }
 
     for (let langCode in translated) {
-      let validated = translated[langCode] !== 'Translatedvalue';
+      const value = translated[langCode];
+      const isNotDefault = value !== 'Translatedvalue';
+      const isString = typeof value === 'string';
+      const hasLength = value.length > 0;
+
+      let validated = isNotDefault && isString && hasLength;
       validatedValue.push(validated);
     }
 

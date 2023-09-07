@@ -75,8 +75,7 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
   public handleCreate() {
     this.global.language.management.add.receiveCreateNewPackageCommand(
       this.language.name,
-      this.language.code,
-      this.keyPairValueList
+      this.language.code
     );
     this.saveCommandSubscription = this.global.language.management.add.status.subscribe(command => {
       if (command !== undefined) {

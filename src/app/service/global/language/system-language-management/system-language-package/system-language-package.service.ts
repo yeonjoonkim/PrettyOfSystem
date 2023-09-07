@@ -15,17 +15,22 @@ export class SystemLanguagePackageService {
   }
 
   public update(pack: ITextTransformObject, pair: IPairKeyValue) {
-    let path: string[] = this._textTransform.setLanguageTransformCodeList(pair.key);
-    let hasFirstPath: boolean = this.firstPath(pack, path);
-    let hasSecondPath: boolean = this.secondPath(pack, path);
-    if (!hasFirstPath) {
-      pack[path[0]] = {};
-    }
-    if (!hasSecondPath) {
-      pack[path[0]][path[1]] = {};
+    let isString: boolean = typeof pair.value === 'string';
+
+    if (isString) {
+      let path: string[] = this._textTransform.setLanguageTransformCodeList(pair.key);
+      let hasFirstPath: boolean = this.firstPath(pack, path);
+      let hasSecondPath: boolean = this.secondPath(pack, path);
+      if (!hasFirstPath) {
+        pack[path[0]] = {};
+      }
+      if (!hasSecondPath) {
+        pack[path[0]][path[1]] = {};
+      }
+
+      if (pair.value) pack[path[0]][path[1]][path[2]] = pair.value;
     }
 
-    pack[path[0]][path[1]][path[2]] = pair.value;
     return pack;
   }
 

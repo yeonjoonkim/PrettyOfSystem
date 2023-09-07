@@ -23,7 +23,6 @@ export class LanguageService {
 
   /** Language Change Event */
   public async onLanguageChange(): Promise<void> {
-    console.log(this.currentLanguage);
     await this.management.storage.storeCurrentLanguage(this.currentLanguage);
     this.changeLanguageAction.emit(this.currentLanguage);
   }

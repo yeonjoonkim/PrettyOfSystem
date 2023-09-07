@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, lastValueFrom } from 'rxjs';
 import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
 import { IPairKeyValue } from 'src/app/interface';
 import {
@@ -12,6 +12,7 @@ import { SystemLanguagePackageService } from '../system-language-package/system-
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 import { LanguageTranslateService } from 'src/app/service/global/language-translate/language-translate.service';
 import { TranslateCriteriaService } from '../translate-criteria/translate-criteria.service';
+import { SystemLanguageManagementService } from '../system-language-management.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class SystemLanguageAddService {
 
   constructor(
     private languageRepo: SystemLanguageRepositoryService,
-    private packageService: SystemLanguagePackageService,
+    private systemLanguage: SystemLanguageManagementService,
     private textTransform: TextTransformService,
     private translate: LanguageTranslateService,
     private criteria: TranslateCriteriaService
@@ -34,11 +35,8 @@ export class SystemLanguageAddService {
     await this.languageRepo.addNewLanguageSelection(command);
   }
 
-  public async receiveCreateNewPackageCommand(
-    translatedTo: string,
-    code: string,
-    defaultKeyPairList: IPairKeyValue[]
-  ) {
+  private async setCreateNewPackageCommand(translatedTo: string, code: string) {
+    let defaultKeyPairList = await this.systemLanguage.getDefaultKeyPairValueList();
     let result: ICreateNewPackageCommand = {
       code: code,
       defaultKeyPairList: defaultKeyPairList,
@@ -53,6 +51,11 @@ export class SystemLanguageAddService {
       attemptError: false,
     };
     return result;
+  }
+
+  public async receiveCreateNewPackageCommand(translatedTo: string, code: string) {
+    let command = await this.setCreateNewPackageCommand(translatedTo, code);
+    this.createCommandService.next(command);
   }
 
   public async handleTranslateCommand(command: ICreateNewPackageCommand) {
@@ -128,7 +131,10 @@ export class SystemLanguageAddService {
       typeof translatedResult.translated[command.code] === 'string'
         ? translatedResult.translated[command.code]
         : command.currentKeyPair.value;
-    command.newPackage = this.packageService.update(command.newPackage, command.currentKeyPair);
+    //  command.newPackage = this.systemLanguage.update(
+    //    command.newPackage,
+    //    command.currentKeyPair
+    //  );
     command.inProgress = false;
     command.endTransaction = command.current === command.end;
     command.current = command.end !== command.current ? command.current + 1 : command.current;

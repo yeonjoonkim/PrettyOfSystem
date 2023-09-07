@@ -78,8 +78,6 @@ export class SystemRoleService {
           this.prefixedObjectName,
           newConfig.description
         );
-        console.log(prevConfig);
-        console.log(newConfig);
 
         await this.global.language.management
           .deletePackage(selectedPreviousRole.name)

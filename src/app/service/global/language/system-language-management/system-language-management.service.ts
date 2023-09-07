@@ -128,7 +128,7 @@ export class SystemLanguageManagementService {
     };
 
     errorMsg = !result.isTransformKeyValueFormat
-      ? await this.transform('messageerror.description.transformkeyvalueformat')
+      ? await this.transform('messageerror.description.transformkeyvalue')
       : !result.isKeyNotExisted
       ? await this.transform('messageerror.description.transformsamekeyvalue')
       : !result.hasValue

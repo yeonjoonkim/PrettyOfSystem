@@ -166,7 +166,6 @@ export class TextTransformService {
 
   public getContainWordList(str: string): Array<string> {
     const words = str.split(' ').filter(word => word.length > 0);
-    console.log('Words after splitting:', words); // Debug log
     return words;
   }
 }

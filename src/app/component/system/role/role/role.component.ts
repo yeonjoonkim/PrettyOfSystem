@@ -130,8 +130,6 @@ export class RoleComponent implements OnInit {
     let hasDescription: boolean = this.role.description.length > 0;
 
     if (hasDescription && hasSelectedConfig && this.prevRole !== undefined) {
-      console.log(this.prevRole);
-      console.log(this.role);
       await this.systemRole.processUpdateRoleConfiguration(this.prevRole, this.role);
     } else {
       await this.presentErroMsg(hasDescription, hasSelectedConfig);
