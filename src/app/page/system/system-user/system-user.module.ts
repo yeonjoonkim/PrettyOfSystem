@@ -15,6 +15,7 @@ import { SharedFormModule } from 'src/app/component/form/form.module';
 
 import { GenderSelectionModule } from 'src/app/component/user/gender-selection/gender-selection.module';
 import { LoginOptionSelectionModule } from 'src/app/component/user/login-option-selection/login-option-selection.module';
+import { LoginnModule } from 'src/app/component/user/login/login.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -26,6 +27,7 @@ import { LoginOptionSelectionModule } from 'src/app/component/user/login-option-
     LanguageTransformPipeModule,
     GenderSelectionModule,
     LoginOptionSelectionModule,
+    LoginnModule,
   ],
   declarations: [SystemUserPage],
 })

@@ -37,6 +37,10 @@ export class DictonaryComponent implements OnInit {
     this.onChangeQuery();
   }
 
+  public async export() {
+    exportToCSV(this.selectedKeyPairValueList, this.selectedLang);
+  }
+
   public async openAddLanguageTransform(event: any): Promise<void> {
     let addLanguageTransformPopOver = await this.popOverCtrl.create({
       component: AddLanguageTransformComponent,
@@ -67,20 +71,20 @@ export class DictonaryComponent implements OnInit {
   }
 
   public async setLanguageSelection() {
-    this.global.loading.show('Refreshing');
-    await this.systemLanguage.refreshLocalStorage();
-    let languageSelection = await this.systemLanguage.get();
-    this.languageSelectionList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(
-      languageSelection
-    );
-    this.selectedLang = this.selectedLang.key ? this.selectedLang : this.languageSelectionList[0];
-    await this.onChangeLanguageSelection();
-    this.onChangeQuery();
-    this.global.loading.dismiss();
-  }
-
-  public onOpen(event: any) {
-    this.dropdownlist.focus();
+    let currentLanguage: string =
+      await this.global.language.management.storage.getCurrentLanguage();
+    await this.global.loading.show();
+    await this.global.language.management.storage.refresh().then(async () => {
+      let languageSelection = await this.systemLanguage.get();
+      this.languageSelectionList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(
+        languageSelection
+      );
+      let currentsystemLanguage = this.languageSelectionList.filter(s => s.key === currentLanguage);
+      this.selectedLang = this.selectedLang.key ? this.selectedLang : currentsystemLanguage[0];
+      await this.onChangeLanguageSelection();
+      this.onChangeQuery();
+      this.global.loading.dismiss();
+    });
   }
 
   public async handleFilter(query: string) {
@@ -93,4 +97,29 @@ export class DictonaryComponent implements OnInit {
       return li.key.toLowerCase().includes(value) || li.value.toLowerCase().includes(value);
     });
   }
+}
+
+function exportToCSV(data: IPairKeyValue[], selectedLang: IPairKeyValue): void {
+  // Convert the data to CSV format
+  const convertToCSV = (objArray: IPairKeyValue[]): string => {
+    const header = 'key,value\n';
+    const rows = objArray.map(item => `"${item.key}","${item.value}"`).join('\n');
+    return header + rows;
+  };
+
+  // Download the CSV
+  const downloadCSV = (csv: string, filename: string): void => {
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.href = window.URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    window.URL.revokeObjectURL(a.href);
+    document.body.removeChild(a);
+  };
+
+  const csv = convertToCSV(data);
+  downloadCSV(csv, selectedLang.key + '-' + selectedLang.value + '.csv');
 }

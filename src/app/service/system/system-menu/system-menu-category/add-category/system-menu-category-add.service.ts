@@ -11,8 +11,8 @@ import { GlobalService } from 'src/app/service/global/global.service';
   providedIn: 'root',
 })
 export class SystemMenuCategoryAddService {
-  public readonly prefixedCategoryOjbectName: string = 'menu.category.';
-  public readonly prefixedCategoryContentObjectName: string = 'menu.content.';
+  public readonly prefixedCategoryOjbectName: string = 'menucategory.title.';
+  public readonly prefixedCategoryContentObjectName: string = 'menucontent.title.';
 
   constructor(
     private global: GlobalService,
@@ -38,20 +38,19 @@ export class SystemMenuCategoryAddService {
     result: ILanguageTranslateItem,
     newCategory: IMenuCategory
   ): Promise<void> {
-    newCategory.description = this.global.language.getDefaultLanguageDescription(result.translated);
     newCategory.name = this.global.textTransform.getTransformObjectKeyValue(
       this.prefixedCategoryOjbectName,
       newCategory.description
     );
-    let success = await this.global.language.transform('message.success.save');
+    let success = await this.global.language.transform('messagesuccess.title.save');
     let hasSameCategoryName = await this.systemMenuRepository.hasSameCategoryName(newCategory.name);
 
     if (!hasSameCategoryName && !result.isEmpty) {
-      await this.global.language.editLanguagePackage(result, newCategory.name.toLowerCase());
+      await this.global.language.management.addPackage(result, newCategory.name.toLowerCase());
       await this.systemMenuRepository.addSystemMenuCategory(newCategory);
       await this.global.toast.present(success);
     } else {
-      let errorMsg = await this.global.language.transform('message.error.unsaved');
+      let errorMsg = await this.global.language.transform('messageerror.title.unsaved');
       await this.global.toast.presentError(errorMsg);
     }
   }
@@ -60,26 +59,27 @@ export class SystemMenuCategoryAddService {
   public async getTranslatedCategoryDescription(
     newCategory: IMenuCategory
   ): Promise<ILanguageTranslateItem> {
-    let translateCriteria = await this.global.language.getAllLanguageTranslateCriteria();
-    translateCriteria.isTitle = true;
-    let result: ILanguageTranslateItem =
-      await this.global.languageTranslate.getTranslatedLanguagePackage(
-        newCategory.description,
-        translateCriteria
-      );
+    let translateCriteria =
+      await this.global.language.management.translateCriteria.allLanguageTitleCriteria();
+    let result: ILanguageTranslateItem = await this.global.languageTranslate.get(
+      newCategory.description,
+      translateCriteria,
+      true
+    );
     return result;
   }
+
   /**This will translate the description of content */
   public async getTranslatedContentDescription(
     newContent: IMenuContent
   ): Promise<ILanguageTranslateItem> {
-    let translateCriteria = await this.global.language.getAllLanguageTranslateCriteria();
-    translateCriteria.isTitle = true;
-    let result: ILanguageTranslateItem =
-      await this.global.languageTranslate.getTranslatedLanguagePackage(
-        newContent.description,
-        translateCriteria
-      );
+    let translateCriteria =
+      await this.global.language.management.translateCriteria.allLanguageTitleCriteria();
+    let result: ILanguageTranslateItem = await this.global.languageTranslate.get(
+      newContent.description,
+      translateCriteria,
+      true
+    );
     return result;
   }
 
@@ -90,10 +90,10 @@ export class SystemMenuCategoryAddService {
     let vaildated = hasDescription && hasIcon;
 
     if (!hasDescription) {
-      let errorMsg = await this.global.language.transform('message.error.descriptionfield');
+      let errorMsg = await this.global.language.transform('messageerror.title.descriptionfield');
       await this.global.toast.presentError(errorMsg);
     } else if (!hasIcon) {
-      let errorMsg = await this.global.language.transform('message.error.iconfield');
+      let errorMsg = await this.global.language.transform('messageerror.title.iconfield');
       await this.global.toast.presentError(errorMsg);
     }
     return vaildated;

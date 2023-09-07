@@ -1,7 +1,7 @@
-<kendo-label text="{{ 'form.title.phone' | languageTransform | async }}">
+<kendo-label text="{{ 'label.title.phone' | languageTransform | async }}">
   <div class="form-error-container">
     <kendo-formerror *ngIf="!validated && isRequired && entered">{{
-      'message.error.invalidphone' | languageTransform | async
+      'messageerror.title.invalidphone' | languageTransform | async
     }}</kendo-formerror>
   </div>
   <form [formGroup]="phoneNumberForm">

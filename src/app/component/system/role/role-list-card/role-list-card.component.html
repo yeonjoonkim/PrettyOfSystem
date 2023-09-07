@@ -1,16 +1,16 @@
 <legend>
-  {{ 'label.name.roleconfiguration' | languageTransform | async }}
+  {{ 'label.title.roleconfiguration' | languageTransform | async }}
 </legend>
 <kendo-grid [data]="gridData" [height]="500">
   <!-- Add Button -->
   <ng-template kendoGridToolbarTemplate>
     <button kendoGridAddCommand (click)="presentAddRole()">
-      {{ 'button.name.add' | languageTransform | async }}
+      {{ 'button.title.add' | languageTransform | async }}
     </button>
   </ng-template>
 
   <!--Role Name -->
-  <kendo-grid-column title="{{ 'label.name.roledescription' | languageTransform | async }}">
+  <kendo-grid-column title="{{ 'label.title.name' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-role>
       {{ role.name }}
     </ng-template>
@@ -20,7 +20,7 @@
   <!-- Employee -->
   <kendo-grid-column
     *ngIf="!global.deviceWidth.deviceType.isMobile"
-    title="{{ 'label.name.employee' | languageTransform | async }}">
+    title="{{ 'label.title.employee' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isEmployee" disabled />
     </ng-template>
@@ -29,7 +29,7 @@
   <!-- Manager -->
   <kendo-grid-column
     *ngIf="!global.deviceWidth.deviceType.isMobile"
-    title="{{ 'label.name.reception' | languageTransform | async }}">
+    title="{{ 'label.title.reception' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isReception" disabled />
     </ng-template>
@@ -38,7 +38,7 @@
   <!-- Manager -->
   <kendo-grid-column
     *ngIf="!global.deviceWidth.deviceType.isMobile"
-    title="{{ 'label.name.manager' | languageTransform | async }}">
+    title="{{ 'label.title.manager' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isManager" disabled />
     </ng-template>
@@ -47,7 +47,7 @@
   <!-- Admin -->
   <kendo-grid-column
     *ngIf="!global.deviceWidth.deviceType.isMobile"
-    title="{{ 'label.name.admin' | languageTransform | async }}">
+    title="{{ 'label.title.admin' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isAdmin" disabled />
     </ng-template>
@@ -56,7 +56,7 @@
   <!--System Admin -->
   <kendo-grid-column
     *ngIf="!global.deviceWidth.deviceType.isMobile"
-    title="{{ 'label.name.systemadmin' | languageTransform | async }}">
+    title="{{ 'label.title.systemadmin' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isSystemAdmin" disabled />
     </ng-template>
@@ -65,22 +65,22 @@
   <!--Role Configuration Mobile Version -->
   <kendo-grid-column
     *ngIf="global.deviceWidth.deviceType.isMobile"
-    title="{{ 'label.name.role' | languageTransform | async }}">
+    title="{{ 'label.title.role' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <p *ngIf="role.accessLevel.isSystemAdmin">
-        {{ 'label.name.systemadmin' | languageTransform | async }}
+        {{ 'label.title.systemadmin' | languageTransform | async }}
       </p>
       <p *ngIf="role.accessLevel.isAdmin">
-        {{ 'label.name.admin' | languageTransform | async }}
+        {{ 'label.title.admin' | languageTransform | async }}
       </p>
       <p *ngIf="role.accessLevel.isManager">
-        {{ 'label.name.manager' | languageTransform | async }}
+        {{ 'label.title.manager' | languageTransform | async }}
       </p>
       <p *ngIf="role.accessLevel.isReception">
-        {{ 'label.name.reception' | languageTransform | async }}
+        {{ 'label.title.reception' | languageTransform | async }}
       </p>
       <p *ngIf="role.accessLevel.isEmployee">
-        {{ 'label.name.employee' | languageTransform | async }}
+        {{ 'label.title.employee' | languageTransform | async }}
       </p>
     </ng-template>
   </kendo-grid-column>

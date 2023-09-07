@@ -2,7 +2,7 @@
   <section id="language-selection-container">
     <flex-row>
       <flex-row-item>
-        <kendo-label text="{{ 'language.name.language' | languageTransform | async }}">
+        <kendo-label text="{{ 'language.title.language' | languageTransform | async }}">
           <kendo-dropdownlist
             #dropdownlist
             adaptiveMode="auto"
@@ -11,14 +11,13 @@
             [(ngModel)]="selectedLang"
             [filterable]="true"
             (ngModelChange)="onChangeLanguageSelection()"
-            (opened)="onOpen($event)"
             (filterChange)="handleFilter($event)">
           </kendo-dropdownlist>
         </kendo-label>
       </flex-row-item>
       <flex-row-item>
         <text-box
-          title="label.name.search"
+          title="label.title.search"
           [(value)]="query"
           (valueChange)="onChangeQuery()"></text-box>
       </flex-row-item>
@@ -30,17 +29,20 @@
         <kendo-grid [data]="gridData" [height]="400" [sortable]="true" [autoSize]="true">
           <ng-template kendoGridToolbarTemplate>
             <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
-              {{ 'button.name.add' | languageTransform | async }}
+              {{ 'button.title.add' | languageTransform | async }}
+            </button>
+            <button kendoGridAddCommand (click)="export()">
+              {{ 'button.title.download' | languageTransform | async }}
             </button>
           </ng-template>
           <kendo-grid-column
-            title="{{ 'transform.name.key' | languageTransform | async }}"
+            title="{{ 'label.title.key' | languageTransform | async }}"
             [filterable]="true"
             field="key">
           </kendo-grid-column>
 
           <kendo-grid-column
-            title="{{ 'transform.name.value' | languageTransform | async }}"
+            title="{{ 'label.title.value' | languageTransform | async }}"
             [filterable]="true"
             field="value">
           </kendo-grid-column>

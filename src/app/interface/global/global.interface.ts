@@ -7,6 +7,29 @@ import {
   DatePeriodType,
 } from '../../constant/constant';
 
+export interface ITimer {
+  timerSettingMin: number;
+  startDateTime: Date;
+  currentDateTime: Date;
+  endDateTime: Date;
+  inProgress: boolean;
+  end: boolean;
+  duration: ITimerDuration;
+  percent: ITimerPercent;
+  label: string;
+}
+
+export type ITimerPercent = {
+  remain: number;
+  used: number;
+};
+
+export type ITimerDuration = {
+  hour: number;
+  min: number;
+  sec: number;
+};
+
 export interface IPairKeyValue {
   key: string;
   value: string;

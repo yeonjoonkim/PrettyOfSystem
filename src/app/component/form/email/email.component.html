@@ -1,7 +1,7 @@
-<kendo-label text="{{ 'form.title.email' | languageTransform | async }}">
+<kendo-label text="{{ 'label.title.email' | languageTransform | async }}">
   <div class="form-error-container">
     <kendo-formerror *ngIf="!validated && mode === 'form' && isRequired && entered">{{
-      'message.error.invalidemail' | languageTransform | async
+      'messageerror.description.invalidemail' | languageTransform | async
     }}</kendo-formerror>
   </div>
   <kendo-textbox

@@ -8,7 +8,7 @@
       size="large"
       rounded="large"
       (click)="onClickSavePlanButton()">
-      {{ 'button.name.save' | languageTransform | async }}
+      {{ 'button.title.save' | languageTransform | async }}
     </button>
 
     <!-- Edit -->
@@ -19,17 +19,17 @@
       rounded="large"
       (click)="onClickEditPlanButton()"
       themeColor="success">
-      {{ 'button.name.edit' | languageTransform | async }}
+      {{ 'button.title.edit' | languageTransform | async }}
     </button>
   </kendo-buttongroup>
   <ion-title *ngIf="!editMode && !isReadonly">{{
-    'title.name.addplan' | languageTransform | async
+    'label.title.addplan' | languageTransform | async
   }}</ion-title>
   <ion-title *ngIf="editMode && !isReadonly">{{
-    'title.name.editplan' | languageTransform | async
+    'label.title.editplan' | languageTransform | async
   }}</ion-title>
   <ion-title *ngIf="isReadonly">{{
-    'label.name.viewsubscriptionplan' | languageTransform | async
+    'label.title.viewsubscriptionplan' | languageTransform | async
   }}</ion-title>
   <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="dismiss()"></ion-icon>
 </ion-toolbar>
@@ -37,7 +37,7 @@
 <ion-content>
   <section class="modal-container">
     <!-- Name -->
-    <kendo-label text="{{ 'label.name.name' | languageTransform | async }}">
+    <kendo-label text="{{ 'label.title.name' | languageTransform | async }}">
       <kendo-textbox
         [disabled]="isReadonly"
         [(ngModel)]="plan.name"
@@ -48,10 +48,10 @@
     </kendo-label>
 
     <!-- Price-->
-    <legend>{{ 'label.name.price' | languageTransform | async }}</legend>
+    <legend>{{ 'label.title.price' | languageTransform | async }}</legend>
     <div>
       <!--Weekly Price-->
-      <kendo-floatinglabel text="{{ 'label.name.weekly' | languageTransform | async }}">
+      <kendo-floatinglabel text="{{ 'date.title.weekly' | languageTransform | async }}">
         <kendo-numerictextbox
           [spinners]="false"
           [disabled]="isReadonly"
@@ -66,7 +66,7 @@
       </kendo-floatinglabel>
 
       <!--Monthly Price-->
-      <kendo-floatinglabel text="{{ 'label.name.monthly' | languageTransform | async }}">
+      <kendo-floatinglabel text="{{ 'date.title.monthly' | languageTransform | async }}">
         <kendo-numerictextbox
           [spinners]="false"
           [disabled]="isReadonly"
@@ -83,7 +83,7 @@
       </kendo-floatinglabel>
 
       <!--Annually Price-->
-      <kendo-floatinglabel text="{{ 'label.name.annually' | languageTransform | async }}">
+      <kendo-floatinglabel text="{{ 'date.title.annually' | languageTransform | async }}">
         <kendo-numerictextbox
           [spinners]="false"
           [disabled]="isReadonly"
@@ -100,10 +100,10 @@
     </div>
 
     <!-- Option-->
-    <legend>{{ 'label.name.option' | languageTransform | async }}</legend>
+    <legend>{{ 'label.title.option' | languageTransform | async }}</legend>
     <div>
       <!-- Limited Service -->
-      <kendo-floatinglabel text="{{ 'label.name.service' | languageTransform | async }}">
+      <kendo-floatinglabel text="{{ 'label.title.service' | languageTransform | async }}">
         <kendo-numerictextbox
           [spinners]="false"
           [disabled]="isReadonly"
@@ -121,7 +121,7 @@
       </kendo-floatinglabel>
 
       <!-- Limited Product -->
-      <kendo-floatinglabel text="{{ 'label.name.product' | languageTransform | async }}">
+      <kendo-floatinglabel text="{{ 'label.title.product' | languageTransform | async }}">
         <kendo-numerictextbox
           [spinners]="false"
           [disabled]="isReadonly"
@@ -139,7 +139,7 @@
       </kendo-floatinglabel>
 
       <!-- Limited Package -->
-      <kendo-floatinglabel text="{{ 'label.name.package' | languageTransform | async }}">
+      <kendo-floatinglabel text="{{ 'label.title.package' | languageTransform | async }}">
         <kendo-numerictextbox
           [spinners]="false"
           [disabled]="isReadonly"
@@ -157,7 +157,7 @@
       </kendo-floatinglabel>
 
       <!-- Limited Product -->
-      <kendo-floatinglabel text="{{ 'label.name.user' | languageTransform | async }}">
+      <kendo-floatinglabel text="{{ 'label.title.user' | languageTransform | async }}">
         <kendo-numerictextbox
           [spinners]="false"
           [disabled]="isReadonly"
@@ -174,25 +174,25 @@
         </kendo-numerictextbox>
       </kendo-floatinglabel>
     </div>
-    <legend>{{ 'label.name.extra' | languageTransform | async }}</legend>
+    <legend>{{ 'label.title.extra' | languageTransform | async }}</legend>
     <div>
       <!-- Premium Plan -->
-      <kendo-label text="{{ 'label.name.premiumplan' | languageTransform | async }}">
+      <kendo-label text="{{ 'label.title.premiumplan' | languageTransform | async }}">
         <kendo-switch
           [(ngModel)]="plan.isPremium"
           [disabled]="isReadonly"
-          onLabel="{{ 'label.name.yes' | languageTransform | async }}"
-          offLabel="{{ 'label.name.no' | languageTransform | async }}">
+          onLabel="{{ 'label.title.yes' | languageTransform | async }}"
+          offLabel="{{ 'label.title.no' | languageTransform | async }}">
         </kendo-switch>
       </kendo-label>
     </div>
     <div id="test-plan-switch" *ngIf="!isReadonly">
       <!-- Test Plan -->
-      <kendo-label text="{{ 'label.name.testplan' | languageTransform | async }}">
+      <kendo-label text="{{ 'label.title.testplan' | languageTransform | async }}">
         <kendo-switch
           [(ngModel)]="plan.isTestPlan"
-          onLabel="{{ 'label.name.yes' | languageTransform | async }}"
-          offLabel="{{ 'label.name.no' | languageTransform | async }}">
+          onLabel="{{ 'label.title.yes' | languageTransform | async }}"
+          offLabel="{{ 'label.title.no' | languageTransform | async }}">
         </kendo-switch>
       </kendo-label>
     </div>

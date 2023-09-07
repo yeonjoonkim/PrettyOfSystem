@@ -1,6 +1,6 @@
 <div id="add-menu-container">
   <!--Label-->
-  <kendo-label text="{{ 'label.name.description' | languageTransform | async }}">
+  <kendo-label text="{{ 'label.title.description' | languageTransform | async }}">
     <kendo-textbox [(ngModel)]="category.description" size="large" [clearButton]="true">
     </kendo-textbox>
   </kendo-label>
@@ -11,32 +11,32 @@
   <!--Role Config -->
   <yes-no-selection-group>
     <yes-no-selection
-      label="label.name.systemadmin"
+      label="label.title.systemadmin"
       [(value)]="category.accessLevel.isSystemAdmin"
       (valueChange)="onChangeSystemAdminAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
-      label="label.name.admin"
+      label="label.title.admin"
       [(value)]="category.accessLevel.isAdmin"
       (valueChange)="onChangeAdminAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
-      label="label.name.manager"
+      label="label.title.manager"
       [(value)]="category.accessLevel.isManager"
       (valueChange)="onChangeManagerAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
-      label="label.name.employee"
+      label="label.title.employee"
       [(value)]="category.accessLevel.isEmployee"
       (valueChange)="onChangeEmployeeAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
-      label="label.name.reception"
+      label="label.title.reception"
       [(value)]="category.accessLevel.isReception"
       (valueChange)="onChangeReceptionAccessCtrl($event)"></yes-no-selection>
   </yes-no-selection-group>
 
   <!--Button-->
   <ion-button *ngIf="!editMode" expand="full" (click)="onClickSaveNewCategory()">{{
-    'button.name.save' | languageTransform | async
+    'button.title.save' | languageTransform | async
   }}</ion-button>
   <ion-button *ngIf="editMode" expand="full" (click)="onClickEditCategory()">{{
-    'button.name.edit' | languageTransform | async
+    'button.title.edit' | languageTransform | async
   }}</ion-button>
 </div>

@@ -19,21 +19,18 @@ export class SystemLanguageService {
   ) {}
 
   public async get(): Promise<ILanguageSelection[]> {
-    return await this.language.getLanguageSelectionResult();
+    return await this.language.management.storage.getSelections();
   }
   public async getSelectedLanguageKeyPairValueList(code: string): Promise<IPairKeyValue[]> {
-    let selectedLang: ILanguageSelection = await this.language.getSelectedLanguageSelection(code);
-    let key: ILanguageKey = await this.language.getLanguageSelectionKey();
+    let selectedLang: ILanguageSelection =
+      await this.language.management.storage.getSelectedSelection(code);
+    let key: ILanguageKey = await this.language.management.storage.getKey();
     let result: IPairKeyValue[] = this.languagePackage.getKeyPairValue(
       key?.used,
       selectedLang?.package
     );
 
     return result;
-  }
-
-  public async refreshLocalStorage() {
-    await this.language.refreshLanguageSelection();
   }
 
   public async getLanguageSelectionKeyPairValueList(

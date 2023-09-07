@@ -50,6 +50,26 @@ export class TextTransformService {
     return formatter;
   }
 
+  public getTranslatedLowerFormat(translated: ILanguageTranslateResult) {
+    let formatter = translated;
+
+    for (let key in formatter) {
+      formatter[key] = formatter[key].toLowerCase();
+    }
+
+    return formatter;
+  }
+
+  public getTranslatedUpperFormat(translated: ILanguageTranslateResult) {
+    let formatter = translated;
+
+    for (let key in formatter) {
+      formatter[key] = formatter[key].toUpperCase();
+    }
+
+    return formatter;
+  }
+
   /** This will retreive title format string.
    * "eXample exAmple" => "Example Example".
    */
@@ -69,9 +89,17 @@ export class TextTransformService {
     return titleFormat;
   }
 
-  public getDescriptionFormat(str: string) {
-    let paragraph = str.split('.');
-    return paragraph.map(sentence => this.getSentenceFormat(sentence)).join(' ');
+  public getDefaultLanguageTranslateResult(result: ILanguageTranslateResult) {
+    let description = result['en'].length > 0 ? result['en'] : '';
+    return description;
+  }
+
+  public getDescriptionFormat(str: string): string {
+    // Split the string into sentences using the period, then filter out any empty strings
+    let paragraphs = str.split('.').filter(sentence => sentence.trim() !== '');
+
+    // Map over the non-empty sentences, format them, then join with ' '
+    return paragraphs.map(sentence => this.getSentenceFormat(sentence.trim())).join(' ');
   }
 
   public getTransformObjectKeyValue(keyValue: string, name: string) {
@@ -83,29 +111,37 @@ export class TextTransformService {
     return objectKeyFormatValue;
   }
 
-  /** This will retreive sentence format string.
+  /** This will retrieve sentence format string.
    * "eXample exAmple" => "Example example."
    * "THIS IS SAMPLE" => "This is sample."
+   * "is this a question?" => "Is this a question?"
+   * "this is exciting!" => "This is exciting!"
    */
   public getSentenceFormat(str: string): string {
     let sentenceFormat: string = '';
     let words: Array<string> = this.getContainWordList(str);
-    let includeFinalised: boolean = words.length > 1 ? words[words.length - 1].includes('.') : true;
+
+    // Use a regex to match any of the punctuation marks at the end of the last word
+    let punctuationRegex = /[.!?।。？]$/;
 
     words.forEach((word, index) => {
       if (index === 0) {
-        let capitalzedWord: string = this.getCapitalzedWord(word);
-        sentenceFormat += capitalzedWord;
+        let capitalizedWord: string = this.getCapitalzedWord(word);
+        sentenceFormat += capitalizedWord;
       } else {
         let lowercaseWord: string = word.toLowerCase();
         sentenceFormat += ' ' + lowercaseWord;
       }
     });
 
-    if (!includeFinalised) {
+    let trimmedSentence = sentenceFormat.trimEnd();
+    let sentenceSpecialEnd =
+      trimmedSentence.length > 0 &&
+      punctuationRegex.test(trimmedSentence[trimmedSentence.length - 1]);
+
+    if (!sentenceSpecialEnd) {
       sentenceFormat += '.';
     }
-
     return sentenceFormat;
   }
 
@@ -124,10 +160,12 @@ export class TextTransformService {
   }
 
   public isDescriptionFormat(str: string) {
-    return str.endsWith('.');
+    let titleFormat: string = this.getTitleFormat(str);
+    return str !== titleFormat;
   }
 
   public getContainWordList(str: string): Array<string> {
-    return str.split(' ').filter(str => str.length > 0);
+    const words = str.split(' ').filter(word => word.length > 0);
+    return words;
   }
 }

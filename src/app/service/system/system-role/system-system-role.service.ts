@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SystemRoleService {
-  private readonly prefixedObjectName: string = 'role.name.';
+  private readonly prefixedObjectName: string = 'role.title.';
 
   constructor(
     public modal: RoleModalService,
@@ -32,18 +32,15 @@ export class SystemRoleService {
 
   public async processNewSaveRoleConfiguration(newConfig: IRoleConfiguration): Promise<void> {
     newConfig.rate = this.roleRate.getSystemRoleRateSettingByConfiguration(newConfig.accessLevel);
-    let translate = await this.global.languageTranslationPackage.getLanguageTitleTrasnslationResult(
+    let translate = await this.global.language.management.translate.translateObjectNameFormat(
       this.prefixedObjectName,
       newConfig.description
     );
 
-    if (!translate.validated.isEmpty && translate.validated.isKeyNotExisited) {
+    if (!translate.result.isEmpty && translate.validated.isKeyNotExisited) {
       newConfig.description = translate.validated.description;
       newConfig.name = translate.validated.name.toLowerCase().replace(' ', '');
-      await this.global.language.editLanguagePackage(
-        translate.translatedResult,
-        translate.validated.name
-      );
+      await this.global.language.management.addPackage(translate.result, translate.validated.name);
       await this.systemRoleRepo.addSystemRoleConfiguration(newConfig);
       await this.presentSaveMsg();
       translate.validated.isSaved = true;
@@ -59,7 +56,7 @@ export class SystemRoleService {
     if (deleteConfirmation) {
       let selectedRole = await this.selectedRole(config.id);
       if (selectedRole !== undefined) {
-        await this.global.language.deleteKeyPairValue(selectedRole.name).then(async () => {
+        await this.global.language.management.deletePackage(selectedRole.name).then(async () => {
           await this.systemRoleRepo.deleteSystemRoleConfiguration(config.id);
           await this.presentDeleteMsg();
         });
@@ -72,24 +69,33 @@ export class SystemRoleService {
     newConfig: IRoleConfiguration
   ) {
     newConfig.rate = this.roleRate.getSystemRoleRateSettingByConfiguration(newConfig.accessLevel);
-    let translated =
-      prevConfig.description !== newConfig.description
-        ? await this.global.languageTranslationPackage.getLanguageDescriptionTrasnslationResult(
-            this.prefixedObjectName,
-            newConfig.description
-          )
-        : false;
+    let needTranslate = prevConfig.description !== newConfig.description;
 
-    if (translated) {
-      newConfig.description = translated.result.description;
-      newConfig.name = translated.result.name;
-      await this.global.languageTranslationPackage.updateLanguageTranslationResult(
-        prevConfig.name,
-        translated
-      );
-      await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
-      await this.presentUpdateMsg();
-      await this.modal.dissmissModalWithRefresh();
+    if (needTranslate) {
+      let selectedPreviousRole = await this.selectedRole(prevConfig.id);
+      if (selectedPreviousRole !== undefined) {
+        let translated = await this.global.language.management.translate.translateObjectNameFormat(
+          this.prefixedObjectName,
+          newConfig.description
+        );
+
+        await this.global.language.management
+          .deletePackage(selectedPreviousRole.name)
+          .then(async () => {
+            newConfig.description = translated.validated.description;
+            newConfig.name = translated.validated.name;
+            let keyValue =
+              this.prefixedObjectName +
+              this.global.textTransform
+                .getDefaultLanguageTranslateResult(translated.result.translated)
+                .toLowerCase()
+                .replace(/\s+/g, '');
+            await this.global.language.management.addPackage(translated.result, keyValue);
+            await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
+            await this.presentUpdateMsg();
+            await this.modal.dissmissModalWithRefresh();
+          });
+      }
     } else {
       await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
       await this.presentUpdateMsg();
@@ -98,17 +104,17 @@ export class SystemRoleService {
   }
 
   private async presentSaveMsg() {
-    let msg = await this.global.language.transform('message.success.save');
+    let msg = await this.global.language.transform('messagesuccess.title.save');
     await this.global.toast.present(msg);
   }
 
   private async presentDeleteMsg() {
-    let msg = await this.global.language.transform('message.success.delete');
+    let msg = await this.global.language.transform('messagesuccess.title.delete');
     await this.global.toast.present(msg);
   }
 
   private async presentUpdateMsg() {
-    let msg = await this.global.language.transform('message.success.update');
+    let msg = await this.global.language.transform('messagesuccess.title.update');
     await this.global.toast.present(msg);
   }
 }

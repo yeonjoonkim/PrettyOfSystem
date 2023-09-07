@@ -25,10 +25,16 @@ export interface IUserSetting {
 }
 
 export interface IUserLogin {
-  phoneNumber: string | null;
-  emailAddress: string | null;
-  password: string | null;
-  confirmedPassword: string | null;
+  phoneNumber: string;
+  emailAddress: string;
+  password: string;
+  otp: string;
+}
+
+export interface ILoginStatus {
+  name: Constant.LoginStatusType;
+  isError: boolean;
+  errorName: string;
 }
 
 export interface IUserAssociatedShop {

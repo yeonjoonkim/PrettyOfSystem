@@ -85,32 +85,32 @@ export class PlanService {
   }
 
   private async presentSaveMsg() {
-    let msg = await this.global.language.transform('message.success.save');
+    let msg = await this.global.language.transform('messagesuccess.title.save');
     await this.global.toast.present(msg);
   }
 
   private async presentSaveError() {
-    let msg = await this.global.language.transform('message.error.unsaved');
+    let msg = await this.global.language.transform('messageerror.title.unsaved');
     await this.global.toast.present(msg);
   }
 
   private async presentDeleteMsg() {
-    let msg = await this.global.language.transform('message.success.delete');
+    let msg = await this.global.language.transform('messagesuccess.title.delete');
     await this.global.toast.present(msg);
   }
 
   private async presentDeleteError() {
-    let msg = await this.global.language.transform('message.error.delete');
+    let msg = await this.global.language.transform('messageerror.title.delete');
     await this.global.toast.present(msg);
   }
 
   private async presentUpdateError() {
-    let msg = await this.global.language.transform('message.error.updated');
+    let msg = await this.global.language.transform('messageerror.title.updated');
     await this.global.toast.present(msg);
   }
 
   private async presentUpdateMsg() {
-    let msg = await this.global.language.transform('message.success.update');
+    let msg = await this.global.language.transform('messagesuccess.title.update');
     await this.global.toast.present(msg);
   }
 }

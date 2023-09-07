@@ -1,10 +1,17 @@
 import {
+  IAddLanguageTransformSaveCommand,
+  ILanguageKey,
   ILanguageTranslateItem,
+  ILanguageTranslatedCriteria,
   ILanguageTrasnlationResult,
 } from 'src/app/interface/system/language/language.interface';
 import { LanguageTranslateService } from '../language-translate/language-translate.service';
 import { Injectable } from '@angular/core';
 import { LanguageService } from '../language/language.service';
+import { TextTransformService } from '../text-transform/text-transform.service';
+import { TranslateCriteriaService } from '../language/system-language-management/translate-criteria/translate-criteria.service';
+import { IPairKeyValue } from 'src/app/interface/global/global.interface';
+import { SystemLanguageStorageService } from '../language/system-language-management/system-language-storage/system-language-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,73 +19,64 @@ import { LanguageService } from '../language/language.service';
 export class LanguageTranslationPackageService {
   constructor(
     private language: LanguageService,
-    private languageTranslate: LanguageTranslateService
+    private languageTranslate: LanguageTranslateService,
+    private texTransform: TextTransformService,
+    private translateCriteria: TranslateCriteriaService,
+    private storage: SystemLanguageStorageService
   ) {}
 
-  public async getLanguageTitleTrasnslationResult(
-    prefixedObjectName: string,
-    description: string
-  ): Promise<{ translatedResult: ILanguageTranslateItem; validated: ILanguageTrasnlationResult }> {
-    let translateCriteria = await this.language.getAllLanguageTranslateCriteria();
-    translateCriteria.isTitle = true;
-    let translatedResult: ILanguageTranslateItem =
-      await this.languageTranslate.getTranslatedLanguagePackage(description, translateCriteria);
-    let validated: ILanguageTrasnlationResult = await this.validateLanugageResult(
-      translatedResult,
-      prefixedObjectName
-    );
-
-    return { translatedResult: translatedResult, validated: validated };
+  public async translateObjectNameFormat(objectName: string, value: string) {
+    let criteria = await this.translateCriteria.allLanguageCriteria(objectName);
+    let result = await this.languageTranslate.get(value, criteria, true);
+    let validated = await this.validateLanugageResult(result, objectName);
+    return { result: result, validated: validated };
   }
 
-  public async getLanguageDescriptionTrasnslationResult(
-    prefixedObjectName: string,
-    description: string
-  ): Promise<{ translatedResult: ILanguageTranslateItem; result: ILanguageTrasnlationResult }> {
-    let translateCriteria = await this.language.getAllLanguageTranslateCriteria();
-    translateCriteria.isTitle = false;
-    let translatedResult: ILanguageTranslateItem =
-      await this.languageTranslate.getTranslatedLanguagePackage(description, translateCriteria);
-    let validated: ILanguageTrasnlationResult = await this.validateLanugageResult(
-      translatedResult,
-      prefixedObjectName
-    );
-
-    return { translatedResult: translatedResult, result: validated };
+  public async translateTitleFormat(objectName: string, value: string) {
+    let criteria = await this.translateCriteria.allLanguageTitleCriteria();
+    let result = await this.languageTranslate.get(value, criteria, true);
+    let validated = await this.validateLanugageResult(result, objectName);
+    return { result: result, validated: validated };
   }
 
-  public async updateLanguageTranslationResult(
-    previousName: string,
-    result: { translatedResult: ILanguageTranslateItem; result: ILanguageTrasnlationResult }
-  ) {
-    await this.language.deleteKeyPairValue(previousName).then(() => {
-      this.language.editLanguagePackage(result.translatedResult, result.result.name);
-    });
+  public async translateDescriptionFormat(objectName: string, value: string) {
+    let criteria = await this.translateCriteria.allLanguageDescriptionCriteria();
+    let result = await this.languageTranslate.get(value, criteria, true);
+    let validated = await this.validateLanugageResult(result, objectName);
+    return { result: result, validated: validated };
   }
 
-  private async validateLanugageResult(
-    translatedResult: ILanguageTranslateItem,
-    prefixedObjectName: string
-  ): Promise<ILanguageTrasnlationResult> {
-    let result: ILanguageTrasnlationResult = this.setInitialILanguageTranslationResult();
-    result.isEmpty = translatedResult.isEmpty;
+  private async validateLanugageResult(item: ILanguageTranslateItem, objectName: string) {
+    let result: ILanguageTrasnlationResult = this.defaultResult();
+    result.isEmpty = item.isEmpty;
     if (!result.isEmpty) {
-      result.name =
-        prefixedObjectName +
-        this.language
-          .getDefaultLanguageDescription(translatedResult.translated)
-          .toLowerCase()
-          .replace(' ', '');
-      result.description = this.language.getDefaultLanguageDescription(translatedResult.translated);
-      result.isKeyNotExisited = (
-        await this.language.validateNewKeyPairValue({ key: result.name, value: result.description })
-      ).isKeyNotExisted;
+      let defaultDescription = this.texTransform.getDefaultLanguageTranslateResult(item.translated);
+      result.name = objectName + defaultDescription.toLowerCase().replace(' ', '');
+      result.description = defaultDescription;
+      let keyValidation = await this.validateKeyPairValue({
+        key: result.name,
+        value: result.description,
+      });
+      result.isKeyNotExisited = keyValidation.isKeyNotExisted;
     }
 
     return result;
   }
 
-  private setInitialILanguageTranslationResult(): ILanguageTrasnlationResult {
+  private async validateKeyPairValue(
+    pair: IPairKeyValue
+  ): Promise<IAddLanguageTransformSaveCommand> {
+    let key: ILanguageKey = await this.storage.getKey();
+    let result = {
+      hasValue: pair.value.length > 0,
+      isKeyNotExisted: !key.used.includes(pair.key.toLowerCase()),
+      isTransformKeyValueFormat:
+        this.texTransform.setLanguageTransformCodeList(pair.key.toLowerCase()).length === 3,
+    };
+    return result;
+  }
+
+  private defaultResult(): ILanguageTrasnlationResult {
     return {
       isEmpty: true,
       isSaved: false,

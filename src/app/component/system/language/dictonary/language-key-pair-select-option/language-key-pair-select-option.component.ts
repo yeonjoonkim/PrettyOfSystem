@@ -46,17 +46,17 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   /** This will set the confirmation of delete alert */
   private async setConfirmDeleteAlert(): Promise<HTMLIonAlertElement> {
-    let deleteMsg = await this.global.language.transform('message.header.delete');
+    let deleteMsg = await this.global.language.transform('confirmation.description.delete');
     let header = this.keyPairValue.key + ' - ' + deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
       header: header,
       buttons: [
         {
-          text: await this.global.language.transform('button.name.delete'),
+          text: await this.global.language.transform('button.title.delete'),
           role: 'delete',
         },
         {
-          text: await this.global.language.transform('button.name.cancel'),
+          text: await this.global.language.transform('button.title.cancel'),
           role: '',
         },
       ],
@@ -69,13 +69,12 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   /**This will fire deletion of key pair value in all language packages and selection list to remove the key value. */
   private async deleteKeyPairValue(): Promise<void> {
-    let deleteMsg = await this.global.language.transform('loading.name.deleting');
-    let sucessfulMsg = await this.global.language.transform('message.success.delete');
-    let errorMsg = await this.global.language.transform('message.error.updated');
-    await this.global.loading.show(deleteMsg);
+    let sucessfulMsg = await this.global.language.transform('messagesuccess.title.delete');
+    let errorMsg = await this.global.language.transform('messagefail.title.updated');
+    await this.global.loading.show();
 
     try {
-      await this.global.language.deleteKeyPairValue(this.keyPairValue.key);
+      await this.global.language.management.deletePackage(this.keyPairValue.key);
       await this.global.toast.present(sucessfulMsg);
     } catch (e) {
       await this.global.toast.presentError(errorMsg);
@@ -86,22 +85,22 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   //** This will set the edit alert */
   private async setEditAlert(): Promise<HTMLIonAlertElement> {
-    let header = await this.global.language.transform('menu.name.edit');
+    let header = await this.global.language.transform('label.title.edit');
 
     let editedAlertCriteria: AlertOptions = {
       header: this.keyPairValue.key + ' ' + header + ' (' + this.languageCode + ')',
       inputs: [
         {
-          placeholder: await this.global.language.transform('transform.edit.placeholder'),
+          placeholder: await this.global.language.transform('placeholder.description.entervalue'),
         },
       ],
       buttons: [
         {
-          text: await this.global.language.transform('button.name.edit'),
+          text: await this.global.language.transform('button.title.edit'),
           role: 'edit',
         },
         {
-          text: await this.global.language.transform('button.name.cancel'),
+          text: await this.global.language.transform('button.title.cancel'),
           role: '',
         },
       ],
@@ -114,13 +113,15 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   /** This will fire the update value in the selected package */
   private async editKeyPairValue(): Promise<void> {
-    let editMsg = await this.global.language.transform('loading.name.editing');
-    let sucessfulMsg = await this.global.language.transform('message.success.edit');
-    let errorMsg = await this.global.language.transform('message.error.edit');
-    await this.global.loading.show(editMsg);
+    let sucessfulMsg = await this.global.language.transform('messagesuccess.title.edited');
+    let errorMsg = await this.global.language.transform('messageerror.title.edited');
+    await this.global.loading.show();
 
     try {
-      await this.global.language.editSelectedPackage(this.languageCode, this.keyPairValue);
+      await this.global.language.management.editSelectedPackage(
+        this.languageCode,
+        this.keyPairValue
+      );
       await this.global.toast.present(sucessfulMsg);
     } catch (e) {
       await this.global.toast.presentError(errorMsg);

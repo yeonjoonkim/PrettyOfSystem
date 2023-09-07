@@ -31,8 +31,8 @@ export class SystemMenuCategoryService {
           ? systemMenuCategory?.content.map(content => content.name)
           : []
       );
-      await this.global.language
-        .deleteKeyPairValueList(selectedCategoryLanguageKeyList)
+      await this.global.language.management
+        .deletePackages(selectedCategoryLanguageKeyList)
         .then(() => {
           this.systemMenuRepo.deleteSystemMenuCategory(selectedMenuCategoryId);
         });
@@ -51,16 +51,16 @@ export class SystemMenuCategoryService {
         );
 
         if (!result.isEmpty) {
-          let success = await this.global.language.transform('message.success.save');
-          edited.description = this.global.language.getDefaultLanguageDescription(
+          let success = await this.global.language.transform('messagesuccess.title.save');
+          edited.description = this.global.textTransform.getDefaultLanguageTranslateResult(
             result.translated
           );
           edited.name = this.global.textTransform.getTransformObjectKeyValue(
             this.systemMenuCategoryAddService.prefixedCategoryOjbectName,
             edited.description
           );
-          await this.global.language.deleteKeyPairValue(previous.name).then(async () => {
-            await this.global.language.editLanguagePackage(result, edited.name.toLowerCase());
+          await this.global.language.management.deletePackage(previous.name).then(async () => {
+            await this.global.language.management.addPackage(result, edited.name.toLowerCase());
             await this.global.toast.present(success);
           });
         }
@@ -79,11 +79,13 @@ export class SystemMenuCategoryService {
     );
 
     if (selectedSystemMenuCategory) {
+      let success = await this.global.language.transform('messagesuccess.title.delete');
       selectedSystemMenuCategory.content = selectedSystemMenuCategory?.content.filter(
         content => content?.name !== selectedSystemMenuCategoryContent?.name
       );
-      await this.global.language.deleteKeyPairValue(selectedSystemMenuCategoryContent.name);
+      await this.global.language.management.deletePackage(selectedSystemMenuCategoryContent.name);
       await this.processUpdateSystemMenuCategory(selectedSystemMenuCategory);
+      await this.global.toast.present(success);
     }
   }
 
@@ -134,7 +136,7 @@ export class SystemMenuCategoryService {
     );
 
     if (!result.isEmpty) {
-      newCategoryContent.description = this.global.language.getDefaultLanguageDescription(
+      newCategoryContent.description = this.global.textTransform.getDefaultLanguageTranslateResult(
         result.translated
       );
       newCategoryContent.name = this.global.textTransform.getTransformObjectKeyValue(
@@ -142,10 +144,13 @@ export class SystemMenuCategoryService {
         newCategoryContent.description.toLowerCase()
       );
 
-      await this.global.language.editLanguagePackage(result, newCategoryContent.name.toLowerCase());
+      await this.global.language.management.addPackage(
+        result,
+        newCategoryContent.name.toLowerCase()
+      );
       systemMenuCategory.content.push(newCategoryContent);
       this.systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
-      let success = await this.global.language.transform('message.success.save');
+      let success = await this.global.language.transform('messagesuccess.title.save');
       await this.global.toast.present(success);
     }
   }
@@ -165,25 +170,25 @@ export class SystemMenuCategoryService {
         newContent
       );
       if (!result.isEmpty) {
-        newContent.description = this.global.language.getDefaultLanguageDescription(
+        newContent.description = this.global.textTransform.getDefaultLanguageTranslateResult(
           result.translated
         );
         newContent.name = this.global.textTransform.getTransformObjectKeyValue(
           this.systemMenuCategoryAddService.prefixedCategoryContentObjectName,
           newContent.description.toLowerCase()
         );
-        await this.global.language.deleteKeyPairValue(previousContent.name).then(async () => {
-          await this.global.language.editLanguagePackage(result, newContent.name.toLowerCase());
+        await this.global.language.management.deletePackage(previousContent.name).then(async () => {
+          await this.global.language.management.addPackage(result, newContent.name.toLowerCase());
           systemMenuCategory.content.push(newContent);
           this.systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
-          let success = await this.global.language.transform('message.success.edit');
+          let success = await this.global.language.transform('messagesuccess.title.edit');
           await this.global.toast.present(success);
         });
       }
     } else {
       systemMenuCategory.content.push(newContent);
       this.systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
-      let success = await this.global.language.transform('message.success.edit');
+      let success = await this.global.language.transform('messagesuccess.title.edit');
       await this.global.toast.present(success);
     }
   }

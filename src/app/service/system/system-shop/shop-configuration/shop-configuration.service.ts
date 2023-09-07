@@ -47,15 +47,14 @@ export class ShopConfigurationService {
   ) {}
 
   public async handleCreate(config: IShopConfiguration, form: IFormHeaderModalProp) {
-    let loadingMsg: string = await this.global.language.transform('loading.name.saving');
     let isExistingBusinessName: boolean = await this.isExistingBusinessName(config);
-    await this.global.loading.show(loadingMsg);
+    await this.global.loading.show();
     let saved = !isExistingBusinessName
       ? await this.systemShopConfigRepo.createNewShopConfiguration(config)
       : false;
 
     if (saved) {
-      let successfulMsg: string = await this.global.language.transform('message.success.save');
+      let successfulMsg: string = await this.global.language.transform('messagesuccess.title.save');
       await this.global.loading.dismiss();
       await this.global.toast.present(successfulMsg);
       await this.modalCtrl.dismiss(config, form.action);
@@ -81,19 +80,20 @@ export class ShopConfigurationService {
   }
 
   private handleErrorMessage(isExistingBusinessName: boolean): string {
-    return isExistingBusinessName ? 'message.error.existedbusinessname' : 'message.error.unsaved';
+    return isExistingBusinessName
+      ? 'messageerror.title.existedbusinessname'
+      : 'messageerror.title.unsaved';
   }
 
   public async handleSave(config: IShopConfiguration, form: IFormHeaderModalProp) {
-    let loadingMsg: string = await this.global.language.transform('loading.name.saving');
     let isExistingBusinessName: boolean = await this.isExistingBusinessName(config);
-    await this.global.loading.show(loadingMsg);
+    await this.global.loading.show();
     let saved = !isExistingBusinessName
       ? await this.systemShopConfigRepo.editExistingShopConfiguration(config)
       : false;
 
     if (saved) {
-      let successfulMsg: string = await this.global.language.transform('message.success.save');
+      let successfulMsg: string = await this.global.language.transform('messagesuccess.title.save');
       await this.global.loading.dismiss();
       await this.global.toast.present(successfulMsg);
       await this.modalCtrl.dismiss(config, form.action);
@@ -106,17 +106,18 @@ export class ShopConfigurationService {
   }
 
   public async handleDelete(config: IShopConfiguration, form: IFormHeaderModalProp) {
-    let loadingMsg: string = await this.global.language.transform('loading.name.deleting');
-    await this.global.loading.show(loadingMsg);
+    await this.global.loading.show();
     let deleted = await this.systemShopConfigRepo.deleteShopConfiguration(config.id);
 
     if (deleted) {
-      let successfulMsg: string = await this.global.language.transform('message.success.delete');
+      let successfulMsg: string = await this.global.language.transform(
+        'messagesuccess.title.delete'
+      );
       await this.global.loading.dismiss();
       await this.global.toast.present(successfulMsg);
       await this.modalCtrl.dismiss(config, form.action);
     } else {
-      let errorMsg: string = await this.global.language.transform('message.error.delete');
+      let errorMsg: string = await this.global.language.transform('messageerror.title.delete');
       await this.global.loading.dismiss();
       await this.global.toast.presentError(errorMsg);
     }

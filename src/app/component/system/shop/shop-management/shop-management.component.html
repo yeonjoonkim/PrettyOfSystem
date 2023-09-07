@@ -1,6 +1,6 @@
 <div id="shop-configuration-list">
   <legend>
-    {{ 'label.name.shopconfiguration' | languageTransform | async }}
+    {{ 'label.title.shopconfiguration' | languageTransform | async }}
   </legend>
   <kendo-grid
     [kendoGridBinding]="configs"
@@ -14,13 +14,13 @@
     <!-- Add Button -->
     <ng-template kendoGridToolbarTemplate>
       <button kendoGridAddCommand (click)="onClickCreateShopConfiguration()">
-        {{ 'button.name.add' | languageTransform | async }}
+        {{ 'button.title.add' | languageTransform | async }}
       </button>
     </ng-template>
 
     <!-- Name -->
     <kendo-grid-column
-      title="{{ 'label.name.name' | languageTransform | async }}"
+      title="{{ 'label.title.name' | languageTransform | async }}"
       [filterable]="true"
       field="name">
       <ng-template kendoGridCellTemplate let-config>{{ config.name }}</ng-template>
@@ -32,7 +32,7 @@
 
     <!-- Suburb -->
     <kendo-grid-column
-      title="{{ 'form.title.suburb' | languageTransform | async }}"
+      title="{{ 'label.title.suburb' | languageTransform | async }}"
       field="address.suburb"
       [filterable]="true">
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
@@ -43,7 +43,7 @@
 
     <!-- Category -->
     <kendo-grid-column
-      title="{{ 'label.name.category' | languageTransform | async }}"
+      title="{{ 'label.title.category' | languageTransform | async }}"
       field="category.name"
       [filterable]="false">
       <ng-template kendoGridCellTemplate let-config>
@@ -54,7 +54,7 @@
     <!--Active-->
     <kendo-grid-column
       *ngIf="!device.deviceType.isMobile"
-      title="{{ 'label.name.active' | languageTransform | async }}"
+      title="{{ 'label.title.active' | languageTransform | async }}"
       field="active"
       [filterable]="false">
       <ng-template kendoGridCellTemplate let-config>
@@ -65,7 +65,7 @@
     <!--Over Due-->
     <kendo-grid-column
       *ngIf="!device.deviceType.isMobile"
-      title="{{ 'label.name.overdue' | languageTransform | async }}"
+      title="{{ 'label.title.overdue' | languageTransform | async }}"
       field="plan.isOverDue"
       [filterable]="false">
       <ng-template kendoGridCellTemplate let-config>

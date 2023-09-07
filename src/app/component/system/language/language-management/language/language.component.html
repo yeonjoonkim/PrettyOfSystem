@@ -22,7 +22,7 @@
     <flex-row>
       <flex-row-item>
         <text-box
-          title="label.name.name"
+          title="label.title.name"
           [readOnly]="form.readOnly"
           [(validate)]="validator.name"
           [(value)]="language.name"
@@ -35,7 +35,7 @@
     <flex-row>
       <flex-row-item>
         <text-box
-          title="label.name.description"
+          title="label.title.description"
           [readOnly]="form.readOnly"
           [(validate)]="validator.description"
           [(value)]="language.description"
@@ -46,7 +46,7 @@
       </flex-row-item>
       <flex-row-item>
         <text-box
-          title="label.name.code"
+          title="label.title.code"
           [readOnly]="form.readOnly"
           [(validate)]="validator.code"
           [(value)]="language.code"
@@ -60,13 +60,13 @@
       <flex-col-item>
         <kendo-grid [kendoGridBinding]="keyPairValueList" [height]="200">
           <kendo-grid-column
-            title="{{ 'transform.name.key' | languageTransform | async }}"
+            title="{{ 'label.title.key' | languageTransform | async }}"
             [filterable]="true"
             field="key">
           </kendo-grid-column>
 
           <kendo-grid-column
-            title="{{ 'transform.name.value' | languageTransform | async }}"
+            title="{{ 'label.title.value' | languageTransform | async }}"
             [filterable]="true"
             field="value">
           </kendo-grid-column>

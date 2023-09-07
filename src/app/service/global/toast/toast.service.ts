@@ -5,10 +5,13 @@ import { ToastController } from '@ionic/angular';
   providedIn: 'root',
 })
 export class ToastService {
+  private toastCtrl: ToastController;
   private duration: number = 2000;
-  private position: 'top' | 'bottom' | 'middle' | undefined = 'top';
+  private position: 'top' | 'bottom' | 'middle' | undefined = 'middle';
 
-  constructor(private toastCtrl: ToastController) {}
+  constructor() {
+    this.toastCtrl = new ToastController();
+  }
 
   public async present(msg: string) {
     let toast = await this.toastCtrl.create({

@@ -39,11 +39,11 @@ export class LangaugeSelectionComponent implements OnInit {
   /** This function will set the global language by using language service. */
   public async onChangeLanguage() {
     this.language.currentLanguage = this.selectedLanguage.id;
-    this.language.onLanguageChange();
+    await this.language.onLanguageChange();
   }
 
   private async setLanguageSelectionList() {
-    let selections: ILanguageSelection[] = await this.language.getLanguageSelection();
+    let selections: ILanguageSelection[] = await this.language.management.storage.getSelections();
 
     let promises: Promise<IPairValueId>[] = selections.map(async s => {
       let name = await this.language.transform(s.description);

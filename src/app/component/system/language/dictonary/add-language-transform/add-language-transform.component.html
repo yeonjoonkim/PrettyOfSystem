@@ -1,22 +1,32 @@
 <section class="modal-container">
-  <!-- Transform Key -->
-  <kendo-label text="{{ 'transform.name.key' | languageTransform | async }}">
-    <kendo-textbox
-      [(ngModel)]="languageTransform.key"
-      size="large"
-      placeholder="{{ 'path.component.item' | languageTransform | async }}"
-      [clearButton]="true">
-    </kendo-textbox>
-  </kendo-label>
+  <!--Format-->
+  <key-pair-value-dropdown-single-selection
+    title="label.title.componentoption"
+    [selection]="componentSelection"
+    [(selected)]="selectedComponent"
+    (selectedChange)="onChangeFormatSelection()"></key-pair-value-dropdown-single-selection>
+  <!--Format-->
+  <key-pair-value-dropdown-single-selection
+    title="label.title.format"
+    [selection]="formatSelection"
+    [(selected)]="selectedFormat"
+    (selectedChange)="onChangeFormatSelection()"></key-pair-value-dropdown-single-selection>
 
-  <!-- Transform Valuie -->
-  <kendo-label text="{{ 'transform.name.value' | languageTransform | async }}">
-    <kendo-textbox [(ngModel)]="languageTransform.value" size="large" [clearButton]="true">
-    </kendo-textbox>
-  </kendo-label>
+  <!-- Transform Key -->
+  <text-box
+    title="label.title.key"
+    [(value)]="keyValue"
+    [(validate)]="validator.text"
+    (valueChange)="onChangeKeyValue()">
+  </text-box>
+
+  <text-box title="label.title.value" [(value)]="languageTransform.value"> </text-box>
 
   <!--Save Button-->
-  <ion-button expand="block" (click)="onClickSaveButton()">{{
-    'button.name.save' | languageTransform | async
-  }}</ion-button>
+  <ion-button
+    expand="block"
+    (click)="onClickSaveButton()"
+    [disabled]="!validator.text && !languageTransform.value"
+    >{{ 'button.title.save' | languageTransform | async }}</ion-button
+  >
 </section>

@@ -24,14 +24,14 @@ export class GenderSelectionComponent implements OnInit {
   }
 
   public genderSelection: IPairKeyValue[] = [
-    { value: Constant.Default.Gender.Male, key: 'label.name.male' },
-    { value: Constant.Default.Gender.Female, key: 'label.name.female' },
-    { value: Constant.Default.Gender.Other, key: 'label.name.other' },
+    { value: Constant.Default.Gender.Male, key: 'label.title.male' },
+    { value: Constant.Default.Gender.Female, key: 'label.title.female' },
+    { value: Constant.Default.Gender.Other, key: 'label.title.other' },
   ];
 
   public selectedGender: IPairKeyValue = {
     value: Constant.Default.Gender.Male,
-    key: 'label.name.male',
+    key: 'label.title.male',
   };
   public inputGender: Constant.GenderType = Constant.Default.Gender.Male;
   constructor() {}
@@ -43,7 +43,7 @@ export class GenderSelectionComponent implements OnInit {
   }
 
   private setFilterMode() {
-    this.genderSelection.push({ value: Constant.Default.Gender.All, key: 'label.name.all' });
+    this.genderSelection.push({ value: Constant.Default.Gender.All, key: 'label.title.all' });
   }
 
   public onChangeGender(selected: IPairKeyValue) {

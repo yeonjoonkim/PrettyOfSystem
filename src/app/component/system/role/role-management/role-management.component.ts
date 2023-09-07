@@ -36,7 +36,7 @@ export class RoleManagementComponent implements OnInit {
   }
 
   public async refresh() {
-    await this.language.refreshLanguageSelection().then(async () => {
+    await this.language.management.storage.refresh().then(async () => {
       await this.setRoleConfigurationList();
     });
   }

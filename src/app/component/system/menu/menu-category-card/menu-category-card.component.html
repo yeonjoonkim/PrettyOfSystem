@@ -1,7 +1,7 @@
 <ion-card id="menu-category">
   <!--Header-->
   <ion-card-header>
-    <ion-card-title>{{ 'menu.category.title' | languageTransform | async }} </ion-card-title>
+    <ion-card-title>{{ 'label.title.category' | languageTransform | async }} </ion-card-title>
     <p>
       <ion-icon
         class="ion-card-title-icon"
@@ -27,12 +27,12 @@
         </ion-item>
         <ion-item-options side="start">
           <ion-item-option color="danger" (click)="onClickDeleteCategory(category)">
-            <p>{{ 'button.name.delete' | languageTransform | async }}</p>
+            <p>{{ 'button.title.delete' | languageTransform | async }}</p>
           </ion-item-option>
         </ion-item-options>
         <ion-item-options side="end">
           <ion-item-option (click)="onClickEditCategory($event, category)">
-            <p>{{ 'button.name.edit' | languageTransform | async }}</p>
+            <p>{{ 'button.title.edit' | languageTransform | async }}</p>
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>

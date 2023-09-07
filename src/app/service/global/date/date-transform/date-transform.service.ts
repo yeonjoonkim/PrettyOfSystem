@@ -5,12 +5,22 @@ import { createDate, ZonedDate } from '@progress/kendo-date-math';
 import '@progress/kendo-date-math/tz/all';
 import * as Constant from 'src/app/constant/constant';
 import { ITimeItem } from 'src/app/interface/global/global.interface';
-
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root',
 })
 export class DateTransformService {
   constructor() {}
+
+  public addMin(date: Date, min: number): Date {
+    return moment(date).add(min, 'minutes').toDate();
+  }
+
+  public diff(aDate: Date, bDate: Date): moment.Duration {
+    const a = moment(aDate);
+    const b = moment(bDate);
+    return moment.duration(a.diff(b));
+  }
 
   public toShopDateTime(inputDate: Date, timezone: Constant.TimeZoneType): ZonedDate {
     let tzDate = ZonedDate.fromLocalDate(inputDate, timezone);

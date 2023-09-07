@@ -22,12 +22,12 @@ export class DateService {
     { index: Constant.Date.DayIndex.Sat, day: Constant.Date.Day.Sat },
   ];
   public period: IDatePeriod[] = [
-    { name: 'date.period.weekly', type: Constant.Date.Period.Weekly, week: 1, day: 7 },
-    { name: 'date.period.monthly', type: Constant.Date.Period.Monthly, week: 4, day: 28 },
-    { name: 'date.period.quarterly', type: Constant.Date.Period.Quarterly, week: 12, day: 84 },
-    { name: 'date.period.halfyear', type: Constant.Date.Period.HalfYear, week: 26, day: 182 },
-    { name: 'date.period.annually', type: Constant.Date.Period.Annually, week: 52, day: 365 },
-    { name: 'date.period.custom', type: Constant.Date.Period.Custom, week: 0, day: 0 },
+    { name: 'date.title.weekly', type: Constant.Date.Period.Weekly, week: 1, day: 7 },
+    { name: 'date.title.monthly', type: Constant.Date.Period.Monthly, week: 4, day: 28 },
+    { name: 'date.title.quarterly', type: Constant.Date.Period.Quarterly, week: 12, day: 84 },
+    { name: 'date.title.halfyear', type: Constant.Date.Period.HalfYear, week: 26, day: 182 },
+    { name: 'date.title.annually', type: Constant.Date.Period.Annually, week: 52, day: 365 },
+    { name: 'date.title.custom', type: Constant.Date.Period.Custom, week: 0, day: 0 },
   ];
 
   constructor(public transform: DateTransformService) {}

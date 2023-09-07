@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
 import { NavParams } from '@ionic/angular';
 import { GlobalService } from 'src/app/service/global/global.service';
+import { cloneDeep } from 'lodash-es';
 @Component({
   selector: 'system-role',
   templateUrl: './role.component.html',
@@ -41,7 +42,7 @@ export class RoleComponent implements OnInit {
 
     if (editable !== undefined) {
       this.editedTitle = role?.name;
-      this.prevRole = role;
+      this.prevRole = cloneDeep(role);
       this.role = role;
       this.editMode = true;
     }
@@ -138,9 +139,9 @@ export class RoleComponent implements OnInit {
   /** During save click event, present toast error message to determine the error. */
   private async presentErroMsg(hasDescription: boolean, hasSelectedConfig: boolean): Promise<void> {
     let errormsg: string = !hasDescription
-      ? await this.global.language.transform('message.error.descriptionfield')
+      ? await this.global.language.transform('messageerror.dscription.descriptionfield')
       : !hasSelectedConfig
-      ? await this.global.language.transform('message.error.config')
+      ? await this.global.language.transform('messageerror.description.config')
       : '';
 
     await this.global.toast.presentError(errormsg);
