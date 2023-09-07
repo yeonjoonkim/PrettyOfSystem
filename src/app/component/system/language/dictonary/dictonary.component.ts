@@ -38,7 +38,7 @@ export class DictonaryComponent implements OnInit {
   }
 
   public async export() {
-    exportToCSV(this.selectedKeyPairValueList, this.selectedLang);
+    await this.exportToCSV(this.selectedKeyPairValueList, this.selectedLang);
   }
 
   public async openAddLanguageTransform(event: any): Promise<void> {
@@ -97,29 +97,31 @@ export class DictonaryComponent implements OnInit {
       return li.key.toLowerCase().includes(value) || li.value.toLowerCase().includes(value);
     });
   }
-}
 
-function exportToCSV(data: IPairKeyValue[], selectedLang: IPairKeyValue): void {
-  // Convert the data to CSV format
-  const convertToCSV = (objArray: IPairKeyValue[]): string => {
-    const header = 'key,value\n';
-    const rows = objArray.map(item => `"${item.key}","${item.value}"`).join('\n');
-    return header + rows;
-  };
+  private async exportToCSV(data: IPairKeyValue[], selectedLang: IPairKeyValue) {
+    await this.global.loading.show();
+    // Convert the data to CSV format
+    const convertToCSV = (objArray: IPairKeyValue[]): string => {
+      const header = 'key,value\n';
+      const rows = objArray.map(item => `"${item.key}","${item.value}"`).join('\n');
+      return header + rows;
+    };
 
-  // Download the CSV
-  const downloadCSV = (csv: string, filename: string): void => {
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.href = window.URL.createObjectURL(blob);
-    a.download = filename;
-    a.click();
-    window.URL.revokeObjectURL(a.href);
-    document.body.removeChild(a);
-  };
+    // Download the CSV
+    const downloadCSV = (csv: string, filename: string): void => {
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.href = window.URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(a.href);
+      document.body.removeChild(a);
+    };
 
-  const csv = convertToCSV(data);
-  downloadCSV(csv, selectedLang.key + '-' + selectedLang.value + '.csv');
+    const csv = convertToCSV(data);
+    downloadCSV(csv, selectedLang.key + '-' + selectedLang.value + '.csv');
+    await this.global.loading.dismiss();
+  }
 }
