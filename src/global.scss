@@ -41,6 +41,20 @@ $background-color: #8685ef;
   --background: #8685ef;
   font-weight: bold;
 }
+.modal-container {
+  margin: 5px;
+}
+
+ion-loading {
+  --backdrop-opacity: 0;
+  --background: transparent;
+  --color: #000; // Adjust this to the color you want
+}
+
+.transparent-loading {
+  --backdrop-opacity: 0;
+  --background: transparent;
+}
 
 .date-pick-popup-container {
   position: fixed !important;

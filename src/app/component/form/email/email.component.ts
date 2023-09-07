@@ -51,7 +51,7 @@ export class EmailComponent implements OnInit {
 
   private async setPlaceHolder() {
     this.placeHolder = this.isRequired
-      ? await this.global.language.transform('form.placeholder.required')
+      ? await this.global.language.transform('placeholder.title.required')
       : this.placeHolder;
   }
 }

@@ -31,7 +31,7 @@ export class DatePeriodPickerComponent implements OnInit {
   public pairValueIdList: IPairValueId[] = [];
   public selectedValueId: IPairValueId = { id: '', value: '' };
   public inputPeriod: IDatePeriod = {
-    name: 'date.period.weekly',
+    name: 'date.title.weekly',
     type: 'Weekly',
     week: 1,
     day: 7,

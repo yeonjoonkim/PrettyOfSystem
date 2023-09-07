@@ -80,7 +80,7 @@ export class TextBoxComponent implements OnInit {
 
   private async setDefaultPlaceHolder() {
     this.placeHolder = this.isRequired
-      ? await this.global.language.transform('form.placeholder.required')
+      ? await this.global.language.transform('placeholder.title.required')
       : this.placeHolder;
   }
 }

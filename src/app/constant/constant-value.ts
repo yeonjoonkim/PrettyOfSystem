@@ -22,6 +22,15 @@ export const Login = {
   } as const,
 } as const;
 
+export const Text = {
+  Format: {
+    Upper: 'upper',
+    Lower: 'lower',
+    Title: 'title',
+    Description: 'description',
+  } as const,
+} as const;
+
 export const Default = {
   Gender: {
     Male: 'Male',

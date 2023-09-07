@@ -1,4 +1,4 @@
-<kendo-label [for]="shopCountryList" text="{{ 'shop.country.title' | languageTransform | async }}">
+<kendo-label [for]="shopCountryList" text="{{ 'label.title.country' | languageTransform | async }}">
   <kendo-dropdownlist
     #shopCountryList
     [data]="pairValueIdList"
@@ -8,6 +8,6 @@
     (valueChange)="onClickCountry()"
     [readonly]="readOnly"
     [loading]="loading"
-    defaultItem="{{ 'message.error.option' | languageTransform | async }}">
+    defaultItem="{{ 'messageerror.description.dropdownoptions' | languageTransform | async }}">
   </kendo-dropdownlist>
 </kendo-label>

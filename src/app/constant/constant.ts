@@ -1,6 +1,15 @@
 import firebase from 'firebase/compat/app';
-import { Default, State, Date, Login } from './constant-value';
-export { Default, State, Setting, Date, ShopSetting, SystemSetting, Login } from './constant-value';
+import { Default, State, Date, Login, Text } from './constant-value';
+export {
+  Default,
+  State,
+  Setting,
+  Date,
+  ShopSetting,
+  SystemSetting,
+  Login,
+  Text,
+} from './constant-value';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
 import { API } from './constant-api';
@@ -43,3 +52,4 @@ export type FormActionType = (typeof Default.FormAction)[keyof typeof Default.Fo
 export type FormStatusType = (typeof Default.FormStatus)[keyof typeof Default.FormStatus];
 export type PhoneCodeType = (typeof Default.PhoneCode)[keyof typeof Default.PhoneCode];
 export type CurrencyType = (typeof Default.CurrencyType)[keyof typeof Default.CurrencyType];
+export type TextFormatType = (typeof Text.Format)[keyof typeof Text.Format];

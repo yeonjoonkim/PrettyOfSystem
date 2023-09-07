@@ -14,7 +14,7 @@ export class LanguageModalService {
 
   public async create() {
     let form: IFormHeaderModalProp = this.formCtrl.setCreateFormHeaderModalProp();
-    form.headerTitle = 'form.header.createlanguage';
+    form.headerTitle = 'label.title.createlanguage';
     let modal = await this.modal.create({
       component: LanguageComponent,
       presentingElement: await this.modal.getTop(),

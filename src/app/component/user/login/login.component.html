@@ -25,7 +25,7 @@
   </flex-col-item>
   <flex-col-item *ngIf="!sendOTP && loginOption.phoneNumber">
     <button kendoButton [disabled]="!validator.phone" (click)="sendPhoneOTP()">
-      {{ 'label.name.sendverification' | languageTransform | async }}
+      {{ 'label.title.sendverification' | languageTransform | async }}
     </button>
   </flex-col-item>
 </flex-col>
@@ -33,8 +33,8 @@
 <!-- OTP Verification (Phone) -->
 <flex-col *ngIf="sendOTP && loginOption.phoneNumber">
   <flex-col-item id="otp-verification-title">
-    <legend>{{ 'label.name.securityconfirmation' | languageTransform | async }}</legend>
-    <p>{{ 'message.name.verificationotpsend' | languageTransform | async }}</p>
+    <legend>{{ 'label.title.securityconfirmation' | languageTransform | async }}</legend>
+    <p>{{ 'messagesuccess.description.verificationotpsend' | languageTransform | async }}</p>
     <p id="otp-verification-phone-number">{{ login.phoneNumber }}</p>
   </flex-col-item>
   <flex-col-item>
@@ -53,16 +53,16 @@
   <flex-col-item>
     <section id="otp-tool">
       <button id="otp-tool-btn" kendoButton (click)="reset()">
-        {{ 'label.name.back' | languageTransform | async }}
+        {{ 'label.title.back' | languageTransform | async }}
       </button>
       <button id="otp-tool-btn" kendoButton (click)="resendOTP()">
-        {{ 'label.name.resend' | languageTransform | async }}
+        {{ 'label.title.resend' | languageTransform | async }}
       </button>
     </section>
   </flex-col-item>
   <flex-col-item>
     <button kendoButton [disabled]="!enableOTPVerificationBtn" (click)="verifyPhoneOTP()">
-      {{ 'label.name.verification' | languageTransform | async }}
+      {{ 'label.title.verification' | languageTransform | async }}
     </button>
   </flex-col-item>
 </flex-col>
@@ -75,10 +75,10 @@
       [isRequired]="true"></e-mail>
   </flex-col-item>
   <flex-col-item>
-    <kendo-label text="{{ 'label.name.password' | languageTransform | async }}">
+    <kendo-label text="{{ 'label.title.password' | languageTransform | async }}">
       <kendo-textbox
         #textbox
-        placeholder="{{ 'form.placeholder.required' | languageTransform | async }}"
+        placeholder="{{ 'placeholder.title.required' | languageTransform | async }}"
         [clearButton]="true"
         [(value)]="login.password"
         (valueChange)="onChangePassword()">
@@ -104,7 +104,7 @@
       kendoButton
       [disabled]="!validator.password || !validator.email"
       (click)="onClickLoginWithEmail()">
-      {{ 'label.name.verification' | languageTransform | async }}
+      {{ 'label.title.verification' | languageTransform | async }}
     </button>
   </flex-col-item>
 </flex-col>

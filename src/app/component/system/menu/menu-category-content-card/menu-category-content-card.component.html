@@ -1,7 +1,7 @@
 <ion-card>
   <!--Header-->
   <ion-card-header>
-    <ion-card-title>{{ 'menu.category.content' | languageTransform | async }}</ion-card-title>
+    <ion-card-title>{{ 'label.title.content' | languageTransform | async }}</ion-card-title>
     <ion-card-subtitle>{{ selectedCategoryName | languageTransform | async }} </ion-card-subtitle>
     <p *ngIf="selectedCategoryName" (click)="onClickAddNewContent($event)">
       <ion-icon class="ion-card-title-icon" name="add-outline" slot="end"></ion-icon>
@@ -22,12 +22,12 @@
 
         <ion-item-options side="start">
           <ion-item-option color="danger" (click)="onClickDeleteContent(content)">
-            <p>{{ 'button.name.delete' | languageTransform | async }}</p>
+            <p>{{ 'button.title.delete' | languageTransform | async }}</p>
           </ion-item-option>
         </ion-item-options>
         <ion-item-options side="end">
           <ion-item-option (click)="onClickEditContent($event, content)">
-            <p>{{ 'button.name.edit' | languageTransform | async }}</p>
+            <p>{{ 'button.title.edit' | languageTransform | async }}</p>
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>

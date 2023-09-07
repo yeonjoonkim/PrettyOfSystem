@@ -20,19 +20,19 @@ export interface ISystemMenuOptionAction {
   providedIn: 'root',
 })
 export class SystemMenuOptionControllerService {
-  private readonly systemMenu: string = 'system.menu.';
+  private readonly labelTitle: string = 'label.title.';
   private readonly menuOption = {
     //Configuration
-    menuManagement: this.systemMenu + 'menumanagement',
-    roleManagement: this.systemMenu + 'rolemanagement',
-    planManagement: this.systemMenu + 'subscriptionmanagement',
+    menuManagement: this.labelTitle + 'menu',
+    roleManagement: this.labelTitle + 'role',
+    planManagement: this.labelTitle + 'subscription',
     //Shop
-    shopManagement: this.systemMenu + 'shopmanagement',
+    shopManagement: this.labelTitle + 'shop',
     //User
-    userManagement: this.systemMenu + 'usermanagement',
+    userManagement: this.labelTitle + 'user',
     //Language
-    transformDictionary: this.systemMenu + 'dictionary',
-    languageManagement: this.systemMenu + 'language',
+    transformDictionary: this.labelTitle + 'dictionary',
+    languageManagement: this.labelTitle + 'language',
   };
 
   constructor(private language: LanguageService) {}

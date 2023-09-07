@@ -1,3 +1,6 @@
+import { ITextTransformObject } from 'src/app/service/global/text-transform/text-transform.service';
+import { IPairKeyValue } from '../../global/global.interface';
+
 export interface ILanguageSelection {
   id?: string;
   code: string;
@@ -34,7 +37,14 @@ export interface IAddLanguageTransformSaveCommand {
 export interface ILanguageTranslatedCriteria {
   name: string[];
   code: string[];
+  format: ILanguageTranslatedFormatCriteria;
+}
+
+export interface ILanguageTranslatedFormatCriteria {
   isTitle: boolean;
+  isUpper: boolean;
+  isLower: boolean;
+  isDescription: boolean;
 }
 
 export interface ILanguageTranslateResult {
@@ -45,4 +55,18 @@ export interface ILanugaeTransformPopOverCriteria {
   key: string;
   value: string;
   selectedLangCode: string;
+}
+
+export interface ICreateNewPackageCommand {
+  code: string;
+  defaultKeyPairList: IPairKeyValue[];
+  newPackage: ITextTransformObject;
+  errorKeyPairList: IPairKeyValue[];
+  translateTo: string;
+  end: number;
+  current: number;
+  currentKeyPair: IPairKeyValue;
+  inProgress: boolean;
+  endTransaction: boolean;
+  attemptError: boolean;
 }

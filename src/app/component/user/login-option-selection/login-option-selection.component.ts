@@ -31,7 +31,7 @@ export class LoginOptionSelectionComponent implements OnInit, OnChanges {
 
   public inputLoginOption: IUserLoginOption = { id: '', phoneNumber: true, email: false };
   public readOnly: boolean = true;
-  public title: string = 'label.name.loginoption';
+  public title: string = 'label.title.loginoption';
 
   constructor(private roleRateService: RoleRateService) {}
 
@@ -90,6 +90,6 @@ export class LoginOptionSelectionComponent implements OnInit, OnChanges {
   }
 
   private setTitle() {
-    this.title = this.mode !== 'login' ? 'label.name.loginoption' : '';
+    this.title = this.mode !== 'login' ? 'label.title.loginoption' : '';
   }
 }

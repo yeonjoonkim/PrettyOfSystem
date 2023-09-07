@@ -34,23 +34,36 @@ export class OpenAiService {
   ) {}
 
   /**This function is trigger api to receive answer from open ai */
-  public async receiveResult(command: string): Promise<string> {
-    //Set api request
+  public async receiveResult(command: string, loading: boolean): Promise<string> {
+    // Set api request
     let param = { ...this.defaultParams, ...{ messages: [{ role: 'system', content: command }] } };
     let requestOptions = this.setReqeustOptions(param);
     let apiResult: string = '';
 
-    //fetch api with request
-    await fetch(this.openAiUrl, requestOptions).then(async result => {
-      if (!result.ok) {
+    try {
+      if (loading) {
+        await this.loading.show();
+      }
+      const response = await Promise.race([
+        fetch(this.openAiUrl, requestOptions),
+        new Promise<never>(
+          (_, reject) => setTimeout(() => reject(new Error('Request timed out')), 15000) // 5 second timeout
+        ),
+      ]);
+
+      if (!response.ok) {
         this.loading.dismiss();
-        let err = await this.language.transform('message.error.api');
+        let err = await this.language.transform('messagefail.description.apiresponsenotok');
         this.toast.presentError(err);
       } else {
-        let data = await result.json();
+        let data = await response.json();
         apiResult = data.choices[0].message.content;
+        await this.loading.dismiss();
       }
-    });
+    } catch (error) {
+      this.loading.dismiss();
+      console.error(error);
+    }
 
     return apiResult;
   }

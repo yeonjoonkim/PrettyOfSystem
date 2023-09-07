@@ -40,7 +40,7 @@ export class MenuManagementComponent implements OnInit {
   }
 
   async onUpdate() {
-    await this.language.refreshLanguageSelection().then(async () => {
+    await this.language.management.storage.refresh().then(async () => {
       await this.setMenuCategory();
     });
   }

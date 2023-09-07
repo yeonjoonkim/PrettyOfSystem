@@ -26,17 +26,17 @@ export class DeleteConfirmationAlert {
 
   private async setConfirmationDeleteAlert(selectedName: string, withName: boolean) {
     let name = await this.language.transform(selectedName);
-    let deleteMsg = await this.language.transform('message.header.delete');
+    let deleteMsg = await this.language.transform('confirmation.title.delete');
     let header = withName ? name + ' - ' + deleteMsg : deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
       header: header,
       buttons: [
         {
-          text: await this.language.transform('button.name.delete'),
+          text: await this.language.transform('button.title.delete'),
           role: 'delete',
         },
         {
-          text: await this.language.transform('button.name.cancel'),
+          text: await this.language.transform('button.title.cancel'),
           role: '',
         },
       ],
@@ -64,17 +64,17 @@ export class DeleteConfirmationAlert {
 
   private async setConfirmationEditAlert(selectedName: string, withName: boolean) {
     let name = await this.language.transform(selectedName);
-    let deleteMsg = await this.language.transform('message.header.edit');
+    let deleteMsg = await this.language.transform('confirmation.description.edit');
     let header = withName ? name + ' - ' + deleteMsg : deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
       header: header,
       buttons: [
         {
-          text: await this.language.transform('button.name.edit'),
+          text: await this.language.transform('button.title.edit'),
           role: 'edit',
         },
         {
-          text: await this.language.transform('button.name.cancel'),
+          text: await this.language.transform('button.title.cancel'),
           role: '',
         },
       ],

@@ -45,7 +45,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.user.firstName = 'Yeon Joon';
     this.user.lastName = 'Kim';
     if (this.user.currentShop !== null) {
-      this.user.currentShop.role.name = 'role.name.systemadministrator';
+      this.user.currentShop.role.name = 'role.title.systemadmin';
       this.user.currentShop.shopName = 'So Thai Massage & Spa Market Square';
       this.user.currentShop.role.accessLevel.isSystemAdmin = true;
     }

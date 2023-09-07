@@ -91,7 +91,6 @@ export class RoleListCardComponent implements OnInit, OnChanges {
 
   private async handleDismissModal(modal: HTMLIonModalElement) {
     let result = await modal.onWillDismiss();
-    console.log(result);
     if (result?.data === 'refresh') {
       this.onUpdate.emit(true);
     }

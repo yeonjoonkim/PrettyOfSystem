@@ -1,0 +1,24 @@
+<kendo-label text="{{ title | languageTransform | async }}">
+  <kendo-dropdownlist
+    id="drop-down-list"
+    #dropdownlist
+    adaptiveMode="auto"
+    [data]="selection"
+    textField="key"
+    [value]="selectedSelection"
+    (valueChange)="onChangeSelection($event)"
+    (open)="onOpen()"
+    [itemDisabled]="itemDisabled"
+    (close)="onClose($event)">
+    <ng-template kendoDropDownListItemTemplate let-listItem>
+      <div>
+        {{ listItem.key | languageTransform | async }}
+      </div>
+    </ng-template>
+    <ng-template kendoDropDownListValueTemplate let-listItem>
+      <span>
+        {{ listItem.key | languageTransform | async }}
+      </span>
+    </ng-template>
+  </kendo-dropdownlist>
+</kendo-label>

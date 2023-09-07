@@ -2,14 +2,14 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import * as Constant from 'src/app/constant/constant';
 import { ModalController, NavParams } from '@ionic/angular';
-import { ILanguageSelection } from 'src/app/interface/system/language/language.interface';
-import { IPairKeyValue } from 'src/app/interface/global/global.interface';
-import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
 import {
   ICreateNewPackageCommand,
-  LanguageSaveService,
-} from 'src/app/service/system/system-language/language-save/language-save.service';
+  ILanguageSelection,
+} from 'src/app/interface/system/language/language.interface';
+import { IPairKeyValue } from 'src/app/interface/global/global.interface';
+import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
 import { Subscription } from 'rxjs';
+import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
   selector: 'language',
@@ -28,7 +28,7 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
     id: '',
     code: '',
     name: '',
-    description: 'language.name.',
+    description: 'language.title.',
     package: {},
     isDefault: false,
   };
@@ -42,7 +42,7 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
     private navParams: NavParams,
     private modalCtrl: ModalController,
     private systemLanguage: SystemLanguageService,
-    public newLanguage: LanguageSaveService
+    private global: GlobalService
   ) {
     this.loadingFormCtrl();
   }
@@ -73,18 +73,23 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public handleCreate() {
-    this.newLanguage.receiveCreateNewPackageCommand(this.language.name, this.language.code);
-    this.saveCommandSubscription = this.newLanguage.createCommand.subscribe(command => {
+    this.global.language.management.add.receiveCreateNewPackageCommand(
+      this.language.name,
+      this.language.code,
+      this.keyPairValueList
+    );
+    this.saveCommandSubscription = this.global.language.management.add.status.subscribe(command => {
       if (command !== undefined) {
-        this.newLanguage.handleTranslateCommand(command);
+        this.global.language.management.add.handleTranslateCommand(command);
         this.createStatus = command;
         this.keyPairValueList = command.defaultKeyPairList;
         this.form.enabledSavebutton = false;
         this.form.readOnly = true;
+
         if (command.endTransaction) {
           this.language.package = command.newPackage;
-          this.newLanguage.saveNewLanguage(this.language);
-          this.systemLanguage.refreshLocalStorage();
+          this.global.language.management.add.save(this.language);
+          this.global.language.management.storage.refresh();
           this.modalCtrl.dismiss({ role: 'Saved' });
         }
       }

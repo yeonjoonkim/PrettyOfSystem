@@ -1,6 +1,6 @@
 <kendo-label
   [for]="shopCategoryList"
-  text="{{ 'shop.category.title' | languageTransform | async }}">
+  text="{{ 'label.title.category' | languageTransform | async }}">
   <div class="form-error-container"></div>
   <kendo-dropdownlist
     #shopCategoryList
@@ -10,7 +10,6 @@
     [(ngModel)]="selectedPairValueId"
     (valueChange)="onClickCategory()"
     [readonly]="readOnly"
-    [loading]="loading"
-    defaultItem="{{ 'message.error.option' | languageTransform | async }}">
+    [loading]="loading">
   </kendo-dropdownlist>
 </kendo-label>

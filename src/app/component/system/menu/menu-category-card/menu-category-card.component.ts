@@ -130,17 +130,17 @@ export class MenuCategoryCardComponent implements OnInit {
   /**This will create an alert to confirm the delete action */
   private async setConfirmDeleteAlert(selectedCategoryName: string) {
     let categoryName = await this.language.transform(selectedCategoryName);
-    let deleteMsg = await this.language.transform('message.header.delete');
+    let deleteMsg = await this.language.transform('label.title.deleteheader');
     let header = categoryName + ' - ' + deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
       header: header,
       buttons: [
         {
-          text: await this.language.transform('button.name.delete'),
+          text: await this.language.transform('button.title.delete'),
           role: 'delete',
         },
         {
-          text: await this.language.transform('button.name.cancel'),
+          text: await this.language.transform('button.title.cancel'),
           role: '',
         },
       ],
