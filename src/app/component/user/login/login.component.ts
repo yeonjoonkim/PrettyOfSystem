@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   async ngOnDestroy() {
-    this._timerSubscription.unsubscribe();
+    this._timerSubscription?.unsubscribe();
     await this.login.timer.end();
   }
 

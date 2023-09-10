@@ -31,6 +31,7 @@ import 'hammerjs';
 //Delcalration for Shared Component
 import { MenuComponent } from './component/global/menu/menu.component';
 import { LangaugeSelectionComponent } from './component/global/langauge-selection/langauge-selection.component';
+import { SharedFormModule } from './component/form/form.module';
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, LangaugeSelectionComponent],
@@ -48,6 +49,7 @@ import { LangaugeSelectionComponent } from './component/global/langauge-selectio
     CommonModule,
     FormsModule,
     KendoUiModule,
+    SharedFormModule,
     BrowserAnimationsModule,
   ],
   exports: [],

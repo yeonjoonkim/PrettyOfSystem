@@ -35,6 +35,17 @@ export interface IPairKeyValue {
   value: string;
 }
 
+export interface IPairNameValue {
+  name: string;
+  value: string | number;
+}
+
+export interface IPairNameValueFilterParam {
+  name: string;
+  translatedName: string;
+  value: string | number;
+}
+
 export interface IPairValueId {
   id: string;
   value: string | number;

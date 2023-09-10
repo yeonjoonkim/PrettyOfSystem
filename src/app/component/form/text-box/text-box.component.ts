@@ -11,7 +11,6 @@ export class TextBoxComponent implements OnInit {
   public validatedValue!: string;
   public hasValue!: boolean;
   public valueLengthCount: number = 0;
-  public placeHolder: string = '';
   public entered: boolean = false;
   @Output() valueChange = new EventEmitter<string>();
   @Output() validateChange = new EventEmitter<boolean>();
@@ -26,6 +25,7 @@ export class TextBoxComponent implements OnInit {
   @Input() min: number = 0;
   @Input() isRequired: boolean = false;
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
+  @Input() placeholder: string = '';
   @Input()
   get value() {
     return this.validatedValue;
@@ -79,8 +79,8 @@ export class TextBoxComponent implements OnInit {
   }
 
   private async setDefaultPlaceHolder() {
-    this.placeHolder = this.isRequired
+    this.placeholder = this.isRequired
       ? await this.global.language.transform('placeholder.title.required')
-      : this.placeHolder;
+      : this.placeholder;
   }
 }

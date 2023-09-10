@@ -12,7 +12,7 @@ import { StorageService } from './service/global/storage/storage.service';
 export class AppComponent implements OnInit, OnDestroy {
   private deviceTypeSubscription!: Subscription;
   public isLoaded: boolean = false;
-  private languageChangeActionSubscription: Subscription | undefined;
+  private languageChangeActionSubscription!: Subscription;
 
   constructor(
     private language: LanguageService,
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async ngOnDestroy() {
-    this.deviceTypeSubscription.unsubscribe();
+    this.deviceTypeSubscription?.unsubscribe();
     this.languageChangeActionSubscription?.unsubscribe();
   }
 

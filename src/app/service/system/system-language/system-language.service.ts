@@ -21,6 +21,7 @@ export class SystemLanguageService {
   public async get(): Promise<ILanguageSelection[]> {
     return await this.language.management.storage.getSelections();
   }
+
   public async getSelectedLanguageKeyPairValueList(code: string): Promise<IPairKeyValue[]> {
     let selectedLang: ILanguageSelection =
       await this.language.management.storage.getSelectedSelection(code);

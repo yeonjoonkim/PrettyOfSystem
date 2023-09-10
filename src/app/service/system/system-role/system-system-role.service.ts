@@ -78,18 +78,18 @@ export class SystemRoleService {
           this.prefixedObjectName,
           newConfig.description
         );
+        newConfig.description = translated.validated.description;
+        newConfig.name = translated.validated.name;
+        let keyValue =
+          this.prefixedObjectName +
+          this.global.textTransform
+            .getDefaultLanguageTranslateResult(translated.result.translated)
+            .toLowerCase()
+            .replace(/\s+/g, '');
 
         await this.global.language.management
           .deletePackage(selectedPreviousRole.name)
           .then(async () => {
-            newConfig.description = translated.validated.description;
-            newConfig.name = translated.validated.name;
-            let keyValue =
-              this.prefixedObjectName +
-              this.global.textTransform
-                .getDefaultLanguageTranslateResult(translated.result.translated)
-                .toLowerCase()
-                .replace(/\s+/g, '');
             await this.global.language.management.addPackage(translated.result, keyValue);
             await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
             await this.presentUpdateMsg();

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ILanguageSelection } from 'src/app/interface/system/language/language.interface';
 import { LanguageService } from 'src/app/service/global/language/language.service';
-import { IPairValueId } from 'src/app/interface/global/global.interface';
+import { IPairNameValue, IPairValueId } from 'src/app/interface/global/global.interface';
 import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 
 @Component({
@@ -12,8 +12,8 @@ import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 export class LangaugeSelectionComponent implements OnInit {
   @ViewChild('dropdownlist')
   public dropdownlist!: DropDownListComponent;
-  public selectedLanguage: IPairValueId = { id: '', value: '' };
-  public languageSelection: IPairValueId[] = [];
+  public selectedLanguage: IPairNameValue = { name: '', value: '' };
+  public languageSelection: IPairNameValue[] = [];
 
   constructor(public language: LanguageService) {}
 
@@ -21,37 +21,25 @@ export class LangaugeSelectionComponent implements OnInit {
     await this.setDefault();
   }
 
-  public onClose(event: any) {
-    event.preventDefault();
-    setTimeout(() => {
-      if (!this.dropdownlist.wrapper.nativeElement.contains(document.activeElement)) {
-        this.dropdownlist.toggle(false);
-      }
-    });
-  }
-
   private async setDefault() {
+    const currentLanguage = await this.language.management.storage.getCurrentLanguage();
     this.languageSelection = await this.setLanguageSelectionList();
-    let currentValue = this.languageSelection.find(s => s.id === this.language.currentLanguage);
-    this.selectedLanguage = currentValue !== undefined ? currentValue : { id: '', value: '' };
+    let currentValue = this.languageSelection.find(s => s.value === currentLanguage);
+    this.selectedLanguage = currentValue !== undefined ? currentValue : { value: '', name: '' };
   }
 
   /** This function will set the global language by using language service. */
   public async onChangeLanguage() {
-    this.language.currentLanguage = this.selectedLanguage.id;
+    this.language.currentLanguage = this.selectedLanguage.value.toString();
     await this.language.onLanguageChange();
   }
 
   private async setLanguageSelectionList() {
     let selections: ILanguageSelection[] = await this.language.management.storage.getSelections();
-
-    let promises: Promise<IPairValueId>[] = selections.map(async s => {
-      let name = await this.language.transform(s.description);
-      return { id: s.code, value: name };
+    let promise = selections.map(async s => {
+      return { name: s.description, value: s.code };
     });
-
-    let keyPairList: IPairValueId[] = await Promise.all(promises);
-
-    return keyPairList;
+    let result = await Promise.all(promise);
+    return result;
   }
 }

@@ -6,7 +6,6 @@ import {
   ICreateNewPackageCommand,
   ILanguageSelection,
   ILanguageTranslateItem,
-  ILanguageTranslatedCriteria,
 } from 'src/app/interface/system/language/language.interface';
 import { SystemLanguagePackageService } from '../system-language-package/system-language-package.service';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
@@ -28,15 +27,19 @@ export class SystemLanguageAddService {
     private systemLanguage: SystemLanguageManagementService,
     private textTransform: TextTransformService,
     private translate: LanguageTranslateService,
-    private criteria: TranslateCriteriaService
+    private criteria: TranslateCriteriaService,
+    private languagePacakge: SystemLanguagePackageService
   ) {}
 
   public async save(command: ILanguageSelection) {
     await this.languageRepo.addNewLanguageSelection(command);
   }
 
-  private async setCreateNewPackageCommand(translatedTo: string, code: string) {
-    let defaultKeyPairList = await this.systemLanguage.getDefaultKeyPairValueList();
+  private async setCreateNewPackageCommand(
+    translatedTo: string,
+    code: string,
+    defaultKeyPairList: IPairKeyValue[]
+  ) {
     let result: ICreateNewPackageCommand = {
       code: code,
       defaultKeyPairList: defaultKeyPairList,
@@ -53,8 +56,12 @@ export class SystemLanguageAddService {
     return result;
   }
 
-  public async receiveCreateNewPackageCommand(translatedTo: string, code: string) {
-    let command = await this.setCreateNewPackageCommand(translatedTo, code);
+  public async receiveCreateNewPackageCommand(
+    translatedTo: string,
+    code: string,
+    defaultKeyPairList: IPairKeyValue[]
+  ) {
+    let command = await this.setCreateNewPackageCommand(translatedTo, code, defaultKeyPairList);
     this.createCommandService.next(command);
   }
 
@@ -64,7 +71,7 @@ export class SystemLanguageAddService {
     if (sendNewTransaction) {
       await this.sendTranslateCommand(command);
       // Wait for 1.5 second before proceeding
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       await this.translateCurrentKeyPairValue(command);
     }
   }
@@ -102,7 +109,11 @@ export class SystemLanguageAddService {
 
   private async translateCurrentKeyPairValue(command: ICreateNewPackageCommand) {
     command.currentKeyPair = command.defaultKeyPairList[command.current];
-    let translateCriteria = await this.criteria.allLanguageCriteria(command.currentKeyPair.key);
+    let translateCriteria = await this.criteria.addingLanguageCriteria(
+      command.currentKeyPair.key,
+      command.translateTo,
+      command.code
+    );
 
     let translatedResult: ILanguageTranslateItem = await this.translate.get(
       command.currentKeyPair.value,
@@ -121,20 +132,21 @@ export class SystemLanguageAddService {
     command: ICreateNewPackageCommand,
     translatedResult: ILanguageTranslateItem
   ) {
-    if (
-      translatedResult.translated[command.code] === undefined ||
-      translatedResult.translated[command.code].length === 0
-    ) {
+    console.log(command.currentKeyPair.value + ' - ' + translatedResult.translated[command.code]);
+    let isUndefined: boolean = translatedResult.translated[command.code] === undefined;
+    let isEmpty: boolean =
+      translatedResult.translated[command.code] !== undefined
+        ? translatedResult.translated[command.code].length === 0
+        : true;
+
+    if (isUndefined || isEmpty) {
       command.errorKeyPairList.push(command.currentKeyPair);
     }
     command.currentKeyPair.value =
       typeof translatedResult.translated[command.code] === 'string'
         ? translatedResult.translated[command.code]
         : command.currentKeyPair.value;
-    //  command.newPackage = this.systemLanguage.update(
-    //    command.newPackage,
-    //    command.currentKeyPair
-    //  );
+    command.newPackage = this.languagePacakge.update(command.newPackage, command.currentKeyPair);
     command.inProgress = false;
     command.endTransaction = command.current === command.end;
     command.current = command.end !== command.current ? command.current + 1 : command.current;

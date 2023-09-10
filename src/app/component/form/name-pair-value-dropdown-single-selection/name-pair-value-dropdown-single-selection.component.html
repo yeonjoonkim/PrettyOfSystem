@@ -1,0 +1,16 @@
+<kendo-label text="{{ title | languageTransform | async }}">
+  <div (click)="presentDropdownList($event)">
+    <kendo-dropdownlist
+      #dropdownlist
+      [data]="selection"
+      textField="name"
+      valueField="value"
+      adaptiveMode="auto"
+      [(value)]="selectedSelection"
+      [readonly]="true">
+      <ng-template kendoDropDownListValueTemplate let-dataItem>
+        <span>{{ dataItem?.name | languageTransform | async }}</span>
+      </ng-template>
+    </kendo-dropdownlist>
+  </div>
+</kendo-label>

@@ -72,10 +72,12 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.form.enabledSavebutton = false;
   }
 
-  public handleCreate() {
+  public async handleCreate() {
+    let defaultKeyPairList = await this.global.language.management.getDefaultKeyPairValueList();
     this.global.language.management.add.receiveCreateNewPackageCommand(
       this.language.name,
-      this.language.code
+      this.language.code,
+      defaultKeyPairList
     );
     this.saveCommandSubscription = this.global.language.management.add.status.subscribe(command => {
       if (command !== undefined) {

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { KeyPairValueDropdownSingleSelectionComponent } from './key-pair-value-dropdown-single-selection.component';
+import { KeyPairValueDropdownSingleSelectionComponent } from './name-pair-value-dropdown-single-selection.component';
 
 describe('KeyPairValueDropdownSingleSelectionComponent', () => {
   let component: KeyPairValueDropdownSingleSelectionComponent;
@@ -9,8 +9,8 @@ describe('KeyPairValueDropdownSingleSelectionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ KeyPairValueDropdownSingleSelectionComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [KeyPairValueDropdownSingleSelectionComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KeyPairValueDropdownSingleSelectionComponent);

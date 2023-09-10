@@ -2,18 +2,12 @@
   <section id="language-selection-container">
     <flex-row>
       <flex-row-item>
-        <kendo-label text="{{ 'language.title.language' | languageTransform | async }}">
-          <kendo-dropdownlist
-            #dropdownlist
-            adaptiveMode="auto"
-            [data]="languageSelectionList"
-            textField="value"
-            [(ngModel)]="selectedLang"
-            [filterable]="true"
-            (ngModelChange)="onChangeLanguageSelection()"
-            (filterChange)="handleFilter($event)">
-          </kendo-dropdownlist>
-        </kendo-label>
+        <name-pair-value-single-selection
+          title="label.title.language"
+          [selection]="languageSelectionList"
+          [(selected)]="selectedLang"
+          [filterable]="true"
+          (selectedChange)="onChangeLanguageSelection()"></name-pair-value-single-selection>
       </flex-row-item>
       <flex-row-item>
         <text-box
@@ -51,7 +45,7 @@
             <ng-template kendoGridCellTemplate let-data>
               <language-key-pair-select-option
                 [keyPairValue]="data"
-                [languageCode]="selectedLang.key"
+                [languageCode]="selectedLang.value.toString()"
                 (keyPairValueChange)="setLanguageSelection()"></language-key-pair-select-option>
             </ng-template>
           </kendo-grid-column>

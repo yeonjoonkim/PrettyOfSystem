@@ -3,7 +3,7 @@ import {
   IAddLanguageTransformSaveCommand,
   ILanguageTranslateItem,
 } from 'src/app/interface/system/language/language.interface';
-import { IPairKeyValue } from 'src/app/interface/global/global.interface';
+import { IPairKeyValue, IPairNameValue } from 'src/app/interface/global/global.interface';
 import { GlobalService } from 'src/app/service//global/global.service';
 import { PopoverController } from '@ionic/angular';
 
@@ -14,30 +14,31 @@ import { PopoverController } from '@ionic/angular';
 })
 export class AddLanguageTransformComponent implements OnInit {
   private isSaved: boolean = false;
-  public componentSelection: IPairKeyValue[] = [
-    { key: 'option.title.option', value: 'option.' },
-    { key: 'option.title.label', value: 'label.' },
-    { key: 'option.title.button', value: 'button.' },
-    { key: 'option.title.confirmation', value: 'confirmation.' },
-    { key: 'option.title.messagefail', value: 'messagefail.' },
-    { key: 'option.title.messagesuccess', value: 'messagesuccess.' },
-    { key: 'option.title.messageerror', value: 'messageerror.' },
-    { key: 'option.title.date', value: 'date.' },
-    { key: 'option.title.time', value: 'time.' },
-    { key: 'option.title.placeholder', value: 'placeholder.' },
-    { key: 'option.title.language', value: 'language.' },
+  public componentSelection: IPairNameValue[] = [
+    { name: 'option.title.option', value: 'option.' },
+    { name: 'option.title.label', value: 'label.' },
+    { name: 'option.title.button', value: 'button.' },
+    { name: 'option.title.confirmation', value: 'confirmation.' },
+    { name: 'option.title.messagefail', value: 'messagefail.' },
+    { name: 'option.title.messagesuccess', value: 'messagesuccess.' },
+    { name: 'option.title.messageerror', value: 'messageerror.' },
+    { name: 'option.title.date', value: 'date.' },
+    { name: 'option.title.time', value: 'time.' },
+    { name: 'option.title.placeholder', value: 'placeholder.' },
+    { name: 'option.title.language', value: 'language.' },
+    { name: 'option.title.role', value: 'role.' },
   ];
-  public formatSelection: IPairKeyValue[] = [
-    { key: 'option.title.title', value: 'title.' },
-    { key: 'option.title.description', value: 'description.' },
-    { key: 'option.title.uppercase', value: 'upper.' },
-    { key: 'option.title.lowercase', value: 'lowercase.' },
+  public formatSelection: IPairNameValue[] = [
+    { name: 'option.title.title', value: 'title.' },
+    { name: 'option.title.description', value: 'description.' },
+    { name: 'option.title.uppercase', value: 'upper.' },
+    { name: 'option.title.lowercase', value: 'lowercase.' },
   ];
-  public selectedComponent: IPairKeyValue = { key: 'option.title.label', value: 'label.' };
-  public selectedFormat: IPairKeyValue = { key: 'option.title.title', value: 'title.' };
+  public selectedComponent: IPairNameValue = { name: 'option.title.label', value: 'label.' };
+  public selectedFormat: IPairNameValue = { name: 'option.title.title', value: 'title.' };
   public keyValue: string = '';
   public validator = {
-    text: false,
+    name: false,
   };
   public languageTransform: IPairKeyValue = {
     key: '',
@@ -50,17 +51,23 @@ export class AddLanguageTransformComponent implements OnInit {
 
   public onChangeComponentSelection() {
     this.languageTransform.key =
-      this.selectedComponent.value + this.selectedFormat.value + this.keyValue;
+      this.selectedComponent.value.toString() +
+      this.selectedFormat.value.toString() +
+      this.keyValue;
   }
 
   public onChangeFormatSelection() {
     this.languageTransform.key =
-      this.selectedComponent.value + this.selectedFormat.value + this.keyValue;
+      this.selectedComponent.value.toString() +
+      this.selectedFormat.value.toString() +
+      this.keyValue;
   }
 
   public onChangeKeyValue() {
     this.languageTransform.key =
-      this.selectedComponent.value + this.selectedFormat.value + this.keyValue;
+      this.selectedComponent.value.toString() +
+      this.selectedFormat.value.toString() +
+      this.keyValue;
   }
 
   /** This will close the this component as a modal*/

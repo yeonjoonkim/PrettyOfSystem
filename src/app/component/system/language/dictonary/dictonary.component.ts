@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IPairKeyValue } from 'src/app/interface/global/global.interface';
+import { IPairKeyValue, IPairNameValue } from 'src/app/interface/global/global.interface';
 import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
 import { AddLanguageTransformComponent } from './add-language-transform/add-language-transform.component';
 import { PopoverController } from '@ionic/angular';
@@ -14,8 +14,8 @@ import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 export class DictonaryComponent implements OnInit {
   @ViewChild('dropdownlist')
   public dropdownlist!: DropDownListComponent;
-  public selectedLang: IPairKeyValue = { key: '', value: '' };
-  public languageSelectionList: IPairKeyValue[] = [];
+  public selectedLang: IPairNameValue = { name: '', value: '' };
+  public languageSelectionList: IPairNameValue[] = [];
   public selectedKeyPairValueList: IPairKeyValue[] = [];
   public gridData: IPairKeyValue[] = [];
   public query: string = '';
@@ -31,8 +31,9 @@ export class DictonaryComponent implements OnInit {
   }
 
   public async onChangeLanguageSelection() {
+    const code = this.selectedLang.value.toString();
     this.selectedKeyPairValueList = await this.systemLanguage.getSelectedLanguageKeyPairValueList(
-      this.selectedLang.key
+      code
     );
     this.onChangeQuery();
   }
@@ -76,29 +77,23 @@ export class DictonaryComponent implements OnInit {
     await this.global.loading.show();
     await this.global.language.management.storage.refresh().then(async () => {
       let languageSelection = await this.systemLanguage.get();
-      this.languageSelectionList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(
+      const keyPairValueList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(
         languageSelection
       );
-      let currentsystemLanguage = this.languageSelectionList.filter(s => s.key === currentLanguage);
-      this.selectedLang = this.selectedLang.key ? this.selectedLang : currentsystemLanguage[0];
+      this.languageSelectionList = keyPairValueList.map(s => {
+        return { name: s.value, value: s.key };
+      });
+      let currentsystemLanguage = this.languageSelectionList.filter(
+        s => s.value === currentLanguage
+      );
+      this.selectedLang = this.selectedLang.value ? this.selectedLang : currentsystemLanguage[0];
       await this.onChangeLanguageSelection();
       this.onChangeQuery();
       this.global.loading.dismiss();
     });
   }
 
-  public async handleFilter(query: string) {
-    let value: string = query.toLowerCase();
-    let languageSelection = await this.systemLanguage.get();
-    let keyPairList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(
-      languageSelection
-    );
-    this.languageSelectionList = keyPairList.filter(li => {
-      return li.key.toLowerCase().includes(value) || li.value.toLowerCase().includes(value);
-    });
-  }
-
-  private async exportToCSV(data: IPairKeyValue[], selectedLang: IPairKeyValue) {
+  private async exportToCSV(data: IPairKeyValue[], selectedLang: IPairNameValue) {
     await this.global.loading.show();
     // Convert the data to CSV format
     const convertToCSV = (objArray: IPairKeyValue[]): string => {
@@ -121,7 +116,7 @@ export class DictonaryComponent implements OnInit {
     };
 
     const csv = convertToCSV(data);
-    downloadCSV(csv, selectedLang.key + '-' + selectedLang.value + '.csv');
+    downloadCSV(csv, selectedLang.value + '.csv');
     await this.global.loading.dismiss();
   }
 }
