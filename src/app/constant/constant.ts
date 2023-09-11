@@ -30,7 +30,7 @@ export type DayType = (typeof Date.Day)[keyof typeof Date.Day];
 export type DateDayNightType = (typeof Date.DayNightType)[keyof typeof Date.DayNightType];
 export type DateFormatType = (typeof Date.Format)[keyof typeof Date.Format];
 export type DateTimeStatusType = (typeof Date.TimeStatus)[keyof typeof Date.TimeStatus];
-export type DatePeriodType = (typeof Date.Period)[keyof typeof Date.Period];
+export type PeriodType = (typeof Date.Period)[keyof typeof Date.Period];
 
 //Country
 export type CountryCodeType =

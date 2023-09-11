@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { createDate, ZonedDate } from '@progress/kendo-date-math';
 import '@progress/kendo-date-math/tz/all';
 import * as Constant from 'src/app/constant/constant';
-import { ITimeItem } from 'src/app/interface/global/global.interface';
+import { TimeItemType } from 'src/app/interface/global/global.interface';
 import * as moment from 'moment';
 @Injectable({
   providedIn: 'root',
@@ -63,7 +63,7 @@ export class DateTransformService {
   public convertShopTimeZoneDateTimeItem(
     inputDate: Date,
     timezone: Constant.TimeZoneType,
-    time: ITimeItem
+    time: TimeItemType
   ) {
     inputDate.setHours(time.hr, time.min, 0, 0);
     let shopTime = this.convertShopTimeZoneDateTime(inputDate, timezone);

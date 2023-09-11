@@ -1,4 +1,4 @@
-import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
+import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { lastValueFrom, map, Observable } from 'rxjs';
@@ -13,9 +13,9 @@ export class SystemRoleRepositoryService {
   constructor(private afs: AngularFirestore) {}
 
   /** This will return as Observalble of all role configs  */
-  public getSystemRoleConfigurations(): Observable<IRoleConfiguration[]> {
+  public getSystemRoleConfigurations(): Observable<RoleConfigurationType[]> {
     return this.afs
-      .collection<IRoleConfiguration>(Db.Context.System.Role.Configuration, ref =>
+      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
         ref.orderBy('rate')
       )
       .get()
@@ -28,9 +28,9 @@ export class SystemRoleRepositoryService {
       );
   }
 
-  public valueChangeListener(): Observable<IRoleConfiguration[]> {
+  public valueChangeListener(): Observable<RoleConfigurationType[]> {
     return this.afs
-      .collection<IRoleConfiguration>(Db.Context.System.Role.Configuration, ref =>
+      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
         ref.orderBy('rate')
       )
       .valueChanges()
@@ -44,7 +44,7 @@ export class SystemRoleRepositoryService {
   }
 
   /** This will add new System Role */
-  public async addSystemRoleConfiguration(newConfig: IRoleConfiguration) {
+  public async addSystemRoleConfiguration(newConfig: RoleConfigurationType) {
     let newId = this.afs.createId();
     newConfig.id = newId;
     try {
@@ -64,7 +64,7 @@ export class SystemRoleRepositoryService {
   }
 
   /** This will update the value of config */
-  public async updateSystemRoleConfiguration(config: IRoleConfiguration) {
+  public async updateSystemRoleConfiguration(config: RoleConfigurationType) {
     await this.afs
       .doc(Db.Context.System.Role.Configuration + '/' + config.id)
       .update({ ...config, ...this.timeStamp });

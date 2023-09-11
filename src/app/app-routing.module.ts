@@ -11,6 +11,10 @@ const routes: Routes = [
     path: 'system',
     loadChildren: () => import('./page/system/system.module').then(m => m.SystemPageModule),
   },
+  {
+    path: 'no-internet',
+    loadChildren: () => import('./page/access/no-internet/no-internet.module').then( m => m.NoInternetPageModule)
+  },
 ];
 
 @NgModule({

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { IPostCodeItem } from 'src/app/interface/global/global.interface';
+import { PostCodeItemType } from 'src/app/interface/global/global.interface';
 @Injectable({
   providedIn: 'root',
 })
 export class WaService {
-  public data: IPostCodeItem[] = [
+  public data: PostCodeItemType[] = [
     {
       postCode: '6280',
       suburb: 'ABBA RIVER',

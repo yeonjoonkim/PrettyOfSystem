@@ -1,6 +1,6 @@
 import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/system-menu-category/system-menu-category.service';
 import { LanguageService } from 'src/app/service/global/language/language.service';
-import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
+import { MenuCategoryType } from 'src/app/interface/menu/menu.interface';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertOptions, PopoverController, AlertController } from '@ionic/angular';
 import { AddMenuCategoryComponent } from '../add-menu-category/add-menu-category.component';
@@ -12,17 +12,17 @@ import { AddMenuCategoryComponent } from '../add-menu-category/add-menu-category
 })
 export class MenuCategoryCardComponent implements OnInit {
   @Output() onUpdate = new EventEmitter<boolean>();
-  @Output() categoryChange = new EventEmitter<IMenuCategory>();
-  @Input() menuCategories: IMenuCategory[] | null = [];
+  @Output() categoryChange = new EventEmitter<MenuCategoryType>();
+  @Input() menuCategories: MenuCategoryType[] | null = [];
   @Input()
-  get category(): IMenuCategory {
+  get category(): MenuCategoryType {
     return this.selectedCategory;
   }
-  set category(value: IMenuCategory) {
+  set category(value: MenuCategoryType) {
     this.selectedCategory = value;
     this.categoryChange.emit(this.selectedCategory);
   }
-  public selectedCategory: IMenuCategory = {
+  public selectedCategory: MenuCategoryType = {
     description: '',
     name: '',
     icon: '',
@@ -62,12 +62,12 @@ export class MenuCategoryCardComponent implements OnInit {
   }
 
   /**Click event to set the category */
-  public onClickCategory(selectedCategory: IMenuCategory) {
+  public onClickCategory(selectedCategory: MenuCategoryType) {
     this.category = selectedCategory;
   }
 
   /**Click Event to remove the selected category */
-  public async onClickDeleteCategory(selectedCategory: IMenuCategory) {
+  public async onClickDeleteCategory(selectedCategory: MenuCategoryType) {
     let confirmAlert = await this.setConfirmDeleteAlert(selectedCategory.name);
     await confirmAlert.present();
     let action = await confirmAlert.onWillDismiss();
@@ -93,7 +93,7 @@ export class MenuCategoryCardComponent implements OnInit {
   }
 
   /**Click event to edit the selected category */
-  public async onClickEditCategory(event: any, selectedCategory: IMenuCategory) {
+  public async onClickEditCategory(event: any, selectedCategory: MenuCategoryType) {
     let addMenuCategory = await this.popoverCtrl.create({
       component: AddMenuCategoryComponent,
       event: event,
@@ -121,7 +121,7 @@ export class MenuCategoryCardComponent implements OnInit {
           isReception: false,
         },
       };
-      let result: IMenuCategory = action?.data?.result;
+      let result: MenuCategoryType = action?.data?.result;
       await this.systemMenuCategoryService.processUpdateSystemMenuCategory(result);
       this.onUpdate.emit(true);
     }

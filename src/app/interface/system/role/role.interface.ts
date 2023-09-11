@@ -1,12 +1,12 @@
-export interface IRoleConfiguration {
+export interface RoleConfigurationType {
   id: string;
   name: string;
   description: string;
-  accessLevel: IRoleAccessLevel;
+  accessLevel: RoleAccessLevelType;
   rate: number;
 }
 
-export interface IRoleAccessLevel {
+export interface RoleAccessLevelType {
   isSystemAdmin: boolean;
   isAdmin: boolean;
   isManager: boolean;

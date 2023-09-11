@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IDatePeriod, IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
+import { DatePeriodType, IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import {
   IShopCategory,
   IShopConfiguration,
@@ -282,7 +282,7 @@ export class ShopConfigurationService {
     };
   }
 
-  public async getSelectedTotalPrice(selectedId: string, period: IDatePeriod) {
+  public async getSelectedTotalPrice(selectedId: string, period: DatePeriodType) {
     let selectedPlan = (await this.systemShop.getSystemShopPlanConfigList()).find(
       p => p.id === selectedId
     );

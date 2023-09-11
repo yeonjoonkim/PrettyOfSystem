@@ -8,6 +8,13 @@ import * as Constant from 'src/app/constant/constant';
 export class TranslateCriteriaService {
   constructor(private _storage: SystemLanguageStorageService) {}
 
+  async addingLanguageCriteria(key: string, description: string, code: string) {
+    let codeList: string[] = [code.toLowerCase()];
+    let nameList: string[] = [description];
+    let format: ILanguageTranslatedFormatCriteria = this.setLanguageTranslatedFormatCriteria(key);
+    return { code: codeList, name: nameList, format: format };
+  }
+
   async allLanguageCriteria(key: string): Promise<ILanguageTranslatedCriteria> {
     let selections = await this._storage.getSelections();
     let codeList: string[] = selections.map(s => s.code.toLowerCase());

@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { GlobalService } from 'src/app/service/global/global.service';
-import { ITimeItem } from 'src/app/interface/global/global.interface';
+import { TimeItemType } from 'src/app/interface/global/global.interface';
 import * as Constant from 'src/app/constant/constant';
 import { TimePickerIncrementalSteps } from '@progress/kendo-angular-dateinputs';
 @Component({
@@ -18,24 +18,24 @@ import { TimePickerIncrementalSteps } from '@progress/kendo-angular-dateinputs';
   styleUrls: ['./time-picker.component.scss'],
 })
 export class TimePickerComponent implements OnInit, OnChanges {
-  @Output() timeChange = new EventEmitter<ITimeItem>();
+  @Output() timeChange = new EventEmitter<TimeItemType>();
   @Input() readOnly: boolean = false;
   @Input() timezone: Constant.TimeZoneType = Constant.TimeZone.EuropeRiga;
   @Input() intervalMin: number = Constant.ShopSetting.TimePicker.IntervalMin;
   @Input() title: string = '';
-  @Input() openTime!: ITimeItem;
-  @Input() closeTime!: ITimeItem;
+  @Input() openTime!: TimeItemType;
+  @Input() closeTime!: TimeItemType;
   @Input()
-  get time(): ITimeItem {
+  get time(): TimeItemType {
     return this.inputTime;
   }
-  set time(time: ITimeItem) {
+  set time(time: TimeItemType) {
     this.inputTime = time;
     this.handReceivingEvent();
     this.timeChange.emit(this.inputTime);
   }
   public date: Date = new Date();
-  public inputTime!: ITimeItem;
+  public inputTime!: TimeItemType;
   public minTime: Date = new Date();
   public maxTime: Date = new Date();
   public steps: TimePickerIncrementalSteps = { minute: 0 };

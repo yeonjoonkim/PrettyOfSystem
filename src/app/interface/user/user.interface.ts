@@ -1,14 +1,12 @@
-import { IRoleConfiguration } from '../system/role/role.interface';
+import { RoleConfigurationType } from '../system/role/role.interface';
 import { IShopWorkHours } from '../shop/shop.interface';
 import * as Constant from '../../constant/constant';
 export interface IUser {
   id: string;
-  firstName: string;
-  lastName: string;
   isSystemAdmin: boolean;
-  associatedShops: IUserAssociatedShop[];
-  currentShop: IUserAssociatedShop | null;
-  setting: IUserSetting;
+  associatedShops: UserAssociatedShopType[];
+  currentShop: UserAssociatedShopType | null;
+  setting: UserSettingType;
   loginIds: string[];
   phoneNumber: string;
   email: string;
@@ -20,7 +18,7 @@ export interface IUserLoginOption {
   phoneNumber: boolean;
 }
 
-export interface IUserSetting {
+export interface UserSettingType {
   preferLanguage: string;
 }
 
@@ -37,11 +35,13 @@ export interface ILoginStatus {
   errorName: string;
 }
 
-export interface IUserAssociatedShop {
+export interface UserAssociatedShopType {
   shopId: string;
   shopName: string;
+  firstName: string;
+  lastName: string;
   gender: Constant.GenderType;
-  role: IRoleConfiguration;
+  role: RoleConfigurationType;
   workHours: IShopWorkHours;
   loginOption: IUserLoginOption;
   activeFrom: Date;

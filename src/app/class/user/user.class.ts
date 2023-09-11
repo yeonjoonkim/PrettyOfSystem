@@ -1,12 +1,12 @@
-import { IUser, IUserAssociatedShop, IUserSetting } from 'src/app/interface';
+import { IUser, UserAssociatedShopType, UserSettingType } from 'src/app/interface';
 export class User implements IUser {
   private _id: string;
   private _firstName: string;
   private _lastName: string;
   private _isSystemAdmin: boolean;
-  private _currentShop: IUserAssociatedShop | null;
-  private _associatedShops: IUserAssociatedShop[];
-  private _setting: IUserSetting;
+  private _currentShop: UserAssociatedShopType | null;
+  private _associatedShops: UserAssociatedShopType[];
+  private _setting: UserSettingType;
   private _loginIds: string[];
   private _phoneNumber: string;
   private _email: string;
@@ -44,15 +44,15 @@ export class User implements IUser {
     return this._isSystemAdmin;
   }
 
-  get currentShop(): IUserAssociatedShop | null {
+  get currentShop(): UserAssociatedShopType | null {
     return this._currentShop;
   }
 
-  get associatedShops(): IUserAssociatedShop[] {
+  get associatedShops(): UserAssociatedShopType[] {
     return this._associatedShops;
   }
 
-  get setting(): IUserSetting {
+  get setting(): UserSettingType {
     return this._setting;
   }
 

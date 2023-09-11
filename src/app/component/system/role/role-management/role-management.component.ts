@@ -1,7 +1,7 @@
 import { Observable, lastValueFrom } from 'rxjs';
 import { SystemRoleService } from 'src/app/service/system/system-role/system-system-role.service';
 import { Component, OnInit } from '@angular/core';
-import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
+import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
 import { LanguageService } from 'src/app/service/global/language/language.service';
 
 @Component({
@@ -10,8 +10,8 @@ import { LanguageService } from 'src/app/service/global/language/language.servic
   styleUrls: ['./role-management.component.scss'],
 })
 export class RoleManagementComponent implements OnInit {
-  public roles!: IRoleConfiguration[];
-  public selectedRole: IRoleConfiguration = {
+  public roles!: RoleConfigurationType[];
+  public selectedRole: RoleConfigurationType = {
     id: '',
     name: '',
     description: '',

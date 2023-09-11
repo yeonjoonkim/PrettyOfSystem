@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IShopSetting } from 'src/app/interface/shop/shop-setting.interface';
 import { ShopSettingGeneral } from './shop-setting-general/shop-setting-general.service';
-import { IShopSettingValiationResult } from 'src/app/interface/shop/shop-setting.interface';
+import { ShopSettingValiationResultType } from 'src/app/interface/shop/shop-setting.interface';
 import { ShopSettingTimePicker } from './shop-setting-time-picker/shop-setting-time-picker.service';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class ShopSettingValidatorService {
   public getValidatedResult(
     setting: IShopSetting,
     defaultSetting: IShopSetting
-  ): IShopSettingValiationResult {
+  ): ShopSettingValiationResultType {
     let hasMissingValue: boolean = this.hasMissingValue(setting);
     setting.general = this.general.getEffectiveGeneral(setting, defaultSetting.general);
     setting.timePicker = this.timePicker.getEffectiveTimePicker(setting, defaultSetting.timePicker);

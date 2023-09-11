@@ -1,4 +1,4 @@
-import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
+import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
 import {
   Component,
   EventEmitter,
@@ -17,19 +17,19 @@ import { GlobalService } from 'src/app/service/global/global.service';
 })
 export class RoleListCardComponent implements OnInit, OnChanges {
   @Output() onUpdate = new EventEmitter<boolean>();
-  @Output() roleChange = new EventEmitter<IRoleConfiguration>();
+  @Output() roleChange = new EventEmitter<RoleConfigurationType>();
   @Input()
-  get role(): IRoleConfiguration {
+  get role(): RoleConfigurationType {
     return this.selectedRole;
   }
-  set role(value: IRoleConfiguration) {
+  set role(value: RoleConfigurationType) {
     this.selectedRole = value;
     this.roleChange.emit(this.selectedRole);
   }
-  @Input() roles: IRoleConfiguration[] | null = [];
+  @Input() roles: RoleConfigurationType[] | null = [];
   public isMobile: boolean = false;
-  public gridData: IRoleConfiguration[] = [];
-  public selectedRole: IRoleConfiguration = {
+  public gridData: RoleConfigurationType[] = [];
+  public selectedRole: RoleConfigurationType = {
     id: '',
     name: '',
     description: '',
@@ -45,13 +45,13 @@ export class RoleListCardComponent implements OnInit, OnChanges {
 
   constructor(private systemRole: SystemRoleService, public global: GlobalService) {}
   ngOnChanges(changes: SimpleChanges): void {
-    let roleList: IRoleConfiguration[] | null = changes['roles'].currentValue;
+    let roleList: RoleConfigurationType[] | null = changes['roles'].currentValue;
     this.setGridDataList(roleList);
   }
 
   ngOnInit() {}
 
-  public setGridDataList(roleList: IRoleConfiguration[] | null) {
+  public setGridDataList(roleList: RoleConfigurationType[] | null) {
     this.gridData = [];
     if (roleList !== null && roleList?.length > 0) {
       roleList.forEach(async r => {
@@ -60,17 +60,17 @@ export class RoleListCardComponent implements OnInit, OnChanges {
       });
     }
   }
-  public onClickRole(selectedRole: IRoleConfiguration) {
+  public onClickRole(selectedRole: RoleConfigurationType) {
     this.role = this.findRole(selectedRole);
   }
 
-  private findRole(selectedRole: IRoleConfiguration) {
+  private findRole(selectedRole: RoleConfigurationType) {
     let result = this.roles?.find(r => r.id === selectedRole.id);
 
     return result !== undefined ? result : selectedRole;
   }
 
-  public async onClickDeleteRole(selectedRole: IRoleConfiguration) {
+  public async onClickDeleteRole(selectedRole: RoleConfigurationType) {
     selectedRole = this.findRole(selectedRole);
     await this.systemRole.processDeleteRoleConfiguration(selectedRole);
     this.onUpdate.emit(true);
@@ -82,7 +82,7 @@ export class RoleListCardComponent implements OnInit, OnChanges {
     await this.handleDismissModal(modal);
   }
 
-  public async presentEditRole(selectedRole: IRoleConfiguration) {
+  public async presentEditRole(selectedRole: RoleConfigurationType) {
     selectedRole = this.findRole(selectedRole);
     let modal = await this.systemRole.modal.presentEditRole(selectedRole);
     await modal.present();

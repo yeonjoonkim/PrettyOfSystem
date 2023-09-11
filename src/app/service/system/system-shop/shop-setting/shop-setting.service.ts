@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import {
-  IShopGeneralSetting,
+  ShopGeneralSettingType,
   IShopSetting,
-  IShopTimePicker,
+  ShopTimePickerType,
 } from 'src/app/interface/shop/shop-setting.interface';
 import * as Constant from 'src/app/constant/constant';
 import { ShopSettingValidatorService } from './shop-setting-validator/shop-setting-validator.service';
-import { IShopSettingValiationResult } from 'src/app/interface/shop/shop-setting.interface';
+import { ShopSettingValiationResultType } from 'src/app/interface/shop/shop-setting.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopSettingService {
-  private timePicker: IShopTimePicker = {
+  private timePicker: ShopTimePickerType = {
     intervalMin: Constant.ShopSetting.TimePicker.IntervalMin,
   };
-  private general: IShopGeneralSetting = { taxRate: Constant.ShopSetting.General.TaxRate };
+  private general: ShopGeneralSettingType = { taxRate: Constant.ShopSetting.General.TaxRate };
   private validator: ShopSettingValidatorService;
   constructor() {
     this.validator = new ShopSettingValidatorService();
@@ -28,7 +28,7 @@ export class ShopSettingService {
     };
   }
 
-  public getValidatedResult(setting: IShopSetting): IShopSettingValiationResult {
+  public getValidatedResult(setting: IShopSetting): ShopSettingValiationResultType {
     let defaultSetting = this.getDefaultShopSetting();
     return this.validator.getValidatedResult(setting, defaultSetting);
   }

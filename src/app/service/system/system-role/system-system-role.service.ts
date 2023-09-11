@@ -1,7 +1,7 @@
 import { RoleRateService } from '../../authentication/role-rate/role-rate.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/role/system-role-repository.service';
-import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
+import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
 import { RoleModalService } from 'src/app/service/system/system-role/role-modal/system-role-modal.service';
 import { Injectable } from '@angular/core';
 
@@ -30,7 +30,7 @@ export class SystemRoleService {
     return this.systemRoleRepo.valueChangeListener();
   }
 
-  public async processNewSaveRoleConfiguration(newConfig: IRoleConfiguration): Promise<void> {
+  public async processNewSaveRoleConfiguration(newConfig: RoleConfigurationType): Promise<void> {
     newConfig.rate = this.roleRate.getSystemRoleRateSettingByConfiguration(newConfig.accessLevel);
     let translate = await this.global.language.management.translate.translateObjectNameFormat(
       this.prefixedObjectName,
@@ -48,7 +48,7 @@ export class SystemRoleService {
     }
   }
 
-  public async processDeleteRoleConfiguration(config: IRoleConfiguration) {
+  public async processDeleteRoleConfiguration(config: RoleConfigurationType) {
     let deleteConfirmation = await this.global.confirmAlert.getDeleteConfirmationWithName(
       config.name
     );
@@ -65,8 +65,8 @@ export class SystemRoleService {
   }
 
   public async processUpdateRoleConfiguration(
-    prevConfig: IRoleConfiguration,
-    newConfig: IRoleConfiguration
+    prevConfig: RoleConfigurationType,
+    newConfig: RoleConfigurationType
   ) {
     newConfig.rate = this.roleRate.getSystemRoleRateSettingByConfiguration(newConfig.accessLevel);
     let needTranslate = prevConfig.description !== newConfig.description;
@@ -78,18 +78,18 @@ export class SystemRoleService {
           this.prefixedObjectName,
           newConfig.description
         );
+        newConfig.description = translated.validated.description;
+        newConfig.name = translated.validated.name;
+        let keyValue =
+          this.prefixedObjectName +
+          this.global.textTransform
+            .getDefaultLanguageTranslateResult(translated.result.translated)
+            .toLowerCase()
+            .replace(/\s+/g, '');
 
         await this.global.language.management
           .deletePackage(selectedPreviousRole.name)
           .then(async () => {
-            newConfig.description = translated.validated.description;
-            newConfig.name = translated.validated.name;
-            let keyValue =
-              this.prefixedObjectName +
-              this.global.textTransform
-                .getDefaultLanguageTranslateResult(translated.result.translated)
-                .toLowerCase()
-                .replace(/\s+/g, '');
             await this.global.language.management.addPackage(translated.result, keyValue);
             await this.systemRoleRepo.updateSystemRoleConfiguration(newConfig);
             await this.presentUpdateMsg();

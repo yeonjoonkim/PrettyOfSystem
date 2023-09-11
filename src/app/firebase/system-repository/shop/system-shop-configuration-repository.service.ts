@@ -10,7 +10,7 @@ import {
 import { LanguageService } from 'src/app/service/global/language/language.service';
 import { FirebaseService } from 'src/app/service/firebase/firebase.service';
 import { ShopSettingService } from 'src/app/service/system/system-shop/shop-setting/shop-setting.service';
-import { IShopSettingValiationResult } from 'src/app/interface/shop/shop-setting.interface';
+import { ShopSettingValiationResultType } from 'src/app/interface/shop/shop-setting.interface';
 import * as Db from 'src/app/constant/firebase-path';
 
 @Injectable({
@@ -111,7 +111,7 @@ export class SystemShopConfigurationRepositoryService {
 
   private async updateShopSetting(
     config: IShopConfiguration,
-    validated: IShopSettingValiationResult
+    validated: ShopSettingValiationResultType
   ) {
     if (validated.isModified) {
       config.setting = validated.setting;

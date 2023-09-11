@@ -1,8 +1,8 @@
 import { SystemPlanRepositoryService } from 'src/app/firebase/system-repository/plan/system-plan-repository.service';
 import { PlanModalService } from './plan-modal/plan-modal.service';
-import { IPlanConfiguration } from '../../../interface/system/plan/plan.interface';
+import { PlanConfigurationType } from '../../../interface/system/plan/plan.interface';
 import { Injectable } from '@angular/core';
-import { IPlanPrice } from 'src/app/interface/system/plan/plan.interface';
+import { PlanPriceType } from 'src/app/interface/system/plan/plan.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class PlanService {
     return this.planRepo.valueChangeListener();
   }
 
-  public getDefaultPlan(): IPlanConfiguration {
+  public getDefaultPlan(): PlanConfigurationType {
     return {
       id: '',
       name: '',
@@ -42,7 +42,7 @@ export class PlanService {
     };
   }
 
-  public getTaxAndNetPrice(price: number): IPlanPrice {
+  public getTaxAndNetPrice(price: number): PlanPriceType {
     price = this.global.numberTransform.roundToDecimalPlaces(price, 2);
     return {
       tax: price ? this.global.numberTransform.roundToDecimalPlaces(price * this.taxRate, 2) : 0,
@@ -51,7 +51,7 @@ export class PlanService {
     };
   }
 
-  public async processSaveNewPlan(planConfig: IPlanConfiguration) {
+  public async processSaveNewPlan(planConfig: PlanConfigurationType) {
     let isSaved = await this.planRepo.addSystemPlanOption(planConfig);
 
     if (isSaved) {
@@ -62,7 +62,7 @@ export class PlanService {
     }
   }
 
-  public async processUpdatePlan(planConfig: IPlanConfiguration) {
+  public async processUpdatePlan(planConfig: PlanConfigurationType) {
     let isUpdated = await this.planRepo.updateSystemPlanOption(planConfig);
 
     if (isUpdated) {

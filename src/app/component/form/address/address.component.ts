@@ -7,12 +7,12 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { IAddress, IPostCodeFilterOption } from 'src/app/interface/global/global.interface';
+import { AddressType, PostCodeFilterOptionType } from 'src/app/interface/global/global.interface';
 import * as Constant from 'src/app/constant/constant';
 import { PostcodeService } from './service/postcode-service.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 
-export interface IAddressAutoCompleteFilterOption {
+export interface AddressTypeAutoCompleteFilterOption {
   suburb: string[];
   state: string[];
 }
@@ -23,7 +23,7 @@ export interface IAddressAutoCompleteFilterOption {
   styleUrls: ['./address.component.scss'],
 })
 export class AddressComponent implements OnInit, OnChanges {
-  @Output() addressChange = new EventEmitter<IAddress>();
+  @Output() addressChange = new EventEmitter<AddressType>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() readOnly: boolean = false;
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
@@ -35,7 +35,7 @@ export class AddressComponent implements OnInit, OnChanges {
   get address() {
     return this.inputAddress;
   }
-  set address(value: IAddress) {
+  set address(value: AddressType) {
     this.inputAddress = value;
     this.addressChange.emit(value);
   }
@@ -48,12 +48,12 @@ export class AddressComponent implements OnInit, OnChanges {
     this.validateChange.emit(this.inputValidator);
   }
   public inputValidator: boolean = false;
-  public inputAddress!: IAddress;
-  public filterOption: IPostCodeFilterOption = {
+  public inputAddress!: AddressType;
+  public filterOption: PostCodeFilterOptionType = {
     stateList: [],
     postCodeList: [],
   };
-  public autoCompleteFilter: IAddressAutoCompleteFilterOption = {
+  public autoCompleteFilter: AddressTypeAutoCompleteFilterOption = {
     suburb: [],
     state: [],
   };

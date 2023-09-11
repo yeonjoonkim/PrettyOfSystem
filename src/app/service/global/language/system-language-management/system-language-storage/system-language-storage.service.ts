@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
-import { ILanguageKey, ILanguageSelection, IPairKeyValue } from 'src/app/interface';
+import { ILanguageKey, ILanguageSelection, PairKeyValueType } from 'src/app/interface';
 import * as StorageKey from 'src/app/service/global/storage/storage.key';
 import { StorageService } from 'src/app/service/global/storage/storage.service';
 @Injectable({
@@ -18,9 +18,18 @@ export class SystemLanguageStorageService {
   }
 
   public async setDefault() {
+    let now: Date = new Date();
+    let expiredDate: Date | null = await this._stroage.getLanguageSelectionExpireDateTime();
+    let isExpired: boolean = expiredDate !== null ? now > expiredDate : true;
     let selections: null | ILanguageSelection[] = await this.getSelections();
-    if (selections === null) {
+    let keys: null | ILanguageKey = await this.getKey();
+    let refresh: boolean =
+      selections === null || expiredDate === null || isExpired || keys === null;
+
+    if (refresh) {
       await this.refresh();
+      await this._stroage.storeExpiredDateTime();
+      console.log('refresh');
     }
   }
 

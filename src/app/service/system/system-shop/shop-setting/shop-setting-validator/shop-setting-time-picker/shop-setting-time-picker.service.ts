@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IShopSetting, IShopTimePicker } from 'src/app/interface/shop/shop-setting.interface';
+import { IShopSetting, ShopTimePickerType } from 'src/app/interface/shop/shop-setting.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +9,8 @@ export class ShopSettingTimePicker {
 
   public getEffectiveTimePicker(
     setting: IShopSetting,
-    timePicker: IShopTimePicker
-  ): IShopTimePicker {
+    timePicker: ShopTimePickerType
+  ): ShopTimePickerType {
     setting.timePicker = this.isUndefined(setting) ? timePicker : setting.timePicker;
     setting.timePicker.intervalMin = this.hasIntervalMin(setting)
       ? timePicker.intervalMin

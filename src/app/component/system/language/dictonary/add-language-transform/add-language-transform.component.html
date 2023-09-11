@@ -1,22 +1,22 @@
 <section class="modal-container">
   <!--Format-->
-  <key-pair-value-dropdown-single-selection
+  <name-pair-value-single-selection
     title="label.title.componentoption"
     [selection]="componentSelection"
     [(selected)]="selectedComponent"
-    (selectedChange)="onChangeFormatSelection()"></key-pair-value-dropdown-single-selection>
+    (selectedChange)="onChangeFormatSelection()"></name-pair-value-single-selection>
   <!--Format-->
-  <key-pair-value-dropdown-single-selection
+  <name-pair-value-single-selection
     title="label.title.format"
     [selection]="formatSelection"
     [(selected)]="selectedFormat"
-    (selectedChange)="onChangeFormatSelection()"></key-pair-value-dropdown-single-selection>
+    (selectedChange)="onChangeFormatSelection()"></name-pair-value-single-selection>
 
   <!-- Transform Key -->
   <text-box
     title="label.title.key"
     [(value)]="keyValue"
-    [(validate)]="validator.text"
+    [(validate)]="validator.name"
     (valueChange)="onChangeKeyValue()">
   </text-box>
 
@@ -26,7 +26,7 @@
   <ion-button
     expand="block"
     (click)="onClickSaveButton()"
-    [disabled]="!validator.text && !languageTransform.value"
+    [disabled]="!validator.name && !languageTransform.value"
     >{{ 'button.title.save' | languageTransform | async }}</ion-button
   >
 </section>

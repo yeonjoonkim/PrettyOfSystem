@@ -9,13 +9,14 @@ import {
   ILanguageSelection,
   ILanguageTranslateItem,
   ILanguageTranslateResult,
-  IPairKeyValue,
+  PairKeyValueType,
 } from 'src/app/interface';
 import { TextTransformService } from '../../text-transform/text-transform.service';
 import { TranslateCriteriaService } from './translate-criteria/translate-criteria.service';
 import { ToastService } from '../../toast/toast.service';
 import { SystemLanguageAddService } from './system-language-add/system-language-add.service';
 import { LanguageTranslationPackageService } from '../../language-translation-package/language-translation-package.service';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +39,7 @@ export class SystemLanguageManagementService {
     private _toast: ToastService
   ) {}
 
-  public async editSelectedPackage(selectedLanguageCode: string, pair: IPairKeyValue) {
+  public async editSelectedPackage(selectedLanguageCode: string, pair: PairKeyValueType) {
     try {
       let selection: ILanguageSelection = await this.storage.getSelectedSelection(
         selectedLanguageCode
@@ -53,13 +54,15 @@ export class SystemLanguageManagementService {
   }
 
   public async addPackage(result: ILanguageTranslateItem, keyValue: string) {
-    let selections: ILanguageSelection[] = await this.storage.getSelections();
+    let selections: ILanguageSelection[] = await lastValueFrom(
+      this._systemLanguageRepo.getLanguageSelectionResult()
+    );
     if (!result.isEmpty) {
       try {
         for (let i = 0; i < selections.length; i++) {
           let selection: ILanguageSelection = selections[i];
           let selectionCode: string = selection.code.toLowerCase();
-          let translatedKeyPairValue: IPairKeyValue = {
+          let translatedKeyPairValue: PairKeyValueType = {
             key: keyValue,
             value: result.translated[selectionCode],
           };
@@ -82,12 +85,15 @@ export class SystemLanguageManagementService {
 
   public async deletePackage(key: string) {
     try {
-      let selections: ILanguageSelection[] = await this.storage.getSelections();
-      for (let i = 0; i < selections.length; i++) {
-        let selection: ILanguageSelection = selections[i];
+      let selections: ILanguageSelection[] = await lastValueFrom(
+        this._systemLanguageRepo.getLanguageSelectionResult()
+      );
+      const updatePromises = selections.map(async (selection: ILanguageSelection) => {
         selection.package = this._systemLanguagePackage.delete(selection.package, key);
-        await this._systemLanguageRepo.updateLanguageSelection(selection);
-      }
+        return this._systemLanguageRepo.updateLanguageSelection(selection);
+      });
+
+      await Promise.all(updatePromises);
       await this.storage.storeSelection(selections);
       await this.deleteLanguageKey(key);
     } catch (e) {
@@ -99,7 +105,13 @@ export class SystemLanguageManagementService {
   public async getDefaultKeyPairValueList() {
     let defaultSelection = await this.storage.getDefaultSelection();
     let key = await this.storage.getKey();
-    return this._systemLanguagePackage.getKeyPairValueList(key.used, defaultSelection);
+    let result = this._systemLanguagePackage.getKeyPairValueList(
+      key.used,
+      defaultSelection.package
+    );
+    return result.map(r => {
+      return { key: r.key, value: r.value };
+    });
   }
 
   public async getSelectedSelection(code: string): Promise<ILanguageSelection> {
@@ -116,7 +128,7 @@ export class SystemLanguageManagementService {
   }
 
   public async validateKeyPairValue(
-    pair: IPairKeyValue
+    pair: PairKeyValueType
   ): Promise<IAddLanguageTransformSaveCommand> {
     let errorMsg: string = '';
     let key: ILanguageKey = await this.storage.getKey();

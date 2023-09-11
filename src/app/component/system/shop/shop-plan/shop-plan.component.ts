@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IPairValueId } from 'src/app/interface/global/global.interface';
+import { PairValueIdType } from 'src/app/interface/global/global.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/constant/constant';
 @Component({
@@ -32,8 +32,8 @@ export class ShopPlanComponent implements OnInit {
   }
   private selectedPlanId: string = '';
   public validated: boolean = false;
-  public planPairIdValueList!: IPairValueId[];
-  public selectedPlanPairIdValue!: IPairValueId;
+  public planPairIdValueList!: PairValueIdType[];
+  public selectedPlanPairIdValue!: PairValueIdType;
   public loading: boolean = true;
 
   constructor(private systemShopService: SystemShopService) {}

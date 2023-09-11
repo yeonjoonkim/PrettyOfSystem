@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
-import { IPairKeyValue } from 'src/app/interface/global/global.interface';
+import { PairKeyValueType } from 'src/app/interface/global/global.interface';
 
 @Component({
   selector: 'gender-selection',
@@ -23,13 +23,13 @@ export class GenderSelectionComponent implements OnInit {
     this.genderChange.emit(gender);
   }
 
-  public genderSelection: IPairKeyValue[] = [
+  public genderSelection: PairKeyValueType[] = [
     { value: Constant.Default.Gender.Male, key: 'label.title.male' },
     { value: Constant.Default.Gender.Female, key: 'label.title.female' },
     { value: Constant.Default.Gender.Other, key: 'label.title.other' },
   ];
 
-  public selectedGender: IPairKeyValue = {
+  public selectedGender: PairKeyValueType = {
     value: Constant.Default.Gender.Male,
     key: 'label.title.male',
   };
@@ -46,7 +46,7 @@ export class GenderSelectionComponent implements OnInit {
     this.genderSelection.push({ value: Constant.Default.Gender.All, key: 'label.title.all' });
   }
 
-  public onChangeGender(selected: IPairKeyValue) {
+  public onChangeGender(selected: PairKeyValueType) {
     this.selectedGender = selected;
     let selectedGenderType: Constant.GenderType = this.convertToGenderType(
       this.selectedGender.value

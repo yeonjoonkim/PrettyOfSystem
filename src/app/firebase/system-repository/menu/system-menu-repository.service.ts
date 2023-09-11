@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { IMenuCategory, IMenuContent } from 'src/app/interface/menu/menu.interface';
+import { MenuCategoryType, MenuContentType } from 'src/app/interface/menu/menu.interface';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { firstValueFrom, from, lastValueFrom, map, Observable } from 'rxjs';
 import * as Db from 'src/app/constant/firebase-path';
-import { IRoleAccessLevel } from 'src/app/interface/system/role/role.interface';
+import { RoleAccessLevelType } from 'src/app/interface/system/role/role.interface';
 import { RoleRateService } from 'src/app/service/authentication/role-rate/role-rate.service';
 
 @Injectable({
@@ -28,9 +28,9 @@ export class SystemMenuRepositoryService {
   }
 
   /**This will return the category */
-  public valueChangeListener(): Observable<IMenuCategory[]> {
+  public valueChangeListener(): Observable<MenuCategoryType[]> {
     return this.afs
-      .collection<IMenuCategory>(Db.Context.System.Menu.Category)
+      .collection<MenuCategoryType>(Db.Context.System.Menu.Category)
       .valueChanges()
       .pipe(
         map(categories => categories.sort(this.compareByContentName)),
@@ -43,9 +43,9 @@ export class SystemMenuRepositoryService {
       );
   }
 
-  public getSystemMenuCategories(): Observable<IMenuCategory[]> {
-    return from(this.afs.collection<IMenuCategory>(Db.Context.System.Menu.Category).get()).pipe(
-      map(querySnapshot => querySnapshot.docs.map(doc => doc.data() as IMenuCategory)),
+  public getSystemMenuCategories(): Observable<MenuCategoryType[]> {
+    return from(this.afs.collection<MenuCategoryType>(Db.Context.System.Menu.Category).get()).pipe(
+      map(querySnapshot => querySnapshot.docs.map(doc => doc.data() as MenuCategoryType)),
       map(categories => categories.sort(this.compareByContentName)),
       map(categories =>
         categories.map(cat => {
@@ -56,7 +56,9 @@ export class SystemMenuRepositoryService {
     );
   }
 
-  public subscribeAccessGrantedMenu(accessLevel: IRoleAccessLevel): Observable<IMenuCategory[]> {
+  public subscribeAccessGrantedMenu(
+    accessLevel: RoleAccessLevelType
+  ): Observable<MenuCategoryType[]> {
     // Replace 'CategoryType' with whatever type you use for 'category'
     return this.getSystemMenuCategories().pipe(
       map(menu => {
@@ -72,7 +74,7 @@ export class SystemMenuRepositoryService {
     );
   }
 
-  public async getAccessGrantedMenu(accessLevel: IRoleAccessLevel): Promise<IMenuCategory[]> {
+  public async getAccessGrantedMenu(accessLevel: RoleAccessLevelType): Promise<MenuCategoryType[]> {
     return await firstValueFrom(this.subscribeAccessGrantedMenu(accessLevel));
   }
 
@@ -82,14 +84,14 @@ export class SystemMenuRepositoryService {
   }
 
   /**Based on systemMenuCat Id update */
-  public updateSystemMenuCategory(selectedSystemMenuCategory: IMenuCategory) {
+  public updateSystemMenuCategory(selectedSystemMenuCategory: MenuCategoryType) {
     this.afs
       .doc(Db.Context.System.Menu.Category + '/' + selectedSystemMenuCategory.id)
       .update(selectedSystemMenuCategory);
   }
 
   /**This will compare the name and return asc */
-  private compareByName(a: IMenuContent, b: IMenuContent) {
+  private compareByName(a: MenuContentType, b: MenuContentType) {
     if (a.name < b.name) {
       return -1;
     }
@@ -100,7 +102,7 @@ export class SystemMenuRepositoryService {
   }
 
   /**This will compare the name and return asc */
-  private compareByContentName(a: IMenuCategory, b: IMenuCategory) {
+  private compareByContentName(a: MenuCategoryType, b: MenuCategoryType) {
     if (a.name < b.name) {
       return -1;
     }
@@ -111,7 +113,7 @@ export class SystemMenuRepositoryService {
   }
 
   /**Save into db */
-  public async addSystemMenuCategory(newCategory: IMenuCategory) {
+  public async addSystemMenuCategory(newCategory: MenuCategoryType) {
     let newId = this.afs.createId();
     let category = { ...newCategory, ...this.timeStamp, id: newId };
     try {

@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { IShopGeneralSetting, IShopSetting } from 'src/app/interface/shop/shop-setting.interface';
+import {
+  ShopGeneralSettingType,
+  IShopSetting,
+} from 'src/app/interface/shop/shop-setting.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +12,8 @@ export class ShopSettingGeneral {
 
   public getEffectiveGeneral(
     setting: IShopSetting,
-    general: IShopGeneralSetting
-  ): IShopGeneralSetting {
+    general: ShopGeneralSettingType
+  ): ShopGeneralSettingType {
     setting.general = this.isUndefined(setting) ? general : setting.general;
     setting.general.taxRate = this.hasTaxRate(setting) ? setting.general.taxRate : general.taxRate;
 

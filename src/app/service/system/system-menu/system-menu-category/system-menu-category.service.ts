@@ -1,8 +1,8 @@
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
-import { IMenuContent } from 'src/app/interface/menu/menu.interface';
+import { MenuContentType } from 'src/app/interface/menu/menu.interface';
 import { SystemMenuCategoryAddService } from './add-category/system-menu-category-add.service';
 import { Injectable } from '@angular/core';
-import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
+import { MenuCategoryType } from 'src/app/interface/menu/menu.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class SystemMenuCategoryService {
   ) {}
 
   /**This will trggier the process of save the new category */
-  public async processSaveNewSystemMenuCategory(newCategory: IMenuCategory) {
+  public async processSaveNewSystemMenuCategory(newCategory: MenuCategoryType) {
     await this.systemMenuCategoryAddService.processSaveNewSystemMenuCategory(newCategory);
   }
 
@@ -39,7 +39,7 @@ export class SystemMenuCategoryService {
     }
   }
 
-  public async processUpdateSystemMenuCategory(edited: IMenuCategory) {
+  public async processUpdateSystemMenuCategory(edited: MenuCategoryType) {
     let selectedId: string = edited?.id ? edited?.id : '';
     let previous = await this.systemMenuRepo.getSelectedSystemMenuCategory(selectedId);
     let needLanguageTranslate: boolean = edited.description !== previous?.description;
@@ -72,7 +72,7 @@ export class SystemMenuCategoryService {
 
   public async processDeleteSystemMenuCategoryContent(
     selectedSystemMenuCategoryId: string,
-    selectedSystemMenuCategoryContent: IMenuContent
+    selectedSystemMenuCategoryContent: MenuContentType
   ) {
     let selectedSystemMenuCategory = await this.systemMenuRepo.getSelectedSystemMenuCategory(
       selectedSystemMenuCategoryId
@@ -91,7 +91,7 @@ export class SystemMenuCategoryService {
 
   public async processUpdateSystemMenuContent(
     selectedSystemMenuCategoryId: string,
-    newSystemMenuCategoryContent: IMenuContent
+    newSystemMenuCategoryContent: MenuContentType
   ) {
     let selectedId: string = selectedSystemMenuCategoryId ? selectedSystemMenuCategoryId : '';
     let selectedSystemMenuCategory = await this.systemMenuRepo.getSelectedSystemMenuCategory(
@@ -128,8 +128,8 @@ export class SystemMenuCategoryService {
   }
 
   private async addNewSystemMenuContent(
-    newCategoryContent: IMenuContent,
-    systemMenuCategory: IMenuCategory
+    newCategoryContent: MenuContentType,
+    systemMenuCategory: MenuCategoryType
   ) {
     let result = await this.systemMenuCategoryAddService.getTranslatedContentDescription(
       newCategoryContent
@@ -156,9 +156,9 @@ export class SystemMenuCategoryService {
   }
 
   private async updateSystemMenuContent(
-    previousContent: IMenuContent,
-    newContent: IMenuContent,
-    systemMenuCategory: IMenuCategory
+    previousContent: MenuContentType,
+    newContent: MenuContentType,
+    systemMenuCategory: MenuCategoryType
   ) {
     systemMenuCategory.content = systemMenuCategory.content.filter(
       content => content.name !== previousContent.name

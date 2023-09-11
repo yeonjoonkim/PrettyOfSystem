@@ -1,4 +1,4 @@
-import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
+import { PlanConfigurationType } from 'src/app/interface/system/plan/plan.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map, Observable } from 'rxjs';
@@ -13,12 +13,12 @@ export class SystemPlanRepositoryService {
   constructor(private afs: AngularFirestore) {}
 
   /**This will return as Observalbe to receive the all Plan Options Available */
-  public valueChangeListener(): Observable<IPlanConfiguration[]> {
+  public valueChangeListener(): Observable<PlanConfigurationType[]> {
     return this.afs
-      .collection<IPlanConfiguration>(Db.Context.System.Plan.Option, ref => ref.orderBy('name'))
+      .collection<PlanConfigurationType>(Db.Context.System.Plan.Option, ref => ref.orderBy('name'))
       .valueChanges()
       .pipe(
-        map((planConfigs: IPlanConfiguration[]) => {
+        map((planConfigs: PlanConfigurationType[]) => {
           if (!planConfigs || planConfigs.length === 0) {
             return [];
           }
@@ -27,9 +27,9 @@ export class SystemPlanRepositoryService {
       );
   }
 
-  public getSystemPlanOptions(): Observable<IPlanConfiguration[]> {
+  public getSystemPlanOptions(): Observable<PlanConfigurationType[]> {
     return this.afs
-      .collection<IPlanConfiguration>(Db.Context.System.Plan.Option)
+      .collection<PlanConfigurationType>(Db.Context.System.Plan.Option)
       .get()
       .pipe(
         map(snapshot => {
@@ -41,7 +41,7 @@ export class SystemPlanRepositoryService {
   }
 
   /**This will add new system plan option */
-  public async addSystemPlanOption(config: IPlanConfiguration) {
+  public async addSystemPlanOption(config: PlanConfigurationType) {
     let isSave = true;
     let newId = this.afs.createId();
     config.id = newId;
@@ -57,7 +57,7 @@ export class SystemPlanRepositoryService {
   }
 
   /**This will updated selected plan */
-  public async updateSystemPlanOption(config: IPlanConfiguration) {
+  public async updateSystemPlanOption(config: PlanConfigurationType) {
     let isUpdate = true;
     let newOption = { ...config, ...this.timeStamp };
     try {
@@ -83,9 +83,9 @@ export class SystemPlanRepositoryService {
     return isDeleted;
   }
 
-  public getSelectedPlan(selectedId: string): Observable<IPlanConfiguration | undefined> {
+  public getSelectedPlan(selectedId: string): Observable<PlanConfigurationType | undefined> {
     return this.afs
-      .doc<IPlanConfiguration>(`${Db.Context.System.Plan.Option}/${selectedId}`)
+      .doc<PlanConfigurationType>(`${Db.Context.System.Plan.Option}/${selectedId}`)
       .get()
       .pipe(
         map(snapshot => {

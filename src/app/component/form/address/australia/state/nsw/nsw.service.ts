@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { IPostCodeItem } from 'src/app/interface/global/global.interface';
+import { PostCodeItemType } from 'src/app/interface/global/global.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NswService {
-  public data: IPostCodeItem[] = [
+  public data: PostCodeItemType[] = [
     {
       postCode: '2850',
       suburb: 'AARONS PASS',

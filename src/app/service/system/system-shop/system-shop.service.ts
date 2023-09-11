@@ -7,7 +7,7 @@ import {
   IShopConfiguration,
   IShopCountry,
 } from 'src/app/interface/shop/shop.interface';
-import { IPairValueId } from 'src/app/interface/global/global.interface';
+import { PairValueIdType } from 'src/app/interface/global/global.interface';
 import { GlobalService } from '../../../service/global/global.service';
 import { ShopModalService } from './shop-modal/shop-modal.service';
 
@@ -38,7 +38,7 @@ export class SystemShopService {
     return await lastValueFrom(this.systemPlanRepo.getSystemPlanOptions());
   }
 
-  public async getCategoryPairValueIdList(): Promise<IPairValueId[]> {
+  public async getCategoryPairValueIdList(): Promise<PairValueIdType[]> {
     let categoryList: IShopCategory[] = [];
     let systemCategoryList = await this.getSystemShopCategoryList();
 
@@ -52,7 +52,7 @@ export class SystemShopService {
     });
   }
 
-  public async getPlanPairValueIdList(): Promise<IPairValueId[]> {
+  public async getPlanPairValueIdList(): Promise<PairValueIdType[]> {
     let systemPlanConfigList = await this.getSystemShopPlanConfigList();
 
     return systemPlanConfigList.map(p => {

@@ -1,4 +1,4 @@
-import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
+import { PlanConfigurationType } from 'src/app/interface/system/plan/plan.interface';
 import { lastValueFrom } from 'rxjs';
 import { PlanService } from 'src/app/service/system/system-plan/plan.service';
 import { Component, OnInit } from '@angular/core';
@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./plan-management.component.scss'],
 })
 export class PlanManagementComponent implements OnInit {
-  public planOptions: IPlanConfiguration[] = [];
+  public planOptions: PlanConfigurationType[] = [];
 
   constructor(private planService: PlanService) {}
 

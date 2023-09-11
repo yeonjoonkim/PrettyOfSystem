@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
-import { IDatePeriod } from 'src/app/interface/global/global.interface';
+import { DatePeriodType } from 'src/app/interface/global/global.interface';
 import { ShopConfigurationService } from 'src/app/service/system/system-shop/shop-configuration/shop-configuration.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class ShopPlanPriceComponent implements OnInit, OnChanges {
     maximumFractionDigits: 2,
   });
   @Input() planId: string = '';
-  @Input() period!: IDatePeriod;
+  @Input() period!: DatePeriodType;
   private option = {
     planId: 'planId',
     period: 'period',

@@ -47,7 +47,7 @@ export class OpenAiService {
       const response = await Promise.race([
         fetch(this.openAiUrl, requestOptions),
         new Promise<never>(
-          (_, reject) => setTimeout(() => reject(new Error('Request timed out')), 15000) // 5 second timeout
+          (_, reject) => setTimeout(() => reject(new Error('Request timed out')), 40000) // 5 second timeout
         ),
       ]);
 
@@ -58,10 +58,14 @@ export class OpenAiService {
       } else {
         let data = await response.json();
         apiResult = data.choices[0].message.content;
-        await this.loading.dismiss();
+        if (loading) {
+          await this.loading.dismiss();
+        }
       }
     } catch (error) {
-      this.loading.dismiss();
+      if (loading) {
+        await this.loading.dismiss();
+      }
       console.error(error);
     }
 

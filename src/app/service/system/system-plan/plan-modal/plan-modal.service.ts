@@ -1,4 +1,4 @@
-import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
+import { PlanConfigurationType } from 'src/app/interface/system/plan/plan.interface';
 import { PlanComponent } from 'src/app/component/system/plan/plan/plan.component';
 import { ModalController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
@@ -18,8 +18,8 @@ export class PlanModalService {
     return addPlan;
   }
 
-  public async presentEditPlan(config: IPlanConfiguration): Promise<HTMLIonModalElement> {
-    let selectedConfig: IPlanConfiguration = cloneDeep(config);
+  public async presentEditPlan(config: PlanConfigurationType): Promise<HTMLIonModalElement> {
+    let selectedConfig: PlanConfigurationType = cloneDeep(config);
     let editPlan = await this.modalCtrl.create({
       component: PlanComponent,
       componentProps: { plan: selectedConfig, editMode: true },
@@ -27,8 +27,8 @@ export class PlanModalService {
     return editPlan;
   }
 
-  public async presentViewPlan(config: IPlanConfiguration): Promise<HTMLIonModalElement> {
-    let selectedConfig: IPlanConfiguration = cloneDeep(config);
+  public async presentViewPlan(config: PlanConfigurationType): Promise<HTMLIonModalElement> {
+    let selectedConfig: PlanConfigurationType = cloneDeep(config);
     let viewPlan = await this.modalCtrl.create({
       component: PlanComponent,
       componentProps: { plan: selectedConfig, readOnly: true },

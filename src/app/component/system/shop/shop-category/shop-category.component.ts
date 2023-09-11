@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IShopCategory } from 'src/app/interface/shop/shop.interface';
-import { IPairValueId } from 'src/app/interface/global/global.interface';
+import { PairValueIdType } from 'src/app/interface/global/global.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/constant/constant';
 
@@ -32,8 +32,8 @@ export class ShopCategoryListComponent implements OnInit {
   }
   private defaultShopCategoryList: IShopCategory[] = [];
   public loading: boolean = true;
-  public pairValueIdList: IPairValueId[] = [];
-  public selectedPairValueId: IPairValueId = { id: '', value: '' };
+  public pairValueIdList: PairValueIdType[] = [];
+  public selectedPairValueId: PairValueIdType = { id: '', value: '' };
   private validated: boolean = false;
   private selectedShopCategory: IShopCategory = {
     id: '',
@@ -54,7 +54,7 @@ export class ShopCategoryListComponent implements OnInit {
   }
 
   private setDefaultPairValueId() {
-    let defaultPair: IPairValueId | undefined = this.pairValueIdList.find(
+    let defaultPair: PairValueIdType | undefined = this.pairValueIdList.find(
       p => p.id === this.selectedShopCategory.id
     );
     this.selectedPairValueId = defaultPair !== undefined ? defaultPair : { id: '', value: '' };

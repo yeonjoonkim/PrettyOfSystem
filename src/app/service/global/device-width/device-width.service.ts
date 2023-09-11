@@ -72,7 +72,7 @@ export class DeviceWidthService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.resizeSubscription.unsubscribe();
+    this.resizeSubscription?.unsubscribe();
   }
 
   private getCurrentDevice(width: number): Device {
