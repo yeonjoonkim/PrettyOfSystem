@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
-import { ILanguageKey, ILanguageSelection, IPairKeyValue } from 'src/app/interface';
+import { ILanguageKey, ILanguageSelection, PairKeyValueType } from 'src/app/interface';
 import * as StorageKey from 'src/app/service/global/storage/storage.key';
 import { StorageService } from 'src/app/service/global/storage/storage.service';
 @Injectable({

@@ -1,6 +1,9 @@
-import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
+import { MenuCategoryType } from 'src/app/interface/menu/menu.interface';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
-import { IRoleAccessLevel, IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
+import {
+  RoleAccessLevelType,
+  RoleConfigurationType,
+} from 'src/app/interface/system/role/role.interface';
 import { RoleRateService } from '../role-rate/role-rate.service';
 import { Injectable } from '@angular/core';
 import * as Constant from '../../../constant/constant';
@@ -11,19 +14,19 @@ import * as Constant from '../../../constant/constant';
 export class AccessControlService {
   constructor(private roleRate: RoleRateService) {}
 
-  public systemAdmin(accessLevel: IRoleAccessLevel): boolean {
+  public systemAdmin(accessLevel: RoleAccessLevelType): boolean {
     return accessLevel.isSystemAdmin;
   }
 
-  public admin(accessLevel: IRoleAccessLevel): boolean {
+  public admin(accessLevel: RoleAccessLevelType): boolean {
     return accessLevel.isSystemAdmin || accessLevel.isAdmin;
   }
 
-  public manager(accessLevel: IRoleAccessLevel): boolean {
+  public manager(accessLevel: RoleAccessLevelType): boolean {
     return accessLevel.isSystemAdmin || accessLevel.isAdmin || accessLevel.isManager;
   }
 
-  public reception(accessLevel: IRoleAccessLevel): boolean {
+  public reception(accessLevel: RoleAccessLevelType): boolean {
     return (
       accessLevel.isSystemAdmin ||
       accessLevel.isAdmin ||
@@ -32,7 +35,7 @@ export class AccessControlService {
     );
   }
 
-  public employee(accessLevel: IRoleAccessLevel): boolean {
+  public employee(accessLevel: RoleAccessLevelType): boolean {
     return (
       accessLevel.isSystemAdmin ||
       accessLevel.isAdmin ||

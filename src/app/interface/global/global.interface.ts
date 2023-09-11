@@ -4,7 +4,7 @@ import {
   FormActionType,
   DayIndexType,
   DayType,
-  DatePeriodType,
+  PeriodType,
 } from '../../constant/constant';
 
 export interface ITimer {
@@ -14,89 +14,89 @@ export interface ITimer {
   endDateTime: Date;
   inProgress: boolean;
   end: boolean;
-  duration: ITimerDuration;
-  percent: ITimerPercent;
+  duration: TimerDurationType;
+  percent: TimerPercentType;
   label: string;
 }
 
-export type ITimerPercent = {
+export type TimerPercentType = {
   remain: number;
   used: number;
 };
 
-export type ITimerDuration = {
+export type TimerDurationType = {
   hour: number;
   min: number;
   sec: number;
 };
 
-export interface IPairKeyValue {
+export type PairKeyValueType = {
   key: string;
   value: string;
-}
+};
 
-export interface IPairNameValue {
+export type PairNameValueType = {
   name: string;
   value: string | number;
-}
+};
 
-export interface IPairNameValueFilterParam {
+export type PairNameValueTypeFilterParamType = {
   name: string;
   translatedName: string;
   value: string | number;
-}
+};
 
-export interface IPairValueId {
+export type PairValueIdType = {
   id: string;
   value: string | number;
-}
+};
 
-export interface IComponentAction {
+export type ComponentActionType = {
   name: string;
   isEdit: boolean;
   isCancel: boolean;
   isSave: boolean;
-}
+};
 
-export interface IAddress {
+export type AddressType = {
   street: string;
   suburb: string;
   state: string;
   postCode: string;
-}
+};
 
-export interface IPostCodeItem {
+export type PostCodeItemType = {
   postCode: string;
   suburb: string;
-}
+};
 
-export interface IPostCodeFilterOption {
-  postCodeList: IPostCodeItem[];
+export type PostCodeFilterOptionType = {
+  postCodeList: PostCodeItemType[];
   stateList: AustraliaStateType[];
-}
+};
 
-export interface ITimeItem {
+export type TimeItemType = {
   hr: number;
   min: number;
   dayNightType: DateDayNightType;
   strValue: string;
-}
+};
 
-export interface IDateIndexPairDay {
+export type IDateIndexPairDay = {
   index: DayIndexType;
   day: DayType;
-}
+};
 
-export interface IDatePeriod {
+export type DatePeriodType = {
   name: string;
-  type: DatePeriodType;
+  type: PeriodType;
   week: number;
   day: number;
-}
+};
 
-export interface IFormHeaderModalProp {
+export type IFormHeaderModalProp = {
   readOnly: boolean;
   action: FormActionType;
   enabledSavebutton: boolean;
   headerTitle: string;
-}
+};

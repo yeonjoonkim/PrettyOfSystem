@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IPairKeyValue, IPairNameValue } from 'src/app/interface/global/global.interface';
+import { PairKeyValueType, PairNameValueType } from 'src/app/interface/global/global.interface';
 import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
 import { AddLanguageTransformComponent } from './add-language-transform/add-language-transform.component';
 import { PopoverController } from '@ionic/angular';
@@ -14,10 +14,10 @@ import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 export class DictonaryComponent implements OnInit {
   @ViewChild('dropdownlist')
   public dropdownlist!: DropDownListComponent;
-  public selectedLang: IPairNameValue = { name: '', value: '' };
-  public languageSelectionList: IPairNameValue[] = [];
-  public selectedKeyPairValueList: IPairKeyValue[] = [];
-  public gridData: IPairKeyValue[] = [];
+  public selectedLang: PairNameValueType = { name: '', value: '' };
+  public languageSelectionList: PairNameValueType[] = [];
+  public selectedKeyPairValueList: PairKeyValueType[] = [];
+  public gridData: PairKeyValueType[] = [];
   public query: string = '';
 
   constructor(
@@ -93,10 +93,10 @@ export class DictonaryComponent implements OnInit {
     });
   }
 
-  private async exportToCSV(data: IPairKeyValue[], selectedLang: IPairNameValue) {
+  private async exportToCSV(data: PairKeyValueType[], selectedLang: PairNameValueType) {
     await this.global.loading.show();
     // Convert the data to CSV format
-    const convertToCSV = (objArray: IPairKeyValue[]): string => {
+    const convertToCSV = (objArray: PairKeyValueType[]): string => {
       const header = 'key,value\n';
       const rows = objArray.map(item => `"${item.key}","${item.value}"`).join('\n');
       return header + rows;

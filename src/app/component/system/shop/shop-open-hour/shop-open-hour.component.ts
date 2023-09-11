@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
 import { IShopOperatingHours, IShopWorkHours } from 'src/app/interface/shop/shop.interface';
-import { ITimeItem } from 'src/app/interface/global/global.interface';
+import { TimeItemType } from 'src/app/interface/global/global.interface';
 export interface IShopOpenHoursValidator {
   mon: boolean;
   tue: boolean;
@@ -350,11 +350,11 @@ export class ShopOpenHourComponent implements OnInit {
     );
   }
 
-  private getDefaultTime(): ITimeItem {
+  private getDefaultTime(): TimeItemType {
     return { hr: 0, min: 0, dayNightType: 'AM', strValue: '00:00:00' };
   }
 
-  private validateOpenAndCloseTimes(open: ITimeItem, close: ITimeItem) {
+  private validateOpenAndCloseTimes(open: TimeItemType, close: TimeItemType) {
     let tempDate: Date = new Date();
     let openTime: Date = this.global.date.transform.convertShopTimeZoneDateTimeItem(
       tempDate,

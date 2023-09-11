@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IPairKeyValue } from 'src/app/interface';
+import { PairKeyValueType } from 'src/app/interface';
 import {
   ITextTransformObject,
   TextTransformService,
@@ -14,7 +14,7 @@ export class SystemLanguagePackageService {
     this._textTransform = new TextTransformService();
   }
 
-  public update(pack: ITextTransformObject, pair: IPairKeyValue) {
+  public update(pack: ITextTransformObject, pair: PairKeyValueType) {
     let isString: boolean = typeof pair.value === 'string';
 
     if (isString) {
@@ -58,8 +58,11 @@ export class SystemLanguagePackageService {
     return pack;
   }
 
-  public getKeyPairValueList(usedKeyList: string[], pack: ITextTransformObject): IPairKeyValue[] {
-    let keyPairValueList: IPairKeyValue[] = usedKeyList.map(key => {
+  public getKeyPairValueList(
+    usedKeyList: string[],
+    pack: ITextTransformObject
+  ): PairKeyValueType[] {
+    let keyPairValueList: PairKeyValueType[] = usedKeyList.map(key => {
       let path = this._textTransform.setLanguageTransformCodeList(key);
       let value = this.getValue(path, pack);
       return { key: key, value: value };

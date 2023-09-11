@@ -9,7 +9,7 @@ import {
   ILanguageSelection,
   ILanguageTranslateItem,
   ILanguageTranslateResult,
-  IPairKeyValue,
+  PairKeyValueType,
 } from 'src/app/interface';
 import { TextTransformService } from '../../text-transform/text-transform.service';
 import { TranslateCriteriaService } from './translate-criteria/translate-criteria.service';
@@ -39,7 +39,7 @@ export class SystemLanguageManagementService {
     private _toast: ToastService
   ) {}
 
-  public async editSelectedPackage(selectedLanguageCode: string, pair: IPairKeyValue) {
+  public async editSelectedPackage(selectedLanguageCode: string, pair: PairKeyValueType) {
     try {
       let selection: ILanguageSelection = await this.storage.getSelectedSelection(
         selectedLanguageCode
@@ -62,7 +62,7 @@ export class SystemLanguageManagementService {
         for (let i = 0; i < selections.length; i++) {
           let selection: ILanguageSelection = selections[i];
           let selectionCode: string = selection.code.toLowerCase();
-          let translatedKeyPairValue: IPairKeyValue = {
+          let translatedKeyPairValue: PairKeyValueType = {
             key: keyValue,
             value: result.translated[selectionCode],
           };
@@ -128,7 +128,7 @@ export class SystemLanguageManagementService {
   }
 
   public async validateKeyPairValue(
-    pair: IPairKeyValue
+    pair: PairKeyValueType
   ): Promise<IAddLanguageTransformSaveCommand> {
     let errorMsg: string = '';
     let key: ILanguageKey = await this.storage.getKey();

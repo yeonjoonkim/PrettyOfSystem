@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
-import { IMenuContent } from 'src/app/interface/menu/menu.interface';
+import { MenuContentType } from 'src/app/interface/menu/menu.interface';
 import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/system-menu-category/system-menu-category.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 
@@ -12,7 +12,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
 export class AddMenuCategoryContentComponent implements OnInit {
   private selectedSystemMenuCategoryId: string = '';
   public editMode: boolean = false;
-  public categoryContent: IMenuContent = {
+  public categoryContent: MenuContentType = {
     name: '',
     description: '',
     url: '',

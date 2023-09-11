@@ -1,7 +1,7 @@
 import * as Constant from '../../constant/constant';
-import { IAddress, IDatePeriod, ITimeItem } from '../global/global.interface';
+import { AddressType, DatePeriodType, TimeItemType } from '../global/global.interface';
 import { IShopSetting } from './shop-setting.interface';
-import { IUserAssociatedShop } from '../user/user.interface';
+import { UserAssociatedShopType } from '../user/user.interface';
 
 export interface IShopCategory {
   id: string;
@@ -28,7 +28,7 @@ export interface IShopPlan {
   isOverDue: boolean;
   lastPaymentDate: Date;
   paymentDate: Date;
-  period: IDatePeriod;
+  period: DatePeriodType;
 }
 
 export interface IShopPlanOption {
@@ -57,8 +57,8 @@ export interface IShopOperatingDaily {
 }
 
 export interface IShopOperatingHours {
-  openTime: ITimeItem;
-  closeTime: ITimeItem;
+  openTime: TimeItemType;
+  closeTime: TimeItemType;
 }
 export interface IShopConfiguration {
   id: string;
@@ -67,7 +67,7 @@ export interface IShopConfiguration {
   email: string;
   taxNumber: string;
   active: boolean;
-  address: IAddress;
+  address: AddressType;
   operatingHours: IShopWorkHours;
   category: IShopCategory;
   country: IShopCountry;
@@ -76,7 +76,7 @@ export interface IShopConfiguration {
   activeTo: Date | null;
   setting: IShopSetting;
   timezone: string;
-  associatedUser: IUserAssociatedShop[];
+  associatedUser: UserAssociatedShopType[];
 }
 
 export interface IShopConfigurationFilterOption {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { AustraliaPostCodeService } from '../australia/australia-post-code.service';
-import { IPostCodeFilterOption } from 'src/app/interface/global/global.interface';
+import { PostCodeFilterOptionType } from 'src/app/interface/global/global.interface';
 
 export interface IStateTypeDeclaration {
   isAustralia: boolean;
@@ -12,8 +12,8 @@ export interface IStateTypeDeclaration {
 export class PostcodeService {
   constructor(private australia: AustraliaPostCodeService) {}
 
-  public setPostCodeFilterOption(state: string): IPostCodeFilterOption {
-    let result: IPostCodeFilterOption = { postCodeList: [], stateList: [] };
+  public setPostCodeFilterOption(state: string): PostCodeFilterOptionType {
+    let result: PostCodeFilterOptionType = { postCodeList: [], stateList: [] };
     let stateType: IStateTypeDeclaration = this.findStateType(state);
     let australiaState: Constant.AustraliaStateType | undefined = stateType.isAustralia
       ? this.australia.convertStringToAustraliaStateType(state)

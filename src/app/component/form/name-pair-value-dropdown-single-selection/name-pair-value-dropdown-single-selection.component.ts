@@ -9,7 +9,11 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { IPairNameValue, IPairNameValueFilterParam } from 'src/app/interface';
+import {
+  PairKeyValueType,
+  PairNameValueType,
+  PairNameValueTypeFilterParamType,
+} from 'src/app/interface';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { cloneDeep } from 'lodash-es';
@@ -22,10 +26,10 @@ import { NamePairValueDropdownlistComponent } from './name-pair-value-dropdown-l
   styleUrls: ['./name-pair-value-dropdown-single-selection.component.scss'],
 })
 export class NamePairValueDropdownSingleSelectionComponent implements OnInit, OnChanges {
-  @Output() selectedChange = new EventEmitter<IPairNameValue>();
+  @Output() selectedChange = new EventEmitter<PairNameValueType>();
 
   @Input() componentMode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
-  @Input() selection: IPairNameValue[] = [];
+  @Input() selection: PairNameValueType[] = [];
   @Input() title: string = '';
   @Input() readOnly: boolean = false;
   @Input() filterable: boolean = true;
@@ -35,14 +39,15 @@ export class NamePairValueDropdownSingleSelectionComponent implements OnInit, On
   get selected() {
     return this.selectedSelection;
   }
-  set selected(value: IPairNameValue) {
+  set selected(value: PairNameValueType) {
     this.selectedSelection = value;
   }
 
-  public selectedSelection: IPairNameValue = { name: '', value: '' };
-  public componetSelection: IPairNameValue[] = [];
-  public queryList: IPairNameValueFilterParam[] = [];
-  private isOpenStatus: boolean = false;
+  public selectedSelection: PairNameValueType = { name: '', value: '' };
+  public componetSelection: PairNameValueType[] = [];
+  public queryList: PairNameValueTypeFilterParamType[] = [];
+  public isOpenStatus: boolean = false;
+  public loading: boolean = true;
 
   constructor(private global: GlobalService, private popoverCtrl: PopoverController) {}
 
@@ -51,14 +56,10 @@ export class NamePairValueDropdownSingleSelectionComponent implements OnInit, On
     await this.onChangeSelection(onChangeSelection);
   }
 
-  async ngOnInit() {
-    await this.setDefaultSetting();
-  }
+  async ngOnInit() {}
 
   public async presentDropdownList(event: any) {
-    const target = event.target as HTMLElement;
-    const isIcon = target.className.includes('icon');
-    if (!this.isOpenStatus && !this.readOnly && !isIcon) {
+    if (!this.isOpenStatus && !this.readOnly) {
       this.isOpenStatus = true;
       let dropdownList = await this.getPopoverSettings(event);
       await dropdownList.present();
@@ -85,6 +86,12 @@ export class NamePairValueDropdownSingleSelectionComponent implements OnInit, On
     await this.setQueryList();
     await this.sortByTranslatedValue();
     await this.setComponentFilterMode();
+
+    await this.setLoaded();
+  }
+
+  private async setLoaded() {
+    this.loading = this.selection.length > 0 ? false : true;
   }
 
   private async getPopoverSettings(event: any) {
@@ -112,10 +119,10 @@ export class NamePairValueDropdownSingleSelectionComponent implements OnInit, On
   }
 
   private async setQueryList() {
-    let copiedSelection: IPairNameValue[] = cloneDeep(this.selection);
+    let copiedSelection: PairNameValueType[] = cloneDeep(this.selection);
     let promises = copiedSelection.map(async s => {
       let translatedName = await this.global.language.transform(s.name);
-      let promise: IPairNameValueFilterParam = {
+      let promise: PairNameValueTypeFilterParamType = {
         name: s.name,
         value: s.value,
         translatedName: translatedName,
@@ -133,7 +140,11 @@ export class NamePairValueDropdownSingleSelectionComponent implements OnInit, On
       const allTextValue: string = 'label.title.all';
       const translatedText: string = await this.global.language.transform(allTextValue);
       this.componetSelection.unshift({ name: 'label.title.all', value: '' });
-      this.queryList.unshift({ name: allTextValue, translatedName: translatedText, value: '' });
+      this.queryList.unshift({
+        name: allTextValue,
+        translatedName: translatedText,
+        value: '',
+      });
     }
   }
 }

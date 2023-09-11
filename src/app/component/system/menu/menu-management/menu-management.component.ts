@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
+import { MenuCategoryType } from 'src/app/interface/menu/menu.interface';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 import { lastValueFrom } from 'rxjs';
 import { LanguageService } from 'src/app/service/global/language/language.service';
@@ -10,8 +10,8 @@ import { LanguageService } from 'src/app/service/global/language/language.servic
   styleUrls: ['./menu-management.component.scss'],
 })
 export class MenuManagementComponent implements OnInit {
-  public menuCategories!: IMenuCategory[];
-  public selectedCategory: IMenuCategory = {
+  public menuCategories!: MenuCategoryType[];
+  public selectedCategory: MenuCategoryType = {
     description: '',
     name: '',
     icon: '',
@@ -31,17 +31,17 @@ export class MenuManagementComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.setMenuCategory();
+    await this.seMenuCategoryType();
   }
 
-  private async setMenuCategory() {
+  private async seMenuCategoryType() {
     let menuCategory = await lastValueFrom(this.systemMenuRepository.getSystemMenuCategories());
     this.menuCategories = menuCategory;
   }
 
   async onUpdate() {
     await this.language.management.storage.refresh().then(async () => {
-      await this.setMenuCategory();
+      await this.seMenuCategoryType();
     });
   }
 }

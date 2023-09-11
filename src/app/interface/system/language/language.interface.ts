@@ -1,5 +1,5 @@
 import { ITextTransformObject } from 'src/app/service/global/text-transform/text-transform.service';
-import { IPairKeyValue } from '../../global/global.interface';
+import { PairKeyValueType } from '../../global/global.interface';
 
 export interface ILanguageSelection {
   id?: string;
@@ -51,21 +51,21 @@ export interface ILanguageTranslateResult {
   [key: string]: string;
 }
 
-export interface ILanugaeTransformPopOverCriteria {
+export interface LanugaeTransformPopOverCriteriaType {
   key: string;
   value: string;
   selectedLangCode: string;
 }
 
-export interface ICreateNewPackageCommand {
+export interface CreateNewPackageCommandType {
   code: string;
-  defaultKeyPairList: IPairKeyValue[];
+  defaultKeyPairList: PairKeyValueType[];
   newPackage: ITextTransformObject;
-  errorKeyPairList: IPairKeyValue[];
+  errorKeyPairList: PairKeyValueType[];
   translateTo: string;
   end: number;
   current: number;
-  currentKeyPair: IPairKeyValue;
+  currentKeyPair: PairKeyValueType;
   inProgress: boolean;
   endTransaction: boolean;
   attemptError: boolean;

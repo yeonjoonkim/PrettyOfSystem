@@ -7,7 +7,10 @@ import { TasService } from './state/tas/tas.service';
 import { SaService } from './state/sa/sa.service';
 import { NtService } from './state/nt/nt.service';
 import * as Constant from 'src/app/constant/constant';
-import { IPostCodeFilterOption, IPostCodeItem } from 'src/app/interface/global/global.interface';
+import {
+  PostCodeFilterOptionType,
+  PostCodeItemType,
+} from 'src/app/interface/global/global.interface';
 import { ActService } from './state/act/act.service';
 @Injectable({
   providedIn: 'root',
@@ -24,7 +27,7 @@ export class AustraliaPostCodeService {
     public act: ActService
   ) {}
 
-  public getPostCodeFilterOption(state: Constant.AustraliaStateType): IPostCodeFilterOption {
+  public getPostCodeFilterOption(state: Constant.AustraliaStateType): PostCodeFilterOptionType {
     return {
       postCodeList: this.getSelectedPostCodeList(state),
       stateList: this.getStateTypeList(),
@@ -64,7 +67,7 @@ export class AustraliaPostCodeService {
     );
   }
 
-  public getSelectedPostCodeList(state: Constant.AustraliaStateType): IPostCodeItem[] {
+  public getSelectedPostCodeList(state: Constant.AustraliaStateType): PostCodeItemType[] {
     return state === Constant.State.AustraliaType.NSW
       ? this.nsw.data
       : state === Constant.State.AustraliaType.QLD

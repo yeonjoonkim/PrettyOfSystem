@@ -1,16 +1,10 @@
 <kendo-label text="{{ title | languageTransform | async }}">
-  <div (click)="presentDropdownList($event)">
-    <kendo-dropdownlist
-      #dropdownlist
-      [data]="selection"
-      textField="name"
-      valueField="value"
-      adaptiveMode="auto"
-      [(value)]="selectedSelection"
-      [readonly]="true">
-      <ng-template kendoDropDownListValueTemplate let-dataItem>
-        <span>{{ dataItem?.name | languageTransform | async }}</span>
-      </ng-template>
-    </kendo-dropdownlist>
-  </div>
+  <kendo-button id="dropdown-list-btn" (click)="presentDropdownList($event)">
+    <span id="selected-name" *ngIf="loading"> </span>
+    <span id="selected-name" *ngIf="!loading">{{
+      selectedSelection.name | languageTransform | async
+    }}</span>
+    <span id="dropdown-list-down" *ngIf="!isOpenStatus" class="k-icon k-i-arrow-60-down"></span>
+    <span id="dropdown-list-up" *ngIf="isOpenStatus" class="k-icon k-i-arrow-60-up"></span>
+  </kendo-button>
 </kendo-label>

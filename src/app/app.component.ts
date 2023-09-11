@@ -1,8 +1,8 @@
-import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
-import { LanguageService } from 'src/app/service/global/language/language.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { StorageService } from './service/global/storage/storage.service';
+import { GlobalService } from './service/global/global.service';
+import { NetworkConnectionStatusService } from './service/global/network-connection-status/network-connection-status.service';
+import { ConnectionStatus } from '@capacitor/network';
 
 @Component({
   selector: 'app-root',
@@ -11,17 +11,19 @@ import { StorageService } from './service/global/storage/storage.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   private deviceTypeSubscription!: Subscription;
-  public isLoaded: boolean = false;
+  private internetConnectionSubscription!: Subscription;
   private languageChangeActionSubscription!: Subscription;
+  public isLoaded: boolean = false;
+  public internetStatus!: ConnectionStatus;
 
   constructor(
-    private language: LanguageService,
-    private deviceWidth: DeviceWidthService,
-    private storage: StorageService
+    private global: GlobalService,
+    public networkStatus: NetworkConnectionStatusService
   ) {}
 
   async ngOnInit() {
-    await this.storage.create();
+    await this.global.storage.create();
+    this.subscribeNetworkStatus();
     this.subscribeDeviceWidth();
     this.subscribeLanguageChangeAction();
     await this.loading();
@@ -30,27 +32,41 @@ export class AppComponent implements OnInit, OnDestroy {
   async ngOnDestroy() {
     this.deviceTypeSubscription?.unsubscribe();
     this.languageChangeActionSubscription?.unsubscribe();
+    this.internetConnectionSubscription?.unsubscribe();
   }
 
   private async subscribeLanguageChangeAction() {
-    this.languageChangeActionSubscription = this.language.changeLanguageAction.subscribe(
-      async i => {
+    this.languageChangeActionSubscription = this.global.language.changeLanguageAction.subscribe(
+      async () => {
         this.ngOnDestroy();
         window.location.reload();
       }
     );
   }
 
+  private subscribeNetworkStatus() {
+    this.internetConnectionSubscription = this.global.networkConnection
+      .activateListener()
+      .subscribe(async status => {
+        this.internetStatus = status;
+        await this.global.networkConnection.handleStatus(status);
+      });
+  }
+
   private async subscribeDeviceWidth() {
-    this.deviceTypeSubscription = this.deviceWidth.deviceTypeObservable.subscribe(device => {
-      this.deviceWidth.deviceType = device;
+    this.deviceTypeSubscription = this.global.deviceWidth.deviceTypeObservable.subscribe(device => {
+      this.global.deviceWidth.deviceType = device;
     });
   }
 
   private async loading() {
-    await this.language.management.storage.setDefault().then(async () => {
-      await this.language.setCurrentLanguage();
+    if (this.internetStatus.connected) {
+      await this.global.language.management.storage.setDefault().then(async () => {
+        await this.global.language.setCurrentLanguage();
+        this.isLoaded = true;
+      });
+    } else {
       this.isLoaded = true;
-    });
+    }
   }
 }

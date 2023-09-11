@@ -1,5 +1,5 @@
 import { PopoverController, NavParams } from '@ionic/angular';
-import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
+import { MenuCategoryType } from 'src/app/interface/menu/menu.interface';
 import { Component, OnInit } from '@angular/core';
 import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/system-menu-category/system-menu-category.service';
 
@@ -10,7 +10,7 @@ import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/sy
 })
 export class AddMenuCategoryComponent implements OnInit {
   public editMode: boolean = false;
-  public category: IMenuCategory = {
+  public category: MenuCategoryType = {
     id: '',
     description: '',
     name: '',

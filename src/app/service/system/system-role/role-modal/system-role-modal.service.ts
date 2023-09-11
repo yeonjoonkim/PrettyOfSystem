@@ -1,4 +1,4 @@
-import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
+import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
 import { ModalController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 
@@ -16,7 +16,7 @@ export class RoleModalService {
     return addRole;
   }
 
-  public async presentEditRole(config: IRoleConfiguration) {
+  public async presentEditRole(config: RoleConfigurationType) {
     let editRole = await this.modalCtrl.create({
       component: RoleComponent,
       componentProps: { role: config, editable: true },

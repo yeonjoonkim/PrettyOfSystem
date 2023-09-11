@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { IRoleAccessLevel, IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
-import { IUser, IUserAssociatedShop } from 'src/app/interface/user/user.interface';
+import {
+  RoleAccessLevelType,
+  RoleConfigurationType,
+} from 'src/app/interface/system/role/role.interface';
+import { IUser, UserAssociatedShopType } from 'src/app/interface/user/user.interface';
 import { SystemShopWorkHoursService } from '../system-shop/system-shop-work-hours/system-shop-work-hours.service';
 import * as Constant from '../../../constant/constant';
 @Injectable({
@@ -11,8 +14,8 @@ export class SystemUserService {
 
   public handleOnChangeSystemAdmin(
     user: IUser,
-    associatedShops: IUserAssociatedShop[],
-    systemAdminRole: IRoleConfiguration
+    associatedShops: UserAssociatedShopType[],
+    systemAdminRole: RoleConfigurationType
   ) {
     user.associatedShops = user.isSystemAdmin
       ? this.setUserInfoInAssociatedShops(associatedShops, user, systemAdminRole)
@@ -23,11 +26,11 @@ export class SystemUserService {
   }
 
   private setUserInfoInAssociatedShops(
-    shops: IUserAssociatedShop[],
+    shops: UserAssociatedShopType[],
     user: IUser,
-    systemAdminRole: IRoleConfiguration
+    systemAdminRole: RoleConfigurationType
   ) {
-    let accessLevel: IRoleAccessLevel = this.setDefaultAccessLevel();
+    let accessLevel: RoleAccessLevelType = this.setDefaultAccessLevel();
     accessLevel.isSystemAdmin = true;
 
     shops = shops.map(s => {
@@ -41,7 +44,7 @@ export class SystemUserService {
     return shops;
   }
 
-  public resetCurrentShop(systemAdminRole: IRoleConfiguration): IUserAssociatedShop {
+  public resetCurrentShop(systemAdminRole: RoleConfigurationType): UserAssociatedShopType {
     return {
       shopId: '',
       shopName: '',

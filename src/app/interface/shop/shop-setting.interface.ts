@@ -1,17 +1,17 @@
 export interface IShopSetting {
-  timePicker: IShopTimePicker;
-  general: IShopGeneralSetting;
+  timePicker: ShopTimePickerType;
+  general: ShopGeneralSettingType;
 }
 
-export interface IShopSettingValiationResult {
+export type ShopSettingValiationResultType = {
   isModified: boolean;
   setting: IShopSetting;
-}
+};
 
-export interface IShopTimePicker {
+export type ShopTimePickerType = {
   intervalMin: number;
-}
+};
 
-export interface IShopGeneralSetting {
+export type ShopGeneralSettingType = {
   taxRate: number;
-}
+};

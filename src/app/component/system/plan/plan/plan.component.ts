@@ -1,7 +1,7 @@
 import { PlanService } from 'src/app/service/system/system-plan/plan.service';
 import { NavParams } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { IPlanConfiguration } from 'src/app/interface/system/plan/plan.interface';
+import { PlanConfigurationType } from 'src/app/interface/system/plan/plan.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 @Component({
   selector: 'plan',
@@ -11,14 +11,14 @@ import { GlobalService } from 'src/app/service/global/global.service';
 export class PlanComponent implements OnInit {
   public editMode: boolean = false;
   public isReadonly: boolean = false;
-  public plan: IPlanConfiguration = this.planService.getDefaultPlan();
+  public plan: PlanConfigurationType = this.planService.getDefaultPlan();
 
   constructor(
     private param: NavParams,
     private planService: PlanService,
     private global: GlobalService
   ) {
-    let selectedPlan: IPlanConfiguration | undefined = this.param.get('plan');
+    let selectedPlan: PlanConfigurationType | undefined = this.param.get('plan');
     this.editMode = this.param.get('editMode') !== undefined ? this.param.get('editMode') : false;
     this.isReadonly = this.param.get('readOnly') !== undefined ? this.param.get('readOnly') : false;
     this.plan =

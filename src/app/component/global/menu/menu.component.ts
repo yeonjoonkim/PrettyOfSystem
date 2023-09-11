@@ -1,5 +1,5 @@
 import { AccessControlService } from 'src/app/service/authentication/access-control/access-control.service';
-import { IMenuCategory } from 'src/app/interface/menu/menu.interface';
+import { MenuCategoryType } from 'src/app/interface/menu/menu.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { LanguageService } from 'src/app/service/global/language/language.service';
@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   public selectedTitleHeading: string = '';
   public selectedCategory: string = '';
   public user: IUser = this.userService.defaultUser();
-  public menus: IMenuCategory[] = [];
+  public menus: MenuCategoryType[] = [];
 
   constructor(
     public language: LanguageService,
@@ -42,9 +42,9 @@ export class MenuComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
 
   private testing() {
-    this.user.firstName = 'Yeon Joon';
-    this.user.lastName = 'Kim';
     if (this.user.currentShop !== null) {
+      this.user.currentShop.firstName = 'Yeon Joon';
+      this.user.currentShop.lastName = 'Kim';
       this.user.currentShop.role.name = 'role.title.systemadmin';
       this.user.currentShop.shopName = 'So Thai Massage & Spa Market Square';
       this.user.currentShop.role.accessLevel.isSystemAdmin = true;

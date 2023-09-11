@@ -1,6 +1,6 @@
 import { SystemRoleService } from 'src/app/service/system/system-role/system-system-role.service';
 import { Component, OnInit } from '@angular/core';
-import { IRoleConfiguration } from 'src/app/interface/system/role/role.interface';
+import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
 import { NavParams } from '@ionic/angular';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { cloneDeep } from 'lodash-es';
@@ -12,8 +12,8 @@ import { cloneDeep } from 'lodash-es';
 export class RoleComponent implements OnInit {
   public editMode: boolean = false;
   public editedTitle: string = '';
-  private prevRole: IRoleConfiguration | undefined;
-  public role: IRoleConfiguration = {
+  private prevRole: RoleConfigurationType | undefined;
+  public role: RoleConfigurationType = {
     id: '',
     name: '',
     description: '',

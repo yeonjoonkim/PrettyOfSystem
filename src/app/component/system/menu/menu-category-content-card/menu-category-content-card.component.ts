@@ -1,7 +1,7 @@
 import { AddMenuCategoryContentComponent } from '../add-menu-category-content/add-menu-category-content.component';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertController, AlertOptions, PopoverController } from '@ionic/angular';
-import { IMenuContent } from 'src/app/interface/menu/menu.interface';
+import { MenuContentType } from 'src/app/interface/menu/menu.interface';
 import { LanguageService } from 'src/app/service/global/language/language.service';
 import { SystemMenuCategoryService } from 'src/app/service/system/system-menu/system-menu-category/system-menu-category.service';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
@@ -15,7 +15,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
   @Output() onUpdate = new EventEmitter<boolean>();
   public editMode: boolean = false;
   private isOpen: boolean = false;
-  @Input() selectedMenuContents: IMenuContent[] = [];
+  @Input() selectedMenuContents: MenuContentType[] = [];
   @Input() selectedMenuCategoryId: string | undefined = '';
   @Input() selectedCategoryName: string | undefined = '';
 
@@ -52,7 +52,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
   }
 
   /**Click event to disply the popover */
-  public async onClickEditContent(event: any, content: IMenuContent) {
+  public async onClickEditContent(event: any, content: MenuContentType) {
     if (!this.isOpen) {
       this.editMode = true;
       let addCategoryContent = await this.getEditCategoryContentPopover(event, content);
@@ -66,7 +66,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
   }
 
   /** Click event to delete the content */
-  public async onClickDeleteContent(content: IMenuContent) {
+  public async onClickDeleteContent(content: MenuContentType) {
     let confirmAlert = await this.setConfirmDeleteAlert(content.name);
     await confirmAlert.present();
     let action = await confirmAlert.onWillDismiss();
@@ -97,7 +97,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
   }
 
   /**Generate the edit popover action */
-  private async getEditCategoryContentPopover(event: any, selectedContent: IMenuContent) {
+  private async getEditCategoryContentPopover(event: any, selectedContent: MenuContentType) {
     let content = await this.popoverCtrl.create({
       component: AddMenuCategoryContentComponent,
       event: event,

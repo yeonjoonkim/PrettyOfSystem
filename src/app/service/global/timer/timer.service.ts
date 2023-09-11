@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { ITimer, ITimerDuration, ITimerPercent } from 'src/app/interface';
+import { ITimer, TimerDurationType, TimerPercentType } from 'src/app/interface';
 import { DateTransformService } from '../date/date-transform/date-transform.service';
 @Injectable({
   providedIn: 'root',
@@ -33,7 +33,7 @@ export class TimerService {
     const endDateTime = this._dateTransform.addMin(now, min);
     const duration = this.calculateDiffEndAndCurrent(endDateTime, now);
 
-    const updatedTimer: ITimer = {
+    const start: ITimer = {
       ...this._defaultValue,
       timerSettingMin: min,
       startDateTime: now,
@@ -43,7 +43,7 @@ export class TimerService {
       inProgress: true,
       percent: this.calculatePercent(now, now, endDateTime),
     };
-    this._valueSubject.next(updatedTimer);
+    this._valueSubject.next(start);
     this.inProgress();
     this.updateTimer();
   }
@@ -66,7 +66,7 @@ export class TimerService {
     }
   }
 
-  private calculateDiffEndAndCurrent(end: Date, current: Date): ITimerDuration {
+  private calculateDiffEndAndCurrent(end: Date, current: Date): TimerDurationType {
     let duration = this._dateTransform.diff(end, current);
     return { hour: duration.hours(), min: duration.minutes(), sec: duration.seconds() };
   }
@@ -95,7 +95,7 @@ export class TimerService {
     await this.startTimerByMin(currentTimer.timerSettingMin);
   }
 
-  private calculatePercent(start: Date, current: Date, end: Date): ITimerPercent {
+  private calculatePercent(start: Date, current: Date, end: Date): TimerPercentType {
     let startTimeStamp = start.getTime();
     let currentTimeStamp = current.getTime();
     let endTimeStamp = end.getTime();
@@ -108,7 +108,7 @@ export class TimerService {
     };
   }
 
-  private replaceNegativeDiffToZero(duration: ITimerDuration) {
+  private replaceNegativeDiffToZero(duration: TimerDurationType) {
     duration.hour = duration.hour > 0 ? duration.hour : 0;
     duration.min = duration.min > 0 ? duration.min : 0;
     duration.sec = duration.sec > 0 ? duration.sec : 0;
@@ -116,7 +116,7 @@ export class TimerService {
     return duration;
   }
 
-  private setLabel(duration: ITimerDuration): string {
+  private setLabel(duration: TimerDurationType): string {
     let label = '';
     let hours: string = this.setTimeLabel(duration.hour);
     let min: string = this.setTimeLabel(duration.min);

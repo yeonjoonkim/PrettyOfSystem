@@ -4,7 +4,7 @@ import {
   ILanguageTranslateResult,
 } from 'src/app/interface/system/language/language.interface';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
-import { IMenuCategory, IMenuContent } from 'src/app/interface/menu/menu.interface';
+import { MenuCategoryType, MenuContentType } from 'src/app/interface/menu/menu.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 
 @Injectable({
@@ -20,7 +20,7 @@ export class SystemMenuCategoryAddService {
   ) {}
 
   /**This event will validate and save into language package and will modify the category name to language transform object value */
-  public async processSaveNewSystemMenuCategory(newCategory: IMenuCategory): Promise<void> {
+  public async processSaveNewSystemMenuCategory(newCategory: MenuCategoryType): Promise<void> {
     newCategory.name = this.global.textTransform.getTransformObjectKeyValue(
       this.prefixedCategoryOjbectName,
       newCategory.description
@@ -36,7 +36,7 @@ export class SystemMenuCategoryAddService {
   /**This will validate the result and save into language package */
   private async saveNewCategory(
     result: ILanguageTranslateItem,
-    newCategory: IMenuCategory
+    newCategory: MenuCategoryType
   ): Promise<void> {
     newCategory.name = this.global.textTransform.getTransformObjectKeyValue(
       this.prefixedCategoryOjbectName,
@@ -57,7 +57,7 @@ export class SystemMenuCategoryAddService {
 
   /**This will translate the description */
   public async getTranslatedCategoryDescription(
-    newCategory: IMenuCategory
+    newCategory: MenuCategoryType
   ): Promise<ILanguageTranslateItem> {
     let translateCriteria =
       await this.global.language.management.translateCriteria.allLanguageTitleCriteria();
@@ -71,7 +71,7 @@ export class SystemMenuCategoryAddService {
 
   /**This will translate the description of content */
   public async getTranslatedContentDescription(
-    newContent: IMenuContent
+    newContent: MenuContentType
   ): Promise<ILanguageTranslateItem> {
     let translateCriteria =
       await this.global.language.management.translateCriteria.allLanguageTitleCriteria();
@@ -84,7 +84,7 @@ export class SystemMenuCategoryAddService {
   }
 
   /** This will validaate cateogry to check the name, icon */
-  private async validateCategory(newCategory: IMenuCategory): Promise<boolean> {
+  private async validateCategory(newCategory: MenuCategoryType): Promise<boolean> {
     let hasDescription = newCategory.description.length > 0;
     let hasIcon = newCategory.icon.length > 0;
     let vaildated = hasDescription && hasIcon;

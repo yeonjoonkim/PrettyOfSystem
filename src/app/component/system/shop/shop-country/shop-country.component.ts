@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IShopCountry } from 'src/app/interface/shop/shop.interface';
-import { IPairValueId } from 'src/app/interface/global/global.interface';
+import { PairValueIdType } from 'src/app/interface/global/global.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/constant/constant';
 
@@ -32,8 +32,8 @@ export class ShopCountryComponent implements OnInit {
     this.validateChange.emit(this.validated);
   }
   public loading: boolean = true;
-  public pairValueIdList: IPairValueId[] = [];
-  public selectedPairValueId: IPairValueId | undefined;
+  public pairValueIdList: PairValueIdType[] = [];
+  public selectedPairValueId: PairValueIdType | undefined;
   private selectedShopCountry!: IShopCountry;
 
   private validated: boolean = false;

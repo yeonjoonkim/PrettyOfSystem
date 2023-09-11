@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, lastValueFrom } from 'rxjs';
 import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
-import { IPairKeyValue } from 'src/app/interface';
+import { PairKeyValueType } from 'src/app/interface';
 import {
-  ICreateNewPackageCommand,
+  CreateNewPackageCommandType,
   ILanguageSelection,
   ILanguageTranslateItem,
 } from 'src/app/interface/system/language/language.interface';
@@ -17,9 +17,9 @@ import { SystemLanguageManagementService } from '../system-language-management.s
   providedIn: 'root',
 })
 export class SystemLanguageAddService {
-  private createCommandService: BehaviorSubject<ICreateNewPackageCommand | undefined> =
-    new BehaviorSubject<ICreateNewPackageCommand | undefined>(undefined);
-  public status: Observable<ICreateNewPackageCommand | undefined> =
+  private createCommandService: BehaviorSubject<CreateNewPackageCommandType | undefined> =
+    new BehaviorSubject<CreateNewPackageCommandType | undefined>(undefined);
+  public status: Observable<CreateNewPackageCommandType | undefined> =
     this.createCommandService.asObservable();
 
   constructor(
@@ -38,9 +38,9 @@ export class SystemLanguageAddService {
   private async setCreateNewPackageCommand(
     translatedTo: string,
     code: string,
-    defaultKeyPairList: IPairKeyValue[]
+    defaultKeyPairList: PairKeyValueType[]
   ) {
-    let result: ICreateNewPackageCommand = {
+    let result: CreateNewPackageCommandType = {
       code: code,
       defaultKeyPairList: defaultKeyPairList,
       currentKeyPair: defaultKeyPairList[0],
@@ -59,13 +59,13 @@ export class SystemLanguageAddService {
   public async receiveCreateNewPackageCommand(
     translatedTo: string,
     code: string,
-    defaultKeyPairList: IPairKeyValue[]
+    defaultKeyPairList: PairKeyValueType[]
   ) {
     let command = await this.setCreateNewPackageCommand(translatedTo, code, defaultKeyPairList);
     this.createCommandService.next(command);
   }
 
-  public async handleTranslateCommand(command: ICreateNewPackageCommand) {
+  public async handleTranslateCommand(command: CreateNewPackageCommandType) {
     let sendNewTransaction: boolean = !command.inProgress && !command.endTransaction;
 
     if (sendNewTransaction) {
@@ -76,7 +76,7 @@ export class SystemLanguageAddService {
     }
   }
 
-  public validateCommand(command: ICreateNewPackageCommand) {
+  public validateCommand(command: CreateNewPackageCommandType) {
     command.attemptError = command.endTransaction
       ? command.errorKeyPairList.length > 0
       : command.attemptError;
@@ -93,13 +93,13 @@ export class SystemLanguageAddService {
     return command;
   }
 
-  private async sendTranslateCommand(command: ICreateNewPackageCommand) {
+  private async sendTranslateCommand(command: CreateNewPackageCommandType) {
     command.currentKeyPair = command.defaultKeyPairList[command.current];
     command.inProgress = true;
     this.createCommandService.next(command);
   }
 
-  private failTranslate(command: ICreateNewPackageCommand) {
+  private failTranslate(command: CreateNewPackageCommandType) {
     command.inProgress = false;
     command.endTransaction = command.current === command.end;
     command.current = command.end !== command.current ? command.current + 1 : command.current;
@@ -107,7 +107,7 @@ export class SystemLanguageAddService {
     this.createCommandService.next(command);
   }
 
-  private async translateCurrentKeyPairValue(command: ICreateNewPackageCommand) {
+  private async translateCurrentKeyPairValue(command: CreateNewPackageCommandType) {
     command.currentKeyPair = command.defaultKeyPairList[command.current];
     let translateCriteria = await this.criteria.addingLanguageCriteria(
       command.currentKeyPair.key,
@@ -129,7 +129,7 @@ export class SystemLanguageAddService {
   }
 
   private async successTranslate(
-    command: ICreateNewPackageCommand,
+    command: CreateNewPackageCommandType,
     translatedResult: ILanguageTranslateItem
   ) {
     console.log(command.currentKeyPair.value + ' - ' + translatedResult.translated[command.code]);

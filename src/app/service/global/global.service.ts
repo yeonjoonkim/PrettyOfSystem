@@ -15,6 +15,7 @@ import { KendoUiService } from './kendo-ui/kendo-ui.service';
 import { FormControllerService } from './form/form-controller.service';
 import { DateService } from './date/date.service';
 import { TimerService } from './timer/timer.service';
+import { NetworkConnectionStatusService } from './network-connection-status/network-connection-status.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,8 @@ export class GlobalService {
     public kendo: KendoUiService,
     public formCtrl: FormControllerService,
     public date: DateService,
-    public timer: TimerService
+    public timer: TimerService,
+    public networkConnection: NetworkConnectionStatusService
   ) {}
 
   public isUndefinedOrNull(data: any): boolean {

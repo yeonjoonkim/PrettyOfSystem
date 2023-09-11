@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
-import { IDatePeriod } from 'src/app/interface/global/global.interface';
-import { IPairValueId } from 'src/app/interface/global/global.interface';
+import { DatePeriodType } from 'src/app/interface/global/global.interface';
+import { PairValueIdType } from 'src/app/interface/global/global.interface';
 
 @Component({
   selector: 'date-period-picker',
@@ -12,25 +12,25 @@ import { IPairValueId } from 'src/app/interface/global/global.interface';
 export class DatePeriodPickerComponent implements OnInit {
   @Input() isPlanFormat: boolean = false;
   @Input() readOnly: boolean = false;
-  @Output() periodChange = new EventEmitter<IDatePeriod>();
+  @Output() periodChange = new EventEmitter<DatePeriodType>();
   @Input()
   get period() {
     return this.inputPeriod;
   }
-  set period(input: IDatePeriod) {
+  set period(input: DatePeriodType) {
     if (input !== undefined) {
       this.inputPeriod = input;
     }
   }
-  public planSelection: Constant.DatePeriodType[] = [
+  public planSelection: Constant.PeriodType[] = [
     Constant.Date.Period.Weekly,
     Constant.Date.Period.Monthly,
     Constant.Date.Period.Annually,
   ];
-  public periodList: IDatePeriod[] = this.global.date.period;
-  public pairValueIdList: IPairValueId[] = [];
-  public selectedValueId: IPairValueId = { id: '', value: '' };
-  public inputPeriod: IDatePeriod = {
+  public periodList: DatePeriodType[] = this.global.date.period;
+  public pairValueIdList: PairValueIdType[] = [];
+  public selectedValueId: PairValueIdType = { id: '', value: '' };
+  public inputPeriod: DatePeriodType = {
     name: 'date.title.weekly',
     type: 'Weekly',
     week: 1,

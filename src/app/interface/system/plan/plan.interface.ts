@@ -1,15 +1,15 @@
-export interface IPlanPrice {
+export interface PlanPriceType {
   tax: number;
   net: number;
   total: number;
 }
 
-export interface IPlanConfiguration {
+export interface PlanConfigurationType {
   id: string;
   name: string;
-  weeklyPrice: IPlanPrice;
-  monthlyPrice: IPlanPrice;
-  annuallyPrice: IPlanPrice;
+  weeklyPrice: PlanPriceType;
+  monthlyPrice: PlanPriceType;
+  annuallyPrice: PlanPriceType;
   isTestPlan: boolean;
   isPremium: boolean;
   limitedService: number;

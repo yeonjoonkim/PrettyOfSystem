@@ -3,10 +3,10 @@ import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface'
 import * as Constant from 'src/app/constant/constant';
 import { ModalController, NavParams } from '@ionic/angular';
 import {
-  ICreateNewPackageCommand,
+  CreateNewPackageCommandType,
   ILanguageSelection,
 } from 'src/app/interface/system/language/language.interface';
-import { IPairKeyValue } from 'src/app/interface/global/global.interface';
+import { PairKeyValueType } from 'src/app/interface/global/global.interface';
 import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
 import { Subscription } from 'rxjs';
 import { GlobalService } from 'src/app/service/global/global.service';
@@ -18,11 +18,11 @@ import { GlobalService } from 'src/app/service/global/global.service';
 })
 export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
   private saveCommandSubscription: Subscription | undefined;
-  public createStatus!: ICreateNewPackageCommand;
+  public createStatus!: CreateNewPackageCommandType;
   public isSaving: boolean = false;
   public form!: IFormHeaderModalProp;
   private selectedlanguage!: ILanguageSelection | undefined;
-  public keyPairValueList: IPairKeyValue[] = [];
+  public keyPairValueList: PairKeyValueType[] = [];
 
   public language: ILanguageSelection = {
     id: '',

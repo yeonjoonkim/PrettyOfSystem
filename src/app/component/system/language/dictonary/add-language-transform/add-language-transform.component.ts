@@ -3,7 +3,7 @@ import {
   IAddLanguageTransformSaveCommand,
   ILanguageTranslateItem,
 } from 'src/app/interface/system/language/language.interface';
-import { IPairKeyValue, IPairNameValue } from 'src/app/interface/global/global.interface';
+import { PairKeyValueType, PairNameValueType } from 'src/app/interface/global/global.interface';
 import { GlobalService } from 'src/app/service//global/global.service';
 import { PopoverController } from '@ionic/angular';
 
@@ -14,7 +14,7 @@ import { PopoverController } from '@ionic/angular';
 })
 export class AddLanguageTransformComponent implements OnInit {
   private isSaved: boolean = false;
-  public componentSelection: IPairNameValue[] = [
+  public componentSelection: PairNameValueType[] = [
     { name: 'option.title.option', value: 'option.' },
     { name: 'option.title.label', value: 'label.' },
     { name: 'option.title.button', value: 'button.' },
@@ -28,19 +28,19 @@ export class AddLanguageTransformComponent implements OnInit {
     { name: 'option.title.language', value: 'language.' },
     { name: 'option.title.role', value: 'role.' },
   ];
-  public formatSelection: IPairNameValue[] = [
+  public formatSelection: PairNameValueType[] = [
     { name: 'option.title.title', value: 'title.' },
     { name: 'option.title.description', value: 'description.' },
     { name: 'option.title.uppercase', value: 'upper.' },
     { name: 'option.title.lowercase', value: 'lowercase.' },
   ];
-  public selectedComponent: IPairNameValue = { name: 'option.title.label', value: 'label.' };
-  public selectedFormat: IPairNameValue = { name: 'option.title.title', value: 'title.' };
+  public selectedComponent: PairNameValueType = { name: 'option.title.label', value: 'label.' };
+  public selectedFormat: PairNameValueType = { name: 'option.title.title', value: 'title.' };
   public keyValue: string = '';
   public validator = {
     name: false,
   };
-  public languageTransform: IPairKeyValue = {
+  public languageTransform: PairKeyValueType = {
     key: '',
     value: '',
   };

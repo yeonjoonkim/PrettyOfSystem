@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import getUserLocale from 'get-user-locale';
-import { IPairKeyValue } from 'src/app/interface/global/global.interface';
+import { PairKeyValueType } from 'src/app/interface/global/global.interface';
 import { SystemLanguageManagementService } from './system-language-management/system-language-management.service';
 const localeOption = {
   useFallbackLocale: false,
@@ -35,7 +35,7 @@ export class LanguageService {
   }
 
   /** This will validate new Key and Value */
-  public async validateNewKeyPairValue(keyPairValue: IPairKeyValue) {
+  public async validateNewKeyPairValue(keyPairValue: PairKeyValueType) {
     let result = await this.management.validateKeyPairValue(keyPairValue);
     return result;
   }

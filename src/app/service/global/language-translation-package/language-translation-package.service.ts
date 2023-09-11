@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 import { LanguageService } from '../language/language.service';
 import { TextTransformService } from '../text-transform/text-transform.service';
 import { TranslateCriteriaService } from '../language/system-language-management/translate-criteria/translate-criteria.service';
-import { IPairKeyValue } from 'src/app/interface/global/global.interface';
+import { PairKeyValueType } from 'src/app/interface/global/global.interface';
 import { SystemLanguageStorageService } from '../language/system-language-management/system-language-storage/system-language-storage.service';
 
 @Injectable({
@@ -64,7 +64,7 @@ export class LanguageTranslationPackageService {
   }
 
   private async validateKeyPairValue(
-    pair: IPairKeyValue
+    pair: PairKeyValueType
   ): Promise<IAddLanguageTransformSaveCommand> {
     let key: ILanguageKey = await this.storage.getKey();
     let result = {

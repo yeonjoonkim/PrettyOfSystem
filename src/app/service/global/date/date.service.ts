@@ -3,8 +3,8 @@ import { DateTransformService } from './date-transform/date-transform.service';
 import * as Constant from '../../../constant/constant';
 import {
   IDateIndexPairDay,
-  IDatePeriod,
-  ITimeItem,
+  DatePeriodType,
+  TimeItemType,
 } from 'src/app/interface/global/global.interface';
 import { TimePickerIncrementalSteps } from '@progress/kendo-angular-dateinputs';
 
@@ -21,7 +21,7 @@ export class DateService {
     { index: Constant.Date.DayIndex.Fri, day: Constant.Date.Day.Fri },
     { index: Constant.Date.DayIndex.Sat, day: Constant.Date.Day.Sat },
   ];
-  public period: IDatePeriod[] = [
+  public period: DatePeriodType[] = [
     { name: 'date.title.weekly', type: Constant.Date.Period.Weekly, week: 1, day: 7 },
     { name: 'date.title.monthly', type: Constant.Date.Period.Monthly, week: 4, day: 28 },
     { name: 'date.title.quarterly', type: Constant.Date.Period.Quarterly, week: 12, day: 84 },
@@ -43,7 +43,7 @@ export class DateService {
     return { minute: mintues };
   }
 
-  public getTimeItem(date: Date): ITimeItem {
+  public getTimeItem(date: Date): TimeItemType {
     let currentDayNightType: Constant.DateDayNightType =
       date.getHours() > 11 ? Constant.Date.DayNightType.NIGHT : Constant.Date.DayNightType.DAY;
     let timeString = date.toLocaleTimeString([], {

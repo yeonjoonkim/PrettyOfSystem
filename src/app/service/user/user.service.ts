@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IUser, IUserSetting } from 'src/app/interface/user/user.interface';
+import { IUser, UserSettingType } from 'src/app/interface/user/user.interface';
 import { ShopConfigurationService } from '../system/system-shop/shop-configuration/shop-configuration.service';
 import * as Constant from '../../constant/constant';
 
@@ -12,12 +12,12 @@ export class UserService {
   public defaultUser(): IUser {
     return {
       id: '',
-      firstName: '',
-      lastName: '',
       isSystemAdmin: false,
       associatedShops: [],
       currentShop: {
         shopId: '',
+        firstName: '',
+        lastName: '',
         role: {
           id: '',
           name: '',
@@ -49,7 +49,7 @@ export class UserService {
     };
   }
 
-  public setDefaultUserSetting(): IUserSetting {
+  public setDefaultUserSetting(): UserSettingType {
     return {
       preferLanguage: '',
     };
