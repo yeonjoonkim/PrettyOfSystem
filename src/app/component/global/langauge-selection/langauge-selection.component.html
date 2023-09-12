@@ -1,6 +1,6 @@
 <kendo-label text="{{ 'language.title.language' | languageTransform | async }}">
-  <name-pair-value-single-selection
+  <pair-name-value-single-selection
     [selection]="languageSelection"
     [(selected)]="selectedLanguage"
-    (selectedChange)="onChangeLanguage()"></name-pair-value-single-selection>
+    (selectedChange)="onChangeLanguage()"></pair-name-value-single-selection>
 </kendo-label>

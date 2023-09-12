@@ -1,32 +1,27 @@
 <section class="modal-container">
-  <!--Format-->
-  <name-pair-value-single-selection
+  <!--Component-->
+  <pair-name-value-single-selection
     title="label.title.componentoption"
+    [isRequired]="true"
     [selection]="componentSelection"
     [(selected)]="selectedComponent"
-    (selectedChange)="onChangeFormatSelection()"></name-pair-value-single-selection>
+    (selectedChange)="onChangeFormatSelection()"></pair-name-value-single-selection>
   <!--Format-->
-  <name-pair-value-single-selection
+  <pair-name-value-single-selection
     title="label.title.format"
+    [isRequired]="true"
     [selection]="formatSelection"
     [(selected)]="selectedFormat"
-    (selectedChange)="onChangeFormatSelection()"></name-pair-value-single-selection>
+    (selectedChange)="onChangeFormatSelection()"></pair-name-value-single-selection>
 
   <!-- Transform Key -->
-  <text-box
-    title="label.title.key"
-    [(value)]="keyValue"
-    [(validate)]="validator.name"
-    (valueChange)="onChangeKeyValue()">
+  <text-box title="label.title.key" [(value)]="keyValue" (valueChange)="onChangeKeyValue()">
   </text-box>
 
   <text-box title="label.title.value" [(value)]="languageTransform.value"> </text-box>
 
   <!--Save Button-->
-  <ion-button
-    expand="block"
-    (click)="onClickSaveButton()"
-    [disabled]="!validator.name && !languageTransform.value"
-    >{{ 'button.title.save' | languageTransform | async }}</ion-button
-  >
+  <ion-button expand="block" (click)="onClickSaveButton()" [disabled]="!validator.name">{{
+    'button.title.save' | languageTransform | async
+  }}</ion-button>
 </section>

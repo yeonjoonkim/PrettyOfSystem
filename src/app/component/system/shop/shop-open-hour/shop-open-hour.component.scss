@@ -25,6 +25,9 @@
 #title {
   margin: 0;
   margin-bottom: 15px;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: fit-content;
   legend {
     display: flex;
     justify-content: space-between;
@@ -34,7 +37,7 @@
     margin-top: 15px;
   }
   #close-open-button {
-    display: inline-block;
+    align-self: flex-end;
     margin: 5px;
   }
 }

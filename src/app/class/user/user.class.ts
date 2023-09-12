@@ -1,8 +1,6 @@
 import { IUser, UserAssociatedShopType, UserSettingType } from 'src/app/interface';
 export class User implements IUser {
   private _id: string;
-  private _firstName: string;
-  private _lastName: string;
   private _isSystemAdmin: boolean;
   private _currentShop: UserAssociatedShopType | null;
   private _associatedShops: UserAssociatedShopType[];
@@ -13,8 +11,6 @@ export class User implements IUser {
 
   constructor(user: IUser) {
     this._id = user.id;
-    this._firstName = user.firstName;
-    this._lastName = user.lastName;
     this._isSystemAdmin = user.isSystemAdmin;
     this._currentShop = user.currentShop;
     this._associatedShops = user.associatedShops;
@@ -28,16 +24,16 @@ export class User implements IUser {
     return this._id;
   }
 
-  get firstName(): string {
-    return this._firstName;
+  get firstName(): string | undefined {
+    return this._currentShop?.firstName;
   }
 
-  get lastName(): string {
-    return this._lastName;
+  get lastName(): string | undefined {
+    return this._currentShop?.lastName;
   }
 
   get fullName(): string {
-    return `${this._firstName} ${this._lastName}`;
+    return `${this._currentShop?.firstName} ${this.currentShop?.lastName}`;
   }
 
   get isSystemAdmin(): boolean {

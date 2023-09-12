@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IShopCountry } from 'src/app/interface/shop/shop.interface';
-import { PairValueIdType } from 'src/app/interface/global/global.interface';
+import { PairNameValueType, PairValueIdType } from 'src/app/interface/global/global.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/constant/constant';
 
@@ -13,7 +13,7 @@ export class ShopCountryComponent implements OnInit {
   @Output() shopCountryChange = new EventEmitter<IShopCountry>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
-  @Input() readOnly: boolean = false;
+  @Input() readOnly: boolean = true;
   @Input() defaultShopCountryList: IShopCountry[] = [];
   @Input()
   get shopCountry(): IShopCountry {
@@ -31,9 +31,9 @@ export class ShopCountryComponent implements OnInit {
     this.validated = value;
     this.validateChange.emit(this.validated);
   }
-  public loading: boolean = true;
-  public pairValueIdList: PairValueIdType[] = [];
-  public selectedPairValueId: PairValueIdType | undefined;
+
+  public pairNameValueList: PairNameValueType[] = [];
+  public selectedPairNameValue: PairNameValueType | undefined;
   private selectedShopCountry!: IShopCountry;
 
   private validated: boolean = false;
@@ -41,26 +41,22 @@ export class ShopCountryComponent implements OnInit {
   constructor(private systemShopService: SystemShopService) {}
 
   async ngOnInit() {
-    this.defaultShopCountryList = !this.readOnly
-      ? await this.systemShopService.getSystemShopCountryList()
-      : [];
-    this.pairValueIdList = await this.systemShopService.getCountryPairValueIdList();
+    this.defaultShopCountryList = await this.systemShopService.getSystemShopCountryList();
+    this.pairNameValueList = this.defaultShopCountryList.map(country => {
+      return { name: country.name, value: country.id };
+    });
     this.setDefaultPairValueId();
   }
 
   private setDefaultPairValueId() {
-    let isEnabledId: boolean = this.selectedShopCountry?.id !== undefined;
-    let defaultPair = isEnabledId
-      ? this.pairValueIdList.find(p => p.id === this.selectedShopCountry.id)
-      : this.pairValueIdList.find(p => p.value === 'country');
-    this.selectedPairValueId = defaultPair;
+    let defaultPair = this.pairNameValueList.find(p => p.value === this.selectedShopCountry.id);
+    this.selectedPairNameValue = defaultPair;
     this.validate = defaultPair !== undefined;
-    this.loading = false;
   }
 
-  public onClickCountry() {
+  public onChangeCountry() {
     let country: IShopCountry | undefined = this.defaultShopCountryList.find(
-      c => c.id === this.selectedPairValueId?.id
+      c => c.id === this.selectedPairNameValue?.value
     );
     this.validate = country !== undefined;
     if (this.validate && country) {

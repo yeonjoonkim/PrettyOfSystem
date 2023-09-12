@@ -2,12 +2,12 @@
   <section id="language-selection-container">
     <flex-row>
       <flex-row-item>
-        <name-pair-value-single-selection
+        <pair-name-value-single-selection
           title="label.title.language"
           [selection]="languageSelectionList"
           [(selected)]="selectedLang"
           [filterable]="true"
-          (selectedChange)="onChangeLanguageSelection()"></name-pair-value-single-selection>
+          (selectedChange)="onChangeLanguageSelection()"></pair-name-value-single-selection>
       </flex-row-item>
       <flex-row-item>
         <text-box

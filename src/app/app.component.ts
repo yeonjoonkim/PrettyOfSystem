@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { GlobalService } from './service/global/global.service';
 import { NetworkConnectionStatusService } from './service/global/network-connection-status/network-connection-status.service';
 import { ConnectionStatus } from '@capacitor/network';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private global: GlobalService,
-    public networkStatus: NetworkConnectionStatusService
+    public networkStatus: NetworkConnectionStatusService,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -33,6 +35,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.deviceTypeSubscription?.unsubscribe();
     this.languageChangeActionSubscription?.unsubscribe();
     this.internetConnectionSubscription?.unsubscribe();
+  }
+
+  public isLoginPage() {
+    return this.router.url === '/login';
   }
 
   private async subscribeLanguageChangeAction() {
@@ -60,7 +66,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private async loading() {
-    if (this.internetStatus.connected) {
+    let connected = await this.global.networkConnection.isConnected();
+    if (connected) {
       await this.global.language.management.storage.setDefault().then(async () => {
         await this.global.language.setCurrentLanguage();
         this.isLoaded = true;

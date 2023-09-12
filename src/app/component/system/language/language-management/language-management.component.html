@@ -1,7 +1,10 @@
 <div id="language-selection-list">
-  <legend>
-    {{ 'label.title.languageselection' | languageTransform | async }}
-  </legend>
+  <div id="language-selection-title">
+    <legend>
+      {{ 'label.title.languageselection' | languageTransform | async }}
+    </legend>
+  </div>
+
   <!--Grid-->
   <kendo-grid
     [kendoGridBinding]="languageSelection"

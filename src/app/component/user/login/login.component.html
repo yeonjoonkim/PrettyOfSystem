@@ -1,110 +1,112 @@
 <!--Login Option -->
-<flex-col *ngIf="!sendOTP">
-  <flex-col-item>
-    <login-option-selection
-      mode="login"
-      [(loginOption)]="loginOption"
-      (loginOptionChange)="onChangeLoginOption()"></login-option-selection>
-  </flex-col-item>
-</flex-col>
+<div id="login">
+  <flex-col *ngIf="!sendOTP">
+    <flex-col-item>
+      <login-option-selection
+        mode="login"
+        [(loginOption)]="loginOption"
+        (loginOptionChange)="onChangeLoginOption()"></login-option-selection>
+    </flex-col-item>
+  </flex-col>
 
-<!--Error Message-->
-<flex-col *ngIf="login.errorMsg">
-  <flex-col-item id="error-col-item">
-    <error-message-item>{{ login.errorMsg | languageTransform | async }}</error-message-item>
-  </flex-col-item>
-</flex-col>
+  <!--Error Message-->
+  <flex-col *ngIf="login.errorMsg">
+    <flex-col-item id="error-col-item">
+      <error-message-item>{{ login.errorMsg | languageTransform | async }}</error-message-item>
+    </flex-col-item>
+  </flex-col>
 
-<!--Phone Verification -->
-<flex-col *ngIf="!sendOTP && loginOption.phoneNumber">
-  <flex-col-item>
-    <phone-number
-      *ngIf="!sendOTP"
-      [(phone)]="login.phoneNumber"
-      [(validate)]="validator.phone"></phone-number>
-  </flex-col-item>
-  <flex-col-item *ngIf="!sendOTP && loginOption.phoneNumber">
-    <button kendoButton [disabled]="!validator.phone" (click)="sendPhoneOTP()">
-      {{ 'label.title.sendverification' | languageTransform | async }}
-    </button>
-  </flex-col-item>
-</flex-col>
-
-<!-- OTP Verification (Phone) -->
-<flex-col *ngIf="sendOTP && loginOption.phoneNumber">
-  <flex-col-item id="otp-verification-title">
-    <legend>{{ 'label.title.securityconfirmation' | languageTransform | async }}</legend>
-    <p>{{ 'messagesuccess.description.verificationotpsend' | languageTransform | async }}</p>
-    <p id="otp-verification-phone-number">{{ login.phoneNumber }}</p>
-  </flex-col-item>
-  <flex-col-item>
-    <text-box
-      [(value)]="login.otp"
-      [min]="5"
-      [max]="6"
-      [(validate)]="validator.otp"
-      (valueChange)="onChangeOTP()"></text-box>
-  </flex-col-item>
-  <flex-col-item>
-    <p id="otp-verification-timer">{{ timer.label }}</p>
-    <kendo-progressbar [value]="timer.percent.used" [label]="{ visible: false }" [max]="100">
-    </kendo-progressbar>
-  </flex-col-item>
-  <flex-col-item>
-    <section id="otp-tool">
-      <button id="otp-tool-btn" kendoButton (click)="reset()">
-        {{ 'label.title.back' | languageTransform | async }}
+  <!--Phone Verification -->
+  <flex-col *ngIf="!sendOTP && loginOption.phoneNumber">
+    <flex-col-item>
+      <phone-number
+        *ngIf="!sendOTP"
+        [(phone)]="login.phoneNumber"
+        [(validate)]="validator.phone"></phone-number>
+    </flex-col-item>
+    <flex-col-item *ngIf="!sendOTP && loginOption.phoneNumber">
+      <button kendoButton [disabled]="!validator.phone" (click)="sendPhoneOTP()">
+        {{ 'label.title.sendverification' | languageTransform | async }}
       </button>
-      <button id="otp-tool-btn" kendoButton (click)="resendOTP()">
-        {{ 'label.title.resend' | languageTransform | async }}
-      </button>
-    </section>
-  </flex-col-item>
-  <flex-col-item>
-    <button kendoButton [disabled]="!enableOTPVerificationBtn" (click)="verifyPhoneOTP()">
-      {{ 'label.title.verification' | languageTransform | async }}
-    </button>
-  </flex-col-item>
-</flex-col>
+    </flex-col-item>
+  </flex-col>
 
-<flex-col *ngIf="loginOption.email">
-  <flex-col-item>
-    <e-mail
-      [(email)]="login.emailAddress"
-      [(validate)]="validator.email"
-      [isRequired]="true"></e-mail>
-  </flex-col-item>
-  <flex-col-item>
-    <kendo-label text="{{ 'label.title.password' | languageTransform | async }}">
-      <kendo-textbox
-        #textbox
-        placeholder="{{ 'placeholder.title.required' | languageTransform | async }}"
-        [clearButton]="true"
-        [(value)]="login.password"
-        (valueChange)="onChangePassword()">
-        <ng-template kendoTextBoxSuffixTemplate>
-          <button
-            *ngIf="showPassword"
-            kendoButton
-            look="clear"
-            icon="unlock"
-            (click)="toggleVisibility()"></button>
-          <button
-            *ngIf="!showPassword"
-            kendoButton
-            look="clear"
-            icon="lock"
-            (click)="toggleVisibility()"></button>
-        </ng-template>
-      </kendo-textbox>
-    </kendo-label>
-  </flex-col-item>
-  <flex-col-item>
-    <button
-      kendoButton
-      [disabled]="!validator.password || !validator.email"
-      (click)="onClickLoginWithEmail()">
-      {{ 'label.title.verification' | languageTransform | async }}
-    </button>
-  </flex-col-item>
-</flex-col>
+  <!-- OTP Verification (Phone) -->
+  <flex-col *ngIf="sendOTP && loginOption.phoneNumber">
+    <flex-col-item id="otp-verification-title">
+      <legend>{{ 'label.title.securityconfirmation' | languageTransform | async }}</legend>
+      <p>{{ 'messagesuccess.description.verificationotpsend' | languageTransform | async }}</p>
+      <p id="otp-verification-phone-number">{{ login.phoneNumber }}</p>
+    </flex-col-item>
+    <flex-col-item>
+      <text-box
+        [(value)]="login.otp"
+        [min]="5"
+        [max]="6"
+        [(validate)]="validator.otp"
+        (valueChange)="onChangeOTP()"></text-box>
+    </flex-col-item>
+    <flex-col-item>
+      <p id="otp-verification-timer">{{ timer.label }}</p>
+      <kendo-progressbar [value]="timer.percent.used" [label]="{ visible: false }" [max]="100">
+      </kendo-progressbar>
+    </flex-col-item>
+    <flex-col-item>
+      <section id="otp-tool">
+        <button id="otp-tool-btn" kendoButton (click)="reset()">
+          {{ 'label.title.back' | languageTransform | async }}
+        </button>
+        <button id="otp-tool-btn" kendoButton (click)="resendOTP()">
+          {{ 'label.title.resend' | languageTransform | async }}
+        </button>
+      </section>
+    </flex-col-item>
+    <flex-col-item>
+      <button kendoButton [disabled]="!enableOTPVerificationBtn" (click)="verifyPhoneOTP()">
+        {{ 'label.title.verification' | languageTransform | async }}
+      </button>
+    </flex-col-item>
+  </flex-col>
+
+  <flex-col *ngIf="loginOption.email">
+    <flex-col-item>
+      <e-mail
+        [(email)]="login.emailAddress"
+        [(validate)]="validator.email"
+        [isRequired]="true"></e-mail>
+    </flex-col-item>
+    <flex-col-item>
+      <kendo-label text="{{ 'label.title.password' | languageTransform | async }}">
+        <kendo-textbox
+          #textbox
+          placeholder="{{ 'placeholder.title.required' | languageTransform | async }}"
+          [clearButton]="true"
+          [(value)]="login.password"
+          (valueChange)="onChangePassword()">
+          <ng-template kendoTextBoxSuffixTemplate>
+            <button
+              *ngIf="showPassword"
+              kendoButton
+              look="clear"
+              icon="unlock"
+              (click)="toggleVisibility()"></button>
+            <button
+              *ngIf="!showPassword"
+              kendoButton
+              look="clear"
+              icon="lock"
+              (click)="toggleVisibility()"></button>
+          </ng-template>
+        </kendo-textbox>
+      </kendo-label>
+    </flex-col-item>
+    <flex-col-item>
+      <button
+        kendoButton
+        [disabled]="!validator.password || !validator.email"
+        (click)="onClickLoginWithEmail()">
+        {{ 'label.title.verification' | languageTransform | async }}
+      </button>
+    </flex-col-item>
+  </flex-col>
+</div>

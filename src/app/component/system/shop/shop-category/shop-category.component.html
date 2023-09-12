@@ -1,15 +1,9 @@
-<kendo-label
-  [for]="shopCategoryList"
-  text="{{ 'label.title.category' | languageTransform | async }}">
-  <div class="form-error-container"></div>
-  <kendo-dropdownlist
-    #shopCategoryList
-    [data]="pairValueIdList"
-    textField="value"
-    valueField="id"
-    [(ngModel)]="selectedPairValueId"
-    (valueChange)="onClickCategory()"
-    [readonly]="readOnly"
-    [loading]="loading">
-  </kendo-dropdownlist>
-</kendo-label>
+<pair-name-value-single-selection
+  title="label.title.category"
+  [readOnly]="readOnly"
+  [isRequired]="true"
+  [selection]="pairNameValueList"
+  [(selected)]="selectedPairNameValue"
+  [filterable]="true"
+  (selectedChange)="onClickCategory()">
+</pair-name-value-single-selection>
