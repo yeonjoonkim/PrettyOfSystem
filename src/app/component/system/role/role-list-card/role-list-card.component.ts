@@ -42,6 +42,7 @@ export class RoleListCardComponent implements OnInit, OnChanges {
     },
     rate: 0,
   };
+  private _isModalOpen: boolean = false;
 
   constructor(private systemRole: SystemRoleService, public global: GlobalService) {}
   ngOnChanges(changes: SimpleChanges): void {
@@ -77,20 +78,27 @@ export class RoleListCardComponent implements OnInit, OnChanges {
   }
 
   public async presentAddRole() {
-    let modal = await this.systemRole.modal.prsentAddRole();
-    await modal.present();
-    await this.handleDismissModal(modal);
+    if (!this._isModalOpen) {
+      this._isModalOpen = true;
+      let modal = await this.systemRole.modal.prsentAddRole();
+      await modal.present();
+      await this.handleDismissModal(modal);
+    }
   }
 
   public async presentEditRole(selectedRole: RoleConfigurationType) {
-    selectedRole = this.findRole(selectedRole);
-    let modal = await this.systemRole.modal.presentEditRole(selectedRole);
-    await modal.present();
-    await this.handleDismissModal(modal);
+    if (!this._isModalOpen) {
+      this._isModalOpen = true;
+      selectedRole = this.findRole(selectedRole);
+      let modal = await this.systemRole.modal.presentEditRole(selectedRole);
+      await modal.present();
+      await this.handleDismissModal(modal);
+    }
   }
 
   private async handleDismissModal(modal: HTMLIonModalElement) {
     let result = await modal.onWillDismiss();
+    this._isModalOpen = false;
     if (result?.data === 'refresh') {
       this.onUpdate.emit(true);
     }

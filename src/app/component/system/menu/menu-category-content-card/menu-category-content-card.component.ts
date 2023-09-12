@@ -40,11 +40,13 @@ export class MenuCategoryContentCardComponent implements OnInit {
   /**Click event to add new content */
   public async onClickAddNewContent(event: any) {
     if (!this.isOpen) {
+      this.isOpen = true;
       this.editMode = false;
       let addCategoryContent = await this.getCategoryContentPopover(event);
       await addCategoryContent.present();
 
       let updateEvent = await addCategoryContent.onWillDismiss();
+      this.isOpen = false;
       if (updateEvent.data) {
         this.onUpdate.emit(true);
       }
@@ -54,11 +56,13 @@ export class MenuCategoryContentCardComponent implements OnInit {
   /**Click event to disply the popover */
   public async onClickEditContent(event: any, content: MenuContentType) {
     if (!this.isOpen) {
+      this.isOpen = true;
       this.editMode = true;
       let addCategoryContent = await this.getEditCategoryContentPopover(event, content);
       await addCategoryContent.present();
 
       let updateEvent = await addCategoryContent.onWillDismiss();
+      this.isOpen = false;
       if (updateEvent.data) {
         this.onUpdate.emit(true);
       }
