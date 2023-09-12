@@ -12,20 +12,27 @@ import { Observable } from 'rxjs';
 export class PlanListComponent implements OnInit {
   @Output() onUpdate = new EventEmitter<boolean>();
   @Input() planOptions: PlanConfigurationType[] = [];
+  private _isModalOpen: boolean = false;
   constructor(public global: GlobalService, private planService: PlanService) {}
 
   ngOnInit() {}
 
   public async onClickAddPlan() {
-    let modal = await this.planService.modal.presentAddPlan();
-    await modal.present();
-    await this.handleDismissModal(modal);
+    if (!this._isModalOpen) {
+      this._isModalOpen = true;
+      let modal = await this.planService.modal.presentAddPlan();
+      await modal.present();
+      await this.handleDismissModal(modal);
+    }
   }
 
   public async onClickEdit(config: PlanConfigurationType) {
-    let modal = await this.planService.modal.presentEditPlan(config);
-    await modal.present();
-    await this.handleDismissModal(modal);
+    if (!this._isModalOpen) {
+      this._isModalOpen = true;
+      let modal = await this.planService.modal.presentEditPlan(config);
+      await modal.present();
+      await this.handleDismissModal(modal);
+    }
   }
 
   public async onClickDelete(id: string, name: string) {
@@ -35,6 +42,7 @@ export class PlanListComponent implements OnInit {
 
   private async handleDismissModal(modal: HTMLIonModalElement) {
     let result = await modal.onWillDismiss();
+    this._isModalOpen = false;
     if (result?.data === 'refresh') {
       this.onUpdate.emit(true);
     }

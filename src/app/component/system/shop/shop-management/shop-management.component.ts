@@ -13,6 +13,7 @@ import { DeviceWidthService } from 'src/app/service/global/device-width/device-w
 export class ShopManagementComponent implements OnInit, OnDestroy {
   public configs: IShopConfiguration[] = [];
   private selectedConfig!: IShopConfiguration;
+  private _isModalOpen: boolean = false;
   constructor(private systemShop: SystemShopService, public device: DeviceWidthService) {}
 
   async ngOnInit() {
@@ -22,20 +23,27 @@ export class ShopManagementComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
 
   public async onClickCreateShopConfiguration() {
-    let modal = await this.systemShop.modal.presentCreateSystemShopConfiguration();
-    await modal.present();
-    await this.handleDissmissModal(modal);
+    if (!this._isModalOpen) {
+      this._isModalOpen = true;
+      let modal = await this.systemShop.modal.presentCreateSystemShopConfiguration();
+      await modal.present();
+      await this.handleDissmissModal(modal);
+    }
   }
 
   public async onClickCell(selected: CellClickEvent) {
     this.selectedConfig = selected.dataItem;
-    let modal = await this.systemShop.modal.presentEditShopConfiguration(this.selectedConfig);
-    await modal.present();
-    await this.handleDissmissModal(modal);
+    if (!this._isModalOpen) {
+      this._isModalOpen = true;
+      let modal = await this.systemShop.modal.presentEditShopConfiguration(this.selectedConfig);
+      await modal.present();
+      await this.handleDissmissModal(modal);
+    }
   }
 
   private async handleDissmissModal(modal: HTMLIonModalElement) {
     let result = await modal.onWillDismiss();
+    this._isModalOpen = false;
     if (result?.role !== 'cancel') {
       await this.setConfigs();
     }

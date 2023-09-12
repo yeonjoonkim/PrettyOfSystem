@@ -35,6 +35,7 @@ export class MenuCategoryCardComponent implements OnInit {
       isReception: false,
     },
   };
+  private _popOverOpen: boolean = false;
 
   constructor(
     private popoverCtrl: PopoverController,
@@ -47,17 +48,21 @@ export class MenuCategoryCardComponent implements OnInit {
 
   /**This will present the add component as pop over */
   public async presentAddMenuCategory(event: any) {
-    let addMenuCategory = await this.popoverCtrl.create({
-      component: AddMenuCategoryComponent,
-      event: event,
-      translucent: true,
-      cssClass: 'pop-over-container',
-    });
+    if (!this._popOverOpen) {
+      this._popOverOpen = true;
+      let addMenuCategory = await this.popoverCtrl.create({
+        component: AddMenuCategoryComponent,
+        event: event,
+        translucent: true,
+        cssClass: 'pop-over-container',
+      });
 
-    await addMenuCategory.present();
-    let result = await addMenuCategory.onWillDismiss();
-    if (result?.data) {
-      this.onUpdate.emit(true);
+      await addMenuCategory.present();
+      let result = await addMenuCategory.onWillDismiss();
+      this._popOverOpen = false;
+      if (result?.data) {
+        this.onUpdate.emit(true);
+      }
     }
   }
 
@@ -94,36 +99,39 @@ export class MenuCategoryCardComponent implements OnInit {
 
   /**Click event to edit the selected category */
   public async onClickEditCategory(event: any, selectedCategory: MenuCategoryType) {
-    let addMenuCategory = await this.popoverCtrl.create({
-      component: AddMenuCategoryComponent,
-      event: event,
-      translucent: true,
-      cssClass: 'pop-over-container',
-      componentProps: {
-        selectedCategory: selectedCategory,
-      },
-    });
-
-    await addMenuCategory.present();
-
-    let action = await addMenuCategory.onWillDismiss();
-    if (action.data?.result) {
-      this.category = {
-        description: '',
-        name: '',
-        icon: '',
-        content: [],
-        accessLevel: {
-          isSystemAdmin: false,
-          isAdmin: false,
-          isManager: false,
-          isEmployee: false,
-          isReception: false,
+    if (!this._popOverOpen) {
+      let addMenuCategory = await this.popoverCtrl.create({
+        component: AddMenuCategoryComponent,
+        event: event,
+        translucent: true,
+        cssClass: 'pop-over-container',
+        componentProps: {
+          selectedCategory: selectedCategory,
         },
-      };
-      let result: MenuCategoryType = action?.data?.result;
-      await this.systemMenuCategoryService.processUpdateSystemMenuCategory(result);
-      this.onUpdate.emit(true);
+      });
+
+      await addMenuCategory.present();
+
+      let action = await addMenuCategory.onWillDismiss();
+      this._popOverOpen = false;
+      if (action.data?.result) {
+        this.category = {
+          description: '',
+          name: '',
+          icon: '',
+          content: [],
+          accessLevel: {
+            isSystemAdmin: false,
+            isAdmin: false,
+            isManager: false,
+            isEmployee: false,
+            isReception: false,
+          },
+        };
+        let result: MenuCategoryType = action?.data?.result;
+        await this.systemMenuCategoryService.processUpdateSystemMenuCategory(result);
+        this.onUpdate.emit(true);
+      }
     }
   }
 

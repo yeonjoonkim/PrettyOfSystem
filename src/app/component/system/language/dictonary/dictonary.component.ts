@@ -19,6 +19,7 @@ export class DictonaryComponent implements OnInit {
   public selectedKeyPairValueList: PairKeyValueType[] = [];
   public gridData: PairKeyValueType[] = [];
   public query: string = '';
+  private _isPopoverOpen: boolean = false;
 
   constructor(
     public systemLanguage: SystemLanguageService,
@@ -43,17 +44,21 @@ export class DictonaryComponent implements OnInit {
   }
 
   public async openAddLanguageTransform(event: any): Promise<void> {
-    let addLanguageTransformPopOver = await this.popOverCtrl.create({
-      component: AddLanguageTransformComponent,
-      event: event,
-      translucent: true,
-    });
+    if (!this._isPopoverOpen) {
+      this._isPopoverOpen = true;
+      let addLanguageTransformPopOver = await this.popOverCtrl.create({
+        component: AddLanguageTransformComponent,
+        event: event,
+        translucent: true,
+      });
 
-    await addLanguageTransformPopOver.present();
-    let result = await addLanguageTransformPopOver.onWillDismiss();
-    if (result.data?.isSaved) {
-      this.query = result.data.key;
-      await this.setLanguageSelection();
+      await addLanguageTransformPopOver.present();
+      let result = await addLanguageTransformPopOver.onWillDismiss();
+      this._isPopoverOpen = false;
+      if (result.data?.isSaved) {
+        this.query = result.data.key;
+        await this.setLanguageSelection();
+      }
     }
   }
 

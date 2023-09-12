@@ -92,6 +92,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
       inputs: [
         {
           placeholder: await this.global.language.transform('placeholder.description.entervalue'),
+          value: this.keyPairValue.value,
         },
       ],
       buttons: [
