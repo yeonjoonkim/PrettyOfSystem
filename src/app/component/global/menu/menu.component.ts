@@ -8,6 +8,7 @@ import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/
 import { UserService } from 'src/app/service/user/user.service';
 import { IUser } from 'src/app/interface/user/user.interface';
 import { MenuController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'side-menu',
@@ -30,7 +31,8 @@ export class MenuComponent implements OnInit, OnDestroy {
     private location: Location,
     private systemMenuRepository: SystemMenuRepositoryService,
     private userService: UserService,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private router: Router
   ) {
     this.testing();
     this.getCurrentLanguage();
@@ -69,6 +71,10 @@ export class MenuComponent implements OnInit, OnDestroy {
   async setDefaultTitleHeading() {
     let currentUrl = this.location.path();
     await this.onChangeMenu(currentUrl);
+  }
+
+  async logout() {
+    this.router.navigateByUrl('/login');
   }
 
   /** This function will change the title heading param based on current url.*/

@@ -7,7 +7,7 @@ import {
   IShopConfiguration,
   IShopCountry,
 } from 'src/app/interface/shop/shop.interface';
-import { PairValueIdType } from 'src/app/interface/global/global.interface';
+import { PairNameValueType, PairValueIdType } from 'src/app/interface/global/global.interface';
 import { GlobalService } from '../../../service/global/global.service';
 import { ShopModalService } from './shop-modal/shop-modal.service';
 
@@ -38,38 +38,11 @@ export class SystemShopService {
     return await lastValueFrom(this.systemPlanRepo.getSystemPlanOptions());
   }
 
-  public async getCategoryPairValueIdList(): Promise<PairValueIdType[]> {
-    let categoryList: IShopCategory[] = [];
-    let systemCategoryList = await this.getSystemShopCategoryList();
-
-    for (let category of systemCategoryList) {
-      category.name = await this.global.language.transform(category.name);
-      categoryList.push(category);
-    }
-
-    return categoryList.map(c => {
-      return { id: c.id, value: c.name };
-    });
-  }
-
-  public async getPlanPairValueIdList(): Promise<PairValueIdType[]> {
+  public async getPlanPairNameValueList(): Promise<PairNameValueType[]> {
     let systemPlanConfigList = await this.getSystemShopPlanConfigList();
 
     return systemPlanConfigList.map(p => {
-      return { value: p.name, id: p.id };
-    });
-  }
-
-  public async getCountryPairValueIdList() {
-    let countryList: IShopCountry[] = [];
-    let systemCountryList = await this.getSystemShopCountryList();
-    for (let country of systemCountryList) {
-      country.name = await this.global.language.transform(country.name);
-      countryList.push(country);
-    }
-
-    return countryList.map(c => {
-      return { id: c.id, value: c.name };
+      return { name: p.name, value: p.id };
     });
   }
 }

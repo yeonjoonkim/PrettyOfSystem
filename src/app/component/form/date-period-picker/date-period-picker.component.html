@@ -1,10 +1,10 @@
-<kendo-label text="{{ 'date.title.period' | languageTransform | async }}">
-  <kendo-dropdownlist
-    [data]="pairValueIdList"
-    [(ngModel)]="selectedValueId"
-    textField="value"
-    valueField="id"
-    (ngModelChange)="onChangeSelection($event)"
-    [readonly]="readOnly">
-  </kendo-dropdownlist>
-</kendo-label>
+<pair-name-value-single-selection
+  title="date.title.period"
+  [readOnly]="readOnly"
+  [isRequired]="isRequired"
+  [selection]="pairNameValueList"
+  [orderByName]="false"
+  [filterable]="false"
+  [(selected)]="selectedNameValue"
+  (selectedChange)="onSelectedChange()">
+</pair-name-value-single-selection>

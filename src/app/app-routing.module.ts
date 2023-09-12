@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/system/configuration',
+    redirectTo: '/system/user',
     pathMatch: 'full',
   },
   {
@@ -13,7 +13,12 @@ const routes: Routes = [
   },
   {
     path: 'no-internet',
-    loadChildren: () => import('./page/access/no-internet/no-internet.module').then( m => m.NoInternetPageModule)
+    loadChildren: () =>
+      import('./page/access/no-internet/no-internet.module').then(m => m.NoInternetPageModule),
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./page/access/login/login.module').then(m => m.LoginPageModule),
   },
 ];
 

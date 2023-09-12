@@ -175,26 +175,15 @@
       </kendo-floatinglabel>
     </div>
     <legend>{{ 'label.title.extra' | languageTransform | async }}</legend>
-    <div>
-      <!-- Premium Plan -->
-      <kendo-label text="{{ 'label.title.premiumplan' | languageTransform | async }}">
-        <kendo-switch
-          [(ngModel)]="plan.isPremium"
-          [disabled]="isReadonly"
-          onLabel="{{ 'label.title.yes' | languageTransform | async }}"
-          offLabel="{{ 'label.title.no' | languageTransform | async }}">
-        </kendo-switch>
-      </kendo-label>
-    </div>
-    <div id="test-plan-switch" *ngIf="!isReadonly">
-      <!-- Test Plan -->
-      <kendo-label text="{{ 'label.title.testplan' | languageTransform | async }}">
-        <kendo-switch
-          [(ngModel)]="plan.isTestPlan"
-          onLabel="{{ 'label.title.yes' | languageTransform | async }}"
-          offLabel="{{ 'label.title.no' | languageTransform | async }}">
-        </kendo-switch>
-      </kendo-label>
-    </div>
+    <yes-no-selection-group>
+      <yes-no-selection
+        label="label.title.premiumplan"
+        [(value)]="plan.isPremium"
+        [readOnly]="isReadonly"></yes-no-selection>
+      <yes-no-selection
+        label="label.title.testplan"
+        [(value)]="plan.isTestPlan"
+        [readOnly]="isReadonly"></yes-no-selection>
+    </yes-no-selection-group>
   </section>
 </ion-content>

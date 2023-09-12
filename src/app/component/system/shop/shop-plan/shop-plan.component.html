@@ -1,11 +1,8 @@
-<kendo-dropdownlist
-  #shopPlan
-  [data]="planPairIdValueList"
-  textField="value"
-  valueField="id"
-  [(ngModel)]="selectedPlanPairIdValue"
-  (valueChange)="onClickPlanPairIdValue()"
-  [readonly]="readOnly"
-  [loading]="loading"
-  defaultItem="{{ 'messageerror.description.dropdownoptions' | languageTransform | async }}">
-</kendo-dropdownlist>
+<pair-name-value-single-selection
+  title="label.title.option"
+  [readOnly]="readOnly"
+  [isRequired]="true"
+  [selection]="planPairNameValueList"
+  [(selected)]="selectedPlanPairNameValue"
+  (selectedChange)="onClickPlan()">
+</pair-name-value-single-selection>

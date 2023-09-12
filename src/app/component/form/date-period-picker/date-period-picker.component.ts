@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
-import { DatePeriodType } from 'src/app/interface/global/global.interface';
-import { PairValueIdType } from 'src/app/interface/global/global.interface';
+import { DatePeriodType, PairNameValueType } from 'src/app/interface/global/global.interface';
 
 @Component({
   selector: 'date-period-picker',
@@ -12,6 +11,7 @@ import { PairValueIdType } from 'src/app/interface/global/global.interface';
 export class DatePeriodPickerComponent implements OnInit {
   @Input() isPlanFormat: boolean = false;
   @Input() readOnly: boolean = false;
+  @Input() isRequired: boolean = true;
   @Output() periodChange = new EventEmitter<DatePeriodType>();
   @Input()
   get period() {
@@ -28,8 +28,8 @@ export class DatePeriodPickerComponent implements OnInit {
     Constant.Date.Period.Annually,
   ];
   public periodList: DatePeriodType[] = this.global.date.period;
-  public pairValueIdList: PairValueIdType[] = [];
-  public selectedValueId: PairValueIdType = { id: '', value: '' };
+  public pairNameValueList: PairNameValueType[] = [];
+  public selectedNameValue!: PairNameValueType;
   public inputPeriod: DatePeriodType = {
     name: 'date.title.weekly',
     type: 'Weekly',
@@ -46,8 +46,8 @@ export class DatePeriodPickerComponent implements OnInit {
     await this.getInputPeriodSelectionList();
   }
 
-  public onChangeSelection(selected: any) {
-    let selectedItem = this.periodList.find(p => p.name === selected.id);
+  public onSelectedChange() {
+    let selectedItem = this.periodList.find(p => p.name === this.selectedNameValue.name);
     if (selectedItem !== undefined) {
       this.period = selectedItem;
       this.periodChange.emit(selectedItem);
@@ -55,17 +55,13 @@ export class DatePeriodPickerComponent implements OnInit {
   }
 
   private async getInputPeriodSelectionList() {
-    this.pairValueIdList = await Promise.all(
-      this.periodList.map(async i => {
-        let id = i.name;
-        let value = await this.global.language.transform(i.name);
-        return { id: id, value: value };
-      })
-    );
+    this.pairNameValueList = this.periodList.map(period => {
+      return { name: period.name, value: period.type };
+    });
 
-    let selected = this.pairValueIdList.find(p => p.id === this.inputPeriod.name);
+    let selected = this.pairNameValueList.find(p => p.name === this.inputPeriod.name);
     if (selected !== undefined) {
-      this.selectedValueId = selected;
+      this.selectedNameValue = selected;
     }
   }
 }

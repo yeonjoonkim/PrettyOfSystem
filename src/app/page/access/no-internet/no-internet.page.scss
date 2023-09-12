@@ -1,13 +1,25 @@
 #container {
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  flex-direction: column;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  text-align: center;
 }
 #container-content {
   margin: auto;
 }
-#icon {
-  font-size: 150px;
+#logo-img {
+  width: 300px;
+}
+
+/* no-internet.page.scss */
+.no-touch-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none; /* This allows clicks to "pass through" */
+  z-index: 9999; /* Make sure it's above other elements */
 }

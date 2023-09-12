@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PairValueIdType } from 'src/app/interface/global/global.interface';
+import { PairNameValueType, PairValueIdType } from 'src/app/interface/global/global.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/constant/constant';
 @Component({
@@ -32,28 +32,28 @@ export class ShopPlanComponent implements OnInit {
   }
   private selectedPlanId: string = '';
   public validated: boolean = false;
-  public planPairIdValueList!: PairValueIdType[];
-  public selectedPlanPairIdValue!: PairValueIdType;
+  public planPairNameValueList!: PairNameValueType[];
+  public selectedPlanPairNameValue!: PairNameValueType;
   public loading: boolean = true;
 
   constructor(private systemShopService: SystemShopService) {}
 
   async ngOnInit() {
-    this.planPairIdValueList = await this.systemShopService.getPlanPairValueIdList();
+    this.planPairNameValueList = await this.systemShopService.getPlanPairNameValueList();
     this.setDefaultPlanPairIdValue();
   }
 
   private setDefaultPlanPairIdValue() {
-    let defaultPair = this.planPairIdValueList.find(p => p.id === this.selectedPlanId);
+    let defaultPair = this.planPairNameValueList.find(p => p.value === this.selectedPlanId);
     this.validate = defaultPair !== undefined;
     if (defaultPair) {
-      this.selectedPlanPairIdValue = defaultPair;
+      this.selectedPlanPairNameValue = defaultPair;
     }
     this.loading = false;
   }
 
-  public onClickPlanPairIdValue() {
-    this.planId = this.selectedPlanPairIdValue.id;
+  public onClickPlan() {
+    this.planId = this.selectedPlanPairNameValue.value;
     this.validate = this.planId !== undefined;
   }
 }

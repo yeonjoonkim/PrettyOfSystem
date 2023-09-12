@@ -52,7 +52,7 @@
     <langauge-selection></langauge-selection>
   </section>
   <section id="log-out" *ngIf="user">
-    <ion-button expand="block" id="log-out-btn">
+    <ion-button expand="block" id="log-out-btn" (click)="logout()">
       {{ 'button.title.logout' | languageTransform | async }}</ion-button
     >
   </section>

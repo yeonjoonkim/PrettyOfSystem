@@ -37,13 +37,13 @@ export type PairKeyValueType = {
 
 export type PairNameValueType = {
   name: string;
-  value: string | number;
+  value: string;
 };
 
 export type PairNameValueTypeFilterParamType = {
   name: string;
   translatedName: string;
-  value: string | number;
+  value: string;
 };
 
 export type PairValueIdType = {

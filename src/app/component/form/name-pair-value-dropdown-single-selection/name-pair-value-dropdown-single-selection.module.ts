@@ -11,7 +11,7 @@ import { NamePairValueDropdownlistComponent } from './name-pair-value-dropdown-l
 @NgModule({
   declarations: [NamePairValueDropdownSingleSelectionComponent, NamePairValueDropdownlistComponent],
   imports: [CommonModule, LanguageTransformPipeModule, KendoUiModule, FormsModule, TextBoxModule],
-  exports: [NamePairValueDropdownSingleSelectionComponent, NamePairValueDropdownlistComponent],
+  exports: [NamePairValueDropdownSingleSelectionComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
 export class NamePairValueSingleSelectionModule {}

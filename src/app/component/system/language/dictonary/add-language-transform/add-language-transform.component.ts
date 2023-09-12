@@ -50,24 +50,29 @@ export class AddLanguageTransformComponent implements OnInit {
   ngOnInit() {}
 
   public onChangeComponentSelection() {
-    this.languageTransform.key =
-      this.selectedComponent.value.toString() +
-      this.selectedFormat.value.toString() +
-      this.keyValue;
+    this.keyValue = this.keyValue.toLowerCase().replace(' ', '');
+    this.setTransformKey();
   }
 
   public onChangeFormatSelection() {
-    this.languageTransform.key =
-      this.selectedComponent.value.toString() +
-      this.selectedFormat.value.toString() +
-      this.keyValue;
+    this.keyValue = this.keyValue.toLowerCase().replace(' ', '');
+    this.setTransformKey();
   }
 
   public onChangeKeyValue() {
-    this.languageTransform.key =
-      this.selectedComponent.value.toString() +
-      this.selectedFormat.value.toString() +
-      this.keyValue;
+    this.keyValue = this.keyValue.toLowerCase().replace(' ', '');
+    this.setTransformKey();
+  }
+
+  private setTransformKey() {
+    const selectedComponent: string =
+      this.selectedComponent?.value !== undefined ? this.selectedComponent?.value : '';
+    const selectedFormat: string =
+      this.selectedFormat?.value !== undefined ? this.selectedFormat?.value : '';
+    this.languageTransform.key = selectedComponent + selectedFormat + this.keyValue.toLowerCase();
+    this.validator.name =
+      this.languageTransform.key.split('.').length > 2 &&
+      this.languageTransform.key.split('.').every(t => t.length > 0);
   }
 
   /** This will close the this component as a modal*/

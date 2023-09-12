@@ -1,7 +1,12 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
 import { CellClickEvent, RowClassArgs } from '@progress/kendo-angular-grid';
-import { PairNameValueType, PairNameValueTypeFilterParamType } from 'src/app/interface';
+import {
+  PairKeyValueType,
+  PairNameValueType,
+  PairNameValueTypeFilterParamType,
+} from 'src/app/interface';
+import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
   selector: 'name-pair-value-dropdown-list',
@@ -12,17 +17,24 @@ export class NamePairValueDropdownlistComponent implements OnInit {
   public gridData: PairNameValueType[] = [];
   public selection: PairNameValueType[] = [];
   public queryParamList: PairNameValueTypeFilterParamType[] = [];
-  public selected: PairNameValueType = { name: '', value: '' };
+  public selected!: PairNameValueType | undefined;
   public filterable: boolean = false;
+  public orderByName: boolean = false;
   public query: string = '';
   public maxHeight: string = '150px';
+  private defaultLanguageKeyPairValue: PairKeyValueType[] = [];
 
-  public rowClass = (args: { dataItem: { value: string } }) => ({
-    'k-selected': args.dataItem.value === this.selected.value,
+  public rowClass = (args: { dataItem: { value: string | undefined } }) => ({
+    'k-selected': args.dataItem?.value === this?.selected?.value,
   });
 
-  constructor(private navParams: NavParams, private popoverCtrl: PopoverController) {
+  constructor(
+    private navParams: NavParams,
+    private popoverCtrl: PopoverController,
+    private global: GlobalService
+  ) {
     this.queryParamList = this.navParams.get('queryParams');
+    this.orderByName = this.navParams.get('orderByName');
     this.selection = this.navParams.get('selection');
     this.gridData = this.selection;
     this.selected = this.navParams.get('selected');
@@ -31,7 +43,10 @@ export class NamePairValueDropdownlistComponent implements OnInit {
     this.maxHeight = this.maxHeight.includes('px') ? this.maxHeight : this.maxHeight + 'px';
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    const defaultKeyPairValue = await this.global.language.management.getDefaultKeyPairValueList();
+    this.defaultLanguageKeyPairValue = defaultKeyPairValue;
+  }
 
   public async onClickCell(clickEvent: CellClickEvent) {
     let newSelected: PairNameValueType = clickEvent.dataItem;
@@ -41,13 +56,31 @@ export class NamePairValueDropdownlistComponent implements OnInit {
 
   public onQueryChange() {
     const queryParam: string = this.query.toLowerCase();
+    const english = this.defaultLanguageKeyPairValue.filter(eng =>
+      eng.value.toLowerCase().includes(queryParam)
+    );
     const queryResult: PairNameValueType[] = this.queryParamList
-      .filter(q => q.translatedName.toLowerCase().includes(queryParam))
-      .sort((a, b) => a.translatedName.localeCompare(b.translatedName))
+      .map(param => {
+        let eng = english.find(eng => eng.key === param.name);
+        return {
+          paramName: param.name,
+          paramTranslatedName: param.translatedName,
+          paramValue: param.value,
+          paramEnglish: eng?.value,
+        };
+      })
+      .filter(
+        q =>
+          q.paramTranslatedName.toLowerCase().includes(queryParam) ||
+          q.paramEnglish?.toLowerCase()?.includes(queryParam)
+      )
+      .sort((a, b) =>
+        this.orderByName ? a.paramTranslatedName.localeCompare(b.paramTranslatedName) : 0
+      )
       .map(q => {
-        console.log(q);
-        return { name: q.name, value: q.value };
+        return { name: q.paramName, value: q.paramValue };
       });
+
     this.gridData = this.allToFirstIndex(queryResult);
   }
 

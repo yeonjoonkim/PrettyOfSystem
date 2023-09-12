@@ -1,0 +1,12 @@
+#language-selection-list {
+  margin-top: 25px;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  kendo-grid {
+    min-width: 300px;
+    max-width: 800px;
+  }
+}

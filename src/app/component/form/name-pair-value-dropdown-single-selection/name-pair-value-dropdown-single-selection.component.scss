@@ -1,14 +1,22 @@
 #dropdown-list-btn {
   width: 100%;
-  justify-content: flex-start;
   height: 30px;
   margin-top: 12px;
   margin-bottom: 10px;
-}
 
-#dropdown-list-down,
-#dropdown-list-up {
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
+  ::ng-deep span.k-button-text {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  ::ng-deep span.k-button-text #selected-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  ::ng-deep span.k-button-text #dropdown-list-down {
+    margin-top: 4px;
+  }
 }

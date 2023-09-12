@@ -1,23 +1,30 @@
 import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 
 //Import Pipe
 import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
-import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 
-import { NamePairValueSingleSelectionModule } from '../name-pair-value-dropdown-single-selection/name-pair-value-dropdown-single-selection.module';
-import { DatePeriodPickerComponent } from './date-period-picker.component';
+//Import Module
+import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
+import { SharedFormModule } from 'src/app/component/form/form.module';
+
+//Import Component
+import { UserManagementComponent } from './user-management.component';
+import { SystemAdminComponent } from '../system-admin/system-admin.component';
 @NgModule({
-  declarations: [DatePeriodPickerComponent],
+  declarations: [UserManagementComponent, SystemAdminComponent],
   imports: [
     CommonModule,
-    LanguageTransformPipeModule,
-    KendoUiModule,
+    CommonModule,
+    IonicModule,
     FormsModule,
-    NamePairValueSingleSelectionModule,
+    LanguageTransformPipeModule,
+    SharedFormModule,
+    KendoUiModule,
   ],
-  exports: [DatePeriodPickerComponent],
+  exports: [UserManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class DatePeriodPickerModule {}
+export class UserManagementModule {}
