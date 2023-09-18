@@ -11,17 +11,17 @@ import {
 })
 export class SystemShopPage implements OnInit {
   public selectedSystemMenu: ISystemMenuOptionAction =
-    this.systemMenuOptionCtrl.setDefaultSystemMenuOptionController();
+    this._systemMenuOptionCtrl.setDefaultSystemMenuOptionController();
   public systemMenu: ISystemMenuOptionAction[] = [];
 
-  constructor(private systemMenuOptionCtrl: SystemMenuOptionControllerService) {}
+  constructor(private _systemMenuOptionCtrl: SystemMenuOptionControllerService) {}
 
   async ngOnInit() {
     await this.setDefaultSystemMenuOption();
   }
 
   private async setDefaultSystemMenuOption() {
-    this.systemMenu = await this.systemMenuOptionCtrl.getSystemShopButtons();
+    this.systemMenu = await this._systemMenuOptionCtrl.getSystemShopButtons();
   }
 
   /** This will process the set up the selected system menu */

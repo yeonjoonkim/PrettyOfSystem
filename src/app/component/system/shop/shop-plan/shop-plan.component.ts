@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PairNameValueType, PairValueIdType } from 'src/app/interface/global/global.interface';
+import { NameValuePairType } from 'src/app/interface/global/global.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/constant/constant';
 @Component({
@@ -14,12 +14,12 @@ export class ShopPlanComponent implements OnInit {
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input()
   get planId() {
-    return this.selectedPlanId;
+    return this._selectedPlanId;
   }
   set planId(value: string) {
-    this.selectedPlanId = value;
+    this._selectedPlanId = value;
     if (!this.loading) {
-      this.planIdChange.emit(this.selectedPlanId);
+      this.planIdChange.emit(this._selectedPlanId);
     }
   }
   @Input()
@@ -30,21 +30,21 @@ export class ShopPlanComponent implements OnInit {
     this.validated = value;
     this.validateChange.emit(this.validated);
   }
-  private selectedPlanId: string = '';
   public validated: boolean = false;
-  public planPairNameValueList!: PairNameValueType[];
-  public selectedPlanPairNameValue!: PairNameValueType;
+  public planPairNameValueList!: NameValuePairType[];
+  public selectedPlanPairNameValue!: NameValuePairType;
   public loading: boolean = true;
+  private _selectedPlanId: string = '';
 
-  constructor(private systemShopService: SystemShopService) {}
+  constructor(private _systemShopService: SystemShopService) {}
 
   async ngOnInit() {
-    this.planPairNameValueList = await this.systemShopService.getPlanPairNameValueList();
+    this.planPairNameValueList = await this._systemShopService.getPlanPairNameValueList();
     this.setDefaultPlanPairIdValue();
   }
 
   private setDefaultPlanPairIdValue() {
-    let defaultPair = this.planPairNameValueList.find(p => p.value === this.selectedPlanId);
+    let defaultPair = this.planPairNameValueList.find(p => p.value === this._selectedPlanId);
     this.validate = defaultPair !== undefined;
     if (defaultPair) {
       this.selectedPlanPairNameValue = defaultPair;

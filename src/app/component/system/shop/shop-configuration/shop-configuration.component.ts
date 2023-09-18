@@ -1,10 +1,10 @@
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { IShopConfiguration } from 'src/app/interface/shop/shop.interface';
+import { Component, OnInit } from '@angular/core';
+import { ShopConfigurationType } from 'src/app/interface/shop/shop.interface';
 import * as Constant from 'src/app/constant/constant';
 import {
-  IShopConfigurationDisplayOption,
-  IShopConfigurationValidator,
+  ShopConfigurationTypeDisplayOption,
+  ShopConfigurationTypeValidator,
   ShopConfigurationService,
 } from 'src/app/service/system/system-shop/shop-configuration/shop-configuration.service';
 import { ModalController, NavParams } from '@ionic/angular';
@@ -15,19 +15,19 @@ import { ModalController, NavParams } from '@ionic/angular';
   styleUrls: ['./shop-configuration.component.scss'],
 })
 //TODO: ADD USER VERIFICATION
-export class ShopConfigurationComponent implements OnInit, AfterViewInit {
+export class ShopConfigurationComponent implements OnInit {
   public planPrice: number = 0;
   public form!: IFormHeaderModalProp;
   public timeZoneList: Constant.TimeZoneType[] = Object.values(Constant.TimeZone);
-  public validator: IShopConfigurationValidator = this.shopConfig.defaultValidator();
-  public display: IShopConfigurationDisplayOption = this.shopConfig.defaultShopDisplayOption();
-  public config: IShopConfiguration = this.shopConfig.setDefaultConfig();
-  private selectedconfig!: IShopConfiguration | undefined;
+  public validator: ShopConfigurationTypeValidator = this._shopConfig.defaultValidator();
+  public display: ShopConfigurationTypeDisplayOption = this._shopConfig.defaultShopDisplayOption();
+  public config: ShopConfigurationType = this._shopConfig.setDefaultConfig();
+  private _selectedconfig!: ShopConfigurationType | undefined;
 
   constructor(
-    private shopConfig: ShopConfigurationService,
-    private navParams: NavParams,
-    private modalCtrl: ModalController
+    private _shopConfig: ShopConfigurationService,
+    private _navParams: NavParams,
+    private _modalCtrl: ModalController
   ) {
     this.loadingFormCtrl();
   }
@@ -36,18 +36,12 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
     this.autoPaymentDateCalculation();
   }
 
-  async ngAfterViewInit() {
-    await this.onChangeForm();
-  }
-
-  private async onChangeForm(): Promise<void> {
-    setTimeout(() => {
-      this.form.enabledSavebutton = this.shopConfig.formInputValidator(this.validator);
-    });
+  public onChangeForm() {
+    this.form.enabledSavebutton = this._shopConfig.formInputValidator(this.validator);
   }
   private loadingFormCtrl(): void {
-    let form: IFormHeaderModalProp = this.navParams.get(Constant.Default.ComponentMode.Form);
-    this.selectedconfig = this.navParams.get('config');
+    let form: IFormHeaderModalProp = this._navParams.get(Constant.Default.ComponentMode.Form);
+    this._selectedconfig = this._navParams.get('config');
     this.form = form
       ? form
       : {
@@ -56,31 +50,33 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
           action: Constant.Default.FormAction.Read,
           enabledSavebutton: false,
         };
-    this.config = this.selectedconfig ? this.selectedconfig : this.shopConfig.setDefaultConfig();
+    this.config = this._selectedconfig ? this._selectedconfig : this._shopConfig.setDefaultConfig();
   }
 
   public async onPlanPeriodChange() {
-    let newPaymentDate = this.shopConfig.global.date.transform.addDay(
+    let newPaymentDate = this._shopConfig.global.date.transform.addDay(
       this.config.plan.lastPaymentDate,
       this.config.plan.period.day
     );
     this.config.plan.paymentDate = newPaymentDate.toUTCDate();
+    this.validator.planPeriod = true;
+    this.onChangeForm();
   }
 
   public onClickInfo(): void {
-    this.display = this.shopConfig.displayInfo();
+    this.display = this._shopConfig.displayInfo();
   }
 
   public onClickHours(): void {
-    this.display = this.shopConfig.displayWorkHours();
+    this.display = this._shopConfig.displayWorkHours();
   }
 
   public onClickAddress(): void {
-    this.display = this.shopConfig.displayAddress();
+    this.display = this._shopConfig.displayAddress();
   }
 
   public onClickSubscription(): void {
-    this.display = this.shopConfig.displaySubscription();
+    this.display = this._shopConfig.displaySubscription();
   }
 
   public autoPaymentDateCalculation() {
@@ -91,31 +87,33 @@ export class ShopConfigurationComponent implements OnInit, AfterViewInit {
 
   public async onChangePlan() {
     if (this.config.plan.configurationId) {
-      this.planPrice = await this.shopConfig.getSelectedTotalPrice(
+      this.planPrice = await this._shopConfig.getSelectedTotalPrice(
         this.config.plan.configurationId,
         this.config.plan.period
       );
     }
+    this.onChangeForm();
   }
 
   public dismiss() {
-    this.modalCtrl.dismiss(this.config, 'cancel');
+    this._modalCtrl.dismiss(this.config, 'cancel');
   }
 
   public async handleEdit() {
     this.form.readOnly = false;
-    this.form.enabledSavebutton = false;
+    this.validator = this._shopConfig.editValidator();
+    this.onChangeForm();
   }
 
   public async handleSave() {
-    this.shopConfig.handleSave(this.config, this.form);
+    this._shopConfig.handleSave(this.config, this.form);
   }
 
   public async handleDelete() {
-    this.shopConfig.handleDelete(this.config, this.form);
+    this._shopConfig.handleDelete(this.config, this.form);
   }
 
   public async handleCreate() {
-    this.shopConfig.handleCreate(this.config, this.form);
+    this._shopConfig.handleCreate(this.config, this.form);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PairKeyValueType } from 'src/app/interface/global/global.interface';
 import {
-  ITextTransformObject,
+  TextTransformObjectType,
   TextTransformService,
 } from '../text-transform/text-transform.service';
 
@@ -9,7 +9,7 @@ import {
   providedIn: 'root',
 })
 export class LanguagePackageService {
-  constructor(private textTransform: TextTransformService) {}
+  constructor(private _textTransform: TextTransformService) {}
 
   /** This will retreive list of key pair value.*/
   public getKeyPairValue(usedKeyList: string[], pack: any): PairKeyValueType[] {
@@ -17,7 +17,7 @@ export class LanguagePackageService {
 
     if (usedKeyList.length > 0) {
       keyPairValueList = usedKeyList.map(key => {
-        let path = this.textTransform.setLanguageTransformCodeList(key);
+        let path = this._textTransform.setLanguageTransformCodeList(key);
         let value = this.getValue(path, pack);
         return { key: key, value: value };
       });
@@ -26,8 +26,8 @@ export class LanguagePackageService {
   }
 
   /** This will return edited key value in the package to update in db */
-  public updateKeyValuePackage(pack: ITextTransformObject, keyPairValue: PairKeyValueType) {
-    let path: string[] = this.textTransform.setLanguageTransformCodeList(keyPairValue.key);
+  public updateKeyValuePackage(pack: TextTransformObjectType, keyPairValue: PairKeyValueType) {
+    let path: string[] = this._textTransform.setLanguageTransformCodeList(keyPairValue.key);
     let hasFirstPath: boolean = this.hasFirstPath(pack, path);
     let hasSecondPath: boolean = this.hasSecondPath(pack, path);
 
@@ -44,8 +44,8 @@ export class LanguagePackageService {
   }
 
   /** This will return removed key value in the package to update in db */
-  public deleteKeyValuePackage(pack: ITextTransformObject, selectedKey: string) {
-    let path: string[] = this.textTransform.setLanguageTransformCodeList(selectedKey);
+  public deleteKeyValuePackage(pack: TextTransformObjectType, selectedKey: string) {
+    let path: string[] = this._textTransform.setLanguageTransformCodeList(selectedKey);
     let hasThirdPath: boolean = this.hasThirdPath(pack, path);
 
     if (hasThirdPath) {

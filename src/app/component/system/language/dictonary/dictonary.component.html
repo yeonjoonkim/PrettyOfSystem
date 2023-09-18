@@ -2,12 +2,14 @@
   <section id="language-selection-container">
     <flex-row>
       <flex-row-item>
-        <pair-name-value-single-selection
+        <name-value-pair-single-dropdown-selection
           title="label.title.language"
           [selection]="languageSelectionList"
           [(selected)]="selectedLang"
           [filterable]="true"
-          (selectedChange)="onChangeLanguageSelection()"></pair-name-value-single-selection>
+          (selectedChange)="
+            onChangeLanguageSelection()
+          "></name-value-pair-single-dropdown-selection>
       </flex-row-item>
       <flex-row-item>
         <text-box

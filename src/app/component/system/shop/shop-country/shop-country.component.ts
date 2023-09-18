@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IShopCountry } from 'src/app/interface/shop/shop.interface';
-import { PairNameValueType, PairValueIdType } from 'src/app/interface/global/global.interface';
+import { ShopCountryType } from 'src/app/interface/shop/shop.interface';
+import { NameValuePairType } from 'src/app/interface/global/global.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/constant/constant';
 
@@ -10,38 +10,37 @@ import * as Constant from 'src/app/constant/constant';
   styleUrls: ['./shop-country.component.scss'],
 })
 export class ShopCountryComponent implements OnInit {
-  @Output() shopCountryChange = new EventEmitter<IShopCountry>();
+  @Output() shopCountryChange = new EventEmitter<ShopCountryType>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input() readOnly: boolean = true;
-  @Input() defaultShopCountryList: IShopCountry[] = [];
+  @Input() defaultShopCountryList: ShopCountryType[] = [];
   @Input()
-  get shopCountry(): IShopCountry {
-    return this.selectedShopCountry;
+  get shopCountry(): ShopCountryType {
+    return this._selectedShopCountry;
   }
-  set shopCountry(value: IShopCountry) {
-    this.selectedShopCountry = value;
-    this.shopCountryChange.emit(this.selectedShopCountry);
+  set shopCountry(value: ShopCountryType) {
+    this._selectedShopCountry = value;
+    this.shopCountryChange.emit(this._selectedShopCountry);
   }
   @Input()
   get validate(): boolean {
-    return this.validated;
+    return this._validated;
   }
   set validate(value: boolean) {
-    this.validated = value;
-    this.validateChange.emit(this.validated);
+    this._validated = value;
+    this.validateChange.emit(this._validated);
   }
 
-  public pairNameValueList: PairNameValueType[] = [];
-  public selectedPairNameValue: PairNameValueType | undefined;
-  private selectedShopCountry!: IShopCountry;
+  public pairNameValueList: NameValuePairType[] = [];
+  public selectedPairNameValue: NameValuePairType | undefined;
+  private _selectedShopCountry!: ShopCountryType;
+  private _validated: boolean = false;
 
-  private validated: boolean = false;
-
-  constructor(private systemShopService: SystemShopService) {}
+  constructor(private _systemShopService: SystemShopService) {}
 
   async ngOnInit() {
-    this.defaultShopCountryList = await this.systemShopService.getSystemShopCountryList();
+    this.defaultShopCountryList = await this._systemShopService.getSystemShopCountryList();
     this.pairNameValueList = this.defaultShopCountryList.map(country => {
       return { name: country.name, value: country.id };
     });
@@ -49,13 +48,13 @@ export class ShopCountryComponent implements OnInit {
   }
 
   private setDefaultPairValueId() {
-    let defaultPair = this.pairNameValueList.find(p => p.value === this.selectedShopCountry.id);
+    let defaultPair = this.pairNameValueList.find(p => p.value === this._selectedShopCountry.id);
     this.selectedPairNameValue = defaultPair;
     this.validate = defaultPair !== undefined;
   }
 
   public onChangeCountry() {
-    let country: IShopCountry | undefined = this.defaultShopCountryList.find(
+    let country: ShopCountryType | undefined = this.defaultShopCountryList.find(
       c => c.id === this.selectedPairNameValue?.value
     );
     this.validate = country !== undefined;

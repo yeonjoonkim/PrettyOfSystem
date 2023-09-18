@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PairKeyValueType } from 'src/app/interface';
 import {
-  ITextTransformObject,
+  TextTransformObjectType,
   TextTransformService,
 } from 'src/app/service/global/text-transform/text-transform.service';
 
@@ -14,7 +14,7 @@ export class SystemLanguagePackageService {
     this._textTransform = new TextTransformService();
   }
 
-  public update(pack: ITextTransformObject, pair: PairKeyValueType) {
+  public update(pack: TextTransformObjectType, pair: PairKeyValueType) {
     let isString: boolean = typeof pair.value === 'string';
 
     if (isString) {
@@ -34,7 +34,7 @@ export class SystemLanguagePackageService {
     return pack;
   }
 
-  public delete(pack: ITextTransformObject, selectedKey: string): ITextTransformObject {
+  public delete(pack: TextTransformObjectType, selectedKey: string): TextTransformObjectType {
     const path: string[] = this._textTransform.setLanguageTransformCodeList(selectedKey);
 
     if (this.hasThirdPath(pack, path)) {
@@ -60,7 +60,7 @@ export class SystemLanguagePackageService {
 
   public getKeyPairValueList(
     usedKeyList: string[],
-    pack: ITextTransformObject
+    pack: TextTransformObjectType
   ): PairKeyValueType[] {
     let keyPairValueList: PairKeyValueType[] = usedKeyList.map(key => {
       let path = this._textTransform.setLanguageTransformCodeList(key);
@@ -72,7 +72,7 @@ export class SystemLanguagePackageService {
   }
 
   //** Determine First Path is exist.*/
-  private firstPath(pack: ITextTransformObject, path: string[]): boolean {
+  private firstPath(pack: TextTransformObjectType, path: string[]): boolean {
     if (pack && pack[path[0]]) {
       return true;
     }
@@ -80,7 +80,7 @@ export class SystemLanguagePackageService {
   }
 
   //** Determine Second Path is exist.*/
-  private secondPath(pack: ITextTransformObject, path: string[]): boolean {
+  private secondPath(pack: TextTransformObjectType, path: string[]): boolean {
     if (pack && pack[path[0]] && pack[path[0]][path[1]]) {
       return true;
     }
@@ -88,7 +88,7 @@ export class SystemLanguagePackageService {
   }
 
   //** Determine if Third Path exists */
-  private hasThirdPath(pack: ITextTransformObject, path: string[]): boolean {
+  private hasThirdPath(pack: TextTransformObjectType, path: string[]): boolean {
     return (
       pack &&
       pack[path[0]] &&
@@ -108,7 +108,7 @@ export class SystemLanguagePackageService {
   }
 
   /** Find a Object Key Value from path */
-  public getValue(path: string[], obj: ITextTransformObject) {
+  public getValue(path: string[], obj: TextTransformObjectType) {
     let selectedValue: any;
 
     path.forEach((code, index) => {

@@ -7,7 +7,8 @@ import { GlobalService } from 'src/app/service/global/global.service';
   styleUrls: ['./email.component.scss'],
 })
 export class EmailComponent implements OnInit {
-  private readonly emailValidatorRules: RegExp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  private readonly _emailValidatorRules: RegExp =
+    /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   public validEmail: string = '';
   public validated!: boolean;
   @Output() emailChange = new EventEmitter<string>();
@@ -28,22 +29,22 @@ export class EmailComponent implements OnInit {
     return this.validated;
   }
   set validate(value: boolean) {
-    this.validated = this.emailValidatorRules.test(this.validEmail);
+    this.validated = this._emailValidatorRules.test(this.validEmail);
     this.validateChange.emit(this.validated);
   }
   public placeHolder: string = '';
   public requiredPlaceHolder: string = '';
   public entered: boolean = false;
 
-  constructor(private global: GlobalService) {}
+  constructor(private _global: GlobalService) {}
 
   async ngOnInit() {
-    this.validated = this.emailValidatorRules.test(this.validEmail);
+    this.validated = this._emailValidatorRules.test(this.validEmail);
     await this.setPlaceHolder();
   }
 
   async onChangeEmail() {
-    this.validated = this.emailValidatorRules.test(this.validEmail);
+    this.validated = this._emailValidatorRules.test(this.validEmail);
     this.validate = this.validated;
     this.email = this.validEmail;
     this.entered = true;
@@ -51,7 +52,7 @@ export class EmailComponent implements OnInit {
 
   private async setPlaceHolder() {
     this.placeHolder = this.isRequired
-      ? await this.global.language.transform('placeholder.title.required')
+      ? await this._global.language.transform('placeholder.title.required')
       : this.placeHolder;
   }
 }

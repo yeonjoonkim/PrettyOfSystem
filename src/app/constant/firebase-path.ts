@@ -9,8 +9,7 @@ const shopConfiguration: string = 'shopConfiguration';
 const user: string = 'user';
 
 //Reporter
-const report: string = 'report/';
-const FunctionError: string = report + 'functionError';
+const FunctionError: string = 'functionError';
 
 export const Context = {
   ShopConfiguration: shopConfiguration,

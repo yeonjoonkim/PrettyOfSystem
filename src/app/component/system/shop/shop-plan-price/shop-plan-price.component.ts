@@ -8,21 +8,18 @@ import { ShopConfigurationService } from 'src/app/service/system/system-shop/sho
   styleUrls: ['./shop-plan-price.component.scss'],
 })
 export class ShopPlanPriceComponent implements OnInit, OnChanges {
-  private formatter = new Intl.NumberFormat('en-AU', {
+  @Input() planId: string = '';
+  @Input() period!: DatePeriodType;
+
+  public planPrice: string = '';
+  private _formatter = new Intl.NumberFormat('en-AU', {
     style: 'currency',
     currency: 'AUD',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-  @Input() planId: string = '';
-  @Input() period!: DatePeriodType;
-  private option = {
-    planId: 'planId',
-    period: 'period',
-  };
-  public planPrice: string = '';
 
-  constructor(private shopConfig: ShopConfigurationService) {}
+  constructor(private _shopConfig: ShopConfigurationService) {}
 
   ngOnInit() {}
 
@@ -31,7 +28,7 @@ export class ShopPlanPriceComponent implements OnInit, OnChanges {
   }
 
   private async onChangeParams() {
-    let price: number = await this.shopConfig.getSelectedTotalPrice(this.planId, this.period);
-    this.planPrice = this.formatter.format(price);
+    let price: number = await this._shopConfig.getSelectedTotalPrice(this.planId, this.period);
+    this.planPrice = this._formatter.format(price);
   }
 }

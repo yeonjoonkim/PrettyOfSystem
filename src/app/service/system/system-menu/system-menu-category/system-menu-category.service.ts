@@ -10,18 +10,18 @@ import { GlobalService } from 'src/app/service/global/global.service';
 })
 export class SystemMenuCategoryService {
   constructor(
-    private systemMenuCategoryAddService: SystemMenuCategoryAddService,
-    private systemMenuRepo: SystemMenuRepositoryService,
-    private global: GlobalService
+    private _systemMenuCategoryAddService: SystemMenuCategoryAddService,
+    private _systemMenuRepo: SystemMenuRepositoryService,
+    private _global: GlobalService
   ) {}
 
   /**This will trggier the process of save the new category */
   public async processSaveNewSystemMenuCategory(newCategory: MenuCategoryType) {
-    await this.systemMenuCategoryAddService.processSaveNewSystemMenuCategory(newCategory);
+    await this._systemMenuCategoryAddService.processSaveNewSystemMenuCategory(newCategory);
   }
 
   public async processDeleteSystemMenuCategory(selectedMenuCategoryId: string) {
-    let systemMenuCategory = await this.systemMenuRepo.getSelectedSystemMenuCategory(
+    let systemMenuCategory = await this._systemMenuRepo.getSelectedSystemMenuCategory(
       selectedMenuCategoryId
     );
 
@@ -31,42 +31,42 @@ export class SystemMenuCategoryService {
           ? systemMenuCategory?.content.map(content => content.name)
           : []
       );
-      await this.global.language.management
+      await this._global.language.management
         .deletePackages(selectedCategoryLanguageKeyList)
         .then(() => {
-          this.systemMenuRepo.deleteSystemMenuCategory(selectedMenuCategoryId);
+          this._systemMenuRepo.deleteSystemMenuCategory(selectedMenuCategoryId);
         });
     }
   }
 
   public async processUpdateSystemMenuCategory(edited: MenuCategoryType) {
     let selectedId: string = edited?.id ? edited?.id : '';
-    let previous = await this.systemMenuRepo.getSelectedSystemMenuCategory(selectedId);
+    let previous = await this._systemMenuRepo.getSelectedSystemMenuCategory(selectedId);
     let needLanguageTranslate: boolean = edited.description !== previous?.description;
 
     if (previous && edited.icon && edited.description) {
       if (needLanguageTranslate) {
-        let result = await this.systemMenuCategoryAddService.getTranslatedCategoryDescription(
+        let result = await this._systemMenuCategoryAddService.getTranslatedCategoryDescription(
           edited
         );
 
         if (!result.isEmpty) {
-          let success = await this.global.language.transform('messagesuccess.title.save');
-          edited.description = this.global.textTransform.getDefaultLanguageTranslateResult(
+          let success = await this._global.language.transform('messagesuccess.title.save');
+          edited.description = this._global.textTransform.getDefaultLanguageTranslateResult(
             result.translated
           );
-          edited.name = this.global.textTransform.getTransformObjectKeyValue(
-            this.systemMenuCategoryAddService.prefixedCategoryOjbectName,
+          edited.name = this._global.textTransform.getTransformObjectKeyValue(
+            this._systemMenuCategoryAddService._prefixedCategoryOjbectName,
             edited.description
           );
-          await this.global.language.management.deletePackage(previous.name).then(async () => {
-            await this.global.language.management.addPackage(result, edited.name.toLowerCase());
-            await this.global.toast.present(success);
+          await this._global.language.management.deletePackage(previous.name).then(async () => {
+            await this._global.language.management.addPackage(result, edited.name.toLowerCase());
+            await this._global.toast.present(success);
           });
         }
       }
 
-      this.systemMenuRepo.updateSystemMenuCategory(edited);
+      this._systemMenuRepo.updateSystemMenuCategory(edited);
     }
   }
 
@@ -74,18 +74,18 @@ export class SystemMenuCategoryService {
     selectedSystemMenuCategoryId: string,
     selectedSystemMenuCategoryContent: MenuContentType
   ) {
-    let selectedSystemMenuCategory = await this.systemMenuRepo.getSelectedSystemMenuCategory(
+    let selectedSystemMenuCategory = await this._systemMenuRepo.getSelectedSystemMenuCategory(
       selectedSystemMenuCategoryId
     );
 
     if (selectedSystemMenuCategory) {
-      let success = await this.global.language.transform('messagesuccess.title.delete');
+      let success = await this._global.language.transform('messagesuccess.title.delete');
       selectedSystemMenuCategory.content = selectedSystemMenuCategory?.content.filter(
         content => content?.name !== selectedSystemMenuCategoryContent?.name
       );
-      await this.global.language.management.deletePackage(selectedSystemMenuCategoryContent.name);
+      await this._global.language.management.deletePackage(selectedSystemMenuCategoryContent.name);
       await this.processUpdateSystemMenuCategory(selectedSystemMenuCategory);
-      await this.global.toast.present(success);
+      await this._global.toast.present(success);
     }
   }
 
@@ -94,7 +94,7 @@ export class SystemMenuCategoryService {
     newSystemMenuCategoryContent: MenuContentType
   ) {
     let selectedId: string = selectedSystemMenuCategoryId ? selectedSystemMenuCategoryId : '';
-    let selectedSystemMenuCategory = await this.systemMenuRepo.getSelectedSystemMenuCategory(
+    let selectedSystemMenuCategory = await this._systemMenuRepo.getSelectedSystemMenuCategory(
       selectedId
     );
     let hasSelectedMenuCategory = selectedSystemMenuCategory !== undefined;
@@ -131,27 +131,27 @@ export class SystemMenuCategoryService {
     newCategoryContent: MenuContentType,
     systemMenuCategory: MenuCategoryType
   ) {
-    let result = await this.systemMenuCategoryAddService.getTranslatedContentDescription(
+    let result = await this._systemMenuCategoryAddService.getTranslatedContentDescription(
       newCategoryContent
     );
 
     if (!result.isEmpty) {
-      newCategoryContent.description = this.global.textTransform.getDefaultLanguageTranslateResult(
+      newCategoryContent.description = this._global.textTransform.getDefaultLanguageTranslateResult(
         result.translated
       );
-      newCategoryContent.name = this.global.textTransform.getTransformObjectKeyValue(
-        this.systemMenuCategoryAddService.prefixedCategoryContentObjectName,
+      newCategoryContent.name = this._global.textTransform.getTransformObjectKeyValue(
+        this._systemMenuCategoryAddService._prefixedCategoryContentObjectName,
         newCategoryContent.description.toLowerCase()
       );
 
-      await this.global.language.management.addPackage(
+      await this._global.language.management.addPackage(
         result,
         newCategoryContent.name.toLowerCase()
       );
       systemMenuCategory.content.push(newCategoryContent);
-      this.systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
-      let success = await this.global.language.transform('messagesuccess.title.save');
-      await this.global.toast.present(success);
+      this._systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
+      let success = await this._global.language.transform('messagesuccess.title.save');
+      await this._global.toast.present(success);
     }
   }
 
@@ -166,30 +166,35 @@ export class SystemMenuCategoryService {
     let needTranslate = previousContent.description !== newContent.description;
 
     if (needTranslate) {
-      let result = await this.systemMenuCategoryAddService.getTranslatedContentDescription(
+      let result = await this._systemMenuCategoryAddService.getTranslatedContentDescription(
         newContent
       );
       if (!result.isEmpty) {
-        newContent.description = this.global.textTransform.getDefaultLanguageTranslateResult(
+        newContent.description = this._global.textTransform.getDefaultLanguageTranslateResult(
           result.translated
         );
-        newContent.name = this.global.textTransform.getTransformObjectKeyValue(
-          this.systemMenuCategoryAddService.prefixedCategoryContentObjectName,
+        newContent.name = this._global.textTransform.getTransformObjectKeyValue(
+          this._systemMenuCategoryAddService._prefixedCategoryContentObjectName,
           newContent.description.toLowerCase()
         );
-        await this.global.language.management.deletePackage(previousContent.name).then(async () => {
-          await this.global.language.management.addPackage(result, newContent.name.toLowerCase());
-          systemMenuCategory.content.push(newContent);
-          this.systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
-          let success = await this.global.language.transform('messagesuccess.title.edit');
-          await this.global.toast.present(success);
-        });
+        await this._global.language.management
+          .deletePackage(previousContent.name)
+          .then(async () => {
+            await this._global.language.management.addPackage(
+              result,
+              newContent.name.toLowerCase()
+            );
+            systemMenuCategory.content.push(newContent);
+            this._systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
+            let success = await this._global.language.transform('messagesuccess.title.edit');
+            await this._global.toast.present(success);
+          });
       }
     } else {
       systemMenuCategory.content.push(newContent);
-      this.systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
-      let success = await this.global.language.transform('messagesuccess.title.edit');
-      await this.global.toast.present(success);
+      this._systemMenuRepo.updateSystemMenuCategory(systemMenuCategory);
+      let success = await this._global.language.transform('messagesuccess.title.edit');
+      await this._global.toast.present(success);
     }
   }
 }

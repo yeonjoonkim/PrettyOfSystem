@@ -12,24 +12,24 @@ import { ShopSettingValiationResultType } from 'src/app/interface/shop/shop-sett
   providedIn: 'root',
 })
 export class ShopSettingService {
-  private timePicker: ShopTimePickerType = {
+  private _timePicker: ShopTimePickerType = {
     intervalMin: Constant.ShopSetting.TimePicker.IntervalMin,
   };
-  private general: ShopGeneralSettingType = { taxRate: Constant.ShopSetting.General.TaxRate };
-  private validator: ShopSettingValidatorService;
+  private _general: ShopGeneralSettingType = { taxRate: Constant.ShopSetting.General.TaxRate };
+  private _validator: ShopSettingValidatorService;
   constructor() {
-    this.validator = new ShopSettingValidatorService();
+    this._validator = new ShopSettingValidatorService();
   }
 
   public getDefaultShopSetting(): IShopSetting {
     return {
-      timePicker: this.timePicker,
-      general: this.general,
+      timePicker: this._timePicker,
+      general: this._general,
     };
   }
 
   public getValidatedResult(setting: IShopSetting): ShopSettingValiationResultType {
     let defaultSetting = this.getDefaultShopSetting();
-    return this.validator.getValidatedResult(setting, defaultSetting);
+    return this._validator.getValidatedResult(setting, defaultSetting);
   }
 }

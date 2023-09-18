@@ -6,7 +6,7 @@ import { AlertOptions, AlertController } from '@ionic/angular';
   providedIn: 'root',
 })
 export class DeleteConfirmationAlert {
-  constructor(private language: LanguageService, private alertCtrl: AlertController) {}
+  constructor(private _language: LanguageService, private _alertCtrl: AlertController) {}
 
   public async getDeleteConfirmation() {
     let confirmationAlert = await this.setConfirmationDeleteAlert('', false);
@@ -25,24 +25,24 @@ export class DeleteConfirmationAlert {
   }
 
   private async setConfirmationDeleteAlert(selectedName: string, withName: boolean) {
-    let name = await this.language.transform(selectedName);
-    let deleteMsg = await this.language.transform('confirmation.title.delete');
-    let header = withName ? name + ' - ' + deleteMsg : deleteMsg;
+    let name = await this._language.transform(selectedName);
+    let deleteMsg = await this._language.transform('confirmation.title.delete');
+    let header = withName ? deleteMsg + '- (' + name + ')' : deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
       header: header,
       buttons: [
         {
-          text: await this.language.transform('button.title.delete'),
+          text: await this._language.transform('button.title.delete'),
           role: 'delete',
         },
         {
-          text: await this.language.transform('button.title.cancel'),
+          text: await this._language.transform('button.title.cancel'),
           role: '',
         },
       ],
     };
 
-    let confirmDeleteAlert = await this.alertCtrl.create(confirmDeleteAlertCriteria);
+    let confirmDeleteAlert = await this._alertCtrl.create(confirmDeleteAlertCriteria);
     return confirmDeleteAlert;
   }
 
@@ -63,24 +63,24 @@ export class DeleteConfirmationAlert {
   }
 
   private async setConfirmationEditAlert(selectedName: string, withName: boolean) {
-    let name = await this.language.transform(selectedName);
-    let deleteMsg = await this.language.transform('confirmation.description.edit');
+    let name = await this._language.transform(selectedName);
+    let deleteMsg = await this._language.transform('confirmation.description.edit');
     let header = withName ? name + ' - ' + deleteMsg : deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
       header: header,
       buttons: [
         {
-          text: await this.language.transform('button.title.edit'),
+          text: await this._language.transform('button.title.edit'),
           role: 'edit',
         },
         {
-          text: await this.language.transform('button.title.cancel'),
+          text: await this._language.transform('button.title.cancel'),
           role: '',
         },
       ],
     };
 
-    let confirmDeleteAlert = await this.alertCtrl.create(confirmDeleteAlertCriteria);
+    let confirmDeleteAlert = await this._alertCtrl.create(confirmDeleteAlertCriteria);
     return confirmDeleteAlert;
   }
 }

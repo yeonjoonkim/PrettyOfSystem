@@ -44,7 +44,7 @@ export class RoleListCardComponent implements OnInit, OnChanges {
   };
   private _isModalOpen: boolean = false;
 
-  constructor(private systemRole: SystemRoleService, public global: GlobalService) {}
+  constructor(public global: GlobalService, private _systemRole: SystemRoleService) {}
   ngOnChanges(changes: SimpleChanges): void {
     let roleList: RoleConfigurationType[] | null = changes['roles'].currentValue;
     this.setGridDataList(roleList);
@@ -73,14 +73,14 @@ export class RoleListCardComponent implements OnInit, OnChanges {
 
   public async onClickDeleteRole(selectedRole: RoleConfigurationType) {
     selectedRole = this.findRole(selectedRole);
-    await this.systemRole.processDeleteRoleConfiguration(selectedRole);
+    await this._systemRole.processDeleteRoleConfiguration(selectedRole);
     this.onUpdate.emit(true);
   }
 
   public async presentAddRole() {
     if (!this._isModalOpen) {
       this._isModalOpen = true;
-      let modal = await this.systemRole.modal.prsentAddRole();
+      let modal = await this._systemRole.modal.prsentAddRole();
       await modal.present();
       await this.handleDismissModal(modal);
     }
@@ -90,7 +90,7 @@ export class RoleListCardComponent implements OnInit, OnChanges {
     if (!this._isModalOpen) {
       this._isModalOpen = true;
       selectedRole = this.findRole(selectedRole);
-      let modal = await this.systemRole.modal.presentEditRole(selectedRole);
+      let modal = await this._systemRole.modal.presentEditRole(selectedRole);
       await modal.present();
       await this.handleDismissModal(modal);
     }

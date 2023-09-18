@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ILanguageSelection } from 'src/app/interface/system/language/language.interface';
+import { LanguageSelectionType } from 'src/app/interface/system/language/language.interface';
 import { LanguageService } from 'src/app/service/global/language/language.service';
-import { PairNameValueType, PairValueIdType } from 'src/app/interface/global/global.interface';
+import { NameValuePairType } from 'src/app/interface/global/global.interface';
 import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 
 @Component({
@@ -12,8 +12,8 @@ import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 export class LangaugeSelectionComponent implements OnInit {
   @ViewChild('dropdownlist')
   public dropdownlist!: DropDownListComponent;
-  public selectedLanguage: PairNameValueType = { name: '', value: '' };
-  public languageSelection: PairNameValueType[] = [];
+  public selectedLanguage: NameValuePairType = { name: '', value: '' };
+  public languageSelection: NameValuePairType[] = [];
 
   constructor(public language: LanguageService) {}
 
@@ -35,7 +35,8 @@ export class LangaugeSelectionComponent implements OnInit {
   }
 
   private async setLanguageSelectionList() {
-    let selections: ILanguageSelection[] = await this.language.management.storage.getSelections();
+    let selections: LanguageSelectionType[] =
+      await this.language.management.storage.getSelections();
     let promise = selections.map(async s => {
       return { name: s.description, value: s.code };
     });

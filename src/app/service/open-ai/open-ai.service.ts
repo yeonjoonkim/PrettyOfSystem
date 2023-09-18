@@ -9,20 +9,20 @@ import { openAiApi } from '../../../../openai-key';
 })
 export class OpenAiService {
   //API
-  private readonly openAiUrl: string = 'https://api.openai.com/v1/chat/completions';
+  private readonly _openAiUrl: string = 'https://api.openai.com/v1/chat/completions';
 
   //API DEFAULT PARAM
-  private readonly defaultParams = {
+  private readonly _defaultParams = {
     model: 'gpt-3.5-turbo-16k',
     temperature: 0.4,
-    max_tokens: 4090,
+    max_tokens: 16000,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
   };
 
   //API DEFAULT HEADER
-  private readonly headers = {
+  private readonly _headers = {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + openAiApi.key,
   };
@@ -36,7 +36,7 @@ export class OpenAiService {
   /**This function is trigger api to receive answer from open ai */
   public async receiveResult(command: string, loading: boolean): Promise<string> {
     // Set api request
-    let param = { ...this.defaultParams, ...{ messages: [{ role: 'system', content: command }] } };
+    let param = { ...this._defaultParams, ...{ messages: [{ role: 'system', content: command }] } };
     let requestOptions = this.setReqeustOptions(param);
     let apiResult: string = '';
 
@@ -45,7 +45,7 @@ export class OpenAiService {
         await this.loading.show();
       }
       const response = await Promise.race([
-        fetch(this.openAiUrl, requestOptions),
+        fetch(this._openAiUrl, requestOptions),
         new Promise<never>(
           (_, reject) => setTimeout(() => reject(new Error('Request timed out')), 40000) // 5 second timeout
         ),
@@ -76,7 +76,7 @@ export class OpenAiService {
   private setReqeustOptions(param: {}): {} {
     let requestOptions = {
       method: 'POST',
-      headers: this.headers,
+      headers: this._headers,
       body: JSON.stringify(param),
     };
 

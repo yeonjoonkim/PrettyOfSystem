@@ -1,7 +1,7 @@
 import { ILanguageTranslateResult } from './../language-translate/language-translate.service';
 import { Injectable } from '@angular/core';
 
-export interface ITextTransformObject {
+export interface TextTransformObjectType {
   [key: string]: any;
 }
 

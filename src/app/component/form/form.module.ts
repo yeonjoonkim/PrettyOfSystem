@@ -11,7 +11,8 @@ import { DatePickerModule } from './date-picker/date-picker.module';
 import { TimePickerModule } from './time-picker/time-picker.module';
 import { TimeZoneModule } from './time-zone/time-zone.module';
 import { DatePeriodPickerModule } from './date-period-picker/date-period-picker.module';
-import { NamePairValueSingleSelectionModule } from './name-pair-value-dropdown-single-selection/name-pair-value-dropdown-single-selection.module';
+import { NameValuePairSingleDropdownSelectionModule } from './name-value-pair-single-dropdown-selection/name-value-pair-single-dropdown-selection.module';
+import { NameValuePairMultiSelectionModule } from './name-value-pair-multi-dropdown-selection/name-value-pair-multi-dropdown-selection.module';
 @NgModule({
   declarations: [],
   imports: [],
@@ -28,7 +29,8 @@ import { NamePairValueSingleSelectionModule } from './name-pair-value-dropdown-s
     DatePickerModule,
     TimeZoneModule,
     DatePeriodPickerModule,
-    NamePairValueSingleSelectionModule,
+    NameValuePairSingleDropdownSelectionModule,
+    NameValuePairMultiSelectionModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

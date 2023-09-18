@@ -1,4 +1,4 @@
-<kendo-label text="{{ title | languageTransform | async }}">
+<kendo-label text="{{ title | languageTransform | async }}" *ngIf="mode === 'form'">
   <kendo-buttongroup selection="single" width="100%">
     <button
       kendoButton
@@ -16,3 +16,20 @@
     </button>
   </kendo-buttongroup>
 </kendo-label>
+
+<kendo-buttongroup selection="single" width="100%" *ngIf="mode === 'login'">
+  <button
+    kendoButton
+    [disabled]="readOnly"
+    [selected]="inputLoginOption.phoneNumber"
+    (click)="onClickPhoneButton()">
+    {{ 'label.title.phone' | languageTransform | async }}
+  </button>
+  <button
+    kendoButton
+    [disabled]="readOnly"
+    [selected]="inputLoginOption.email"
+    (click)="onClickEmailButton()">
+    {{ 'label.title.email' | languageTransform | async }}
+  </button>
+</kendo-buttongroup>

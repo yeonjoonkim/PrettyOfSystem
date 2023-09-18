@@ -11,20 +11,20 @@ import { Router } from '@angular/router';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private deviceTypeSubscription!: Subscription;
-  private internetConnectionSubscription!: Subscription;
-  private languageChangeActionSubscription!: Subscription;
+  private _deviceTypeSubscription!: Subscription;
+  private _internetConnectionSubscription!: Subscription;
+  private _languageChangeActionSubscription!: Subscription;
   public isLoaded: boolean = false;
   public internetStatus!: ConnectionStatus;
 
   constructor(
-    private global: GlobalService,
+    private _global: GlobalService,
     public networkStatus: NetworkConnectionStatusService,
-    private router: Router
+    private _router: Router
   ) {}
 
   async ngOnInit() {
-    await this.global.storage.create();
+    await this._global.storage.create();
     this.subscribeNetworkStatus();
     this.subscribeDeviceWidth();
     this.subscribeLanguageChangeAction();
@@ -32,17 +32,17 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async ngOnDestroy() {
-    this.deviceTypeSubscription?.unsubscribe();
-    this.languageChangeActionSubscription?.unsubscribe();
-    this.internetConnectionSubscription?.unsubscribe();
+    this._deviceTypeSubscription?.unsubscribe();
+    this._languageChangeActionSubscription?.unsubscribe();
+    this._internetConnectionSubscription?.unsubscribe();
   }
 
   public isLoginPage() {
-    return this.router.url === '/login';
+    return this._router.url === '/login';
   }
 
   private async subscribeLanguageChangeAction() {
-    this.languageChangeActionSubscription = this.global.language.changeLanguageAction.subscribe(
+    this._languageChangeActionSubscription = this._global.language.changeLanguageAction.subscribe(
       async () => {
         this.ngOnDestroy();
         window.location.reload();
@@ -51,25 +51,27 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private subscribeNetworkStatus() {
-    this.internetConnectionSubscription = this.global.networkConnection
+    this._internetConnectionSubscription = this._global.networkConnection
       .activateListener()
       .subscribe(async status => {
         this.internetStatus = status;
-        await this.global.networkConnection.handleStatus(status);
+        await this._global.networkConnection.handleStatus(status);
       });
   }
 
   private async subscribeDeviceWidth() {
-    this.deviceTypeSubscription = this.global.deviceWidth.deviceTypeObservable.subscribe(device => {
-      this.global.deviceWidth.deviceType = device;
-    });
+    this._deviceTypeSubscription = this._global.deviceWidth.deviceTypeObservable.subscribe(
+      device => {
+        this._global.deviceWidth.deviceType = device;
+      }
+    );
   }
 
   private async loading() {
-    let connected = await this.global.networkConnection.isConnected();
+    let connected = await this._global.networkConnection.isConnected();
     if (connected) {
-      await this.global.language.management.storage.setDefault().then(async () => {
-        await this.global.language.setCurrentLanguage();
+      await this._global.language.management.storage.setDefault().then(async () => {
+        await this._global.language.setCurrentLanguage();
         this.isLoaded = true;
       });
     } else {

@@ -8,13 +8,13 @@ import * as Db from 'src/app/constant/firebase-path';
   providedIn: 'root',
 })
 export class SystemPlanRepositoryService {
-  private readonly timeStamp = { lastModifiedDate: new Date() };
+  private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(private afs: AngularFirestore) {}
+  constructor(private _afs: AngularFirestore) {}
 
   /**This will return as Observalbe to receive the all Plan Options Available */
   public valueChangeListener(): Observable<PlanConfigurationType[]> {
-    return this.afs
+    return this._afs
       .collection<PlanConfigurationType>(Db.Context.System.Plan.Option, ref => ref.orderBy('name'))
       .valueChanges()
       .pipe(
@@ -28,7 +28,7 @@ export class SystemPlanRepositoryService {
   }
 
   public getSystemPlanOptions(): Observable<PlanConfigurationType[]> {
-    return this.afs
+    return this._afs
       .collection<PlanConfigurationType>(Db.Context.System.Plan.Option)
       .get()
       .pipe(
@@ -43,11 +43,11 @@ export class SystemPlanRepositoryService {
   /**This will add new system plan option */
   public async addSystemPlanOption(config: PlanConfigurationType) {
     let isSave = true;
-    let newId = this.afs.createId();
+    let newId = this._afs.createId();
     config.id = newId;
-    let newOption = { ...config, ...this.timeStamp };
+    let newOption = { ...config, ...this._timeStamp };
     try {
-      await this.afs.collection(Db.Context.System.Plan.Option).doc(newId).set(newOption);
+      await this._afs.collection(Db.Context.System.Plan.Option).doc(newId).set(newOption);
     } catch (e) {
       console.error(e);
       isSave = false;
@@ -59,9 +59,9 @@ export class SystemPlanRepositoryService {
   /**This will updated selected plan */
   public async updateSystemPlanOption(config: PlanConfigurationType) {
     let isUpdate = true;
-    let newOption = { ...config, ...this.timeStamp };
+    let newOption = { ...config, ...this._timeStamp };
     try {
-      await this.afs.collection(Db.Context.System.Plan.Option).doc(config.id).set(newOption);
+      await this._afs.collection(Db.Context.System.Plan.Option).doc(config.id).set(newOption);
     } catch (e) {
       console.error(e);
       isUpdate = false;
@@ -74,7 +74,7 @@ export class SystemPlanRepositoryService {
   public async deleteSystemPlanOption(selectedId: string) {
     let isDeleted = true;
     try {
-      this.afs.doc(Db.Context.System.Plan.Option + '/' + selectedId).delete();
+      this._afs.doc(Db.Context.System.Plan.Option + '/' + selectedId).delete();
     } catch (e) {
       console.error(e);
       isDeleted = false;
@@ -84,7 +84,7 @@ export class SystemPlanRepositoryService {
   }
 
   public getSelectedPlan(selectedId: string): Observable<PlanConfigurationType | undefined> {
-    return this.afs
+    return this._afs
       .doc<PlanConfigurationType>(`${Db.Context.System.Plan.Option}/${selectedId}`)
       .get()
       .pipe(

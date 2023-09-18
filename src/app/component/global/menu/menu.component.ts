@@ -1,4 +1,3 @@
-import { AccessControlService } from 'src/app/service/authentication/access-control/access-control.service';
 import { MenuCategoryType } from 'src/app/interface/menu/menu.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
@@ -22,59 +21,61 @@ export class MenuComponent implements OnInit, OnDestroy {
   public selectedLangauge: string = '';
   public selectedTitleHeading: string = '';
   public selectedCategory: string = '';
-  public user: IUser = this.userService.defaultUser();
+  public user: IUser;
   public menus: MenuCategoryType[] = [];
 
   constructor(
     public language: LanguageService,
-    private storage: StorageService,
-    private location: Location,
-    private systemMenuRepository: SystemMenuRepositoryService,
-    private userService: UserService,
-    private menuCtrl: MenuController,
-    private router: Router
+    private _storage: StorageService,
+    private _location: Location,
+    private _systemMenuRepository: SystemMenuRepositoryService,
+    private _userService: UserService,
+    private _menuCtrl: MenuController,
+    private _router: Router
   ) {
+    this.user = this._userService.defaultUser();
     this.testing();
     this.getCurrentLanguage();
     this.getAccessGrantedMenu();
   }
 
-  ngOnInit() {}
+  async ngOnInit() {}
 
   ngOnDestroy() {}
 
-  private testing() {
-    if (this.user.currentShop !== null) {
-      this.user.currentShop.firstName = 'Yeon Joon';
-      this.user.currentShop.lastName = 'Kim';
-      this.user.currentShop.role.name = 'role.title.systemadmin';
-      this.user.currentShop.shopName = 'So Thai Massage & Spa Market Square';
-      this.user.currentShop.role.accessLevel.isSystemAdmin = true;
-    }
-  }
+  private async testing() {}
 
   private async getAccessGrantedMenu() {
-    if (this.user.currentShop?.role?.accessLevel) {
-      this.menus = await this.systemMenuRepository.getAccessGrantedMenu(
-        this.user.currentShop?.role?.accessLevel
-      );
-    }
+    // if (this.user.currentShop?.role?.accessLevel) {
+    //   this.menus = await this.systemMenuRepository.getAccessGrantedMenu(
+    //     this.user.currentShop?.role?.accessLevel
+    //   );
+    // }
+
+    this.menus = await this._systemMenuRepository.getAccessGrantedMenu({
+      isAdmin: false,
+      isEmployee: false,
+      isManager: false,
+      isReception: false,
+      isSystemAdmin: true,
+    });
+
     await this.setDefaultTitleHeading();
   }
 
   private async getCurrentLanguage() {
-    let currentLang = await this.storage.getLanguage();
+    let currentLang = await this._storage.getLanguage();
     this.selectedLangauge = currentLang !== null ? currentLang : this.language.deafultLanguageCode;
   }
 
   /** Implemented on the ngOnInit to set up the default Title Heading param */
   async setDefaultTitleHeading() {
-    let currentUrl = this.location.path();
+    let currentUrl = this._location.path();
     await this.onChangeMenu(currentUrl);
   }
 
   async logout() {
-    this.router.navigateByUrl('/login');
+    this._router.navigateByUrl('/login');
   }
 
   /** This function will change the title heading param based on current url.*/
@@ -84,6 +85,6 @@ export class MenuComponent implements OnInit, OnDestroy {
       return menu;
     });
     this.selectedTitleHeading = selectedMenu !== undefined ? selectedMenu.name : '';
-    this.menuCtrl.close();
+    this._menuCtrl.close();
   }
 }

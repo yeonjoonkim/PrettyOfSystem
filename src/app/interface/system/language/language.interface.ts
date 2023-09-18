@@ -1,14 +1,17 @@
-import { ITextTransformObject } from 'src/app/service/global/text-transform/text-transform.service';
 import { PairKeyValueType } from '../../global/global.interface';
 
-export interface ILanguageSelection {
+export type TextTransformObjectType = {
+  [key: string]: any;
+};
+
+export type LanguageSelectionType = {
   id?: string;
   code: string;
   name: string;
   description: string;
   package: {};
   isDefault: boolean;
-}
+};
 
 export interface ILanguageKey {
   id?: string;
@@ -60,7 +63,7 @@ export interface LanugaeTransformPopOverCriteriaType {
 export interface CreateNewPackageCommandType {
   code: string;
   defaultKeyPairList: PairKeyValueType[];
-  newPackage: ITextTransformObject;
+  newPackage: TextTransformObjectType;
   errorKeyPairList: PairKeyValueType[];
   translateTo: string;
   end: number;

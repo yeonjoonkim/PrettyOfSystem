@@ -32,11 +32,11 @@ export class AddMenuCategoryComponent implements OnInit {
 
   /**This will retreive the category by using pop over action*/
   constructor(
-    private systemMenuCategoryService: SystemMenuCategoryService,
-    private popoverCtrl: PopoverController,
-    private navParams: NavParams
+    private _systemMenuCategoryService: SystemMenuCategoryService,
+    private _popoverCtrl: PopoverController,
+    private _navParams: NavParams
   ) {
-    let selectedCategory = this.navParams.get('selectedCategory');
+    let selectedCategory = this._navParams.get('selectedCategory');
     if (selectedCategory) {
       this.editMode = true;
       this.category = selectedCategory;
@@ -48,8 +48,8 @@ export class AddMenuCategoryComponent implements OnInit {
   /**This event will validate and save into language package and will modify the category name to language transform object value */
   public async onClickSaveNewCategory(): Promise<void> {
     if ((this.category.icon && this.category.description, this.hasAccessLevel())) {
-      await this.systemMenuCategoryService.processSaveNewSystemMenuCategory(this.category);
-      await this.popoverCtrl.dismiss({ data: this._behaviourDismiss.create });
+      await this._systemMenuCategoryService.processSaveNewSystemMenuCategory(this.category);
+      await this._popoverCtrl.dismiss({ data: this._behaviourDismiss.create });
     }
   }
 
@@ -66,7 +66,7 @@ export class AddMenuCategoryComponent implements OnInit {
   /**This event will attempt to edit the value and pass to the component */
   public async onClickEditCategory() {
     if (this.category.icon && this.category.description) {
-      await this.popoverCtrl.dismiss({ result: this.category });
+      await this._popoverCtrl.dismiss({ result: this.category });
     }
   }
 

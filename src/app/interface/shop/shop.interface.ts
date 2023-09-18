@@ -1,9 +1,8 @@
 import * as Constant from '../../constant/constant';
 import { AddressType, DatePeriodType, TimeItemType } from '../global/global.interface';
 import { IShopSetting } from './shop-setting.interface';
-import { UserAssociatedShopType } from '../user/user.interface';
 
-export interface IShopCategory {
+export type ShopCategoryType = {
   id: string;
   isHairSalon: boolean;
   isMassageTheraphy: boolean;
@@ -11,9 +10,9 @@ export interface IShopCategory {
   isSkinCare: boolean;
   isMobileShop: boolean;
   name: string;
-}
+};
 
-export interface IShopCountry {
+export type ShopCountryType = {
   id: string;
   currency: Constant.CurrencyType;
   length: string;
@@ -21,46 +20,47 @@ export interface IShopCountry {
   prefixedPhoneCode: Constant.PhoneCodeType;
   dateFormat: Constant.DateFormatType;
   code: Constant.CountryCodeType;
-}
+};
 
-export interface IShopPlan {
+export type ShopPlanType = {
   configurationId: string;
   isOverDue: boolean;
   lastPaymentDate: Date;
   paymentDate: Date;
   period: DatePeriodType;
-}
+};
 
-export interface IShopPlanOption {
+export type ShopPlanOptionType = {
   isWeekly: boolean;
   isMonthly: boolean;
   isAnnually: boolean;
-}
+};
 
-export interface IShopWorkHours {
-  mon: IShopOperatingDaily;
-  tue: IShopOperatingDaily;
-  wed: IShopOperatingDaily;
-  thu: IShopOperatingDaily;
-  fri: IShopOperatingDaily;
-  sat: IShopOperatingDaily;
-  sun: IShopOperatingDaily;
+export type ShopWorkHoursType = {
+  mon: ShopOperatingDailyType;
+  tue: ShopOperatingDailyType;
+  wed: ShopOperatingDailyType;
+  thu: ShopOperatingDailyType;
+  fri: ShopOperatingDailyType;
+  sat: ShopOperatingDailyType;
+  sun: ShopOperatingDailyType;
   closeDay: Constant.DayIndexType[];
-}
+};
 
-export interface IShopOperatingDaily {
+export type ShopOperatingDailyType = {
   index: Constant.DayIndexType;
   day: Constant.DayType;
   isOpen: boolean;
   workHours: number;
-  operatingHours: IShopOperatingHours;
-}
+  operatingHours: ShopOperatingHoursType;
+};
 
-export interface IShopOperatingHours {
+export type ShopOperatingHoursType = {
   openTime: TimeItemType;
   closeTime: TimeItemType;
-}
-export interface IShopConfiguration {
+};
+
+export interface ShopConfigurationType {
   id: string;
   name: string;
   phoneNumber: string;
@@ -68,18 +68,17 @@ export interface IShopConfiguration {
   taxNumber: string;
   active: boolean;
   address: AddressType;
-  operatingHours: IShopWorkHours;
-  category: IShopCategory;
-  country: IShopCountry;
-  plan: IShopPlan;
+  operatingHours: ShopWorkHoursType;
+  category: ShopCategoryType;
+  country: ShopCountryType;
+  plan: ShopPlanType;
   activeFrom: Date;
   activeTo: Date | null;
   setting: IShopSetting;
   timezone: string;
-  associatedUser: UserAssociatedShopType[];
 }
 
-export interface IShopConfigurationFilterOption {
+export interface ShopConfigurationTypeFilterOption {
   name: string;
   email: string;
   phoneNumber: string;

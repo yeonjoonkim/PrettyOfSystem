@@ -1,5 +1,5 @@
 import {
-  ILanguageSelection,
+  LanguageSelectionType,
   ILanguageKey,
 } from 'src/app/interface/system/language/language.interface';
 import { Injectable } from '@angular/core';
@@ -11,12 +11,12 @@ import * as Db from 'src/app/constant/firebase-path';
   providedIn: 'root',
 })
 export class SystemLanguageRepositoryService {
-  private readonly timeStamp = { lastModifiedDate: new Date() };
+  private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(private afs: AngularFirestore) {}
+  constructor(private _afs: AngularFirestore) {}
 
   public getLanguageSelectionResult() {
-    return this.afs
+    return this._afs
       .collection(Db.Context.System.Language.Selection)
       .get()
       .pipe(
@@ -30,7 +30,7 @@ export class SystemLanguageRepositoryService {
   }
 
   public getLanguageKeyResult() {
-    return this.afs
+    return this._afs
       .collection(Db.Context.System.Language.Key)
       .get()
       .pipe(
@@ -43,21 +43,21 @@ export class SystemLanguageRepositoryService {
       );
   }
 
-  public async updateLanguageSelection(criteria: ILanguageSelection) {
-    let updateCommand = { ...criteria, ...this.timeStamp };
-    this.afs
+  public async updateLanguageSelection(criteria: LanguageSelectionType) {
+    let updateCommand = { ...criteria, ...this._timeStamp };
+    this._afs
       .collection(Db.Context.System.Language.Selection)
       .doc(criteria.id)
       .update(updateCommand);
   }
 
   public async updateLanguageKey(criteria: ILanguageKey) {
-    let updateCommand = { ...criteria, ...this.timeStamp };
-    this.afs.collection(Db.Context.System.Language.Key).doc(criteria.id).update(updateCommand);
+    let updateCommand = { ...criteria, ...this._timeStamp };
+    this._afs.collection(Db.Context.System.Language.Key).doc(criteria.id).update(updateCommand);
   }
 
   private setILanuageSelection(response: any, id?: string) {
-    let selection: ILanguageSelection = response;
+    let selection: LanguageSelectionType = response;
     selection.id = id;
     return selection;
   }
@@ -70,24 +70,13 @@ export class SystemLanguageRepositoryService {
     return key;
   }
 
-  public async addNewLanguageSelection(criteria: ILanguageSelection) {
-    let id = this.afs.createId();
-    let newSelection = { ...criteria, ...this.timeStamp, id: id };
+  public async addNewLanguageSelection(criteria: LanguageSelectionType) {
+    let id = this._afs.createId();
+    let newSelection = { ...criteria, ...this._timeStamp, id: id };
     try {
-      await this.afs.collection(Db.Context.System.Language.Selection).doc(id).set(newSelection);
+      await this._afs.collection(Db.Context.System.Language.Selection).doc(id).set(newSelection);
     } catch (e) {
       console.error(e);
     }
-  }
-
-  private setDefaultILanguageSelection(code: string, description: string, name: string) {
-    let selection: ILanguageSelection = {
-      code: code,
-      description: description,
-      name: name,
-      package: {},
-      isDefault: false,
-    };
-    return selection;
   }
 }

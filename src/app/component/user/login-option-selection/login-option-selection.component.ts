@@ -18,6 +18,7 @@ import { IUserLoginOption } from 'src/app/interface/user/user.interface';
 })
 export class LoginOptionSelectionComponent implements OnInit, OnChanges {
   @Output() loginOptionChange = new EventEmitter<IUserLoginOption>();
+  @Input() readOnly: boolean = false;
   @Input() mode: 'login' | 'form' = 'form';
   @Input() roleRate: Constant.RoleAccessRateType = Constant.Default.RoleAccessRateType.Reception;
   @Input()
@@ -29,14 +30,13 @@ export class LoginOptionSelectionComponent implements OnInit, OnChanges {
     this.loginOptionChange.emit(value);
   }
 
-  public inputLoginOption: IUserLoginOption = { id: '', phoneNumber: true, email: false };
-  public readOnly: boolean = true;
+  public inputLoginOption: IUserLoginOption = { phoneNumber: true, email: false };
+
   public title: string = 'label.title.loginoption';
 
-  constructor(private roleRateService: RoleRateService) {}
+  constructor(private _roleRateService: RoleRateService) {}
 
   ngOnInit() {
-    this.setReadOnlyByComponentMode();
     this.setTitle();
   }
 
@@ -51,13 +51,13 @@ export class LoginOptionSelectionComponent implements OnInit, OnChanges {
   }
 
   public onClickEmailButton() {
-    let email: IUserLoginOption = { id: '', phoneNumber: false, email: true };
+    let email: IUserLoginOption = { phoneNumber: false, email: true };
     this.inputLoginOption = email;
     this.loginOption = this.readOnly ? this.loginOption : this.inputLoginOption;
   }
 
   public onClickPhoneButton() {
-    let email: IUserLoginOption = { id: '', phoneNumber: true, email: false };
+    let email: IUserLoginOption = { phoneNumber: true, email: false };
     this.inputLoginOption = email;
     this.loginOption = this.readOnly ? this.loginOption : this.inputLoginOption;
   }
@@ -75,18 +75,13 @@ export class LoginOptionSelectionComponent implements OnInit, OnChanges {
       modeChange?.currentValue !== modeChange?.previousValue || modeChange?.firstChange;
 
     if (changes) {
-      this.setReadOnlyByComponentMode();
       this.setTitle();
     }
   }
 
   private setLoginOptionByRoleRate(currentValue: Constant.RoleAccessRateType) {
-    let option: IUserLoginOption = this.roleRateService.setLoginOptionByRate(currentValue);
+    let option: IUserLoginOption = this._roleRateService.setLoginOptionByRate(currentValue);
     this.loginOption = option;
-  }
-
-  private setReadOnlyByComponentMode() {
-    this.readOnly = this.mode === 'login' ? false : true;
   }
 
   private setTitle() {

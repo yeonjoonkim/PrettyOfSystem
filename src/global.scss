@@ -118,6 +118,19 @@ legend {
   font-style: normal;
 }
 
+.active-box {
+  right: 0;
+  margin-left: 15px;
+  margin-top: 5px;
+  color: #b3b3b3;
+  display: flex;
+  justify-content: end;
+  font-size: 11px;
+  .k-checkbox {
+    margin-left: 5px;
+  }
+}
+
 yes-no-selection-group {
   display: flex;
   flex-direction: column;

@@ -10,7 +10,12 @@ import { GlobalService } from 'src/app/service/global/global.service';
   styleUrls: ['./add-menu-category-content.component.scss'],
 })
 export class AddMenuCategoryContentComponent implements OnInit {
-  private selectedSystemMenuCategoryId: string = '';
+  private _selectedSystemMenuCategoryId: string = '';
+  private readonly _behaviourDismiss = {
+    delete: 'delete',
+    create: 'create',
+    edit: 'edit',
+  };
   public editMode: boolean = false;
   public categoryContent: MenuContentType = {
     name: '',
@@ -18,18 +23,13 @@ export class AddMenuCategoryContentComponent implements OnInit {
     url: '',
     icon: '',
   };
-  private readonly _behaviourDismiss = {
-    delete: 'delete',
-    create: 'create',
-    edit: 'edit',
-  };
 
   /**This will retreive the parameter by using pop over*/
   constructor(
-    private systemMenuCategoryService: SystemMenuCategoryService,
-    private popoverCtrl: PopoverController,
-    private navParams: NavParams,
-    private global: GlobalService
+    private _systemMenuCategoryService: SystemMenuCategoryService,
+    private _popoverCtrl: PopoverController,
+    private _navParams: NavParams,
+    private _global: GlobalService
   ) {
     this.getPopoverParameter();
   }
@@ -38,17 +38,17 @@ export class AddMenuCategoryContentComponent implements OnInit {
 
   /**This will get the popover parms */
   private getPopoverParameter() {
-    let paramMenuCategoryId = this.navParams.get('selectedMenuCategoryId');
-    let selectedContent = this.navParams.get('selectedMenuContent');
-    let paramEditMode = this.navParams.get('editMode');
+    let paramMenuCategoryId = this._navParams.get('selectedMenuCategoryId');
+    let selectedContent = this._navParams.get('selectedMenuContent');
+    let paramEditMode = this._navParams.get('editMode');
 
     if (paramEditMode !== undefined) {
       if (paramEditMode) {
-        this.selectedSystemMenuCategoryId = paramMenuCategoryId;
+        this._selectedSystemMenuCategoryId = paramMenuCategoryId;
         this.categoryContent = selectedContent;
         this.editMode = paramEditMode;
       } else {
-        this.selectedSystemMenuCategoryId = paramMenuCategoryId;
+        this._selectedSystemMenuCategoryId = paramMenuCategoryId;
         this.editMode = paramEditMode;
       }
     }
@@ -58,11 +58,11 @@ export class AddMenuCategoryContentComponent implements OnInit {
   public async onClickSaveNewCategoryContent() {
     await this.validateInput();
     if (this.categoryContent.icon.length > 0 && this.categoryContent.description.length > 0) {
-      await this.systemMenuCategoryService.processUpdateSystemMenuContent(
-        this.selectedSystemMenuCategoryId,
+      await this._systemMenuCategoryService.processUpdateSystemMenuContent(
+        this._selectedSystemMenuCategoryId,
         this.categoryContent
       );
-      await this.popoverCtrl.dismiss({ data: this._behaviourDismiss.edit });
+      await this._popoverCtrl.dismiss({ data: this._behaviourDismiss.edit });
     }
   }
 
@@ -70,11 +70,11 @@ export class AddMenuCategoryContentComponent implements OnInit {
   public async onClickEditCategoryContent() {
     await this.validateInput();
     if (this.categoryContent.icon.length > 0 && this.categoryContent.description.length > 0) {
-      await this.systemMenuCategoryService.processUpdateSystemMenuContent(
-        this.selectedSystemMenuCategoryId,
+      await this._systemMenuCategoryService.processUpdateSystemMenuContent(
+        this._selectedSystemMenuCategoryId,
         this.categoryContent
       );
-      await this.popoverCtrl.dismiss({ data: this._behaviourDismiss.edit });
+      await this._popoverCtrl.dismiss({ data: this._behaviourDismiss.edit });
     }
   }
 
@@ -84,17 +84,17 @@ export class AddMenuCategoryContentComponent implements OnInit {
     let isDescriptionError: boolean = this.categoryContent.description.length === 0;
 
     if (isIconError) {
-      let iconError: string = await this.global.language.transform(
+      let iconError: string = await this._global.language.transform(
         'messageerror.description.invaildicon'
       );
-      await this.global.toast.presentError(iconError);
+      await this._global.toast.presentError(iconError);
     }
 
     if (isDescriptionError) {
-      let description: string = await this.global.language.transform(
+      let description: string = await this._global.language.transform(
         'messageerror.description.descriptionfield'
       );
-      await this.global.toast.presentError(description);
+      await this._global.toast.presentError(description);
     }
   }
 }

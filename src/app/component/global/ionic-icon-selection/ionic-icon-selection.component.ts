@@ -25,7 +25,7 @@ export class IonicIconSelectionComponent implements OnInit {
     this.iconChange.emit(this.selectedIcon);
   }
 
-  constructor(private popOverCtrl: PopoverController) {}
+  constructor(private _popOverCtrl: PopoverController) {}
 
   ngOnInit() {}
 
@@ -42,7 +42,7 @@ export class IonicIconSelectionComponent implements OnInit {
 
   /**This will generate the pop over controller */
   private async createIconSelectionPopover(event: any): Promise<HTMLIonPopoverElement> {
-    return await this.popOverCtrl.create({
+    return await this._popOverCtrl.create({
       component: IonicIconListComponent,
       event: event,
       translucent: true,

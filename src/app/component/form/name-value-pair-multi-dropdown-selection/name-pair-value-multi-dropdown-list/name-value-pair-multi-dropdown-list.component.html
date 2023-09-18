@@ -1,0 +1,35 @@
+<flex-col>
+  <flex-row id="search-apply-container">
+    <flex-row-item id="search-container">
+      <kendo-textbox
+        *ngIf="filterable"
+        [(ngModel)]="query"
+        (ngModelChange)="onQueryChange()"
+        placeholder="{{ 'placeholder.title.search' | languageTransform | async }}"></kendo-textbox>
+    </flex-row-item>
+    <flex-row-item id="apply-container">
+      <kendo-button id="apply-btn" (click)="apply()">{{
+        'label.title.apply' | languageTransform | async
+      }}</kendo-button>
+    </flex-row-item>
+  </flex-row>
+
+  <flex-col-item>
+    <kendo-grid
+      id="dropdown-list"
+      [style.max-height]="maxHeight"
+      [kendoGridBinding]="gridData"
+      [hideHeader]="true"
+      [rowClass]="rowClass"
+      (cellClick)="onClickCell($event)">
+      <kendo-grid-column>
+        <ng-template kendoGridCellTemplate let-data>
+          {{ data.name | languageTransform | async }}
+        </ng-template>
+      </kendo-grid-column>
+      <ng-template kendoGridNoRecordsTemplate>
+        <p>{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
+      </ng-template>
+    </kendo-grid>
+  </flex-col-item>
+</flex-col>

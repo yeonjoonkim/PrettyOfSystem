@@ -1,0 +1,133 @@
+<ion-content [scrollable]="true">
+  <form-header
+    [title]="form.headerTitle"
+    [readOnly]="form.readOnly"
+    [enabledSavebutton]="form.enabledSavebutton"
+    [action]="form.action"
+    (onClickDismiss)="dismiss()"
+    (onClickEdit)="handleEdit()">
+  </form-header>
+
+  <flex-col>
+    <!--Active-->
+    <flex-row>
+      <flex-row-item id="login-option-container">
+        <legend>
+          {{ 'label.title.information' | languageTransform | async }}
+        </legend></flex-row-item
+      >
+      <flex-row-item id="check-box-container">
+        <flex-col>
+          <flex-col-item id="check-box">
+            <kendo-label text="{{ 'label.title.admin' | languageTransform | async }}">
+              <input
+                type="checkbox"
+                kendoCheckBox
+                [checked]="user.isSystemAdmin"
+                [disabled]="form.readOnly" />
+            </kendo-label>
+          </flex-col-item>
+          <flex-col-item id="check-box">
+            <kendo-label text="{{ 'label.title.active' | languageTransform | async }}">
+              <input
+                type="checkbox"
+                kendoCheckBox
+                [checked]="!user.disabledAccount"
+                [disabled]="form.readOnly" />
+            </kendo-label>
+          </flex-col-item>
+        </flex-col>
+      </flex-row-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          title="label.title.firstname"
+          [(value)]="user.firstName"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [isTitleFormat]="true"></text-box>
+      </flex-row-item>
+      <flex-row-item>
+        <text-box
+          title="label.title.lastname"
+          [(value)]="user.lastName"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [isTitleFormat]="true"></text-box>
+      </flex-row-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <phone-number
+          [(phone)]="user.phoneNumber"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"></phone-number>
+      </flex-row-item>
+      <flex-row-item>
+        <e-mail [(email)]="user.email" [readOnly]="form.readOnly" [isRequired]="true"></e-mail>
+      </flex-row-item>
+    </flex-row>
+
+    <flex-col-item>
+      <legend>
+        {{ 'label.title.associatedshop' | languageTransform | async }}
+      </legend>
+    </flex-col-item>
+    <flex-col-item>
+      <kendo-grid [height]="300" [kendoGridBinding]="user.associatedShops">
+        <!--Add-->
+        <ng-template kendoGridToolbarTemplate>
+          <button kendoGridAddCommand>
+            {{ 'button.title.add' | languageTransform | async }}
+          </button>
+        </ng-template>
+
+        <kendo-grid-column title="{{ 'label.title.businessname' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-associatedShop>
+            <ng-container *ngFor="let shop of shopFilters">
+              <span *ngIf="associatedShop.shopId === shop.value">{{ shop.name }}</span>
+            </ng-container>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column title="{{ 'label.title.role' | languageTransform | async }}" field="id">
+          <ng-template kendoGridCellTemplate let-shop>
+            <name-value-pair-single-dropdown-selection
+              (selectedChange)="onChangeRole($event, shop)"
+              [selection]="roleFilters"
+              [isRequiredTitle]="false"
+              [filterable]="false"
+              maxHeight="150"
+              [selected]="{
+                name: shop.role.name,
+                value: shop.role.id
+              }"
+              [readOnly]="form.readOnly"></name-value-pair-single-dropdown-selection>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column title="{{ 'label.title.active' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-shop>
+            <input
+              id="associated-shop-active"
+              type="checkbox"
+              kendoCheckBox
+              [checked]="shop.active"
+              [disabled]="form.readOnly" />
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-command-column [width]="75">
+          <ng-template kendoGridCellTemplate let-shop>
+            <button
+              *ngIf="!form.readOnly"
+              id="delete-btn"
+              kendoGridRemoveCommand
+              themeColor="error"
+              icon="trash"
+              (click)="onClickDeleteAssociatedShop(shop)"></button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

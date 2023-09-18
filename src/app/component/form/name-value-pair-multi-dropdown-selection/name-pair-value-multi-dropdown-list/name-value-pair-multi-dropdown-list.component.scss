@@ -1,0 +1,26 @@
+#dropdown-list tr.active {
+  background-color: red;
+}
+
+#dropdown-list tr.deactive {
+  background-color: black;
+}
+flex-col-item,
+flex-row-item {
+  margin: 0;
+}
+
+#search-container {
+  flex: 6;
+}
+#apply-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  #apply-btn {
+    width: 80px;
+    max-width: 100px;
+    min-width: 80px;
+  }
+}

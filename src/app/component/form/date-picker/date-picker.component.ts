@@ -31,24 +31,24 @@ export class DatePickerComponent implements OnInit {
   }
   set date(input: Date) {
     //INPUT
-    let inputDate: ZonedDate = this.global.date.transform.toShopDateTime(input, this.shopTimeZone);
+    let inputDate: ZonedDate = this._global.date.transform.toShopDateTime(input, this.shopTimeZone);
     let shopTime = inputDate.toTimezone(this.shopTimeZone);
-    this.inputDate = this.global.date.transform.convertToLocalShopDateTime(
+    this.inputDate = this._global.date.transform.convertToLocalShopDateTime(
       shopTime,
       this.shopTimeZone
     );
   }
 
-  constructor(private global: GlobalService) {}
+  constructor(private _global: GlobalService) {}
 
   ngOnInit() {
-    this.miniumDate = this.global.date.transform.getMinumSelectionDate(
+    this.miniumDate = this._global.date.transform.getMinumSelectionDate(
       new Date(),
       this.shopTimeZone,
       this.restrictedFromToday,
       this.displayPreviousDay
     );
-    this.maxDate = this.global.date.transform.getMaxiumSelectionDate(
+    this.maxDate = this._global.date.transform.getMaxiumSelectionDate(
       new Date(),
       this.shopTimeZone,
       this.displayNextDay
@@ -59,7 +59,7 @@ export class DatePickerComponent implements OnInit {
   public transformDate(selectedDate: any) {
     this.date = selectedDate;
     //OUTPUT
-    let outputDate: ZonedDate = this.global.date.transform.convertShopTimeZoneDateTime(
+    let outputDate: ZonedDate = this._global.date.transform.convertShopTimeZoneDateTime(
       selectedDate,
       this.shopTimeZone
     );

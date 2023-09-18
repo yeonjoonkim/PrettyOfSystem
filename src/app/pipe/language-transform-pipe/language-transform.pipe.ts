@@ -5,11 +5,11 @@ import { LanguageService } from 'src/app/service/global/language/language.servic
   name: 'languageTransform',
 })
 export class LanguageTransformPipe implements PipeTransform {
-  constructor(private language: LanguageService) {}
+  constructor(private _language: LanguageService) {}
 
   async transform(value: any) {
     if (value) {
-      let item = await this.language.transform(value);
+      let item = await this._language.transform(value);
       return item;
     }
     return value;

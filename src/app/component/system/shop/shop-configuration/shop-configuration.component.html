@@ -67,8 +67,7 @@
             [isTitleFormat]="true"
             [isRequired]="true"
             [min]="2"
-            (valueChange)="ngAfterViewInit()"
-            (validateChange)="ngAfterViewInit()">
+            (valueChange)="onChangeForm()">
           </text-box>
         </flex-row-item>
         <flex-row-item>
@@ -82,8 +81,7 @@
             [maxLength]="15"
             [isRequired]="true"
             [showCounter]="false"
-            (valueChange)="ngAfterViewInit()"
-            (validateChange)="ngAfterViewInit()">
+            (valueChange)="onChangeForm()">
           </text-box>
         </flex-row-item>
       </flex-row>
@@ -95,8 +93,7 @@
             [readOnly]="form.readOnly"
             [(phone)]="config.phoneNumber"
             [(validate)]="validator.phonNumber"
-            (phoneChange)="ngAfterViewInit()"
-            (validateChange)="ngAfterViewInit()">
+            (phoneChange)="onChangeForm()">
           </phone-number>
         </flex-row-item>
         <flex-row-item>
@@ -106,8 +103,7 @@
             [(validate)]="validator.email"
             [readOnly]="form.readOnly"
             [isRequired]="true"
-            (emailChange)="ngAfterViewInit()"
-            (validateChange)="ngAfterViewInit()">
+            (emailChange)="onChangeForm()">
           </e-mail>
         </flex-row-item>
       </flex-row>
@@ -119,7 +115,7 @@
             [readOnly]="form.readOnly"
             [(shopCategory)]="config.category"
             [(validate)]="validator.category"
-            (shopCategoryChange)="ngAfterViewInit()">
+            (shopCategoryChange)="onChangeForm()">
           </shop-category>
         </flex-col-item>
       </flex-col>
@@ -135,7 +131,7 @@
             [action]="form.action"
             [timezone]="config.timezone"
             [(validate)]="validator.workHours"
-            (workHoursChange)="ngAfterViewInit()"></operating-hours>
+            (workHoursChange)="onChangeForm()"></operating-hours>
         </flex-col-item>
       </flex-col>
     </div>
@@ -148,7 +144,7 @@
         [(validate)]="validator.address"
         [readOnly]="form.readOnly"
         [excludeStreet]="false"
-        (addressChange)="ngAfterViewInit()"></address>
+        (addressChange)="onChangeForm()"></address>
       <flex-col>
         <flex-col-item id="country">
           <shop-country
@@ -156,7 +152,7 @@
             [(shopCountry)]="config.country"
             [(validate)]="validator.country"
             [readOnly]="form.readOnly"
-            (shopCountryChange)="ngAfterViewInit()">
+            (shopCountryChange)="onChangeForm()">
           </shop-country>
         </flex-col-item>
         <flex-col-item id="timezone">
@@ -165,7 +161,7 @@
             [(timeZone)]="config.timezone"
             [(validate)]="validator.timeZone"
             [readOnly]="form.readOnly"
-            (timeZoneChange)="ngAfterViewInit()">
+            (timeZoneChange)="onChangeForm()">
           </time-zone>
         </flex-col-item>
       </flex-col>
@@ -194,7 +190,6 @@
           [(planId)]="config.plan.configurationId"
           [(validate)]="validator.plan"
           [readOnly]="form.readOnly"
-          (validateChange)="ngAfterViewInit()"
           (planIdChange)="onChangePlan()"></shop-plan>
       </flex-col-item>
       <flex-row>

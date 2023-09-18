@@ -12,7 +12,6 @@ import { ITimer, IUserLoginOption } from 'src/app/interface';
 export class LoginComponent implements OnInit, OnDestroy {
   @ViewChild('textbox') public textbox!: TextBoxComponent;
   public loginOption: IUserLoginOption = {
-    id: '',
     email: false,
     phoneNumber: true,
   };
@@ -26,8 +25,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   public sendOTP: boolean = false;
   public enableOTPVerificationBtn: boolean = false;
   public showPassword: boolean = false;
-  private _timerSubscription!: Subscription;
   public timer!: ITimer;
+  private _timerSubscription!: Subscription;
 
   constructor() {}
 

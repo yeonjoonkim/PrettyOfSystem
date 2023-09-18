@@ -1,4 +1,4 @@
-import { IUserLogin, IUserLoginOption, ILoginStatus } from 'src/app/interface';
+import { IUserLogin } from 'src/app/interface';
 import { CryptService } from 'src/app/service/global/crypt/crypt.service';
 import { TimerService } from 'src/app/service/global/timer/timer.service';
 

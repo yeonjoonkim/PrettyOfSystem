@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SystemLanguagePackageService } from './system-language-package/system-language-package.service';
 import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
-
 import { SystemLanguageStorageService } from './system-language-storage/system-language-storage.service';
 import {
   IAddLanguageTransformSaveCommand,
   ILanguageKey,
-  ILanguageSelection,
+  LanguageSelectionType,
   ILanguageTranslateItem,
-  ILanguageTranslateResult,
   PairKeyValueType,
 } from 'src/app/interface';
 import { TextTransformService } from '../../text-transform/text-transform.service';
@@ -22,10 +20,10 @@ import { lastValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class SystemLanguageManagementService {
-  private errorMsg = {
+  private _errorMsg = {
     unsaved: 'messageerror.title.unsaved',
   };
-  private successMsg = {
+  private _successMsg = {
     saved: 'messagesuccess.title.saved',
   };
   constructor(
@@ -41,7 +39,7 @@ export class SystemLanguageManagementService {
 
   public async editSelectedPackage(selectedLanguageCode: string, pair: PairKeyValueType) {
     try {
-      let selection: ILanguageSelection = await this.storage.getSelectedSelection(
+      let selection: LanguageSelectionType = await this.storage.getSelectedSelection(
         selectedLanguageCode
       );
       selection.package = this._systemLanguagePackage.update(selection.package, pair);
@@ -49,18 +47,18 @@ export class SystemLanguageManagementService {
       await this.storage.refresh();
     } catch (e) {
       console.error(e);
-      await this._toast.presentError(this.errorMsg.unsaved);
+      await this._toast.presentError(this._errorMsg.unsaved);
     }
   }
 
   public async addPackage(result: ILanguageTranslateItem, keyValue: string) {
-    let selections: ILanguageSelection[] = await lastValueFrom(
+    let selections: LanguageSelectionType[] = await lastValueFrom(
       this._systemLanguageRepo.getLanguageSelectionResult()
     );
     if (!result.isEmpty) {
       try {
         for (let i = 0; i < selections.length; i++) {
-          let selection: ILanguageSelection = selections[i];
+          let selection: LanguageSelectionType = selections[i];
           let selectionCode: string = selection.code.toLowerCase();
           let translatedKeyPairValue: PairKeyValueType = {
             key: keyValue,
@@ -76,7 +74,7 @@ export class SystemLanguageManagementService {
         await this.storage.storeSelection(selections);
       } catch (e) {
         console.error(e);
-        await this._toast.presentError(this.errorMsg.unsaved);
+        await this._toast.presentError(this._errorMsg.unsaved);
       }
 
       await this.storage.refresh();
@@ -85,10 +83,10 @@ export class SystemLanguageManagementService {
 
   public async deletePackage(key: string) {
     try {
-      let selections: ILanguageSelection[] = await lastValueFrom(
+      let selections: LanguageSelectionType[] = await lastValueFrom(
         this._systemLanguageRepo.getLanguageSelectionResult()
       );
-      const updatePromises = selections.map(async (selection: ILanguageSelection) => {
+      const updatePromises = selections.map(async (selection: LanguageSelectionType) => {
         selection.package = this._systemLanguagePackage.delete(selection.package, key);
         return this._systemLanguageRepo.updateLanguageSelection(selection);
       });
@@ -98,7 +96,7 @@ export class SystemLanguageManagementService {
       await this.deleteLanguageKey(key);
     } catch (e) {
       console.error(e);
-      await this._toast.presentError(this.errorMsg.unsaved);
+      await this._toast.presentError(this._errorMsg.unsaved);
     }
   }
 
@@ -114,9 +112,9 @@ export class SystemLanguageManagementService {
     });
   }
 
-  public async getSelectedSelection(code: string): Promise<ILanguageSelection> {
+  public async getSelectedSelection(code: string): Promise<LanguageSelectionType> {
     let selections = await this.storage.getSelections();
-    return selections.find(r => r.code === code) as ILanguageSelection;
+    return selections.find(r => r.code === code) as LanguageSelectionType;
   }
 
   public async transform(key: string) {
@@ -171,7 +169,7 @@ export class SystemLanguageManagementService {
 
     try {
       for (let i = 0; i < selections.length; i++) {
-        let selection: ILanguageSelection = selections[i];
+        let selection: LanguageSelectionType = selections[i];
         for (let i = 0; i < keyList.length; i++) {
           let key: string = keyList[i];
 

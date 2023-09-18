@@ -8,7 +8,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
 })
 export class PercentageComponent implements OnInit {
   @Output() onChangeValue = new EventEmitter<number>();
-  @Output() valueChange = new EventEmitter<number>(); // EventEmitter for two-way binding
+  @Output() valueChange = new EventEmitter<number>();
 
   @Input() title: string = '';
   @Input() readOnly: boolean = false;
@@ -23,14 +23,14 @@ export class PercentageComponent implements OnInit {
   set value(value: number) {
     this.currentValue = value;
     this.onChangeValue.emit(this.value);
-    this.valueChange.emit(this.value); // Emit changes for two-way binding
+    this.valueChange.emit(this.value);
   }
 
   public currentValue: number = 0;
 
-  constructor(private global: GlobalService) {}
+  constructor(private _global: GlobalService) {}
 
   ngOnInit() {
-    this.currentValue = this.global.numberTransform.nullReplaceToZero(this.currentValue);
+    this.currentValue = this._global.numberTransform.nullReplaceToZero(this.currentValue);
   }
 }

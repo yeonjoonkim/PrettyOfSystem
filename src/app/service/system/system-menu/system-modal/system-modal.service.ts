@@ -5,9 +5,9 @@ import { ModalController } from '@ionic/angular';
   providedIn: 'root',
 })
 export class SystemModalService {
-  constructor(private modalCtrl: ModalController) {}
+  constructor(private _modalCtrl: ModalController) {}
 
   public async dismissModal(): Promise<void> {
-    await this.modalCtrl.dismiss();
+    await this._modalCtrl.dismiss();
   }
 }

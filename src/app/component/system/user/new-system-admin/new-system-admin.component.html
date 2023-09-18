@@ -1,0 +1,136 @@
+<ion-content [scrollable]="true">
+  <form-header
+    [title]="form.headerTitle"
+    [readOnly]="form.readOnly"
+    [enabledSavebutton]="form.enabledSavebutton"
+    [action]="form.action"
+    (onClickDismiss)="dismiss()"
+    (onClickCreate)="onClickCreate()">
+  </form-header>
+
+  <form-container>
+    <flex-col>
+      <flex-col-item>
+        <gender-selection [(gender)]="user.gender" [readOnly]="form.readOnly"></gender-selection>
+      </flex-col-item>
+      <flex-col-item>
+        <login-option-selection
+          [readOnly]="form.readOnly"
+          mode="form"
+          [(loginOption)]="user.loginOption"
+          (loginOptionChange)="onChangeLoginOption()"></login-option-selection>
+      </flex-col-item>
+    </flex-col>
+    <!-- Name -->
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          title="label.title.firstname"
+          [(value)]="user.firstName"
+          [isTitleFormat]="true"
+          [(validate)]="validator.firstName"
+          [isRequired]="true"
+          [readOnly]="form.readOnly"
+          [min]="1"
+          [max]="100"
+          (valueChange)="handleFormEnableSaveBtn()"></text-box>
+      </flex-row-item>
+      <flex-row-item>
+        <text-box
+          title="label.title.lastname"
+          [(value)]="user.lastName"
+          [isTitleFormat]="true"
+          [isRequired]="true"
+          [readOnly]="form.readOnly"
+          [(validate)]="validator.lastName"
+          [min]="0"
+          [max]="100"
+          (valueChange)="handleFormEnableSaveBtn()"></text-box>
+      </flex-row-item>
+    </flex-row>
+  </form-container>
+  <flex-col>
+    <flex-col-item>
+      <phone-number
+        [(phone)]="user.phoneNumber"
+        [(validate)]="validator.phone"
+        [isRequired]="true"
+        (validateChange)="handleFormEnableSaveBtn()"></phone-number>
+    </flex-col-item>
+    <flex-col-item>
+      <e-mail
+        [(email)]="user.email"
+        [isRequired]="true"
+        [(validate)]="validator.email"
+        (validateChange)="handleFormEnableSaveBtn()"></e-mail>
+    </flex-col-item>
+  </flex-col>
+  <flex-col *ngIf="user.loginOption.email && (form.action === 'create' || form.action === 'edit')">
+    <flex-col-item>
+      <kendo-label text="{{ 'label.title.password' | languageTransform | async }}">
+        <kendo-textbox
+          #passwordOne
+          placeholder="{{ 'placeholder.title.required' | languageTransform | async }}"
+          [clearButton]="true"
+          [(value)]="passwordConfirmation.one"
+          (valueChange)="onChangePasswordOne()">
+          <ng-template kendoTextBoxSuffixTemplate>
+            <button
+              *ngIf="visible.passwordOne"
+              kendoButton
+              look="clear"
+              icon="unlock"
+              (click)="togglePasswordOne()"></button>
+            <button
+              *ngIf="!visible.passwordOne"
+              kendoButton
+              look="clear"
+              icon="lock"
+              (click)="togglePasswordOne()"></button>
+          </ng-template>
+        </kendo-textbox>
+      </kendo-label>
+    </flex-col-item>
+    <flex-col-item>
+      <kendo-label text="{{ 'label.title.passwordconfirmation' | languageTransform | async }}">
+        <kendo-textbox
+          #passwordTwo
+          placeholder="{{ 'placeholder.title.required' | languageTransform | async }}"
+          [clearButton]="true"
+          [(value)]="passwordConfirmation.two"
+          (valueChange)="onChangePasswordTwo()">
+          <ng-template kendoTextBoxSuffixTemplate>
+            <button
+              *ngIf="visible.passwordTwo"
+              kendoButton
+              look="clear"
+              icon="unlock"
+              (click)="togglePasswordTwo()"></button>
+            <button
+              *ngIf="!visible.passwordTwo"
+              kendoButton
+              look="clear"
+              icon="lock"
+              (click)="togglePasswordTwo()"></button>
+          </ng-template>
+        </kendo-textbox>
+      </kendo-label>
+    </flex-col-item>
+    <flex-col-item>
+      <div class="form-error-container">
+        <kendo-formerror
+          *ngIf="
+            (passwordConfirmation.one || passwordConfirmation.two) &&
+            (!passwordValidation.one || !passwordValidation.two)
+          "
+          >{{
+            'messageerror.description.passworderror' | languageTransform | async
+          }}</kendo-formerror
+        >
+        <kendo-formerror *ngIf="passwordValidation.two && !validator.password">
+          {{ 'messageerror.description.passwordnotmatch' | languageTransform | async }}
+        </kendo-formerror>
+      </div>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

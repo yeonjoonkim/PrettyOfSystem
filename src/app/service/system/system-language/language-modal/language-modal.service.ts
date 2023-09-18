@@ -3,32 +3,32 @@ import { ModalController } from '@ionic/angular';
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { LanguageComponent } from 'src/app/component/system/language/language-management/language/language.component';
-import { ILanguageSelection } from 'src/app/interface/system/language/language.interface';
+import { LanguageSelectionType } from 'src/app/interface/system/language/language.interface';
 import { cloneDeep } from 'lodash-es';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LanguageModalService {
-  constructor(private modal: ModalController, private formCtrl: FormControllerService) {}
+  constructor(private _modal: ModalController, private _formCtrl: FormControllerService) {}
 
   public async create() {
-    let form: IFormHeaderModalProp = this.formCtrl.setCreateFormHeaderModalProp();
+    let form: IFormHeaderModalProp = this._formCtrl.setCreateFormHeaderModalProp();
     form.headerTitle = 'label.title.createlanguage';
-    let modal = await this.modal.create({
+    let modal = await this._modal.create({
       component: LanguageComponent,
-      presentingElement: await this.modal.getTop(),
+      presentingElement: await this._modal.getTop(),
       componentProps: { form: form },
     });
     return modal;
   }
 
-  public async edit(language: ILanguageSelection) {
-    let form: IFormHeaderModalProp = this.formCtrl.setEditFormHeaderModalProp();
+  public async edit(language: LanguageSelectionType) {
+    let form: IFormHeaderModalProp = this._formCtrl.setEditFormHeaderModalProp();
     form.headerTitle = language.name;
-    let modal = await this.modal.create({
+    let modal = await this._modal.create({
       component: LanguageComponent,
-      presentingElement: await this.modal.getTop(),
+      presentingElement: await this._modal.getTop(),
       componentProps: {
         form: cloneDeep(form),
         language: cloneDeep(language),
@@ -38,12 +38,12 @@ export class LanguageModalService {
     return modal;
   }
 
-  public async read(language: ILanguageSelection) {
-    let form: IFormHeaderModalProp = this.formCtrl.setReadFormHeaderModalProp();
+  public async read(language: LanguageSelectionType) {
+    let form: IFormHeaderModalProp = this._formCtrl.setReadFormHeaderModalProp();
     form.headerTitle = language.name;
-    let modal = await this.modal.create({
+    let modal = await this._modal.create({
       component: LanguageComponent,
-      presentingElement: await this.modal.getTop(),
+      presentingElement: await this._modal.getTop(),
       componentProps: {
         form: cloneDeep(form),
         language: cloneDeep(language),

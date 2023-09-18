@@ -1,19 +1,25 @@
 import { RoleConfigurationType } from '../system/role/role.interface';
-import { IShopWorkHours } from '../shop/shop.interface';
+import { ShopWorkHoursType } from '../shop/shop.interface';
 import * as Constant from '../../constant/constant';
+import { NameValuePairType } from '../global/global.interface';
+
 export interface IUser {
   id: string;
+  firstName: string;
+  lastName: string;
+  gender: Constant.GenderType;
   isSystemAdmin: boolean;
   associatedShops: UserAssociatedShopType[];
-  currentShop: UserAssociatedShopType | null;
+  currentShopId: string;
   setting: UserSettingType;
-  loginIds: string[];
+  loginOption: IUserLoginOption;
   phoneNumber: string;
   email: string;
+  encryptedPassword: string;
+  disabledAccount: boolean;
 }
 
 export interface IUserLoginOption {
-  id: string;
   email: boolean;
   phoneNumber: boolean;
 }
@@ -37,17 +43,37 @@ export interface ILoginStatus {
 
 export interface UserAssociatedShopType {
   shopId: string;
-  shopName: string;
-  firstName: string;
-  lastName: string;
-  gender: Constant.GenderType;
+  userId: string;
   role: RoleConfigurationType;
-  workHours: IShopWorkHours;
-  loginOption: IUserLoginOption;
   activeFrom: Date;
   activeTo: Date | null;
   active: boolean;
-  phoneNumber: string;
-  email: string;
   displayInSystem: boolean;
+  roster: ShopWorkHoursType;
 }
+
+export type UserManagementCriteria = {
+  createShopUserCriteria: CreateShopUserCriteria[];
+  shopFilter: NameValuePairType[];
+  userGridData: IUser[];
+  role: RoleConfigurationType[];
+  roleFilter: NameValuePairType[];
+};
+
+export type CreateShopUserCriteria = {
+  id: string;
+  name: string;
+  operatingHours: ShopWorkHoursType;
+};
+
+export type ShopUserManagementCriteria = {
+  createCriteria: CreateShopUserCriteria[];
+  filter: NameValuePairType[];
+};
+
+export type SystemUserInputValitorType = {
+  firstName: boolean;
+  lastName: boolean;
+  phoneNumber: boolean;
+  email: boolean;
+};

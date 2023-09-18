@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
-import { ILanguageKey, ILanguageSelection, PairKeyValueType } from 'src/app/interface';
+import { ILanguageKey, LanguageSelectionType } from 'src/app/interface';
 import * as StorageKey from 'src/app/service/global/storage/storage.key';
 import { StorageService } from 'src/app/service/global/storage/storage.service';
 @Injectable({
@@ -21,7 +21,7 @@ export class SystemLanguageStorageService {
     let now: Date = new Date();
     let expiredDate: Date | null = await this._stroage.getLanguageSelectionExpireDateTime();
     let isExpired: boolean = expiredDate !== null ? now > expiredDate : true;
-    let selections: null | ILanguageSelection[] = await this.getSelections();
+    let selections: null | LanguageSelectionType[] = await this.getSelections();
     let keys: null | ILanguageKey = await this.getKey();
     let refresh: boolean =
       selections === null || expiredDate === null || isExpired || keys === null;
@@ -34,7 +34,7 @@ export class SystemLanguageStorageService {
   }
 
   public async refresh() {
-    let selections: ILanguageSelection[] = await this.getLanguageSelections();
+    let selections: LanguageSelectionType[] = await this.getLanguageSelections();
     let key: ILanguageKey = await this.getLanguageKey();
     await this._stroage.store(StorageKey.default.languageSelection, selections);
     await this._stroage.store(StorageKey.default.languageSelectionKey, key);
@@ -44,7 +44,7 @@ export class SystemLanguageStorageService {
     await this._stroage.store(StorageKey.default.language, code);
   }
 
-  public async storeSelection(selection: ILanguageSelection[]) {
+  public async storeSelection(selection: LanguageSelectionType[]) {
     await this._stroage.store(StorageKey.default.languageSelection, selection);
   }
 
@@ -56,15 +56,15 @@ export class SystemLanguageStorageService {
     return await this._stroage.getLanguage();
   }
 
-  public async getDefaultSelection(): Promise<ILanguageSelection> {
-    let selections: ILanguageSelection[] = await this._stroage.getLanguageSelection();
+  public async getDefaultSelection(): Promise<LanguageSelectionType> {
+    let selections: LanguageSelectionType[] = await this._stroage.getLanguageSelection();
     let selection = selections.filter(selection => selection.isDefault);
 
     return selection[0];
   }
 
-  public async getSelections(): Promise<ILanguageSelection[]> {
-    let result: ILanguageSelection[] = await this._stroage.getLanguageSelection();
+  public async getSelections(): Promise<LanguageSelectionType[]> {
+    let result: LanguageSelectionType[] = await this._stroage.getLanguageSelection();
     return result;
   }
 
@@ -76,11 +76,11 @@ export class SystemLanguageStorageService {
     return selection[0];
   }
 
-  public async getSelectedSelection(selectedCode: string): Promise<ILanguageSelection> {
-    let selections: ILanguageSelection[] = await this.getLanguageSelections();
+  public async getSelectedSelection(selectedCode: string): Promise<LanguageSelectionType> {
+    let selections: LanguageSelectionType[] = await this.getLanguageSelections();
     return selections.find(
       selection => selection.code === selectedCode.toLowerCase()
-    ) as ILanguageSelection;
+    ) as LanguageSelectionType;
   }
 
   public async getKey(): Promise<ILanguageKey> {
@@ -88,7 +88,7 @@ export class SystemLanguageStorageService {
     return result as ILanguageKey;
   }
 
-  private async getLanguageSelections(): Promise<ILanguageSelection[]> {
+  private async getLanguageSelections(): Promise<LanguageSelectionType[]> {
     return await lastValueFrom(this._systemLanguageRepo.getLanguageSelectionResult());
   }
 

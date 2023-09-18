@@ -8,13 +8,13 @@ import * as Db from 'src/app/constant/firebase-path';
   providedIn: 'root',
 })
 export class SystemRoleRepositoryService {
-  private readonly timeStamp = { lastModifiedDate: new Date() };
+  private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(private afs: AngularFirestore) {}
+  constructor(private _afs: AngularFirestore) {}
 
   /** This will return as Observalble of all role configs  */
-  public getSystemRoleConfigurations(): Observable<RoleConfigurationType[]> {
-    return this.afs
+  public getRoleConfigurations(): Observable<RoleConfigurationType[]> {
+    return this._afs
       .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
         ref.orderBy('rate')
       )
@@ -29,7 +29,7 @@ export class SystemRoleRepositoryService {
   }
 
   public valueChangeListener(): Observable<RoleConfigurationType[]> {
-    return this.afs
+    return this._afs
       .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
         ref.orderBy('rate')
       )
@@ -45,13 +45,13 @@ export class SystemRoleRepositoryService {
 
   /** This will add new System Role */
   public async addSystemRoleConfiguration(newConfig: RoleConfigurationType) {
-    let newId = this.afs.createId();
+    let newId = this._afs.createId();
     newConfig.id = newId;
     try {
-      await this.afs
+      await this._afs
         .collection(Db.Context.System.Role.Configuration)
         .doc(newConfig.id)
-        .set({ ...newConfig, ...this.timeStamp });
+        .set({ ...newConfig, ...this._timeStamp });
     } catch (e) {
       console.error(e);
     }
@@ -59,19 +59,19 @@ export class SystemRoleRepositoryService {
 
   /** This will get only selectedId */
   public async getSelectedSystemRole(selectedId: string) {
-    let roles = await lastValueFrom(this.getSystemRoleConfigurations());
+    let roles = await lastValueFrom(this.getRoleConfigurations());
     return roles.find(role => role.id === selectedId);
   }
 
   /** This will update the value of config */
   public async updateSystemRoleConfiguration(config: RoleConfigurationType) {
-    await this.afs
+    await this._afs
       .doc(Db.Context.System.Role.Configuration + '/' + config.id)
-      .update({ ...config, ...this.timeStamp });
+      .update({ ...config, ...this._timeStamp });
   }
 
   /** This will delete the value of config*/
   public async deleteSystemRoleConfiguration(id: string) {
-    await this.afs.doc(Db.Context.System.Role.Configuration + '/' + id).delete();
+    await this._afs.doc(Db.Context.System.Role.Configuration + '/' + id).delete();
   }
 }

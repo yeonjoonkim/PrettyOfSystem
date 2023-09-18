@@ -1,18 +1,18 @@
 <section class="modal-container">
   <!--Component-->
-  <pair-name-value-single-selection
+  <name-value-pair-single-dropdown-selection
     title="label.title.componentoption"
     [isRequired]="true"
     [selection]="componentSelection"
     [(selected)]="selectedComponent"
-    (selectedChange)="onChangeFormatSelection()"></pair-name-value-single-selection>
+    (selectedChange)="onChangeFormatSelection()"></name-value-pair-single-dropdown-selection>
   <!--Format-->
-  <pair-name-value-single-selection
+  <name-value-pair-single-dropdown-selection
     title="label.title.format"
     [isRequired]="true"
     [selection]="formatSelection"
     [(selected)]="selectedFormat"
-    (selectedChange)="onChangeFormatSelection()"></pair-name-value-single-selection>
+    (selectedChange)="onChangeFormatSelection()"></name-value-pair-single-dropdown-selection>
 
   <!-- Transform Key -->
   <text-box title="label.title.key" [(value)]="keyValue" (valueChange)="onChangeKeyValue()">

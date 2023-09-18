@@ -32,6 +32,7 @@ export const Text = {
 } as const;
 
 export const Default = {
+  Refresh: 'Refresh',
   Gender: {
     Male: 'Male',
     Female: 'Female',

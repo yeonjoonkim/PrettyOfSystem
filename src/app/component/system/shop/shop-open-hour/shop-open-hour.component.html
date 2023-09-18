@@ -1,7 +1,9 @@
 <flex-col id="work-hours-container">
   <!--Title-->
   <legend>{{ 'label.title.operatinghours' | languageTransform | async }}</legend>
-  <flex-row-item id="time-container" *ngIf="action === 'create'">
+  <flex-row-item
+    id="time-container"
+    *ngIf="!readOnly && (action === 'create' || action === 'edit')">
     <time-picker-group>
       <time-picker
         [(time)]="copyValue.openTime"
@@ -30,18 +32,16 @@
   <!--Monday-->
   <flex-col-item>
     <flex-row>
-      <flex-row-item id="title">
-        <legend [ngClass]="{ 'error-text': !validator.mon }">
-          M
-          <input
-            id="close-open-button"
-            type="checkbox"
-            kendoCheckBox
-            [(ngModel)]="inputWorkHours.mon.isOpen"
-            (ngModelChange)="onChangeMon()"
-            [disabled]="readOnly" />
-        </legend>
-      </flex-row-item>
+      <div id="title">
+        <legend [ngClass]="{ 'error-text': !validator.mon }">Mon</legend>
+        <input
+          id="close-open-button"
+          type="checkbox"
+          kendoCheckBox
+          [(ngModel)]="inputWorkHours.mon.isOpen"
+          (ngModelChange)="onChangeMon()"
+          [disabled]="readOnly" />
+      </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.mon.isOpen">
           <time-picker
@@ -62,18 +62,16 @@
   <!-- Tuesday -->
   <flex-col-item>
     <flex-row>
-      <flex-row-item id="title">
-        <legend [ngClass]="{ 'error-text': !validator.tue }">
-          T
-          <input
-            id="close-open-button"
-            type="checkbox"
-            kendoCheckBox
-            [(ngModel)]="inputWorkHours.tue.isOpen"
-            (ngModelChange)="onChangeTue()"
-            [disabled]="readOnly" />
-        </legend>
-      </flex-row-item>
+      <div id="title">
+        <legend [ngClass]="{ 'error-text': !validator.tue }">Tue</legend>
+        <input
+          id="close-open-button"
+          type="checkbox"
+          kendoCheckBox
+          [(ngModel)]="inputWorkHours.tue.isOpen"
+          (ngModelChange)="onChangeTue()"
+          [disabled]="readOnly" />
+      </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.tue.isOpen">
           <time-picker
@@ -94,18 +92,16 @@
   <!-- Wednesday -->
   <flex-col-item>
     <flex-row>
-      <flex-row-item id="title">
-        <legend [ngClass]="{ 'error-text': !validator.wed }">
-          W
-          <input
-            id="close-open-button"
-            type="checkbox"
-            kendoCheckBox
-            [(ngModel)]="inputWorkHours.wed.isOpen"
-            (ngModelChange)="onChangeWed()"
-            [disabled]="readOnly" />
-        </legend>
-      </flex-row-item>
+      <div id="title">
+        <legend [ngClass]="{ 'error-text': !validator.wed }">Wed</legend>
+        <input
+          id="close-open-button"
+          type="checkbox"
+          kendoCheckBox
+          [(ngModel)]="inputWorkHours.wed.isOpen"
+          (ngModelChange)="onChangeWed()"
+          [disabled]="readOnly" />
+      </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.wed.isOpen">
           <time-picker
@@ -127,18 +123,16 @@
   <!-- Thursday -->
   <flex-col-item>
     <flex-row>
-      <flex-row-item id="title">
-        <legend [ngClass]="{ 'error-text': !validator.thu }">
-          T
-          <input
-            id="close-open-button"
-            type="checkbox"
-            kendoCheckBox
-            [(ngModel)]="inputWorkHours.thu.isOpen"
-            (ngModelChange)="onChangeThu()"
-            [disabled]="readOnly" />
-        </legend>
-      </flex-row-item>
+      <div id="title">
+        <legend [ngClass]="{ 'error-text': !validator.thu }">Thu</legend>
+        <input
+          id="close-open-button"
+          type="checkbox"
+          kendoCheckBox
+          [(ngModel)]="inputWorkHours.thu.isOpen"
+          (ngModelChange)="onChangeThu()"
+          [disabled]="readOnly" />
+      </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.thu.isOpen">
           <time-picker
@@ -160,18 +154,16 @@
   <!-- Friday -->
   <flex-col-item>
     <flex-row>
-      <flex-row-item id="title">
-        <legend [ngClass]="{ 'error-text': !validator.fri }">
-          F
-          <input
-            id="close-open-button"
-            type="checkbox"
-            kendoCheckBox
-            [(ngModel)]="inputWorkHours.fri.isOpen"
-            (ngModelChange)="onChangeFri()"
-            [disabled]="readOnly" />
-        </legend>
-      </flex-row-item>
+      <div id="title">
+        <legend [ngClass]="{ 'error-text': !validator.fri }">Fri</legend>
+        <input
+          id="close-open-button"
+          type="checkbox"
+          kendoCheckBox
+          [(ngModel)]="inputWorkHours.fri.isOpen"
+          (ngModelChange)="onChangeFri()"
+          [disabled]="readOnly" />
+      </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.fri.isOpen">
           <time-picker
@@ -193,18 +185,16 @@
   <!-- Saturday -->
   <flex-col-item>
     <flex-row>
-      <flex-row-item id="title">
-        <legend [ngClass]="{ 'error-text': !validator.sat }">
-          S
-          <input
-            id="close-open-button"
-            type="checkbox"
-            kendoCheckBox
-            [(ngModel)]="inputWorkHours.sat.isOpen"
-            (ngModelChange)="onChangeSat()"
-            [disabled]="readOnly" />
-        </legend>
-      </flex-row-item>
+      <div id="title">
+        <legend [ngClass]="{ 'error-text': !validator.sat }">Sat</legend>
+        <input
+          id="close-open-button"
+          type="checkbox"
+          kendoCheckBox
+          [(ngModel)]="inputWorkHours.sat.isOpen"
+          (ngModelChange)="onChangeSat()"
+          [disabled]="readOnly" />
+      </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.sat.isOpen">
           <time-picker
@@ -226,18 +216,16 @@
   <!-- Sunday -->
   <flex-col-item>
     <flex-row>
-      <flex-row-item id="title">
-        <legend [ngClass]="{ 'error-text': !validator.sun }">
-          S
-          <input
-            id="close-open-button"
-            type="checkbox"
-            kendoCheckBox
-            [(ngModel)]="inputWorkHours.sun.isOpen"
-            (ngModelChange)="onChangeSun()"
-            [disabled]="readOnly" />
-        </legend>
-      </flex-row-item>
+      <div id="title">
+        <legend [ngClass]="{ 'error-text': !validator.sun }">Sun</legend>
+        <input
+          id="close-open-button"
+          type="checkbox"
+          kendoCheckBox
+          [(ngModel)]="inputWorkHours.sun.isOpen"
+          (ngModelChange)="onChangeSun()"
+          [disabled]="readOnly" />
+      </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.sun.isOpen">
           <time-picker

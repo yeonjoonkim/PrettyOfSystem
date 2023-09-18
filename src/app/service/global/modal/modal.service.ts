@@ -12,4 +12,8 @@ export class ModalService {
   public async dismiss() {
     await this.ctrl.dismiss();
   }
+
+  public async dismissRefreshAction() {
+    await this.ctrl.dismiss(Constant.Default.Refresh);
+  }
 }

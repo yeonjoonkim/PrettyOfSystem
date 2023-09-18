@@ -5,12 +5,21 @@ import { createDate, ZonedDate } from '@progress/kendo-date-math';
 import '@progress/kendo-date-math/tz/all';
 import * as Constant from 'src/app/constant/constant';
 import { TimeItemType } from 'src/app/interface/global/global.interface';
+import firebase from 'firebase/compat/app';
 import * as moment from 'moment';
 @Injectable({
   providedIn: 'root',
 })
 export class DateTransformService {
   constructor() {}
+
+  private isTimeStamp(value: any): value is firebase.firestore.Timestamp {
+    return value instanceof firebase.firestore.Timestamp;
+  }
+
+  private toDate(value: Date | firebase.firestore.Timestamp): Date {
+    return this.isTimeStamp(value) ? value.toDate() : value;
+  }
 
   public addMin(date: Date, min: number): Date {
     return moment(date).add(min, 'minutes').toDate();
@@ -23,7 +32,8 @@ export class DateTransformService {
   }
 
   public toShopDateTime(inputDate: Date, timezone: Constant.TimeZoneType): ZonedDate {
-    let tzDate = ZonedDate.fromLocalDate(inputDate, timezone);
+    let date = this.toDate(inputDate);
+    let tzDate = ZonedDate.fromLocalDate(date, timezone);
     let result: ZonedDate = tzDate.toTimezone(timezone);
     return result;
   }

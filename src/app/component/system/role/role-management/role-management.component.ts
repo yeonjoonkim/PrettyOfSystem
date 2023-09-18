@@ -1,4 +1,4 @@
-import { Observable, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { SystemRoleService } from 'src/app/service/system/system-role/system-system-role.service';
 import { Component, OnInit } from '@angular/core';
 import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
@@ -24,19 +24,19 @@ export class RoleManagementComponent implements OnInit {
     },
     rate: 0,
   };
-  constructor(private systemRole: SystemRoleService, private language: LanguageService) {}
+  constructor(private _systemRole: SystemRoleService, private _language: LanguageService) {}
 
   async ngOnInit() {
     await this.refresh();
   }
 
   private async setRoleConfigurationList() {
-    let result = await lastValueFrom(this.systemRole.getAllRoles());
+    let result = await lastValueFrom(this._systemRole.getAllRoles());
     this.roles = result.sort(r => r.rate);
   }
 
   public async refresh() {
-    await this.language.management.storage.refresh().then(async () => {
+    await this._language.management.storage.refresh().then(async () => {
       await this.setRoleConfigurationList();
     });
   }

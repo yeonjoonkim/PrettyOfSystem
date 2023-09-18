@@ -26,8 +26,8 @@ export class MenuManagementComponent implements OnInit {
   };
 
   constructor(
-    private systemMenuRepository: SystemMenuRepositoryService,
-    private language: LanguageService
+    private _systemMenuRepository: SystemMenuRepositoryService,
+    private _language: LanguageService
   ) {}
 
   async ngOnInit() {
@@ -35,12 +35,12 @@ export class MenuManagementComponent implements OnInit {
   }
 
   private async seMenuCategoryType() {
-    let menuCategory = await lastValueFrom(this.systemMenuRepository.getSystemMenuCategories());
+    let menuCategory = await lastValueFrom(this._systemMenuRepository.getSystemMenuCategories());
     this.menuCategories = menuCategory;
   }
 
   async onUpdate() {
-    await this.language.management.storage.refresh().then(async () => {
+    await this._language.management.storage.refresh().then(async () => {
       await this.seMenuCategoryType();
     });
   }
