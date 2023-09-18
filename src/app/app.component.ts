@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { GlobalService } from './service/global/global.service';
 import { NetworkConnectionStatusService } from './service/global/network-connection-status/network-connection-status.service';
 import { ConnectionStatus } from '@capacitor/network';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private _deviceTypeSubscription!: Subscription;
   private _internetConnectionSubscription!: Subscription;
   private _languageChangeActionSubscription!: Subscription;
+  private _routerChangeSubscription!: Subscription;
   public isLoaded: boolean = false;
   public internetStatus!: ConnectionStatus;
 
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscribeNetworkStatus();
     this.subscribeDeviceWidth();
     this.subscribeLanguageChangeAction();
+    this.subscribeRouterChange();
     await this.loading();
   }
 
@@ -35,6 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this._deviceTypeSubscription?.unsubscribe();
     this._languageChangeActionSubscription?.unsubscribe();
     this._internetConnectionSubscription?.unsubscribe();
+    this._routerChangeSubscription?.unsubscribe();
   }
 
   public isLoginPage() {
@@ -48,6 +51,15 @@ export class AppComponent implements OnInit, OnDestroy {
         window.location.reload();
       }
     );
+  }
+
+  private subscribeRouterChange() {
+    this._routerChangeSubscription = this._router.events.subscribe(async change => {
+      if (change instanceof NavigationEnd) {
+        const connection = await this._global.networkConnection.getStatus();
+        await this._global.networkConnection.handleStatus(connection);
+      }
+    });
   }
 
   private subscribeNetworkStatus() {

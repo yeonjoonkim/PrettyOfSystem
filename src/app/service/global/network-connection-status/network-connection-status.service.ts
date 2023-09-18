@@ -36,6 +36,12 @@ export class NetworkConnectionStatusService {
     });
   }
 
+  public async getStatus() {
+    return Network.getStatus().then(status => {
+      return status;
+    });
+  }
+
   public async handleStatus(status: ConnectionStatus) {
     if (status.connected) {
       await this.routeToPreviousAccess();
