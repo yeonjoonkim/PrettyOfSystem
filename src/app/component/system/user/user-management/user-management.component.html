@@ -7,11 +7,11 @@
     </flex-col-item>
     <flex-row>
       <flex-row-item>
-        <name-value-pair-multi-selection
+        <name-value-pair-multi-dropdown-selection
           title="label.title.shop"
           [selection]="criteria.shopFilter"
           [(selected)]="queryShopFilter"
-          (selectedChange)="onChangeQuery()"></name-value-pair-multi-selection>
+          (selectedChange)="onChangeQuery()"></name-value-pair-multi-dropdown-selection>
       </flex-row-item>
       <flex-row-item>
         <text-box
@@ -32,15 +32,16 @@
         <ng-template kendoGridToolbarTemplate>
           <button kendoGridEditCommand icon="refresh" (click)="refresh()"></button>
           <button kendoGridAddCommand (click)="onClickCreateSystemAdmin()">
-            {{ 'button.title.addsystemadmin' | languageTransform | async }}
+            {{ 'label.title.newsystemadmin' | languageTransform | async }}
           </button>
-          <button kendoGridAddCommand (click)="onClickCreateSystemAdmin()">
+          <button kendoGridAddCommand (click)="onClickCreateUser()">
             {{ 'button.title.adduser' | languageTransform | async }}
           </button>
         </ng-template>
 
         <!-- First Name -->
         <kendo-grid-column
+          *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
           title="{{ 'label.title.firstname' | languageTransform | async }}"
           field="firstName">
           <ng-template kendoGridCellTemplate let-user>
@@ -55,10 +56,26 @@
 
         <!-- Last Name -->
         <kendo-grid-column
+          *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
           title="{{ 'label.title.lastname' | languageTransform | async }}"
           field="lastName">
           <ng-template kendoGridCellTemplate let-user>
             <span>{{ user.lastName }}</span>
+          </ng-template>
+        </kendo-grid-column>
+
+        <!--Full Name-->
+        <kendo-grid-column
+          title="{{ 'label.title.name' | languageTransform | async }}"
+          *ngIf="device.deviceType.isMobile"
+          field="firstName">
+          <ng-template kendoGridCellTemplate let-user>
+            <span
+              id="full-name"
+              [ngClass]="{ 'is-system-admin': user.isSystemAdmin !== '' }"
+              (click)="onClickEditUser(user)"
+              >{{ user.firstName }} {{ user.lastName }}</span
+            >
           </ng-template>
         </kendo-grid-column>
 
@@ -77,6 +94,7 @@
 
         <!--Email-->
         <kendo-grid-column
+          *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
           title="{{ 'label.title.email' | languageTransform | async }}"
           field="email">
           <ng-template kendoGridCellTemplate let-user>
@@ -90,31 +108,83 @@
 
         <!--Count-->
         <kendo-grid-column
-          *ngIf="!device.deviceType.isMobile"
           id="shop-count"
+          field="associatedShops.length"
           title="{{ 'label.title.shop' | languageTransform | async }}">
           <ng-template kendoGridCellTemplate let-user>
             <span>{{ user.associatedShops.length }}</span>
           </ng-template>
         </kendo-grid-column>
 
-        <!--System Admin-->
+        <!--Associated Shop Name-->
         <kendo-grid-column
           *ngIf="!device.deviceType.isMobile"
-          id="disabled"
-          title="{{ 'label.title.admin' | languageTransform | async }}">
-          <ng-template kendoGridCellTemplate let-data>
-            <input type="checkbox" kendoCheckBox [checked]="data.isSystemAdmin" disabled />
+          title="{{ 'label.title.associatedShop' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-user>
+            <div id="associated-shop-name">
+              <ng-container *ngFor="let shop of criteria.shopFilter; let i = index">
+                <ng-container *ngFor="let userShop of user.associatedShops; let z = index">
+                  <div *ngIf="criteria.shopFilter.length !== user.associatedShops.length">
+                    <!--Single -->
+                    <span
+                      *ngIf="
+                        userShop.shopId === shop.value &&
+                        i === 0 &&
+                        user.associatedShops.length === i + 1
+                      "
+                      >{{ shop.name }}</span
+                    >
+                    <!--Multiple Start-->
+                    <span
+                      *ngIf="
+                        userShop.shopId === shop.value &&
+                        user.associatedShops.length > 1 &&
+                        user.associatedShops.length !== i + 1
+                      "
+                      >{{ shop.name + ', ' }}
+                    </span>
+                    <!--Multiple End-->
+                    <span
+                      *ngIf="
+                        userShop.shopId === shop.value &&
+                        i > 0 &&
+                        user.associatedShops.length === i + 1
+                      "
+                      >{{ shop.name }}</span
+                    >
+                  </div>
+                  <div
+                    *ngIf="
+                      criteria.shopFilter.length === user.associatedShops.length &&
+                      i === 0 &&
+                      z === 0
+                    ">
+                    <span>{{ 'label.title.all' | languageTransform | async }}</span>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </div>
           </ng-template>
         </kendo-grid-column>
 
         <!--System Admin-->
         <kendo-grid-column
           *ngIf="!device.deviceType.isMobile"
-          id="disabled"
-          title="{{ 'label.title.disabled' | languageTransform | async }}">
+          id="admin"
+          field="isSystemAdmin"
+          title="{{ 'label.title.admin' | languageTransform | async }}">
           <ng-template kendoGridCellTemplate let-data>
-            <input type="checkbox" kendoCheckBox [checked]="data.disabledAccount" disabled />
+            <input type="checkbox" kendoCheckBox [checked]="data.isSystemAdmin" disabled />
+          </ng-template>
+        </kendo-grid-column>
+
+        <!--Active-->
+        <kendo-grid-column
+          id="disabled"
+          field="disabledAccount"
+          title="{{ 'label.title.active' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-data>
+            <input type="checkbox" kendoCheckBox [checked]="!data.disabledAccount" disabled />
           </ng-template>
         </kendo-grid-column>
       </kendo-grid>

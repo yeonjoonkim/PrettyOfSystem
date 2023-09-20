@@ -21,7 +21,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   public selectedLangauge: string = '';
   public selectedTitleHeading: string = '';
   public selectedCategory: string = '';
-  public user: IUser;
+  public user!: IUser;
   public menus: MenuCategoryType[] = [];
 
   constructor(
@@ -33,7 +33,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     private _menuCtrl: MenuController,
     private _router: Router
   ) {
-    this.user = this._userService.defaultUser();
     this.testing();
     this.getCurrentLanguage();
     this.getAccessGrantedMenu();

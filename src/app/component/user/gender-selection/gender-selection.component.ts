@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
-import { PairKeyValueType } from 'src/app/interface/global/global.interface';
+import { NameValuePairType } from 'src/app/interface/global/global.interface';
 
 @Component({
   selector: 'gender-selection',
@@ -23,15 +23,15 @@ export class GenderSelectionComponent implements OnInit {
     this.genderChange.emit(gender);
   }
 
-  public genderSelection: PairKeyValueType[] = [
-    { value: Constant.Default.Gender.Male, key: 'label.title.male' },
-    { value: Constant.Default.Gender.Female, key: 'label.title.female' },
-    { value: Constant.Default.Gender.Other, key: 'label.title.other' },
+  public genderSelection: NameValuePairType[] = [
+    { value: Constant.Default.Gender.Male, name: 'label.title.male' },
+    { value: Constant.Default.Gender.Female, name: 'label.title.female' },
+    { value: Constant.Default.Gender.Other, name: 'label.title.other' },
   ];
 
-  public selectedGender: PairKeyValueType = {
+  public selectedGender: NameValuePairType = {
     value: Constant.Default.Gender.Male,
-    key: 'label.title.male',
+    name: 'label.title.male',
   };
   public inputGender: Constant.GenderType = Constant.Default.Gender.Male;
   constructor() {}
@@ -43,10 +43,10 @@ export class GenderSelectionComponent implements OnInit {
   }
 
   private setFilterMode() {
-    this.genderSelection.push({ value: Constant.Default.Gender.All, key: 'label.title.all' });
+    this.genderSelection.push({ value: Constant.Default.Gender.All, name: 'label.title.all' });
   }
 
-  public onChangeGender(selected: PairKeyValueType) {
+  public onChangeGender(selected: NameValuePairType) {
     this.selectedGender = selected;
     let selectedGenderType: Constant.GenderType = this.convertToGenderType(
       this.selectedGender.value

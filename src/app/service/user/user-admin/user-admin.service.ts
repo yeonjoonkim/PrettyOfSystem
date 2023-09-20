@@ -6,12 +6,14 @@ import {
   IUser,
   NameValuePairType,
   UserManagementCriteria,
+  UserSettingType,
 } from 'src/app/interface';
 import { UserCredentialRepositoryService } from 'src/app/firebase/user-repository/user-credential-repository/user-credential-repository.service';
 import { lastValueFrom } from 'rxjs';
 import { GlobalService } from '../../global/global.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
 import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/role/system-role-repository.service';
+import { UserAdminPopoverService } from './user-admin-popover/user-admin-popover.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,25 +21,80 @@ import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/
 export class UserAdminService {
   constructor(
     public modal: UserAdminModalService,
-    private _userService: UserService,
+    public popover: UserAdminPopoverService,
     private _global: GlobalService,
     private _userRepo: UserCredentialRepositoryService,
     private _shopRepo: SystemShopConfigurationRepositoryService,
     private _roleRepo: SystemRoleRepositoryService
   ) {}
 
-  public async handleCreate(admin: IUser, encryptedpassword: string) {
+  public async updateUser(user: IUser) {
     this._global.loading.show();
-    admin.isSystemAdmin = true;
-    admin.encryptedPassword = admin.loginOption.email ? encryptedpassword : '';
-    admin.setting.preferLanguage =
+    try {
+      const successMsg = await this._global.language.transform('messagesuccess.title.edited');
+      await this._userRepo.updateUser(user);
+      await this._global.toast.present(successMsg);
+      await this._global.loading.dismiss();
+    } catch (error) {
+      const failMsg = await this._global.language.transform('messagefail.title.edited');
+      await this._global.loading.dismiss();
+      await this._global.toast.present(failMsg);
+    }
+  }
+
+  public defaultUser(): IUser {
+    return {
+      id: '',
+      firstName: '',
+      lastName: '',
+      gender: 'Male',
+      isSystemAdmin: false,
+      associatedShops: [],
+      currentShopId: '',
+      phoneNumber: '',
+      email: '',
+      encryptedPassword: '',
+      loginOption: {
+        email: false,
+        phoneNumber: true,
+      },
+      setting: this.setDefaultUserSetting(),
+      disabledAccount: false,
+    };
+  }
+
+  public setDefaultUserSetting(): UserSettingType {
+    return {
+      preferLanguage: '',
+    };
+  }
+
+  public async deleteUser(user: IUser) {
+    this._global.loading.show();
+    try {
+      const successMsg = await this._global.language.transform('messagesuccess.title.delete');
+      await this._userRepo.deleteUser(user);
+      await this._global.toast.present(successMsg);
+      await this._global.loading.dismiss();
+    } catch (error) {
+      const failMsg = await this._global.language.transform('messagefail.title.delete');
+      await this._global.loading.dismiss();
+      await this._global.toast.present(failMsg);
+    }
+  }
+
+  public async handleCreate(user: IUser, isSystemAdmin: boolean) {
+    this._global.loading.show();
+    user.isSystemAdmin = isSystemAdmin;
+    user.encryptedPassword = user.loginOption.email ? user.encryptedPassword : '';
+    user.setting.preferLanguage =
       await this._global.language.management.storage.getCurrentLanguage();
     try {
-      if (admin.loginOption.phoneNumber) {
-        const existedPhoneNumber: boolean = await this.existingPhoneLoginChecker(admin.phoneNumber);
+      if (user.loginOption.phoneNumber) {
+        const existedPhoneNumber: boolean = await this.existingPhoneLoginChecker(user.phoneNumber);
         if (!existedPhoneNumber) {
           const successMsg = await this._global.language.transform('messagesuccess.title.save');
-          await this._userRepo.createUser(admin);
+          await this._userRepo.createUser(user);
           await this._global.toast.present(successMsg);
           await this._global.modal.dismissRefreshAction();
         } else {
@@ -46,11 +103,11 @@ export class UserAdminService {
           );
           await this._global.toast.presentError(errorMsg);
         }
-      } else if (admin.loginOption.email) {
-        const existedEmail: boolean = await this.existingEmailLoginChecker(admin.email);
+      } else if (user.loginOption.email) {
+        const existedEmail: boolean = await this.existingEmailLoginChecker(user.email);
         if (!existedEmail) {
           const successMsg = await this._global.language.transform('messagesuccess.title.save');
-          await this._userRepo.createUser(admin);
+          await this._userRepo.createUser(user);
           await this._global.toast.present(successMsg);
           await this.modal.dismiss();
         } else {
@@ -68,8 +125,26 @@ export class UserAdminService {
     }
   }
 
-  public encryptPassword(password: string) {
-    return this._global.crypt.encrypt(password);
+  public async deleteAssociatedShop(user: IUser, shopId: string, shopName: string) {
+    const exist = user.associatedShops.find(s => s.shopId === shopId);
+    if (exist !== undefined) {
+      const confirm = await this._global.confirmAlert.getDeleteConfirmationWithName(shopName);
+      if (confirm) {
+        user.associatedShops = user.associatedShops.filter(s => s.shopId !== shopId);
+        user.currentShopId =
+          user.currentShopId === shopId && user.associatedShops.length > 0
+            ? user.associatedShops[0].shopId
+            : user.currentShopId !== shopId
+            ? user.currentShopId
+            : '';
+      }
+    }
+
+    return user;
+  }
+
+  public getDefaultUser() {
+    return this.defaultUser();
   }
 
   public async getUserManagementCriteria(): Promise<UserManagementCriteria> {

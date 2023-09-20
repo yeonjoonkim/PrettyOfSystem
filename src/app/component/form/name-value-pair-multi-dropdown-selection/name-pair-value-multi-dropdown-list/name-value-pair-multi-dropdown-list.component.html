@@ -15,6 +15,15 @@
   </flex-row>
 
   <flex-col-item>
+    <div id="all-btn-container">
+      <div
+        *ngIf="selection.length > 1"
+        id="all-btn"
+        (click)="all()"
+        [ngClass]="{ active: selected?.length === 0 }">
+        <span id="all-btn-text"> {{ 'label.title.all' | languageTransform | async }}</span>
+      </div>
+    </div>
     <kendo-grid
       id="dropdown-list"
       [style.max-height]="maxHeight"

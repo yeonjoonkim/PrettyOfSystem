@@ -9,18 +9,18 @@
   </form-header>
 
   <form-container>
-    <flex-col>
-      <flex-col-item>
-        <gender-selection [(gender)]="user.gender" [readOnly]="form.readOnly"></gender-selection>
-      </flex-col-item>
-      <flex-col-item>
+    <flex-row>
+      <flex-row-item>
         <login-option-selection
-          [readOnly]="form.readOnly"
           mode="form"
+          [readOnly]="form.readOnly"
           [(loginOption)]="user.loginOption"
           (loginOptionChange)="onChangeLoginOption()"></login-option-selection>
-      </flex-col-item>
-    </flex-col>
+      </flex-row-item>
+      <flex-row-item>
+        <gender-selection [(gender)]="user.gender" [readOnly]="form.readOnly"></gender-selection>
+      </flex-row-item>
+    </flex-row>
     <!-- Name -->
     <flex-row>
       <flex-row-item>
@@ -66,71 +66,9 @@
     </flex-col-item>
   </flex-col>
   <flex-col *ngIf="user.loginOption.email && (form.action === 'create' || form.action === 'edit')">
-    <flex-col-item>
-      <kendo-label text="{{ 'label.title.password' | languageTransform | async }}">
-        <kendo-textbox
-          #passwordOne
-          placeholder="{{ 'placeholder.title.required' | languageTransform | async }}"
-          [clearButton]="true"
-          [(value)]="passwordConfirmation.one"
-          (valueChange)="onChangePasswordOne()">
-          <ng-template kendoTextBoxSuffixTemplate>
-            <button
-              *ngIf="visible.passwordOne"
-              kendoButton
-              look="clear"
-              icon="unlock"
-              (click)="togglePasswordOne()"></button>
-            <button
-              *ngIf="!visible.passwordOne"
-              kendoButton
-              look="clear"
-              icon="lock"
-              (click)="togglePasswordOne()"></button>
-          </ng-template>
-        </kendo-textbox>
-      </kendo-label>
-    </flex-col-item>
-    <flex-col-item>
-      <kendo-label text="{{ 'label.title.passwordconfirmation' | languageTransform | async }}">
-        <kendo-textbox
-          #passwordTwo
-          placeholder="{{ 'placeholder.title.required' | languageTransform | async }}"
-          [clearButton]="true"
-          [(value)]="passwordConfirmation.two"
-          (valueChange)="onChangePasswordTwo()">
-          <ng-template kendoTextBoxSuffixTemplate>
-            <button
-              *ngIf="visible.passwordTwo"
-              kendoButton
-              look="clear"
-              icon="unlock"
-              (click)="togglePasswordTwo()"></button>
-            <button
-              *ngIf="!visible.passwordTwo"
-              kendoButton
-              look="clear"
-              icon="lock"
-              (click)="togglePasswordTwo()"></button>
-          </ng-template>
-        </kendo-textbox>
-      </kendo-label>
-    </flex-col-item>
-    <flex-col-item>
-      <div class="form-error-container">
-        <kendo-formerror
-          *ngIf="
-            (passwordConfirmation.one || passwordConfirmation.two) &&
-            (!passwordValidation.one || !passwordValidation.two)
-          "
-          >{{
-            'messageerror.description.passworderror' | languageTransform | async
-          }}</kendo-formerror
-        >
-        <kendo-formerror *ngIf="passwordValidation.two && !validator.password">
-          {{ 'messageerror.description.passwordnotmatch' | languageTransform | async }}
-        </kendo-formerror>
-      </div>
-    </flex-col-item>
+    <password-confirmation
+      (passwordChange)="setPassword($event)"
+      [(validate)]="validator.password"
+      (validateChange)="onChangePasswordValidation()"></password-confirmation>
   </flex-col>
 </ion-content>

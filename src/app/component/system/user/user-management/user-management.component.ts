@@ -30,11 +30,16 @@ export class UserManagementComponent implements OnInit {
 
   async ngOnInit() {
     await this.refresh();
-    await this.onClickEditUser(this.criteria.userGridData[0]);
   }
 
   public async onClickCreateSystemAdmin() {
     const modal = await this._userAdmin.modal.presentCreateNewSystemAdmin();
+    await modal.present();
+    await this.handleModalDismiss(modal);
+  }
+
+  public async onClickCreateUser() {
+    const modal = await this._userAdmin.modal.presentCreateUser(this.criteria);
     await modal.present();
     await this.handleModalDismiss(modal);
   }
@@ -66,7 +71,11 @@ export class UserManagementComponent implements OnInit {
           .toLowerCase()
           .replace(/\s/g, '')
           .includes(queryParam);
-        const phoneNumberCompared = user.phoneNumber.includes(queryParam);
+        const phoneNumberCompared =
+          user.phoneNumber.includes(queryParam) ||
+          user.phoneNumber.substring(3).includes(queryParam) ||
+          ('0' + user.phoneNumber.substring(3)).includes(queryParam);
+
         const emailCompared = user.email.includes(queryParam);
 
         return (nameCompared || phoneNumberCompared || emailCompared) && shopCompared;

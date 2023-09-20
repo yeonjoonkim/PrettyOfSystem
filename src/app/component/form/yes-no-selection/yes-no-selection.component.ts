@@ -6,7 +6,7 @@ import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./yes-no-selection.component.scss'],
 })
 export class YesNoSelectionComponent implements OnInit {
-  @Input() label: string = '';
+  @Input() title: string = '';
   @Input() value: boolean = false;
   @Input() simpleMode: boolean = false;
   @Input() size: 'small' | 'medium' | 'large' = 'medium';

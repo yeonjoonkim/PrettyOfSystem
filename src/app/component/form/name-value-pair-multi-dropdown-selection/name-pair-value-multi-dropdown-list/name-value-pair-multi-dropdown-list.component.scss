@@ -10,6 +10,28 @@ flex-row-item {
   margin: 0;
 }
 
+::ng-deep span.k-button-text #selected-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#all-btn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin: 0px 1px;
+  height: 32px;
+  font-size: 14px;
+}
+#all-btn-text {
+  padding: 8px 12px;
+}
+#all-btn-container {
+  display: flex;
+  justify-content: center;
+}
+
 #search-container {
   flex: 6;
 }
@@ -22,5 +44,6 @@ flex-row-item {
     width: 80px;
     max-width: 100px;
     min-width: 80px;
+    height: 32px;
   }
 }

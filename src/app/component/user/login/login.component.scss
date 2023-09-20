@@ -7,6 +7,10 @@ button {
   height: 200px;
 }
 
+.g-recaptcha {
+  visibility: hidden;
+}
+
 #otp-tool {
   display: flex;
   flex-direction: row;

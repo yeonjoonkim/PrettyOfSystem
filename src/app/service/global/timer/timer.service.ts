@@ -28,7 +28,7 @@ export class TimerService {
     this._dateTransform = new DateTransformService();
   }
 
-  public async startTimerByMin(min: number) {
+  public startTimerByMin(min: number) {
     const now = new Date();
     const endDateTime = this._dateTransform.addMin(now, min);
     const duration = this.calculateDiffEndAndCurrent(endDateTime, now);

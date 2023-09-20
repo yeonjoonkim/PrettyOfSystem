@@ -11,23 +11,23 @@
   <!--Role Config -->
   <yes-no-selection-group>
     <yes-no-selection
-      label="label.title.systemadmin"
+      title="label.title.systemadmin"
       [(value)]="category.accessLevel.isSystemAdmin"
       (valueChange)="onChangeSystemAdminAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
-      label="label.title.admin"
+      title="label.title.admin"
       [(value)]="category.accessLevel.isAdmin"
       (valueChange)="onChangeAdminAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
-      label="label.title.manager"
+      title="label.title.manager"
       [(value)]="category.accessLevel.isManager"
       (valueChange)="onChangeManagerAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
-      label="label.title.employee"
+      title="label.title.employee"
       [(value)]="category.accessLevel.isEmployee"
       (valueChange)="onChangeEmployeeAccessCtrl($event)"></yes-no-selection>
     <yes-no-selection
-      label="label.title.reception"
+      title="label.title.reception"
       [(value)]="category.accessLevel.isReception"
       (valueChange)="onChangeReceptionAccessCtrl($event)"></yes-no-selection>
   </yes-no-selection-group>

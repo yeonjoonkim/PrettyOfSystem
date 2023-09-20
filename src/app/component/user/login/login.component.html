@@ -1,18 +1,19 @@
 <!--Login Option -->
+<div id="recaptcha-container"></div>
+
 <div id="login">
+  <!--Error Message-->
+  <flex-col *ngIf="login.errorMsg">
+    <flex-col-item id="error-col-item">
+      <error-message-item>{{ login.errorMsg | languageTransform | async }}</error-message-item>
+    </flex-col-item>
+  </flex-col>
   <flex-col *ngIf="!sendOTP">
     <flex-col-item>
       <login-option-selection
         mode="login"
         [(loginOption)]="loginOption"
         (loginOptionChange)="onChangeLoginOption()"></login-option-selection>
-    </flex-col-item>
-  </flex-col>
-
-  <!--Error Message-->
-  <flex-col *ngIf="login.errorMsg">
-    <flex-col-item id="error-col-item">
-      <error-message-item>{{ login.errorMsg | languageTransform | async }}</error-message-item>
     </flex-col-item>
   </flex-col>
 
@@ -25,7 +26,7 @@
         [(validate)]="validator.phone"></phone-number>
     </flex-col-item>
     <flex-col-item *ngIf="!sendOTP && loginOption.phoneNumber">
-      <button kendoButton [disabled]="!validator.phone" (click)="sendPhoneOTP()">
+      <button id="otp-btn" kendoButton [disabled]="!validator.phone" (click)="sendPhoneOTP()">
         {{ 'label.title.sendverification' | languageTransform | async }}
       </button>
     </flex-col-item>
@@ -62,8 +63,12 @@
       </section>
     </flex-col-item>
     <flex-col-item>
-      <button kendoButton [disabled]="!enableOTPVerificationBtn" (click)="verifyPhoneOTP()">
-        {{ 'label.title.verification' | languageTransform | async }}
+      <button
+        id="otp-btn"
+        kendoButton
+        [disabled]="!enableOTPVerificationBtn"
+        (click)="verifyPhoneOTP()">
+        {{ 'label.title.confirmation' | languageTransform | async }}
       </button>
     </flex-col-item>
   </flex-col>

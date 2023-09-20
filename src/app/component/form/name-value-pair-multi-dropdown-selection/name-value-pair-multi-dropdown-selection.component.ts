@@ -20,7 +20,7 @@ import { PopoverController } from '@ionic/angular';
 import { NameValuePairMultiDropdownlistComponent } from './name-pair-value-multi-dropdown-list/name-value-pair-multi-dropdown-list.component';
 
 @Component({
-  selector: 'name-value-pair-multi-selection',
+  selector: 'name-value-pair-multi-dropdown-selection',
   templateUrl: './name-value-pair-multi-dropdown-selection.component.html',
   styleUrls: ['./name-value-pair-multi-dropdown-selection.component.scss'],
 })
@@ -113,7 +113,6 @@ export class NameValuePairDropdownMultiSelectionComponent
   private async dismissListener(dropdownList: HTMLIonPopoverElement) {
     let event = await dropdownList.onWillDismiss();
     if (event?.data !== undefined) {
-      console.log(event.data);
       this.selected = event.data?.selected;
       await this.setText();
       this.selectedChange.emit(this.selectedSelection);

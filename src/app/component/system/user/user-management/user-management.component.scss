@@ -29,6 +29,14 @@
   text-overflow: ellipsis;
 }
 
+#associated-shop-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: row;
+}
+
 @media (max-width: 620px) {
   #shop-count,
   #disabled {

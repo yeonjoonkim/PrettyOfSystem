@@ -2,18 +2,31 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IUser } from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
-import { Observable, catchError, from, map, switchMap } from 'rxjs';
+import { Observable, catchError, from, lastValueFrom, map, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserCredentialRepositoryService {
   private readonly _timeStamp = { lastModifiedDate: new Date() };
+  private readonly _emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   constructor(private _afs: AngularFirestore) {}
+
+  public async verifyUserAccount(input: string) {
+    const isEmailUser = this._emailRegex.test(input);
+    if (isEmailUser) {
+      return await this.verifyUserByEmail(input);
+    } else {
+      return await this.verifyUserByPhone(input);
+    }
+  }
 
   public subscribeUserByPhoneNumber(phoneNumber: string): Observable<IUser | null> {
     const userCollectionRef = this._afs.collection<IUser>(Db.Context.User, ref =>
-      ref.where('phoneNumber', '==', phoneNumber).limit(1)
+      ref
+        .where('phoneNumber', '==', phoneNumber)
+        .where('loginOption.phoneNumber', '==', true)
+        .limit(1)
     );
 
     return userCollectionRef.get().pipe(
@@ -32,7 +45,7 @@ export class UserCredentialRepositoryService {
 
   public subscribeUserByEmail(email: string): Observable<IUser | null> {
     const userCollectionRef = this._afs.collection<IUser>(Db.Context.User, ref =>
-      ref.where('email', '==', email).limit(1)
+      ref.where('email', '==', email).where('loginOption.email', '==', true).limit(1)
     );
 
     return userCollectionRef.get().pipe(
@@ -85,6 +98,28 @@ export class UserCredentialRepositoryService {
     const updateCriteria = { ...user, ...this._timeStamp };
     try {
       await this._afs.collection(Db.Context.User).doc(user.id).update(updateCriteria);
-    } catch (err) {}
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  public async deleteUser(user: IUser) {
+    try {
+      await this._afs.collection(Db.Context.User).doc(user.id).delete();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  private async verifyUserByEmail(email: string) {
+    const user = await lastValueFrom(this.subscribeUserByEmail(email));
+    return user !== null;
+  }
+
+  private async verifyUserByPhone(phone: string) {
+    const user = await lastValueFrom(this.subscribeUserByPhoneNumber(phone));
+    return user !== null;
   }
 }

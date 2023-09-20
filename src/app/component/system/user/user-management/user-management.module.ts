@@ -9,16 +9,23 @@ import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pip
 //Import Module
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
-import { LoginOptionSelectionModule } from 'src/app/component/user/login-option-selection/login-option-selection.module';
 import { GenderSelectionModule } from 'src/app/component/user/gender-selection/gender-selection.module';
+import { LoginOptionSelectionModule } from 'src/app/component/user/login-option-selection/login-option-selection.module';
 
 //Import Component
 import { UserManagementComponent } from './user-management.component';
 import { NewSystemAdminComponent } from '../new-system-admin/new-system-admin.component';
 import { EditUserComponent } from '../edit-user/edit-user.component';
-
+import { AddAssociatedShopComponent } from '../add-associated-shop/add-associated-shop.component';
+import { NewUserComponent } from '../new-user/new-user.component';
 @NgModule({
-  declarations: [UserManagementComponent, NewSystemAdminComponent, EditUserComponent],
+  declarations: [
+    UserManagementComponent,
+    NewSystemAdminComponent,
+    EditUserComponent,
+    AddAssociatedShopComponent,
+    NewUserComponent,
+  ],
   imports: [
     CommonModule,
     CommonModule,
@@ -27,8 +34,8 @@ import { EditUserComponent } from '../edit-user/edit-user.component';
     LanguageTransformPipeModule,
     SharedFormModule,
     KendoUiModule,
-    LoginOptionSelectionModule,
     GenderSelectionModule,
+    LoginOptionSelectionModule,
   ],
   exports: [UserManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

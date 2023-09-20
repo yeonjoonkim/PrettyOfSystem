@@ -5922,7 +5922,7 @@ firebase-functions-test@^3.1.0:
     lodash "^4.17.5"
     ts-deepmerge "^2.0.1"
 
-firebase@^9.8.0, firebase@9.9.3:
+firebase@^9.8.0, firebase@^9.9.3:
   version "9.9.3"
   resolved "https://registry.npmjs.org/firebase/-/firebase-9.9.3.tgz"
   integrity sha512-lU1FstWqfVZQfz4+TWCZvqJYbwZMyoyP0X/xD/YIfrtXgquOMEDTpoasH4P79N9y3I8iV+6gQHuVmpK+AX2elg==

@@ -5,9 +5,7 @@
     [enabledSavebutton]="form.enabledSavebutton"
     [action]="form.action"
     (onClickDismiss)="dismiss()"
-    (onClickEdit)="handleEdit()"
-    (onClickSave)="handleSave()"
-    (onClickDelete)="handleDelete()">
+    (onClickCreate)="onClickCreate()">
   </form-header>
   <flex-col>
     <kendo-buttongroup selection="single" width="100%">
@@ -29,8 +27,9 @@
         <flex-col-item id="login-option-container">
           <login-option-selection
             mode="login"
-            [loginOption]="user.loginOption"
-            [readOnly]="true"></login-option-selection>
+            [(loginOption)]="user.loginOption"
+            (loginOptionChange)="onChangeLoginOption()"
+            [readOnly]="form.readOnly"></login-option-selection>
         </flex-col-item>
         <flex-col-item>
           <gender-selection [(gender)]="user.gender" [readOnly]="form.readOnly"></gender-selection>
@@ -46,12 +45,6 @@
             title="label.title.active"
             [(value)]="!user.disabledAccount"
             [readOnly]="form.readOnly"></yes-no-selection>
-          <yes-no-selection
-            *ngIf="user.loginOption.email && form.action === 'edit' && !form.readOnly"
-            title="label.title.resetpassword"
-            [(value)]="resetPassword"
-            [readOnly]="form.readOnly"
-            (valueChange)="onClickResetPassword()"></yes-no-selection>
         </yes-no-selection-group>
       </flex-col-item>
     </flex-row>
@@ -96,7 +89,7 @@
       </flex-row-item>
     </flex-row>
     <password-confirmation
-      *ngIf="resetPassword"
+      *ngIf="user.loginOption.email"
       (passwordChange)="setPassword($event)"
       [(validate)]="validator.password"
       (validateChange)="handleEnabledSaveBtn()"></password-confirmation>
@@ -140,16 +133,6 @@
                 value: shop.role.id
               }"
               [readOnly]="form.readOnly"></name-value-pair-single-dropdown-selection>
-          </ng-template>
-        </kendo-grid-column>
-        <kendo-grid-column title="{{ 'label.title.displayinbooking' | languageTransform | async }}">
-          <ng-template kendoGridCellTemplate let-shop>
-            <input
-              id="associated-shop-active"
-              type="checkbox"
-              kendoCheckBox
-              [checked]="shop.displayInSystem"
-              [disabled]="form.readOnly" />
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column title="{{ 'label.title.active' | languageTransform | async }}">

@@ -18,11 +18,11 @@ export class EmailComponent implements OnInit {
   @Input() isRequired: boolean = false;
   @Input()
   get email() {
-    return this.validEmail;
+    return this.validEmail.toLowerCase();
   }
   set email(value: string) {
-    this.validEmail = value;
-    this.emailChange.emit(this.validEmail);
+    this.validEmail = value.toLowerCase();
+    this.emailChange.emit(this.validEmail.toLowerCase());
   }
   @Input()
   get validate() {

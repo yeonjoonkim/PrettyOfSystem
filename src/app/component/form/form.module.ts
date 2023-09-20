@@ -13,6 +13,7 @@ import { TimeZoneModule } from './time-zone/time-zone.module';
 import { DatePeriodPickerModule } from './date-period-picker/date-period-picker.module';
 import { NameValuePairSingleDropdownSelectionModule } from './name-value-pair-single-dropdown-selection/name-value-pair-single-dropdown-selection.module';
 import { NameValuePairMultiSelectionModule } from './name-value-pair-multi-dropdown-selection/name-value-pair-multi-dropdown-selection.module';
+import { PasswordConfirmationModule } from './password-confirmation/password-confirmation.module';
 @NgModule({
   declarations: [],
   imports: [],
@@ -31,6 +32,7 @@ import { NameValuePairMultiSelectionModule } from './name-value-pair-multi-dropd
     DatePeriodPickerModule,
     NameValuePairSingleDropdownSelectionModule,
     NameValuePairMultiSelectionModule,
+    PasswordConfirmationModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

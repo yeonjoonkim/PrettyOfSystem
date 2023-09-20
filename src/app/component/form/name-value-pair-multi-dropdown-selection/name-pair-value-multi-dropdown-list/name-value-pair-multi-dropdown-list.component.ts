@@ -60,9 +60,16 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
     if (!isExisted) {
       this.selected.push(newSelected);
     }
+    if (isExisted) {
+      this.selected = this.selected.filter(r => r.value !== newSelected.value);
+    }
     if (allSelected) {
       this.selected = [];
     }
+  }
+
+  public all() {
+    this.selected = [];
   }
 
   public async apply() {

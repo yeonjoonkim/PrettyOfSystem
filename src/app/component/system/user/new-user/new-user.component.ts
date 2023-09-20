@@ -9,70 +9,82 @@ import {
   UserManagementCriteria,
 } from 'src/app/interface';
 import { UserAdminService } from 'src/app/service/user/user-admin/user-admin.service';
-import * as Constant from '../../../../constant/constant';
-import { GlobalService } from 'src/app/service/global/global.service';
-
+import * as Constant from 'src/app/constant/constant';
 @Component({
-  selector: 'app-edit-user',
-  templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.scss'],
+  selector: 'new-user',
+  templateUrl: './new-user.component.html',
+  styleUrls: ['./new-user.component.scss'],
 })
-export class EditUserComponent implements OnInit {
+export class NewUserComponent implements OnInit {
   public pages: NameValuePairType[] = [
     { name: 'label.title.information', value: 'page1' },
     { name: 'label.title.associatedshop', value: 'page2' },
   ];
   public currentPage: NameValuePairType = { name: 'label.title.information', value: 'page1' };
-  public form!: IFormHeaderModalProp;
-  public user: IUser = this._systemAdmin.getDefaultUser();
   public roleFilters: NameValuePairType[] = [];
   public shopFilters: NameValuePairType[] = [];
-  public resetPassword: boolean = false;
+  public form!: IFormHeaderModalProp;
+  public user: IUser = this._systemAdmin.getDefaultUser();
   public validator = {
-    firstName: false,
-    lastName: false,
     phone: false,
     email: false,
     password: false,
+    firstName: false,
+    lastName: false,
+    associatedShop: false,
   };
-  private _paramUser!: IUser;
+
   private _roles: RoleConfigurationType[] = [];
-  private _encryptedPassword: string = '';
   private _criteria!: UserManagementCriteria;
-  constructor(
-    private _navParams: NavParams,
-    private _systemAdmin: UserAdminService,
-    private _global: GlobalService
-  ) {}
+  constructor(private _navParams: NavParams, private _systemAdmin: UserAdminService) {}
 
   async ngOnInit() {
     await this.loadingFromCtrl();
   }
 
-  public async handleEdit() {
-    this.form.readOnly = false;
+  public onChangeLoginOption() {
+    this.validator.password = false;
+    this.user.encryptedPassword = '';
+    this.handleEnabledSaveBtn();
   }
 
-  public async handleSave() {
-    this.user.encryptedPassword =
-      this.user.loginOption.email && this.resetPassword
-        ? this._encryptedPassword
-        : this.user.encryptedPassword;
-    await this._systemAdmin.updateUser(this.user);
-    await this._global.modal.dismissRefreshAction();
+  public handleEnabledSaveBtn() {
+    const fullNameValiator = this.validator.firstName && this.validator.lastName;
+    this.validator.associatedShop = this.user.associatedShops.length > 0;
+    let enabled =
+      this.validator.email &&
+      fullNameValiator &&
+      this.validator.phone &&
+      this.validator.associatedShop;
+    if (this.user.loginOption.email) {
+      enabled = enabled && this.validator.password;
+    }
+    this.form.enabledSavebutton = enabled;
   }
 
-  public async handleDelete() {
-    await this._systemAdmin.deleteUser(this.user);
-    await this._global.modal.dismissRefreshAction();
+  public onChangePasswordValidation() {
+    if (!this.validator.password) {
+      this.user.encryptedPassword = '';
+    }
+    this.handleEnabledSaveBtn();
+  }
+
+  public setPassword(pwd: string) {
+    this.user.encryptedPassword = pwd;
+    this.handleEnabledSaveBtn();
   }
 
   public async dismiss() {
     await this._systemAdmin.modal.dismiss();
   }
 
+  public async onClickCreate() {
+    await this._systemAdmin.handleCreate(this.user, false);
+  }
+
   public onPageChange(page: NameValuePairType) {
     this.currentPage = page;
+    this.handleEnabledSaveBtn();
   }
 
   public onChangeAssociatedShopRole(
@@ -85,6 +97,7 @@ export class EditUserComponent implements OnInit {
       const index = this.user.associatedShops.findIndex(s => s.shopId === selectedShop.shopId);
       this.user.associatedShops[index] = selectedShop;
     }
+    this.handleEnabledSaveBtn();
   }
 
   public async onClickAddAssociatedShopRole(event: any) {
@@ -93,31 +106,7 @@ export class EditUserComponent implements OnInit {
       this.user,
       this._criteria
     );
-  }
-
-  public setPassword(pwd: string) {
-    this._encryptedPassword = pwd;
-  }
-
-  public async onClickResetPassword() {
-    this._encryptedPassword = '';
     this.handleEnabledSaveBtn();
-  }
-
-  public async handleEnabledSaveBtn() {
-    let validation =
-      this.validator.firstName &&
-      this.validator.lastName &&
-      this.validator.phone &&
-      this.validator.email;
-
-    if (this.user.loginOption.email) {
-      validation = this.resetPassword ? validation && this.validator.password : validation;
-      if (!this.validator.password) {
-        this._encryptedPassword = '';
-      }
-    }
-    this.form.enabledSavebutton = validation;
   }
 
   public async onClickDeleteAssociatedShop(selected: UserAssociatedShopType) {
@@ -129,13 +118,12 @@ export class EditUserComponent implements OnInit {
         shop.name
       );
     }
+    this.handleEnabledSaveBtn();
   }
 
   private async loadingFromCtrl() {
     const form: IFormHeaderModalProp = this._navParams.get(Constant.Default.ComponentMode.Form);
     const _criteria: UserManagementCriteria = this._navParams.get('criteria');
-    this._paramUser = this._navParams.get('config');
-
     this.form = form
       ? form
       : {
@@ -144,7 +132,6 @@ export class EditUserComponent implements OnInit {
           action: Constant.Default.FormAction.Read,
           enabledSavebutton: false,
         };
-    this.user = this._paramUser ? this._paramUser : this._systemAdmin.getDefaultUser();
 
     if (_criteria !== undefined && _criteria !== null) {
       this._criteria = _criteria;
