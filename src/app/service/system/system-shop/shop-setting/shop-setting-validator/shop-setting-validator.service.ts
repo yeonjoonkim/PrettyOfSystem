@@ -8,11 +8,11 @@ import { ShopSettingTimePicker } from './shop-setting-time-picker/shop-setting-t
   providedIn: 'root',
 })
 export class ShopSettingValidatorService {
-  private general: ShopSettingGeneral;
-  private timePicker: ShopSettingTimePicker;
+  private _general: ShopSettingGeneral;
+  private _timePicker: ShopSettingTimePicker;
   constructor() {
-    this.general = new ShopSettingGeneral();
-    this.timePicker = new ShopSettingTimePicker();
+    this._general = new ShopSettingGeneral();
+    this._timePicker = new ShopSettingTimePicker();
   }
 
   public getValidatedResult(
@@ -20,13 +20,16 @@ export class ShopSettingValidatorService {
     defaultSetting: IShopSetting
   ): ShopSettingValiationResultType {
     let hasMissingValue: boolean = this.hasMissingValue(setting);
-    setting.general = this.general.getEffectiveGeneral(setting, defaultSetting.general);
-    setting.timePicker = this.timePicker.getEffectiveTimePicker(setting, defaultSetting.timePicker);
+    setting.general = this._general.getEffectiveGeneral(setting, defaultSetting.general);
+    setting.timePicker = this._timePicker.getEffectiveTimePicker(
+      setting,
+      defaultSetting.timePicker
+    );
 
     return { setting: setting, isModified: hasMissingValue };
   }
 
   private hasMissingValue(s: IShopSetting) {
-    return this.general.hasMissingValue(s) || this.timePicker.hasMissingValue(s);
+    return this._general.hasMissingValue(s) || this._timePicker.hasMissingValue(s);
   }
 }

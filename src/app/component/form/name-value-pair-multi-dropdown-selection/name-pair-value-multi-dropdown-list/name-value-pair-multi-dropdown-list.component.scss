@@ -1,0 +1,47 @@
+#dropdown-list tr.active {
+  background-color: red;
+}
+
+#dropdown-list tr.deactive {
+  background-color: black;
+}
+flex-col-item,
+flex-row-item {
+  margin: 0;
+}
+
+::ng-deep span.k-button-text #selected-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#all-btn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin: 0px 1px;
+  height: 32px;
+  font-size: 14px;
+}
+#all-btn-text {
+  padding: 8px 12px;
+}
+#all-btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+#search-container {
+  flex: 6;
+}
+#apply-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  #apply-btn {
+    width: 100%;
+    height: 33px;
+  }
+}

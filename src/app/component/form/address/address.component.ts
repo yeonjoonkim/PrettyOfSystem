@@ -23,6 +23,11 @@ export interface AddressTypeAutoCompleteFilterOption {
   styleUrls: ['./address.component.scss'],
 })
 export class AddressComponent implements OnInit, OnChanges {
+  private readonly _onChangeOption = {
+    defaultState: 'defaultState',
+    defaultSuburb: 'defaultSuburb',
+  };
+
   @Output() addressChange = new EventEmitter<AddressType>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() readOnly: boolean = false;
@@ -57,10 +62,6 @@ export class AddressComponent implements OnInit, OnChanges {
     suburb: [],
     state: [],
   };
-  private readonly onChangeOption = {
-    defaultState: 'defaultState',
-    defaultSuburb: 'defaultSuburb',
-  };
   public placeHolder: string = '';
   public entered = {
     street: false,
@@ -68,7 +69,7 @@ export class AddressComponent implements OnInit, OnChanges {
     state: false,
   };
 
-  constructor(private postcode: PostcodeService, private global: GlobalService) {}
+  constructor(private _postcode: PostcodeService, private _global: GlobalService) {}
 
   async ngOnInit() {
     await this.setDefaultPlaceHolder();
@@ -80,8 +81,8 @@ export class AddressComponent implements OnInit, OnChanges {
   }
 
   private handleOnChangeDefaultState(changes: SimpleChanges) {
-    let currentValue = changes[this.onChangeOption.defaultState]?.currentValue;
-    let previousValue = changes[this.onChangeOption.defaultState]?.previousValue;
+    let currentValue = changes[this._onChangeOption.defaultState]?.currentValue;
+    let previousValue = changes[this._onChangeOption.defaultState]?.previousValue;
     let valueChanged =
       currentValue !== undefined && previousValue != undefined && previousValue != currentValue;
     if (valueChanged) {
@@ -100,7 +101,7 @@ export class AddressComponent implements OnInit, OnChanges {
     let isValidated: boolean = this.setAddressValidator();
     this.address.state = isValidated ? this.address.state : this.defaultState;
     this.address.suburb = isValidated ? this.address.suburb : this.defaultSuburb;
-    this.filterOption = this.postcode.setPostCodeFilterOption(this.address.state);
+    this.filterOption = this._postcode.setPostCodeFilterOption(this.address.state);
     this.onChangeSuburb();
   }
 
@@ -146,8 +147,8 @@ export class AddressComponent implements OnInit, OnChanges {
     this.autoCompleteFilter.state = [];
     this.autoCompleteFilter.suburb = [];
     this.filterOption = !isEmpty
-      ? this.postcode.setPostCodeFilterOption(this.address.state)
-      : this.postcode.setPostCodeFilterOption(this.defaultState);
+      ? this._postcode.setPostCodeFilterOption(this.address.state)
+      : this._postcode.setPostCodeFilterOption(this.defaultState);
     this.validate = this.setAddressValidator();
     this.addressChange.emit(this.inputAddress);
   }
@@ -164,7 +165,7 @@ export class AddressComponent implements OnInit, OnChanges {
 
   private async setDefaultPlaceHolder() {
     this.placeHolder = this.isRequired
-      ? await this.global.language.transform('placeholder.title.required')
+      ? await this._global.language.transform('placeholder.title.required')
       : this.placeHolder;
   }
 }

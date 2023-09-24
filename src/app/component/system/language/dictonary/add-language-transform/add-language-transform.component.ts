@@ -3,7 +3,7 @@ import {
   IAddLanguageTransformSaveCommand,
   ILanguageTranslateItem,
 } from 'src/app/interface/system/language/language.interface';
-import { PairKeyValueType, PairNameValueType } from 'src/app/interface/global/global.interface';
+import { PairKeyValueType, NameValuePairType } from 'src/app/interface/global/global.interface';
 import { GlobalService } from 'src/app/service//global/global.service';
 import { PopoverController } from '@ionic/angular';
 
@@ -13,8 +13,8 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['./add-language-transform.component.scss'],
 })
 export class AddLanguageTransformComponent implements OnInit {
-  private isSaved: boolean = false;
-  public componentSelection: PairNameValueType[] = [
+  private _isSaved: boolean = false;
+  public componentSelection: NameValuePairType[] = [
     { name: 'option.title.option', value: 'option.' },
     { name: 'option.title.label', value: 'label.' },
     { name: 'option.title.button', value: 'button.' },
@@ -28,14 +28,14 @@ export class AddLanguageTransformComponent implements OnInit {
     { name: 'option.title.language', value: 'language.' },
     { name: 'option.title.role', value: 'role.' },
   ];
-  public formatSelection: PairNameValueType[] = [
+  public formatSelection: NameValuePairType[] = [
     { name: 'option.title.title', value: 'title.' },
     { name: 'option.title.description', value: 'description.' },
     { name: 'option.title.uppercase', value: 'upper.' },
     { name: 'option.title.lowercase', value: 'lowercase.' },
   ];
-  public selectedComponent: PairNameValueType = { name: 'option.title.label', value: 'label.' };
-  public selectedFormat: PairNameValueType = { name: 'option.title.title', value: 'title.' };
+  public selectedComponent: NameValuePairType = { name: 'option.title.label', value: 'label.' };
+  public selectedFormat: NameValuePairType = { name: 'option.title.title', value: 'title.' };
   public keyValue: string = '';
   public validator = {
     name: false,
@@ -45,7 +45,7 @@ export class AddLanguageTransformComponent implements OnInit {
     value: '',
   };
 
-  constructor(private global: GlobalService, private popOverCtrl: PopoverController) {}
+  constructor(private _global: GlobalService, private _popOverCtrl: PopoverController) {}
 
   ngOnInit() {}
 
@@ -77,20 +77,20 @@ export class AddLanguageTransformComponent implements OnInit {
 
   /** This will close the this component as a modal*/
   public async dismissAddLanguage(): Promise<void> {
-    await this.popOverCtrl.dismiss({ key: this.languageTransform.key, isSaved: this.isSaved });
+    await this._popOverCtrl.dismiss({ key: this.languageTransform.key, isSaved: this._isSaved });
   }
 
   /**This will start, when user click save button */
   public async onClickSaveButton(): Promise<void> {
     let validated: IAddLanguageTransformSaveCommand =
-      await this.global.language.validateNewKeyPairValue(this.languageTransform);
+      await this._global.language.validateNewKeyPairValue(this.languageTransform);
 
     if (validated.hasValue && validated.isKeyNotExisted && validated.isTransformKeyValueFormat) {
       let translateCriteria =
-        await this.global.language.management.translateCriteria.allLanguageCriteria(
+        await this._global.language.management.translateCriteria.allLanguageCriteria(
           this.languageTransform.key
         );
-      let result = await this.global.languageTranslate.get(
+      let result = await this._global.languageTranslate.get(
         this.languageTransform.value,
         translateCriteria,
         true
@@ -102,17 +102,11 @@ export class AddLanguageTransformComponent implements OnInit {
   /** This will update language package */
   private async updateLanguagePackage(result: ILanguageTranslateItem): Promise<void> {
     if (!result.isEmpty) {
-      let sccuess = await this.global.language.transform('messagesuccess.title.save');
-      await this.global.language.management.addPackage(
+      this._isSaved = await this._global.language.management.addPackage(
         result,
         this.languageTransform.key.toLowerCase()
       );
-      await this.global.toast.present(sccuess);
-      this.isSaved = true;
-      this.dismissAddLanguage();
-    } else {
-      let errorMsg = await this.global.language.transform('messagefail.title.unsaved');
-      await this.global.toast.presentError(errorMsg);
+      await this.dismissAddLanguage();
     }
   }
 }

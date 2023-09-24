@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PairKeyValueType, PairNameValueType } from 'src/app/interface/global/global.interface';
+import { PairKeyValueType, NameValuePairType } from 'src/app/interface/global/global.interface';
 import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
 import { AddLanguageTransformComponent } from './add-language-transform/add-language-transform.component';
 import { PopoverController } from '@ionic/angular';
@@ -14,8 +14,8 @@ import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 export class DictonaryComponent implements OnInit {
   @ViewChild('dropdownlist')
   public dropdownlist!: DropDownListComponent;
-  public selectedLang: PairNameValueType = { name: '', value: '' };
-  public languageSelectionList: PairNameValueType[] = [];
+  public selectedLang: NameValuePairType = { name: '', value: '' };
+  public languageSelectionList: NameValuePairType[] = [];
   public selectedKeyPairValueList: PairKeyValueType[] = [];
   public gridData: PairKeyValueType[] = [];
   public query: string = '';
@@ -23,8 +23,8 @@ export class DictonaryComponent implements OnInit {
 
   constructor(
     public systemLanguage: SystemLanguageService,
-    private popOverCtrl: PopoverController,
-    private global: GlobalService
+    private _popOverCtrl: PopoverController,
+    private _global: GlobalService
   ) {}
 
   async ngOnInit() {
@@ -46,7 +46,7 @@ export class DictonaryComponent implements OnInit {
   public async openAddLanguageTransform(event: any): Promise<void> {
     if (!this._isPopoverOpen) {
       this._isPopoverOpen = true;
-      let addLanguageTransformPopOver = await this.popOverCtrl.create({
+      let addLanguageTransformPopOver = await this._popOverCtrl.create({
         component: AddLanguageTransformComponent,
         event: event,
         translucent: true,
@@ -78,9 +78,9 @@ export class DictonaryComponent implements OnInit {
 
   public async setLanguageSelection() {
     let currentLanguage: string =
-      await this.global.language.management.storage.getCurrentLanguage();
-    await this.global.loading.show();
-    await this.global.language.management.storage.refresh().then(async () => {
+      await this._global.language.management.storage.getCurrentLanguage();
+    await this._global.loading.show();
+    await this._global.language.management.storage.refresh().then(async () => {
       let languageSelection = await this.systemLanguage.get();
       const keyPairValueList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(
         languageSelection
@@ -94,12 +94,25 @@ export class DictonaryComponent implements OnInit {
       this.selectedLang = this.selectedLang.value ? this.selectedLang : currentsystemLanguage[0];
       await this.onChangeLanguageSelection();
       this.onChangeQuery();
-      this.global.loading.dismiss();
+      this._global.loading.dismiss();
     });
   }
 
-  private async exportToCSV(data: PairKeyValueType[], selectedLang: PairNameValueType) {
-    await this.global.loading.show();
+  public async allExport() {
+    const promises = this.languageSelectionList.map(async r => {
+      const code = r.value;
+      const value = await this.systemLanguage.getSelectedLanguageKeyPairValueList(code);
+      return { name: r, value: value };
+    });
+
+    const result = await Promise.all(promises);
+    result.forEach(async exportCriteria => {
+      await this.exportToCSV(exportCriteria.value, exportCriteria.name);
+    });
+  }
+
+  private async exportToCSV(data: PairKeyValueType[], selectedLang: NameValuePairType) {
+    await this._global.loading.show();
     // Convert the data to CSV format
     const convertToCSV = (objArray: PairKeyValueType[]): string => {
       const header = 'key,value\n';
@@ -122,6 +135,6 @@ export class DictonaryComponent implements OnInit {
 
     const csv = convertToCSV(data);
     downloadCSV(csv, selectedLang.value + '.csv');
-    await this.global.loading.dismiss();
+    await this._global.loading.dismiss();
   }
 }

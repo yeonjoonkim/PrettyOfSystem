@@ -5,29 +5,24 @@ import {
 } from 'src/app/interface/system/language/language.interface';
 import { OpenAiService } from '../../open-ai/open-ai.service';
 import { TextTransformService } from '../text-transform/text-transform.service';
-import { LoadingService } from '../loading/loading.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LanguageTranslateService {
-  private readonly correctGrammer: string = 'Correct grammar ';
-  private readonly translateTo: string = 'Translate to ';
-  private readonly returnAs: string = 'return as ';
-  private readonly singleString: string = 'a single String Value.';
+  private readonly _correctGrammer: string = 'Correct grammar ';
+  private readonly _translateTo: string = 'Translate to ';
+  private readonly _returnAs: string = 'return as ';
+  private readonly _singleString: string = 'a single String Value.';
 
   //command
-  private readonly correctGrammerThenTranslateTo: string =
-    this.correctGrammer + 'then ' + this.translateTo;
-  private readonly returnAsSingleString: string = this.returnAs + this.singleString;
-  private readonly convertJSON: string =
+  private readonly _correctGrammerThenTranslateTo: string =
+    this._correctGrammer + 'then ' + this._translateTo;
+  private readonly _returnAsSingleString: string = this._returnAs + this._singleString;
+  private readonly _convertJSON: string =
     'It must convert into exact same JSON format without any description or information. Do not say any introduction.';
 
-  constructor(
-    private openAi: OpenAiService,
-    private textTransform: TextTransformService,
-    private loading: LoadingService
-  ) {}
+  constructor(private openAi: OpenAiService, private textTransform: TextTransformService) {}
 
   public async get(value: string, criteria: ILanguageTranslatedCriteria, loading: boolean) {
     let translated: ILanguageTranslateResult = criteria.format.isTitle
@@ -116,7 +111,7 @@ export class LanguageTranslateService {
     loading: boolean
   ): Promise<string> {
     let command =
-      selectedLanguage + this.setCommandSentenceFormat(value) + this.returnAsSingleString;
+      selectedLanguage + this.setCommandSentenceFormat(value) + this._returnAsSingleString;
     let response = await this.openAi.receiveResult(command, loading);
     let result: string = this.deleteSpaces(response);
     return result;
@@ -125,10 +120,10 @@ export class LanguageTranslateService {
   /** This will trigger open ai api to retreive the translate the sentence to English */
   public async getTranslateToEnglish(value: string, loading: boolean): Promise<string> {
     let command =
-      this.correctGrammerThenTranslateTo +
+      this._correctGrammerThenTranslateTo +
       'English' +
       this.setCommandSentenceFormat(value) +
-      this.returnAsSingleString;
+      this._returnAsSingleString;
     let response = await this.openAi.receiveResult(command, loading);
     let result: string = this.deleteSpaces(response);
 
@@ -136,12 +131,12 @@ export class LanguageTranslateService {
   }
 
   private getTranslatedCommand(value: string, criteria: ILanguageTranslatedCriteria) {
-    let firstCommand = this.correctGrammerThenTranslateTo;
+    let firstCommand = this._correctGrammerThenTranslateTo;
     let commandFormat = this.setCommandSentenceFormat(value);
     let allLanguageCommand = criteria.name.join(', ');
     let jsonFormatCommand = this.setJSONFormatCommand(criteria.code);
     let command =
-      firstCommand + allLanguageCommand + commandFormat + this.convertJSON + jsonFormatCommand;
+      firstCommand + allLanguageCommand + commandFormat + this._convertJSON + jsonFormatCommand;
 
     return command;
   }

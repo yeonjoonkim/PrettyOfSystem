@@ -40,7 +40,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
   public maxTime: Date = new Date();
   public steps: TimePickerIncrementalSteps = { minute: 0 };
 
-  constructor(private global: GlobalService) {}
+  constructor(private _global: GlobalService) {}
   ngOnChanges(changes: SimpleChanges): void {
     let timeChanges = changes['time'];
     this.handleChange(timeChanges);
@@ -58,7 +58,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
     }
   }
   public onChangeDate() {
-    this.time = this.global.date.getTimeItem(this.date);
+    this.time = this._global.date.getTimeItem(this.date);
   }
 
   private setDefault() {
@@ -68,19 +68,19 @@ export class TimePickerComponent implements OnInit, OnChanges {
   }
 
   private setDefaultStep() {
-    this.steps = this.global.date.getTimePickerIncrementalSteps(this.intervalMin);
+    this.steps = this._global.date.getTimePickerIncrementalSteps(this.intervalMin);
   }
 
   private setDefaultMinTimePicker() {
-    let minHours: number = !this.global.isUndefinedOrNull(this.openTime) ? this.openTime.hr : 0;
-    let minMintues: number = !this.global.isUndefinedOrNull(this.openTime) ? this.openTime.min : 0;
+    let minHours: number = !this._global.isUndefinedOrNull(this.openTime) ? this.openTime.hr : 0;
+    let minMintues: number = !this._global.isUndefinedOrNull(this.openTime) ? this.openTime.min : 0;
     this.minTime.setHours(minHours);
     this.minTime.setMinutes(minMintues);
   }
 
   private setDefaultMaxTimePicker() {
-    let maxHours: number = !this.global.isUndefinedOrNull(this.closeTime) ? this.closeTime.hr : 23;
-    let maxMintues: number = !this.global.isUndefinedOrNull(this.closeTime)
+    let maxHours: number = !this._global.isUndefinedOrNull(this.closeTime) ? this.closeTime.hr : 23;
+    let maxMintues: number = !this._global.isUndefinedOrNull(this.closeTime)
       ? this.closeTime.min
       : 59;
     this.maxTime.setHours(maxHours);

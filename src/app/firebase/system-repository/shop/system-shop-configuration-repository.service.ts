@@ -1,35 +1,44 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { from, lastValueFrom, map, Observable, switchMap } from 'rxjs';
 import {
-  IShopCategory,
-  IShopConfiguration,
-  IShopCountry,
+  combineLatest,
+  filter,
+  from,
+  lastValueFrom,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  switchMap,
+  toArray,
+} from 'rxjs';
+import {
+  ShopCategoryType,
+  ShopConfigurationType,
+  ShopCountryType,
 } from 'src/app/interface/shop/shop.interface';
-import { LanguageService } from 'src/app/service/global/language/language.service';
 import { FirebaseService } from 'src/app/service/firebase/firebase.service';
 import { ShopSettingService } from 'src/app/service/system/system-shop/shop-setting/shop-setting.service';
 import { ShopSettingValiationResultType } from 'src/app/interface/shop/shop-setting.interface';
 import * as Db from 'src/app/constant/firebase-path';
+import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SystemShopConfigurationRepositoryService {
-  private readonly timeStamp = { lastModifiedDate: new Date() };
+  private readonly _timeStamp = { lastModifiedDate: new Date() };
 
   constructor(
-    private afs: AngularFirestore,
-    private language: LanguageService,
-    private afstorage: AngularFireStorage,
-    private firebaseService: FirebaseService,
-    private setting: ShopSettingService
+    private _afs: AngularFirestore,
+    private _firebaseService: FirebaseService,
+    private _setting: ShopSettingService,
+    private _toaster: FirebaseToasterService
   ) {}
 
-  public getShopCategories(): Observable<IShopCategory[]> {
-    return this.afs
-      .collection<IShopCategory>(Db.Context.System.Shop.Category, ref => ref.orderBy('name'))
+  public categoryListener(): Observable<ShopCategoryType[]> {
+    return this._afs
+      .collection<ShopCategoryType>(Db.Context.System.Shop.Category, ref => ref.orderBy('name'))
       .get()
       .pipe(
         map(snapshot => {
@@ -40,16 +49,14 @@ export class SystemShopConfigurationRepositoryService {
       );
   }
 
-  public async getSelectedSystemShopCategory(
-    selectedId: string
-  ): Promise<IShopCategory | undefined> {
-    let systemShopCategories: IShopCategory[] = await lastValueFrom(this.getShopCategories());
+  public async getCategory(selectedId: string): Promise<ShopCategoryType | undefined> {
+    let systemShopCategories: ShopCategoryType[] = await lastValueFrom(this.categoryListener());
     return systemShopCategories.find(r => r.id === selectedId);
   }
 
-  public getSystemShopCountries(): Observable<IShopCountry[]> {
-    return this.afs
-      .collection<IShopCountry>(Db.Context.System.Shop.Country, ref => ref.orderBy('name'))
+  public countryListener(): Observable<ShopCountryType[]> {
+    return this._afs
+      .collection<ShopCountryType>(Db.Context.System.Shop.Country, ref => ref.orderBy('name'))
       .get()
       .pipe(
         map(snapshot => {
@@ -59,77 +66,16 @@ export class SystemShopConfigurationRepositoryService {
         })
       );
   }
-
-  public async getSelectedSystemShopCountry(selectedId: string): Promise<IShopCountry | undefined> {
-    let categories = await lastValueFrom(this.getSystemShopCountries());
+  public async getSelectedSystemShopCountry(
+    selectedId: string
+  ): Promise<ShopCountryType | undefined> {
+    let categories = await lastValueFrom(this.countryListener());
     return categories.find(countries => countries.id === selectedId);
   }
 
-  public async createNewShopConfiguration(shopConfig: IShopConfiguration): Promise<boolean> {
-    let result: boolean = false;
-    let newId = this.afs.createId();
-    shopConfig.id = newId;
-    let config = { ...shopConfig, ...this.timeStamp };
-    try {
-      await this.afs.collection(Db.Context.ShopConfiguration).doc(shopConfig.id).set(config);
-      result = true;
-    } catch (e) {
-      console.error(e);
-    }
-    return result;
-  }
-
-  public async editExistingShopConfiguration(shopConfig: IShopConfiguration): Promise<boolean> {
-    let result: boolean = false;
-    let updatedConfig = { ...shopConfig, ...this.timeStamp };
-
-    try {
-      await this.afs
-        .collection(Db.Context.ShopConfiguration)
-        .doc(updatedConfig.id)
-        .update(updatedConfig);
-      result = true;
-    } catch (e) {
-      console.error(e);
-    }
-
-    return result;
-  }
-
-  public async deleteShopConfiguration(shopConfigId: string): Promise<boolean> {
-    let result: boolean = false;
-
-    try {
-      await this.afs.collection(Db.Context.ShopConfiguration).doc(shopConfigId).delete();
-      result = true;
-    } catch (e) {
-      console.error(e);
-    }
-
-    return result;
-  }
-
-  private async updateShopSetting(
-    config: IShopConfiguration,
-    validated: ShopSettingValiationResultType
-  ) {
-    if (validated.isModified) {
-      config.setting = validated.setting;
-      let updatedConfig = { ...config, ...this.timeStamp };
-      try {
-        await this.afs
-          .collection(Db.Context.ShopConfiguration)
-          .doc(updatedConfig.id)
-          .update(updatedConfig);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }
-
-  public shopConfigurationValueChangeListener(): Observable<IShopConfiguration[]> {
-    return this.afs
-      .collection<IShopConfiguration>(Db.Context.ShopConfiguration, ref => ref.orderBy('name'))
+  public allShopConfigurationValueChangeListener(): Observable<ShopConfigurationType[]> {
+    return this._afs
+      .collection<ShopConfigurationType>(Db.Context.ShopConfiguration, ref => ref.orderBy('name'))
       .valueChanges()
       .pipe(
         switchMap(configs =>
@@ -138,9 +84,9 @@ export class SystemShopConfigurationRepositoryService {
       );
   }
 
-  public getAllShopConfigurations(): Observable<IShopConfiguration[]> {
-    return this.afs
-      .collection<IShopConfiguration>(Db.Context.ShopConfiguration, ref => ref.orderBy('name'))
+  public allShopConfigurationGetListener(): Observable<ShopConfigurationType[]> {
+    return this._afs
+      .collection<ShopConfigurationType>(Db.Context.ShopConfiguration, ref => ref.orderBy('name'))
       .get()
       .pipe(
         switchMap(configs =>
@@ -148,7 +94,7 @@ export class SystemShopConfigurationRepositoryService {
             Promise.all(
               configs.docs.map(snapshot => {
                 let shopconfig = snapshot.data();
-                return this.validatedShopConfiguration(shopconfig);
+                return shopconfig;
               })
             )
           )
@@ -156,34 +102,82 @@ export class SystemShopConfigurationRepositoryService {
       );
   }
 
-  public getSelectedShopConfiguration(
-    selectedId: string
-  ): Observable<IShopConfiguration | undefined> {
-    return this.afs
-      .doc<IShopConfiguration>(`${Db.Context.ShopConfiguration}/${selectedId}`)
-      .valueChanges()
-      .pipe(
-        switchMap(async shopconfig => {
-          if (shopconfig) {
-            return await this.validatedShopConfiguration(shopconfig);
-          }
-          return undefined;
-        })
-      );
+  public assocatedShopConfigurationValueChangeListener(
+    selectedIds: string[]
+  ): Observable<ShopConfigurationType[] | []> {
+    if (!selectedIds.length) return of([]);
+
+    const observables = selectedIds.map(selectedId =>
+      this._afs
+        .doc<ShopConfigurationType>(`${Db.Context.ShopConfiguration}/${selectedId}`)
+        .valueChanges()
+        .pipe(
+          switchMap(shopconfig =>
+            shopconfig ? from(this.validatedShopConfiguration(shopconfig)) : of(null)
+          ),
+          filter((config): config is ShopConfigurationType => config !== null)
+        )
+    );
+
+    return combineLatest(observables).pipe(
+      map(configs => configs.filter((config): config is ShopConfigurationType => config !== null))
+    );
   }
 
-  private async validatedShopConfiguration(sc: IShopConfiguration): Promise<IShopConfiguration> {
-    let validated = this.setting.getValidatedResult(sc.setting);
-    sc.setting = validated.setting;
-    sc.plan.lastPaymentDate = this.firebaseService.toDate(sc.plan.lastPaymentDate);
-    sc.plan.paymentDate = this.firebaseService.toDate(sc.plan.paymentDate);
-    sc.activeFrom = this.firebaseService.toDate(sc.activeFrom);
-    if (sc.activeTo) {
-      sc.activeTo = this.firebaseService.toDate(sc.plan.lastPaymentDate);
+  public async createNewShopConfiguration(shopConfig: ShopConfigurationType): Promise<boolean> {
+    const newId = this._afs.createId();
+    const config = { ...shopConfig, ...this._timeStamp };
+    config.id = newId;
+
+    try {
+      await this._afs.collection(Db.Context.ShopConfiguration).doc(shopConfig.id).set(config);
+      await this._toaster.addSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.addFail(error);
+      console.error(error);
+      return false;
     }
+  }
 
-    await this.updateShopSetting(sc, validated);
+  public async editExistingShopConfiguration(shopConfig: ShopConfigurationType): Promise<boolean> {
+    const updatedConfig = { ...shopConfig, ...this._timeStamp };
+    const collection = Db.Context.ShopConfiguration;
+    try {
+      await this._afs.collection(collection).doc(updatedConfig.id).update(updatedConfig);
+      await this._toaster.editSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.editFail(error);
+      console.error(error);
+      return false;
+    }
+  }
 
+  public async deleteShopConfiguration(shopConfigId: string): Promise<boolean> {
+    try {
+      await this._afs.collection(Db.Context.ShopConfiguration).doc(shopConfigId).delete();
+      await this._toaster.deleteSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.deleteFail(error);
+      console.error(error);
+      return false;
+    }
+  }
+
+  //TODO: Put it into scheduler
+  private async validatedShopConfiguration(
+    sc: ShopConfigurationType
+  ): Promise<ShopConfigurationType> {
+    let validated = this._setting.getValidatedResult(sc.setting);
+    sc.setting = validated.setting;
+    sc.plan.lastPaymentDate = this._firebaseService.toDate(sc.plan.lastPaymentDate);
+    sc.plan.paymentDate = this._firebaseService.toDate(sc.plan.paymentDate);
+    sc.activeFrom = this._firebaseService.toDate(sc.activeFrom);
+    if (sc.activeTo) {
+      sc.activeTo = this._firebaseService.toDate(sc.plan.lastPaymentDate);
+    }
     return sc;
   }
 }

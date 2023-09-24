@@ -18,10 +18,6 @@ export { API } from './constant-api';
 //Login
 export type LoginStatusType = (typeof Login.Status)[keyof typeof Login.Status];
 
-//API
-export type APIResponseType = (typeof API.Response)[keyof typeof API.Response];
-export type ErrorAccidentType = (typeof API.ErrorAccident)[keyof typeof API.ErrorAccident];
-
 //Date
 export type TimeStamp = firebase.firestore.Timestamp;
 export type TimeZoneType = (typeof TimeZone)[keyof typeof TimeZone];
@@ -38,8 +34,8 @@ export type CountryCodeType =
 
 //Role
 export type GenderType = (typeof Default.Gender)[keyof typeof Default.Gender];
-
-export type RoleAccessType = (typeof Default.RoleAccessType)[keyof typeof Default.RoleAccessType];
+export type RoleDescriptionType =
+  (typeof Default.RoleDescriptionType)[keyof typeof Default.RoleDescriptionType];
 export type RoleAccessRateType =
   (typeof Default.RoleAccessRateType)[keyof typeof Default.RoleAccessRateType];
 
@@ -53,3 +49,7 @@ export type FormStatusType = (typeof Default.FormStatus)[keyof typeof Default.Fo
 export type PhoneCodeType = (typeof Default.PhoneCode)[keyof typeof Default.PhoneCode];
 export type CurrencyType = (typeof Default.CurrencyType)[keyof typeof Default.CurrencyType];
 export type TextFormatType = (typeof Text.Format)[keyof typeof Text.Format];
+
+//API
+export type APIResponseType = (typeof API.Response)[keyof typeof API.Response];
+export type APIActionType = (typeof API.Action)[keyof typeof API.Action];

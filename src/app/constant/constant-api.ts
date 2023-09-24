@@ -9,4 +9,9 @@ export const API = {
     Transaction: 'Transaction',
     Deleting: 'Deleting',
   } as const,
+  Action: {
+    Delete: 'delete',
+    Create: 'create',
+    Update: 'update',
+  },
 } as const;

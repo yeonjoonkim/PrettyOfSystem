@@ -38,10 +38,10 @@ export class MenuCategoryCardComponent implements OnInit {
   private _popOverOpen: boolean = false;
 
   constructor(
-    private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController,
-    private language: LanguageService,
-    private systemMenuCategoryService: SystemMenuCategoryService
+    private _popoverCtrl: PopoverController,
+    private _alertCtrl: AlertController,
+    private _language: LanguageService,
+    private _systemMenuCategoryService: SystemMenuCategoryService
   ) {}
 
   ngOnInit() {}
@@ -50,7 +50,7 @@ export class MenuCategoryCardComponent implements OnInit {
   public async presentAddMenuCategory(event: any) {
     if (!this._popOverOpen) {
       this._popOverOpen = true;
-      let addMenuCategory = await this.popoverCtrl.create({
+      let addMenuCategory = await this._popoverCtrl.create({
         component: AddMenuCategoryComponent,
         event: event,
         translucent: true,
@@ -92,7 +92,7 @@ export class MenuCategoryCardComponent implements OnInit {
           isReception: false,
         },
       };
-      await this.systemMenuCategoryService.processDeleteSystemMenuCategory(selectedCategoryId);
+      await this._systemMenuCategoryService.processDeleteSystemMenuCategory(selectedCategoryId);
       this.onUpdate.emit(true);
     }
   }
@@ -100,7 +100,7 @@ export class MenuCategoryCardComponent implements OnInit {
   /**Click event to edit the selected category */
   public async onClickEditCategory(event: any, selectedCategory: MenuCategoryType) {
     if (!this._popOverOpen) {
-      let addMenuCategory = await this.popoverCtrl.create({
+      let addMenuCategory = await this._popoverCtrl.create({
         component: AddMenuCategoryComponent,
         event: event,
         translucent: true,
@@ -129,7 +129,7 @@ export class MenuCategoryCardComponent implements OnInit {
           },
         };
         let result: MenuCategoryType = action?.data?.result;
-        await this.systemMenuCategoryService.processUpdateSystemMenuCategory(result);
+        await this._systemMenuCategoryService.processUpdateSystemMenuCategory(result);
         this.onUpdate.emit(true);
       }
     }
@@ -137,24 +137,24 @@ export class MenuCategoryCardComponent implements OnInit {
 
   /**This will create an alert to confirm the delete action */
   private async setConfirmDeleteAlert(selectedCategoryName: string) {
-    let categoryName = await this.language.transform(selectedCategoryName);
-    let deleteMsg = await this.language.transform('label.title.deleteheader');
+    let categoryName = await this._language.transform(selectedCategoryName);
+    let deleteMsg = await this._language.transform('label.title.deleteheader');
     let header = categoryName + ' - ' + deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
       header: header,
       buttons: [
         {
-          text: await this.language.transform('button.title.delete'),
+          text: await this._language.transform('button.title.delete'),
           role: 'delete',
         },
         {
-          text: await this.language.transform('button.title.cancel'),
+          text: await this._language.transform('button.title.cancel'),
           role: '',
         },
       ],
     };
 
-    let confirmDeleteAlert = await this.alertCtrl.create(confirmDeleteAlertCriteria);
+    let confirmDeleteAlert = await this._alertCtrl.create(confirmDeleteAlertCriteria);
     return confirmDeleteAlert;
   }
 }

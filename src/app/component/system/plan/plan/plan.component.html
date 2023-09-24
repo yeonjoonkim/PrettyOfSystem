@@ -177,11 +177,11 @@
     <legend>{{ 'label.title.extra' | languageTransform | async }}</legend>
     <yes-no-selection-group>
       <yes-no-selection
-        label="label.title.premiumplan"
+        title="label.title.premiumplan"
         [(value)]="plan.isPremium"
         [readOnly]="isReadonly"></yes-no-selection>
       <yes-no-selection
-        label="label.title.testplan"
+        title="label.title.testplan"
         [(value)]="plan.isTestPlan"
         [readOnly]="isReadonly"></yes-no-selection>
     </yes-no-selection-group>

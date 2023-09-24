@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { DatePeriodType, IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import {
-  IShopCategory,
-  IShopConfiguration,
-  IShopCountry,
-  IShopPlan,
-  IShopWorkHours,
+  ShopCategoryType,
+  ShopConfigurationType,
+  ShopCountryType,
+  ShopPlanType,
+  ShopWorkHoursType,
 } from 'src/app/interface/shop/shop.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
@@ -15,7 +15,7 @@ import { ShopSettingService } from '../shop-setting/shop-setting.service';
 import { SystemShopWorkHoursService } from '../system-shop-work-hours/system-shop-work-hours.service';
 import { ModalController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
-export interface IShopConfigurationValidator {
+export interface ShopConfigurationTypeValidator {
   name: boolean;
   email: boolean;
   phonNumber: boolean;
@@ -26,8 +26,9 @@ export interface IShopConfigurationValidator {
   plan: boolean;
   timeZone: boolean;
   workHours: boolean;
+  planPeriod: boolean;
 }
-export interface IShopConfigurationDisplayOption {
+export interface ShopConfigurationTypeDisplayOption {
   info: boolean;
   address: boolean;
   subscription: boolean;
@@ -39,35 +40,30 @@ export interface IShopConfigurationDisplayOption {
 export class ShopConfigurationService {
   constructor(
     public global: GlobalService,
-    private systemShop: SystemShopService,
-    private modalCtrl: ModalController,
-    private systemShopConfigRepo: SystemShopConfigurationRepositoryService,
-    private systemShopSetting: ShopSettingService,
-    private systemWorkHoursService: SystemShopWorkHoursService
+    private _systemShop: SystemShopService,
+    private _modalCtrl: ModalController,
+    private _systemShopConfigRepo: SystemShopConfigurationRepositoryService,
+    private _systemShopSetting: ShopSettingService,
+    private _systemWorkHoursService: SystemShopWorkHoursService
   ) {}
 
-  public async handleCreate(config: IShopConfiguration, form: IFormHeaderModalProp) {
+  public async handleCreate(config: ShopConfigurationType, form: IFormHeaderModalProp) {
     let isExistingBusinessName: boolean = await this.isExistingBusinessName(config);
     await this.global.loading.show();
     let saved = !isExistingBusinessName
-      ? await this.systemShopConfigRepo.createNewShopConfiguration(config)
+      ? await this._systemShopConfigRepo.createNewShopConfiguration(config)
       : false;
 
     if (saved) {
-      let successfulMsg: string = await this.global.language.transform('messagesuccess.title.save');
       await this.global.loading.dismiss();
-      await this.global.toast.present(successfulMsg);
-      await this.modalCtrl.dismiss(config, form.action);
+      await this._modalCtrl.dismiss(config, form.action);
     } else {
-      let msg: string = this.handleErrorMessage(isExistingBusinessName);
-      let errorMsg: string = await this.global.language.transform(msg);
       await this.global.loading.dismiss();
-      await this.global.toast.presentError(errorMsg);
     }
   }
 
-  private async isExistingBusinessName(config: IShopConfiguration): Promise<boolean> {
-    let existingConfig: IShopConfiguration[] = await this.getAllSystemShopConfiguration();
+  private async isExistingBusinessName(config: ShopConfigurationType): Promise<boolean> {
+    let existingConfig: ShopConfigurationType[] = await this.getAllSystemShopConfiguration();
     let existingBusinessName: string[] = existingConfig
       .filter(c => c.id !== config.id)
       .map(c => c.name);
@@ -75,55 +71,38 @@ export class ShopConfigurationService {
     return existingBusinessName.includes(config.name);
   }
 
-  private async getAllSystemShopConfiguration(): Promise<IShopConfiguration[]> {
-    return await lastValueFrom(this.systemShopConfigRepo.getAllShopConfigurations());
+  private async getAllSystemShopConfiguration(): Promise<ShopConfigurationType[]> {
+    return await lastValueFrom(this._systemShopConfigRepo.allShopConfigurationGetListener());
   }
 
-  private handleErrorMessage(isExistingBusinessName: boolean): string {
-    return isExistingBusinessName
-      ? 'messageerror.title.existedbusinessname'
-      : 'messageerror.title.unsaved';
-  }
-
-  public async handleSave(config: IShopConfiguration, form: IFormHeaderModalProp) {
+  public async handleSave(config: ShopConfigurationType, form: IFormHeaderModalProp) {
     let isExistingBusinessName: boolean = await this.isExistingBusinessName(config);
     await this.global.loading.show();
     let saved = !isExistingBusinessName
-      ? await this.systemShopConfigRepo.editExistingShopConfiguration(config)
+      ? await this._systemShopConfigRepo.editExistingShopConfiguration(config)
       : false;
 
     if (saved) {
-      let successfulMsg: string = await this.global.language.transform('messagesuccess.title.save');
       await this.global.loading.dismiss();
-      await this.global.toast.present(successfulMsg);
-      await this.modalCtrl.dismiss(config, form.action);
+      await this._modalCtrl.dismiss(config, form.action);
     } else {
-      let msg: string = this.handleErrorMessage(isExistingBusinessName);
-      let errorMsg: string = await this.global.language.transform(msg);
       await this.global.loading.dismiss();
-      await this.global.toast.presentError(errorMsg);
     }
   }
 
-  public async handleDelete(config: IShopConfiguration, form: IFormHeaderModalProp) {
+  public async handleDelete(config: ShopConfigurationType, form: IFormHeaderModalProp) {
     await this.global.loading.show();
-    let deleted = await this.systemShopConfigRepo.deleteShopConfiguration(config.id);
+    let deleted = await this._systemShopConfigRepo.deleteShopConfiguration(config.id);
 
     if (deleted) {
-      let successfulMsg: string = await this.global.language.transform(
-        'messagesuccess.title.delete'
-      );
       await this.global.loading.dismiss();
-      await this.global.toast.present(successfulMsg);
-      await this.modalCtrl.dismiss(config, form.action);
+      await this._modalCtrl.dismiss(config, form.action);
     } else {
-      let errorMsg: string = await this.global.language.transform('messageerror.title.delete');
       await this.global.loading.dismiss();
-      await this.global.toast.presentError(errorMsg);
     }
   }
 
-  public setDefaultConfig(): IShopConfiguration {
+  public setDefaultConfig(): ShopConfigurationType {
     return {
       id: '',
       name: '',
@@ -142,18 +121,17 @@ export class ShopConfigurationService {
       category: this.getDefaultCategory(),
       country: this.getDefaultCountry(),
       plan: this.getDefaultPlan(),
-      setting: this.systemShopSetting.getDefaultShopSetting(),
+      setting: this._systemShopSetting.getDefaultShopSetting(),
       activeFrom: new Date(),
       activeTo: null,
-      associatedUser: [],
     };
   }
 
-  public setWorkHours(): IShopWorkHours {
-    return this.systemWorkHoursService.setDefaultWorkHours();
+  public setWorkHours(): ShopWorkHoursType {
+    return this._systemWorkHoursService.setDefaultWorkHours();
   }
 
-  private getDefaultCategory(): IShopCategory {
+  private getDefaultCategory(): ShopCategoryType {
     return {
       id: '',
       isHairSalon: false,
@@ -165,7 +143,7 @@ export class ShopConfigurationService {
     };
   }
 
-  private getDefaultCountry(): IShopCountry {
+  private getDefaultCountry(): ShopCountryType {
     return {
       id: '',
       currency: Constant.Default.CurrencyType.AUD,
@@ -177,7 +155,7 @@ export class ShopConfigurationService {
     };
   }
 
-  private getDefaultPlan(): IShopPlan {
+  private getDefaultPlan(): ShopPlanType {
     return {
       configurationId: '',
       isOverDue: false,
@@ -192,7 +170,7 @@ export class ShopConfigurationService {
     };
   }
 
-  public formInputValidator(validator: IShopConfigurationValidator) {
+  public formInputValidator(validator: ShopConfigurationTypeValidator) {
     return (
       validator.name &&
       validator.email &&
@@ -203,11 +181,12 @@ export class ShopConfigurationService {
       validator.country &&
       validator.plan &&
       validator.timeZone &&
-      validator.workHours
+      validator.workHours &&
+      validator.planPeriod
     );
   }
 
-  public defaultShopDisplayOption(): IShopConfigurationDisplayOption {
+  public defaultShopDisplayOption(): ShopConfigurationTypeDisplayOption {
     return {
       info: true,
       address: false,
@@ -216,7 +195,7 @@ export class ShopConfigurationService {
     };
   }
 
-  public defaultValidator(): IShopConfigurationValidator {
+  public defaultValidator(): ShopConfigurationTypeValidator {
     return {
       name: false,
       email: false,
@@ -228,10 +207,11 @@ export class ShopConfigurationService {
       plan: false,
       timeZone: false,
       workHours: false,
+      planPeriod: false,
     };
   }
 
-  public editValidator(): IShopConfigurationValidator {
+  public editValidator(): ShopConfigurationTypeValidator {
     return {
       name: true,
       email: true,
@@ -243,10 +223,11 @@ export class ShopConfigurationService {
       plan: true,
       timeZone: true,
       workHours: true,
+      planPeriod: true,
     };
   }
 
-  public displayInfo(): IShopConfigurationDisplayOption {
+  public displayInfo(): ShopConfigurationTypeDisplayOption {
     return {
       info: true,
       address: false,
@@ -255,7 +236,7 @@ export class ShopConfigurationService {
     };
   }
 
-  public displayAddress(): IShopConfigurationDisplayOption {
+  public displayAddress(): ShopConfigurationTypeDisplayOption {
     return {
       info: false,
       address: true,
@@ -264,7 +245,7 @@ export class ShopConfigurationService {
     };
   }
 
-  public displaySubscription(): IShopConfigurationDisplayOption {
+  public displaySubscription(): ShopConfigurationTypeDisplayOption {
     return {
       info: false,
       address: false,
@@ -273,7 +254,7 @@ export class ShopConfigurationService {
     };
   }
 
-  public displayWorkHours(): IShopConfigurationDisplayOption {
+  public displayWorkHours(): ShopConfigurationTypeDisplayOption {
     return {
       info: false,
       address: false,
@@ -283,7 +264,7 @@ export class ShopConfigurationService {
   }
 
   public async getSelectedTotalPrice(selectedId: string, period: DatePeriodType) {
-    let selectedPlan = (await this.systemShop.getSystemShopPlanConfigList()).find(
+    let selectedPlan = (await this._systemShop.getSystemShopPlanConfigList()).find(
       p => p.id === selectedId
     );
     let price: number = 0;

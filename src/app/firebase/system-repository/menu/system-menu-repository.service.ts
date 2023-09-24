@@ -5,16 +5,20 @@ import { firstValueFrom, from, lastValueFrom, map, Observable } from 'rxjs';
 import * as Db from 'src/app/constant/firebase-path';
 import { RoleAccessLevelType } from 'src/app/interface/system/role/role.interface';
 import { RoleRateService } from 'src/app/service/authentication/role-rate/role-rate.service';
+import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SystemMenuRepositoryService {
-  private readonly timeStamp = { lastModifiedDate: new Date() };
+  private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(private afs: AngularFirestore, private roleRate: RoleRateService) {}
+  constructor(
+    private _afs: AngularFirestore,
+    private _roleRate: RoleRateService,
+    private _toaster: FirebaseToasterService
+  ) {}
 
-  /** This will validate the category name in the db*/
   public async hasSameCategoryName(selectedCategoryName: string) {
     let categories = await lastValueFrom(this.getSystemMenuCategories());
     let hasSameCategoryName =
@@ -27,9 +31,8 @@ export class SystemMenuRepositoryService {
     return categories.find(cat => cat.id === selectedMenuCategoryId);
   }
 
-  /**This will return the category */
   public valueChangeListener(): Observable<MenuCategoryType[]> {
-    return this.afs
+    return this._afs
       .collection<MenuCategoryType>(Db.Context.System.Menu.Category)
       .valueChanges()
       .pipe(
@@ -44,7 +47,7 @@ export class SystemMenuRepositoryService {
   }
 
   public getSystemMenuCategories(): Observable<MenuCategoryType[]> {
-    return from(this.afs.collection<MenuCategoryType>(Db.Context.System.Menu.Category).get()).pipe(
+    return from(this._afs.collection<MenuCategoryType>(Db.Context.System.Menu.Category).get()).pipe(
       map(querySnapshot => querySnapshot.docs.map(doc => doc.data() as MenuCategoryType)),
       map(categories => categories.sort(this.compareByContentName)),
       map(categories =>
@@ -59,15 +62,15 @@ export class SystemMenuRepositoryService {
   public subscribeAccessGrantedMenu(
     accessLevel: RoleAccessLevelType
   ): Observable<MenuCategoryType[]> {
-    // Replace 'CategoryType' with whatever type you use for 'category'
     return this.getSystemMenuCategories().pipe(
       map(menu => {
         return menu.filter(category => {
-          let categoryAccessLevel: number = this.roleRate.getSystemRoleRateSettingByConfiguration(
+          let categoryAccessLevel: number = this._roleRate.getSystemRoleRateSettingByConfiguration(
             category.accessLevel
           );
-          let rate: number = this.roleRate.getSystemRoleRateSettingByConfiguration(accessLevel);
+          let rate: number = this._roleRate.getSystemRoleRateSettingByConfiguration(accessLevel);
           let isCategoryAccessGranted = rate >= categoryAccessLevel;
+
           return isCategoryAccessGranted;
         });
       })
@@ -76,18 +79,6 @@ export class SystemMenuRepositoryService {
 
   public async getAccessGrantedMenu(accessLevel: RoleAccessLevelType): Promise<MenuCategoryType[]> {
     return await firstValueFrom(this.subscribeAccessGrantedMenu(accessLevel));
-  }
-
-  /**Based on Id delete the document */
-  public deleteSystemMenuCategory(selectedSystemMenuCategoryId: string) {
-    this.afs.doc(Db.Context.System.Menu.Category + '/' + selectedSystemMenuCategoryId).delete();
-  }
-
-  /**Based on systemMenuCat Id update */
-  public updateSystemMenuCategory(selectedSystemMenuCategory: MenuCategoryType) {
-    this.afs
-      .doc(Db.Context.System.Menu.Category + '/' + selectedSystemMenuCategory.id)
-      .update(selectedSystemMenuCategory);
   }
 
   /**This will compare the name and return asc */
@@ -114,12 +105,43 @@ export class SystemMenuRepositoryService {
 
   /**Save into db */
   public async addSystemMenuCategory(newCategory: MenuCategoryType) {
-    let newId = this.afs.createId();
-    let category = { ...newCategory, ...this.timeStamp, id: newId };
+    let newId = this._afs.createId();
+    let category = { ...newCategory, ...this._timeStamp, id: newId };
     try {
-      await this.afs.collection(Db.Context.System.Menu.Category).doc(newId).set(category);
-    } catch (e) {
-      console.error(e);
+      await this._afs.collection(Db.Context.System.Menu.Category).doc(newId).set(category);
+      await this._toaster.addSuccess();
+      return true;
+    } catch (error) {
+      console.error(error);
+      await this._toaster.addFail(error);
+      return false;
+    }
+  }
+
+  /**Based on systemMenuCat Id update */
+  public async updateSystemMenuCategory(selectedSystemMenuCategory: MenuCategoryType) {
+    const doc = Db.Context.System.Menu.Category + '/' + selectedSystemMenuCategory.id;
+    try {
+      await this._afs.doc(doc).update(selectedSystemMenuCategory);
+      await this._toaster.updateSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.updateFail(error);
+      console.error(error);
+      return false;
+    }
+  }
+
+  public async deleteSystemMenuCategory(selectedSystemMenuCategoryId: string) {
+    const doc = Db.Context.System.Menu.Category + '/' + selectedSystemMenuCategoryId;
+    try {
+      await this._afs.doc(doc).delete();
+      await this._toaster.deleteSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.deleteFail(error);
+      console.error(error);
+      return false;
     }
   }
 }

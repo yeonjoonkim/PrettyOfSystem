@@ -35,7 +35,7 @@ export type PairKeyValueType = {
   value: string;
 };
 
-export type PairNameValueType = {
+export type NameValuePairType = {
   name: string;
   value: string;
 };

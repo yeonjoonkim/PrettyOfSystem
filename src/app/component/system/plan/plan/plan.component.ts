@@ -11,79 +11,81 @@ import { GlobalService } from 'src/app/service/global/global.service';
 export class PlanComponent implements OnInit {
   public editMode: boolean = false;
   public isReadonly: boolean = false;
-  public plan: PlanConfigurationType = this.planService.getDefaultPlan();
+  public plan: PlanConfigurationType = this._planService.getDefaultPlan();
 
   constructor(
-    private param: NavParams,
-    private planService: PlanService,
-    private global: GlobalService
+    private _navParam: NavParams,
+    private _planService: PlanService,
+    private _global: GlobalService
   ) {
-    let selectedPlan: PlanConfigurationType | undefined = this.param.get('plan');
-    this.editMode = this.param.get('editMode') !== undefined ? this.param.get('editMode') : false;
-    this.isReadonly = this.param.get('readOnly') !== undefined ? this.param.get('readOnly') : false;
+    let selectedPlan: PlanConfigurationType | undefined = this._navParam.get('plan');
+    this.editMode =
+      this._navParam.get('editMode') !== undefined ? this._navParam.get('editMode') : false;
+    this.isReadonly =
+      this._navParam.get('readOnly') !== undefined ? this._navParam.get('readOnly') : false;
     this.plan =
       this.editMode && selectedPlan !== undefined
         ? selectedPlan
-        : this.planService.getDefaultPlan();
+        : this._planService.getDefaultPlan();
     this.plan =
       this.isReadonly && selectedPlan !== undefined
         ? selectedPlan
-        : this.planService.getDefaultPlan();
+        : this._planService.getDefaultPlan();
   }
 
   ngOnInit() {}
 
   public async dismiss() {
-    this.planService.modal.dismissModal();
+    this._planService.modal.dismissModal();
   }
 
   public onNameChange() {
-    this.plan.name = this.global.textTransform.getTitleFormat(this.plan.name);
+    this.plan.name = this._global.textTransform.getTitleFormat(this.plan.name);
   }
 
   public onChangeWeekPrice() {
-    this.plan.weeklyPrice = this.planService.getTaxAndNetPrice(this.plan.weeklyPrice.total);
+    this.plan.weeklyPrice = this._planService.getTaxAndNetPrice(this.plan.weeklyPrice.total);
   }
 
   public onChangeMonthPrice() {
-    this.plan.monthlyPrice = this.planService.getTaxAndNetPrice(this.plan.monthlyPrice.total);
+    this.plan.monthlyPrice = this._planService.getTaxAndNetPrice(this.plan.monthlyPrice.total);
   }
 
   public onChangeAnnualPrice() {
-    this.plan.annuallyPrice = this.planService.getTaxAndNetPrice(this.plan.annuallyPrice.total);
+    this.plan.annuallyPrice = this._planService.getTaxAndNetPrice(this.plan.annuallyPrice.total);
   }
 
   public onChangeLimitedService() {
-    this.plan.limitedService = this.global.numberTransform.nullReplaceToZero(
+    this.plan.limitedService = this._global.numberTransform.nullReplaceToZero(
       this.plan.limitedService
     );
   }
 
   public onChangeLimitedProduct() {
-    this.plan.limitedProduct = this.global.numberTransform.nullReplaceToZero(
+    this.plan.limitedProduct = this._global.numberTransform.nullReplaceToZero(
       this.plan.limitedProduct
     );
   }
 
   public onChangeLimitedPackage() {
-    this.plan.limitedPackage = this.global.numberTransform.nullReplaceToZero(
+    this.plan.limitedPackage = this._global.numberTransform.nullReplaceToZero(
       this.plan.limitedPackage
     );
   }
 
   public onChangeLimitedUser() {
-    this.plan.limitedUser = this.global.numberTransform.nullReplaceToZero(this.plan.limitedUser);
+    this.plan.limitedUser = this._global.numberTransform.nullReplaceToZero(this.plan.limitedUser);
   }
 
   public async onClickSavePlanButton() {
     if (this.plan.name) {
-      await this.planService.processSaveNewPlan(this.plan);
+      await this._planService.processSaveNewPlan(this.plan);
     }
   }
 
   public async onClickEditPlanButton() {
     if (this.plan.name) {
-      await this.planService.processUpdatePlan(this.plan);
+      await this._planService.processUpdatePlan(this.plan);
     }
   }
 }

@@ -11,14 +11,14 @@ import { Component, OnInit } from '@angular/core';
 export class PlanManagementComponent implements OnInit {
   public planOptions: PlanConfigurationType[] = [];
 
-  constructor(private planService: PlanService) {}
+  constructor(private _planService: PlanService) {}
 
   async ngOnInit() {
     await this.setPlanOptions();
   }
 
   private async setPlanOptions() {
-    let result = await lastValueFrom(this.planService.getPlanOptions());
+    let result = await lastValueFrom(this._planService.getPlanOptions());
     this.planOptions = result.sort(r => r.monthlyPrice.total);
   }
 

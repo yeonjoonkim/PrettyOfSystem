@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Network, ConnectionStatus, NetworkStatus } from '@capacitor/network';
-import { Observable, fromEvent } from 'rxjs';
+import { Network, ConnectionStatus } from '@capacitor/network';
+import { Observable } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { StorageService } from '../storage/storage.service';
 })
 export class NetworkConnectionStatusService {
   public status!: ConnectionStatus;
-  constructor(private router: Router, private storage: StorageService) {}
+  constructor(private _router: Router, private _storage: StorageService) {}
 
   public activateListener(): Observable<ConnectionStatus> {
     return new Observable<ConnectionStatus>(observer => {
@@ -36,6 +36,12 @@ export class NetworkConnectionStatusService {
     });
   }
 
+  public async getStatus() {
+    return Network.getStatus().then(status => {
+      return status;
+    });
+  }
+
   public async handleStatus(status: ConnectionStatus) {
     if (status.connected) {
       await this.routeToPreviousAccess();
@@ -46,20 +52,20 @@ export class NetworkConnectionStatusService {
 
   private async routeToNoInternetAccess() {
     let currentUrl = window.location.pathname;
-    let previousUrl: string | null = await this.storage.get('previousUrl');
+    let previousUrl: string | null = await this._storage.get('previousUrl');
 
     if (previousUrl === null) {
-      await this.storage.store('previousUrl', currentUrl);
+      await this._storage.store('previousUrl', currentUrl);
     }
 
-    this.router.navigateByUrl('no-internet');
+    this._router.navigateByUrl('no-internet');
   }
 
   private async routeToPreviousAccess() {
-    let previousUrl: string = await this.storage.get('previousUrl');
-    this.storage.removeItem('previousUrl');
+    let previousUrl: string = await this._storage.get('previousUrl');
+    this._storage.removeItem('previousUrl');
     if (typeof previousUrl === 'string') {
-      this.router.navigateByUrl(previousUrl);
+      this._router.navigateByUrl(previousUrl);
     }
   }
 }

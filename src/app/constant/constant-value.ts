@@ -32,6 +32,7 @@ export const Text = {
 } as const;
 
 export const Default = {
+  Refresh: 'Refresh',
   Gender: {
     Male: 'Male',
     Female: 'Female',
@@ -79,12 +80,13 @@ export const Default = {
     CNY: 'CNY',
   } as const,
 
-  RoleAccessType: {
-    SystemAdmin: 'System Administrator',
-    Admin: 'Administrator',
+  RoleDescriptionType: {
+    SystemAdmin: 'System Admin',
+    Admin: 'Admin',
     Manager: 'Manager',
-    Reception: 'Pos',
+    Reception: 'POS',
     Employee: 'Employee',
+    None: '',
   } as const,
 
   RoleAccessRateType: {

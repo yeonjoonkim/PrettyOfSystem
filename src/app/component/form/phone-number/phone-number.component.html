@@ -1,7 +1,7 @@
-<kendo-label text="{{ 'label.title.phone' | languageTransform | async }}">
+<kendo-label text="{{ title | languageTransform | async }}" *ngIf="isTitleRequired">
   <div class="form-error-container">
     <kendo-formerror *ngIf="!validated && isRequired && entered">{{
-      'messageerror.title.invalidphone' | languageTransform | async
+      'messageerror.description.invalidphone' | languageTransform | async
     }}</kendo-formerror>
   </div>
   <form [formGroup]="phoneNumberForm">
@@ -22,3 +22,28 @@
       (countryChange)="onChangeCountry()"></ngx-intl-tel-input>
   </form>
 </kendo-label>
+
+<div *ngIf="!isTitleRequired">
+  <div class="form-error-container">
+    <kendo-formerror *ngIf="!validated && isRequired && entered">{{
+      'messageerror.description.invalidphone' | languageTransform | async
+    }}</kendo-formerror>
+  </div>
+  <form [formGroup]="phoneNumberForm">
+    <ngx-intl-tel-input
+      [cssClass]="'custom-tel-input'"
+      formControlName="phone"
+      customPlaceholder="{{ placeholder | languageTransform | async }}"
+      [enableAutoCountrySelect]="true"
+      [enablePlaceholder]="false"
+      [searchCountryFlag]="true"
+      [phoneValidation]="true"
+      [selectedCountryISO]="countryISO"
+      [preferredCountries]="preferredCountries"
+      [separateDialCode]="separateDialCode"
+      [numberFormat]="phoneNumberFormat"
+      [disabled]="readOnly"
+      (ngModelChange)="onChangeValue($event)"
+      (countryChange)="onChangeCountry()"></ngx-intl-tel-input>
+  </form>
+</div>

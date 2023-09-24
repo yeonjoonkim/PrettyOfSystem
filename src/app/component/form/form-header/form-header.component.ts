@@ -19,7 +19,7 @@ export class FormHeaderComponent implements OnInit {
   @Input() action: Constant.FormActionType = Constant.Default.FormAction.Read;
   public status: Constant.FormStatusType = Constant.Default.FormStatus.Reading;
 
-  constructor(private global: GlobalService) {}
+  constructor(private _global: GlobalService) {}
 
   ngOnInit() {
     this.setDefaultStatus();
@@ -38,12 +38,12 @@ export class FormHeaderComponent implements OnInit {
 
   public async onClickSaveButton() {
     this.status =
-      this.global.formCtrl.statusValiation.isEditing(this.status) ||
-      this.global.formCtrl.statusValiation.isDeleting(this.status)
+      this._global.formCtrl.statusValiation.isEditing(this.status) ||
+      this._global.formCtrl.statusValiation.isDeleting(this.status)
         ? Constant.Default.FormStatus.Saving
         : this.status;
-    let isCreating: boolean = this.global.formCtrl.statusValiation.isCreating(this.status);
-    let isSaving: boolean = this.global.formCtrl.statusValiation.isSaving(this.status);
+    let isCreating: boolean = this._global.formCtrl.statusValiation.isCreating(this.status);
+    let isSaving: boolean = this._global.formCtrl.statusValiation.isSaving(this.status);
 
     if (isCreating) {
       this.onClickCreate.emit(true);
@@ -60,14 +60,14 @@ export class FormHeaderComponent implements OnInit {
   }
 
   public async handleSaving() {
-    let editConfirmation: boolean = await this.global.confirmAlert.getEditConfirmation();
+    let editConfirmation: boolean = await this._global.confirmAlert.getEditConfirmation();
     if (editConfirmation) {
       this.onClickSave.emit(true);
     }
   }
 
   public async onClickDeleteButton() {
-    let deleteConfirmation: boolean = await this.global.confirmAlert.getDeleteConfirmation();
+    let deleteConfirmation: boolean = await this._global.confirmAlert.getDeleteConfirmation();
     if (deleteConfirmation) {
       this.onClickDelete.emit(true);
     }

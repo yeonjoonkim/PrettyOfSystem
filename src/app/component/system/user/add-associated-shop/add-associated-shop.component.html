@@ -1,0 +1,26 @@
+<section class="modal-container">
+  <!--Shop-->
+  <name-value-pair-single-dropdown-selection
+    title="label.title.shop"
+    [isRequired]="true"
+    [selection]="shopFilters"
+    [(selected)]="selectedShop"></name-value-pair-single-dropdown-selection>
+  <!--Role-->
+  <name-value-pair-single-dropdown-selection
+    title="label.title.role"
+    [isRequired]="true"
+    [selection]="roleFilters"
+    [(selected)]="selectedRole"></name-value-pair-single-dropdown-selection>
+
+  <!--Display In Booking -->
+  <yes-no-selection-group>
+    <yes-no-selection
+      title="label.title.displayinbooking"
+      [(value)]="displayInBooking"></yes-no-selection>
+  </yes-no-selection-group>
+
+  <!--Save Button-->
+  <ion-button expand="block" (click)="onClickAdd()" [disabled]="!selectedRole.value">{{
+    'button.title.add' | languageTransform | async
+  }}</ion-button>
+</section>

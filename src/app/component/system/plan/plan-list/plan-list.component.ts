@@ -2,7 +2,6 @@ import { PlanService } from 'src/app/service/system/system-plan/plan.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { PlanConfigurationType } from 'src/app/interface/system/plan/plan.interface';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'plan-list',
@@ -13,14 +12,14 @@ export class PlanListComponent implements OnInit {
   @Output() onUpdate = new EventEmitter<boolean>();
   @Input() planOptions: PlanConfigurationType[] = [];
   private _isModalOpen: boolean = false;
-  constructor(public global: GlobalService, private planService: PlanService) {}
+  constructor(public global: GlobalService, private _planService: PlanService) {}
 
   ngOnInit() {}
 
   public async onClickAddPlan() {
     if (!this._isModalOpen) {
       this._isModalOpen = true;
-      let modal = await this.planService.modal.presentAddPlan();
+      let modal = await this._planService.modal.presentAddPlan();
       await modal.present();
       await this.handleDismissModal(modal);
     }
@@ -29,14 +28,14 @@ export class PlanListComponent implements OnInit {
   public async onClickEdit(config: PlanConfigurationType) {
     if (!this._isModalOpen) {
       this._isModalOpen = true;
-      let modal = await this.planService.modal.presentEditPlan(config);
+      let modal = await this._planService.modal.presentEditPlan(config);
       await modal.present();
       await this.handleDismissModal(modal);
     }
   }
 
   public async onClickDelete(id: string, name: string) {
-    await this.planService.processDeletePlan(id, name);
+    await this._planService.processDeletePlan(id, name);
     this.onUpdate.emit(true);
   }
 

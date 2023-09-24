@@ -1,0 +1,193 @@
+<div id="user-list">
+  <flex-col>
+    <flex-col-item>
+      <legend>
+        {{ 'label.title.user' | languageTransform | async }}
+      </legend>
+    </flex-col-item>
+    <flex-row>
+      <flex-row-item>
+        <name-value-pair-multi-dropdown-selection
+          title="label.title.shop"
+          [selection]="criteria.shopFilter"
+          [(selected)]="queryShopFilter"
+          (selectedChange)="onChangeQuery()"></name-value-pair-multi-dropdown-selection>
+      </flex-row-item>
+      <flex-row-item>
+        <text-box
+          title="label.title.search"
+          [(value)]="query"
+          (valueChange)="onChangeQuery()"></text-box>
+      </flex-row-item>
+    </flex-row>
+    <flex-col-item>
+      <kendo-grid
+        [kendoGridBinding]="queryData"
+        [height]="500"
+        [sortable]="true"
+        [autoSize]="true"
+        scrollable="virtual"
+        [selectable]="false">
+        <!-- Add Button -->
+        <ng-template kendoGridToolbarTemplate>
+          <button kendoGridEditCommand icon="refresh" (click)="refresh()"></button>
+          <button kendoGridAddCommand (click)="onClickCreateSystemAdmin()">
+            {{ 'label.title.newsystemadmin' | languageTransform | async }}
+          </button>
+          <button kendoGridAddCommand (click)="onClickCreateUser()">
+            {{ 'button.title.adduser' | languageTransform | async }}
+          </button>
+        </ng-template>
+
+        <!-- First Name -->
+        <kendo-grid-column
+          *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
+          title="{{ 'label.title.firstname' | languageTransform | async }}"
+          field="firstName">
+          <ng-template kendoGridCellTemplate let-user>
+            <span
+              id="full-name"
+              [ngClass]="{ 'is-system-admin': user.isSystemAdmin !== '' }"
+              (click)="onClickEditUser(user)"
+              >{{ user.firstName }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+
+        <!-- Last Name -->
+        <kendo-grid-column
+          *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
+          title="{{ 'label.title.lastname' | languageTransform | async }}"
+          field="lastName">
+          <ng-template kendoGridCellTemplate let-user>
+            <span>{{ user.lastName }}</span>
+          </ng-template>
+        </kendo-grid-column>
+
+        <!--Full Name-->
+        <kendo-grid-column
+          title="{{ 'label.title.name' | languageTransform | async }}"
+          *ngIf="device.deviceType.isMobile"
+          field="firstName">
+          <ng-template kendoGridCellTemplate let-user>
+            <span
+              id="full-name"
+              [ngClass]="{ 'is-system-admin': user.isSystemAdmin !== '' }"
+              (click)="onClickEditUser(user)"
+              >{{ user.firstName }} {{ user.lastName }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+
+        <!--Phone-->
+        <kendo-grid-column
+          title="{{ 'label.title.phone' | languageTransform | async }}"
+          field="phoneNumber">
+          <ng-template kendoGridCellTemplate let-user>
+            <a id="phone-number" href="tel:{{ user.phoneNumber }}"
+              ><span [ngClass]="{ 'login-option': user.loginOption.phoneNumber }">{{
+                user.phoneNumber
+              }}</span></a
+            >
+          </ng-template>
+        </kendo-grid-column>
+
+        <!--Email-->
+        <kendo-grid-column
+          *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
+          title="{{ 'label.title.email' | languageTransform | async }}"
+          field="email">
+          <ng-template kendoGridCellTemplate let-user>
+            <a id="email" href="mailto: {{ user.email }}"
+              ><span [ngClass]="{ 'login-option': user.loginOption.email }">{{
+                user.email
+              }}</span></a
+            >
+          </ng-template>
+        </kendo-grid-column>
+
+        <!--Count-->
+        <kendo-grid-column
+          id="shop-count"
+          field="associatedShops.length"
+          title="{{ 'label.title.shop' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-user>
+            <span>{{ user.associatedShops.length }}</span>
+          </ng-template>
+        </kendo-grid-column>
+
+        <!--Associated Shop Name-->
+        <kendo-grid-column
+          *ngIf="!device.deviceType.isMobile"
+          title="{{ 'label.title.associatedShop' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-user>
+            <div id="associated-shop-name">
+              <ng-container *ngFor="let shop of criteria.shopFilter; let i = index">
+                <ng-container *ngFor="let userShop of user.associatedShops; let z = index">
+                  <div *ngIf="criteria.shopFilter.length !== user.associatedShops.length">
+                    <!--Single -->
+                    <span
+                      *ngIf="
+                        userShop.shopId === shop.value &&
+                        i === 0 &&
+                        user.associatedShops.length === i + 1
+                      "
+                      >{{ shop.name }}</span
+                    >
+                    <!--Multiple Start-->
+                    <span
+                      *ngIf="
+                        userShop.shopId === shop.value &&
+                        user.associatedShops.length > 1 &&
+                        user.associatedShops.length !== i + 1
+                      "
+                      >{{ shop.name + ', ' }}
+                    </span>
+                    <!--Multiple End-->
+                    <span
+                      *ngIf="
+                        userShop.shopId === shop.value &&
+                        i > 0 &&
+                        user.associatedShops.length === i + 1
+                      "
+                      >{{ shop.name }}</span
+                    >
+                  </div>
+                  <div
+                    *ngIf="
+                      criteria.shopFilter.length === user.associatedShops.length &&
+                      i === 0 &&
+                      z === 0
+                    ">
+                    <span>{{ 'label.title.all' | languageTransform | async }}</span>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </div>
+          </ng-template>
+        </kendo-grid-column>
+
+        <!--System Admin-->
+        <kendo-grid-column
+          *ngIf="!device.deviceType.isMobile"
+          id="admin"
+          field="isSystemAdmin"
+          title="{{ 'label.title.admin' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-data>
+            <input type="checkbox" kendoCheckBox [checked]="data.isSystemAdmin" disabled />
+          </ng-template>
+        </kendo-grid-column>
+
+        <!--Active-->
+        <kendo-grid-column
+          id="disabled"
+          field="disabledAccount"
+          title="{{ 'label.title.active' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-data>
+            <input type="checkbox" kendoCheckBox [checked]="!data.disabledAccount" disabled />
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+    </flex-col-item>
+  </flex-col>
+</div>

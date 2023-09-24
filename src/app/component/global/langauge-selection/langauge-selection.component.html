@@ -1,6 +1,15 @@
-<kendo-label text="{{ 'language.title.language' | languageTransform | async }}">
-  <pair-name-value-single-selection
-    [selection]="languageSelection"
-    [(selected)]="selectedLanguage"
-    (selectedChange)="onChangeLanguage()"></pair-name-value-single-selection>
+<kendo-label
+  text="{{ 'language.title.language' | languageTransform | async }}"
+  *ngIf="isLabelRequired">
+  <name-value-pair-single-dropdown-selection
+    [selection]="languages"
+    [(selected)]="selected"
+    (selectedChange)="onChangeLanguage()"></name-value-pair-single-dropdown-selection>
 </kendo-label>
+
+<name-value-pair-single-dropdown-selection
+  *ngIf="!isLabelRequired"
+  [selection]="languages"
+  [isRequiredTitle]="isLabelRequired"
+  [(selected)]="selected"
+  (selectedChange)="onChangeLanguage()"></name-value-pair-single-dropdown-selection>

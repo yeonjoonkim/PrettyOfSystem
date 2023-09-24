@@ -5,29 +5,29 @@ import { ToastController } from '@ionic/angular';
   providedIn: 'root',
 })
 export class ToastService {
-  private toastCtrl: ToastController;
-  private duration: number = 2000;
-  private position: 'top' | 'bottom' | 'middle' | undefined = 'middle';
+  private _toastCtrl: ToastController;
+  private _duration: number = 2000;
+  private _position: 'top' | 'bottom' | 'middle' | undefined = 'middle';
 
   constructor() {
-    this.toastCtrl = new ToastController();
+    this._toastCtrl = new ToastController();
   }
 
   public async present(msg: string) {
-    let toast = await this.toastCtrl.create({
+    let toast = await this._toastCtrl.create({
       message: msg,
-      duration: this.duration,
-      position: this.position,
+      duration: this._duration,
+      position: this._position,
     });
 
     await toast.present();
   }
 
   public async presentError(msg: string) {
-    let toast = await this.toastCtrl.create({
+    let toast = await this._toastCtrl.create({
       message: msg,
-      duration: this.duration,
-      position: this.position,
+      duration: this._duration,
+      position: this._position,
       cssClass: 'error-toast',
     });
 

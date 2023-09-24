@@ -13,20 +13,20 @@ import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/
 })
 export class MenuCategoryContentCardComponent implements OnInit {
   @Output() onUpdate = new EventEmitter<boolean>();
-  public editMode: boolean = false;
-  private isOpen: boolean = false;
   @Input() selectedMenuContents: MenuContentType[] = [];
   @Input() selectedMenuCategoryId: string | undefined = '';
   @Input() selectedCategoryName: string | undefined = '';
 
+  public editMode: boolean = false;
+  private _isOpen: boolean = false;
   constructor(
-    private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController,
-    private language: LanguageService,
-    private systemMenuCategoryService: SystemMenuCategoryService,
-    private systemMenuRepository: SystemMenuRepositoryService
+    private _popoverCtrl: PopoverController,
+    private _alertCtrl: AlertController,
+    private _language: LanguageService,
+    private _systemMenuCategoryService: SystemMenuCategoryService,
+    private _systemMenuRepository: SystemMenuRepositoryService
   ) {
-    this.systemMenuRepository.getSystemMenuCategories().subscribe(category => {
+    this._systemMenuRepository.getSystemMenuCategories().subscribe(category => {
       let selectedCat = category.filter(cat => cat.id === this.selectedMenuCategoryId);
       if (selectedCat.length === 1) {
         let selected = selectedCat[0];
@@ -39,14 +39,14 @@ export class MenuCategoryContentCardComponent implements OnInit {
 
   /**Click event to add new content */
   public async onClickAddNewContent(event: any) {
-    if (!this.isOpen) {
-      this.isOpen = true;
+    if (!this._isOpen) {
+      this._isOpen = true;
       this.editMode = false;
       let addCategoryContent = await this.getCategoryContentPopover(event);
       await addCategoryContent.present();
 
       let updateEvent = await addCategoryContent.onWillDismiss();
-      this.isOpen = false;
+      this._isOpen = false;
       if (updateEvent.data) {
         this.onUpdate.emit(true);
       }
@@ -55,14 +55,14 @@ export class MenuCategoryContentCardComponent implements OnInit {
 
   /**Click event to disply the popover */
   public async onClickEditContent(event: any, content: MenuContentType) {
-    if (!this.isOpen) {
-      this.isOpen = true;
+    if (!this._isOpen) {
+      this._isOpen = true;
       this.editMode = true;
       let addCategoryContent = await this.getEditCategoryContentPopover(event, content);
       await addCategoryContent.present();
 
       let updateEvent = await addCategoryContent.onWillDismiss();
-      this.isOpen = false;
+      this._isOpen = false;
       if (updateEvent.data) {
         this.onUpdate.emit(true);
       }
@@ -76,7 +76,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
     let action = await confirmAlert.onWillDismiss();
 
     if (action?.role === 'delete' && this.selectedMenuCategoryId !== undefined) {
-      await this.systemMenuCategoryService.processDeleteSystemMenuCategoryContent(
+      await this._systemMenuCategoryService.processDeleteSystemMenuCategoryContent(
         this.selectedMenuCategoryId,
         content
       );
@@ -86,7 +86,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
 
   /**Generate the add new popover action */
   private async getCategoryContentPopover(event: any) {
-    let content = await this.popoverCtrl.create({
+    let content = await this._popoverCtrl.create({
       component: AddMenuCategoryContentComponent,
       event: event,
       translucent: true,
@@ -102,7 +102,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
 
   /**Generate the edit popover action */
   private async getEditCategoryContentPopover(event: any, selectedContent: MenuContentType) {
-    let content = await this.popoverCtrl.create({
+    let content = await this._popoverCtrl.create({
       component: AddMenuCategoryContentComponent,
       event: event,
       translucent: true,
@@ -119,24 +119,24 @@ export class MenuCategoryContentCardComponent implements OnInit {
 
   /** Generate the delete confirmation */
   private async setConfirmDeleteAlert(selectedCategoryName: string) {
-    let categoryName = await this.language.transform(selectedCategoryName);
-    let deleteMsg = await this.language.transform('label.title.deleteheader');
+    let categoryName = await this._language.transform(selectedCategoryName);
+    let deleteMsg = await this._language.transform('label.title.deleteheader');
     let header = categoryName + ' - ' + deleteMsg;
     let confirmDeleteAlertCriteria: AlertOptions = {
       header: header,
       buttons: [
         {
-          text: await this.language.transform('button.title.delete'),
+          text: await this._language.transform('button.title.delete'),
           role: 'delete',
         },
         {
-          text: await this.language.transform('button.title.cancel'),
+          text: await this._language.transform('button.title.cancel'),
           role: '',
         },
       ],
     };
 
-    let confirmDeleteAlert = await this.alertCtrl.create(confirmDeleteAlertCriteria);
+    let confirmDeleteAlert = await this._alertCtrl.create(confirmDeleteAlertCriteria);
     return confirmDeleteAlert;
   }
 }

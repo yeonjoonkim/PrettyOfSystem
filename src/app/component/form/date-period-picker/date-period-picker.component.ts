@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
-import { DatePeriodType, PairNameValueType } from 'src/app/interface/global/global.interface';
+import { DatePeriodType, NameValuePairType } from 'src/app/interface/global/global.interface';
 
 @Component({
   selector: 'date-period-picker',
@@ -27,9 +27,9 @@ export class DatePeriodPickerComponent implements OnInit {
     Constant.Date.Period.Monthly,
     Constant.Date.Period.Annually,
   ];
-  public periodList: DatePeriodType[] = this.global.date.period;
-  public pairNameValueList: PairNameValueType[] = [];
-  public selectedNameValue!: PairNameValueType;
+  public periodList: DatePeriodType[] = this._global.date.period;
+  public pairNameValueList: NameValuePairType[] = [];
+  public selectedNameValue!: NameValuePairType;
   public inputPeriod: DatePeriodType = {
     name: 'date.title.weekly',
     type: 'Weekly',
@@ -37,7 +37,7 @@ export class DatePeriodPickerComponent implements OnInit {
     day: 7,
   };
 
-  constructor(private global: GlobalService) {}
+  constructor(private _global: GlobalService) {}
 
   async ngOnInit() {
     this.periodList = this.isPlanFormat

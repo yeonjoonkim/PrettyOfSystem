@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ILanguageTranslateItem,
-  ILanguageTranslateResult,
-} from 'src/app/interface/system/language/language.interface';
+import { ILanguageTranslateItem } from 'src/app/interface/system/language/language.interface';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 import { MenuCategoryType, MenuContentType } from 'src/app/interface/menu/menu.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
@@ -11,18 +8,18 @@ import { GlobalService } from 'src/app/service/global/global.service';
   providedIn: 'root',
 })
 export class SystemMenuCategoryAddService {
-  public readonly prefixedCategoryOjbectName: string = 'menucategory.title.';
-  public readonly prefixedCategoryContentObjectName: string = 'menucontent.title.';
+  public readonly _prefixedCategoryOjbectName: string = 'menucategory.title.';
+  public readonly _prefixedCategoryContentObjectName: string = 'menucontent.title.';
 
   constructor(
-    private global: GlobalService,
-    private systemMenuRepository: SystemMenuRepositoryService
+    private _global: GlobalService,
+    private _systemMenuRepository: SystemMenuRepositoryService
   ) {}
 
   /**This event will validate and save into language package and will modify the category name to language transform object value */
   public async processSaveNewSystemMenuCategory(newCategory: MenuCategoryType): Promise<void> {
-    newCategory.name = this.global.textTransform.getTransformObjectKeyValue(
-      this.prefixedCategoryOjbectName,
+    newCategory.name = this._global.textTransform.getTransformObjectKeyValue(
+      this._prefixedCategoryOjbectName,
       newCategory.description
     );
     let vaildated = await this.validateCategory(newCategory);
@@ -38,20 +35,23 @@ export class SystemMenuCategoryAddService {
     result: ILanguageTranslateItem,
     newCategory: MenuCategoryType
   ): Promise<void> {
-    newCategory.name = this.global.textTransform.getTransformObjectKeyValue(
-      this.prefixedCategoryOjbectName,
+    newCategory.name = this._global.textTransform.getTransformObjectKeyValue(
+      this._prefixedCategoryOjbectName,
       newCategory.description
     );
-    let success = await this.global.language.transform('messagesuccess.title.save');
-    let hasSameCategoryName = await this.systemMenuRepository.hasSameCategoryName(newCategory.name);
+    let success = await this._global.language.transform('messagesuccess.title.save');
+    let hasSameCategoryName = await this._systemMenuRepository.hasSameCategoryName(
+      newCategory.name
+    );
 
     if (!hasSameCategoryName && !result.isEmpty) {
-      await this.global.language.management.addPackage(result, newCategory.name.toLowerCase());
-      await this.systemMenuRepository.addSystemMenuCategory(newCategory);
-      await this.global.toast.present(success);
+      const isadded = await this._systemMenuRepository.addSystemMenuCategory(newCategory);
+      if (isadded) {
+        await this._global.language.management.addPackage(result, newCategory.name.toLowerCase());
+      }
     } else {
-      let errorMsg = await this.global.language.transform('messageerror.title.unsaved');
-      await this.global.toast.presentError(errorMsg);
+      let errorMsg = await this._global.language.transform('messageerror.title.unsaved');
+      await this._global.toast.presentError(errorMsg);
     }
   }
 
@@ -60,8 +60,8 @@ export class SystemMenuCategoryAddService {
     newCategory: MenuCategoryType
   ): Promise<ILanguageTranslateItem> {
     let translateCriteria =
-      await this.global.language.management.translateCriteria.allLanguageTitleCriteria();
-    let result: ILanguageTranslateItem = await this.global.languageTranslate.get(
+      await this._global.language.management.translateCriteria.allLanguageTitleCriteria();
+    let result: ILanguageTranslateItem = await this._global.languageTranslate.get(
       newCategory.description,
       translateCriteria,
       true
@@ -74,8 +74,8 @@ export class SystemMenuCategoryAddService {
     newContent: MenuContentType
   ): Promise<ILanguageTranslateItem> {
     let translateCriteria =
-      await this.global.language.management.translateCriteria.allLanguageTitleCriteria();
-    let result: ILanguageTranslateItem = await this.global.languageTranslate.get(
+      await this._global.language.management.translateCriteria.allLanguageTitleCriteria();
+    let result: ILanguageTranslateItem = await this._global.languageTranslate.get(
       newContent.description,
       translateCriteria,
       true
@@ -90,11 +90,11 @@ export class SystemMenuCategoryAddService {
     let vaildated = hasDescription && hasIcon;
 
     if (!hasDescription) {
-      let errorMsg = await this.global.language.transform('messageerror.title.descriptionfield');
-      await this.global.toast.presentError(errorMsg);
+      let errorMsg = await this._global.language.transform('messageerror.title.descriptionfield');
+      await this._global.toast.presentError(errorMsg);
     } else if (!hasIcon) {
-      let errorMsg = await this.global.language.transform('messageerror.title.iconfield');
-      await this.global.toast.presentError(errorMsg);
+      let errorMsg = await this._global.language.transform('messageerror.title.iconfield');
+      await this._global.toast.presentError(errorMsg);
     }
     return vaildated;
   }

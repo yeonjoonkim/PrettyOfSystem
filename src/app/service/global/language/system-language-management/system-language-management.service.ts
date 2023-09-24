@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SystemLanguagePackageService } from './system-language-package/system-language-package.service';
 import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
-
 import { SystemLanguageStorageService } from './system-language-storage/system-language-storage.service';
 import {
   IAddLanguageTransformSaveCommand,
   ILanguageKey,
-  ILanguageSelection,
+  LanguageSelectionType,
   ILanguageTranslateItem,
-  ILanguageTranslateResult,
   PairKeyValueType,
 } from 'src/app/interface';
 import { TextTransformService } from '../../text-transform/text-transform.service';
@@ -22,12 +20,6 @@ import { lastValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class SystemLanguageManagementService {
-  private errorMsg = {
-    unsaved: 'messageerror.title.unsaved',
-  };
-  private successMsg = {
-    saved: 'messagesuccess.title.saved',
-  };
   constructor(
     public storage: SystemLanguageStorageService,
     public translateCriteria: TranslateCriteriaService,
@@ -40,27 +32,24 @@ export class SystemLanguageManagementService {
   ) {}
 
   public async editSelectedPackage(selectedLanguageCode: string, pair: PairKeyValueType) {
-    try {
-      let selection: ILanguageSelection = await this.storage.getSelectedSelection(
-        selectedLanguageCode
-      );
-      selection.package = this._systemLanguagePackage.update(selection.package, pair);
-      await this._systemLanguageRepo.updateLanguageSelection(selection);
-      await this.storage.refresh();
-    } catch (e) {
-      console.error(e);
-      await this._toast.presentError(this.errorMsg.unsaved);
-    }
+    let selection: LanguageSelectionType = await this.storage.getSelectedSelection(
+      selectedLanguageCode
+    );
+    selection.package = this._systemLanguagePackage.update(selection.package, pair);
+    await this._systemLanguageRepo.updateLanguageSelection(selection);
+    await this.storage.refresh();
   }
 
   public async addPackage(result: ILanguageTranslateItem, keyValue: string) {
-    let selections: ILanguageSelection[] = await lastValueFrom(
+    let isSuccess: boolean;
+    isSuccess = true;
+    let selections: LanguageSelectionType[] = await lastValueFrom(
       this._systemLanguageRepo.getLanguageSelectionResult()
     );
     if (!result.isEmpty) {
-      try {
-        for (let i = 0; i < selections.length; i++) {
-          let selection: ILanguageSelection = selections[i];
+      for (let i = 0; i < selections.length; i++) {
+        if (isSuccess) {
+          let selection: LanguageSelectionType = selections[i];
           let selectionCode: string = selection.code.toLowerCase();
           let translatedKeyPairValue: PairKeyValueType = {
             key: keyValue,
@@ -70,36 +59,35 @@ export class SystemLanguageManagementService {
             selection.package,
             translatedKeyPairValue
           );
-          await this._systemLanguageRepo.updateLanguageSelection(selection);
+          isSuccess = await this._systemLanguageRepo.updateLanguageSelection(selection);
         }
+      }
+      if (isSuccess) {
         await this.addLanguageKey(keyValue);
         await this.storage.storeSelection(selections);
-      } catch (e) {
-        console.error(e);
-        await this._toast.presentError(this.errorMsg.unsaved);
       }
-
       await this.storage.refresh();
     }
+
+    return isSuccess;
   }
 
   public async deletePackage(key: string) {
-    try {
-      let selections: ILanguageSelection[] = await lastValueFrom(
-        this._systemLanguageRepo.getLanguageSelectionResult()
-      );
-      const updatePromises = selections.map(async (selection: ILanguageSelection) => {
-        selection.package = this._systemLanguagePackage.delete(selection.package, key);
-        return this._systemLanguageRepo.updateLanguageSelection(selection);
-      });
+    let selections: LanguageSelectionType[] = await lastValueFrom(
+      this._systemLanguageRepo.getLanguageSelectionResult()
+    );
+    const updatePromises = selections.map(async (selection: LanguageSelectionType) => {
+      selection.package = this._systemLanguagePackage.delete(selection.package, key);
+      return this._systemLanguageRepo.updateLanguageSelection(selection);
+    });
+    const result = await Promise.all(updatePromises);
 
-      await Promise.all(updatePromises);
+    if (!result.includes(false)) {
       await this.storage.storeSelection(selections);
       await this.deleteLanguageKey(key);
-    } catch (e) {
-      console.error(e);
-      await this._toast.presentError(this.errorMsg.unsaved);
     }
+
+    return !result.includes(false);
   }
 
   public async getDefaultKeyPairValueList() {
@@ -114,9 +102,9 @@ export class SystemLanguageManagementService {
     });
   }
 
-  public async getSelectedSelection(code: string): Promise<ILanguageSelection> {
+  public async getSelectedSelection(code: string): Promise<LanguageSelectionType> {
     let selections = await this.storage.getSelections();
-    return selections.find(r => r.code === code) as ILanguageSelection;
+    return selections.find(r => r.code === code) as LanguageSelectionType;
   }
 
   public async transform(key: string) {
@@ -165,25 +153,29 @@ export class SystemLanguageManagementService {
   }
 
   public async deletePackages(keyList: string[]) {
+    let isSuccess: boolean = true;
     let selections = await this.storage.getSelections();
     let usedKey = await this.storage.getKey();
     usedKey.used = usedKey.used.filter(element => !keyList.includes(element));
 
-    try {
-      for (let i = 0; i < selections.length; i++) {
-        let selection: ILanguageSelection = selections[i];
+    for (let i = 0; i < selections.length; i++) {
+      let selection: LanguageSelectionType = selections[i];
+      if (isSuccess) {
         for (let i = 0; i < keyList.length; i++) {
-          let key: string = keyList[i];
+          if (isSuccess) {
+            let key: string = keyList[i];
 
-          selection.package = this._systemLanguagePackage.delete(selection.package, key);
-          await this._systemLanguageRepo.updateLanguageSelection(selection);
+            selection.package = this._systemLanguagePackage.delete(selection.package, key);
+            isSuccess = await this._systemLanguageRepo.updateLanguageSelection(selection);
+          }
         }
       }
-    } catch (e) {
-      console.error(e);
+    }
+    if (isSuccess) {
+      await this._systemLanguageRepo.updateLanguageKey(usedKey);
     }
 
-    await this._systemLanguageRepo.updateLanguageKey(usedKey);
+    return isSuccess;
   }
 
   public async deleteLanguageKey(usedKeyValue: string): Promise<void> {
@@ -196,8 +188,10 @@ export class SystemLanguageManagementService {
         if (index !== -1) {
           key.used.splice(index, 1);
           key.used.sort();
-          await this._systemLanguageRepo.updateLanguageKey(key);
-          await this.storage.storeKey(key);
+          const result = await this._systemLanguageRepo.updateLanguageKey(key);
+          if (result) {
+            await this.storage.storeKey(key);
+          }
         }
       }
     }

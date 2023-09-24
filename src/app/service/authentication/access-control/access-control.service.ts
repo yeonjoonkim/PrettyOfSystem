@@ -1,18 +1,11 @@
-import { MenuCategoryType } from 'src/app/interface/menu/menu.interface';
-import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
-import {
-  RoleAccessLevelType,
-  RoleConfigurationType,
-} from 'src/app/interface/system/role/role.interface';
-import { RoleRateService } from '../role-rate/role-rate.service';
+import { RoleAccessLevelType } from 'src/app/interface/system/role/role.interface';
 import { Injectable } from '@angular/core';
-import * as Constant from '../../../constant/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccessControlService {
-  constructor(private roleRate: RoleRateService) {}
+  constructor() {}
 
   public systemAdmin(accessLevel: RoleAccessLevelType): boolean {
     return accessLevel.isSystemAdmin;

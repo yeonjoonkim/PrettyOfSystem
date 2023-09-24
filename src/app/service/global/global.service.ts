@@ -16,6 +16,7 @@ import { FormControllerService } from './form/form-controller.service';
 import { DateService } from './date/date.service';
 import { TimerService } from './timer/timer.service';
 import { NetworkConnectionStatusService } from './network-connection-status/network-connection-status.service';
+import { CryptService } from './crypt/crypt.service';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +39,8 @@ export class GlobalService {
     public formCtrl: FormControllerService,
     public date: DateService,
     public timer: TimerService,
-    public networkConnection: NetworkConnectionStatusService
+    public networkConnection: NetworkConnectionStatusService,
+    public crypt: CryptService
   ) {}
 
   public isUndefinedOrNull(data: any): boolean {

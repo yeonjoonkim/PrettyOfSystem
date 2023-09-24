@@ -1,0 +1,21 @@
+#dropdown-list-btn {
+  width: 120px;
+  height: 30px;
+  background: transparent;
+
+  ::ng-deep span.k-button-text {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  ::ng-deep span.k-button-text #selected-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  ::ng-deep span.k-button-text #dropdown-list-down {
+    margin-top: 4px;
+  }
+}

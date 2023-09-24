@@ -12,7 +12,6 @@ import { cloneDeep } from 'lodash-es';
 export class RoleComponent implements OnInit {
   public editMode: boolean = false;
   public editedTitle: string = '';
-  private prevRole: RoleConfigurationType | undefined;
   public role: RoleConfigurationType = {
     id: '',
     name: '',
@@ -26,10 +25,11 @@ export class RoleComponent implements OnInit {
     },
     rate: 0,
   };
+  private _prevRole: RoleConfigurationType | undefined;
   constructor(
-    private global: GlobalService,
-    private systemRole: SystemRoleService,
-    private navParams: NavParams
+    private _global: GlobalService,
+    private _systemRole: SystemRoleService,
+    private _navParams: NavParams
   ) {
     this.getParams();
   }
@@ -37,12 +37,12 @@ export class RoleComponent implements OnInit {
   ngOnInit() {}
 
   private getParams() {
-    let editable = this.navParams.get('editable');
-    let role = this.navParams.get('role');
+    let editable = this._navParams.get('editable');
+    let role = this._navParams.get('role');
 
     if (editable !== undefined) {
       this.editedTitle = role?.name;
-      this.prevRole = cloneDeep(role);
+      this._prevRole = cloneDeep(role);
       this.role = role;
       this.editMode = true;
     }
@@ -114,7 +114,7 @@ export class RoleComponent implements OnInit {
     let hasDescription: boolean = this.role.description.length > 0;
 
     if (hasDescription && hasSelectedConfig) {
-      await this.systemRole.processNewSaveRoleConfiguration(this.role);
+      await this._systemRole.processNewSaveRoleConfiguration(this.role);
     } else {
       await this.presentErroMsg(hasDescription, hasSelectedConfig);
     }
@@ -129,26 +129,24 @@ export class RoleComponent implements OnInit {
       this.role.accessLevel.isReception;
     let hasDescription: boolean = this.role.description.length > 0;
 
-    if (hasDescription && hasSelectedConfig && this.prevRole !== undefined) {
-      await this.systemRole.processUpdateRoleConfiguration(this.prevRole, this.role);
-    } else {
-      await this.presentErroMsg(hasDescription, hasSelectedConfig);
+    if (hasDescription && hasSelectedConfig && this._prevRole !== undefined) {
+      await this._systemRole.processUpdateRoleConfiguration(this._prevRole, this.role);
     }
   }
 
   /** During save click event, present toast error message to determine the error. */
   private async presentErroMsg(hasDescription: boolean, hasSelectedConfig: boolean): Promise<void> {
     let errormsg: string = !hasDescription
-      ? await this.global.language.transform('messageerror.dscription.descriptionfield')
+      ? await this._global.language.transform('messageerror.dscription.descriptionfield')
       : !hasSelectedConfig
-      ? await this.global.language.transform('messageerror.description.config')
+      ? await this._global.language.transform('messageerror.description.config')
       : '';
 
-    await this.global.toast.presentError(errormsg);
+    await this._global.toast.presentError(errormsg);
   }
 
   /**Dismiss the current add role modal */
   public async dismiss(): Promise<void> {
-    await this.systemRole.modal.dismissModal();
+    await this._systemRole.modal.dismissModal();
   }
 }

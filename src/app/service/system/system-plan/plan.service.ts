@@ -9,21 +9,21 @@ import { GlobalService } from 'src/app/service/global/global.service';
   providedIn: 'root',
 })
 export class PlanService {
-  private readonly rateHolder: number = 1;
-  private readonly taxRate: number = 0.1;
-  private readonly netRate: number = this.rateHolder - this.taxRate;
+  private readonly _rateHolder: number = 1;
+  private readonly _taxRate: number = 0.1;
+  private readonly _netRate: number = this._rateHolder - this._taxRate;
   constructor(
     public modal: PlanModalService,
-    private planRepo: SystemPlanRepositoryService,
-    private global: GlobalService
+    private _planRepo: SystemPlanRepositoryService,
+    private _global: GlobalService
   ) {}
 
   public getPlanOptions() {
-    return this.planRepo.getSystemPlanOptions();
+    return this._planRepo.getSystemPlanOptions();
   }
 
   public valueChangeListener() {
-    return this.planRepo.valueChangeListener();
+    return this._planRepo.valueChangeListener();
   }
 
   public getDefaultPlan(): PlanConfigurationType {
@@ -43,74 +43,36 @@ export class PlanService {
   }
 
   public getTaxAndNetPrice(price: number): PlanPriceType {
-    price = this.global.numberTransform.roundToDecimalPlaces(price, 2);
+    price = this._global.numberTransform.roundToDecimalPlaces(price, 2);
     return {
-      tax: price ? this.global.numberTransform.roundToDecimalPlaces(price * this.taxRate, 2) : 0,
-      net: price ? this.global.numberTransform.roundToDecimalPlaces(price * this.netRate, 2) : 0,
+      tax: price ? this._global.numberTransform.roundToDecimalPlaces(price * this._taxRate, 2) : 0,
+      net: price ? this._global.numberTransform.roundToDecimalPlaces(price * this._netRate, 2) : 0,
       total: price,
     };
   }
 
   public async processSaveNewPlan(planConfig: PlanConfigurationType) {
-    let isSaved = await this.planRepo.addSystemPlanOption(planConfig);
+    const isSaved = await this._planRepo.addSystemPlanOption(planConfig);
 
     if (isSaved) {
       await this.modal.dissmissModalWithRefresh();
-      await this.presentSaveMsg();
-    } else {
-      await this.presentSaveError();
     }
   }
 
   public async processUpdatePlan(planConfig: PlanConfigurationType) {
-    let isUpdated = await this.planRepo.updateSystemPlanOption(planConfig);
+    const isUpdated = await this._planRepo.updateSystemPlanOption(planConfig);
 
     if (isUpdated) {
-      await this.presentUpdateMsg();
       await this.modal.dissmissModalWithRefresh();
-    } else {
-      await this.presentUpdateError();
     }
   }
 
   public async processDeletePlan(selectedPlanId: string, selectedPlanName: string) {
-    let deleteConfirmation = await this.global.confirmAlert.getDeleteConfirmationWithName(
+    const deleteConfirmation = await this._global.confirmAlert.getDeleteConfirmationWithName(
       selectedPlanName
     );
     if (deleteConfirmation) {
-      (await this.planRepo.deleteSystemPlanOption(selectedPlanId))
-        ? await this.presentDeleteMsg()
-        : await this.presentDeleteError();
+      await this._planRepo.deleteSystemPlanOption(selectedPlanId);
     }
-  }
-
-  private async presentSaveMsg() {
-    let msg = await this.global.language.transform('messagesuccess.title.save');
-    await this.global.toast.present(msg);
-  }
-
-  private async presentSaveError() {
-    let msg = await this.global.language.transform('messageerror.title.unsaved');
-    await this.global.toast.present(msg);
-  }
-
-  private async presentDeleteMsg() {
-    let msg = await this.global.language.transform('messagesuccess.title.delete');
-    await this.global.toast.present(msg);
-  }
-
-  private async presentDeleteError() {
-    let msg = await this.global.language.transform('messageerror.title.delete');
-    await this.global.toast.present(msg);
-  }
-
-  private async presentUpdateError() {
-    let msg = await this.global.language.transform('messageerror.title.updated');
-    await this.global.toast.present(msg);
-  }
-
-  private async presentUpdateMsg() {
-    let msg = await this.global.language.transform('messagesuccess.title.update');
-    await this.global.toast.present(msg);
   }
 }

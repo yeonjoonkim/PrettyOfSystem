@@ -44,7 +44,7 @@ export class TextBoxComponent implements OnInit {
   }
   public counter: string = `${this.valueLengthCount}/${this.max}`;
 
-  constructor(private global: GlobalService) {}
+  constructor(private _global: GlobalService) {}
 
   async ngOnInit() {
     this.value =
@@ -74,13 +74,13 @@ export class TextBoxComponent implements OnInit {
       : this.isUpperFormat
       ? this.validatedValue.toLocaleUpperCase()
       : this.isTitleFormat
-      ? this.global.textTransform.getTitleFormat(this.validatedValue)
+      ? this._global.textTransform.getTitleFormat(this.validatedValue)
       : this.validatedValue;
   }
 
   private async setDefaultPlaceHolder() {
     this.placeholder = this.isRequired
-      ? await this.global.language.transform('placeholder.title.required')
+      ? await this._global.language.transform('placeholder.title.required')
       : this.placeholder;
   }
 }

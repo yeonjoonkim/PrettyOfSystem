@@ -1,0 +1,38 @@
+form-container {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#info-container {
+  margin-top: 20px;
+}
+#associated-shop-active,
+#delete-btn {
+  margin-top: 7px;
+}
+
+#account-setting {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#login-gender-container {
+  flex: 1;
+}
+#login-option-container {
+  margin: 0px 15px;
+}
+
+password-confirmation {
+  flex: 1;
+}
+
+//Mobile
+@media (max-width: 480px) {
+  #check-box {
+    font-size: 8px;
+  }
+}

@@ -20,19 +20,19 @@ export interface ISystemMenuOptionAction {
   providedIn: 'root',
 })
 export class SystemMenuOptionControllerService {
-  private readonly labelTitle: string = 'label.title.';
-  private readonly menuOption = {
+  private readonly _labelTitle: string = 'label.title.';
+  private readonly _menuOption = {
     //Configuration
-    menuManagement: this.labelTitle + 'menu',
-    roleManagement: this.labelTitle + 'role',
-    planManagement: this.labelTitle + 'subscription',
+    menuManagement: this._labelTitle + 'menu',
+    roleManagement: this._labelTitle + 'role',
+    planManagement: this._labelTitle + 'subscription',
     //Shop
-    shopManagement: this.labelTitle + 'shop',
+    shopManagement: this._labelTitle + 'shop',
     //User
-    userManagement: this.labelTitle + 'user',
+    userManagement: this._labelTitle + 'user',
     //Language
-    transformDictionary: this.labelTitle + 'dictionary',
-    languageManagement: this.labelTitle + 'language',
+    transformDictionary: this._labelTitle + 'dictionary',
+    languageManagement: this._labelTitle + 'language',
   };
 
   constructor(private language: LanguageService) {}
@@ -75,14 +75,14 @@ export class SystemMenuOptionControllerService {
 
   private async getLanguageDictionaryOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this.menuOption.transformDictionary);
+    controller.name = await this.language.transform(this._menuOption.transformDictionary);
     controller.isLanguageDictionary = true;
     return controller;
   }
 
   private async getLanguageManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this.menuOption.languageManagement);
+    controller.name = await this.language.transform(this._menuOption.languageManagement);
 
     controller.isLanguageManagement = true;
 
@@ -91,7 +91,7 @@ export class SystemMenuOptionControllerService {
 
   private async getRoleManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this.menuOption.roleManagement);
+    controller.name = await this.language.transform(this._menuOption.roleManagement);
     controller.isRoleManagement = true;
 
     return controller;
@@ -99,7 +99,7 @@ export class SystemMenuOptionControllerService {
 
   private async getMenuManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this.menuOption.menuManagement);
+    controller.name = await this.language.transform(this._menuOption.menuManagement);
     controller.isMenuManagement = true;
 
     return controller;
@@ -107,7 +107,7 @@ export class SystemMenuOptionControllerService {
 
   private async getPlanManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this.menuOption.planManagement);
+    controller.name = await this.language.transform(this._menuOption.planManagement);
     controller.isPlanManagement = true;
 
     return controller;
@@ -115,7 +115,7 @@ export class SystemMenuOptionControllerService {
 
   private async getShopManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this.menuOption.shopManagement);
+    controller.name = await this.language.transform(this._menuOption.shopManagement);
     controller.isShopManagement = true;
 
     return controller;
@@ -123,7 +123,7 @@ export class SystemMenuOptionControllerService {
 
   private async getUserManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this.menuOption.userManagement);
+    controller.name = await this.language.transform(this._menuOption.userManagement);
     controller.isUserManagement = true;
 
     return controller;

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
-import { IShopOperatingHours, IShopWorkHours } from 'src/app/interface/shop/shop.interface';
+import { ShopOperatingHoursType, ShopWorkHoursType } from 'src/app/interface/shop/shop.interface';
 import { TimeItemType } from 'src/app/interface/global/global.interface';
 export interface IShopOpenHoursValidator {
   mon: boolean;
@@ -19,17 +19,17 @@ export interface IShopOpenHoursValidator {
   styleUrls: ['./shop-open-hour.component.scss'],
 })
 export class ShopOpenHourComponent implements OnInit {
-  @Output() workHoursChange = new EventEmitter<IShopWorkHours>();
+  @Output() workHoursChange = new EventEmitter<ShopWorkHoursType>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() readOnly: boolean = false;
   @Input() timezone: Constant.TimeZoneType = Constant.TimeZone.AustraliaBrisbane;
   @Input() intervalMin: number = Constant.ShopSetting.TimePicker.IntervalMin;
   @Input() action: Constant.FormActionType = Constant.Default.FormAction.Create;
   @Input()
-  get workHours(): IShopWorkHours {
+  get workHours(): ShopWorkHoursType {
     return this.inputWorkHours;
   }
-  set workHours(workHours: IShopWorkHours) {
+  set workHours(workHours: ShopWorkHoursType) {
     this.inputWorkHours = workHours;
     this.workHoursChange.emit(workHours);
   }
@@ -51,7 +51,7 @@ export class ShopOpenHourComponent implements OnInit {
     sat: true,
     sun: true,
   };
-  public inputWorkHours: IShopWorkHours = {
+  public inputWorkHours: ShopWorkHoursType = {
     closeDay: [],
     mon: {
       isOpen: true,
@@ -194,7 +194,7 @@ export class ShopOpenHourComponent implements OnInit {
       workHours: 24,
     },
   };
-  public copyValue: IShopOperatingHours = {
+  public copyValue: ShopOperatingHoursType = {
     openTime: {
       hr: 0,
       min: 0,
@@ -208,7 +208,7 @@ export class ShopOpenHourComponent implements OnInit {
       strValue: '00:00:00',
     },
   };
-  constructor(private global: GlobalService) {}
+  constructor(private _global: GlobalService) {}
 
   async ngOnInit() {}
 
@@ -356,12 +356,12 @@ export class ShopOpenHourComponent implements OnInit {
 
   private validateOpenAndCloseTimes(open: TimeItemType, close: TimeItemType) {
     let tempDate: Date = new Date();
-    let openTime: Date = this.global.date.transform.convertShopTimeZoneDateTimeItem(
+    let openTime: Date = this._global.date.transform.convertShopTimeZoneDateTimeItem(
       tempDate,
       this.timezone,
       open
     );
-    let closeTime: Date = this.global.date.transform.convertShopTimeZoneDateTimeItem(
+    let closeTime: Date = this._global.date.transform.convertShopTimeZoneDateTimeItem(
       tempDate,
       this.timezone,
       close
@@ -375,7 +375,7 @@ export class ShopOpenHourComponent implements OnInit {
       close.dayNightType === Constant.Date.DayNightType.DAY;
     let workHours: number = is24Hours
       ? 24.0
-      : this.global.date.differenceTime(openTime, closeTime, 2);
+      : this._global.date.differenceTime(openTime, closeTime, 2);
     let validator: boolean = is24Hours ? true : openTime < closeTime;
 
     return { result: validator, workHours: workHours };

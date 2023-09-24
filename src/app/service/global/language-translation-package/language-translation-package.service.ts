@@ -2,12 +2,10 @@ import {
   IAddLanguageTransformSaveCommand,
   ILanguageKey,
   ILanguageTranslateItem,
-  ILanguageTranslatedCriteria,
   ILanguageTrasnlationResult,
 } from 'src/app/interface/system/language/language.interface';
 import { LanguageTranslateService } from '../language-translate/language-translate.service';
 import { Injectable } from '@angular/core';
-import { LanguageService } from '../language/language.service';
 import { TextTransformService } from '../text-transform/text-transform.service';
 import { TranslateCriteriaService } from '../language/system-language-management/translate-criteria/translate-criteria.service';
 import { PairKeyValueType } from 'src/app/interface/global/global.interface';
@@ -18,30 +16,29 @@ import { SystemLanguageStorageService } from '../language/system-language-manage
 })
 export class LanguageTranslationPackageService {
   constructor(
-    private language: LanguageService,
-    private languageTranslate: LanguageTranslateService,
-    private texTransform: TextTransformService,
-    private translateCriteria: TranslateCriteriaService,
-    private storage: SystemLanguageStorageService
+    private _languageTranslate: LanguageTranslateService,
+    private _texTransform: TextTransformService,
+    private _translateCriteria: TranslateCriteriaService,
+    private _storage: SystemLanguageStorageService
   ) {}
 
   public async translateObjectNameFormat(objectName: string, value: string) {
-    let criteria = await this.translateCriteria.allLanguageCriteria(objectName);
-    let result = await this.languageTranslate.get(value, criteria, true);
+    let criteria = await this._translateCriteria.allLanguageCriteria(objectName);
+    let result = await this._languageTranslate.get(value, criteria, true);
     let validated = await this.validateLanugageResult(result, objectName);
     return { result: result, validated: validated };
   }
 
   public async translateTitleFormat(objectName: string, value: string) {
-    let criteria = await this.translateCriteria.allLanguageTitleCriteria();
-    let result = await this.languageTranslate.get(value, criteria, true);
+    let criteria = await this._translateCriteria.allLanguageTitleCriteria();
+    let result = await this._languageTranslate.get(value, criteria, true);
     let validated = await this.validateLanugageResult(result, objectName);
     return { result: result, validated: validated };
   }
 
   public async translateDescriptionFormat(objectName: string, value: string) {
-    let criteria = await this.translateCriteria.allLanguageDescriptionCriteria();
-    let result = await this.languageTranslate.get(value, criteria, true);
+    let criteria = await this._translateCriteria.allLanguageDescriptionCriteria();
+    let result = await this._languageTranslate.get(value, criteria, true);
     let validated = await this.validateLanugageResult(result, objectName);
     return { result: result, validated: validated };
   }
@@ -50,7 +47,9 @@ export class LanguageTranslationPackageService {
     let result: ILanguageTrasnlationResult = this.defaultResult();
     result.isEmpty = item.isEmpty;
     if (!result.isEmpty) {
-      let defaultDescription = this.texTransform.getDefaultLanguageTranslateResult(item.translated);
+      let defaultDescription = this._texTransform.getDefaultLanguageTranslateResult(
+        item.translated
+      );
       result.name = objectName + defaultDescription.toLowerCase().replace(' ', '');
       result.description = defaultDescription;
       let keyValidation = await this.validateKeyPairValue({
@@ -66,12 +65,12 @@ export class LanguageTranslationPackageService {
   private async validateKeyPairValue(
     pair: PairKeyValueType
   ): Promise<IAddLanguageTransformSaveCommand> {
-    let key: ILanguageKey = await this.storage.getKey();
+    let key: ILanguageKey = await this._storage.getKey();
     let result = {
       hasValue: pair.value.length > 0,
       isKeyNotExisted: !key.used.includes(pair.key.toLowerCase()),
       isTransformKeyValueFormat:
-        this.texTransform.setLanguageTransformCodeList(pair.key.toLowerCase()).length === 3,
+        this._texTransform.setLanguageTransformCodeList(pair.key.toLowerCase()).length === 3,
     };
     return result;
   }

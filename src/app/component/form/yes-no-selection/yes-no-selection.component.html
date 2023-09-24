@@ -1,4 +1,4 @@
-<kendo-label text="{{ label | languageTransform | async }}" *ngIf="!simpleMode">
+<kendo-label text="{{ title | languageTransform | async }}" *ngIf="!simpleMode">
   <kendo-switch
     [(ngModel)]="value"
     (ngModelChange)="onChangeSelection()"

@@ -55,11 +55,11 @@ class DesktopDevice extends Device {
   providedIn: 'root',
 })
 export class DeviceWidthService implements OnDestroy {
-  private resizeSubscription!: Subscription;
+  private _resizeSubscription!: Subscription;
 
-  private isMobileSource = new BehaviorSubject<boolean>(false);
-  private isTabletSource = new BehaviorSubject<boolean>(false);
-  private isDesktopSource = new BehaviorSubject<boolean>(false);
+  private _isMobileSource = new BehaviorSubject<boolean>(false);
+  private _isTabletSource = new BehaviorSubject<boolean>(false);
+  private _isDesktopSource = new BehaviorSubject<boolean>(false);
 
   public deviceTypeObservable: Observable<IDeviceType>;
   public deviceType: IDeviceType = {
@@ -72,7 +72,7 @@ export class DeviceWidthService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.resizeSubscription?.unsubscribe();
+    this._resizeSubscription?.unsubscribe();
   }
 
   private getCurrentDevice(width: number): Device {
@@ -88,23 +88,23 @@ export class DeviceWidthService implements OnDestroy {
       startWith(window.innerWidth)
     );
 
-    this.resizeSubscription = resize$.subscribe(width => {
+    this._resizeSubscription = resize$.subscribe(width => {
       const currentDevice = this.getCurrentDevice(width);
       this.updateDeviceType(currentDevice);
     });
 
     return combineLatest([
-      this.isMobileSource.asObservable(),
-      this.isTabletSource.asObservable(),
-      this.isDesktopSource.asObservable(),
+      this._isMobileSource.asObservable(),
+      this._isTabletSource.asObservable(),
+      this._isDesktopSource.asObservable(),
     ]).pipe(
       map(([isMobile, isTablet, isDesktop]): IDeviceType => ({ isMobile, isTablet, isDesktop }))
     );
   }
 
   private updateDeviceType(device: Device): void {
-    this.isMobileSource.next(device instanceof MobileDevice);
-    this.isTabletSource.next(device instanceof TabletDevice);
-    this.isDesktopSource.next(device instanceof DesktopDevice);
+    this._isMobileSource.next(device instanceof MobileDevice);
+    this._isTabletSource.next(device instanceof TabletDevice);
+    this._isDesktopSource.next(device instanceof DesktopDevice);
   }
 }

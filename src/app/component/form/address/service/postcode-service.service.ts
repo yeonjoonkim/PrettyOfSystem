@@ -10,24 +10,28 @@ export interface IStateTypeDeclaration {
   providedIn: 'root',
 })
 export class PostcodeService {
-  constructor(private australia: AustraliaPostCodeService) {}
+  constructor(private _australia: AustraliaPostCodeService) {}
+
+  public getAustralia() {
+    return this._australia.getCombined();
+  }
 
   public setPostCodeFilterOption(state: string): PostCodeFilterOptionType {
     let result: PostCodeFilterOptionType = { postCodeList: [], stateList: [] };
     let stateType: IStateTypeDeclaration = this.findStateType(state);
     let australiaState: Constant.AustraliaStateType | undefined = stateType.isAustralia
-      ? this.australia.convertStringToAustraliaStateType(state)
+      ? this._australia.convertStringToAustraliaStateType(state)
       : undefined;
 
     if (australiaState != undefined) {
-      result = this.australia.getPostCodeFilterOption(australiaState);
+      result = this._australia.getPostCodeFilterOption(australiaState);
     }
     return result;
   }
 
   public findStateType(state: string): IStateTypeDeclaration {
     return {
-      isAustralia: this.australia.StateType(state),
+      isAustralia: this._australia.StateType(state),
     };
   }
 }

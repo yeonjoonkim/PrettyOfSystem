@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IShopOperatingHours } from 'src/app/interface/shop/shop.interface';
+import { ShopOperatingHoursType } from 'src/app/interface/shop/shop.interface';
 import * as Constant from 'src/app/constant/constant';
 
 @Injectable({
@@ -63,7 +63,7 @@ export class SystemShopWorkHoursService {
     };
   }
 
-  private getDefaultOperatingHours(): IShopOperatingHours {
+  private getDefaultOperatingHours(): ShopOperatingHoursType {
     return {
       openTime: {
         hr: 0,

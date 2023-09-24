@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TextBoxComponent } from '@progress/kendo-angular-inputs';
-import { Subscription } from 'rxjs';
+import { Subscription, lastValueFrom } from 'rxjs';
 import { UserLogin } from 'src/app/class/user/user-login.class';
 import { ITimer, IUserLoginOption } from 'src/app/interface';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { getAuth, RecaptchaVerifier } from 'firebase/auth';
+import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
   selector: 'login',
@@ -11,12 +14,12 @@ import { ITimer, IUserLoginOption } from 'src/app/interface';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   @ViewChild('textbox') public textbox!: TextBoxComponent;
+
   public loginOption: IUserLoginOption = {
-    id: '',
     email: false,
     phoneNumber: true,
   };
-  public login: UserLogin = new UserLogin();
+  public login!: UserLogin;
   public validator = {
     phone: false,
     email: false,
@@ -26,19 +29,24 @@ export class LoginComponent implements OnInit, OnDestroy {
   public sendOTP: boolean = false;
   public enableOTPVerificationBtn: boolean = false;
   public showPassword: boolean = false;
-  private _timerSubscription!: Subscription;
   public timer!: ITimer;
+  private _timerSubscription!: Subscription;
+  public _recaptcha!: RecaptchaVerifier;
 
-  constructor() {}
+  constructor(private _afa: AngularFireAuth, private _userService: UserService) {
+    this.login = new UserLogin(this._afa, this._userService);
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.reset();
+    this.startRecaptchaVerifier();
+  }
 
   async ngOnDestroy() {
     this._timerSubscription?.unsubscribe();
     await this.login.timer.end();
+    await this.login.reset();
   }
-
-  public ngAfterViewInit(): void {}
 
   public toggleVisibility(): void {
     const inputEl = this.textbox.input.nativeElement;
@@ -66,14 +74,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public async sendPhoneOTP() {
-    await this.subscribeTimer();
-    await this.login.sendOtpVerification();
-    this.sendOTP = true;
+    try {
+      await this.login.sendOtpVerification(this._recaptcha);
+      await this.subscribeTimer();
+      this.sendOTP = this.login.errorMsg ? false : true;
+    } catch (error) {
+      console.error(error);
+      this.sendOTP = false;
+    }
   }
 
   public async resendOTP() {
     this.login.otp = '';
-    await this.login.resendOtpVerification();
+    this.login.errorMsg = '';
+    await this.login.resendOtpVerification(this._recaptcha);
   }
 
   public async verifyPhoneOTP() {
@@ -100,5 +114,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.login.timer.end();
       }
     });
+  }
+
+  private startRecaptchaVerifier() {
+    const auth = getAuth();
+    this._recaptcha = new RecaptchaVerifier('recaptcha-container', { size: 'invisible' }, auth);
+    this._recaptcha.verify();
   }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IShopCategory } from 'src/app/interface/shop/shop.interface';
-import { PairNameValueType, PairValueIdType } from 'src/app/interface/global/global.interface';
+import { ShopCategoryType } from 'src/app/interface/shop/shop.interface';
+import { NameValuePairType } from 'src/app/interface/global/global.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
 import * as Constant from 'src/app/constant/constant';
 
@@ -10,32 +10,33 @@ import * as Constant from 'src/app/constant/constant';
   styleUrls: ['./shop-category.component.scss'],
 })
 export class ShopCategoryListComponent implements OnInit {
-  @Output() shopCategoryChange = new EventEmitter<IShopCategory>();
+  @Output() shopCategoryChange = new EventEmitter<ShopCategoryType>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input() readOnly: boolean = false;
   @Input()
-  get shopCategory(): IShopCategory {
-    return this.selectedShopCategory;
+  get shopCategory(): ShopCategoryType {
+    return this._selectedShopCategory;
   }
-  set shopCategory(value: IShopCategory) {
-    this.selectedShopCategory = value;
-    this.shopCategoryChange.emit(this.selectedShopCategory);
+  set shopCategory(value: ShopCategoryType) {
+    this._selectedShopCategory = value;
+    this.shopCategoryChange.emit(this._selectedShopCategory);
   }
   @Input()
   get validate(): boolean {
-    return this.validated;
+    return this._validated;
   }
   set validate(value: boolean) {
-    this.validated = value;
-    this.validateChange.emit(this.validated);
+    this._validated = value;
+    this.validateChange.emit(this._validated);
   }
-  private defaultShopCategoryList: IShopCategory[] = [];
+
   public loading: boolean = true;
-  public pairNameValueList: PairNameValueType[] = [];
-  public selectedPairNameValue!: PairNameValueType | undefined;
-  private validated: boolean = false;
-  private selectedShopCategory: IShopCategory = {
+  public pairNameValueList: NameValuePairType[] = [];
+  public selectedPairNameValue!: NameValuePairType | undefined;
+  private _defaultShopCategoryList: ShopCategoryType[] = [];
+  private _validated: boolean = false;
+  private _selectedShopCategory: ShopCategoryType = {
     id: '',
     name: '',
     isHairSalon: false,
@@ -45,19 +46,19 @@ export class ShopCategoryListComponent implements OnInit {
     isMobileShop: false,
   };
 
-  constructor(private systemShopService: SystemShopService) {}
+  constructor(private _systemShopService: SystemShopService) {}
 
   async ngOnInit() {
-    this.defaultShopCategoryList = await this.systemShopService.getSystemShopCategoryList();
-    this.pairNameValueList = this.defaultShopCategoryList.map(category => {
+    this._defaultShopCategoryList = await this._systemShopService.getSystemShopCategoryList();
+    this.pairNameValueList = this._defaultShopCategoryList.map(category => {
       return { name: category.name, value: category.id };
     });
     this.setDefaultPairNameValue();
   }
 
   private setDefaultPairNameValue() {
-    let defaultPair: PairNameValueType | undefined = this.pairNameValueList.find(
-      p => p.value === this.selectedShopCategory.id
+    let defaultPair: NameValuePairType | undefined = this.pairNameValueList.find(
+      p => p.value === this._selectedShopCategory.id
     );
     this.selectedPairNameValue = defaultPair;
     this.validate = defaultPair !== undefined;
@@ -66,7 +67,9 @@ export class ShopCategoryListComponent implements OnInit {
 
   public onClickCategory() {
     let id: string | undefined = this.selectedPairNameValue?.value;
-    let category: IShopCategory | undefined = this.defaultShopCategoryList.find(c => c.id === id);
+    let category: ShopCategoryType | undefined = this._defaultShopCategoryList.find(
+      c => c.id === id
+    );
     if (id !== undefined && category !== undefined) {
       this.validate = category !== undefined;
       this.shopCategory = category;

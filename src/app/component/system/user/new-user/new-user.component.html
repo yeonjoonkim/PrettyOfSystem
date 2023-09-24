@@ -1,0 +1,162 @@
+<ion-content [scrollable]="true">
+  <form-header
+    [title]="form.headerTitle"
+    [readOnly]="form.readOnly"
+    [enabledSavebutton]="form.enabledSavebutton"
+    [action]="form.action"
+    (onClickDismiss)="dismiss()"
+    (onClickCreate)="onClickCreate()">
+  </form-header>
+  <flex-col>
+    <kendo-buttongroup selection="single" width="100%">
+      <button
+        kendoButton
+        *ngFor="let page of pages"
+        [toggleable]="true"
+        [selected]="page.name === currentPage.name"
+        (selectedChange)="onPageChange(page)">
+        {{ page.name | languageTransform | async }}
+      </button>
+    </kendo-buttongroup>
+  </flex-col>
+
+  <!--Page 1. Information-->
+  <flex-col id="info-container" *ngIf="currentPage.value === 'page1'">
+    <flex-row>
+      <flex-col id="login-gender-container">
+        <flex-col-item id="login-option-container">
+          <login-option-selection
+            mode="login"
+            [(loginOption)]="user.loginOption"
+            (loginOptionChange)="onChangeLoginOption()"
+            [readOnly]="form.readOnly"></login-option-selection>
+        </flex-col-item>
+        <flex-col-item>
+          <gender-selection [(gender)]="user.gender" [readOnly]="form.readOnly"></gender-selection>
+        </flex-col-item>
+      </flex-col>
+      <flex-col-item id="account-setting">
+        <yes-no-selection-group>
+          <yes-no-selection
+            title="label.title.admin"
+            [(value)]="user.isSystemAdmin"
+            [readOnly]="form.readOnly"></yes-no-selection>
+          <yes-no-selection
+            title="label.title.active"
+            [(value)]="!user.disabledAccount"
+            [readOnly]="form.readOnly"></yes-no-selection>
+        </yes-no-selection-group>
+      </flex-col-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          title="label.title.firstname"
+          [(value)]="user.firstName"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [isTitleFormat]="true"
+          [(validate)]="validator.firstName"
+          (validateChange)="handleEnabledSaveBtn()"></text-box>
+      </flex-row-item>
+      <flex-row-item>
+        <text-box
+          title="label.title.lastname"
+          [(value)]="user.lastName"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [isTitleFormat]="true"
+          [(validate)]="validator.lastName"
+          (validateChange)="handleEnabledSaveBtn()"></text-box>
+      </flex-row-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <phone-number
+          [(phone)]="user.phoneNumber"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [(validate)]="validator.phone"
+          (validateChange)="handleEnabledSaveBtn()"></phone-number>
+      </flex-row-item>
+      <flex-row-item>
+        <e-mail
+          [(email)]="user.email"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [(validate)]="validator.email"
+          (validateChange)="handleEnabledSaveBtn()"></e-mail>
+      </flex-row-item>
+    </flex-row>
+    <password-confirmation
+      *ngIf="user.loginOption.email"
+      (passwordChange)="setPassword($event)"
+      [(validate)]="validator.password"
+      (validateChange)="handleEnabledSaveBtn()"></password-confirmation>
+  </flex-col>
+
+  <!--Page 2. Associated Shop-->
+  <flex-col *ngIf="currentPage.value === 'page2'">
+    <flex-col-item>
+      <legend>
+        {{ 'label.title.associatedshop' | languageTransform | async }}
+      </legend>
+    </flex-col-item>
+    <flex-col-item>
+      <kendo-grid [height]="300" [kendoGridBinding]="user.associatedShops">
+        <!--Add-->
+        <ng-template kendoGridToolbarTemplate>
+          <button
+            kendoGridAddCommand
+            (click)="onClickAddAssociatedShopRole($event)"
+            *ngIf="!form.readOnly">
+            {{ 'button.title.add' | languageTransform | async }}
+          </button>
+        </ng-template>
+        <kendo-grid-column title="{{ 'label.title.businessname' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-associatedShop>
+            <ng-container *ngFor="let shop of shopFilters">
+              <span *ngIf="associatedShop.shopId === shop.value">{{ shop.name }}</span>
+            </ng-container>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column title="{{ 'label.title.role' | languageTransform | async }}" field="id">
+          <ng-template kendoGridCellTemplate let-shop>
+            <name-value-pair-single-dropdown-selection
+              (selectedChange)="onChangeAssociatedShopRole($event, shop)"
+              [selection]="roleFilters"
+              [isRequiredTitle]="false"
+              [filterable]="false"
+              maxHeight="150"
+              [selected]="{
+                name: shop.role.name,
+                value: shop.role.id
+              }"
+              [readOnly]="form.readOnly"></name-value-pair-single-dropdown-selection>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column title="{{ 'label.title.active' | languageTransform | async }}">
+          <ng-template kendoGridCellTemplate let-shop>
+            <input
+              id="associated-shop-active"
+              type="checkbox"
+              kendoCheckBox
+              [checked]="shop.active"
+              [disabled]="form.readOnly" />
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-command-column [width]="75">
+          <ng-template kendoGridCellTemplate let-shop>
+            <button
+              *ngIf="!form.readOnly"
+              id="delete-btn"
+              kendoGridRemoveCommand
+              themeColor="error"
+              icon="trash"
+              (click)="onClickDeleteAssociatedShop(shop)"></button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

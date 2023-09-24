@@ -1,48 +1,62 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { GlobalService } from './service/global/global.service';
 import { NetworkConnectionStatusService } from './service/global/network-connection-status/network-connection-status.service';
 import { ConnectionStatus } from '@capacitor/network';
-import { Router } from '@angular/router';
-
+import { NavigationEnd, Router } from '@angular/router';
+import { UserService } from './service/user/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private deviceTypeSubscription!: Subscription;
-  private internetConnectionSubscription!: Subscription;
-  private languageChangeActionSubscription!: Subscription;
+  private _deviceTypeSubscription!: Subscription;
+  private _internetConnectionSubscription!: Subscription;
+  private _languageChangeActionSubscription!: Subscription;
+  private _loginStatusSubscription!: Subscription;
+  private _routerChangeSubscription!: Subscription;
   public isLoaded: boolean = false;
   public internetStatus!: ConnectionStatus;
-
+  public isLogin: boolean = false;
   constructor(
-    private global: GlobalService,
+    private _global: GlobalService,
     public networkStatus: NetworkConnectionStatusService,
-    private router: Router
-  ) {}
+    private _router: Router,
+    private _user: UserService
+  ) {
+    this._user.activateAuthChangeListener();
+  }
 
   async ngOnInit() {
-    await this.global.storage.create();
+    await this._global.storage.create();
+    this.subscribeRouterChange();
+    this.subscribeUserLoginStatus();
     this.subscribeNetworkStatus();
     this.subscribeDeviceWidth();
     this.subscribeLanguageChangeAction();
-    await this.loading();
   }
 
   async ngOnDestroy() {
-    this.deviceTypeSubscription?.unsubscribe();
-    this.languageChangeActionSubscription?.unsubscribe();
-    this.internetConnectionSubscription?.unsubscribe();
+    this._deviceTypeSubscription?.unsubscribe();
+    this._languageChangeActionSubscription?.unsubscribe();
+    this._internetConnectionSubscription?.unsubscribe();
+    this._routerChangeSubscription?.unsubscribe();
+    this._loginStatusSubscription?.unsubscribe();
   }
 
   public isLoginPage() {
-    return this.router.url === '/login';
+    return this._router.url === '/login';
+  }
+
+  private async subscribeUserLoginStatus() {
+    this._loginStatusSubscription = this._user.isLoggedin$.subscribe(isLogin => {
+      this.isLogin = isLogin;
+    });
   }
 
   private async subscribeLanguageChangeAction() {
-    this.languageChangeActionSubscription = this.global.language.changeLanguageAction.subscribe(
+    this._languageChangeActionSubscription = this._global.language.changeLanguageAction.subscribe(
       async () => {
         this.ngOnDestroy();
         window.location.reload();
@@ -50,30 +64,38 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
+  private subscribeRouterChange() {
+    this._routerChangeSubscription = this._router.events.subscribe(async change => {
+      if (change instanceof NavigationEnd) {
+        const connection = await this._global.networkConnection.getStatus();
+        await this._global.networkConnection.handleStatus(connection);
+        await this.loadLanguage();
+      }
+    });
+  }
+
   private subscribeNetworkStatus() {
-    this.internetConnectionSubscription = this.global.networkConnection
+    this._internetConnectionSubscription = this._global.networkConnection
       .activateListener()
       .subscribe(async status => {
         this.internetStatus = status;
-        await this.global.networkConnection.handleStatus(status);
+        await this._global.networkConnection.handleStatus(status);
       });
   }
 
   private async subscribeDeviceWidth() {
-    this.deviceTypeSubscription = this.global.deviceWidth.deviceTypeObservable.subscribe(device => {
-      this.global.deviceWidth.deviceType = device;
-    });
+    this._deviceTypeSubscription = this._global.deviceWidth.deviceTypeObservable.subscribe(
+      device => {
+        this._global.deviceWidth.deviceType = device;
+      }
+    );
   }
 
-  private async loading() {
-    let connected = await this.global.networkConnection.isConnected();
-    if (connected) {
-      await this.global.language.management.storage.setDefault().then(async () => {
-        await this.global.language.setCurrentLanguage();
-        this.isLoaded = true;
-      });
-    } else {
+  private async loadLanguage() {
+    let connected = await this._global.networkConnection.isConnected();
+    await this._global.language.management.storage.setDefault(connected).then(async () => {
+      await this._global.language.setCurrentLanguage();
       this.isLoaded = true;
-    }
+    });
   }
 }

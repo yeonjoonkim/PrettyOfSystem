@@ -1,0 +1,45 @@
+.login-option {
+  color: #b87c4c;
+  font-weight: bold;
+}
+.is-system-admin {
+  color: #00aaa9;
+  font-weight: bold;
+}
+
+#user-list {
+  margin-top: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+#full-name {
+  text-decoration: underline;
+  &:hover {
+    color: #8685ef;
+    cursor: pointer;
+  }
+}
+
+#full-name,
+#email,
+#phone-number {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#associated-shop-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 620px) {
+  #shop-count,
+  #disabled {
+    display: none;
+  }
+}

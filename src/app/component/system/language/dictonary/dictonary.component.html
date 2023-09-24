@@ -2,12 +2,14 @@
   <section id="language-selection-container">
     <flex-row>
       <flex-row-item>
-        <pair-name-value-single-selection
+        <name-value-pair-single-dropdown-selection
           title="label.title.language"
           [selection]="languageSelectionList"
           [(selected)]="selectedLang"
           [filterable]="true"
-          (selectedChange)="onChangeLanguageSelection()"></pair-name-value-single-selection>
+          (selectedChange)="
+            onChangeLanguageSelection()
+          "></name-value-pair-single-dropdown-selection>
       </flex-row-item>
       <flex-row-item>
         <text-box
@@ -23,10 +25,16 @@
         <kendo-grid [data]="gridData" [height]="400" [sortable]="true" [autoSize]="true">
           <ng-template kendoGridToolbarTemplate>
             <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
+              {{ 'button.title.refresh' | languageTransform | async }}
+            </button>
+            <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
               {{ 'button.title.add' | languageTransform | async }}
             </button>
             <button kendoGridAddCommand (click)="export()">
               {{ 'button.title.download' | languageTransform | async }}
+            </button>
+            <button kendoGridAddCommand (click)="allExport()">
+              {{ 'button.title.downloadall' | languageTransform | async }}
             </button>
           </ng-template>
           <kendo-grid-column

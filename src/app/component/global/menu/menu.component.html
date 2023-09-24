@@ -1,28 +1,32 @@
 <!--TODO: add user information and menu information from app.component-->
 <!--User Info-->
 <section id="menu-container">
-  <ion-card id="user-info-card">
+  <ion-card id="user-info-card" *ngIf="isLogin">
+    <div>
+      <name-value-pair-single-dropdown-selection
+        [(selected)]="selectedShop"
+        [selection]="shopSelection"
+        [isRequiredTitle]="false"
+        (selectedChange)="handleCurrentShopChange()"
+        id="user-shop-list"></name-value-pair-single-dropdown-selection>
+    </div>
+
     <ion-card-header>
       <div id="user-info-title">
         <ion-card-title
-          ><u id="user-name"
-            >{{ user.currentShop?.firstName }} {{ user.currentShop?.lastName }}</u
-          ></ion-card-title
+          ><u id="user-name"> {{ user.fullName }}</u></ion-card-title
         >
         <ion-card-subtitle
           ><p>
-            {{ user.currentShop?.role?.name | languageTransform | async }}
+            {{ user.currentRole | languageTransform | async }}
           </p></ion-card-subtitle
         >
       </div>
     </ion-card-header>
-    <ion-card-content>
-      <kendo-dropdownlist id="user-shop-list"></kendo-dropdownlist>
-    </ion-card-content>
   </ion-card>
 
   <!--Menu-->
-  <ion-accordion-group>
+  <ion-accordion-group *ngIf="isLogin">
     <!--Route Link-->
     <ion-accordion *ngFor="let menu of menus">
       <!--Header-->
@@ -51,9 +55,14 @@
   <section id="language-setting-container">
     <langauge-selection></langauge-selection>
   </section>
-  <section id="log-out" *ngIf="user">
+  <section id="log-out" *ngIf="isLogin">
     <ion-button expand="block" id="log-out-btn" (click)="logout()">
       {{ 'button.title.logout' | languageTransform | async }}</ion-button
+    >
+  </section>
+  <section id="log-in" *ngIf="!isLogin">
+    <ion-button expand="block" id="log-in-btn" (click)="login()">
+      {{ 'button.title.login' | languageTransform | async }}</ion-button
     >
   </section>
 </section>

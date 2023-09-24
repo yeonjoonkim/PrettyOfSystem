@@ -28,6 +28,7 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() isRequired: boolean = false;
   @Input() isOptional: boolean = false;
+  @Input() isTitleRequired: boolean = true;
   @Input() readOnly: boolean = false;
   @Input() defaultCountry: Constant.CountryCodeType = Constant.Default.CountryCodeType.Australia;
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
@@ -43,7 +44,7 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
       if (!this.entered) {
         this.assignPhoneNumberForm(str);
       }
-      this.valueReceived = true;
+      this._valueReceived = true;
     }
     if (isPhoeNumberType) {
       let phoneType = input as PhoneNumber;
@@ -60,14 +61,11 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
     this.validated = input;
     this.validateChange.emit(input);
   }
-
   public validated: boolean = false;
-  private countryLoad: boolean = false;
-  private valueReceived: boolean = false;
-  private validator: RegExp = /[\s-]/;
   public placeholder: string = '';
   public separateDialCode: boolean = false;
   public entered: boolean = false;
+  public title: string = 'label.title.phone';
   public searchCountryField = SearchCountryField;
   public countryISO: CountryISO = CountryISO.Australia;
   public phoneNumberFormat: PhoneNumberFormat = PhoneNumberFormat.International;
@@ -91,12 +89,15 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
     phone: new FormControl('', [Validators.required]),
   });
   public displayNumber: string = '';
-
+  private _countryLoad: boolean = false;
+  private _valueReceived: boolean = false;
+  private _validator: RegExp = /[\s-]/;
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
     let readOnlyChange = changes['readOnly'];
     if (readOnlyChange) {
       this.onChangeReadOnly();
+      this.title = this.isTitleRequired ? 'label.title.phone' : '';
     }
   }
 
@@ -116,17 +117,17 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
       this.displayNumber !== input.nationalNumber &&
       this.displayNumber !== this.phoneNumberForm.value.phone
     ) {
-      this.entered = this.valueReceived ? true : false;
-      this.validate = this.validator.test(input.nationalNumber);
+      this.entered = this._valueReceived ? true : false;
+      this.validate = this._validator.test(input.nationalNumber);
       this.phone = input;
     }
   }
 
   public onChangeCountry() {
-    if (this.countryLoad) {
+    if (this._countryLoad) {
       this.onChangeValue(this.defaultPhoneNumber);
     } else {
-      this.countryLoad = true;
+      this._countryLoad = true;
     }
   }
 
@@ -139,9 +140,9 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
 
   private setPlaceholder() {
     this.placeholder = this.isRequired
-      ? 'form.placeholder.required'
+      ? 'placeholder.title.required'
       : this.isOptional
-      ? 'form.placeholder.optional'
+      ? 'placholder.title.optional'
       : '';
   }
   private setDefaultCountry() {

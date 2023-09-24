@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { LanguageService } from '../language/language.service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,17 +7,18 @@ import { LanguageService } from '../language/language.service';
 export class LoadingService {
   public message: string = '';
 
-  constructor(private loadingCtrl: LoadingController) {}
+  constructor(private _loadingCtrl: LoadingController) {}
 
   async show() {
-    let loading = await this.loadingCtrl.create({
-      spinner: 'bubbles',
+    let loading = await this._loadingCtrl.create({
+      spinner: 'dots',
       cssClass: 'transparent-loading',
+      translucent: true,
     });
     loading.present();
   }
 
   async dismiss() {
-    this.loadingCtrl.dismiss();
+    this._loadingCtrl.dismiss();
   }
 }
