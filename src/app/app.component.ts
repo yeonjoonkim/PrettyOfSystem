@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { GlobalService } from './service/global/global.service';
 import { NetworkConnectionStatusService } from './service/global/network-connection-status/network-connection-status.service';
 import { ConnectionStatus } from '@capacitor/network';
 import { NavigationEnd, Router } from '@angular/router';
-
+import { UserService } from './service/user/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -14,23 +14,27 @@ export class AppComponent implements OnInit, OnDestroy {
   private _deviceTypeSubscription!: Subscription;
   private _internetConnectionSubscription!: Subscription;
   private _languageChangeActionSubscription!: Subscription;
+  private _loginStatusSubscription!: Subscription;
   private _routerChangeSubscription!: Subscription;
   public isLoaded: boolean = false;
   public internetStatus!: ConnectionStatus;
-
+  public isLogin: boolean = false;
   constructor(
     private _global: GlobalService,
     public networkStatus: NetworkConnectionStatusService,
-    private _router: Router
-  ) {}
+    private _router: Router,
+    private _user: UserService
+  ) {
+    this._user.activateAuthChangeListener();
+  }
 
   async ngOnInit() {
     await this._global.storage.create();
+    this.subscribeRouterChange();
+    this.subscribeUserLoginStatus();
     this.subscribeNetworkStatus();
     this.subscribeDeviceWidth();
     this.subscribeLanguageChangeAction();
-    this.subscribeRouterChange();
-    await this.loading();
   }
 
   async ngOnDestroy() {
@@ -38,10 +42,17 @@ export class AppComponent implements OnInit, OnDestroy {
     this._languageChangeActionSubscription?.unsubscribe();
     this._internetConnectionSubscription?.unsubscribe();
     this._routerChangeSubscription?.unsubscribe();
+    this._loginStatusSubscription?.unsubscribe();
   }
 
   public isLoginPage() {
     return this._router.url === '/login';
+  }
+
+  private async subscribeUserLoginStatus() {
+    this._loginStatusSubscription = this._user.isLoggedin$.subscribe(isLogin => {
+      this.isLogin = isLogin;
+    });
   }
 
   private async subscribeLanguageChangeAction() {
@@ -58,6 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (change instanceof NavigationEnd) {
         const connection = await this._global.networkConnection.getStatus();
         await this._global.networkConnection.handleStatus(connection);
+        await this.loadLanguage();
       }
     });
   }
@@ -79,15 +91,11 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
-  private async loading() {
+  private async loadLanguage() {
     let connected = await this._global.networkConnection.isConnected();
-    if (connected) {
-      await this._global.language.management.storage.setDefault().then(async () => {
-        await this._global.language.setCurrentLanguage();
-        this.isLoaded = true;
-      });
-    } else {
+    await this._global.language.management.storage.setDefault(connected).then(async () => {
+      await this._global.language.setCurrentLanguage();
       this.isLoaded = true;
-    }
+    });
   }
 }

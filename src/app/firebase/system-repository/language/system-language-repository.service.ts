@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs';
 import * as Db from 'src/app/constant/firebase-path';
+import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ import * as Db from 'src/app/constant/firebase-path';
 export class SystemLanguageRepositoryService {
   private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(private _afs: AngularFirestore) {}
+  constructor(private _afs: AngularFirestore, private _toaster: FirebaseToasterService) {}
 
   public getLanguageSelectionResult() {
     return this._afs
@@ -43,19 +44,6 @@ export class SystemLanguageRepositoryService {
       );
   }
 
-  public async updateLanguageSelection(criteria: LanguageSelectionType) {
-    let updateCommand = { ...criteria, ...this._timeStamp };
-    this._afs
-      .collection(Db.Context.System.Language.Selection)
-      .doc(criteria.id)
-      .update(updateCommand);
-  }
-
-  public async updateLanguageKey(criteria: ILanguageKey) {
-    let updateCommand = { ...criteria, ...this._timeStamp };
-    this._afs.collection(Db.Context.System.Language.Key).doc(criteria.id).update(updateCommand);
-  }
-
   private setILanuageSelection(response: any, id?: string) {
     let selection: LanguageSelectionType = response;
     selection.id = id;
@@ -70,13 +58,47 @@ export class SystemLanguageRepositoryService {
     return key;
   }
 
-  public async addNewLanguageSelection(criteria: LanguageSelectionType) {
-    let id = this._afs.createId();
-    let newSelection = { ...criteria, ...this._timeStamp, id: id };
+  public async updateLanguageSelection(criteria: LanguageSelectionType) {
+    let updateCommand = { ...criteria, ...this._timeStamp };
     try {
+      await this._afs
+        .collection(Db.Context.System.Language.Selection)
+        .doc(criteria.id)
+        .update(updateCommand);
+      await this._toaster.updateSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.updateFail(error);
+      console.error(error);
+      return false;
+    }
+  }
+
+  public async updateLanguageKey(criteria: ILanguageKey) {
+    const updateCommand = { ...criteria, ...this._timeStamp };
+    const collection = Db.Context.System.Language.Key;
+    try {
+      await this._afs.collection(collection).doc(criteria.id).update(updateCommand);
+      await this._toaster.updateSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.updateFail(error);
+      console.error(error);
+      return false;
+    }
+  }
+
+  public async addNewLanguageSelection(criteria: LanguageSelectionType) {
+    try {
+      const id = this._afs.createId();
+      const newSelection = { ...criteria, ...this._timeStamp, id: id };
       await this._afs.collection(Db.Context.System.Language.Selection).doc(id).set(newSelection);
-    } catch (e) {
-      console.error(e);
+      await this._toaster.addSuccess();
+      return true;
+    } catch (error) {
+      console.error(error);
+      await this._toaster.addFail(error);
+      return false;
     }
   }
 }

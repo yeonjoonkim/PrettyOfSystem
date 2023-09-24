@@ -1,4 +1,10 @@
 <ion-content [fullscreen]="true" scroll-y="false">
+  <div id="header">
+    <button id="homepage-btn" kendoButton (click)="redirectToBooking()">
+      {{ 'label.title.homepage' | languageTransform | async }}
+    </button>
+    <booking-language-selection></booking-language-selection>
+  </div>
   <div id="login-container">
     <img id="logo-img" src="assets/logo/prettyofsystem-logo-white.svg" />
     <login></login>

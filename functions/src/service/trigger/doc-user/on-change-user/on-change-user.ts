@@ -15,7 +15,8 @@ export const getChangeDectection = function (before: I.IUser, after: I.IUser): I
   changeAction.isRosterChange = areAssociatedShopsRosterChange(before, after);
   changeAction.isSystemAdminChanged = isSystemAdminChanged(before, after);
   changeAction.isDisabledAccountChanged = isDisabledAccountChanged(before, after);
-
+  changeAction.isCurrentShopRoleChange = isCurrentShopRoleChange(before, after);
+  changeAction.isCurrentShopIdChange = isCurrentShopChange(before, after);
   return changeAction;
 };
 
@@ -28,12 +29,21 @@ export const getChangeAction = function (c: I.OnChangeUserType, after: I.IUser) 
   event.isActivateAccount = c.beforeActiveShopCount === 0 && c.afterActiveShopCount > 0;
   event.isDeactiveAccount = c.beforeActiveShopCount > 0 && c.afterActiveShopCount === 0;
   event.isCurrentShopIdUpdate = c.isShopActiveCountChanged;
+  event.isCurrentShopRoleUpdate = c.isCurrentShopRoleChange;
   event.isSendMsgRosterChange = c.isRosterChange;
   event.isUpdateClaim =
     c.isSystemAdminChanged ||
     c.isDisabledAccountChanged ||
-    (!event.isActivateAccount && !event.isDeactiveAccount);
+    (!event.isActivateAccount && !event.isDeactiveAccount) ||
+    c.isCurrentShopRoleChange ||
+    c.isCurrentShopIdChange ||
+    event.isCurrentShopIdUpdate;
+
   return event;
+};
+
+const isCurrentShopChange = function (before: I.IUser, after: I.IUser) {
+  return before.currentShopId !== after.currentShopId;
 };
 
 const getActiveShopCount = function (user: I.IUser) {
@@ -84,6 +94,16 @@ const isLoginOptionChanged = function (before: I.IUser, after: I.IUser) {
     before.loginOption.email !== after.loginOption.email &&
     before.loginOption.phoneNumber !== after.loginOption.phoneNumber
   );
+};
+
+const isCurrentShopRoleChange = function (before: I.IUser, after: I.IUser) {
+  const isSameShop = before.currentShopId === after.currentShopId;
+  const beforeCurrentShop = before.associatedShops.find(s => s.shopId === after.currentShopId);
+  const afterCurrentShop = after.associatedShops.find(s => s.shopId === after.currentShopId);
+  if (isSameShop && beforeCurrentShop !== undefined && afterCurrentShop !== undefined) {
+    return beforeCurrentShop.role.description !== afterCurrentShop.role.description;
+  }
+  return false;
 };
 
 const areAssociatedShopsRosterChange = function (before: I.IUser, after: I.IUser) {
@@ -154,7 +174,9 @@ const getDefaultOnChangeUserDocumentationType = function (): I.OnChangeUserType 
     isLastNameChanged: false,
     isGenderChanged: false,
     isEmailChanged: false,
+    isCurrentShopIdChange: false,
     isSystemAdminChanged: false,
+    isCurrentShopRoleChange: false,
     isPasswordChanged: false,
     isCurrentlyActive: false,
     isPreviouslyActive: false,
@@ -172,6 +194,7 @@ const getDefaultOnChangeUserActionType = function (): I.OnChangeUserActionType {
     isActivateAccount: false,
     isDeactiveAccount: false,
     isCurrentShopIdUpdate: false,
+    isCurrentShopRoleUpdate: false,
     isUpdateClaim: false,
   };
 };

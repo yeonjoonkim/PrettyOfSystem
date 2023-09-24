@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { SystemRoleService } from 'src/app/service/system/system-role/system-system-role.service';
 import { GlobalService } from 'src/app/service/global/global.service';
+
 @Component({
   selector: 'system-role-list-card',
   templateUrl: './role-list-card.component.html',

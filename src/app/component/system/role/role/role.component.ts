@@ -131,8 +131,6 @@ export class RoleComponent implements OnInit {
 
     if (hasDescription && hasSelectedConfig && this._prevRole !== undefined) {
       await this._systemRole.processUpdateRoleConfiguration(this._prevRole, this.role);
-    } else {
-      await this.presentErroMsg(hasDescription, hasSelectedConfig);
     }
   }
 

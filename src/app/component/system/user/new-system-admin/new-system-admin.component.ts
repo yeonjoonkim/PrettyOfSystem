@@ -21,7 +21,9 @@ export class NewSystemAdminComponent implements OnInit {
   };
 
   private _paramUser!: IUser;
-  constructor(private _navParams: NavParams, private _systemAdmin: UserAdminService) {}
+  constructor(private _navParams: NavParams, private _systemAdmin: UserAdminService) {
+    this.user.id = this._systemAdmin.getNewId();
+  }
 
   async ngOnInit() {
     await this.loadingFromCtrl();

@@ -55,15 +55,10 @@ export class ShopConfigurationService {
       : false;
 
     if (saved) {
-      let successfulMsg: string = await this.global.language.transform('messagesuccess.title.save');
       await this.global.loading.dismiss();
-      await this.global.toast.present(successfulMsg);
       await this._modalCtrl.dismiss(config, form.action);
     } else {
-      let msg: string = this.handleErrorMessage(isExistingBusinessName);
-      let errorMsg: string = await this.global.language.transform(msg);
       await this.global.loading.dismiss();
-      await this.global.toast.presentError(errorMsg);
     }
   }
 
@@ -77,13 +72,7 @@ export class ShopConfigurationService {
   }
 
   private async getAllSystemShopConfiguration(): Promise<ShopConfigurationType[]> {
-    return await lastValueFrom(this._systemShopConfigRepo.getAllShopConfigurations());
-  }
-
-  private handleErrorMessage(isExistingBusinessName: boolean): string {
-    return isExistingBusinessName
-      ? 'messageerror.title.existedbusinessname'
-      : 'messageerror.title.unsaved';
+    return await lastValueFrom(this._systemShopConfigRepo.allShopConfigurationGetListener());
   }
 
   public async handleSave(config: ShopConfigurationType, form: IFormHeaderModalProp) {
@@ -94,15 +83,10 @@ export class ShopConfigurationService {
       : false;
 
     if (saved) {
-      let successfulMsg: string = await this.global.language.transform('messagesuccess.title.save');
       await this.global.loading.dismiss();
-      await this.global.toast.present(successfulMsg);
       await this._modalCtrl.dismiss(config, form.action);
     } else {
-      let msg: string = this.handleErrorMessage(isExistingBusinessName);
-      let errorMsg: string = await this.global.language.transform(msg);
       await this.global.loading.dismiss();
-      await this.global.toast.presentError(errorMsg);
     }
   }
 
@@ -111,16 +95,10 @@ export class ShopConfigurationService {
     let deleted = await this._systemShopConfigRepo.deleteShopConfiguration(config.id);
 
     if (deleted) {
-      let successfulMsg: string = await this.global.language.transform(
-        'messagesuccess.title.delete'
-      );
       await this.global.loading.dismiss();
-      await this.global.toast.present(successfulMsg);
       await this._modalCtrl.dismiss(config, form.action);
     } else {
-      let errorMsg: string = await this.global.language.transform('messageerror.title.delete');
       await this.global.loading.dismiss();
-      await this.global.toast.presentError(errorMsg);
     }
   }
 

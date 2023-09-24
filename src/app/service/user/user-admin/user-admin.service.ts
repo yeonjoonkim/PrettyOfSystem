@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { UserAdminModalService } from './user-admin-modal/user-admin-modal.service';
-import { UserService } from '../user.service';
 import {
   CreateShopUserCriteria,
   IUser,
@@ -14,32 +13,31 @@ import { GlobalService } from '../../global/global.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
 import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/role/system-role-repository.service';
 import { UserAdminPopoverService } from './user-admin-popover/user-admin-popover.service';
-
+import * as Constant from 'src/app/constant/constant';
+import { FirebaseService } from '../../firebase/firebase.service';
 @Injectable({
   providedIn: 'root',
 })
 export class UserAdminService {
   constructor(
     public modal: UserAdminModalService,
+
     public popover: UserAdminPopoverService,
     private _global: GlobalService,
     private _userRepo: UserCredentialRepositoryService,
     private _shopRepo: SystemShopConfigurationRepositoryService,
-    private _roleRepo: SystemRoleRepositoryService
+    private _roleRepo: SystemRoleRepositoryService,
+    private _firebaseService: FirebaseService
   ) {}
 
   public async updateUser(user: IUser) {
-    this._global.loading.show();
-    try {
-      const successMsg = await this._global.language.transform('messagesuccess.title.edited');
-      await this._userRepo.updateUser(user);
-      await this._global.toast.present(successMsg);
-      await this._global.loading.dismiss();
-    } catch (error) {
-      const failMsg = await this._global.language.transform('messagefail.title.edited');
-      await this._global.loading.dismiss();
-      await this._global.toast.present(failMsg);
-    }
+    await this._global.loading.show();
+    await this._userRepo.updateUser(user);
+    await this._global.loading.dismiss();
+  }
+
+  public getNewId() {
+    return this._firebaseService.newId();
   }
 
   public defaultUser(): IUser {
@@ -47,7 +45,7 @@ export class UserAdminService {
       id: '',
       firstName: '',
       lastName: '',
-      gender: 'Male',
+      gender: Constant.Default.Gender.Male,
       isSystemAdmin: false,
       associatedShops: [],
       currentShopId: '',
@@ -71,16 +69,8 @@ export class UserAdminService {
 
   public async deleteUser(user: IUser) {
     this._global.loading.show();
-    try {
-      const successMsg = await this._global.language.transform('messagesuccess.title.delete');
-      await this._userRepo.deleteUser(user);
-      await this._global.toast.present(successMsg);
-      await this._global.loading.dismiss();
-    } catch (error) {
-      const failMsg = await this._global.language.transform('messagefail.title.delete');
-      await this._global.loading.dismiss();
-      await this._global.toast.present(failMsg);
-    }
+    await this._userRepo.deleteUser(user);
+    await this._global.loading.dismiss();
   }
 
   public async handleCreate(user: IUser, isSystemAdmin: boolean) {
@@ -93,9 +83,7 @@ export class UserAdminService {
       if (user.loginOption.phoneNumber) {
         const existedPhoneNumber: boolean = await this.existingPhoneLoginChecker(user.phoneNumber);
         if (!existedPhoneNumber) {
-          const successMsg = await this._global.language.transform('messagesuccess.title.save');
           await this._userRepo.createUser(user);
-          await this._global.toast.present(successMsg);
           await this._global.modal.dismissRefreshAction();
         } else {
           const errorMsg = await this._global.language.transform(
@@ -106,9 +94,7 @@ export class UserAdminService {
       } else if (user.loginOption.email) {
         const existedEmail: boolean = await this.existingEmailLoginChecker(user.email);
         if (!existedEmail) {
-          const successMsg = await this._global.language.transform('messagesuccess.title.save');
           await this._userRepo.createUser(user);
-          await this._global.toast.present(successMsg);
           await this.modal.dismiss();
         } else {
           const errorMsg = await this._global.language.transform(
@@ -141,10 +127,6 @@ export class UserAdminService {
     }
 
     return user;
-  }
-
-  public getDefaultUser() {
-    return this.defaultUser();
   }
 
   public async getUserManagementCriteria(): Promise<UserManagementCriteria> {
@@ -186,7 +168,7 @@ export class UserAdminService {
   }
 
   private async getAllShops() {
-    return await lastValueFrom(this._shopRepo.getAllShopConfigurations());
+    return await lastValueFrom(this._shopRepo.allShopConfigurationGetListener());
   }
 
   private async existingPhoneLoginChecker(phoneNumber: string) {

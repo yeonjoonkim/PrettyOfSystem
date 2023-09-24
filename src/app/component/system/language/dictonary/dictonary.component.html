@@ -25,10 +25,16 @@
         <kendo-grid [data]="gridData" [height]="400" [sortable]="true" [autoSize]="true">
           <ng-template kendoGridToolbarTemplate>
             <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
+              {{ 'button.title.refresh' | languageTransform | async }}
+            </button>
+            <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
               {{ 'button.title.add' | languageTransform | async }}
             </button>
             <button kendoGridAddCommand (click)="export()">
               {{ 'button.title.download' | languageTransform | async }}
+            </button>
+            <button kendoGridAddCommand (click)="allExport()">
+              {{ 'button.title.downloadall' | languageTransform | async }}
             </button>
           </ng-template>
           <kendo-grid-column

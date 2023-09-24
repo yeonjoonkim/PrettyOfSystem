@@ -17,7 +17,9 @@ export const onUserCreate = onDocumentCreated(Db.Context.User + '/{userId}', asy
 
   if (user !== null) {
     await handleAuthenticationLogin(user, 'create');
-    await Repository.Auth.Claim.update(user.id, user.isSystemAdmin, false);
+    if (!user.isSystemAdmin) {
+      await handleClaimUpdate(user);
+    }
     await handleSystemAdminAccount(user);
   }
 });
@@ -27,7 +29,7 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
   const currentUserData = !userSnapshot?.after ? null : userSnapshot.after.data();
   const prevUserData = !userSnapshot?.before ? null : userSnapshot.before.data();
 
-  const current = currentUserData !== null ? (currentUserData as I.IUser) : null;
+  let current = currentUserData !== null ? (currentUserData as I.IUser) : null;
   const prev = prevUserData !== null ? (prevUserData as I.IUser) : null;
 
   if (current !== null && prev !== null) {
@@ -35,24 +37,23 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       const change = Service.Trigger.User.OnChange.getChangeDectection(prev, current);
       const event = Service.Trigger.User.OnChange.getChangeAction(change, current);
 
+      Repository.Error.createErrorReport(change, event, 'update', current.id);
+
       if (event.isAuthUpdate) {
         await handleAuthenticationLogin(current, 'update');
       }
       if (event.isDeactiveAccount) {
-        await handleDeactiveLogin(current);
+        current = await handleDeactiveLogin(current);
       }
       if (event.isActivateAccount) {
-        await handleActiveLogin(current);
+        current = await handleActiveLogin(current);
       }
-      if (event.isCurrentShopIdUpdate) {
-        await handleCurrentShopIdUpdate(current);
+
+      if (event.isCurrentShopRoleUpdate || event.isCurrentShopIdUpdate) {
+        await handleCurrentShopRoleUpdate(current);
       }
       if (event.isUpdateClaim) {
-        await Repository.Auth.Claim.update(
-          current.id,
-          current.isSystemAdmin,
-          current.disabledAccount
-        );
+        await handleClaimUpdate(current);
       }
       if (event.isSendMsgRosterChange) {
         logger.info('Roster Changed');
@@ -73,46 +74,46 @@ export const onUserDelete = onDocumentDeleted(Db.Context.User + '/{userId}', asy
   }
 });
 
-const handleCurrentShopIdUpdate = async function (user: I.IUser) {
+const handleCurrentShopRoleUpdate = async function (user: I.IUser) {
   const currentShop = user.associatedShops.find(s => s.shopId === user.currentShopId);
-  if (currentShop === undefined && user.associatedShops.length > 0) {
-    user.currentShopId = user.associatedShops[0].shopId;
-    await Repository.User.updateSelectedUser(user);
+  if (currentShop !== undefined) {
+    if (!currentShop.active) {
+      user.currentShopId =
+        user.associatedShops.filter(s => s.active).length > 0 ? user.associatedShops[0].shopId : '';
+      await Repository.User.updateSelectedUser(user);
+    }
+
+    const claim = getCurrentUserClaim(user);
+
+    await Repository.Auth.Claim.update(user.id, claim);
   }
 };
 
 const handleDeactiveLogin = async function (user: I.IUser) {
   try {
-    const userAuthenticationSnapshot = await admin.auth().getUser(user.id);
-    const userClaim = userAuthenticationSnapshot.customClaims;
-
-    if (!userClaim?.isSystemAdmin) {
-      user.currentShopId = '';
-      user.disabledAccount = true;
-      Repository.User.updateSelectedUser(user);
-      await admin.auth().updateUser(user.id, { disabled: true });
-    }
+    const claim = getCurrentUserClaim(user);
+    claim.disableAccount = true;
+    admin.auth().updateUser(user.id, { disabled: claim.disableAccount });
+    await Repository.Auth.Claim.update(user.id, claim);
+    user.disabledAccount = claim.disableAccount;
+    return user;
   } catch (error) {
     await Repository.Error.createErrorReport(user, error, 'update', 'handleDeactiveLogin');
+    return user;
   }
 };
 
 const handleActiveLogin = async function (user: I.IUser) {
   try {
-    const userAuthenticationSnapshot = await admin.auth().getUser(user.id);
-    const userClaim = userAuthenticationSnapshot.customClaims;
-    const userActiveShops = user.associatedShops.filter(associated => associated.active);
-
-    if (!userClaim?.isSystemAdmin) {
-      await Repository.Auth.Claim.update(user.id, user.isSystemAdmin, false);
-      if (userActiveShops.length > 0) {
-        user.disabledAccount = false;
-        user.currentShopId = userActiveShops[0].shopId;
-        await Repository.User.updateSelectedUser(user);
-      }
-    }
+    const claim = getCurrentUserClaim(user);
+    claim.disableAccount = false;
+    admin.auth().updateUser(user.id, { disabled: claim.disableAccount });
+    await Repository.Auth.Claim.update(user.id, claim);
+    user.disabledAccount = claim.disableAccount;
+    return user;
   } catch (error) {
     await Repository.Error.createErrorReport(user, error, 'update', 'handleDeactiveLogin');
+    return user;
   }
 };
 
@@ -181,7 +182,9 @@ const handleSystemAdminAccount = async function (user: I.IUser) {
   if (user.isSystemAdmin && systemAdminRole !== null && allShops.length > 0) {
     user.associatedShops = transformToAssociatedShop(user, allShops, systemAdminRole);
     user.currentShopId = user.associatedShops.length > 0 ? user.associatedShops[0].shopId : '';
+    const claim = getCurrentUserClaim(user);
     await Repository.User.updateSelectedUser(user);
+    await Repository.Auth.Claim.update(user.id, claim);
   }
 };
 
@@ -203,4 +206,30 @@ const transformToAssociatedShop = function (
     };
     return associatedShop;
   });
+};
+
+const handleClaimUpdate = async function (user: I.IUser) {
+  const claim = getCurrentUserClaim(user);
+  admin.auth().updateUser(user.id, { disabled: user.disabledAccount });
+  await Repository.Auth.Claim.update(user.id, claim);
+};
+
+const getCurrentUserClaim = function (user: I.IUser) {
+  const currentShop = user.associatedShops.find(shop => user.currentShopId === shop.shopId);
+  const claim: I.UserClaimType = {
+    role: {
+      isSystemAdmin: user.isSystemAdmin,
+      isAdmin: false,
+      isManager: false,
+      isEmployee: false,
+      isReception: false,
+    },
+    currentShopId: '',
+    language: user.setting.preferLanguage,
+    disableAccount: user.disabledAccount,
+  };
+  claim.role = currentShop !== undefined ? currentShop?.role.accessLevel : claim.role;
+  claim.language = user.setting.preferLanguage;
+  claim.currentShopId = user.currentShopId;
+  return claim;
 };

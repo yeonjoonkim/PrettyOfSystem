@@ -87,8 +87,13 @@ export class UserManagementComponent implements OnInit {
 
   private async handleModalDismiss(modal: HTMLIonModalElement) {
     const result = await modal.onDidDismiss();
+
     if (result?.data === Constant.Default.Refresh) {
-      await this.refresh();
+      this._global.loading.show();
+      setTimeout(async () => {
+        await this._global.loading.dismiss();
+        await this.refresh();
+      }, 3500);
     }
   }
 

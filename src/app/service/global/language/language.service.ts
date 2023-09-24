@@ -42,11 +42,40 @@ export class LanguageService {
 
   //** TODO: If Language Selection has added, please specified the language code */
   public async setCurrentLanguage() {
-    let currentSetting = await this.management.storage.getCurrentLanguage();
-    let isKorean = currentLocale?.includes('ko');
-    let isJapanese = currentLocale?.includes('ja');
-    let isChinese = currentLocale?.includes('zh');
-    let result = isKorean ? 'ko' : isChinese ? 'zh-hans' : isJapanese ? 'ja' : 'en';
+    const currentSetting = await this.management.storage.getCurrentLanguage();
+    const locale = currentLocale?.toLowerCase();
+    const isKorean = locale?.includes('ko');
+    const isJapanese = locale?.includes('ja');
+    const isChinese = locale?.includes('zh');
+    let isHindi = locale?.includes('hi');
+    let isItailan = locale?.includes('it');
+    let isSpanish = locale?.includes('es');
+    let isFilipino = locale?.includes('ph');
+    let isVietnamese = locale?.includes('vi');
+    let isIndonesian = locale?.includes('id');
+    let isFrench = locale?.includes('fr');
+    let result = isKorean
+      ? 'ko'
+      : isChinese
+      ? 'zh-hans'
+      : isJapanese
+      ? 'ja'
+      : isHindi
+      ? 'hi_in'
+      : isItailan
+      ? '	it'
+      : isSpanish
+      ? 'es'
+      : isFilipino
+      ? 'tl-ph'
+      : isVietnamese
+      ? 'vi-vn'
+      : isIndonesian
+      ? 'id_id'
+      : isFrench
+      ? 'fr'
+      : 'en';
+
     currentSetting !== null && typeof currentSetting === 'string' && currentSetting !== undefined
       ? await this.management.storage.storeCurrentLanguage(currentSetting)
       : await this.management.storage.storeCurrentLanguage(result);

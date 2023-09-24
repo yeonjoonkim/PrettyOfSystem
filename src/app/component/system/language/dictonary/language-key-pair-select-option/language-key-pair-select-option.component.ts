@@ -72,14 +72,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
     let sucessfulMsg = await this._global.language.transform('messagesuccess.title.delete');
     let errorMsg = await this._global.language.transform('messagefail.title.updated');
     await this._global.loading.show();
-
-    try {
-      await this._global.language.management.deletePackage(this.keyPairValue.key);
-      await this._global.toast.present(sucessfulMsg);
-    } catch (e) {
-      await this._global.toast.presentError(errorMsg);
-      console.error(e);
-    }
+    await this._global.language.management.deletePackage(this.keyPairValue.key);
     await this._global.loading.dismiss();
   }
 
@@ -114,20 +107,11 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
 
   /** This will fire the update value in the selected package */
   private async editKeyPairValue(): Promise<void> {
-    let sucessfulMsg = await this._global.language.transform('messagesuccess.title.edited');
-    let errorMsg = await this._global.language.transform('messageerror.title.edited');
     await this._global.loading.show();
-
-    try {
-      await this._global.language.management.editSelectedPackage(
-        this.languageCode,
-        this.keyPairValue
-      );
-      await this._global.toast.present(sucessfulMsg);
-    } catch (e) {
-      await this._global.toast.presentError(errorMsg);
-      console.error(e);
-    }
+    await this._global.language.management.editSelectedPackage(
+      this.languageCode,
+      this.keyPairValue
+    );
     await this._global.loading.dismiss();
   }
 }

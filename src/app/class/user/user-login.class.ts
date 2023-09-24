@@ -17,10 +17,12 @@ export class UserLogin implements IUserLogin {
   private _errorCodes: NameValuePairType[] = [
     { value: 'auth/invalid-verification-code', name: 'messageerror.description.invalidotp' },
     { value: 'auth/code-expired', name: 'messageerror.description.otpexpired' },
-    { value: 'auth/wrong-password', name: 'messagerror.description.wrongemailorpwd' },
-    { value: 'auth/user-not-found', name: 'messagerror.description.wrongemailorpwd' },
+    { value: 'auth/wrong-password', name: 'messageerror.description.wrongemailorpwd' },
+    { value: 'auth/user-not-found', name: 'messageerror.description.wrongemailorpwd' },
     { value: 'auth/too-many-requests', name: 'messageerror.description.toomanyrequests' },
     { value: 'usernotexisted', name: 'messageerror.description.usernotexisted' },
+    { value: 'auth/capcha-check-failed', name: 'messageerror.description.notsupportignito' },
+    { value: 'auth/user-disabled', name: 'messageerror.description.disabledaccount' },
   ];
 
   constructor(private _afa: AngularFireAuth, private _userService: UserService) {
@@ -104,8 +106,6 @@ export class UserLogin implements IUserLogin {
 
   public async sendOtpVerification(recaptcha: RecaptchaVerifier) {
     const verification = await this._userService.verifyUserAccount(this._phoneNumber);
-    console.log(verification);
-    console.log();
     if (verification) {
       try {
         this.errorMsg = '';
@@ -113,7 +113,7 @@ export class UserLogin implements IUserLogin {
           this._phoneNumber,
           recaptcha
         );
-        this.timer.startTimerByMin(3);
+        this.timer.startTimerByMin(0.5);
       } catch (err) {
         const error: string = JSON.stringify(err);
         this.handleError(error);
@@ -133,7 +133,6 @@ export class UserLogin implements IUserLogin {
   public async verifyOTP() {
     try {
       const userCredential = await this.confirmationResult.confirm(this.otp);
-      console.log(userCredential);
       if (userCredential) {
         await this.processLogin(userCredential);
       }
@@ -144,16 +143,13 @@ export class UserLogin implements IUserLogin {
   }
 
   private async processLogin(credential: any) {
-    const user = credential?.user as User | undefined;
+    const user = credential?.user;
     if (user !== undefined) {
-      console.log(user);
+      await this._userService.testingRouter();
+      await this.timer.end();
+      await this.reset();
     }
-
     //Todo: implement guard
-    this.timer.end();
-    console.log('Login');
-    this._afa.signOut();
-    console.log('signout');
   }
 
   private handleNotExistUserError() {
@@ -164,13 +160,11 @@ export class UserLogin implements IUserLogin {
   }
 
   private async handleError(errorMsg: string) {
-    const defaultError = 'messageerror.description.cannotlogin';
     const errorCode = this._errorCodes.find(e => errorMsg.includes(e.value));
     const error = errorCode !== undefined ? errorCode.name : errorMsg;
     if (error.includes('expire')) {
       this.timer.end();
     }
-    console.log(errorMsg);
     this.errorMsg = error;
   }
 }

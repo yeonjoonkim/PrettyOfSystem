@@ -4,7 +4,7 @@ import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/
 import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
 import { RoleModalService } from 'src/app/service/system/system-role/role-modal/system-role-modal.service';
 import { Injectable } from '@angular/core';
-
+import * as Constant from 'src/app/constant/constant';
 @Injectable({
   providedIn: 'root',
 })
@@ -38,11 +38,10 @@ export class SystemRoleService {
     );
 
     if (!translate.result.isEmpty && translate.validated.isKeyNotExisited) {
-      newConfig.description = translate.validated.description;
+      newConfig.description = translate.validated.description as Constant.RoleDescriptionType;
       newConfig.name = translate.validated.name.toLowerCase().replace(' ', '');
       await this._global.language.management.addPackage(translate.result, translate.validated.name);
       await this._systemRoleRepo.addSystemRoleConfiguration(newConfig);
-      await this.presentSaveMsg();
       translate.validated.isSaved = true;
       this.modal.dissmissModalWithRefresh();
     }
@@ -58,7 +57,6 @@ export class SystemRoleService {
       if (selectedRole !== undefined) {
         await this._global.language.management.deletePackage(selectedRole.name).then(async () => {
           await this._systemRoleRepo.deleteSystemRoleConfiguration(config.id);
-          await this.presentDeleteMsg();
         });
       }
     }
@@ -78,7 +76,7 @@ export class SystemRoleService {
           this._prefixedObjectName,
           newConfig.description
         );
-        newConfig.description = translated.validated.description;
+        newConfig.description = translated.validated.description as Constant.RoleDescriptionType;
         newConfig.name = translated.validated.name;
         let keyValue =
           this._prefixedObjectName +
@@ -92,29 +90,12 @@ export class SystemRoleService {
           .then(async () => {
             await this._global.language.management.addPackage(translated.result, keyValue);
             await this._systemRoleRepo.updateSystemRoleConfiguration(newConfig);
-            await this.presentUpdateMsg();
             await this.modal.dissmissModalWithRefresh();
           });
       }
     } else {
       await this._systemRoleRepo.updateSystemRoleConfiguration(newConfig);
-      await this.presentUpdateMsg();
       await this.modal.dismissModal();
     }
-  }
-
-  private async presentSaveMsg() {
-    let msg = await this._global.language.transform('messagesuccess.title.save');
-    await this._global.toast.present(msg);
-  }
-
-  private async presentDeleteMsg() {
-    let msg = await this._global.language.transform('messagesuccess.title.delete');
-    await this._global.toast.present(msg);
-  }
-
-  private async presentUpdateMsg() {
-    let msg = await this._global.language.transform('messagesuccess.title.update');
-    await this._global.toast.present(msg);
   }
 }

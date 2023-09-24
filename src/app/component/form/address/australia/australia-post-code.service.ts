@@ -27,6 +27,20 @@ export class AustraliaPostCodeService {
     public act: ActService
   ) {}
 
+  public getCombined() {
+    return [
+      ...this.act.data,
+      ...this.nsw.data,
+      ...this.qld.data,
+
+      ...this.wa.data,
+      ...this.vic.data,
+      ...this.tas.data,
+      ...this.sa.data,
+      ...this.nt.data,
+    ];
+  }
+
   public getPostCodeFilterOption(state: Constant.AustraliaStateType): PostCodeFilterOptionType {
     return {
       postCodeList: this.getSelectedPostCodeList(state),

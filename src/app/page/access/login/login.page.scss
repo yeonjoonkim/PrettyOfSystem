@@ -9,3 +9,16 @@
 #logo-img {
   width: 230px;
 }
+
+#header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  height: 30px;
+}
+
+#homepage-btn,
+#logout-btn {
+  background: transparent;
+  font-size: 15px;
+}

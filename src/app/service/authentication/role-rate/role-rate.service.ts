@@ -27,16 +27,16 @@ export class RoleRateService {
     return rate;
   }
 
-  public getSystemRoleRateAccessLevel(level: Constant.RoleAccessType): number {
-    return level === Constant.Default.RoleAccessType.SystemAdmin
+  public getSystemRoleRateAccessLevel(level: Constant.RoleDescriptionType): number {
+    return level === Constant.Default.RoleDescriptionType.SystemAdmin
       ? this._rate.SystemAdmin
-      : level === Constant.Default.RoleAccessType.Admin
+      : level === Constant.Default.RoleDescriptionType.Admin
       ? this._rate.Admin
-      : level === Constant.Default.RoleAccessType.Manager
+      : level === Constant.Default.RoleDescriptionType.Manager
       ? this._rate.Manager
-      : level === Constant.Default.RoleAccessType.Reception
+      : level === Constant.Default.RoleDescriptionType.Reception
       ? this._rate.Reception
-      : level === Constant.Default.RoleAccessType.Employee
+      : level === Constant.Default.RoleDescriptionType.Employee
       ? this._rate.Employee
       : 0;
   }

@@ -1,0 +1,15 @@
+<flex-row id="booking-header">
+  <div id="logo-container" (click)="openMenu()">
+    <img src="assets/logo/prettyofsystem-logo-white.svg" alt="Prettyofsystem Logo" />
+  </div>
+
+  <div id="btn-container">
+    <button id="login-btn" kendoButton *ngIf="isLogout$ | async" (click)="logIn()">
+      {{ 'label.title.login' | languageTransform | async }}
+    </button>
+    <button id="logout-btn" kendoButton *ngIf="isLogin$ | async" (click)="logout()">
+      {{ 'label.title.logout' | languageTransform | async }}
+    </button>
+    <booking-language-selection></booking-language-selection>
+  </div>
+</flex-row>

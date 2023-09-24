@@ -34,8 +34,8 @@ export type CountryCodeType =
 
 //Role
 export type GenderType = (typeof Default.Gender)[keyof typeof Default.Gender];
-
-export type RoleAccessType = (typeof Default.RoleAccessType)[keyof typeof Default.RoleAccessType];
+export type RoleDescriptionType =
+  (typeof Default.RoleDescriptionType)[keyof typeof Default.RoleDescriptionType];
 export type RoleAccessRateType =
   (typeof Default.RoleAccessRateType)[keyof typeof Default.RoleAccessRateType];
 

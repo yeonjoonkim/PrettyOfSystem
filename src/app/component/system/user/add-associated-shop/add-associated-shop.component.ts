@@ -66,9 +66,17 @@ export class AddAssociatedShopComponent implements OnInit {
 
   private async handleAdd(newShop: UserAssociatedShopType) {
     this._user.associatedShops.push(newShop);
+    this.setCurrentShop(newShop);
     this.setShopFilterNonExistShops();
     await this.validateNoShopToAdd();
     await this.dismiss();
+  }
+
+  private setCurrentShop(newShop: UserAssociatedShopType) {
+    const currentShop = this._user.associatedShops.find(s => s.shopId === this._user.currentShopId);
+    if (currentShop === undefined) {
+      this._user.currentShopId = newShop.shopId;
+    }
   }
 
   private newShop(): UserAssociatedShopType | null {

@@ -17,7 +17,7 @@ export class SystemLanguageStorageService {
     this._stroage.create();
   }
 
-  public async setDefault() {
+  public async setDefault(isConnected: boolean) {
     let now: Date = new Date();
     let expiredDate: Date | null = await this._stroage.getLanguageSelectionExpireDateTime();
     let isExpired: boolean = expiredDate !== null ? now > expiredDate : true;
@@ -26,7 +26,7 @@ export class SystemLanguageStorageService {
     let refresh: boolean =
       selections === null || expiredDate === null || isExpired || keys === null;
 
-    if (refresh) {
+    if (refresh && isConnected) {
       await this.refresh();
       await this._stroage.storeExpiredDateTime();
       console.log('refresh');

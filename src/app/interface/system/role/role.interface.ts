@@ -1,7 +1,9 @@
+import { RoleDescriptionType } from '../..';
+
 export interface RoleConfigurationType {
   id: string;
   name: string;
-  description: string;
+  description: RoleDescriptionType;
   accessLevel: RoleAccessLevelType;
   rate: number;
 }

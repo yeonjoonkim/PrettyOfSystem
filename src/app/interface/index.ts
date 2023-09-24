@@ -7,3 +7,4 @@ export * from './system/plan/plan.interface';
 export * from './system/role/role.interface';
 export * from './user/user.interface';
 export * from './function/function.interface';
+export * from './booking/booking-search/booking-search.interface';

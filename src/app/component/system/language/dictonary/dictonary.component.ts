@@ -98,6 +98,19 @@ export class DictonaryComponent implements OnInit {
     });
   }
 
+  public async allExport() {
+    const promises = this.languageSelectionList.map(async r => {
+      const code = r.value;
+      const value = await this.systemLanguage.getSelectedLanguageKeyPairValueList(code);
+      return { name: r, value: value };
+    });
+
+    const result = await Promise.all(promises);
+    result.forEach(async exportCriteria => {
+      await this.exportToCSV(exportCriteria.value, exportCriteria.name);
+    });
+  }
+
   private async exportToCSV(data: PairKeyValueType[], selectedLang: NameValuePairType) {
     await this._global.loading.show();
     // Convert the data to CSV format

@@ -38,12 +38,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.reset();
     this.startRecaptchaVerifier();
   }
 
   async ngOnDestroy() {
     this._timerSubscription?.unsubscribe();
     await this.login.timer.end();
+    await this.login.reset();
   }
 
   public toggleVisibility(): void {

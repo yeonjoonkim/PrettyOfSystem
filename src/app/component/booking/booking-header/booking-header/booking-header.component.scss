@@ -1,0 +1,14 @@
+#booking-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 30px;
+}
+#logo-container {
+  width: 50px;
+}
+
+#login-btn,
+#logout-btn {
+  background: transparent;
+}

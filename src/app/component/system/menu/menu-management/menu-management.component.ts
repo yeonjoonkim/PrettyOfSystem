@@ -31,17 +31,17 @@ export class MenuManagementComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.seMenuCategoryType();
+    await this.setMenuCategoryType();
   }
 
-  private async seMenuCategoryType() {
+  private async setMenuCategoryType() {
     let menuCategory = await lastValueFrom(this._systemMenuRepository.getSystemMenuCategories());
     this.menuCategories = menuCategory;
   }
 
   async onUpdate() {
     await this._language.management.storage.refresh().then(async () => {
-      await this.seMenuCategoryType();
+      await this.setMenuCategoryType();
     });
   }
 }

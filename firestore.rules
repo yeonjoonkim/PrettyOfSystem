@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+      match /{document=**}{
+         allow read;
+      }
+
+     match /system/{document=**} {
+        allow create: if isSystemAdmin();
+        allow update: if isSystemAdmin();
+        allow delete: if isSystemAdmin();
+     }
+
+     match /shopConfiguration/{document=**}{
+        allow create: if isSystemAdmin();
+        allow update: if higherThanReception();
+        allow delete: if isSystemAdmin();
+     }
+
+     match /user/{document=**}{
+        allow create: if higherThanReception();
+        allow update: if higherThanReception() || isMe();
+        allow delete: if isSystemAdmin();
+     }
+
+
+     match /functionError/{document=**}{
+      allow read: if isSystemAdmin();
+      allow create;
+      allow update: if isSystemAdmin();
+      allow delete: if isSystemAdmin();
+     }
+   
+    // Helper Functions
+     function getUserRole() {
+       return request.auth.token.role;
+     }
+
+     function isSystemAdmin() {
+     	let userRole = getUserRole();
+      return userRole.isSystemAdmin;
+    }
+
+    function higherThanReception() {
+      let userRole = getUserRole();
+      return userRole.isSystemAdmin || userRole.isReception || userRole.isAdmin || userRole.isManager;
+    }
+
+    function isMe() {
+      return request.auth.uid == myDocument().data.id;
+   }
+   
+   // Helper Functions
+    function myDocument() {
+      return get(/databases/$(database)/documents/user/$(request.auth.uid));
+    }
+   
+ }
+}

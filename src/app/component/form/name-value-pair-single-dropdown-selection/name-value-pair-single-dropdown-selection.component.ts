@@ -70,9 +70,7 @@ export class NameValuePairSingleDropdownSelectionComponent
     await this.onChangeSelection(onChangeSelection);
   }
 
-  async ngOnInit() {
-    this.selectedSelection;
-  }
+  async ngOnInit() {}
 
   ngAfterViewInit() {
     this.setupEventListeners();

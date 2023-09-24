@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, PopoverController } from '@ionic/angular';
+import { LoadingController, ModalController, PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'no-internet',
@@ -7,11 +7,16 @@ import { ModalController, PopoverController } from '@ionic/angular';
   styleUrls: ['./no-internet.page.scss'],
 })
 export class NoInternetPage implements OnInit {
-  constructor(private _modalCtrl: ModalController, private _popoverCtrl: PopoverController) {}
+  constructor(
+    private _modalCtrl: ModalController,
+    private _popoverCtrl: PopoverController,
+    private _loadingCtrl: LoadingController
+  ) {}
 
   async ngOnInit() {
     await this.dismissModal();
     await this.dismissPopover();
+    await this.dismissLoading();
   }
 
   private async dismissModal() {
@@ -25,6 +30,13 @@ export class NoInternetPage implements OnInit {
     const popover = await this._popoverCtrl.getTop();
     if (popover) {
       await this._popoverCtrl.dismiss();
+    }
+  }
+
+  private async dismissLoading() {
+    const loading = await this._loadingCtrl.getTop();
+    if (loading) {
+      await this._loadingCtrl.dismiss();
     }
   }
 }

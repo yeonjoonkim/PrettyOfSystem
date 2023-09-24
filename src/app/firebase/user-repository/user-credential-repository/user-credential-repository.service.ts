@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IUser } from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
-import { Observable, catchError, from, lastValueFrom, map, switchMap } from 'rxjs';
+import { Observable, catchError, from, map, switchMap, take, throwError } from 'rxjs';
+import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { Observable, catchError, from, lastValueFrom, map, switchMap } from 'rxj
 export class UserCredentialRepositoryService {
   private readonly _timeStamp = { lastModifiedDate: new Date() };
   private readonly _emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  constructor(private _afs: AngularFirestore) {}
+  constructor(private _afs: AngularFirestore, private _toaster: FirebaseToasterService) {}
 
   public async verifyUserAccount(input: string) {
     const isEmailUser = this._emailRegex.test(input);
@@ -36,10 +37,16 @@ export class UserCredentialRepositoryService {
         } else {
           return null;
         }
-      }),
-      catchError(error => {
-        throw error;
       })
+    );
+  }
+
+  public subscribeValueChangeListener(id: string): Observable<IUser | null> {
+    const userDocRef = this._afs.doc<IUser>(`${Db.Context.User}/${id}`);
+
+    return userDocRef.valueChanges().pipe(
+      map(userData => (userData ? userData : null)),
+      catchError(error => throwError(error))
     );
   }
 
@@ -81,45 +88,59 @@ export class UserCredentialRepositoryService {
   }
 
   public async createUser(user: IUser): Promise<boolean> {
-    user.id = this._afs.createId();
-    let createUserCriteria = { ...user, ...this._timeStamp };
+    let command = { ...user, ...this._timeStamp };
     try {
-      await this._afs
-        .collection(Db.Context.User)
-        .doc(createUserCriteria.id)
-        .set(createUserCriteria);
+      await this._afs.collection(Db.Context.User).doc(command.id).set(command);
+      await this._toaster.addSuccess();
       return true;
     } catch (error) {
+      await this._toaster.addFail(error);
       console.error(error);
-      throw error;
+      return false;
     }
   }
   public async updateUser(user: IUser) {
     const updateCriteria = { ...user, ...this._timeStamp };
     try {
       await this._afs.collection(Db.Context.User).doc(user.id).update(updateCriteria);
+      await this._toaster.updateSuccess();
+      return true;
     } catch (error) {
+      await this._toaster.updateFail(error);
       console.error(error);
-      throw error;
+      return false;
     }
   }
 
   public async deleteUser(user: IUser) {
     try {
       await this._afs.collection(Db.Context.User).doc(user.id).delete();
+      await this._toaster.deleteSuccess();
+      return true;
     } catch (error) {
+      await this._toaster.deleteFail(error);
       console.error(error);
-      throw error;
+      return false;
     }
   }
 
   private async verifyUserByEmail(email: string) {
-    const user = await lastValueFrom(this.subscribeUserByEmail(email));
-    return user !== null;
+    try {
+      const result = this.subscribeUserByEmail(email).pipe(take(1));
+      return result !== null;
+    } catch (error) {
+      console.error('Error verifying user by email:', error);
+      return false;
+    }
   }
 
-  private async verifyUserByPhone(phone: string) {
-    const user = await lastValueFrom(this.subscribeUserByPhoneNumber(phone));
-    return user !== null;
+  private async verifyUserByPhone(phone: string): Promise<boolean> {
+    try {
+      const result = this.subscribeUserByPhoneNumber(phone).pipe(take(1));
+      return result !== null;
+    } catch (error) {
+      console.error('Error verifying user by phone:', error);
+      return false;
+    }
   }
 }

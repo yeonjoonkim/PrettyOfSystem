@@ -11,8 +11,9 @@ export class LoadingService {
 
   async show() {
     let loading = await this._loadingCtrl.create({
-      spinner: 'bubbles',
+      spinner: 'dots',
       cssClass: 'transparent-loading',
+      translucent: true,
     });
     loading.present();
   }

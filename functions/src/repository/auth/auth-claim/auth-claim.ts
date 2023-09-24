@@ -1,14 +1,13 @@
 import * as admin from 'firebase-admin';
 import { logger } from 'firebase-functions/v2';
+import * as I from '../../../interface';
 
-export const update = async function (id: string, isSystemAdmin: boolean, disabled: boolean) {
+export const update = async function (id: string, claim: I.UserClaimType) {
   const isExistedId = await isExistedUserById(id);
 
   if (isExistedId) {
     try {
-      await admin
-        .auth()
-        .setCustomUserClaims(id, { isSystemAdmin: isSystemAdmin, disabled: disabled });
+      await admin.auth().setCustomUserClaims(id, claim);
       return true;
     } catch (error) {
       return false;

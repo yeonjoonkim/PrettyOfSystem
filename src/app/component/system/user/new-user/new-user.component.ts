@@ -24,7 +24,7 @@ export class NewUserComponent implements OnInit {
   public roleFilters: NameValuePairType[] = [];
   public shopFilters: NameValuePairType[] = [];
   public form!: IFormHeaderModalProp;
-  public user: IUser = this._systemAdmin.getDefaultUser();
+  public user: IUser = this._systemAdmin.defaultUser();
   public validator = {
     phone: false,
     email: false,
@@ -36,7 +36,9 @@ export class NewUserComponent implements OnInit {
 
   private _roles: RoleConfigurationType[] = [];
   private _criteria!: UserManagementCriteria;
-  constructor(private _navParams: NavParams, private _systemAdmin: UserAdminService) {}
+  constructor(private _navParams: NavParams, private _systemAdmin: UserAdminService) {
+    this.user.id = this._systemAdmin.getNewId();
+  }
 
   async ngOnInit() {
     await this.loadingFromCtrl();

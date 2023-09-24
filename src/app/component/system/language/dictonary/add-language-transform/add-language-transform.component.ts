@@ -102,17 +102,11 @@ export class AddLanguageTransformComponent implements OnInit {
   /** This will update language package */
   private async updateLanguagePackage(result: ILanguageTranslateItem): Promise<void> {
     if (!result.isEmpty) {
-      let sccuess = await this._global.language.transform('messagesuccess.title.save');
-      await this._global.language.management.addPackage(
+      this._isSaved = await this._global.language.management.addPackage(
         result,
         this.languageTransform.key.toLowerCase()
       );
-      await this._global.toast.present(sccuess);
-      this._isSaved = true;
-      this.dismissAddLanguage();
-    } else {
-      let errorMsg = await this._global.language.transform('messagefail.title.unsaved');
-      await this._global.toast.presentError(errorMsg);
+      await this.dismissAddLanguage();
     }
   }
 }

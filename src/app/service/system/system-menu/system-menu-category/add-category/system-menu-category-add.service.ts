@@ -45,9 +45,10 @@ export class SystemMenuCategoryAddService {
     );
 
     if (!hasSameCategoryName && !result.isEmpty) {
-      await this._global.language.management.addPackage(result, newCategory.name.toLowerCase());
-      await this._systemMenuRepository.addSystemMenuCategory(newCategory);
-      await this._global.toast.present(success);
+      const isadded = await this._systemMenuRepository.addSystemMenuCategory(newCategory);
+      if (isadded) {
+        await this._global.language.management.addPackage(result, newCategory.name.toLowerCase());
+      }
     } else {
       let errorMsg = await this._global.language.transform('messageerror.title.unsaved');
       await this._global.toast.presentError(errorMsg);

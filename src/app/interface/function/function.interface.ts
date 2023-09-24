@@ -11,7 +11,8 @@ export type OnChangeUserType = {
   isRosterChange: boolean;
   isCurrentlyActive: boolean;
   isPreviouslyActive: boolean;
-
+  isCurrentShopRoleChange: boolean;
+  isCurrentShopIdChange: boolean;
   isShopActiveCountChanged: boolean;
   afterActiveShopCount: number;
   beforeActiveShopCount: number;
@@ -21,6 +22,7 @@ export type OnChangeUserActionType = {
   isSendMsgRosterChange: boolean;
   isAuthUpdate: boolean;
   isCurrentShopIdUpdate: boolean;
+  isCurrentShopRoleUpdate: boolean;
   isActivateAccount: boolean;
   isDeactiveAccount: boolean;
   isUpdateClaim: boolean;

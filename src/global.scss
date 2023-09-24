@@ -27,6 +27,19 @@
 
 @import './theme/pretty-of-system-dark-theme/dist/scss';
 @import './theme/variables.scss';
+
+/* Set variables for all modes */
+
+p,
+h1,
+.k-button-text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif !important;
+}
+:root {
+  /* Set the font family of the entire app */
+  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
+}
+
 $form-background-color: white;
 $title-color: #414d58;
 $background-color: #8685ef;
@@ -58,8 +71,17 @@ ion-loading {
 }
 
 .transparent-loading {
-  --backdrop-opacity: 0;
   --background: transparent;
+  width: 100%;
+}
+
+.transparent-loading::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  background: url('./assets/logo/prettyofsystem-logo-white.svg') no-repeat center center / contain;
+  width: 100px; /* Set the width as per your need */
+  height: 100px; /* Set the height as per your need */
 }
 
 .date-pick-popup-container {

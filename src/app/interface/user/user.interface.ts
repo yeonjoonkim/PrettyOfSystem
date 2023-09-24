@@ -1,4 +1,4 @@
-import { RoleConfigurationType } from '../system/role/role.interface';
+import { RoleAccessLevelType, RoleConfigurationType } from '../system/role/role.interface';
 import { ShopWorkHoursType } from '../shop/shop.interface';
 import * as Constant from '../../constant/constant';
 import { NameValuePairType } from '../global/global.interface';
@@ -18,6 +18,13 @@ export interface IUser {
   encryptedPassword: string;
   disabledAccount: boolean;
 }
+
+export type UserClaimType = {
+  role: RoleAccessLevelType;
+  currentShopId: string;
+  language: string;
+  disableAccount: boolean;
+};
 
 export interface IUserLoginOption {
   email: boolean;

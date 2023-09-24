@@ -12,6 +12,10 @@ export interface IStateTypeDeclaration {
 export class PostcodeService {
   constructor(private _australia: AustraliaPostCodeService) {}
 
+  public getAustralia() {
+    return this._australia.getCombined();
+  }
+
   public setPostCodeFilterOption(state: string): PostCodeFilterOptionType {
     let result: PostCodeFilterOptionType = { postCodeList: [], stateList: [] };
     let stateType: IStateTypeDeclaration = this.findStateType(state);

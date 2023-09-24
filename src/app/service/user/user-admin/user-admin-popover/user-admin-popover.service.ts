@@ -45,7 +45,6 @@ export class UserAdminPopoverService {
     const popover = await this._popover.create({
       component: AddAssociatedShopComponent,
       translucent: true,
-      size: 'auto',
       componentProps: {
         user: paramUser,
         criteria: paramCriteria,

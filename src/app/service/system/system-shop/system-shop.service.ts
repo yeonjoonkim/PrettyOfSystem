@@ -17,15 +17,15 @@ export class SystemShopService {
   ) {}
 
   public getAllShopConfigurations(): Observable<ShopConfigurationType[]> {
-    return this._systemShopConfigRepo.getAllShopConfigurations();
+    return this._systemShopConfigRepo.allShopConfigurationGetListener();
   }
 
   public async getSystemShopCategoryList() {
-    return await lastValueFrom(this._systemShopConfigRepo.getShopCategories());
+    return await lastValueFrom(this._systemShopConfigRepo.categoryListener());
   }
 
   public async getSystemShopCountryList() {
-    return await lastValueFrom(this._systemShopConfigRepo.getSystemShopCountries());
+    return await lastValueFrom(this._systemShopConfigRepo.countryListener());
   }
 
   public async getSystemShopPlanConfigList() {
