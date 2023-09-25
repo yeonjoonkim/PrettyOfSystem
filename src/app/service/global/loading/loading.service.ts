@@ -11,9 +11,9 @@ export class LoadingService {
 
   async show() {
     let loading = await this._loadingCtrl.create({
-      spinner: 'dots',
-      cssClass: 'transparent-loading',
-      translucent: true,
+      spinner: 'crescent',
+      cssClass: 'logo-loading',
+      translucent: false,
     });
     loading.present();
   }

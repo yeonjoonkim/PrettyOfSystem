@@ -1,59 +1,79 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-      match /{document=**}{
-         allow read;
+    match /{document=**}{
+        allow read;
+    }
+
+      match /system/{document=**} {
+        allow create: if requestRole().isSystemAdmin;
+        allow update: if requestRole().isSystemAdmin;
+        allow delete: if requestRole().isSystemAdmin;
+     }
+
+      match /shopConfiguration/{document=**}{
+        allow read;
+        allow create: if requestRole().isSystemAdmin;
+        allow update: if updateShopConfiguration(resource);
+        allow delete: if requestRole().isSystemAdmin;
+     }
+
+      match /user/{document=**}{
+        allow create: if validateUser(resource);
+        allow update: if validateUser(resource);
+        allow delete: if requestRole().isSystemAdmin;
+     }
+
+      match /functionError/{document=**}{
+        allow read: if requestRole().isSystemAdmin;
+        allow create;
+        allow update: if requestRole().isSystemAdmin;
+        allow delete: if requestRole().isSystemAdmin;
+     }
+
+
+      function updateShopConfiguration(resource){
+        let role = requestRole();
+        let shopId = requestShop();
+        let isRelatedToShop = isRequesterRelatedToShop();
+        return resource.data.id == shopId && isRelatedToShop && (role.isSystemAdmin || role.isAdmin || role.isManager || role.isReception);
       }
 
-     match /system/{document=**} {
-        allow create: if isSystemAdmin();
-        allow update: if isSystemAdmin();
-        allow delete: if isSystemAdmin();
-     }
-
-     match /shopConfiguration/{document=**}{
-        allow create: if isSystemAdmin();
-        allow update: if higherThanReception();
-        allow delete: if isSystemAdmin();
-     }
-
-     match /user/{document=**}{
-        allow create: if higherThanReception();
-        allow update: if higherThanReception() || isMe();
-        allow delete: if isSystemAdmin();
-     }
+      function validateUser(resource){
+        let isMyDocument = resource.data.id == request.auth.uid;
+        let role = requestRole();
+        let isRelatedToShop = isRequesterRelatedToShop();
+        let isResourceSystemAdminUser = isResourceSystemAdminUser(resource);
+        return (isResourceSystemAdminUser == role.isSystemAdmin) || isMyDocument || (isRelatedToShop && role.isAdmin || role.isManager || role.isReception);
+      }
 
 
-     match /functionError/{document=**}{
-      allow read: if isSystemAdmin();
-      allow create;
-      allow update: if isSystemAdmin();
-      allow delete: if isSystemAdmin();
-     }
-   
-    // Helper Functions
-     function getUserRole() {
-       return request.auth.token.role;
-     }
+      function requestUserData(){
+        return get(/databases/$(database)/documents/user/$(request.auth.uid)).data;
+      }
 
-     function isSystemAdmin() {
-     	let userRole = getUserRole();
-      return userRole.isSystemAdmin;
-    }
+      function requestRole(){
+        return request.auth.token.role;
+      }
 
-    function higherThanReception() {
-      let userRole = getUserRole();
-      return userRole.isSystemAdmin || userRole.isReception || userRole.isAdmin || userRole.isManager;
-    }
+      function requestShop(){
+      return request.auth.token.currentShopId;
+      }
 
-    function isMe() {
-      return request.auth.uid == myDocument().data.id;
-   }
-   
-   // Helper Functions
-    function myDocument() {
-      return get(/databases/$(database)/documents/user/$(request.auth.uid));
-    }
-   
+      function isRequesterRelatedToShop(){
+        let user = requestUserData();
+        return user.associatedShops.hasAny([requestShop()]);
+      }
+
+      // Resource User Data
+      function resourceUserData(resource){
+        return get(/databases/$(database)/documents/user/$(resource.data.id)).data;
+      }
+
+      function isResourceSystemAdminUser(resource){
+        let resourceUser = resourceUserData(resource);
+        return resourceUser.isSystemAdmin;
+      }
+
  }
 }

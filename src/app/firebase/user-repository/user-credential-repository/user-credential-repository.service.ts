@@ -90,7 +90,8 @@ export class UserCredentialRepositoryService {
   public async createUser(user: IUser): Promise<boolean> {
     let command = { ...user, ...this._timeStamp };
     try {
-      await this._afs.collection(Db.Context.User).doc(command.id).set(command);
+      console.log(user.id);
+      await this._afs.collection(Db.Context.User).doc(user.id).set(command);
       await this._toaster.addSuccess();
       return true;
     } catch (error) {

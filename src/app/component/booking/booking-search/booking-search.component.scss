@@ -9,7 +9,7 @@
   }
 }
 #catch-phrase {
-  color: #cd7866;
+  color: #cd7867;
   font-size: 20px;
   font-weight: bold;
   text-align: center;
@@ -25,7 +25,7 @@
 }
 #query {
   margin: 0;
-  width: 290px;
+  width: 310px;
   background: #fff;
   height: 100%;
   color: #121212;
@@ -33,7 +33,7 @@
   font-weight: bold;
 }
 ::ng-deep #query input.k-input-inner::placeholder {
-  color: #cd7866;
+  color: #cd7867;
 }
 
 .search {
@@ -46,9 +46,9 @@
   border-radius: 40px;
 }
 .search.active {
-  max-width: 1000px;
-  min-width: 0;
-  width: 340px;
+  max-width: 1000px !important;
+  min-width: 0px !important;
+  width: 360px;
 }
 
 .search .icon {
@@ -86,7 +86,7 @@
 
 .search .input {
   position: relative;
-  width: 290px;
+  width: 310px;
   height: 40px;
   left: 35px;
   display: flex;

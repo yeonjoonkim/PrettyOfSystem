@@ -1,0 +1,21 @@
+#btn-title {
+  text-align: center;
+}
+
+#booking-search-icon-btn {
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.activeSearchIconBtn {
+  background: #3e4756;
+  opacity: 1;
+  font-weight: bold;
+}
+
+.deactiveSearchIconBtn {
+  opacity: 0.7;
+  ::hover {
+    cursor: pointer;
+  }
+}

@@ -1,9 +1,9 @@
 import firebase from 'firebase/compat/app';
-import { Default, State, Date, Login, Text } from './constant-value';
+import { Default, State, Date, Login, Text, BookingSearchIconType } from './constant-value';
 export {
   Default,
   State,
-  Setting,
+  BookingSearchIconType,
   Date,
   ShopSetting,
   SystemSetting,
@@ -53,3 +53,7 @@ export type TextFormatType = (typeof Text.Format)[keyof typeof Text.Format];
 //API
 export type APIResponseType = (typeof API.Response)[keyof typeof API.Response];
 export type APIActionType = (typeof API.Action)[keyof typeof API.Action];
+
+//Booking
+export type BookingSearchIconType =
+  (typeof BookingSearchIconType)[keyof typeof BookingSearchIconType];

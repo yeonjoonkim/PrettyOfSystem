@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-
+import { loginGuard } from './guard/login-gurad/login-guard.guard';
 const routes: Routes = [
   {
     path: '',
@@ -19,6 +19,7 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./page/access/login/login.module').then(m => m.LoginPageModule),
+    canActivate: [loginGuard],
   },
   {
     path: 'booking',

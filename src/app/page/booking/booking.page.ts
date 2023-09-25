@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BookingQueryCriteria, PostCodeItemType } from 'src/app/interface';
-
+import * as Constant from 'src/app/constant/constant';
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.page.html',
@@ -12,15 +12,7 @@ export class BookingPage implements OnInit {
       postCode: '',
       suburb: '',
     },
-    category: {
-      id: '',
-      isHairSalon: false,
-      isMassageTheraphy: true,
-      isPersonalTrainning: false,
-      isSkinCare: false,
-      isMobileShop: false,
-      name: '',
-    },
+    shopCategoryName: Constant.BookingSearchIconType.MassageTheraphy,
   };
   constructor() {}
 

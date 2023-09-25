@@ -6,6 +6,7 @@ import { ITimer, IUserLoginOption } from 'src/app/interface';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import { UserService } from 'src/app/service/user/user.service';
+import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
   selector: 'login',
@@ -33,8 +34,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   private _timerSubscription!: Subscription;
   public _recaptcha!: RecaptchaVerifier;
 
-  constructor(private _afa: AngularFireAuth, private _userService: UserService) {
-    this.login = new UserLogin(this._afa, this._userService);
+  constructor(
+    private _afa: AngularFireAuth,
+    private _userService: UserService,
+    private _global: GlobalService
+  ) {
+    this.login = new UserLogin(this._afa, this._userService, this._global);
   }
 
   ngOnInit() {

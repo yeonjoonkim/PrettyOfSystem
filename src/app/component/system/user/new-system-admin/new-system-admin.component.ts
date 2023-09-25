@@ -21,9 +21,7 @@ export class NewSystemAdminComponent implements OnInit {
   };
 
   private _paramUser!: IUser;
-  constructor(private _navParams: NavParams, private _systemAdmin: UserAdminService) {
-    this.user.id = this._systemAdmin.getNewId();
-  }
+  constructor(private _navParams: NavParams, private _systemAdmin: UserAdminService) {}
 
   async ngOnInit() {
     await this.loadingFromCtrl();
@@ -74,6 +72,8 @@ export class NewSystemAdminComponent implements OnInit {
   }
 
   public async onClickCreate() {
+    this.user.id = this._systemAdmin.getNewId();
+    console.group(this.user.id);
     await this._systemAdmin.handleCreate(this.user, true);
   }
 }

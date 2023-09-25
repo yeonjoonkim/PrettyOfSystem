@@ -9,6 +9,7 @@ export type ShopCategoryType = {
   isPersonalTrainning: boolean;
   isSkinCare: boolean;
   isMobileShop: boolean;
+  isNailArt: boolean;
   name: string;
 };
 

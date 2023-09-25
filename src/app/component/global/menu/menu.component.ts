@@ -14,15 +14,10 @@ import { NameValuePairType, UserAssociatedShopType } from 'src/app/interface';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
-
-//InProgress
-//Todo: Add @Input from app component 'User-Info'
 export class MenuComponent implements OnInit, OnDestroy {
   private _menuSubscription!: Subscription;
-  private _loginStatusSubscription!: Subscription;
   private _shopSelectionSubscription!: Subscription;
-  private _currentShopSelectionSubscription!: Subscription;
-  private _currentRoleNameSubscription!: Subscription;
+  private _selectShopSubscription!: Subscription;
 
   public shopSelection: NameValuePairType[] = [];
   public selectedShop: NameValuePairType = { name: '', value: '' };
@@ -30,14 +25,12 @@ export class MenuComponent implements OnInit, OnDestroy {
   public selectedTitleHeading: string = '';
   public selectedCategory: string = '';
   public menus: MenuCategoryType[] = [];
-  public user = this.setDefaultUser();
-  public isLogin: boolean = false;
 
   constructor(
+    public user: UserService,
     private _language: LanguageService,
     private _storage: StorageService,
     private _location: Location,
-    private _user: UserService,
     private _menuCtrl: MenuController,
     private _router: Router
   ) {}
@@ -45,17 +38,13 @@ export class MenuComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.getCurrentLanguage();
     this.subscribeUserMenu();
-    this.subscribeUserLoginStatus();
     this.subscribeShopSelection();
-    this.subscribeRole();
   }
 
   ngOnDestroy() {
     this._menuSubscription?.unsubscribe();
-    this._loginStatusSubscription?.unsubscribe();
+    this._selectShopSubscription?.unsubscribe();
     this._shopSelectionSubscription?.unsubscribe();
-    this._currentShopSelectionSubscription?.unsubscribe();
-    this._currentRoleNameSubscription?.unsubscribe();
   }
   public async onChangeMenu(url: string) {
     let selectedMenu = this.menus.find(s => {
@@ -67,7 +56,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   public logout() {
-    this._user.logout();
+    this.user.logout();
   }
 
   public login() {
@@ -79,42 +68,25 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.selectedLangauge = currentLang !== null ? currentLang : this._language.deafultLanguageCode;
   }
 
-  private setDefaultUser() {
-    const fullname: string = '';
-    const currentRole: string = '';
-    const currentShopId: string = '';
-    const associatedShop: UserAssociatedShopType[] = [];
-    return {
-      fullName: fullname,
-      currentRole: currentRole,
-      currentShopId: currentShopId,
-      associatedShop: associatedShop,
-    };
-  }
-
   public async handleCurrentShopChange() {
-    await this._user.updateCurrentShop(this.selectedShop.value);
+    await this.user.updateCurrentShop(this.selectedShop.value);
   }
 
-  private async setDefaultTitleHeading() {
-    let currentUrl = this._location.path();
-    await this.onChangeMenu(currentUrl);
+  private async subscribeShopSelection() {
+    this._shopSelectionSubscription = this.user.shopSelection$.subscribe(selection => {
+      this.shopSelection = selection;
+    });
+    this._selectShopSubscription = this.user.currentShop$.subscribe(selected => {
+      this.selectedShop = selected;
+    });
   }
 
   private async subscribeUserMenu() {
-    this._menuSubscription = this._user.menu$.subscribe(async menu => {
+    this._menuSubscription = this.user.menu$.subscribe(async menu => {
       this.menus = menu;
       await this.validateCurrentPath().then(async () => {
         await this.setDefaultTitleHeading();
       });
-    });
-  }
-  private async subscribeShopSelection() {
-    this._shopSelectionSubscription = this._user.shopSelection$.subscribe(selection => {
-      this.shopSelection = selection;
-    });
-    this._currentShopSelectionSubscription = this._user.currentShop$.subscribe(current => {
-      this.selectedShop = current;
     });
   }
 
@@ -130,26 +102,8 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  private async subscribeUserLoginStatus() {
-    this._loginStatusSubscription = this._user.data$.subscribe(credential => {
-      //Login
-      if (credential !== null) {
-        this.user.fullName = credential.firstName + ' ' + credential.lastName;
-        this.user.currentShopId = credential.currentShopId;
-        this.user.associatedShop = credential.associatedShops;
-        this.isLogin = true;
-      }
-      //Logout
-      else {
-        this.user = this.setDefaultUser();
-        this.isLogin = false;
-      }
-    });
-  }
-
-  private async subscribeRole() {
-    this._currentRoleNameSubscription = this._user.currentRole$.subscribe(role => {
-      this.user.currentRole = role !== null ? role.name : '';
-    });
+  private async setDefaultTitleHeading() {
+    let currentUrl = this._location.path();
+    await this.onChangeMenu(currentUrl);
   }
 }

@@ -12,3 +12,25 @@ flex-col-item {
 #search-container {
   margin-top: 5px;
 }
+
+#btn-list {
+  width: 100%;
+}
+
+#btn {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0px 1px;
+  height: 32px;
+  font-size: 14px;
+}
+#name {
+  padding: 8px 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#container {
+  min-height: 0px;
+  justify-content: flex-start;
+}

@@ -42,7 +42,7 @@ h1,
 
 $form-background-color: white;
 $title-color: #414d58;
-$background-color: #8685ef;
+$background-color: #474554;
 
 .grecaptcha-badge {
   visibility: hidden;
@@ -55,9 +55,9 @@ $background-color: #8685ef;
 }
 
 .active {
-  --background: #8685ef;
-  background-color: #8685ef;
-  background: #8685ef;
+  --background: #474554;
+  background-color: #474554;
+  background: #474554;
   font-weight: bold;
 }
 .modal-container {
@@ -66,22 +66,35 @@ $background-color: #8685ef;
 
 ion-loading {
   --backdrop-opacity: 0;
-  --background: transparent;
-  --color: #000; // Adjust this to the color you want
+  background: transparent;
+  box-shadow: none;
 }
 
-.transparent-loading {
-  --background: transparent;
+ion-popover {
+  --background: black;
+  --backdrop-opacity: 0.8;
+  --color: white;
+}
+
+.logo-loading {
+  position: relative;
   width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  --background: #transparent !important;
+  transition: opacity 3s ease-in-out;
 }
 
-.transparent-loading::before {
+.logo-loading::before,
+.logo-loading::after {
   content: '';
   position: absolute;
   top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: url('./assets/logo/prettyofsystem-logo-white.svg') no-repeat center center / contain;
-  width: 100px; /* Set the width as per your need */
-  height: 100px; /* Set the height as per your need */
+  width: 150px;
+  height: 150px;
 }
 
 .date-pick-popup-container {
@@ -106,9 +119,14 @@ ion-loading {
   color: red;
 }
 
+.success-toast {
+  --background: white;
+}
+
 .error-toast {
   --background: red;
 }
+
 .error-text {
   color: red;
 }
@@ -174,7 +192,7 @@ time-picker-group {
 }
 
 ion-button {
-  --background: #8685ef;
+  --background: #474554;
   position: relative;
   color: white;
 }

@@ -2,5 +2,6 @@
   <booking-header></booking-header>
   <section id="booking-container">
     <booking-search (onQueryChange)="onAddressQuery($event)"></booking-search>
+    <booking-search-icon [(shopCategoryName)]="query.shopCategoryName"></booking-search-icon>
   </section>
 </ion-content>

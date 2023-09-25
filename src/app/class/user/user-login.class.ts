@@ -2,6 +2,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { RecaptchaVerifier, User } from 'firebase/auth';
 import { IUserLogin, NameValuePairType } from 'src/app/interface';
 import { CryptService } from 'src/app/service/global/crypt/crypt.service';
+import { GlobalService } from 'src/app/service/global/global.service';
 import { TimerService } from 'src/app/service/global/timer/timer.service';
 import { UserService } from 'src/app/service/user/user.service';
 export class UserLogin implements IUserLogin {
@@ -25,7 +26,11 @@ export class UserLogin implements IUserLogin {
     { value: 'auth/user-disabled', name: 'messageerror.description.disabledaccount' },
   ];
 
-  constructor(private _afa: AngularFireAuth, private _userService: UserService) {
+  constructor(
+    private _afa: AngularFireAuth,
+    private _userService: UserService,
+    private _global: GlobalService
+  ) {
     this._cypo = new CryptService();
     this.timer = new TimerService();
   }
@@ -88,10 +93,12 @@ export class UserLogin implements IUserLogin {
     if (verification) {
       try {
         this.errorMsg = '';
+        this._global.loading.show();
         const userCredential = await this._afa.signInWithEmailAndPassword(
           this._emailAddress,
           this.password
         );
+        this._global.loading.dismiss();
         if (userCredential) {
           await this.processLogin(userCredential);
         }
@@ -108,12 +115,14 @@ export class UserLogin implements IUserLogin {
     const verification = await this._userService.verifyUserAccount(this._phoneNumber);
     if (verification) {
       try {
+        this._global.loading.show();
         this.errorMsg = '';
         this.confirmationResult = await this._afa.signInWithPhoneNumber(
           this._phoneNumber,
           recaptcha
         );
         this.timer.startTimerByMin(0.5);
+        this._global.loading.dismiss();
       } catch (err) {
         const error: string = JSON.stringify(err);
         this.handleError(error);
@@ -126,13 +135,17 @@ export class UserLogin implements IUserLogin {
 
   public async resendOtpVerification(recaptcha: RecaptchaVerifier) {
     await this.timer.restart();
+    await this._global.loading.show();
     const confirm = await this._afa.signInWithPhoneNumber(this._phoneNumber, recaptcha);
+    await this._global.loading.dismiss();
     this.confirmationResult = confirm;
   }
 
   public async verifyOTP() {
     try {
+      await this._global.loading.show();
       const userCredential = await this.confirmationResult.confirm(this.otp);
+      await this._global.loading.dismiss();
       if (userCredential) {
         await this.processLogin(userCredential);
       }
@@ -145,11 +158,10 @@ export class UserLogin implements IUserLogin {
   private async processLogin(credential: any) {
     const user = credential?.user;
     if (user !== undefined) {
-      await this._userService.testingRouter();
+      await this._userService.init();
       await this.timer.end();
       await this.reset();
     }
-    //Todo: implement guard
   }
 
   private handleNotExistUserError() {

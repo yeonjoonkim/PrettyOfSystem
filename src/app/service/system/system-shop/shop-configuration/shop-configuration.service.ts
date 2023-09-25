@@ -139,6 +139,7 @@ export class ShopConfigurationService {
       isPersonalTrainning: false,
       isSkinCare: false,
       isMobileShop: false,
+      isNailArt: false,
       name: '',
     };
   }

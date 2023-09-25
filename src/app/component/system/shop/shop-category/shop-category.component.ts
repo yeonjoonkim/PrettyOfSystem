@@ -43,6 +43,7 @@ export class ShopCategoryListComponent implements OnInit {
     isMassageTheraphy: false,
     isPersonalTrainning: false,
     isSkinCare: false,
+    isNailArt: false,
     isMobileShop: false,
   };
 

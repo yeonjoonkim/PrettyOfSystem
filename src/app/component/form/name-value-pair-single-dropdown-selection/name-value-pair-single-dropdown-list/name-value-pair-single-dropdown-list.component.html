@@ -7,22 +7,15 @@
       placeholder="{{ 'placeholder.title.search' | languageTransform | async }}"></kendo-textbox>
   </flex-col-item>
   <flex-col-item>
-    <kendo-grid
-      id="dropdown-list"
-      [style.max-height]="maxHeight"
-      [kendoGridBinding]="gridData"
-      [selectable]="true"
-      [rowClass]="rowClass"
-      [hideHeader]="true"
-      (cellClick)="onClickCell($event)">
-      <kendo-grid-column>
-        <ng-template kendoGridCellTemplate let-data>
-          {{ data.name | languageTransform | async }}
-        </ng-template>
-      </kendo-grid-column>
-      <ng-template kendoGridNoRecordsTemplate>
-        <p>{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
-      </ng-template>
-    </kendo-grid>
+    <div id="container" [ngStyle]="{ 'max-height': maxHeight }">
+      <div *ngFor="let btn of gridData" id="btn-list">
+        <div id="btn" (click)="onClickCell(btn)" [ngClass]="{ active: isActive(btn) }">
+          <span id="name">{{ btn.name | languageTransform | async }}</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="gridData.length === 0">
+      <p>{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
+    </div>
   </flex-col-item>
 </flex-col>

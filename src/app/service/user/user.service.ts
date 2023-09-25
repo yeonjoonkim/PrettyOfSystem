@@ -7,12 +7,12 @@ import {
   RoleConfigurationType,
   ShopConfigurationType,
 } from 'src/app/interface';
-import { Observable, from, lastValueFrom, map, mergeMap, of, switchMap } from 'rxjs';
+import { Observable, map, of, switchMap } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
-import { combineLatestWith, take } from 'rxjs/operators';
+import { combineLatestWith, filter, pairwise, scan, startWith, take } from 'rxjs/operators';
 import { GlobalService } from '../global/global.service';
 
 @Injectable({
@@ -38,12 +38,29 @@ export class UserService {
     private _global: GlobalService
   ) {}
 
-  public async testingRouter() {
-    this._router.navigateByUrl('/system/user');
+  public async init() {
+    this._global.loading.show();
+    const subscription = this.data$.subscribe(data => {
+      if (data !== null) {
+        const currentShop = data.associatedShops.find(s => s.shopId === data.currentShopId);
+        if (currentShop !== undefined) {
+          if (currentShop.role.accessLevel.isSystemAdmin) {
+            this._router.navigateByUrl('system/user');
+          } else {
+            this._router.navigateByUrl('booking');
+          }
+          this._global.loading.dismiss();
+          subscription.unsubscribe();
+        }
+      }
+    });
   }
 
   public async verifyUserAccount(input: string) {
-    return await this._userRepo.verifyUserAccount(input);
+    await this._global.loading.show();
+    const result = await this._userRepo.verifyUserAccount(input);
+    await this._global.loading.dismiss();
+    return result;
   }
 
   public logout() {
@@ -92,7 +109,7 @@ export class UserService {
         if (user !== null) {
           const role = this.findCurrentRole(user);
           if (role !== null) {
-            return this._menuRepo.getAccessGrantedMenu(role.accessLevel);
+            return this._menuRepo.subscribeAccessGrantedMenu(role.accessLevel);
           } else {
             return of([]);
           }

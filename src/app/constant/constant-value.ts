@@ -4,6 +4,12 @@ export const SystemSetting = {
   TimeZone: TimeZone.AustraliaBrisbane,
 };
 
+export const BookingSearchIconType = {
+  NailArt: 'label.title.nailart',
+  MassageTheraphy: 'label.title.massagetheraphy',
+  SkinCare: 'label.title.skincare',
+} as const;
+
 export const ShopSetting = {
   General: {
     TaxRate: 0.1,
@@ -98,11 +104,6 @@ export const Default = {
     Admin: 10000,
     SystemAdmin: 100000,
   } as const,
-};
-
-export const Setting = {
-  ShopSetting: {} as const,
-  PersonalSetting: {} as const,
 };
 
 export const State = {

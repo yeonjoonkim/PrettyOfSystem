@@ -15,30 +15,23 @@
   </flex-row>
 
   <flex-col-item>
-    <div id="all-btn-container">
+    <div id="container" [ngStyle]="{ 'max-height': maxHeight }">
       <div
         *ngIf="selection.length > 1"
-        id="all-btn"
+        id="btn"
         (click)="all()"
         [ngClass]="{ active: selected?.length === 0 }">
-        <span id="all-btn-text"> {{ 'label.title.all' | languageTransform | async }}</span>
+        <span id="name"> {{ 'label.title.all' | languageTransform | async }}</span>
+      </div>
+
+      <div *ngFor="let btn of gridData; let i = index" id="btn-list">
+        <div id="btn" [ngClass]="{ active: isInclude(btn) }" (click)="onClickCell(btn)">
+          <span id="name">{{ btn.name | languageTransform | async }}</span>
+        </div>
+      </div>
+      <div *ngIf="gridData.length === 0">
+        <p>{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
       </div>
     </div>
-    <kendo-grid
-      id="dropdown-list"
-      [style.max-height]="maxHeight"
-      [kendoGridBinding]="gridData"
-      [hideHeader]="true"
-      [rowClass]="rowClass"
-      (cellClick)="onClickCell($event)">
-      <kendo-grid-column>
-        <ng-template kendoGridCellTemplate let-data>
-          {{ data.name | languageTransform | async }}
-        </ng-template>
-      </kendo-grid-column>
-      <ng-template kendoGridNoRecordsTemplate>
-        <p>{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
-      </ng-template>
-    </kendo-grid>
   </flex-col-item>
 </flex-col>
