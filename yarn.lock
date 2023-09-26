@@ -1360,12 +1360,17 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@capacitor/android@^5.4.1":
+  version "5.4.1"
+  resolved "https://registry.npmjs.org/@capacitor/android/-/android-5.4.1.tgz"
+  integrity sha512-25k/GyIly/8xKQo0EO6eIvJStpVWsBPyYh9Eiv+Or9DCz9iuVlGZY3vui+zjFhfHQ5f9Uwywa8B+thOGWU8f6g==
+
 "@capacitor/app@4.1.1":
   version "4.1.1"
   resolved "https://registry.npmjs.org/@capacitor/app/-/app-4.1.1.tgz"
   integrity sha512-SJcJA1rhFQyeH6eLfUEbdKkHzAwzahJNVPNXmU88fdmXpMgM2dJGzZj1vrm6e21aQq+Z4aBVLJ2RCdj92zD7wg==
 
-"@capacitor/cli@4.6.1":
+"@capacitor/cli@^4.6.1":
   version "4.6.1"
   resolved "https://registry.npmjs.org/@capacitor/cli/-/cli-4.6.1.tgz"
   integrity sha512-iFMK83B67RXEQyWi1kOzQmRdCFc/pPD924mjAXG7yFLVyMvVRGAwwf8LzWFzHyQDoKK+auPMHycVfzm9T6Iyyg==
@@ -1388,10 +1393,10 @@
     tslib "^2.4.0"
     xml2js "^0.4.23"
 
-"@capacitor/core@4.6.1":
-  version "4.6.1"
-  resolved "https://registry.npmjs.org/@capacitor/core/-/core-4.6.1.tgz"
-  integrity sha512-7A2IV9E8umgu9u0fChUTjQJq+Jp25GJZMmWxoQN/nVx/1rcpFJ4m1xo3NPBoIRs+aV7FR+BM17mPrnkKlA8N2g==
+"@capacitor/core@^5.4.1":
+  version "5.4.1"
+  resolved "https://registry.npmjs.org/@capacitor/core/-/core-5.4.1.tgz"
+  integrity sha512-QG9gORuxw2WNcVpLHT1W3LzACOJvFWRuHcz4b9edzxehSELqiSQ4DoGWLp4PuNBBp2oV/fGA4FMNmfZ1jIAAWg==
   dependencies:
     tslib "^2.1.0"
 
@@ -1399,6 +1404,11 @@
   version "4.1.0"
   resolved "https://registry.npmjs.org/@capacitor/haptics/-/haptics-4.1.0.tgz"
   integrity sha512-gAIFy50e1VZPdokRFLkl8Y+yZYB3e4brd5yu9DRShbWbheruwU34TxtG5C1NANvq4mbXd3tMXzBi59Q5JFyTHA==
+
+"@capacitor/ios@^5.4.1":
+  version "5.4.1"
+  resolved "https://registry.npmjs.org/@capacitor/ios/-/ios-5.4.1.tgz"
+  integrity sha512-s5djQEX1HFM6u4gQlWz7DUWG7ma0d3AwwnjbSbCh25aYEt40Dbei0TjzlKrfU6b3nUbyVVAZJBJgMuk7Bq59qA==
 
 "@capacitor/keyboard@4.1.0":
   version "4.1.0"
