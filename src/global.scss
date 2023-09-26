@@ -99,9 +99,12 @@ ion-popover {
   -margin-inline-start: 0;
 }
 
-.loading-spinner.sc-ion-loading-md + .loading-content.sc-ion-loading-md {
+.loading-spinner.sc-ion-loading-md + .loading-content.sc-ion-loading-md,
+.loading-spinner.sc-ion-loading-ios + .loading-content.sc-ion-loading-ios {
   -webkit-margin-start: 0;
+  -webkit-margin-left: 0; /* for maximum compatibility on older WebKit browsers */
   margin-inline-start: 0;
+  margin-left: 0; /* for non-WebKit browsers and maximum compatibility */
 }
 
 .logo-loading::before,

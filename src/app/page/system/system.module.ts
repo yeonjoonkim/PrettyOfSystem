@@ -7,7 +7,6 @@ import { SystemPageRoutingModule } from './system-routing.module';
 @NgModule({
   imports: [SystemPageRoutingModule],
   declarations: [],
-  entryComponents: [],
   exports: [],
 })
 export class SystemPageModule {}

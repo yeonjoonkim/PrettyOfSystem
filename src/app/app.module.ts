@@ -73,7 +73,7 @@ export class AppModule implements OnInit {
   loadingRecap() {
     const app = initializeApp(environment.firebaseConfig);
     const appCheck = initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider('6Lf8ODkoAAAAAJlFaUYalF4WZHUxPJz2y-9vGely'),
+      provider: new ReCaptchaV3Provider('6LcxQTkoAAAAAJDSrZQT9sFfGQGq1EoDFoZxPpor'),
       isTokenAutoRefreshEnabled: true,
     });
   }

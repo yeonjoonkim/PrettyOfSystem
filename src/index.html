@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -14,6 +14,20 @@
     <meta name="msapplication-tap-highlight" content="no" />
 
     <link rel="icon" type="image/svg+xml" href="assets/logo/prettyofsystem-logo-white.svg" />
+
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcxQTkoAAAAAJDSrZQT9sFfGQGq1EoDFoZxPpor"></script>
+
+    <script>
+      function onClick(e) {
+        e.preventDefault();
+        grecaptcha.enterprise.ready(async () => {
+          const token = await grecaptcha.enterprise.execute(
+            '6LcxQTkoAAAAAJDSrZQT9sFfGQGq1EoDFoZxPpor',
+            { action: 'LOGIN' }
+          );
+        });
+      }
+    </script>
 
     <!-- add to homescreen for ios -->
     <meta name="apple-mobile-web-app-capable" content="yes" />

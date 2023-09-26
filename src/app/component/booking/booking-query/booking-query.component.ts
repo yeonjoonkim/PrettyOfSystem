@@ -14,6 +14,7 @@ export class BookingQueryComponent implements OnInit, OnChanges {
     },
     shopCategoryName: Constant.BookingSearchIconType.MassageTheraphy,
   };
+  public loading: boolean = false;
   constructor() {}
 
   ngOnInit() {}
@@ -32,6 +33,12 @@ export class BookingQueryComponent implements OnInit, OnChanges {
         afterQuery.address.suburb.length > 0 &&
         afterQuery.address.postCode.length > 0 &&
         afterQuery.shopCategoryName.length > 0;
+      if (isChanged && isQuery) {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000);
+      }
     }
   }
 
