@@ -59,3 +59,21 @@ button {
     margin: 0;
   }
 }
+
+#login-policy-container {
+  width: 230px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+  #privacy-policy-btn,
+  #terms-and-condition-btn {
+    background: transparent;
+    font-size: 10px;
+    width: fit-content;
+    color: #787586;
+    &:hover {
+      color: white;
+    }
+  }
+}

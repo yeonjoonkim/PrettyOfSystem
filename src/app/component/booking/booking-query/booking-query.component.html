@@ -1,0 +1,7 @@
+<section *ngIf="!query.address.suburb">
+  <flex-col>
+    <flex-col-item id="catch-phrase-container">
+      <p id="catch-phrase">{{ 'label.title.catchphrase' | languageTransform | async }}</p>
+    </flex-col-item>
+  </flex-col>
+</section>

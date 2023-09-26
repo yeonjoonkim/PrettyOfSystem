@@ -1,21 +1,28 @@
 #btn-title {
   text-align: center;
+  font-size: 10px;
 }
 
 #booking-search-icon-btn {
   border-radius: 5px;
   padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+#btn-img {
+  width: 75px;
 }
 
 .activeSearchIconBtn {
-  background: #3e4756;
   opacity: 1;
   font-weight: bold;
 }
 
 .deactiveSearchIconBtn {
-  opacity: 0.7;
-  ::hover {
-    cursor: pointer;
-  }
+  opacity: 0.5;
 }

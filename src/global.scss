@@ -42,7 +42,7 @@ h1,
 
 $form-background-color: white;
 $title-color: #414d58;
-$background-color: #474554;
+$background-color: #787586;
 
 .grecaptcha-badge {
   visibility: hidden;
@@ -55,9 +55,9 @@ $background-color: #474554;
 }
 
 .active {
-  --background: #474554;
-  background-color: #474554;
-  background: #474554;
+  --background: #787586;
+  background-color: #787586;
+  background: #787586;
   font-weight: bold;
 }
 .modal-container {
@@ -80,19 +80,40 @@ ion-popover {
   position: relative;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.7);
   --background: #transparent !important;
-  transition: opacity 3s ease-in-out;
+  position: relative;
+  width: 100%; /* Adjust the width as needed */
+  flex-direction: column;
+  height: 100vh; /* Adjust the height as needed */
+}
+
+.loading-wrapper.sc-ion-loading-md {
+  flex-direction: column;
+}
+.loading-wrapper.sc-ion-loading-md .loading-content {
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+  -webkit-margin-start: 0;
+  -margin-inline-start: 0;
+}
+
+.loading-spinner.sc-ion-loading-md + .loading-content.sc-ion-loading-md {
+  -webkit-margin-start: 0;
+  margin-inline-start: 0;
 }
 
 .logo-loading::before,
-.logo-loading::after {
+.logo-loading::after,
+.logo-loading::backdrop {
   content: '';
   position: absolute;
-  top: 40%;
-  left: 50%;
+  top: 40%; /* Center vertically */
+  left: 50%; /* Center horizontally */
   transform: translate(-50%, -50%);
-  background: url('./assets/logo/prettyofsystem-logo-white.svg') no-repeat center center / contain;
+  background: url('./assets/logo/prettyofsystem-logo-white.svg') no-repeat center center;
+  background-size: contain; /* This ensures the image is contained within the box */
   width: 150px;
   height: 150px;
 }
@@ -120,7 +141,8 @@ ion-popover {
 }
 
 .success-toast {
-  --background: white;
+  --background: #787586;
+  --color: #121212;
 }
 
 .error-toast {
@@ -192,7 +214,7 @@ time-picker-group {
 }
 
 ion-button {
-  --background: #474554;
+  --background: #787586;
   position: relative;
   color: white;
 }

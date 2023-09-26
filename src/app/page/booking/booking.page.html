@@ -1,7 +1,10 @@
 <ion-content [fullscreen]="true">
   <booking-header></booking-header>
-  <section id="booking-container">
+  <div id="booking-container">
     <booking-search (onQueryChange)="onAddressQuery($event)"></booking-search>
     <booking-search-icon [(shopCategoryName)]="query.shopCategoryName"></booking-search-icon>
-  </section>
+  </div>
+  <div>
+    <booking-query [query]="query"></booking-query>
+  </div>
 </ion-content>

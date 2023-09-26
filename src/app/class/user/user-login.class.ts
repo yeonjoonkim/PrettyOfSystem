@@ -93,12 +93,10 @@ export class UserLogin implements IUserLogin {
     if (verification) {
       try {
         this.errorMsg = '';
-        this._global.loading.show();
         const userCredential = await this._afa.signInWithEmailAndPassword(
           this._emailAddress,
           this.password
         );
-        this._global.loading.dismiss();
         if (userCredential) {
           await this.processLogin(userCredential);
         }
@@ -115,14 +113,12 @@ export class UserLogin implements IUserLogin {
     const verification = await this._userService.verifyUserAccount(this._phoneNumber);
     if (verification) {
       try {
-        this._global.loading.show();
         this.errorMsg = '';
         this.confirmationResult = await this._afa.signInWithPhoneNumber(
           this._phoneNumber,
           recaptcha
         );
         this.timer.startTimerByMin(0.5);
-        this._global.loading.dismiss();
       } catch (err) {
         const error: string = JSON.stringify(err);
         this.handleError(error);
@@ -135,17 +131,13 @@ export class UserLogin implements IUserLogin {
 
   public async resendOtpVerification(recaptcha: RecaptchaVerifier) {
     await this.timer.restart();
-    await this._global.loading.show();
     const confirm = await this._afa.signInWithPhoneNumber(this._phoneNumber, recaptcha);
-    await this._global.loading.dismiss();
     this.confirmationResult = confirm;
   }
 
   public async verifyOTP() {
     try {
-      await this._global.loading.show();
       const userCredential = await this.confirmationResult.confirm(this.otp);
-      await this._global.loading.dismiss();
       if (userCredential) {
         await this.processLogin(userCredential);
       }

@@ -37,8 +37,6 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       const change = Service.Trigger.User.OnChange.getChangeDectection(prev, current);
       const event = Service.Trigger.User.OnChange.getChangeAction(change, current);
 
-      Repository.Error.createErrorReport(change, event, 'update', current.id);
-
       if (event.isAuthUpdate) {
         await handleAuthenticationLogin(current, 'update');
       }

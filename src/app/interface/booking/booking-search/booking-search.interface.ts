@@ -1,4 +1,4 @@
-import { BookingSearchIconType, ShopCategoryType } from '../..';
+import { BookingSearchIconType } from '../..';
 import { PostCodeItemType } from '../../global/global.interface';
 
 export type BookingQueryCriteria = {

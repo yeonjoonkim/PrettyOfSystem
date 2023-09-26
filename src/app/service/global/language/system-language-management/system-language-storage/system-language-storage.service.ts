@@ -8,6 +8,8 @@ import { StorageService } from 'src/app/service/global/storage/storage.service';
   providedIn: 'root',
 })
 export class SystemLanguageStorageService {
+  private _hasSelection: boolean = false;
+  private _refreshing: boolean = false;
   constructor(
     private _stroage: StorageService,
     private _systemLanguageRepo: SystemLanguageRepositoryService
@@ -68,12 +70,41 @@ export class SystemLanguageStorageService {
     return result;
   }
 
-  public async getCurrentSelection() {
+  public async getCurrentSelection(): Promise<LanguageSelectionType> {
     let currentLanguage: string = await this._stroage.getLanguage();
-    let selections = await this.getSelections();
-    let selection = selections.filter(s => s.code === currentLanguage);
+    let selections: null | LanguageSelectionType[] = await this.getSelections();
 
-    return selection[0];
+    let selected = selections?.filter(s => s.code === currentLanguage);
+
+    if (selections !== null) {
+      this._hasSelection = true;
+      return selected[0] as LanguageSelectionType;
+    }
+
+    if (!this._refreshing) {
+      this._refreshing = true;
+      await this.refresh();
+      this._refreshing = false;
+      selections = await this.getSelections();
+
+      selected = selections.filter(s => s.code === currentLanguage);
+      this._hasSelection = selected.length > 0;
+      return selected[0] as LanguageSelectionType;
+    }
+
+    while (this._refreshing) {
+      await new Promise(resolve => setTimeout(resolve, 2500));
+    }
+
+    selections = await this.getSelections();
+
+    if (!selections) {
+      throw new Error('Selections are null or undefined after waiting for refresh');
+    }
+
+    selected = selections.filter(s => s.code === currentLanguage);
+    this._hasSelection = selected.length > 0;
+    return selected[0] as LanguageSelectionType;
   }
 
   public async getSelectedSelection(selectedCode: string): Promise<LanguageSelectionType> {
