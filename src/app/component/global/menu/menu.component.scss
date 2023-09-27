@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  --background: #191919;
 }
 
 #shop-container {
@@ -14,7 +15,18 @@
   margin-bottom: -10px;
 }
 
+.menu-selector {
+  --background: #3f3f3f;
+}
+.content-selector {
+  --background: #3f3f3f;
+}
+.menu-active {
+  --background: #787586 !important;
+}
+
 #user-info-card ion-card-header {
+  --background: #191919;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -45,9 +57,14 @@ ion-list {
 
 #log-out,
 #log-in {
-  margin: auto;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   #log-out-btn,
   #log-in-btn {
-    --background: #121212;
+    --background: transparent;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

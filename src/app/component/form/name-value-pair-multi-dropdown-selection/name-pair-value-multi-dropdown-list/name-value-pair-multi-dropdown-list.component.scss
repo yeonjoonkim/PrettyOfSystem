@@ -25,7 +25,12 @@ flex-row-item {
   justify-content: flex-start;
   margin: 0px 1px;
   height: 32px;
-  font-size: 14px;
+  font-size: 12px;
+  border-bottom: 1px solid #121212;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 #name {
   padding: 8px 12px;
@@ -36,6 +41,7 @@ flex-row-item {
 #container {
   min-height: 0px;
   justify-content: flex-start;
+  background-color: #191919;
 }
 
 #search-container {
@@ -48,6 +54,6 @@ flex-row-item {
   justify-content: center;
   #apply-btn {
     width: 100%;
-    height: 33px;
+    height: 32px;
   }
 }

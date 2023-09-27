@@ -30,19 +30,36 @@
 
 /* Set variables for all modes */
 
-p,
-h1,
+:root {
+  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
+  --form-background-color: white;
+  --title-color: #414d58;
+  --background: #191919;
+  --active: #787586;
+  --error: #b02b36;
+}
+
+ion-app,
+ion-content {
+  --ion-background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
+
+  #background-content {
+    --ion-background-color: var(--background);
+    background: var(--background);
+  }
+}
+
+ion-toolbar {
+  --ion-background-color: var(--active);
+  background: var(--active);
+  background-color: var(--active);
+}
+
 .k-button-text {
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif !important;
 }
-:root {
-  /* Set the font family of the entire app */
-  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
-}
-
-$form-background-color: white;
-$title-color: #414d58;
-$background-color: #787586;
 
 .grecaptcha-badge {
   visibility: hidden;
@@ -55,13 +72,22 @@ $background-color: #787586;
 }
 
 .active {
-  --background: #787586;
-  background-color: #787586;
-  background: #787586;
+  --background: var(--active);
+  background-color: var(--active);
+  background: var(--active);
   font-weight: bold;
 }
+
+.deactive {
+  --background: var(--background);
+  background-color: var(--background);
+  background: var(--background);
+  font-weight: bold;
+}
+
 .modal-container {
   margin: 5px;
+  background-color: var(--background);
 }
 
 ion-loading {
@@ -71,7 +97,6 @@ ion-loading {
 }
 
 ion-popover {
-  --background: black;
   --backdrop-opacity: 0.8;
   --color: white;
 }
@@ -136,7 +161,6 @@ ion-popover {
   flex-direction: column;
   padding: 80px;
   --width: fit-content;
-  max-width: calc(100vw - 40px);
 }
 
 .delete-ion-sliding-option {
@@ -144,16 +168,16 @@ ion-popover {
 }
 
 .success-toast {
-  --background: #787586;
+  --background: white;
   --color: #121212;
 }
 
 .error-toast {
-  --background: red;
+  --background: var(--error);
 }
 
 .error-text {
-  color: red;
+  color: var(--error);
 }
 
 .ion-card-title-icon {
@@ -169,16 +193,6 @@ ion-popover {
 .form-error-container {
   width: 100%;
   height: 5px;
-}
-
-.flex-col-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.flex-row-container {
-  display: flex;
-  flex-direction: row;
 }
 
 legend {
@@ -206,7 +220,7 @@ yes-no-selection-group {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: fit-content;
+  width: 100%;
   yes-no-selection {
     align-self: flex-end;
   }
@@ -214,10 +228,11 @@ yes-no-selection-group {
 time-picker-group {
   display: flex;
   flex-direction: row;
+  background: var(--background);
 }
 
 ion-button {
-  --background: #787586;
+  --background: var(--active);
   position: relative;
   color: white;
 }
@@ -242,24 +257,45 @@ flex-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  --background: var(--background);
+  --background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
   flex-row-item {
     flex: 1;
+    --background: var(--background);
+    --background-color: var(--background);
+    background: var(--background);
+    background-color: var(--background);
   }
 }
 flex-col {
+  --background: var(--background);
+  --background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   flex-col-item {
     flex: 1;
+    --background: var(--background);
+    --background-color: var(--background);
+    background: var(--background);
+    background-color: var(--background);
   }
 }
 
 error-message-item {
   display: flex;
   justify-content: center;
-  color: #b02b36;
+  color: var(--error);
+  --background: var(--background);
+  --background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
   p {
     margin: 0px;
     margin-left: 5px;

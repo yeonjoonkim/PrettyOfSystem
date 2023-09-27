@@ -1,37 +1,41 @@
-<flex-col>
-  <flex-row id="search-apply-container">
-    <flex-row-item id="search-container">
-      <kendo-textbox
-        *ngIf="filterable"
-        [(ngModel)]="query"
-        (ngModelChange)="onQueryChange()"
-        placeholder="{{ 'placeholder.title.search' | languageTransform | async }}"></kendo-textbox>
-    </flex-row-item>
-    <flex-row-item id="apply-container">
-      <kendo-button id="apply-btn" (click)="apply()">{{
-        'label.title.apply' | languageTransform | async
-      }}</kendo-button>
-    </flex-row-item>
-  </flex-row>
+<ion-content>
+  <flex-col>
+    <flex-row id="search-apply-container">
+      <flex-row-item id="search-container">
+        <kendo-textbox
+          *ngIf="filterable"
+          [(ngModel)]="query"
+          (ngModelChange)="onQueryChange()"
+          placeholder="{{
+            'placeholder.title.search' | languageTransform | async
+          }}"></kendo-textbox>
+      </flex-row-item>
+      <flex-row-item id="apply-container">
+        <kendo-button id="apply-btn" (click)="apply()">{{
+          'label.title.apply' | languageTransform | async
+        }}</kendo-button>
+      </flex-row-item>
+    </flex-row>
 
-  <flex-col-item>
-    <div id="container" [ngStyle]="{ 'max-height': maxHeight }">
-      <div
-        *ngIf="selection.length > 1"
-        id="btn"
-        (click)="all()"
-        [ngClass]="{ active: selected?.length === 0 }">
-        <span id="name"> {{ 'label.title.all' | languageTransform | async }}</span>
-      </div>
+    <flex-col-item>
+      <div id="container" [ngStyle]="{ 'max-height': maxHeight }">
+        <div
+          *ngIf="selection.length > 1"
+          id="btn"
+          (click)="all()"
+          [ngClass]="{ active: selected?.length === 0 }">
+          <span id="name"> {{ 'label.title.all' | languageTransform | async }}</span>
+        </div>
 
-      <div *ngFor="let btn of gridData; let i = index" id="btn-list">
-        <div id="btn" [ngClass]="{ active: isInclude(btn) }" (click)="onClickCell(btn)">
-          <span id="name">{{ btn.name | languageTransform | async }}</span>
+        <div *ngFor="let btn of gridData; let i = index" id="btn-list">
+          <div id="btn" [ngClass]="{ active: isInclude(btn) }" (click)="onClickCell(btn)">
+            <span id="name">{{ btn.name | languageTransform | async }}</span>
+          </div>
+        </div>
+        <div *ngIf="gridData.length === 0">
+          <p>{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
         </div>
       </div>
-      <div *ngIf="gridData.length === 0">
-        <p>{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
-      </div>
-    </div>
-  </flex-col-item>
-</flex-col>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

@@ -20,5 +20,6 @@ export class BookingPage implements OnInit {
 
   public async onAddressQuery(query: PostCodeItemType) {
     this.query.address = query;
+    this.query = this.query;
   }
 }

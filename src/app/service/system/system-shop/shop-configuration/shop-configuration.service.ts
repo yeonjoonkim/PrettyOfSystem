@@ -163,7 +163,7 @@ export class ShopConfigurationService {
       lastPaymentDate: new Date(),
       paymentDate: new Date(),
       period: {
-        name: 'date.period.weekly',
+        name: 'date.title.weekly',
         type: 'Weekly',
         week: 1,
         day: 7,

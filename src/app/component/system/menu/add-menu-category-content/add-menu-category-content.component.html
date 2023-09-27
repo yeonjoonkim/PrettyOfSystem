@@ -1,4 +1,4 @@
-<div id="add-menu-container">
+<ion-content>
   <!--Label-->
   <ion-item>
     <ion-label>{{ 'label.title.description' | languageTransform | async }}</ion-label>
@@ -20,4 +20,4 @@
   <ion-button *ngIf="editMode" expand="full" (click)="onClickEditCategoryContent()">{{
     'button.title.edit' | languageTransform | async
   }}</ion-button>
-</div>
+</ion-content>

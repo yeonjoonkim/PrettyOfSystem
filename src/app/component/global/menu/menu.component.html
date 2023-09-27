@@ -28,11 +28,28 @@
 
   <!--Menu-->
   <div id="menu">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item
+          button
+          slot="header"
+          routerLink="/booking"
+          routerLinkActive="menu-active"
+          class="content-selector"
+          (click)="onChangeMenu('/booking')">
+          <ion-icon slot="start" name="home-outline"></ion-icon>
+          {{ 'label.title.homepage' | languageTransform | async }}
+        </ion-item>
+      </ion-accordion>
+    </ion-accordion-group>
     <ion-accordion-group *ngIf="user.isLoggedin$ | async">
       <!--Route Link-->
       <ion-accordion *ngFor="let menu of menus">
         <!--Header-->
-        <ion-item slot="header" [ngClass]="menu.name === selectedTitleHeading ? 'active' : ''">
+        <ion-item
+          slot="header"
+          class="menu-selector"
+          [ngClass]="menu.name === selectedTitleHeading ? 'menu-active' : ''">
           <ion-icon slot="start" [name]="menu.icon"></ion-icon>
           {{ menu.name | languageTransform | async }}
         </ion-item>
@@ -42,12 +59,11 @@
           <ion-item
             button
             routerLink="{{ content.url }}"
-            routerLinkActive="active"
+            routerLinkActive="menu-active"
+            class="content-selector"
             (click)="onChangeMenu(content.url)">
-            <ion-label>
-              <ion-icon slot="start" name="{{ content.icon }}"></ion-icon>
-              {{ content.name | languageTransform | async }}
-            </ion-label>
+            <ion-icon slot="start" name="{{ content.icon }}"></ion-icon>
+            {{ content.name | languageTransform | async }}
           </ion-item>
         </ion-list>
       </ion-accordion>

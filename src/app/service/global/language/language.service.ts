@@ -47,13 +47,14 @@ export class LanguageService {
     const isKorean = locale?.includes('ko');
     const isJapanese = locale?.includes('ja');
     const isChinese = locale?.includes('zh');
-    let isHindi = locale?.includes('hi');
-    let isItailan = locale?.includes('it');
-    let isSpanish = locale?.includes('es');
-    let isFilipino = locale?.includes('ph');
-    let isVietnamese = locale?.includes('vi');
-    let isIndonesian = locale?.includes('id');
-    let isFrench = locale?.includes('fr');
+    const isHindi = locale?.includes('hi');
+    const isItailan = locale?.includes('it');
+    const isSpanish = locale?.includes('es');
+    const isFilipino = locale?.includes('ph');
+    const isVietnamese = locale?.includes('vi');
+    const isIndonesian = locale?.includes('id');
+    const isFrench = locale?.includes('fr');
+    const isThai = locale?.includes('th');
     let result = isKorean
       ? 'ko'
       : isChinese
@@ -74,6 +75,8 @@ export class LanguageService {
       ? 'id_id'
       : isFrench
       ? 'fr'
+      : isThai
+      ? 'th'
       : 'en';
 
     currentSetting !== null && typeof currentSetting === 'string' && currentSetting !== undefined

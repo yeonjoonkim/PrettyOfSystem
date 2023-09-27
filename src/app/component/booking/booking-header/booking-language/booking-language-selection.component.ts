@@ -35,6 +35,7 @@ export class BookingLanguageSelectionComponent implements OnInit, AfterViewInit 
     { name: 'English', value: 'en' }, // English
     { name: 'Indonesia', value: 'id_id' }, // Indonesian
     { name: 'Français', value: 'fr' }, // French
+    { name: 'ไทย', value: 'th' },
   ];
   @Input() maxHeight: string = '150px';
 
