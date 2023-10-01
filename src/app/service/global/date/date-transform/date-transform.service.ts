@@ -17,7 +17,7 @@ export class DateTransformService {
     return value instanceof firebase.firestore.Timestamp;
   }
 
-  private toDate(value: Date | firebase.firestore.Timestamp): Date {
+  public toDate(value: Date | firebase.firestore.Timestamp): Date {
     return this.isTimeStamp(value) ? value.toDate() : value;
   }
 

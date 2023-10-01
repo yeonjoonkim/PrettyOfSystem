@@ -33,9 +33,8 @@ export class DictonaryComponent implements OnInit {
 
   public async onChangeLanguageSelection() {
     const code = this.selectedLang.value.toString();
-    this.selectedKeyPairValueList = await this.systemLanguage.getSelectedLanguageKeyPairValueList(
-      code
-    );
+    this.selectedKeyPairValueList =
+      await this.systemLanguage.getSelectedLanguageKeyPairValueList(code);
     this.onChangeQuery();
   }
 
@@ -82,9 +81,8 @@ export class DictonaryComponent implements OnInit {
     await this._global.loading.show();
     await this._global.language.management.storage.refresh().then(async () => {
       let languageSelection = await this.systemLanguage.get();
-      const keyPairValueList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(
-        languageSelection
-      );
+      const keyPairValueList =
+        await this.systemLanguage.getLanguageSelectionKeyPairValueList(languageSelection);
       this.languageSelectionList = keyPairValueList.map(s => {
         return { name: s.value, value: s.key };
       });
@@ -94,7 +92,7 @@ export class DictonaryComponent implements OnInit {
       this.selectedLang = this.selectedLang.value ? this.selectedLang : currentsystemLanguage[0];
       await this.onChangeLanguageSelection();
       this.onChangeQuery();
-      this._global.loading.dismiss();
+      await this._global.loading.dismiss();
     });
   }
 
@@ -112,7 +110,6 @@ export class DictonaryComponent implements OnInit {
   }
 
   private async exportToCSV(data: PairKeyValueType[], selectedLang: NameValuePairType) {
-    await this._global.loading.show();
     // Convert the data to CSV format
     const convertToCSV = (objArray: PairKeyValueType[]): string => {
       const header = 'key,value\n';
@@ -135,6 +132,5 @@ export class DictonaryComponent implements OnInit {
 
     const csv = convertToCSV(data);
     downloadCSV(csv, selectedLang.value + '.csv');
-    await this._global.loading.dismiss();
   }
 }

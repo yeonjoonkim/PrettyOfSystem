@@ -18,6 +18,7 @@ import { NewSystemAdminComponent } from '../new-system-admin/new-system-admin.co
 import { EditUserComponent } from '../edit-user/edit-user.component';
 import { AddAssociatedShopComponent } from '../add-associated-shop/add-associated-shop.component';
 import { NewUserComponent } from '../new-user/new-user.component';
+import { LanguageSelectionModule } from 'src/app/component/global/langauge-selection/language-selection.module';
 @NgModule({
   declarations: [
     UserManagementComponent,
@@ -36,6 +37,7 @@ import { NewUserComponent } from '../new-user/new-user.component';
     KendoUiModule,
     GenderSelectionModule,
     LoginOptionSelectionModule,
+    LanguageSelectionModule,
   ],
   exports: [UserManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { BookingQueryComponent } from './booking-query.component';
+import { AppPrivacyPolicyComponent } from './app-privacy-policy.component';
 
-describe('BookingQueryComponent', () => {
-  let component: BookingQueryComponent;
-  let fixture: ComponentFixture<BookingQueryComponent>;
+describe('AppPrivacyPolicyComponent', () => {
+  let component: AppPrivacyPolicyComponent;
+  let fixture: ComponentFixture<AppPrivacyPolicyComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookingQueryComponent ],
+      declarations: [ AppPrivacyPolicyComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(BookingQueryComponent);
+    fixture = TestBed.createComponent(AppPrivacyPolicyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

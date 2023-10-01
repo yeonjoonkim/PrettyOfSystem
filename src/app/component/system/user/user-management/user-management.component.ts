@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { IUser, NameValuePairType, UserManagementCriteria } from 'src/app/interface';
-import { UserAdminService } from 'src/app/service/user/user-admin/user-admin.service';
+import { UserAdminService } from 'src/app/service/user-admin/user-admin.service';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';

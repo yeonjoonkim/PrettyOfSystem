@@ -96,6 +96,14 @@
           (validateChange)="handleEnabledSaveBtn()"></e-mail>
       </flex-row-item>
     </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <langauge-selection
+          [readOnly]="form.readOnly"
+          [(selectedCode)]="user.setting.preferLanguage"></langauge-selection>
+      </flex-row-item>
+      <flex-row-item></flex-row-item>
+    </flex-row>
     <password-confirmation
       *ngIf="resetPassword"
       (passwordChange)="setPassword($event)"
@@ -111,7 +119,7 @@
       </legend>
     </flex-col-item>
     <flex-col-item>
-      <kendo-grid [height]="150" [kendoGridBinding]="user.associatedShops" [height]="400">
+      <kendo-grid [kendoGridBinding]="user.associatedShops" [height]="400">
         <!--Add-->
         <ng-template kendoGridToolbarTemplate>
           <button
@@ -147,7 +155,9 @@
               [readOnly]="form.readOnly"></name-value-pair-single-dropdown-selection>
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column title="{{ 'label.title.displayinbooking' | languageTransform | async }}">
+        <kendo-grid-column
+          [width]="50"
+          title="{{ 'label.title.displayinbooking' | languageTransform | async }}">
           <ng-template kendoGridCellTemplate let-shop>
             <input
               id="associated-shop-active"
@@ -168,7 +178,7 @@
               [disabled]="form.readOnly" />
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-command-column [width]="75">
+        <kendo-grid-command-column [width]="50">
           <ng-template kendoGridCellTemplate let-shop>
             <button
               *ngIf="!form.readOnly"

@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Menu -->
+    <ion-buttons slot="start">
+      <ion-menu-button auto-hide="true"></ion-menu-button>
+    </ion-buttons>
+    <!-- Title -->
+    <ion-title>{{'menucontent.title.employeemanagement'| languageTransform | async }} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <shop-employee-management></shop-employee-management>
+</ion-content>

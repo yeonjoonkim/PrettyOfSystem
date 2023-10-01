@@ -17,12 +17,14 @@ import { DateService } from './date/date.service';
 import { TimerService } from './timer/timer.service';
 import { NetworkConnectionStatusService } from './network-connection-status/network-connection-status.service';
 import { CryptService } from './crypt/crypt.service';
+import { AgreementModalService } from './agreement-modal/agreement-modal.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalService {
   constructor(
+    public appAgreement: AgreementModalService,
     public confirmAlert: DeleteConfirmationAlert,
     public deviceWidth: DeviceWidthService,
     public errorReport: ErrorReporterService,

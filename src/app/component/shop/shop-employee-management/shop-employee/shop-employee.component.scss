@@ -1,0 +1,10 @@
+#info-container {
+  margin-top: 20px;
+}
+
+#active,
+#display-in-booking,
+#password-reset {
+  display: flex;
+  justify-content: flex-end;
+}

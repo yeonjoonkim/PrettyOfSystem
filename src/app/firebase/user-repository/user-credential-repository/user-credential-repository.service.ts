@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IUser } from 'src/app/interface';
+import { IUser, ShopEmployeeManagementUserType, UserAssociatedShopType } from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
 import { Observable, catchError, from, map, switchMap, take, throwError } from 'rxjs';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
+import { DateTransformService } from 'src/app/service/global/date/date-transform/date-transform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,11 @@ import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.
 export class UserCredentialRepositoryService {
   private readonly _timeStamp = { lastModifiedDate: new Date() };
   private readonly _emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  constructor(private _afs: AngularFirestore, private _toaster: FirebaseToasterService) {}
+  constructor(
+    private _afs: AngularFirestore,
+    private _toaster: FirebaseToasterService,
+    private _dateTransform: DateTransformService
+  ) {}
 
   public async verifyUserAccount(input: string) {
     const isEmailUser = this._emailRegex.test(input);
@@ -20,6 +25,31 @@ export class UserCredentialRepositoryService {
     } else {
       return await this.verifyUserByPhone(input);
     }
+  }
+
+  public subscribeUserAccount(loginInput: string) {
+    const isEmailUser = this._emailRegex.test(loginInput);
+    if (isEmailUser) {
+      return this.subscribeUserByEmail(loginInput);
+    } else {
+      return this.subscribeUserByPhoneNumber(loginInput);
+    }
+  }
+
+  public subscribeUserById(userId: string): Observable<IUser | null> {
+    const userCollectionRef = this._afs.collection<IUser>(Db.Context.User, ref =>
+      ref.where('id', '==', userId).limit(1)
+    );
+
+    return userCollectionRef.get().pipe(
+      map(userQuerySnapshot => {
+        if (userQuerySnapshot.docs.length > 0) {
+          return userQuerySnapshot.docs[0].data();
+        } else {
+          return null;
+        }
+      })
+    );
   }
 
   public subscribeUserByPhoneNumber(phoneNumber: string): Observable<IUser | null> {
@@ -69,6 +99,24 @@ export class UserCredentialRepositoryService {
     );
   }
 
+  public subscribeAssociatedShopUsers(
+    shopId: string
+  ): Observable<ShopEmployeeManagementUserType[]> {
+    return this._afs
+      .collection<IUser>(Db.Context.User, ref =>
+        ref.where('associatedShopIds', 'array-contains', shopId).where('isSystemAdmin', '!=', true)
+      )
+      .snapshotChanges()
+      .pipe(
+        map(users =>
+          users.map(user =>
+            this.transformIntoShopEmployeeManagementUserType(user.payload.doc.data(), shopId)
+          )
+        ),
+        map(users => users.filter(user => user !== null) as ShopEmployeeManagementUserType[])
+      );
+  }
+
   public subscribeAllUser() {
     return this._afs
       .collection<IUser>(Db.Context.User, ref => ref.orderBy('isSystemAdmin'))
@@ -90,7 +138,6 @@ export class UserCredentialRepositoryService {
   public async createUser(user: IUser): Promise<boolean> {
     let command = { ...user, ...this._timeStamp };
     try {
-      console.log(user.id);
       await this._afs.collection(Db.Context.User).doc(user.id).set(command);
       await this._toaster.addSuccess();
       return true;
@@ -143,5 +190,36 @@ export class UserCredentialRepositoryService {
       console.error('Error verifying user by phone:', error);
       return false;
     }
+  }
+
+  private transformIntoShopEmployeeManagementUserType(
+    u: IUser,
+    sId: string
+  ): ShopEmployeeManagementUserType | null {
+    const as = u.associatedShops.find(s => (s.shopId = sId)) as UserAssociatedShopType;
+    if (as !== null) {
+      const result: ShopEmployeeManagementUserType = {
+        userId: u.id,
+        shopId: as.shopId,
+        firstName: u.firstName,
+        lastName: u.lastName,
+        loginOption: u.loginOption,
+        gender: u.gender,
+        role: as.role,
+        phoneNumber: u.phoneNumber,
+        email: u.email,
+        encryptedPassword: u.encryptedPassword,
+        activeFrom: this._dateTransform.toDate(as.activeFrom),
+        activeTo: as.activeTo !== null ? this._dateTransform.toDate(as.activeTo) : null,
+        active: as.active,
+        displayInSystem: as.displayInSystem,
+        roster: as.roster,
+        setting: u.setting,
+      };
+
+      return result;
+    }
+
+    return null;
   }
 }

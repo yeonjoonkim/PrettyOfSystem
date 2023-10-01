@@ -8,9 +8,10 @@ import {
   UserAssociatedShopType,
   UserManagementCriteria,
 } from 'src/app/interface';
-import { UserAdminService } from 'src/app/service/user/user-admin/user-admin.service';
+import { UserAdminService } from 'src/app/service/user-admin/user-admin.service';
 import * as Constant from '../../../../constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
+import { cloneDeep } from 'lodash-es';
 
 @Component({
   selector: 'app-edit-user',
@@ -58,13 +59,21 @@ export class EditUserComponent implements OnInit {
       this.user.loginOption.email && this.resetPassword
         ? this._encryptedPassword
         : this.user.encryptedPassword;
-    await this._systemAdmin.updateUser(this.user);
-    await this._global.modal.dismissRefreshAction();
+    this.form.enabledSavebutton = false;
+    const result = await this._systemAdmin.updateUser(this.user, this._paramUser);
+
+    if (result) {
+      await this._global.modal.dismissRefreshAction();
+    } else {
+      this.form.enabledSavebutton = true;
+    }
   }
 
   public async handleDelete() {
-    await this._systemAdmin.deleteUser(this.user);
-    await this._global.modal.dismissRefreshAction();
+    const result = await this._systemAdmin.deleteUser(this.user);
+    if (result) {
+      await this._global.modal.dismissRefreshAction();
+    }
   }
 
   public async dismiss() {
@@ -154,6 +163,7 @@ export class EditUserComponent implements OnInit {
 
   public async onClickDeleteAssociatedShop(selected: UserAssociatedShopType) {
     const shop = this.shopFilters.find(s => s.value === selected.shopId);
+
     if (shop !== undefined) {
       this.user = await this._systemAdmin.deleteAssociatedShop(
         this.user,
@@ -168,8 +178,8 @@ export class EditUserComponent implements OnInit {
   private async loadingFromCtrl() {
     const form: IFormHeaderModalProp = this._navParams.get(Constant.Default.ComponentMode.Form);
     const _criteria: UserManagementCriteria = this._navParams.get('criteria');
-    this._paramUser = this._navParams.get('config');
-
+    const paramUser = this._navParams.get('config');
+    this._paramUser = cloneDeep(paramUser);
     this.form = form
       ? form
       : {
@@ -178,7 +188,7 @@ export class EditUserComponent implements OnInit {
           action: Constant.Default.FormAction.Read,
           enabledSavebutton: false,
         };
-    this.user = this._paramUser ? this._paramUser : this._systemAdmin.defaultUser();
+    this.user = paramUser ? paramUser : this._systemAdmin.defaultUser();
 
     if (_criteria !== undefined && _criteria !== null) {
       this._criteria = _criteria;

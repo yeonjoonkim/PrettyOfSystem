@@ -65,6 +65,14 @@
         (validateChange)="handleFormEnableSaveBtn()"></e-mail>
     </flex-col-item>
   </flex-col>
+  <flex-row>
+    <flex-row-item>
+      <langauge-selection
+        [readOnly]="form.readOnly"
+        [(selectedCode)]="user.setting.preferLanguage"></langauge-selection>
+    </flex-row-item>
+    <flex-row-item></flex-row-item>
+  </flex-row>
   <flex-col *ngIf="user.loginOption.email && (form.action === 'create' || form.action === 'edit')">
     <password-confirmation
       (passwordChange)="setPassword($event)"

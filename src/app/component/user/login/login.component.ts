@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TextBoxComponent } from '@progress/kendo-angular-inputs';
-import { Subscription, lastValueFrom } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { UserLogin } from 'src/app/class/user/user-login.class';
 import { ITimer, IUserLoginOption } from 'src/app/interface';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -39,12 +39,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     private _userService: UserService,
     private _global: GlobalService
   ) {
-    this.login = new UserLogin(this._afa, this._userService, this._global);
+    this.login = new UserLogin(this._afa, this._userService);
   }
 
   ngOnInit() {
     this.reset();
     this.startRecaptchaVerifier();
+  }
+
+  public async presentTermandCondition() {
+    await this._global.appAgreement.presentTermsandCondition();
+  }
+
+  public async presentPrivacyPolicy() {
+    await this._global.appAgreement.presentPrivacyPolicy();
   }
 
   async ngOnDestroy() {

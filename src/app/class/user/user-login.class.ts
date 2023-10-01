@@ -2,7 +2,6 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { RecaptchaVerifier, User } from 'firebase/auth';
 import { IUserLogin, NameValuePairType } from 'src/app/interface';
 import { CryptService } from 'src/app/service/global/crypt/crypt.service';
-import { GlobalService } from 'src/app/service/global/global.service';
 import { TimerService } from 'src/app/service/global/timer/timer.service';
 import { UserService } from 'src/app/service/user/user.service';
 export class UserLogin implements IUserLogin {
@@ -28,8 +27,7 @@ export class UserLogin implements IUserLogin {
 
   constructor(
     private _afa: AngularFireAuth,
-    private _userService: UserService,
-    private _global: GlobalService
+    private _userService: UserService
   ) {
     this._cypo = new CryptService();
     this.timer = new TimerService();
@@ -121,7 +119,13 @@ export class UserLogin implements IUserLogin {
         this.timer.startTimerByMin(0.5);
       } catch (err) {
         const error: string = JSON.stringify(err);
-        this.handleError(error);
+
+        if (error.includes('auth/captcha-check-failed')) {
+          this.errorMsg = '';
+        } else {
+          this.handleError(error);
+        }
+
         throw err;
       }
     } else {

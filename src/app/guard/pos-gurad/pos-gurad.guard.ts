@@ -4,7 +4,7 @@ import { map, of, switchMap, take } from 'rxjs';
 import { RoleAccessLevelType, RoleConfigurationType } from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
 
-export const posGuard: CanActivateFn = () => {
+export const posGuard: CanActivateFn = (route, state) => {
   const user: UserService = inject(UserService);
   const router: Router = inject(Router);
   const currentURL: string = router.url;
@@ -34,11 +34,9 @@ export const posGuard: CanActivateFn = () => {
             return accessibleUrls;
           }),
           map(accessibleUrls => {
-            const actualUrl = router.url;
-            console.log(actualUrl);
-            if (accessibleUrls.includes(actualUrl)) {
+            if (accessibleUrls.includes(state.url)) {
               return true;
-            } else if (!accessibleUrls.includes(actualUrl) && accessibleUrls.length > 0) {
+            } else if (!accessibleUrls.includes(state.url) && accessibleUrls.length > 0) {
               router.navigateByUrl(accessibleUrls[0]);
               return false;
             } else {
@@ -48,7 +46,7 @@ export const posGuard: CanActivateFn = () => {
           })
         );
       } else {
-        return of(true); // If roleConfig is null and it's a booking or login page, you might want to allow access
+        return of(true);
       }
     })
   );

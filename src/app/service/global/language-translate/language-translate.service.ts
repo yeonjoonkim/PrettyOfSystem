@@ -22,7 +22,10 @@ export class LanguageTranslateService {
   private readonly _convertJSON: string =
     'It must convert into exact same JSON format without any description or information. Do not say any introduction.';
 
-  constructor(private openAi: OpenAiService, private textTransform: TextTransformService) {}
+  constructor(
+    private openAi: OpenAiService,
+    private textTransform: TextTransformService
+  ) {}
 
   public async get(value: string, criteria: ILanguageTranslatedCriteria, loading: boolean) {
     let translated: ILanguageTranslateResult = criteria.format.isTitle
@@ -178,7 +181,7 @@ export class LanguageTranslateService {
   }
 
   private setCommandSentenceFormat(sentence: string) {
-    return '. The Translated Value is "' + sentence + '".';
+    return '. The Translated Value is "' + sentence.replace(/"/g, '') + '".';
   }
 
   private deleteSpaces(str: string): string {

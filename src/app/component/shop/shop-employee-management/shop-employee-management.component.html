@@ -1,0 +1,12 @@
+<flex-col id="shop-employee-grid-usage">
+  <flex-col-item>
+    <shop-employee-usage [usage]="usage"></shop-employee-usage>
+  </flex-col-item>
+  <flex-col-item>
+    <shop-employee-grid
+      [employees]="employees"
+      [role]="currentRole"
+      (onEdit)="handleClickEditUser($event)"
+      (onCreate)="handleClickCreateUser()"></shop-employee-grid>
+  </flex-col-item>
+</flex-col>

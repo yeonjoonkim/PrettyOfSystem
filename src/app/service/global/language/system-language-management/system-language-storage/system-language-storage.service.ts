@@ -103,6 +103,7 @@ export class SystemLanguageStorageService {
     }
 
     selected = selections.filter(s => s.code === currentLanguage);
+
     this._hasSelection = selected.length > 0;
     return selected[0] as LanguageSelectionType;
   }

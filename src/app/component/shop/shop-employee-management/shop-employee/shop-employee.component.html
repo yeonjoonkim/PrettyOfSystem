@@ -1,0 +1,150 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  (onClickDismiss)="dismiss()"
+  (onClickCreate)="handleCreate()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()"
+  (onClickDelete)="handleDelete()">
+</form-header>
+<ion-content [scrollable]="true">
+  <!--Page 1. Information-->
+  <flex-col id="info-container">
+    <flex-col-item id="active">
+      <kendo-label text="{{ 'label.title.active' | languageTransform | async }}">
+        <input
+          kendoCheckBox
+          type="checkbox"
+          [disabled]="form.readOnly"
+          [(ngModel)]="employee.active"
+          (ngModelChange)="onChangeActive()" />
+      </kendo-label>
+    </flex-col-item>
+    <flex-col-item id="display-in-booking">
+      <kendo-label text="{{ 'label.title.displayinBooking' | languageTransform | async }}">
+        <input
+          kendoCheckBox
+          type="checkbox"
+          [disabled]="form.readOnly"
+          [(ngModel)]="employee.displayInSystem"
+          (ngModelChange)="handleEnabledSaveBtn()" />
+      </kendo-label>
+    </flex-col-item>
+
+    <!-- Role -->
+    <flex-row>
+      <flex-row-item>
+        <name-value-pair-single-dropdown-selection
+          title="label.title.role"
+          [readOnly]="form.readOnly"
+          [selection]="availableRoleFilter"
+          [(selected)]="selectedRole"
+          (selectedChange)="onChangeRole()"></name-value-pair-single-dropdown-selection>
+      </flex-row-item>
+      <flex-row-item>
+        <langauge-selection
+          [readOnly]="form.readOnly"
+          [(selectedCode)]="employee.setting.preferLanguage"
+          (selectedCodeChange)="handleEnabledSaveBtn()"></langauge-selection>
+      </flex-row-item>
+    </flex-row>
+
+    <!-- General -->
+    <flex-row id="login-gender-container">
+      <flex-row-item id="login-option-container">
+        <login-option-selection
+          mode="form"
+          [loginOption]="employee.loginOption"
+          [readOnly]="true"
+          (loginOptionChange)="handleEnabledSaveBtn()"></login-option-selection>
+      </flex-row-item>
+      <flex-row-item>
+        <gender-selection
+          [(gender)]="employee.gender"
+          [readOnly]="form.readOnly"
+          (genderChange)="handleEnabledSaveBtn()"></gender-selection>
+      </flex-row-item>
+    </flex-row>
+
+    <!-- Name -->
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          title="label.title.firstname"
+          [(value)]="employee.firstName"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [isTitleFormat]="true"
+          [(validate)]="validator.firstName"
+          (validateChange)="handleEnabledSaveBtn()"></text-box>
+      </flex-row-item>
+      <flex-row-item>
+        <text-box
+          title="label.title.lastname"
+          [(value)]="employee.lastName"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [isTitleFormat]="true"
+          [(validate)]="validator.lastName"
+          (validateChange)="handleEnabledSaveBtn()"></text-box>
+      </flex-row-item>
+    </flex-row>
+
+    <!-- Contact -->
+    <flex-row>
+      <flex-row-item>
+        <phone-number
+          [(phone)]="employee.phoneNumber"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [(validate)]="validator.phone"
+          (phoneChange)="handleEnabledSaveBtn()"></phone-number>
+      </flex-row-item>
+      <flex-row-item>
+        <e-mail
+          [(email)]="employee.email"
+          [readOnly]="form.readOnly"
+          [isRequired]="true"
+          [(validate)]="validator.email"
+          (emailChange)="handleEnabledSaveBtn()"></e-mail>
+      </flex-row-item>
+    </flex-row>
+    <!-- Date -->
+    <flex-row *ngIf="form.action !== 'create'">
+      <flex-row-item>
+        <date-picker
+          *ngIf="shopConfig !== undefined"
+          title="label.title.activefrom"
+          [readOnly]="form.readOnly"
+          [dateFormatter]="shopConfig.country.dateFormat"
+          [shopTimeZone]="shopConfig.timezone"
+          [(date)]="employee.activeFrom"></date-picker>
+      </flex-row-item>
+      <flex-row-item>
+        <date-picker
+          *ngIf="shopConfig !== undefined && employee.activeTo !== null"
+          title="label.title.activeto"
+          [readOnly]="form.readOnly"
+          [dateFormatter]="shopConfig.country.dateFormat"
+          [shopTimeZone]="shopConfig.timezone"
+          [(date)]="employee.activeTo"></date-picker>
+      </flex-row-item>
+    </flex-row>
+
+    <!-- Password  -->
+    <flex-col-item id="password-reset">
+      <yes-no-selection
+        *ngIf="employee.loginOption.email && form.action === 'edit' && !form.readOnly"
+        title="label.title.passwordreset"
+        [(value)]="resetPassword"
+        [readOnly]="form.readOnly"
+        (valueChange)="onClickResetPassword()"></yes-no-selection>
+    </flex-col-item>
+    <password-confirmation
+      *ngIf="resetPassword"
+      (passwordChange)="setPassword($event)"
+      [(validate)]="validator.password"></password-confirmation>
+  </flex-col>
+</ion-content>

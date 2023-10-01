@@ -11,13 +11,31 @@ import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.
 export class SystemRoleRepositoryService {
   private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(private _afs: AngularFirestore, private _toaster: FirebaseToasterService) {}
+  constructor(
+    private _afs: AngularFirestore,
+    private _toaster: FirebaseToasterService
+  ) {}
 
   /** This will return as Observalble of all role configs  */
   public getRoleConfigurations(): Observable<RoleConfigurationType[]> {
     return this._afs
       .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
         ref.orderBy('rate')
+      )
+      .get()
+      .pipe(
+        map(snapshot => {
+          return snapshot.docs.map(doc => {
+            return doc.data();
+          });
+        })
+      );
+  }
+
+  public subscribeAvailableRoles(role: RoleConfigurationType) {
+    return this._afs
+      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
+        ref.where('rate', '<=', role.rate).orderBy('rate')
       )
       .get()
       .pipe(

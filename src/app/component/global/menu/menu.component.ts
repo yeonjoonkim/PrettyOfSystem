@@ -8,6 +8,7 @@ import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NameValuePairType, UserAssociatedShopType } from 'src/app/interface';
+import { AgreementModalService } from 'src/app/service/global/agreement-modal/agreement-modal.service';
 
 @Component({
   selector: 'side-menu',
@@ -32,7 +33,8 @@ export class MenuComponent implements OnInit, OnDestroy {
     private _storage: StorageService,
     private _location: Location,
     private _menuCtrl: MenuController,
-    private _router: Router
+    private _router: Router,
+    private _appAgreement: AgreementModalService
   ) {}
 
   async ngOnInit() {
@@ -53,6 +55,18 @@ export class MenuComponent implements OnInit, OnDestroy {
     });
     this.selectedTitleHeading = selectedMenu !== undefined ? selectedMenu.name : '';
     this._menuCtrl.close();
+  }
+
+  public async presentEdit() {
+    await this.user.presentEdit();
+  }
+
+  public async presentTermsandConditions() {
+    await this._appAgreement.presentTermsandCondition();
+  }
+
+  public async presentPrivacyPolicy() {
+    await this._appAgreement.presentPrivacyPolicy();
   }
 
   public logout() {

@@ -8,13 +8,13 @@ import {
   UserSettingType,
 } from 'src/app/interface';
 import { UserCredentialRepositoryService } from 'src/app/firebase/user-repository/user-credential-repository/user-credential-repository.service';
-import { lastValueFrom } from 'rxjs';
-import { GlobalService } from '../../global/global.service';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { GlobalService } from '../global/global.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
 import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/role/system-role-repository.service';
 import { UserAdminPopoverService } from './user-admin-popover/user-admin-popover.service';
 import * as Constant from 'src/app/constant/constant';
-import { FirebaseService } from '../../firebase/firebase.service';
+import { FirebaseService } from '../firebase/firebase.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -30,10 +30,23 @@ export class UserAdminService {
     private _firebaseService: FirebaseService
   ) {}
 
-  public async updateUser(user: IUser) {
-    await this._global.loading.show();
-    await this._userRepo.updateUser(user);
-    await this._global.loading.dismiss();
+  public async updateUser(after: IUser, before: IUser) {
+    const isLoginOptionChanged = this.isLoginOptionChanged(before, after);
+    if (isLoginOptionChanged) {
+      const loginMethod = after.loginOption.phoneNumber ? after.phoneNumber : after.email;
+      const userLoginVerification = this._userRepo.subscribeUserAccount(loginMethod);
+      const isExisted = await firstValueFrom(userLoginVerification);
+      console.log(isExisted);
+      if (!isExisted) {
+        return await this._userRepo.updateUser(after);
+      } else {
+        await this.toastExsitingAccountError();
+        return false;
+      }
+    } else {
+      console.log(after);
+      return await this._userRepo.updateUser(after);
+    }
   }
 
   public getNewId() {
@@ -48,6 +61,7 @@ export class UserAdminService {
       gender: Constant.Default.Gender.Male,
       isSystemAdmin: false,
       associatedShops: [],
+      associatedShopIds: [],
       currentShopId: '',
       phoneNumber: '',
       email: '',
@@ -67,18 +81,25 @@ export class UserAdminService {
     };
   }
 
+  private isLoginOptionChanged(before: IUser, after: IUser) {
+    if (after.loginOption.email) {
+      return before.email !== after.email;
+    } else {
+      return before.phoneNumber !== after.phoneNumber;
+    }
+  }
+
   public async deleteUser(user: IUser) {
     this._global.loading.show();
-    await this._userRepo.deleteUser(user);
+    const result = await this._userRepo.deleteUser(user);
     await this._global.loading.dismiss();
+    return result;
   }
 
   public async handleCreate(user: IUser, isSystemAdmin: boolean) {
     this._global.loading.show();
     user.isSystemAdmin = isSystemAdmin;
     user.encryptedPassword = user.loginOption.email ? user.encryptedPassword : '';
-    user.setting.preferLanguage =
-      await this._global.language.management.storage.getCurrentLanguage();
     try {
       if (user.loginOption.phoneNumber) {
         const existedPhoneNumber: boolean = await this.existingPhoneLoginChecker(user.phoneNumber);
@@ -117,6 +138,7 @@ export class UserAdminService {
       const confirm = await this._global.confirmAlert.getDeleteConfirmationWithName(shopName);
       if (confirm) {
         user.associatedShops = user.associatedShops.filter(s => s.shopId !== shopId);
+        user.associatedShopIds = user.associatedShopIds.filter(s => s !== shopId);
         user.currentShopId =
           user.currentShopId === shopId && user.associatedShops.length > 0
             ? user.associatedShops[0].shopId
@@ -179,5 +201,10 @@ export class UserAdminService {
   private async existingEmailLoginChecker(phoneNumber: string) {
     const existedUser = await lastValueFrom(this._userRepo.subscribeUserByEmail(phoneNumber));
     return existedUser !== null;
+  }
+
+  private async toastExsitingAccountError() {
+    const msg = await this._global.language.transform('messageerror.description.existingacc');
+    await this._global.toast.presentError(msg);
   }
 }

@@ -15,6 +15,7 @@ export class FormHeaderComponent implements OnInit {
   @Output() onClickDismiss = new EventEmitter<boolean>();
   @Input() readOnly: boolean = false;
   @Input() enabledSavebutton: boolean = true;
+  @Input() isDeleteRequired: boolean = true;
   @Input() title!: string;
   @Input() action: Constant.FormActionType = Constant.Default.FormAction.Read;
   public status: Constant.FormStatusType = Constant.Default.FormStatus.Reading;

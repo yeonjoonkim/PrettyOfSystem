@@ -19,7 +19,8 @@
   --background: #3f3f3f;
 }
 .content-selector {
-  --background: #3f3f3f;
+  --background: #1e2221;
+  border-bottom: 1px solid black;
 }
 .menu-active {
   --background: #787586 !important;
@@ -55,16 +56,32 @@ ion-list {
   padding-bottom: 50px;
 }
 
-#log-out,
-#log-in {
+#footer {
   position: absolute;
   bottom: 0;
-  width: 100%;
-  #log-out-btn,
-  #log-in-btn {
-    --background: transparent;
-    &:hover {
-      cursor: pointer;
+  flex-col-item {
+    span {
+      padding: 5px;
     }
   }
+  #log-in-out-btn,
+  #privacy-terms-condition-btn {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+#terms-conditions:hover,
+#log-in-btn:hover,
+#log-out-btn:hover,
+#privacy:hover,
+.hover-effect:hover {
+  color: #787586;
+  cursor: pointer;
+}
+
+#version,
+#terms-conditions,
+#privacy {
+  font-size: 8px;
 }

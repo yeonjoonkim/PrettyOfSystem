@@ -30,7 +30,10 @@ export class LoadingService {
   }
 
   async dismiss() {
-    this._loadingCtrl.dismiss();
+    const loading = await this._loadingCtrl.getTop();
+    if (loading !== undefined) {
+      await this._loadingCtrl.dismiss();
+    }
   }
 
   private async transform(key: string) {

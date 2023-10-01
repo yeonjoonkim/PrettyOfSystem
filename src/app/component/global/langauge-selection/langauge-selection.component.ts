@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { LanguageService } from 'src/app/service/global/language/language.service';
 import { NameValuePairType } from 'src/app/interface/global/global.interface';
 import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
@@ -9,7 +9,19 @@ import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
   styleUrls: ['./langauge-selection.component.scss'],
 })
 export class LangaugeSelectionComponent implements OnInit {
-  @Input() isLabelRequired: boolean = true;
+  @Output() selectedCodeChange = new EventEmitter<string>();
+  @Input() readOnly: boolean = false;
+  @Input()
+  get selectedCode(): string {
+    return this.selected.value;
+  }
+  set selectedCode(value: string) {
+    const language = this.languages.find(s => s.value === value);
+    if (language !== undefined) {
+      this.selected = language;
+    }
+  }
+
   @ViewChild('dropdownlist')
   public dropdownlist!: DropDownListComponent;
   public selected: NameValuePairType = { name: '', value: '' };
@@ -26,28 +38,15 @@ export class LangaugeSelectionComponent implements OnInit {
     { name: 'English', value: 'en' }, // English
     { name: 'Indonesia', value: 'id_id' }, // Indonesian
     { name: 'Français', value: 'fr' }, // French
+    { name: 'ไทย', value: 'th' },
   ];
 
-  constructor(private _language: LanguageService) {}
+  constructor() {}
 
-  async ngOnInit() {
-    await this.setDefault();
-  }
+  async ngOnInit() {}
 
-  private async setDefault() {
-    const current = await this._language.management.storage.getCurrentLanguage();
-    const currentSelected = this.languages.find(l => l.value === current);
-    if (currentSelected !== undefined) {
-      this.selected = currentSelected;
-    } else {
-      this.selected = { name: 'English', value: 'en' };
-      this.onChangeLanguage();
-    }
-  }
-
-  /** This function will set the global language by using language service. */
   public async onChangeLanguage() {
-    this._language.currentLanguage = this.selected.value;
-    await this._language.onLanguageChange();
+    this.selectedCode = this.selected.value;
+    this.selectedCodeChange.emit(this.selected.value);
   }
 }

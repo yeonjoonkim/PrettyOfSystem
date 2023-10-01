@@ -13,7 +13,7 @@
     <ion-card-header>
       <div id="user-info-title">
         <ion-card-title
-          ><u id="user-name">
+          ><u id="user-name" (click)="presentEdit()">
             {{ (user.data$ | async)?.firstName }} {{ (user.data$ | async)?.lastName }}</u
           ></ion-card-title
         >
@@ -35,7 +35,7 @@
           slot="header"
           routerLink="/booking"
           routerLinkActive="menu-active"
-          class="content-selector"
+          class="menu-selector"
           (click)="onChangeMenu('/booking')">
           <ion-icon slot="start" name="home-outline"></ion-icon>
           {{ 'label.title.homepage' | languageTransform | async }}
@@ -70,14 +70,24 @@
     </ion-accordion-group>
   </div>
 
-  <section id="log-out" *ngIf="user.isLoggedin$ | async">
-    <ion-button expand="block" id="log-out-btn" (click)="logout()">
-      {{ 'button.title.logout' | languageTransform | async }}</ion-button
-    >
-  </section>
-  <section id="log-in" *ngIf="user.isLoggedout$ | async">
-    <ion-button expand="block" id="log-in-btn" (click)="login()">
-      {{ 'button.title.login' | languageTransform | async }}</ion-button
-    >
-  </section>
+  <!-- Login Status-->
+  <flex-col id="footer">
+    <flex-col-item id="log-in-out-btn">
+      <span id="log-out-btn" *ngIf="user.isLoggedin$ | async" (click)="logout()">
+        {{ 'button.title.logout' | languageTransform | async }}</span
+      >
+      <span *ngIf="user.isLoggedout$ | async" id="log-in-btn" (click)="login()">
+        {{ 'button.title.login' | languageTransform | async }}
+      </span>
+    </flex-col-item>
+    <flex-col-item id="privacy-terms-condition-btn">
+      <span id="version">V 0.0.0</span>
+      <span id="terms-conditions" (click)="presentTermsandConditions()">{{
+        'label.title.termsandconditions' | languageTransform | async
+      }}</span>
+      <span id="privacy" (click)="presentPrivacyPolicy()">{{
+        'label.title.privacypolicy' | languageTransform | async
+      }}</span>
+    </flex-col-item>
+  </flex-col>
 </section>

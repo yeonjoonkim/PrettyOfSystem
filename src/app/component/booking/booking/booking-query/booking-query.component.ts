@@ -1,11 +1,11 @@
 import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
-import { BookingQueryCriteria, PostCodeItemType } from 'src/app/interface';
+import { PostCodeItemType } from 'src/app/interface';
 @Component({
   selector: 'booking-query',
   templateUrl: './booking-query.component.html',
   styleUrls: ['./booking-query.component.scss'],
 })
-export class BookingQueryComponent implements OnInit {
+export class BookingQueryComponent implements OnInit, OnChanges {
   @Input() addressParam!: PostCodeItemType;
   @Input() shopCategoryParam!: string;
 

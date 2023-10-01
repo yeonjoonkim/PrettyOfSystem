@@ -1,10 +1,10 @@
-export interface PlanPriceType {
+export type PlanPriceType = {
   tax: number;
   net: number;
   total: number;
-}
+};
 
-export interface PlanConfigurationType {
+export type PlanConfigurationType = {
   id: string;
   name: string;
   weeklyPrice: PlanPriceType;
@@ -16,4 +16,4 @@ export interface PlanConfigurationType {
   limitedPackage: number;
   limitedProduct: number;
   limitedUser: number;
-}
+};

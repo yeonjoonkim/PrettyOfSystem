@@ -47,12 +47,12 @@ export class OpenAiService {
       const response = await Promise.race([
         fetch(this._openAiUrl, requestOptions),
         new Promise<never>(
-          (_, reject) => setTimeout(() => reject(new Error('Request timed out')), 40000) // 5 second timeout
+          (_, reject) => setTimeout(() => reject(new Error('Request timed out')), 180000) // 5 second timeout
         ),
       ]);
 
       if (!response.ok) {
-        this.loading.dismiss();
+        await this.loading.dismiss();
         let err = await this.language.transform('messagefail.description.apiresponsenotok');
         this.toast.presentError(err);
       } else {

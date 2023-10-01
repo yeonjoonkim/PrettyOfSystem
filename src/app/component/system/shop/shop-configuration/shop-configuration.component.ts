@@ -1,5 +1,5 @@
 import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { ShopConfigurationType } from 'src/app/interface/shop/shop.interface';
 import * as Constant from 'src/app/constant/constant';
 import {
@@ -14,8 +14,7 @@ import { ModalController, NavParams } from '@ionic/angular';
   templateUrl: './shop-configuration.component.html',
   styleUrls: ['./shop-configuration.component.scss'],
 })
-//TODO: ADD USER VERIFICATION
-export class ShopConfigurationComponent implements OnInit {
+export class ShopConfigurationComponent implements OnInit, DoCheck {
   public planPrice: number = 0;
   public form!: IFormHeaderModalProp;
   public timeZoneList: Constant.TimeZoneType[] = Object.values(Constant.TimeZone);
@@ -30,6 +29,9 @@ export class ShopConfigurationComponent implements OnInit {
     private _modalCtrl: ModalController
   ) {
     this.loadingFormCtrl();
+  }
+  ngDoCheck() {
+    this.onChangeForm();
   }
 
   ngOnInit() {
@@ -85,6 +87,14 @@ export class ShopConfigurationComponent implements OnInit {
     }
   }
 
+  public onActiveChange() {
+    if (this.config.active) {
+      this.config.activeTo = null;
+    } else {
+      this.config.activeTo = new Date();
+    }
+  }
+
   public async onChangePlan() {
     if (this.config.plan.configurationId) {
       this.planPrice = await this._shopConfig.getSelectedTotalPrice(
@@ -95,8 +105,8 @@ export class ShopConfigurationComponent implements OnInit {
     this.onChangeForm();
   }
 
-  public dismiss() {
-    this._modalCtrl.dismiss(this.config, 'cancel');
+  public async dismiss() {
+    await this._modalCtrl.dismiss(this.config, 'cancel');
   }
 
   public async handleEdit() {

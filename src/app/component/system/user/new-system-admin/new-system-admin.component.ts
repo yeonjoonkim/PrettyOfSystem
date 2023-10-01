@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { IFormHeaderModalProp, IUser } from 'src/app/interface';
 import * as Constant from '../../../../constant/constant';
-import { UserAdminService } from 'src/app/service/user/user-admin/user-admin.service';
+import { UserAdminService } from 'src/app/service/user-admin/user-admin.service';
+import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 
 @Component({
   selector: 'new-system-admin',
@@ -21,7 +22,11 @@ export class NewSystemAdminComponent implements OnInit {
   };
 
   private _paramUser!: IUser;
-  constructor(private _navParams: NavParams, private _systemAdmin: UserAdminService) {}
+  constructor(
+    private _navParams: NavParams,
+    private _systemAdmin: UserAdminService,
+    private _languageStorage: SystemLanguageStorageService
+  ) {}
 
   async ngOnInit() {
     await this.loadingFromCtrl();
@@ -39,6 +44,10 @@ export class NewSystemAdminComponent implements OnInit {
           enabledSavebutton: false,
         };
     this.user = this._paramUser ? this._paramUser : this._systemAdmin.defaultUser();
+
+    if (!this.user.setting.preferLanguage) {
+      this.user.setting.preferLanguage = await this._languageStorage.getCurrentLanguage();
+    }
   }
 
   public onChangeLoginOption() {

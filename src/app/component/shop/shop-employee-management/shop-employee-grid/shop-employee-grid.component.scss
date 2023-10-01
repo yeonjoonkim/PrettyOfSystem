@@ -1,0 +1,13 @@
+#active-check-box,
+#display-check-box {
+  margin: 5px;
+}
+
+#full-name {
+  text-decoration: underline;
+  color: var(--hyperlink);
+  &:hover {
+    color: var(--active);
+    cursor: pointer;
+  }
+}

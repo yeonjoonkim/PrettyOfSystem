@@ -14,6 +14,8 @@ import { DatePeriodPickerModule } from './date-period-picker/date-period-picker.
 import { NameValuePairSingleDropdownSelectionModule } from './name-value-pair-single-dropdown-selection/name-value-pair-single-dropdown-selection.module';
 import { NameValuePairMultiSelectionModule } from './name-value-pair-multi-dropdown-selection/name-value-pair-multi-dropdown-selection.module';
 import { PasswordConfirmationModule } from './password-confirmation/password-confirmation.module';
+import { AppTermsAndConditionModule } from '../agreement/app/app-terms-and-conditions/app-terms-and-condition.module';
+import { AppPrivacyPolicyModule } from '../agreement/app/app-privacy-policy/app-privacy-policy.module';
 @NgModule({
   declarations: [],
   imports: [],
@@ -33,6 +35,8 @@ import { PasswordConfirmationModule } from './password-confirmation/password-con
     NameValuePairSingleDropdownSelectionModule,
     NameValuePairMultiSelectionModule,
     PasswordConfirmationModule,
+    AppTermsAndConditionModule,
+    AppPrivacyPolicyModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { GlobalService } from 'src/app/service/global/global.service';
-import { PostcodeService } from '../../form/address/service/postcode-service.service';
+import { PostcodeService } from '../../../form/address/service/postcode-service.service';
 import { PostCodeItemType } from 'src/app/interface';
 
 type IndexedFilterType = Record<string, PostCodeItemType[]>;
@@ -22,7 +22,10 @@ export class BookingSearchComponent implements OnInit, OnDestroy {
   private _index = 0;
   private _interval: any;
 
-  constructor(private _global: GlobalService, private _postCode: PostcodeService) {
+  constructor(
+    private _global: GlobalService,
+    private _postCode: PostcodeService
+  ) {
     this._queryFilter = this._postCode.getAustralia();
     this._indexedFilter = this._queryFilter.reduce<IndexedFilterType>((index, au) => {
       const key = `${au.suburb.replace(/\s+/g, '').toUpperCase()}${au.postCode}`; // Create compound key
