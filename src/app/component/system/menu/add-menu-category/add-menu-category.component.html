@@ -1,4 +1,4 @@
-<div id="add-menu-container">
+<ion-content>
   <!--Label-->
   <kendo-label text="{{ 'label.title.description' | languageTransform | async }}">
     <kendo-textbox [(ngModel)]="category.description" size="large" [clearButton]="true">
@@ -39,4 +39,4 @@
   <ion-button *ngIf="editMode" expand="full" (click)="onClickEditCategory()">{{
     'button.title.edit' | languageTransform | async
   }}</ion-button>
-</div>
+</ion-content>

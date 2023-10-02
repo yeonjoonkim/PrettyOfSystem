@@ -79,6 +79,7 @@ const insertIntoSystemAdminAssociatedShops = async function (shop: I.ShopConfigu
           role: systemAdminRole,
         };
         admin.associatedShops.push(associated);
+        admin.associatedShopIds.push(associated.shopId);
         admin.currentShopId =
           admin.currentShopId.length > 0 ? admin.currentShopId : associated.shopId;
         await Repository.User.updateSelectedUser(admin);
@@ -115,6 +116,7 @@ const deleteFromUserAssociatedShops = async function (shop: I.ShopConfigurationT
     if (users.length > 0) {
       for (const user of users) {
         user.associatedShops = user.associatedShops.filter(s => s.shopId !== shop.id);
+        user.associatedShopIds = user.associatedShopIds.filter(s => s !== shop.id);
         user.currentShopId =
           user.currentShopId === shop.id && user.associatedShops.length > 0
             ? user.associatedShops[0].shopId

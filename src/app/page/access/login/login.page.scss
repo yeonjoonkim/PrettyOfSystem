@@ -13,12 +13,21 @@
 #header {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 30px;
+}
+#logo-container {
+  width: 50px;
 }
 
 #homepage-btn,
 #logout-btn {
   background: transparent;
-  font-size: 15px;
+  font-size: 14px;
+  color: white;
+}
+
+#btn-container {
+  display: flex;
+  justify-content: flex-end;
 }

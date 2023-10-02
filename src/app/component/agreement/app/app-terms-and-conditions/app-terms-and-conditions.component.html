@@ -1,0 +1,83 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  (onClickDismiss)="dismiss()"></form-header>
+<ion-content>
+  <flex-col>
+    <!--1. Acceptance of Terms-->
+    <flex-col-item>
+      <legend class="title">
+        {{ 'label.title.acceptanceofterms' | languageTransform | async }}
+      </legend>
+      {{ 'confirmation.description.appacceptanceofterms' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--2. License and Use-->
+    <flex-col-item>
+      <legend class="title">{{ 'label.title.licenseanduse' | languageTransform | async }}</legend>
+      {{ 'confirmation.description.applicenseanduse' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--3. User Accounts-->
+    <flex-col-item>
+      <legend class="title">{{ 'label.title.userAccounts' | languageTransform | async }}</legend>
+      {{ 'confirmation.description.appuseraccounts' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--4. Payment-->
+    <flex-col-item>
+      <legend class="title">{{ 'label.title.payment' | languageTransform | async }}</legend>
+      {{ 'confirmation.description.apppayment' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--5. Data Protection-->
+    <flex-col-item>
+      <legend class="title">{{ 'label.title.dataprotection' | languageTransform | async }}</legend>
+      {{ 'confirmation.description.appdataprotection' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--6. Prohibited Use-->
+    <flex-col-item>
+      <legend class="title">{{ 'label.title.prohibiteduse' | languageTransform | async }}</legend>
+      {{ 'confirmation.description.appprohibiteduse' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--7. Warranty and Liability-->
+    <flex-col-item>
+      <legend class="title">
+        {{ 'label.title.warrantyandliability' | languageTransform | async }}
+      </legend>
+      {{ 'confirmation.description.appwarrantyandliability' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--8. Termination-->
+    <flex-col-item>
+      <legend class="title">{{ 'label.title.termination' | languageTransform | async }}</legend>
+      {{ 'confirmation.description.apptermination' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--9. Governing Law-->
+    <flex-col-item>
+      <legend class="title">{{ 'label.title.governinglaw' | languageTransform | async }}</legend>
+      {{ 'confirmation.description.appgoverninglaw' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--10. Changes to Terms-->
+    <flex-col-item>
+      <legend class="title">{{ 'label.title.changestoterms' | languageTransform | async }}</legend>
+      {{ 'confirmation.description.appchangestoterms' | languageTransform | async }}
+    </flex-col-item>
+
+    <!--11. Contact-->
+    <flex-col-item>
+      <legend class="title">{{ 'label.title.contact' | languageTransform | async }}</legend>
+      {{ 'confirmation.description.appcontact' | languageTransform | async }}
+    </flex-col-item>
+    <flex-col-item id="contact-info">
+      <a href="tel:+61439007010"><span>+61439007010</span></a>
+      <a href="mailto:admin@pos.clinic"><span>admin@pos.clinic</span></a>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

@@ -4,16 +4,19 @@ import {
   IUser,
   MenuCategoryType,
   NameValuePairType,
+  PlanConfigurationType,
   RoleConfigurationType,
   ShopConfigurationType,
 } from 'src/app/interface';
-import { Observable, from, lastValueFrom, map, mergeMap, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
-import { combineLatestWith, take } from 'rxjs/operators';
+import { combineLatestWith, first, take } from 'rxjs/operators';
 import { GlobalService } from '../global/global.service';
+import { UserModalService } from './user-modal/user-modal.service';
+import { SystemPlanRepositoryService } from 'src/app/firebase/system-repository/plan/system-plan-repository.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,22 +31,68 @@ export class UserService {
   public shopSelection$!: Observable<NameValuePairType[]>;
   public currentShop$!: Observable<NameValuePairType>;
   public currentRole$!: Observable<RoleConfigurationType | null>;
+  public currentShopPlan$!: Observable<PlanConfigurationType | null>;
 
   constructor(
+    public modal: UserModalService,
     private _afAuth: AngularFireAuth,
     private _router: Router,
     private _systemShop: SystemShopConfigurationRepositoryService,
     private _userRepo: UserCredentialRepositoryService,
     private _menuRepo: SystemMenuRepositoryService,
+    private _planRepo: SystemPlanRepositoryService,
     private _global: GlobalService
-  ) {}
+  ) {
+    this.activateAuthChangeListener();
+  }
 
-  public async testingRouter() {
-    this._router.navigateByUrl('/system/user');
+  public async init() {
+    this._global.loading.show();
+    const subscription = this.data$.subscribe(async data => {
+      if (data !== null) {
+        const currentShop = data.associatedShops.find(s => s.shopId === data.currentShopId);
+
+        if (currentShop !== undefined) {
+          if (currentShop.role.accessLevel.isSystemAdmin) {
+            this._router.navigateByUrl('system/user');
+          } else if (
+            currentShop.role.accessLevel.isAdmin ||
+            currentShop.role.accessLevel.isManager
+          ) {
+            this._router.navigateByUrl('shop/employee-management');
+          } else {
+            this._router.navigateByUrl('booking');
+          }
+          await this.setPreferLanguage(data.setting.preferLanguage);
+          await this._global.loading.dismiss();
+          subscription.unsubscribe();
+        }
+      }
+    });
+  }
+
+  private async setPreferLanguage(langCode: string) {
+    this._global.language.currentLanguage = langCode;
+    await this._global.language.onLanguageChange();
+  }
+
+  public async presentEdit() {
+    combineLatest([this.data$, this.shopSelection$])
+      .pipe(
+        first() // take the first emission and complete
+      )
+      .subscribe(([user, shopSelection]) => {
+        if (user) {
+          this.modal.presentEdit(user, shopSelection).then(modal => modal.present());
+        }
+      });
   }
 
   public async verifyUserAccount(input: string) {
-    return await this._userRepo.verifyUserAccount(input);
+    await this._global.loading.show();
+    const result = await this._userRepo.verifyUserAccount(input);
+    await this._global.loading.dismiss();
+    return result;
   }
 
   public logout() {
@@ -57,9 +106,16 @@ export class UserService {
         user.currentShopId = shopId;
         await this._global.loading.show();
         await this._userRepo.updateUser(user);
+        this._global.language.currentLanguage = user.setting.preferLanguage;
+        await this._global.language.onLanguageChange();
         await this._global.loading.dismiss();
       }
     });
+  }
+
+  public async updateUser(user: IUser) {
+    const result = await this._userRepo.updateUser(user);
+    return result;
   }
 
   public activateAuthChangeListener() {
@@ -69,6 +125,7 @@ export class UserService {
     this.activateUserMenuListener();
     this.activateAssociatedShopsListener();
     this.activateCurrentShopConfigurationListener();
+    this.activateCurrentShopPlanListener();
     this.activateUserShopSelectionListener();
     this.activeUserCurrentShopListener();
     this.activateCurrentRoleListener();
@@ -92,7 +149,7 @@ export class UserService {
         if (user !== null) {
           const role = this.findCurrentRole(user);
           if (role !== null) {
-            return this._menuRepo.getAccessGrantedMenu(role.accessLevel);
+            return this._menuRepo.subscribeAccessGrantedMenu(role.accessLevel);
           } else {
             return of([]);
           }
@@ -129,6 +186,17 @@ export class UserService {
             ? shops.find((s: ShopConfigurationType) => s.id === user.currentShopId) || null
             : null;
         return currentConfig;
+      })
+    );
+  }
+  private activateCurrentShopPlanListener() {
+    this.currentShopPlan$ = this.currentShopConfig$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return this._planRepo.getSelectedPlan(config.plan.configurationId);
+        } else {
+          return of(null);
+        }
       })
     );
   }

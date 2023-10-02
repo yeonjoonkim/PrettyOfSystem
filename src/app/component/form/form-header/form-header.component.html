@@ -6,7 +6,8 @@
       *ngIf="
         (status === 'editing' || status === 'saving' || status === 'deleting') &&
         status &&
-        !readOnly
+        !readOnly &&
+        isDeleteRequired
       "
       icon="trash"
       themeColor="error"

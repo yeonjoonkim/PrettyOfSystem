@@ -88,6 +88,14 @@
           (validateChange)="handleEnabledSaveBtn()"></e-mail>
       </flex-row-item>
     </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <langauge-selection
+          [readOnly]="form.readOnly"
+          [(selectedCode)]="user.setting.preferLanguage"></langauge-selection>
+      </flex-row-item>
+      <flex-row-item></flex-row-item>
+    </flex-row>
     <password-confirmation
       *ngIf="user.loginOption.email"
       (passwordChange)="setPassword($event)"

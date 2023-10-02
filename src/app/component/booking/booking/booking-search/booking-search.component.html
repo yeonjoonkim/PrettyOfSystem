@@ -1,0 +1,27 @@
+<section id="search-section">
+  <flex-col id="search-container">
+    <flex-col-item>
+      <div [class.active]="isActive" class="search">
+        <div (click)="toggleActive()" class="icon"></div>
+        <div class="input" *ngIf="isActive">
+          <kendo-autocomplete
+            id="query"
+            [data]="autoCompleteSearchFilter"
+            [filterable]="true"
+            [loading]="loading"
+            (filterChange)="onTyping($event)"
+            (valueChange)="valueChange($event)"
+            [placeholder]="placeholder">
+            <ng-template kendoComboBoxNoDataTemplate>
+              <p>
+                {{
+                  'placeholder.description.searchbookingautocomplete' | languageTransform | async
+                }}
+              </p>
+            </ng-template>
+          </kendo-autocomplete>
+        </div>
+      </div>
+    </flex-col-item>
+  </flex-col>
+</section>

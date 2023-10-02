@@ -77,10 +77,6 @@ export class SystemMenuRepositoryService {
     );
   }
 
-  public async getAccessGrantedMenu(accessLevel: RoleAccessLevelType): Promise<MenuCategoryType[]> {
-    return await firstValueFrom(this.subscribeAccessGrantedMenu(accessLevel));
-  }
-
   /**This will compare the name and return asc */
   private compareByName(a: MenuContentType, b: MenuContentType) {
     if (a.name < b.name) {

@@ -25,7 +25,10 @@ export class UserLogin implements IUserLogin {
     { value: 'auth/user-disabled', name: 'messageerror.description.disabledaccount' },
   ];
 
-  constructor(private _afa: AngularFireAuth, private _userService: UserService) {
+  constructor(
+    private _afa: AngularFireAuth,
+    private _userService: UserService
+  ) {
     this._cypo = new CryptService();
     this.timer = new TimerService();
   }
@@ -116,7 +119,13 @@ export class UserLogin implements IUserLogin {
         this.timer.startTimerByMin(0.5);
       } catch (err) {
         const error: string = JSON.stringify(err);
-        this.handleError(error);
+
+        if (error.includes('auth/captcha-check-failed')) {
+          this.errorMsg = '';
+        } else {
+          this.handleError(error);
+        }
+
         throw err;
       }
     } else {
@@ -145,11 +154,10 @@ export class UserLogin implements IUserLogin {
   private async processLogin(credential: any) {
     const user = credential?.user;
     if (user !== undefined) {
-      await this._userService.testingRouter();
+      await this._userService.init();
       await this.timer.end();
       await this.reset();
     }
-    //Todo: implement guard
   }
 
   private handleNotExistUserError() {

@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TextBoxComponent } from '@progress/kendo-angular-inputs';
-import { Subscription, lastValueFrom } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { UserLogin } from 'src/app/class/user/user-login.class';
 import { ITimer, IUserLoginOption } from 'src/app/interface';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import { UserService } from 'src/app/service/user/user.service';
+import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
   selector: 'login',
@@ -33,13 +34,25 @@ export class LoginComponent implements OnInit, OnDestroy {
   private _timerSubscription!: Subscription;
   public _recaptcha!: RecaptchaVerifier;
 
-  constructor(private _afa: AngularFireAuth, private _userService: UserService) {
+  constructor(
+    private _afa: AngularFireAuth,
+    private _userService: UserService,
+    private _global: GlobalService
+  ) {
     this.login = new UserLogin(this._afa, this._userService);
   }
 
   ngOnInit() {
     this.reset();
     this.startRecaptchaVerifier();
+  }
+
+  public async presentTermandCondition() {
+    await this._global.appAgreement.presentTermsandCondition();
+  }
+
+  public async presentPrivacyPolicy() {
+    await this._global.appAgreement.presentPrivacyPolicy();
   }
 
   async ngOnDestroy() {

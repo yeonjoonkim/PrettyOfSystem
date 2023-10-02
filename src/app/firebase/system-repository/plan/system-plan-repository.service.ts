@@ -11,7 +11,10 @@ import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.
 export class SystemPlanRepositoryService {
   private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(private _afs: AngularFirestore, private _toaster: FirebaseToasterService) {}
+  constructor(
+    private _afs: AngularFirestore,
+    private _toaster: FirebaseToasterService
+  ) {}
 
   /**This will return as Observalbe to receive the all Plan Options Available */
   public valueChangeListener(): Observable<PlanConfigurationType[]> {
@@ -41,13 +44,13 @@ export class SystemPlanRepositoryService {
       );
   }
 
-  public getSelectedPlan(selectedId: string): Observable<PlanConfigurationType | undefined> {
+  public getSelectedPlan(selectedId: string): Observable<PlanConfigurationType> {
     return this._afs
       .doc<PlanConfigurationType>(`${Db.Context.System.Plan.Option}/${selectedId}`)
       .get()
       .pipe(
         map(snapshot => {
-          return snapshot.data();
+          return snapshot.data() as PlanConfigurationType;
         })
       );
   }

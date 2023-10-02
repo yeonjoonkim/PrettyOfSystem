@@ -1,0 +1,14 @@
+<flex-row>
+  <flex-row-item *ngFor="let btn of selection">
+    <div
+      id="booking-search-icon-btn"
+      [ngClass]="{
+        activeSearchIconBtn: isActive(btn.name),
+        deactiveSearchIconBtn: !isActive(btn.name)
+      }"
+      (click)="onChangeIcon(btn)">
+      <div id="btn-img"><img [src]="btn.value" /></div>
+      <div id="btn-title">{{ btn.name | languageTransform | async }}</div>
+    </div>
+  </flex-row-item>
+</flex-row>

@@ -15,8 +15,9 @@
 
 #full-name {
   text-decoration: underline;
+
   &:hover {
-    color: #8685ef;
+    color: #787586;
     cursor: pointer;
   }
 }

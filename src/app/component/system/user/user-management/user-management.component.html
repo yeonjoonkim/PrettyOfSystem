@@ -108,6 +108,7 @@
 
         <!--Count-->
         <kendo-grid-column
+          *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
           id="shop-count"
           field="associatedShops.length"
           title="{{ 'label.title.shop' | languageTransform | async }}">

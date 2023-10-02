@@ -1,0 +1,79 @@
+<kendo-grid [kendoGridBinding]="employees" [height]="600" [sortable]="true">
+  <!-- Add -->
+
+  <ng-template kendoGridToolbarTemplate>
+    <button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole()">
+      {{ 'button.title.adduser' | languageTransform | async }}
+    </button>
+  </ng-template>
+
+  <!-- Name -->
+  <kendo-grid-column
+    [sortable]="true"
+    [width]="100"
+    field="firstName"
+    title="{{ 'label.title.firstName' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-emp>
+      <p (click)="onClickEdit(emp)" id="full-name">{{ emp.firstName }} {{ emp.lastName }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Role -->
+  <kendo-grid-column
+    [sortable]="true"
+    [width]="75"
+    field="email"
+    title="{{ 'label.title.role' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-emp>
+      <p>{{ emp.role.name | languageTransform | async }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Phone Number -->
+  <kendo-grid-column
+    [sortable]="true"
+    [width]="125"
+    field="phoneNumber"
+    title="{{ 'label.title.phoneNumber' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-emp>
+      <a id="phone-number" href="tel:{{ emp.phoneNumber }}"
+        ><span>{{ emp.phoneNumber }}</span></a
+      >
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Active -->
+  <kendo-grid-column
+    [sortable]="true"
+    [width]="75"
+    field="active"
+    title="{{ 'label.title.active' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-emp>
+      <input
+        id="active-check-box"
+        kendoCheckBox
+        type="checkbox"
+        [disabled]="true"
+        [ngModel]="emp.active" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Active -->
+  <kendo-grid-column
+    [sortable]="true"
+    [width]="75"
+    field="displayInSystem"
+    title="{{ 'label.title.schedule' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-emp>
+      <input
+        id="display-check-box"
+        kendoCheckBox
+        type="checkbox"
+        [disabled]="true"
+        [ngModel]="emp.displayInSystem" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- NO Data-->
+  <ng-template kendoGridNoRecordsTemplate></ng-template>
+</kendo-grid>

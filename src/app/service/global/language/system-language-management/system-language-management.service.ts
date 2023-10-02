@@ -20,6 +20,8 @@ import { lastValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class SystemLanguageManagementService {
+  private _hasSelection: boolean = false;
+  private _isInQ: boolean = false;
   constructor(
     public storage: SystemLanguageStorageService,
     public translateCriteria: TranslateCriteriaService,
@@ -109,6 +111,7 @@ export class SystemLanguageManagementService {
 
   public async transform(key: string) {
     let currentSelection = await this.storage.getCurrentSelection();
+
     let path = this._textTransform.setLanguageTransformCodeList(key);
     let result = this._systemLanguagePackage.getValue(path, currentSelection?.package);
 

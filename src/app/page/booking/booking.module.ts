@@ -10,10 +10,10 @@ import { LanguageTransformPipeModule } from '../../pipe/language-transform-pipe/
 //Module
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
-import { BookingHeaderModule } from 'src/app/component/booking/booking-header/booking-header/booking-header.module';
-import { BookingSearchModule } from 'src/app/component/booking/booking-search/booking-search.module';
-import { BookingSearchIconModule } from 'src/app/component/booking/booking-search-icon/booking-search-icon.module';
-
+import { BookingHeaderModule } from 'src/app/component/booking/booking/booking-header/booking-header/booking-header.module';
+import { BookingSearchModule } from 'src/app/component/booking/booking/booking-search/booking-search.module';
+import { BookingSearchIconModule } from 'src/app/component/booking/booking/booking-search-icon/booking-search-icon.module';
+import { BookingQueryhModule } from 'src/app/component/booking/booking/booking-query/booking-search.module';
 //Component
 import { BookingPage } from './booking.page';
 
@@ -29,6 +29,7 @@ import { BookingPage } from './booking.page';
     BookingSearchModule,
     BookingHeaderModule,
     BookingSearchIconModule,
+    BookingQueryhModule,
   ],
   declarations: [BookingPage],
 })

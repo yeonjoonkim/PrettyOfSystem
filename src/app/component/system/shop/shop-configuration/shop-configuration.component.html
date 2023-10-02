@@ -52,7 +52,12 @@
         <!--Active-->
         <flex-row-item id="active-box">
           <kendo-label text="{{ 'label.title.active' | languageTransform | async }}">
-            <input type="checkbox" kendoCheckBox [checked]="config.active" [disabled]="true" />
+            <input
+              type="checkbox"
+              kendoCheckBox
+              [(ngModel)]="config.active"
+              (ngModelChange)="onActiveChange()"
+              [disabled]="form.readOnly" />
           </kendo-label>
         </flex-row-item>
       </flex-row>
@@ -66,8 +71,7 @@
             [(validate)]="validator.name"
             [isTitleFormat]="true"
             [isRequired]="true"
-            [min]="2"
-            (valueChange)="onChangeForm()">
+            [min]="2">
           </text-box>
         </flex-row-item>
         <flex-row-item>
@@ -80,8 +84,7 @@
             [isTitleFormat]="true"
             [maxLength]="15"
             [isRequired]="true"
-            [showCounter]="false"
-            (valueChange)="onChangeForm()">
+            [showCounter]="false">
           </text-box>
         </flex-row-item>
       </flex-row>
@@ -92,8 +95,7 @@
             mode="form"
             [readOnly]="form.readOnly"
             [(phone)]="config.phoneNumber"
-            [(validate)]="validator.phonNumber"
-            (phoneChange)="onChangeForm()">
+            [(validate)]="validator.phonNumber">
           </phone-number>
         </flex-row-item>
         <flex-row-item>
@@ -102,8 +104,7 @@
             [(email)]="config.email"
             [(validate)]="validator.email"
             [readOnly]="form.readOnly"
-            [isRequired]="true"
-            (emailChange)="onChangeForm()">
+            [isRequired]="true">
           </e-mail>
         </flex-row-item>
       </flex-row>
@@ -143,16 +144,14 @@
         [(address)]="config.address"
         [(validate)]="validator.address"
         [readOnly]="form.readOnly"
-        [excludeStreet]="false"
-        (addressChange)="onChangeForm()"></address>
+        [excludeStreet]="false"></address>
       <flex-col>
         <flex-col-item id="country">
           <shop-country
             #country
             [(shopCountry)]="config.country"
             [(validate)]="validator.country"
-            [readOnly]="form.readOnly"
-            (shopCountryChange)="onChangeForm()">
+            [readOnly]="form.readOnly">
           </shop-country>
         </flex-col-item>
         <flex-col-item id="timezone">
@@ -160,8 +159,7 @@
             #timezone
             [(timeZone)]="config.timezone"
             [(validate)]="validator.timeZone"
-            [readOnly]="form.readOnly"
-            (timeZoneChange)="onChangeForm()">
+            [readOnly]="form.readOnly">
           </time-zone>
         </flex-col-item>
       </flex-col>
@@ -180,8 +178,8 @@
             <input
               type="checkbox"
               kendoCheckBox
-              [checked]="config.plan.isOverDue"
-              [disabled]="true" />
+              [(ngModel)]="config.plan.isOverDue"
+              [disabled]="form.readOnly" />
           </kendo-label>
         </flex-row-item>
       </flex-row>
@@ -189,16 +187,14 @@
         <shop-plan
           [(planId)]="config.plan.configurationId"
           [(validate)]="validator.plan"
-          [readOnly]="form.readOnly"
-          (planIdChange)="onChangePlan()"></shop-plan>
+          [readOnly]="form.readOnly"></shop-plan>
       </flex-col-item>
       <flex-row>
         <flex-row-item>
           <date-period-picker
             [isPlanFormat]="true"
             [(period)]="config.plan.period"
-            [readOnly]="form.readOnly"
-            (periodChange)="onPlanPeriodChange()"></date-period-picker>
+            [readOnly]="form.readOnly"></date-period-picker>
         </flex-row-item>
         <flex-row-item>
           <shop-plan-price

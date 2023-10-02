@@ -48,9 +48,8 @@ export class NameValuePairSingleDropdownlistComponent implements OnInit {
     this._defaultLanguageKeyPairValue = defaultKeyPairValue;
   }
 
-  public async onClickCell(clickEvent: CellClickEvent) {
-    let newSelected: NameValuePairType = clickEvent.dataItem;
-    this.selected = newSelected;
+  public async onClickCell(data: NameValuePairType) {
+    this.selected = data;
     await this._popoverCtrl.dismiss({ selected: this.selected });
   }
 
@@ -82,6 +81,10 @@ export class NameValuePairSingleDropdownlistComponent implements OnInit {
       });
 
     this.gridData = this.allToFirstIndex(queryResult);
+  }
+
+  public isActive(data: NameValuePairType) {
+    return this.selected?.value === data.value;
   }
 
   allToFirstIndex(result: NameValuePairType[]) {

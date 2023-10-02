@@ -8,8 +8,9 @@ import {
   UserAssociatedShopType,
   UserManagementCriteria,
 } from 'src/app/interface';
-import { UserAdminService } from 'src/app/service/user/user-admin/user-admin.service';
+import { UserAdminService } from 'src/app/service/user-admin/user-admin.service';
 import * as Constant from 'src/app/constant/constant';
+import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 @Component({
   selector: 'new-user',
   templateUrl: './new-user.component.html',
@@ -36,7 +37,11 @@ export class NewUserComponent implements OnInit {
 
   private _roles: RoleConfigurationType[] = [];
   private _criteria!: UserManagementCriteria;
-  constructor(private _navParams: NavParams, private _systemAdmin: UserAdminService) {
+  constructor(
+    private _navParams: NavParams,
+    private _systemAdmin: UserAdminService,
+    private _languageStorage: SystemLanguageStorageService
+  ) {
     this.user.id = this._systemAdmin.getNewId();
   }
 
@@ -140,6 +145,10 @@ export class NewUserComponent implements OnInit {
       this.roleFilters = _criteria.roleFilter;
       this.shopFilters = _criteria.shopFilter;
       this._roles = _criteria.role;
+    }
+
+    if (!this.user.setting.preferLanguage) {
+      this.user.setting.preferLanguage = await this._languageStorage.getCurrentLanguage();
     }
   }
 }

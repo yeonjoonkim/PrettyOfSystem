@@ -37,8 +37,10 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       const change = Service.Trigger.User.OnChange.getChangeDectection(prev, current);
       const event = Service.Trigger.User.OnChange.getChangeAction(change, current);
 
-      Repository.Error.createErrorReport(change, event, 'update', current.id);
-
+      if (change.isLoginOptionChanged) {
+        await handleAuthenticationLogin(prev, 'delete');
+        await handleAuthenticationLogin(current, 'create');
+      }
       if (event.isAuthUpdate) {
         await handleAuthenticationLogin(current, 'update');
       }
@@ -181,6 +183,7 @@ const handleSystemAdminAccount = async function (user: I.IUser) {
 
   if (user.isSystemAdmin && systemAdminRole !== null && allShops.length > 0) {
     user.associatedShops = transformToAssociatedShop(user, allShops, systemAdminRole);
+    user.associatedShopIds = allShops.map(s => s.id);
     user.currentShopId = user.associatedShops.length > 0 ? user.associatedShops[0].shopId : '';
     const claim = getCurrentUserClaim(user);
     await Repository.User.updateSelectedUser(user);

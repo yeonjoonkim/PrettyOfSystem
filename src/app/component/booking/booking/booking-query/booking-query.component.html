@@ -1,0 +1,87 @@
+<section *ngIf="!addressParam?.suburb" id="catch-phrase-empty-query">
+  <flex-col>
+    <flex-col-item id="catch-phrase-container">
+      <p id="catch-phrase">{{ 'label.title.catchphrase' | languageTransform | async }}</p>
+    </flex-col-item>
+  </flex-col>
+</section>
+
+<div id="loading-skeleton" *ngIf="loading">
+  <flex-col>
+    <flex-col-item>
+      <kendo-card width="100%" style="max-width: 800px">
+        <kendo-card-header class="k-hbox">
+          <kendo-skeleton
+            shape="circle"
+            animation="pulse"
+            [width]="40"
+            [height]="40"></kendo-skeleton>
+          <div [ngStyle]="{ flex: '1 1 50%', marginLeft: '16px' }">
+            <kendo-skeleton shape="text" animation="pulse" width="100%"></kendo-skeleton>
+            <kendo-skeleton shape="text" animation="pulse" width="40%"></kendo-skeleton>
+          </div>
+        </kendo-card-header>
+
+        <kendo-skeleton
+          shape="rectangle"
+          animation="pulse"
+          width="100%"
+          height="143.86px"></kendo-skeleton>
+
+        <kendo-card-footer class="k-hbox">
+          <kendo-skeleton shape="text" animation="pulse" width="100%"></kendo-skeleton>
+        </kendo-card-footer>
+      </kendo-card>
+    </flex-col-item>
+    <flex-col-item>
+      <kendo-card width="100%" style="max-width: 800px">
+        <kendo-card-header class="k-hbox">
+          <kendo-skeleton
+            shape="circle"
+            animation="pulse"
+            [width]="40"
+            [height]="40"></kendo-skeleton>
+          <div [ngStyle]="{ flex: '1 1 50%', marginLeft: '16px' }">
+            <kendo-skeleton shape="text" animation="pulse" width="100%"></kendo-skeleton>
+            <kendo-skeleton shape="text" animation="pulse" width="40%"></kendo-skeleton>
+          </div>
+        </kendo-card-header>
+
+        <kendo-skeleton
+          shape="rectangle"
+          animation="pulse"
+          width="100%"
+          height="143.86px"></kendo-skeleton>
+
+        <kendo-card-footer class="k-hbox">
+          <kendo-skeleton shape="text" animation="pulse" width="100%"></kendo-skeleton>
+        </kendo-card-footer>
+      </kendo-card>
+    </flex-col-item>
+    <flex-col-item>
+      <kendo-card width="100%" style="max-width: 800px">
+        <kendo-card-header class="k-hbox">
+          <kendo-skeleton
+            shape="circle"
+            animation="pulse"
+            [width]="40"
+            [height]="40"></kendo-skeleton>
+          <div [ngStyle]="{ flex: '1 1 50%', marginLeft: '16px' }">
+            <kendo-skeleton shape="text" animation="pulse" width="100%"></kendo-skeleton>
+            <kendo-skeleton shape="text" animation="pulse" width="40%"></kendo-skeleton>
+          </div>
+        </kendo-card-header>
+
+        <kendo-skeleton
+          shape="rectangle"
+          animation="pulse"
+          width="100%"
+          height="143.86px"></kendo-skeleton>
+
+        <kendo-card-footer class="k-hbox">
+          <kendo-skeleton shape="text" animation="pulse" width="100%"></kendo-skeleton>
+        </kendo-card-footer>
+      </kendo-card>
+    </flex-col-item>
+  </flex-col>
+</div>

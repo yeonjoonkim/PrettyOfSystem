@@ -30,19 +30,37 @@
 
 /* Set variables for all modes */
 
-p,
-h1,
+:root {
+  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
+  --form-background-color: white;
+  --background: #191919;
+  --active: #787586;
+  --error: #b02b36;
+  --title: #cd7867;
+  --hyperlink: #ff00ff;
+}
+
+ion-app,
+ion-content {
+  --ion-background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
+
+  #background-content {
+    --ion-background-color: var(--background);
+    background: var(--background);
+  }
+}
+
+ion-toolbar {
+  --ion-background-color: var(--active);
+  background: var(--active);
+  background-color: var(--active);
+}
+
 .k-button-text {
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif !important;
 }
-:root {
-  /* Set the font family of the entire app */
-  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
-}
-
-$form-background-color: white;
-$title-color: #414d58;
-$background-color: #8685ef;
 
 .grecaptcha-badge {
   visibility: hidden;
@@ -53,35 +71,83 @@ $background-color: #8685ef;
   margin: 5px;
   cursor: pointer;
 }
-
-.active {
-  --background: #8685ef;
-  background-color: #8685ef;
-  background: #8685ef;
+.title {
+  color: var(--title);
   font-weight: bold;
 }
+.active {
+  --background: var(--active);
+  background-color: var(--active);
+  background: var(--active);
+  font-weight: bold;
+}
+
+.deactive {
+  --background: var(--background);
+  background-color: var(--background);
+  background: var(--background);
+  font-weight: bold;
+}
+
 .modal-container {
   margin: 5px;
+  background-color: var(--background);
 }
 
 ion-loading {
   --backdrop-opacity: 0;
-  --background: transparent;
-  --color: #000; // Adjust this to the color you want
+  background: transparent;
+  box-shadow: none;
 }
 
-.transparent-loading {
-  --background: transparent;
+ion-popover {
+  --backdrop-opacity: 0.8;
+  --color: white;
+}
+
+.logo-loading {
+  position: relative;
   width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  --background: #transparent !important;
+  position: relative;
+  width: 100%; /* Adjust the width as needed */
+  flex-direction: column;
+  height: 100vh; /* Adjust the height as needed */
 }
 
-.transparent-loading::before {
+.loading-wrapper.sc-ion-loading-md {
+  flex-direction: column;
+}
+.loading-wrapper.sc-ion-loading-md .loading-content {
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+  -webkit-margin-start: 0;
+  -margin-inline-start: 0;
+}
+
+.loading-spinner.sc-ion-loading-md + .loading-content.sc-ion-loading-md,
+.loading-spinner.sc-ion-loading-ios + .loading-content.sc-ion-loading-ios {
+  -webkit-margin-start: 0;
+  -webkit-margin-left: 0; /* for maximum compatibility on older WebKit browsers */
+  margin-inline-start: 0;
+  margin-left: 0; /* for non-WebKit browsers and maximum compatibility */
+}
+
+.logo-loading::before,
+.logo-loading::after,
+.logo-loading::backdrop {
   content: '';
   position: absolute;
-  top: 40%;
-  background: url('./assets/logo/prettyofsystem-logo-white.svg') no-repeat center center / contain;
-  width: 100px; /* Set the width as per your need */
-  height: 100px; /* Set the height as per your need */
+  top: 40%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%);
+  background: url('./assets/logo/prettyofsystem-logo-white.svg') no-repeat center center;
+  background-size: contain; /* This ensures the image is contained within the box */
+  width: 150px;
+  height: 150px;
 }
 
 .date-pick-popup-container {
@@ -99,18 +165,23 @@ ion-loading {
   flex-direction: column;
   padding: 80px;
   --width: fit-content;
-  max-width: calc(100vw - 40px);
 }
 
 .delete-ion-sliding-option {
   color: red;
 }
 
-.error-toast {
-  --background: red;
+.success-toast {
+  --background: white;
+  --color: #121212;
 }
+
+.error-toast {
+  --background: var(--error);
+}
+
 .error-text {
-  color: red;
+  color: var(--error);
 }
 
 .ion-card-title-icon {
@@ -126,16 +197,6 @@ ion-loading {
 .form-error-container {
   width: 100%;
   height: 5px;
-}
-
-.flex-col-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.flex-row-container {
-  display: flex;
-  flex-direction: row;
 }
 
 legend {
@@ -163,7 +224,7 @@ yes-no-selection-group {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: fit-content;
+  width: 100%;
   yes-no-selection {
     align-self: flex-end;
   }
@@ -171,10 +232,11 @@ yes-no-selection-group {
 time-picker-group {
   display: flex;
   flex-direction: row;
+  background: var(--background);
 }
 
 ion-button {
-  --background: #8685ef;
+  --background: var(--active);
   position: relative;
   color: white;
 }
@@ -199,24 +261,45 @@ flex-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  --background: var(--background);
+  --background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
   flex-row-item {
     flex: 1;
+    --background: var(--background);
+    --background-color: var(--background);
+    background: var(--background);
+    background-color: var(--background);
   }
 }
 flex-col {
+  --background: var(--background);
+  --background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   flex-col-item {
     flex: 1;
+    --background: var(--background);
+    --background-color: var(--background);
+    background: var(--background);
+    background-color: var(--background);
   }
 }
 
 error-message-item {
   display: flex;
   justify-content: center;
-  color: #b02b36;
+  color: var(--error);
+  --background: var(--background);
+  --background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
   p {
     margin: 0px;
     margin-left: 5px;

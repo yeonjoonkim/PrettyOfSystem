@@ -7,14 +7,32 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  --background: #191919;
+}
+
+#shop-container {
+  margin-top: -12px;
+  margin-bottom: -10px;
+}
+
+.menu-selector {
+  --background: #3f3f3f;
+}
+.content-selector {
+  --background: #1e2221;
+  border-bottom: 1px solid black;
+}
+.menu-active {
+  --background: #787586 !important;
 }
 
 #user-info-card ion-card-header {
+  --background: #191919;
   width: 100%;
   display: flex;
   flex-direction: row;
-  margin-top: 25px;
   justify-items: center;
+
   p {
     margin: 0;
   }
@@ -23,12 +41,7 @@
       cursor: pointer;
     }
   }
-}
-
-#language-setting-container {
-  width: 100%;
-  padding-top: 10px;
-  padding-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 ion-list {
@@ -36,16 +49,39 @@ ion-list {
 }
 
 #user-shop-list {
-  position: absolute;
-  top: -10px;
   width: 100%;
 }
 
-#log-out,
-#log-in {
-  margin: auto;
-  #log-out-btn,
-  #log-in-btn {
-    --background: #121212;
+#menu {
+  padding-bottom: 50px;
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  flex-col-item {
+    span {
+      padding: 5px;
+    }
   }
+  #log-in-out-btn,
+  #privacy-terms-condition-btn {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+#terms-conditions:hover,
+#log-in-btn:hover,
+#log-out-btn:hover,
+#privacy:hover,
+.hover-effect:hover {
+  color: #787586;
+  cursor: pointer;
+}
+
+#version,
+#terms-conditions,
+#privacy {
+  font-size: 8px;
 }

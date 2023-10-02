@@ -18,6 +18,7 @@ export class ToastService {
       message: msg,
       duration: this._duration,
       position: this._position,
+      cssClass: 'success-toast',
     });
 
     await toast.present();

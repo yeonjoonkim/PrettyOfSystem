@@ -10,6 +10,7 @@ export interface IUser {
   gender: Constant.GenderType;
   isSystemAdmin: boolean;
   associatedShops: UserAssociatedShopType[];
+  associatedShopIds: string[];
   currentShopId: string;
   setting: UserSettingType;
   loginOption: IUserLoginOption;

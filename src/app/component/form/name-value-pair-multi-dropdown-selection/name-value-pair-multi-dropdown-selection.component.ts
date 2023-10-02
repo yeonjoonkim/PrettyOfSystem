@@ -141,7 +141,7 @@ export class NameValuePairDropdownMultiSelectionComponent
     return await this._popoverCtrl.create({
       component: NameValuePairMultiDropdownlistComponent,
       event: event,
-      translucent: true,
+      translucent: false,
       size: 'cover',
       componentProps: {
         selected: this.selected,

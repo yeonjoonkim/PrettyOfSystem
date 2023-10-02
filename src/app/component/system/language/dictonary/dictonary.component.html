@@ -24,9 +24,7 @@
       <flex-col-item>
         <kendo-grid [data]="gridData" [height]="400" [sortable]="true" [autoSize]="true">
           <ng-template kendoGridToolbarTemplate>
-            <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
-              {{ 'button.title.refresh' | languageTransform | async }}
-            </button>
+            <button kendoGridAddCommand (click)="setLanguageSelection()" icon="refresh"></button>
             <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
               {{ 'button.title.add' | languageTransform | async }}
             </button>

@@ -8,7 +8,6 @@ import { HttpClientModule } from '@angular/common/http';
 //KENDO UI
 import { BarcodesModule } from '@progress/kendo-angular-barcodes';
 import { ChartsModule } from '@progress/kendo-angular-charts';
-import { ChatModule } from '@progress/kendo-angular-conversational-ui';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IntlModule } from '@progress/kendo-angular-intl';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
@@ -63,7 +62,6 @@ import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
     BarcodesModule,
     ButtonsModule,
     ChartsModule,
-    ChatModule,
     DateInputsModule,
     DialogsModule,
     DropDownsModule,

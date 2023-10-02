@@ -1,0 +1,21 @@
+<flex-col id="shop-employee-grid-usage">
+  <flex-col-item>
+    <div>
+      <kendo-label text="{{ 'label.title.maximumactiveemployees' | languageTransform | async }}">
+        <kendo-progressbar
+          id="maximum-employee-progress-bar"
+          [min]="0"
+          [max]="usage.maximumUsers"
+          [indeterminate]="false"
+          [value]="usage.currentActiveUsers"></kendo-progressbar>
+      </kendo-label>
+    </div>
+  </flex-col-item>
+  <flex-col-item>
+    <shop-employee-grid
+      [employees]="employees"
+      [role]="currentRole"
+      (onEdit)="handleClickEditUser($event)"
+      (onCreate)="handleClickCreateUser()"></shop-employee-grid>
+  </flex-col-item>
+</flex-col>

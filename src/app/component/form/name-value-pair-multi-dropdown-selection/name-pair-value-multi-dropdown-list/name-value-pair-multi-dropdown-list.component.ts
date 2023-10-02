@@ -49,8 +49,8 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
     this._defaultLanguageKeyPairValue = defaultKeyPairValue;
   }
 
-  public async onClickCell(clickEvent: CellClickEvent) {
-    let newSelected: NameValuePairType = clickEvent.dataItem;
+  public async onClickCell(selected: NameValuePairType) {
+    let newSelected: NameValuePairType = selected;
     this.selected = this.selected === undefined ? [] : this.selected;
     const isExisted = this.selected.filter(s => s.value === newSelected.value).length > 0;
     const currentSelectedValues = this.selected.concat(newSelected).map(s => s.value);
@@ -70,6 +70,16 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
 
   public all() {
     this.selected = [];
+  }
+
+  public isInclude(data: NameValuePairType) {
+    if (!this.selected) {
+      return false; // or true, depending on your business logic
+    }
+
+    return (
+      this.selected.filter(s => s?.value === data.value).length > 0 || this.selected.length === 0
+    );
   }
 
   public async apply() {

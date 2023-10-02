@@ -36,7 +36,7 @@ export class PlanComponent implements OnInit {
   ngOnInit() {}
 
   public async dismiss() {
-    this._planService.modal.dismissModal();
+    await this._planService.modal.dismissModal();
   }
 
   public onNameChange() {
