@@ -13,18 +13,12 @@ import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.modu
 //Import Component
 import { ShopEmployeeManagementComponent } from './shop-employee-management.component';
 import { ShopEmployeeGridComponent } from './shop-employee-grid/shop-employee-grid.component';
-import { ShopEmployeeUsageComponent } from './shop-employee-usage/shop-employee-usage.component';
 import { ShopEmployeeComponent } from './shop-employee/shop-employee.component';
 import { GenderSelectionModule } from '../../user/gender-selection/gender-selection.module';
 import { LoginOptionSelectionModule } from '../../user/login-option-selection/login-option-selection.module';
 import { LanguageSelectionModule } from '../../global/langauge-selection/language-selection.module';
 @NgModule({
-  declarations: [
-    ShopEmployeeGridComponent,
-    ShopEmployeeUsageComponent,
-    ShopEmployeeManagementComponent,
-    ShopEmployeeComponent,
-  ],
+  declarations: [ShopEmployeeGridComponent, ShopEmployeeManagementComponent, ShopEmployeeComponent],
   imports: [
     CommonModule,
     IonicModule,

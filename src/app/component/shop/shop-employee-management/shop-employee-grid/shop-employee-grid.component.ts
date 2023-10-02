@@ -64,6 +64,7 @@ export class ShopEmployeeGridComponent implements OnInit, OnChanges {
   public onClickCreate() {
     this.onCreate.emit(true);
   }
+
   public async onClickEdit(selected: ShopEmployeeManagementUserType) {
     const param: EmployeeManagementEditUserPropType = {
       isReadOnly: await this._shopEmp.isHigerRole(selected.role),

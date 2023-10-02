@@ -32,6 +32,7 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
     maximumUsers: 0,
   };
 
+  private _isModalOpen!: boolean;
   private _shopConfig!: ShopConfigurationType;
   private _addNewEmployee!: boolean;
   private _roleProp: EmployeeManagementRolePropType = {
@@ -103,9 +104,12 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
   public async handleClickCreateUser() {
     if (this._addNewEmployee) {
       const newEmployee = await this._shopEmp.buildNewEmployee();
-      if (newEmployee !== null && this._shopConfig !== null) {
+      if (newEmployee !== null && this._shopConfig !== null && !this._isModalOpen) {
         const modal = await this._shopEmp.modal.presentNewEmployee(newEmployee, this._roleProp);
+
+        this._isModalOpen = true;
         await modal.present();
+        await this.handleModalDismiss(modal);
       }
     } else {
       await this._shopEmp.toastReachedToMaximumError();
@@ -121,6 +125,18 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
           this._shopConfig
         );
 
-    await modal.present();
+    if (!this._isModalOpen) {
+      this._isModalOpen = true;
+      await modal.present();
+      await this.handleModalDismiss(modal);
+    }
+  }
+
+  private async handleModalDismiss(modal: HTMLIonModalElement) {
+    const dismiss = await modal.onDidDismiss();
+
+    if (dismiss) {
+      this._isModalOpen = false;
+    }
   }
 }
