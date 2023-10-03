@@ -3,6 +3,7 @@ import * as Db from '../../../db';
 import * as I from '../../../interface';
 import * as Service from './../../../service/index';
 import * as Repository from '../../../repository/index';
+import { logger } from 'firebase-functions/v2';
 
 export const getAll = async function (): Promise<I.ShopConfigurationType[]> {
   const allSnapshot = await firestore().collection(Db.Context.ShopConfiguration).get();
@@ -108,6 +109,21 @@ export const updateConfig = async function (config: I.ShopConfigurationType): Pr
     }
   } else {
     return false;
+  }
+};
+
+export const getSelectedConfig = async function (id: string) {
+  try {
+    const configSnapShot = await firestore().collection(Db.Context.ShopConfiguration).doc(id).get();
+    if (!configSnapShot.exists) {
+      return null;
+    }
+    let config = configSnapShot.data() as I.ShopConfigurationType;
+    config = transformTimeStampToDate(config);
+    return config;
+  } catch (error) {
+    logger.error(' Cannot retreive', error);
+    return null;
   }
 };
 

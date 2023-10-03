@@ -13,3 +13,11 @@ export const getAll = async function (): Promise<I.LanguageSelectionType[]> {
 
   return allLanguageSelection;
 };
+
+export const getAllNameValueTypeList = async function () {
+  const selections = await getAll();
+  const result: I.NameValuePairType[] = selections.map(s => {
+    return { name: s.description, value: s.code };
+  });
+  return result;
+};

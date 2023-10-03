@@ -14,4 +14,12 @@ export const API = {
     Create: 'create',
     Update: 'update',
   },
+  TranslateStatus: {
+    Create: 'create',
+    Pending: 'pending',
+    InProgress: 'inProgress',
+    Success: 'Success',
+    Completed: 'Completed',
+    Failed: 'Failed',
+  },
 } as const;

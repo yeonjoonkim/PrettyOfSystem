@@ -117,6 +117,7 @@ export class ShopConfigurationService {
         state: 'QLD',
         postCode: '',
       },
+      package: {},
       operatingHours: this.setWorkHours(),
       category: this.getDefaultCategory(),
       country: this.getDefaultCountry(),
