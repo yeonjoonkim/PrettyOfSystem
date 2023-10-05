@@ -78,6 +78,10 @@ export class ShopEmployeeComponent implements OnInit {
         this.resetPassword = false;
       }
 
+      if (this.employee.role.accessLevel.isReception) {
+        this.employee.displayInSystem = false;
+      }
+
       if (this.employee.loginOption.email) {
         this.resetPassword = this.employee.encryptedPassword.length === 0;
         this.validator.password = this.employee.encryptedPassword.length > 0;

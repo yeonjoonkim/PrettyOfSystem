@@ -27,7 +27,7 @@
         <input
           kendoCheckBox
           type="checkbox"
-          [disabled]="form.readOnly"
+          [disabled]="form.readOnly || employee.role.accessLevel.isReception"
           [(ngModel)]="employee.displayInSystem"
           (ngModelChange)="handleEnabledSaveBtn()" />
       </kendo-label>

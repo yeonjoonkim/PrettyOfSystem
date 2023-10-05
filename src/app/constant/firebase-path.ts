@@ -11,7 +11,16 @@ const user: string = 'user';
 //Reporter
 const FunctionError: string = 'functionError';
 
+//OpenApi
+const OpenApiInstance: string = 'openApiInstance';
+
+const ChatGptTranslateRequest: string = 'chatGptTranslateRequest';
+const SystemLanguageTranslateRequest: string = 'systemLanguageTranslateRequest';
+
 export const Context = {
+  OpenApiInstance: OpenApiInstance,
+  SystemLangaugeTranslateRequest: SystemLanguageTranslateRequest,
+  ChatGptTranslateRequest: ChatGptTranslateRequest,
   ShopConfiguration: shopConfiguration,
   User: user,
   System: {

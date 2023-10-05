@@ -9,3 +9,5 @@ export * from './user/user.interface';
 export * from './function/function.interface';
 export * from './booking/booking-search/booking-search.interface';
 export * from './shop/shop-employee-management.interface';
+export * from './function/function-translation/function-translation.interface';
+export * from './function/function-system-translation/function-system-translation.interface';

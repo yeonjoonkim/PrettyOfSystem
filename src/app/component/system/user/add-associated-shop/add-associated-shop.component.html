@@ -10,13 +10,15 @@
     title="label.title.role"
     [isRequired]="true"
     [selection]="roleFilters"
-    [(selected)]="selectedRole"></name-value-pair-single-dropdown-selection>
+    [(selected)]="selectedRole"
+    (selectedChange)="onChangeRole()"></name-value-pair-single-dropdown-selection>
 
   <!--Display In Booking -->
   <yes-no-selection-group>
     <yes-no-selection
       title="label.title.displayinbooking"
-      [(value)]="displayInBooking"></yes-no-selection>
+      [(value)]="displayInBooking"
+      [readOnly]="isReception"></yes-no-selection>
   </yes-no-selection-group>
 
   <!--Save Button-->

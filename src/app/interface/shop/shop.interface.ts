@@ -73,11 +73,17 @@ export interface ShopConfigurationType {
   category: ShopCategoryType;
   country: ShopCountryType;
   plan: ShopPlanType;
+  package: ShopConfigurationLanguagePackageType;
+  translatedRequestIds: [];
   activeFrom: Date;
   activeTo: Date | null;
   setting: IShopSetting;
   timezone: string;
 }
+
+export type ShopConfigurationLanguagePackageType = {
+  [key: string]: string;
+};
 
 export interface ShopConfigurationTypeFilterOption {
   name: string;

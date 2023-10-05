@@ -45,6 +45,15 @@ export const onShopUpdate = onDocumentUpdated(
       if (event.isResetRoster) {
         await resetShopUserRoster(after);
       }
+      if (event.isTranslatedRequestDelete) {
+        const requests: string[] = before.translatedRequestIds.filter(
+          s => !after.translatedRequestIds.includes(s)
+        );
+
+        await handleDeleteTranslatedPackage(requests, after).then(async () => {
+          await handleDeleteTranslatedRequest(requests);
+        });
+      }
     }
   }
 );
@@ -57,6 +66,7 @@ export const onShopDelete = onDocumentDeleted(
     const shop = shopData !== null ? (shopData as I.ShopConfigurationType) : null;
     if (shop !== null) {
       await deleteFromUserAssociatedShops(shop);
+      await deleteTranslatedRequests(shop.translatedRequestIds);
     }
   }
 );
@@ -107,6 +117,42 @@ const resetShopUserRoster = async function (shop: I.ShopConfigurationType) {
       }
     });
   }
+};
+
+const deleteTranslatedRequests = async function (reqeustedIds: string[]) {
+  for (let request of reqeustedIds) {
+    await Repository.TranslateRequest.deleteDocumentById(request);
+    await sleep(500);
+  }
+};
+
+const sleep = async (duration: number) => {
+  return new Promise(resolve => setTimeout(resolve, duration));
+};
+
+const handleDeleteTranslatedRequest = async function (deletedIds: string[]) {
+  for (let deleteReqeust of deletedIds) {
+    await Repository.TranslateRequest.deleteDocumentById(deleteReqeust);
+    await sleep(1000);
+  }
+};
+
+const handleDeleteTranslatedPackage = async function (
+  deletedIds: string[],
+  after: I.ShopConfigurationType
+) {
+  for (let deletedId of deletedIds) {
+    const request = await Repository.TranslateRequest.getSelected(deletedId);
+    if (request !== null) {
+      for (let key in after.package) {
+        if (key.includes(request.packageKey)) {
+          delete after.package[key];
+        }
+      }
+    }
+  }
+
+  await Repository.Shop.Configuration.updateConfig(after);
 };
 
 const deleteFromUserAssociatedShops = async function (shop: I.ShopConfigurationType) {

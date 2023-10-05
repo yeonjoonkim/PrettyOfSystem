@@ -53,6 +53,7 @@ export type TextFormatType = (typeof Text.Format)[keyof typeof Text.Format];
 //API
 export type APIResponseType = (typeof API.Response)[keyof typeof API.Response];
 export type APIActionType = (typeof API.Action)[keyof typeof API.Action];
+export type APITranslationStatus = (typeof API.TranslateStatus)[keyof typeof API.TranslateStatus];
 
 //Booking
 export type BookingSearchIconType =

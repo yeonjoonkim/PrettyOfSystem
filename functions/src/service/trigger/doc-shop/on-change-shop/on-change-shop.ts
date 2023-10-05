@@ -15,6 +15,8 @@ export const getChangeDectection = async function (
     before.operatingHours,
     after.operatingHours
   );
+  changeAction.isTranslatedRequestChange = isTranslatedRequestChange(before, after);
+  changeAction.isTranslatedRequestDelete = isTranslatedRequestDelete(before, after);
   return changeAction;
 };
 
@@ -25,6 +27,7 @@ export const getChangeAction = function (c: I.OnChangeShopType) {
     (c.isAddressChanged || c.isEmailChanged || c.isPhoneChanged || c.isOperatingHourChanged) &&
     c.isPreimumPlan;
   event.isActiveStatusChange = c.isActiveChanged;
+  event.isTranslatedRequestDelete = c.isTranslatedRequestChange && c.isTranslatedRequestDelete;
   return event;
 };
 
@@ -33,6 +36,20 @@ const isPreimumPlan = async function (after: I.ShopConfigurationType) {
   const premiumPlan = premiumPlans.find(p => p.id === after.plan.configurationId);
 
   return premiumPlan !== undefined ? true : false;
+};
+
+const isTranslatedRequestChange = function (
+  before: I.ShopConfigurationType,
+  after: I.ShopConfigurationType
+) {
+  return before.translatedRequestIds.length !== after.translatedRequestIds.length;
+};
+
+const isTranslatedRequestDelete = function (
+  before: I.ShopConfigurationType,
+  after: I.ShopConfigurationType
+): boolean {
+  return before.translatedRequestIds.length > after.translatedRequestIds.length;
 };
 
 const isActiveChange = function (before: I.ShopConfigurationType, after: I.ShopConfigurationType) {
@@ -116,6 +133,8 @@ const getDefaultChangeType = function (): I.OnChangeShopType {
     isAddressChanged: false,
     isOperatingHourChanged: false,
     isPreimumPlan: false,
+    isTranslatedRequestChange: false,
+    isTranslatedRequestDelete: false,
   };
 };
 
@@ -124,5 +143,6 @@ const getDefaultActionType = function (): I.OnChangeShopActionType {
     isSendMsgClientShopInfoChange: false,
     isResetRoster: false,
     isActiveStatusChange: false,
+    isTranslatedRequestDelete: false,
   };
 };

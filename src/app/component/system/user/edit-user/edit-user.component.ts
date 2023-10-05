@@ -40,6 +40,8 @@ export class EditUserComponent implements OnInit {
   private _roles: RoleConfigurationType[] = [];
   private _encryptedPassword: string = '';
   private _criteria!: UserManagementCriteria;
+  public loading = false;
+  private _cachedAssocatedShops!: UserAssociatedShopType[];
   constructor(
     private _navParams: NavParams,
     private _systemAdmin: UserAdminService,
@@ -69,6 +71,17 @@ export class EditUserComponent implements OnInit {
     }
   }
 
+  public async reloading() {
+    await this._global.loading.show();
+    this.user.associatedShops = [];
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+      this.user.associatedShops = this._cachedAssocatedShops;
+      this._global.loading.dismiss();
+    }, 300);
+  }
+
   public async handleDelete() {
     const result = await this._systemAdmin.deleteUser(this.user);
     if (result) {
@@ -84,7 +97,7 @@ export class EditUserComponent implements OnInit {
     this.currentPage = page;
   }
 
-  public onChangeAssociatedShopRole(
+  public async onChangeAssociatedShopRole(
     selected: NameValuePairType,
     selectedShop: UserAssociatedShopType
   ) {
@@ -93,8 +106,20 @@ export class EditUserComponent implements OnInit {
     const index = this.user.associatedShops.findIndex(s => s.shopId === selectedShop.shopId);
     if (role !== undefined && shop !== undefined) {
       shop.role = role;
+      shop.displayInSystem = role.accessLevel.isReception ? false : shop.displayInSystem;
       this.user.associatedShops[index] = shop;
+      this._cachedAssocatedShops = cloneDeep(this.user.associatedShops);
+      await this.reloading();
     }
+  }
+
+  public async onChangeDisplay(shop: UserAssociatedShopType) {
+    shop.displayInSystem = !shop.displayInSystem;
+    shop.displayInSystem = shop.role.accessLevel.isReception ? false : shop.displayInSystem;
+    const index = this.user.associatedShops.findIndex(s => shop.shopId === s.shopId);
+    this.user.associatedShops[index] = shop;
+    this._cachedAssocatedShops = cloneDeep(this.user.associatedShops);
+    await this.reloading();
   }
 
   public async onClickAddAssociatedShopRole(event: any) {
@@ -103,6 +128,8 @@ export class EditUserComponent implements OnInit {
       this.user,
       this._criteria
     );
+    this._cachedAssocatedShops = cloneDeep(this.user.associatedShops);
+    await this.reloading();
   }
 
   public async onClickDisabledAccount() {

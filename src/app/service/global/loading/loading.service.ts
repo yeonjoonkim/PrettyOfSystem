@@ -39,17 +39,21 @@ export class LoadingService {
   private async transform(key: string) {
     let currentSelection = await this.getCurrentSelection();
     let path = this._textTransform.setLanguageTransformCodeList(key);
-    let result = this._systemLanguagePackage.getValue(path, currentSelection?.package);
-
-    return !this.isObject(result) && this.isString(result) ? result : key;
+    if (currentSelection !== null) {
+      let result = this._systemLanguagePackage.getValue(path, currentSelection?.package);
+      return !this.isObject(result) && this.isString(result) ? result : key;
+    } else {
+      return '';
+    }
   }
 
   private async getCurrentSelection() {
     let currentLanguage: string = await this._storage.getLanguage();
     let selections = await this.getSelections();
-    let selection = selections.filter(s => s.code === currentLanguage);
+    let selection =
+      selections !== null ? selections?.filter(s => s.code === currentLanguage) : null;
 
-    return selection[0];
+    return selection !== null ? selection[0] : null;
   }
 
   private async getSelections(): Promise<LanguageSelectionType[]> {

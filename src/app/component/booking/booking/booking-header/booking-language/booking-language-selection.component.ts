@@ -112,8 +112,7 @@ export class BookingLanguageSelectionComponent implements OnInit, AfterViewInit 
 
   /** This function will set the global language by using language service. */
   public async onChangeLanguage() {
-    this._language.currentLanguage = this.selected.value;
-    await this._language.onLanguageChange();
+    await this._language.onLanguageChange(this.selected.value);
   }
 
   private async getPopoverSettings(event: any) {

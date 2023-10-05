@@ -4,12 +4,22 @@ import { SystemLanguageRepositoryService } from 'src/app/firebase/system-reposit
 import { ILanguageKey, LanguageSelectionType } from 'src/app/interface';
 import * as StorageKey from 'src/app/service/global/storage/storage.key';
 import { StorageService } from 'src/app/service/global/storage/storage.service';
+import getUserLocale from 'get-user-locale';
+const localeOption = {
+  useFallbackLocale: false,
+  fallbackLocale: 'en-US',
+};
+
+const currentLocale = getUserLocale(localeOption) === null ? 'en' : getUserLocale(localeOption);
+
 @Injectable({
   providedIn: 'root',
 })
 export class SystemLanguageStorageService {
   private _hasSelection: boolean = false;
   private _refreshing: boolean = false;
+  public currentLanguage!: string;
+  public currentSelection!: LanguageSelectionType;
   constructor(
     private _stroage: StorageService,
     private _systemLanguageRepo: SystemLanguageRepositoryService
@@ -24,22 +34,36 @@ export class SystemLanguageStorageService {
     let expiredDate: Date | null = await this._stroage.getLanguageSelectionExpireDateTime();
     let isExpired: boolean = expiredDate !== null ? now > expiredDate : true;
     let selections: null | LanguageSelectionType[] = await this.getSelections();
+    let currentLanguage: string | null = await this.getCurrentLanguage();
     let keys: null | ILanguageKey = await this.getKey();
     let refresh: boolean =
-      selections === null || expiredDate === null || isExpired || keys === null;
+      selections === null ||
+      expiredDate === null ||
+      isExpired ||
+      keys === null ||
+      selections?.length === 0 ||
+      currentLanguage === null;
 
     if (refresh && isConnected) {
       await this.refresh();
       await this._stroage.storeExpiredDateTime();
       console.log('refresh');
     }
+    this.currentLanguage = await this.getCurrentLanguage();
+    this.currentSelection = await this.getCurrentSelection();
   }
 
   public async refresh() {
-    let selections: LanguageSelectionType[] = await this.getLanguageSelections();
-    let key: ILanguageKey = await this.getLanguageKey();
+    const selections: LanguageSelectionType[] = await this.getLanguageSelections();
+    const key: ILanguageKey = await this.getLanguageKey();
+    const language = await this.getCurrentLanguage();
     await this._stroage.store(StorageKey.default.languageSelection, selections);
     await this._stroage.store(StorageKey.default.languageSelectionKey, key);
+    if (language === null) {
+      this.setCurrentLanguage();
+    }
+    this.currentLanguage = await this.getCurrentLanguage();
+    this.currentSelection = await this.getCurrentSelection();
   }
 
   public async storeCurrentLanguage(code: string) {
@@ -55,7 +79,12 @@ export class SystemLanguageStorageService {
   }
 
   public async getCurrentLanguage() {
-    return await this._stroage.getLanguage();
+    if (this.currentLanguage !== undefined) {
+      return this.currentLanguage;
+    } else {
+      this.currentLanguage = await this._stroage.getLanguage();
+      return this.currentLanguage;
+    }
   }
 
   public async getDefaultSelection(): Promise<LanguageSelectionType> {
@@ -71,6 +100,15 @@ export class SystemLanguageStorageService {
   }
 
   public async getCurrentSelection(): Promise<LanguageSelectionType> {
+    if (this.currentSelection !== undefined) {
+      return this.currentSelection;
+    } else {
+      this.currentSelection = await this.currentSelectedSelection();
+      return this.currentSelection;
+    }
+  }
+
+  private async currentSelectedSelection(): Promise<LanguageSelectionType> {
     let currentLanguage: string = await this._stroage.getLanguage();
     let selections: null | LanguageSelectionType[] = await this.getSelections();
 
@@ -127,5 +165,48 @@ export class SystemLanguageStorageService {
   private async getLanguageKey(): Promise<ILanguageKey> {
     let result = await lastValueFrom(this._systemLanguageRepo.getLanguageKeyResult());
     return result.length > 0 ? result[0] : { id: '', used: [] };
+  }
+
+  private async setCurrentLanguage() {
+    const currentSetting = await this.getCurrentLanguage();
+    const locale = currentLocale?.toLowerCase();
+    const isKorean = locale?.includes('ko');
+    const isJapanese = locale?.includes('ja');
+    const isChinese = locale?.includes('zh');
+    const isHindi = locale?.includes('hi');
+    const isItailan = locale?.includes('it');
+    const isSpanish = locale?.includes('es');
+    const isFilipino = locale?.includes('ph');
+    const isVietnamese = locale?.includes('vi');
+    const isIndonesian = locale?.includes('id');
+    const isFrench = locale?.includes('fr');
+    const isThai = locale?.includes('th');
+    let result = isKorean
+      ? 'ko'
+      : isChinese
+      ? 'zh-hans'
+      : isJapanese
+      ? 'ja'
+      : isHindi
+      ? 'hi_in'
+      : isItailan
+      ? '	it'
+      : isSpanish
+      ? 'es'
+      : isFilipino
+      ? 'tl-ph'
+      : isVietnamese
+      ? 'vi-vn'
+      : isIndonesian
+      ? 'id_id'
+      : isFrench
+      ? 'fr'
+      : isThai
+      ? 'th'
+      : 'en';
+
+    currentSetting !== null && typeof currentSetting === 'string' && currentSetting !== undefined
+      ? await this.storeCurrentLanguage(currentSetting)
+      : await this.storeCurrentLanguage(result);
   }
 }

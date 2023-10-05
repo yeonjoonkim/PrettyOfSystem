@@ -110,8 +110,8 @@
         {{ 'label.title.associatedshop' | languageTransform | async }}
       </legend>
     </flex-col-item>
-    <flex-col-item>
-      <kendo-grid [height]="300" [kendoGridBinding]="user.associatedShops">
+    <flex-col-item *ngIf="!loading">
+      <kendo-grid [height]="300" [data]="user.associatedShops">
         <!--Add-->
         <ng-template kendoGridToolbarTemplate>
           <button
@@ -121,14 +121,19 @@
             {{ 'button.title.add' | languageTransform | async }}
           </button>
         </ng-template>
-        <kendo-grid-column title="{{ 'label.title.businessname' | languageTransform | async }}">
+        <kendo-grid-column
+          title="{{ 'label.title.businessname' | languageTransform | async }}"
+          [width]="125">
           <ng-template kendoGridCellTemplate let-associatedShop>
             <ng-container *ngFor="let shop of shopFilters">
               <span *ngIf="associatedShop.shopId === shop.value">{{ shop.name }}</span>
             </ng-container>
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column title="{{ 'label.title.role' | languageTransform | async }}" field="id">
+        <kendo-grid-column
+          title="{{ 'label.title.role' | languageTransform | async }}"
+          field="id"
+          [width]="125">
           <ng-template kendoGridCellTemplate let-shop>
             <name-value-pair-single-dropdown-selection
               (selectedChange)="onChangeAssociatedShopRole($event, shop)"
@@ -143,17 +148,34 @@
               [readOnly]="form.readOnly"></name-value-pair-single-dropdown-selection>
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column title="{{ 'label.title.active' | languageTransform | async }}">
+        <kendo-grid-column
+          title="{{ 'label.title.displayinbooking' | languageTransform | async }}"
+          [width]="75">
+          <ng-template kendoGridCellTemplate let-shop>
+            <input
+              id="associated-shop-display-in-booking"
+              type="checkbox"
+              kendoCheckBox
+              (click)="displayChange(shop)"
+              [checked]="shop.displayInSystem"
+              [disabled]="form.readOnly" />
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          title="{{ 'label.title.active' | languageTransform | async }}"
+          [width]="50">
           <ng-template kendoGridCellTemplate let-shop>
             <input
               id="associated-shop-active"
               type="checkbox"
               kendoCheckBox
               [checked]="shop.active"
+              (click)="activeChange(shop)"
               [disabled]="form.readOnly" />
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-command-column [width]="75">
+
+        <kendo-grid-command-column [width]="50">
           <ng-template kendoGridCellTemplate let-shop>
             <button
               *ngIf="!form.readOnly"

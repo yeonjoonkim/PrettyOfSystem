@@ -1,5 +1,3 @@
-<!--TODO: add user information and menu information from app.component-->
-<!--User Info-->
 <section id="menu-container">
   <div id="user-info-card" *ngIf="user.isLoggedin$ | async">
     <div id="shop-container">
@@ -67,27 +65,28 @@
           </ion-item>
         </ion-list>
       </ion-accordion>
+      <!-- Login Status-->
+      <div id="footer-container">
+        <flex-col id="footer">
+          <flex-col-item id="log-in-out-btn">
+            <span id="log-out-btn" *ngIf="user.isLoggedin$ | async" (click)="logout()">
+              {{ 'button.title.logout' | languageTransform | async }}</span
+            >
+            <span *ngIf="user.isLoggedout$ | async" id="log-in-btn" (click)="login()">
+              {{ 'button.title.login' | languageTransform | async }}
+            </span>
+          </flex-col-item>
+          <flex-col-item id="privacy-terms-condition-btn">
+            <span id="version">V 0.0.0</span>
+            <span id="terms-conditions" (click)="presentTermsandConditions()">{{
+              'label.title.termsandconditions' | languageTransform | async
+            }}</span>
+            <span id="privacy" (click)="presentPrivacyPolicy()">{{
+              'label.title.privacypolicy' | languageTransform | async
+            }}</span>
+          </flex-col-item>
+        </flex-col>
+      </div>
     </ion-accordion-group>
   </div>
-
-  <!-- Login Status-->
-  <flex-col id="footer">
-    <flex-col-item id="log-in-out-btn">
-      <span id="log-out-btn" *ngIf="user.isLoggedin$ | async" (click)="logout()">
-        {{ 'button.title.logout' | languageTransform | async }}</span
-      >
-      <span *ngIf="user.isLoggedout$ | async" id="log-in-btn" (click)="login()">
-        {{ 'button.title.login' | languageTransform | async }}
-      </span>
-    </flex-col-item>
-    <flex-col-item id="privacy-terms-condition-btn">
-      <span id="version">V 0.0.0</span>
-      <span id="terms-conditions" (click)="presentTermsandConditions()">{{
-        'label.title.termsandconditions' | languageTransform | async
-      }}</span>
-      <span id="privacy" (click)="presentPrivacyPolicy()">{{
-        'label.title.privacypolicy' | languageTransform | async
-      }}</span>
-    </flex-col-item>
-  </flex-col>
 </section>
