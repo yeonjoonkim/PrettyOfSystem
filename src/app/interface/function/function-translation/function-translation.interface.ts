@@ -22,8 +22,9 @@ export type ChatGptTranslateDocumentLifeCycleType = {
   inProgressToSuccess: boolean;
   inProgressToFail: boolean;
   successToFail: boolean;
-  FailToPending: boolean;
-  SuccessToCompleted: boolean;
+  failToPending: boolean;
+  successToCompleted: boolean;
+  completedToPending: boolean;
 };
 
 export type ChatGptTranslateDocumentChangeActionType = {
@@ -85,6 +86,7 @@ export type ChatGptTranslateDocumentType = {
   error: NameValuePairType[];
   attempt: number;
   translateResult: ChatGptTranslateResult[];
+  parentId: string;
 };
 
 export type ChatGptTranslateResult = {

@@ -37,6 +37,9 @@ import { UserEditModule } from './component/user/user-edit/user-edit.module';
 import { SharedFormModule } from './component/form/form.module';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
+//Service
+import { UserService } from './service/user/user.service';
+
 @NgModule({
   declarations: [AppComponent, MenuComponent],
   imports: [
@@ -67,7 +70,9 @@ import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
 export class AppModule implements OnInit {
-  constructor() {}
+  constructor(private _user: UserService) {
+    this._user.activateAuthChangeListener();
+  }
   async ngOnInit() {
     this.loadingRecap();
   }

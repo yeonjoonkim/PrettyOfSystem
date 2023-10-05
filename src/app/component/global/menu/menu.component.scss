@@ -53,7 +53,8 @@ ion-list {
 }
 
 #menu {
-  padding-bottom: 50px;
+  max-height: 900px;
+  overflow-y: auto;
 }
 
 #footer {
@@ -84,4 +85,28 @@ ion-list {
 #terms-conditions,
 #privacy {
   font-size: 8px;
+}
+
+@media only screen and (max-height: 1180px) {
+  #menu {
+    max-height: 700px;
+  }
+}
+
+@media only screen and (max-height: 712px) {
+  #menu {
+    max-height: 450px;
+  }
+}
+
+@media only screen and (max-height: 630px) {
+  #menu {
+    max-height: 390px;
+  }
+}
+
+@media only screen and (max-height: 550px) {
+  #menu {
+    max-height: 350px;
+  }
 }

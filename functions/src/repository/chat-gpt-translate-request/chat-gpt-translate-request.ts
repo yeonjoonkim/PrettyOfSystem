@@ -15,6 +15,22 @@ export const getAll = async function (): Promise<I.ChatGptTranslateDocumentType[
   return requests;
 };
 
+export const getSelected = async function (
+  id: string
+): Promise<I.ChatGptTranslateDocumentType | null> {
+  const docRef = firestore().collection(Db.Context.ChatGptTranslateRequest).doc(id);
+  const docSnapshot = await docRef.get();
+
+  if (!docSnapshot.exists) {
+    logger.error(`Document with ID ${id} not found`);
+    return null;
+  } else {
+    const data = docSnapshot.data() as I.ChatGptTranslateDocumentType;
+    logger.info(`Retrieving Translate Request with ID: ${id}`);
+    return data;
+  }
+};
+
 export const getPendings = async function (): Promise<I.ChatGptTranslateDocumentType[]> {
   const snapshot = await firestore()
     .collection(Db.Context.ChatGptTranslateRequest)
@@ -73,6 +89,46 @@ export const createDocument = async function (request: I.ChatGptTranslateDocumen
     return true;
   } catch (error) {
     logger.error('Create Translate Request Failed', error);
+    return false;
+  }
+};
+
+export const deleteDocument = async function (
+  request: I.ChatGptTranslateDocumentType
+): Promise<boolean> {
+  const documentation = firestore().collection(Db.Context.ChatGptTranslateRequest).doc(request.id);
+  const data = await documentation.get();
+
+  if (data.exists) {
+    try {
+      await documentation.delete();
+      logger.info(`Deleted Translate Request with ID: ${request.id}`);
+      return true;
+    } catch (error) {
+      logger.error('Delete Translate Request Failed', error);
+      return false;
+    }
+  } else {
+    logger.warn(`Document with ID ${request.id} not found`);
+    return false;
+  }
+};
+
+export const deleteDocumentById = async function (id: string): Promise<boolean> {
+  const documentation = firestore().collection(Db.Context.ChatGptTranslateRequest).doc(id);
+  const data = await documentation.get();
+
+  if (data.exists) {
+    try {
+      await documentation.delete();
+      logger.info(`Deleted Translate Request with ID: ${id}`);
+      return true;
+    } catch (error) {
+      logger.error('Delete Translate Request Failed', id);
+      return false;
+    }
+  } else {
+    logger.warn(`Document with ID ${id} not found`);
     return false;
   }
 };

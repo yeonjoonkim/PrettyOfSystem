@@ -3,6 +3,7 @@ import { NavParams } from '@ionic/angular';
 import { IFormHeaderModalProp, IUser, NameValuePairType } from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
 import * as Constant from 'src/app/constant/constant';
+import { cloneDeep } from 'lodash-es';
 
 @Component({
   selector: 'user-edit',
@@ -28,7 +29,7 @@ export class UserEditComponent implements OnInit, DoCheck {
   };
   public user!: IUser;
   private _encryptedPassword: string = '';
-
+  private _paramUser!: IUser;
   constructor(
     private _navParams: NavParams,
     private _user: UserService
@@ -82,7 +83,9 @@ export class UserEditComponent implements OnInit, DoCheck {
       this.user.loginOption.email && this.resetPassword
         ? this._encryptedPassword
         : this.user.encryptedPassword;
-    const result = await this._user.updateUser(this.user);
+    this._paramUser;
+    console.log(this._paramUser);
+    const result = await this._user.updateUser(this.user, this._paramUser);
     if (result) {
       await this._user.modal.dismiss();
     }
@@ -94,8 +97,7 @@ export class UserEditComponent implements OnInit, DoCheck {
     );
     const shopSelection: NameValuePairType[] | undefined = this._navParams.get('shopSelection');
     const user: IUser | undefined = this._navParams.get('user');
-
-    if (form !== undefined && shopSelection !== undefined && user && undefined) {
+    if (form !== undefined && shopSelection !== undefined && user !== undefined) {
       this.form = form
         ? form
         : {
@@ -104,6 +106,7 @@ export class UserEditComponent implements OnInit, DoCheck {
             action: Constant.Default.FormAction.Read,
             enabledSavebutton: false,
           };
+      this._paramUser = cloneDeep(user);
       this.user = user;
       this.shopSelection = shopSelection;
       this.loading = false;

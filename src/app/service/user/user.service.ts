@@ -5,10 +5,11 @@ import {
   MenuCategoryType,
   NameValuePairType,
   PlanConfigurationType,
+  RoleAccessLevelType,
   RoleConfigurationType,
   ShopConfigurationType,
 } from 'src/app/interface';
-import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, firstValueFrom, map, of, switchMap } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
@@ -17,6 +18,7 @@ import { combineLatestWith, first, take } from 'rxjs/operators';
 import { GlobalService } from '../global/global.service';
 import { UserModalService } from './user-modal/user-modal.service';
 import { SystemPlanRepositoryService } from 'src/app/firebase/system-repository/plan/system-plan-repository.service';
+import { SystemLanguageStorageService } from '../global/language/system-language-management/system-language-storage/system-language-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -41,39 +43,37 @@ export class UserService {
     private _userRepo: UserCredentialRepositoryService,
     private _menuRepo: SystemMenuRepositoryService,
     private _planRepo: SystemPlanRepositoryService,
-    private _global: GlobalService
-  ) {
-    this.activateAuthChangeListener();
-  }
+    private _global: GlobalService,
+    private _languageStorage: SystemLanguageStorageService
+  ) {}
 
   public async init() {
     this._global.loading.show();
-    const subscription = this.data$.subscribe(async data => {
+    const language = await this._languageStorage.getCurrentLanguage();
+    let userLanguage = '';
+    const subscription = this.data$.pipe(take(1)).subscribe(async data => {
       if (data !== null) {
         const currentShop = data.associatedShops.find(s => s.shopId === data.currentShopId);
-
-        if (currentShop !== undefined) {
-          if (currentShop.role.accessLevel.isSystemAdmin) {
-            this._router.navigateByUrl('system/user');
-          } else if (
-            currentShop.role.accessLevel.isAdmin ||
-            currentShop.role.accessLevel.isManager
-          ) {
-            this._router.navigateByUrl('shop/employee-management');
-          } else {
-            this._router.navigateByUrl('booking');
-          }
-          await this.setPreferLanguage(data.setting.preferLanguage);
-          await this._global.loading.dismiss();
-          subscription.unsubscribe();
-        }
+        this.navigateByRole(currentShop?.role?.accessLevel);
+        userLanguage = data.setting.preferLanguage;
+        subscription.unsubscribe();
       }
     });
+
+    if (language !== userLanguage && userLanguage.length > 0) {
+      await this._global.language.onLanguageChange(userLanguage);
+    }
+    await this._global.loading.dismiss();
   }
 
-  private async setPreferLanguage(langCode: string) {
-    this._global.language.currentLanguage = langCode;
-    await this._global.language.onLanguageChange();
+  private navigateByRole(accessLevel: RoleAccessLevelType | undefined) {
+    if (accessLevel?.isSystemAdmin) {
+      this._router.navigateByUrl('system/user');
+    } else if (accessLevel?.isAdmin || accessLevel?.isManager) {
+      this._router.navigateByUrl('shop/employee-management');
+    } else {
+      this._router.navigateByUrl('booking');
+    }
   }
 
   public async presentEdit() {
@@ -100,22 +100,39 @@ export class UserService {
     this._router.navigateByUrl('/login');
   }
 
-  public async updateCurrentShop(shopId: string) {
+  public async updateCurrentShop(shopId: string, currentLanguage: string) {
     this.data$.pipe(take(1)).subscribe(async user => {
       if (user !== null) {
         user.currentShopId = shopId;
         await this._global.loading.show();
         await this._userRepo.updateUser(user);
-        this._global.language.currentLanguage = user.setting.preferLanguage;
-        await this._global.language.onLanguageChange();
+
+        if (currentLanguage !== user.setting.preferLanguage) {
+          await this._global.language.onLanguageChange(user.setting.preferLanguage);
+        }
+
         await this._global.loading.dismiss();
       }
     });
   }
 
-  public async updateUser(user: IUser) {
-    const result = await this._userRepo.updateUser(user);
-    return result;
+  public async updateUser(after: IUser, before: IUser) {
+    const beforeLoginInput = before.loginOption.email ? before.email : before.phoneNumber;
+    const afterLoginInput = after.loginOption.email ? after.email : after.phoneNumber;
+    const onChangeLoginOption = beforeLoginInput !== afterLoginInput;
+
+    if (onChangeLoginOption) {
+      const userLoginVerification = this._userRepo.subscribeUserAccount(afterLoginInput);
+      const isExisted = await firstValueFrom(userLoginVerification);
+      if (!isExisted) {
+        return this._userRepo.updateUser(after);
+      } else {
+        await this.toastExsitingAccountError();
+        return false;
+      }
+    } else {
+      return await this._userRepo.updateUser(after);
+    }
   }
 
   public activateAuthChangeListener() {
@@ -238,7 +255,6 @@ export class UserService {
       switchMap(user => {
         if (user !== null) {
           const currentShop = user.associatedShops.find(s => s.shopId === user.currentShopId);
-          // If currentShop is found, need to wrap the role inside an Observable using 'of'
           return currentShop !== undefined ? of(currentShop.role) : of(null);
         } else {
           return of(null);
@@ -253,5 +269,10 @@ export class UserService {
       return currentShop.role;
     }
     return null;
+  }
+
+  private async toastExsitingAccountError() {
+    const msg = await this._global.language.transform('messageerror.description.existingacc');
+    await this._global.toast.presentError(msg);
   }
 }

@@ -125,6 +125,7 @@ export class ShopConfigurationService {
       setting: this._systemShopSetting.getDefaultShopSetting(),
       activeFrom: new Date(),
       activeTo: null,
+      translatedRequestIds: [],
     };
   }
 

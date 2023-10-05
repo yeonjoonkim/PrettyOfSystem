@@ -5,7 +5,8 @@ import { logger } from 'firebase-functions/v2';
 
 export const prepareDocuments = function (
   configs: I.ShopConfigurationType[],
-  requestLanguage: I.SystemLanguageTranslateRequestType
+  requestLanguage: I.SystemLanguageTranslateRequestType,
+  completes: I.ChatGptTranslateDocumentType[]
 ) {
   const requestForms: I.ChatGptTranslateDocumentType[] = [];
 
@@ -30,6 +31,16 @@ export const prepareDocuments = function (
         )
           ? (format as 'upper' | 'lower' | 'title' | 'description')
           : 'title';
+
+        const relatedComplete = completes.find(
+          s =>
+            s.format === form.format && s.shopId === form.shopId && s.serviceId === form.serviceId
+        );
+
+        if (relatedComplete !== undefined) {
+          form.parentId = relatedComplete.id;
+        }
+
         requestForms.push(form);
       }
     }
@@ -41,7 +52,7 @@ const transformEnglishNamePairValueList = function (config: I.ShopConfigurationT
   const result: I.NameValuePairType[] = [];
 
   for (let key in config.package) {
-    if (config.package.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(config.package, key)) {
       const format = key.split('.');
       const value = config.package[key];
       const element = { name: key, value: value };
@@ -72,6 +83,7 @@ const defaultTranslateDocumentType = function () {
     error: [],
     attempt: 0,
     translateResult: [],
+    parentId: '',
   };
 
   return document;

@@ -131,7 +131,7 @@
         </ng-template>
         <kendo-grid-column
           title="{{ 'label.title.businessname' | languageTransform | async }}"
-          [width]="200">
+          [width]="150">
           <ng-template kendoGridCellTemplate let-associatedShop>
             <ng-container *ngFor="let shop of shopFilters">
               <span *ngIf="associatedShop.shopId === shop.value">{{ shop.name }}</span>
@@ -140,7 +140,7 @@
         </kendo-grid-column>
         <kendo-grid-column
           title="{{ 'label.title.role' | languageTransform | async }}"
-          [width]="150">
+          [width]="125">
           <ng-template kendoGridCellTemplate let-shop>
             <name-value-pair-single-dropdown-selection
               (selectedChange)="onChangeAssociatedShopRole($event, shop)"
@@ -156,14 +156,15 @@
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column
-          [width]="50"
+          [width]="75"
           title="{{ 'label.title.displayinbooking' | languageTransform | async }}">
           <ng-template kendoGridCellTemplate let-shop>
             <input
               id="associated-shop-active"
               type="checkbox"
               kendoCheckBox
-              [(ngModel)]="shop.displayInSystem"
+              [checked]="shop.displayInSystem"
+              (click)="onChangeDisplay(shop)"
               [disabled]="form.readOnly" />
           </ng-template>
         </kendo-grid-column>

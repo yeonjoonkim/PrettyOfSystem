@@ -35,10 +35,13 @@ export type OnChangeShopType = {
   isAddressChanged: boolean;
   isOperatingHourChanged: boolean;
   isPreimumPlan: boolean;
+  isTranslatedRequestChange: boolean;
+  isTranslatedRequestDelete: boolean;
 };
 
 export type OnChangeShopActionType = {
   isSendMsgClientShopInfoChange: boolean;
   isResetRoster: boolean;
   isActiveStatusChange: boolean;
+  isTranslatedRequestDelete: boolean;
 };

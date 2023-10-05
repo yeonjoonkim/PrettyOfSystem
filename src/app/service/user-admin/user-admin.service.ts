@@ -36,7 +36,7 @@ export class UserAdminService {
       const loginMethod = after.loginOption.phoneNumber ? after.phoneNumber : after.email;
       const userLoginVerification = this._userRepo.subscribeUserAccount(loginMethod);
       const isExisted = await firstValueFrom(userLoginVerification);
-      console.log(isExisted);
+
       if (!isExisted) {
         return await this._userRepo.updateUser(after);
       } else {
@@ -44,7 +44,6 @@ export class UserAdminService {
         return false;
       }
     } else {
-      console.log(after);
       return await this._userRepo.updateUser(after);
     }
   }

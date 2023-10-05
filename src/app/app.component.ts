@@ -5,6 +5,7 @@ import { NetworkConnectionStatusService } from './service/global/network-connect
 import { ConnectionStatus } from '@capacitor/network';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from './service/user/user.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -92,7 +93,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private async loadLanguage() {
     let connected = await this._global.networkConnection.isConnected();
     await this._global.language.management.storage.setDefault(connected).then(async () => {
-      await this._global.language.setCurrentLanguage();
       this.isLoaded = true;
     });
   }

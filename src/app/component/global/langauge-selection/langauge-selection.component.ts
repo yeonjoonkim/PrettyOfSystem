@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { LanguageService } from 'src/app/service/global/language/language.service';
 import { NameValuePairType } from 'src/app/interface/global/global.interface';
 import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 

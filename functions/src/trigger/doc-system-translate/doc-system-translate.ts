@@ -10,10 +10,14 @@ export const onCreateNewLanguage = onDocumentCreated(
   async event => {
     let requestData = event.data?.data() as I.SystemLanguageTranslateRequestType | null;
     if (requestData) {
-      logger.info('Retreving All Shop Configs');
+      logger.info('Retreving All Shop Configs and Completed Document');
       const configs = await Repository.Shop.Configuration.getAll();
-      logger.info('Retreving All Shop Configs');
-      const forms = Service.Trigger.SystemTranslateRequest.prepareDocuments(configs, requestData);
+      const compeltedDocs = await Repository.TranslateRequest.getCompletes();
+      const forms = Service.Trigger.SystemTranslateRequest.prepareDocuments(
+        configs,
+        requestData,
+        compeltedDocs
+      );
 
       const sleep = async (duration: number) => {
         return new Promise(resolve => setTimeout(resolve, duration));

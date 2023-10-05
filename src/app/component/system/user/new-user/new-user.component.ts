@@ -11,6 +11,8 @@ import {
 import { UserAdminService } from 'src/app/service/user-admin/user-admin.service';
 import * as Constant from 'src/app/constant/constant';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
+import { LoadingService } from 'src/app/service/global/loading/loading.service';
+import { cloneDeep } from 'lodash-es';
 @Component({
   selector: 'new-user',
   templateUrl: './new-user.component.html',
@@ -37,10 +39,13 @@ export class NewUserComponent implements OnInit {
 
   private _roles: RoleConfigurationType[] = [];
   private _criteria!: UserManagementCriteria;
+  public loading = false;
+  private _cachedAssocatedShops!: UserAssociatedShopType[];
   constructor(
     private _navParams: NavParams,
     private _systemAdmin: UserAdminService,
-    private _languageStorage: SystemLanguageStorageService
+    private _languageStorage: SystemLanguageStorageService,
+    private _loading: LoadingService
   ) {
     this.user.id = this._systemAdmin.getNewId();
   }
@@ -94,7 +99,7 @@ export class NewUserComponent implements OnInit {
     this.handleEnabledSaveBtn();
   }
 
-  public onChangeAssociatedShopRole(
+  public async onChangeAssociatedShopRole(
     selected: NameValuePairType,
     selectedShop: UserAssociatedShopType
   ) {
@@ -102,9 +107,47 @@ export class NewUserComponent implements OnInit {
     const shop = this.user.associatedShops.find(s => s.shopId === selectedShop.shopId);
     if (role !== undefined && shop !== undefined) {
       const index = this.user.associatedShops.findIndex(s => s.shopId === selectedShop.shopId);
+      selectedShop.displayInSystem = selectedShop.role.accessLevel.isReception
+        ? false
+        : selectedShop.displayInSystem;
+      selectedShop.role = role;
+      selectedShop.displayInSystem = role.accessLevel.isReception
+        ? false
+        : selectedShop.displayInSystem;
       this.user.associatedShops[index] = selectedShop;
+      this._cachedAssocatedShops = cloneDeep(this.user.associatedShops);
+      await this.reloading();
     }
+
     this.handleEnabledSaveBtn();
+  }
+
+  public async displayChange(shop: UserAssociatedShopType) {
+    shop.displayInSystem = !shop.displayInSystem;
+    shop.displayInSystem = shop.role.accessLevel.isReception ? false : shop.displayInSystem;
+    const index = this.user.associatedShops.findIndex(s => s.shopId === shop.shopId);
+    this.user.associatedShops[index] = shop;
+    this._cachedAssocatedShops = cloneDeep(this.user.associatedShops);
+    await this.reloading();
+  }
+
+  public async activeChange(shop: UserAssociatedShopType) {
+    shop.active = !shop.active;
+    const index = this.user.associatedShops.findIndex(s => shop.shopId === s.shopId);
+    this.user.associatedShops[index] = shop;
+    this._cachedAssocatedShops = cloneDeep(this.user.associatedShops);
+    await this.reloading();
+  }
+
+  public async reloading() {
+    await this._loading.show();
+    this.user.associatedShops = [];
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+      this.user.associatedShops = this._cachedAssocatedShops;
+      this._loading.dismiss();
+    }, 300);
   }
 
   public async onClickAddAssociatedShopRole(event: any) {

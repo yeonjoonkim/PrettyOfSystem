@@ -22,6 +22,7 @@ export class AddAssociatedShopComponent implements OnInit {
   public selectedShop: NameValuePairType = { name: '', value: '' };
   public selectedRole: NameValuePairType = { name: '', value: '' };
   public displayInBooking: boolean = false;
+  public isReception: boolean = false;
   constructor(
     private _popover: PopoverController,
     private _navParam: NavParams,
@@ -61,6 +62,14 @@ export class AddAssociatedShopComponent implements OnInit {
     } else {
       const err = await this._global.language.transform('messagefail.description.noshoprole');
       await this._global.toast.presentError(err);
+    }
+  }
+
+  public onChangeRole() {
+    const role = this._criteria.role.find(r => r.id === this.selectedRole.value);
+    if (role !== undefined) {
+      this.displayInBooking = role.accessLevel.isReception ? false : this.displayInBooking;
+      this.isReception = role.accessLevel.isReception;
     }
   }
 

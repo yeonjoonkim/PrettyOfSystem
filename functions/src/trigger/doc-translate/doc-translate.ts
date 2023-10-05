@@ -53,13 +53,13 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
         after.format
       );
 
-      if (lifeCycle.FailToPending) {
+      if (lifeCycle.failToPending || lifeCycle.completedToPending) {
         after.error = [];
         after.attempt = 0;
         after.result = [];
       }
 
-      logger.info(after.id + ' triggered. Before: ' + before.status + '| After: ' + after.status);
+      logger.info(after.id + ' triggered. Before: ' + before.status + ' | After: ' + after.status);
 
       if (action.tryReconnectOpenAPI) {
         logger.info(after.id + ' Attempt to reconnect to open api instance.');
@@ -69,6 +69,9 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
           after.prop = Service.TextTransform.preCleansingTranslateProp(after.prop);
           await Repository.TranslateRequest.updateDocument(after);
           logger.info(after.id + 'connected ');
+        } else if (!connection && (lifeCycle.failToPending || lifeCycle.completedToPending)) {
+          await Repository.TranslateRequest.updateDocument(after);
+          logger.info(after.id + ' cannot find any available instance. will try again.');
         } else {
           logger.info(after.id + ' cannot find any available instance. will try again.');
         }
@@ -76,6 +79,7 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
 
       if (action.startTranslate && vm !== undefined) {
         logger.info(after.id + ' Start Translate');
+        after.prop = Service.TextTransform.preCleansingTranslateProp(after.prop);
         let translated = await Service.Translate.process(vm, after);
         logger.info(after.id + ' End Translate');
         if (translated.error.length > 0) {
@@ -117,6 +121,9 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
       if (action.failAlert && vm !== undefined) {
         //Alert to System Admin
         await switchPendingRequestToInProgress(after);
+      }
+      if (after.status === Constant.API.TranslateStatus.Completed && after.parentId.length > 0) {
+        await handleMergeIntoParent(after);
       }
     }
   }
@@ -178,5 +185,18 @@ const handleUpdateShopLanguagePackage = async function (doc: I.ChatGptTranslateD
     return update;
   } else {
     return false;
+  }
+};
+
+const handleMergeIntoParent = async function (child: I.ChatGptTranslateDocumentType) {
+  logger.info('Retreving Parent Document');
+  const parent = await Repository.TranslateRequest.getSelected(child.parentId);
+  if (parent !== null) {
+    logger.info('Start Merge');
+    parent.result.concat(child.result);
+    parent.translateResult.concat(child.translateResult);
+    logger.info('Start Completed');
+    await Repository.TranslateRequest.updateDocument(parent);
+    await Repository.TranslateRequest.deleteDocument(child);
   }
 };

@@ -60,29 +60,4 @@ export class BookingQueryComponent implements OnInit, OnChanges {
       return false;
     }
   }
-
-  private isAddressChange(change: SimpleChange) {}
-
-  // private async handleQuery(queryChange: SimpleChange) {
-  //   const beforeQuery: BookingQueryCriteria | undefined = queryChange.previousValue;
-  //   const afterQuery: BookingQueryCriteria | undefined = queryChange.currentValue;
-  //   if (beforeQuery !== undefined && afterQuery !== undefined) {
-  //     const isChanged = this.isQueryChanged(beforeQuery, afterQuery);
-  //     const isQuery =
-  //       afterQuery.address.suburb.length > 0 &&
-  //       afterQuery.address.postCode.length > 0 &&
-  //       afterQuery.shopCategoryName.length > 0;
-  //     console.log(isChanged && isQuery);
-  //     if (isChanged && isQuery) {
-
-  //     }
-  //   }
-  // }
-
-  // private isQueryChanged(before: BookingQueryCriteria, after: BookingQueryCriteria) {
-  //   const isPostCodeChanged = before.address.postCode !== after.address.postCode;
-  //   const isSurburbChanged = before.address.suburb !== after.address.suburb;
-  //   const isCategoryChanged = before.shopCategoryName !== after.shopCategoryName;
-  //   return isCategoryChanged || isSurburbChanged || isPostCodeChanged;
-  // }
 }

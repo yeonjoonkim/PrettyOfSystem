@@ -15,13 +15,18 @@ import { ToastService } from '../../toast/toast.service';
 import { SystemLanguageAddService } from './system-language-add/system-language-add.service';
 import { LanguageTranslationPackageService } from '../../language-translation-package/language-translation-package.service';
 import { lastValueFrom } from 'rxjs';
-
+import getUserLocale from 'get-user-locale';
+const localeOption = {
+  useFallbackLocale: false,
+  fallbackLocale: 'en-US',
+};
+const currentLocale = getUserLocale(localeOption) === null ? 'en' : getUserLocale(localeOption);
 @Injectable({
   providedIn: 'root',
 })
 export class SystemLanguageManagementService {
-  private _hasSelection: boolean = false;
-  private _isInQ: boolean = false;
+  public currentSelection!: LanguageSelectionType;
+  public currentLanguage!: string;
   constructor(
     public storage: SystemLanguageStorageService,
     public translateCriteria: TranslateCriteriaService,
@@ -34,9 +39,8 @@ export class SystemLanguageManagementService {
   ) {}
 
   public async editSelectedPackage(selectedLanguageCode: string, pair: PairKeyValueType) {
-    let selection: LanguageSelectionType = await this.storage.getSelectedSelection(
-      selectedLanguageCode
-    );
+    let selection: LanguageSelectionType =
+      await this.storage.getSelectedSelection(selectedLanguageCode);
     selection.package = this._systemLanguagePackage.update(selection.package, pair);
     await this._systemLanguageRepo.updateLanguageSelection(selection);
     await this.storage.refresh();
@@ -110,12 +114,65 @@ export class SystemLanguageManagementService {
   }
 
   public async transform(key: string) {
-    let currentSelection = await this.storage.getCurrentSelection();
+    if (this.currentSelection !== undefined && this.currentLanguage !== undefined) {
+      let path = this._textTransform.setLanguageTransformCodeList(key);
+      let result = this._systemLanguagePackage.getValue(path, this.currentSelection.package);
+      return !this.isObject(result) && this.isString(result) ? result : key;
+    } else {
+      let currentLanguage = await this.storage.getCurrentLanguage();
+      if (currentLanguage === null) {
+        await this.setCurrentLanguage();
+      }
+      this.currentLanguage = await this.storage.getCurrentLanguage();
+      this.currentSelection = await this.storage.getCurrentSelection();
+      let path = this._textTransform.setLanguageTransformCodeList(key);
+      let result = this._systemLanguagePackage.getValue(path, this.currentSelection.package);
 
-    let path = this._textTransform.setLanguageTransformCodeList(key);
-    let result = this._systemLanguagePackage.getValue(path, currentSelection?.package);
+      return !this.isObject(result) && this.isString(result) ? result : key;
+    }
+  }
 
-    return !this.isObject(result) && this.isString(result) ? result : key;
+  private async setCurrentLanguage() {
+    const currentSetting = await this.storage.getCurrentLanguage();
+    const locale = currentLocale?.toLowerCase();
+    const isKorean = locale?.includes('ko');
+    const isJapanese = locale?.includes('ja');
+    const isChinese = locale?.includes('zh');
+    const isHindi = locale?.includes('hi');
+    const isItailan = locale?.includes('it');
+    const isSpanish = locale?.includes('es');
+    const isFilipino = locale?.includes('ph');
+    const isVietnamese = locale?.includes('vi');
+    const isIndonesian = locale?.includes('id');
+    const isFrench = locale?.includes('fr');
+    const isThai = locale?.includes('th');
+    let result = isKorean
+      ? 'ko'
+      : isChinese
+      ? 'zh-hans'
+      : isJapanese
+      ? 'ja'
+      : isHindi
+      ? 'hi_in'
+      : isItailan
+      ? '	it'
+      : isSpanish
+      ? 'es'
+      : isFilipino
+      ? 'tl-ph'
+      : isVietnamese
+      ? 'vi-vn'
+      : isIndonesian
+      ? 'id_id'
+      : isFrench
+      ? 'fr'
+      : isThai
+      ? 'th'
+      : 'en';
+
+    currentSetting !== null && typeof currentSetting === 'string' && currentSetting !== undefined
+      ? await this.storage.storeCurrentLanguage(currentSetting)
+      : await this.storage.storeCurrentLanguage(result);
   }
 
   public async validateKeyPairValue(

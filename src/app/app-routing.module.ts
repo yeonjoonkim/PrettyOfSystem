@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { loginGuard } from './guard/login-gurad/login-guard.guard';
-import { posGuard } from './guard/pos-gurad/pos-gurad.guard';
+import { adminGuard, managerGuard, systemAdminGuard } from './guard/role-guard/role.guard';
 const routes: Routes = [
   {
     path: '',
@@ -11,6 +11,7 @@ const routes: Routes = [
   {
     path: 'system',
     loadChildren: () => import('./page/system/system.module').then(m => m.SystemPageModule),
+    canActivate: [systemAdminGuard],
   },
 
   {
@@ -30,6 +31,7 @@ const routes: Routes = [
   {
     path: 'shop',
     loadChildren: () => import('./page/shop/shop.module').then(m => m.ShopPageModule),
+    canActivate: [managerGuard],
   },
 ];
 

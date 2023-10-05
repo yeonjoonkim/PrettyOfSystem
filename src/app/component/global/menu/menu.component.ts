@@ -78,12 +78,11 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   private async getCurrentLanguage() {
-    let currentLang = await this._storage.getLanguage();
-    this.selectedLangauge = currentLang !== null ? currentLang : this._language.deafultLanguageCode;
+    this.selectedLangauge = await this._storage.getLanguage();
   }
 
   public async handleCurrentShopChange() {
-    await this.user.updateCurrentShop(this.selectedShop.value);
+    await this.user.updateCurrentShop(this.selectedShop.value, this.selectedLangauge);
   }
 
   private async subscribeShopSelection() {
