@@ -95,8 +95,14 @@ export class SystemLanguageStorageService {
   }
 
   public async getSelections(): Promise<LanguageSelectionType[]> {
-    let result: LanguageSelectionType[] = await this._stroage.getLanguageSelection();
-    return result;
+    let result: LanguageSelectionType[] | null = await this._stroage.getLanguageSelection();
+    if (result !== null) {
+      return result;
+    } else {
+      await this.refresh();
+      let result: LanguageSelectionType[] = await this._stroage.getLanguageSelection();
+      return result;
+    }
   }
 
   public async getCurrentSelection(): Promise<LanguageSelectionType> {

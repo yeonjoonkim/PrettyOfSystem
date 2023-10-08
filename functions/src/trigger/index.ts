@@ -5,3 +5,10 @@ export {
   onUpdateChatGptTranslateRequest,
 } from './doc-translate/doc-translate';
 export { onCreateNewLanguage } from './doc-system-translate/doc-system-translate';
+export {
+  onShopServiceCreate,
+  onShopServiceDelete,
+  onShopServiceUpdated,
+} from './doc-shop-service/doc-shop-service';
+
+export { onOpenAPIInstanceUpdate } from './open-api-instance/open-api-instnace';

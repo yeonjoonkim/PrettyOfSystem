@@ -13,7 +13,6 @@ import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/
 import { ShopEmployeeAccountService } from './shop-employee-account/shop-employee-account.service';
 import { GlobalService } from '../../global/global.service';
 import { ShopEmployeeAccountModalService } from './shop-employee-account-modal/shop-employee-account-modal.service';
-import { FirebaseService } from '../../firebase/firebase.service';
 import * as Constant from 'src/app/constant/constant';
 import { SystemLanguageStorageService } from '../../global/language/system-language-management/system-language-storage/system-language-storage.service';
 @Injectable({
@@ -35,7 +34,6 @@ export class ShopEmployeeManagementService {
     private _roleRepo: SystemRoleRepositoryService,
     private _shopEmpAcc: ShopEmployeeAccountService,
     private _global: GlobalService,
-    private _f: FirebaseService,
     private _languageStorage: SystemLanguageStorageService
   ) {
     this.role$ = this._currentUser.currentRole$;
@@ -56,7 +54,7 @@ export class ShopEmployeeManagementService {
     if (shop !== null && employeeRole !== undefined) {
       const result: ShopEmployeeManagementUserType = {
         shopId: shop.id,
-        userId: this._f.newId(),
+        userId: this._global.newId(),
         firstName: '',
         lastName: '',
         loginOption: { phoneNumber: true, email: false },
@@ -185,7 +183,7 @@ export class ShopEmployeeManagementService {
   private activateAssociatedUsers() {
     this.shopEmployees$ = this.shopConfig$.pipe(
       switchMap(config => {
-        if (config !== null) {
+        if (config !== null && config !== undefined) {
           return this._userRepo.subscribeAssociatedShopUsers(config.id);
         } else {
           return of([]);
@@ -238,8 +236,17 @@ export class ShopEmployeeManagementService {
     }
   }
 
-  public isAuthorisedRole(r: RoleConfigurationType) {
+  public isManagerAccessLevel(r: RoleConfigurationType) {
     return r.accessLevel.isSystemAdmin || r.accessLevel.isAdmin || r.accessLevel.isManager;
+  }
+
+  public isReceptionAccessLevel(r: RoleConfigurationType) {
+    return (
+      r.accessLevel.isSystemAdmin ||
+      r.accessLevel.isAdmin ||
+      r.accessLevel.isManager ||
+      r.accessLevel.isReception
+    );
   }
 
   public async isHigerRole(r: RoleConfigurationType) {

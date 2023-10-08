@@ -79,7 +79,7 @@ export class ShopConfigurationService {
     let isExistingBusinessName: boolean = await this.isExistingBusinessName(config);
     await this.global.loading.show();
     let saved = !isExistingBusinessName
-      ? await this._systemShopConfigRepo.editExistingShopConfiguration(config)
+      ? await this._systemShopConfigRepo.updateShopConfiguration(config)
       : false;
 
     if (saved) {

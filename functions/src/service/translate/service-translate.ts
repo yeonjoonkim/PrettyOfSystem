@@ -23,6 +23,7 @@ export const process = async function (
     } catch (e) {
       logger.error(doc.id + 'Error in Performance Translataion: ' + lang.name, e);
       doc.error.push(lang);
+      doc.result.push(lang);
     }
   };
 
@@ -35,17 +36,14 @@ export const process = async function (
     await sleep(1000); // delay of 1 second between requests
   }
 
-  let backoffTime = 2000;
-
-  while (doc.attempt < 2 && doc.error.length > 0) {
+  while (doc.attempt < 3 && doc.error.length > 0) {
     doc.attempt++;
     let currentErrors = [...doc.error];
     doc.error = [];
     for (const errorLang of currentErrors) {
       await performTranslation(errorLang);
-      await sleep(backoffTime);
+      await sleep(1000);
     }
-    backoffTime *= 2;
   }
 
   return doc;
@@ -60,7 +58,7 @@ export const translateResult = async function (
   let r = defaultResult();
   r.language = l;
   r.formatter = setFormatter(f);
-  r.command = setCommand(l, p);
+  r.command = setCommand(l, p, r.formatter);
   r.response = await Api.OpenApi.sendRequest(i, r.command);
 
   if (!r.response) {
@@ -73,7 +71,8 @@ export const translateResult = async function (
     return r;
   }
 
-  const result = r.response.result.choices[0].message.content;
+  let result = r.response.result.choices[0].message.content;
+
   r.translatedObject = await translatedObjectResult(result, l.value);
 
   if (objectInspector(r.translatedObject)) {
@@ -105,13 +104,22 @@ const translatedObjectResult = async function (
   object[code] = '';
 
   try {
-    object = JSON.parse(result);
+    const startIndex = result.lastIndexOf('{');
+    const endIndex = result.lastIndexOf('}') + 1;
+    const jsonString = result.substring(startIndex, endIndex);
+    object = JSON.parse(jsonString);
   } catch (error) {
-    await Repo.Error.createErrorReport(result, error, 'update', 'LanguageTransJSON');
-    console.error('Failed to parse JSON:', error);
+    await Repo.Error.createErrorReport(
+      result,
+      JSON.stringify(error),
+      'update',
+      'LanguageTransJSON'
+    );
+    logger.error('Failed to parse JSON:', error);
   }
   return object;
 };
+
 const objectInspector = function (translated: I.ILanguageTranslateResult) {
   for (let langCode in translated) {
     const value = translated[langCode];
@@ -142,19 +150,27 @@ function transformText(obj: any, formatter: any): any {
   }
 }
 
-const setCommand = function (lang: I.NameValuePairType, prop: string) {
+const setCommand = function (
+  lang: I.NameValuePairType,
+  prop: string,
+  format: I.ILanguageTranslatedFormatCriteria
+) {
   const cleansedProp = TextTransform.preCleansingTranslateProp(prop);
+  const formatCommand = format.isDescription ? 'at a professional level. input: "' : '. input: "';
 
   return (
-    'Please correct any grammar errors in the following text: "' +
-    cleansedProp +
-    '". Then translate the corrected text to ' +
+    'Please correct any grammatical errors in the input and then translate it to' +
     lang.name +
-    '. The translation should be provided in JSON format, without any additional information or descriptions. The JSON key should be "' +
+    formatCommand +
+    cleansedProp +
+    '". Output: ' +
+    'It must be converted to the exact JSON format without any additional descriptions or information. Avoid any introductions.' +
+    'The translation should be provided in JSON format, without any additional information or descriptions. The JSON key should be "' +
     lang.value +
-    '" and the value should be the translated string. Please ensure that the JSON is properly formatted and can be parsed without errors by JSON.parse() in JavaScript or TypeScript. Here is the desired output format: {"' +
+    '" and the value should be the translated string. ' +
+    'Expect output: {"' +
     lang.value +
-    '":"<translatedValue>"}. Please do not include any introductory text or additional information in your response.'
+    '":"translatedValue"}.'
   );
 };
 

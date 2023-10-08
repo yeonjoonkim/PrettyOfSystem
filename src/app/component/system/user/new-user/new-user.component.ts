@@ -13,6 +13,7 @@ import * as Constant from 'src/app/constant/constant';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 import { LoadingService } from 'src/app/service/global/loading/loading.service';
 import { cloneDeep } from 'lodash-es';
+import { GlobalService } from 'src/app/service/global/global.service';
 @Component({
   selector: 'new-user',
   templateUrl: './new-user.component.html',
@@ -45,9 +46,10 @@ export class NewUserComponent implements OnInit {
     private _navParams: NavParams,
     private _systemAdmin: UserAdminService,
     private _languageStorage: SystemLanguageStorageService,
-    private _loading: LoadingService
+    private _loading: LoadingService,
+    private _global: GlobalService
   ) {
-    this.user.id = this._systemAdmin.getNewId();
+    this.user.id = this._global.newId();
   }
 
   async ngOnInit() {

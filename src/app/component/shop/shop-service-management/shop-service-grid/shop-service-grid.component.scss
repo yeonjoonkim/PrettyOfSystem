@@ -1,0 +1,51 @@
+#service-name {
+  text-decoration: underline;
+  color: var(--hyperlink);
+  &:hover {
+    color: var(--active);
+    cursor: pointer;
+  }
+}
+
+#insurance-check-box,
+#pregnant-check-box {
+  margin: 0;
+}
+
+.translated-status-container {
+  border-radius: 5px;
+  height: 100%;
+  padding: 0px 1px 1px 0px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.create {
+  background-color: var(--created);
+}
+
+.pending {
+  background-color: var(--title);
+}
+
+.inprogress {
+  background-color: var(--hyperlink);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.failed {
+  background-color: var(--error);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.success {
+  background-color: var(--success);
+}
+
+.completed {
+  background-color: var(--completed);
+  cursor: pointer;
+  text-decoration: underline;
+}

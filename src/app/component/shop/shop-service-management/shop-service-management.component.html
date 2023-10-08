@@ -1,0 +1,12 @@
+<flex-col id="shop-service">
+  <flex-col-item id="shop-service-grid">
+    <legend>{{ 'label.title.service' | languageTransform | async }}</legend>
+    <shop-service-grid
+      [services]="services"
+      [translatedRequests]="translatedRequests"
+      [role]="role"
+      (onCreate)="handleCreate()"
+      (onEdit)="handleEdit($event)"
+      (onEditPackage)="handleEditPackage($event)"></shop-service-grid>
+  </flex-col-item>
+</flex-col>

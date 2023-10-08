@@ -80,7 +80,7 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
       defaultKeyPairList
     );
     this._saveCommandSubscription = this._global.language.management.add.status.subscribe(
-      command => {
+      async command => {
         if (command !== undefined) {
           this._global.language.management.add.handleTranslateCommand(command);
           this.createStatus = command;
@@ -92,6 +92,10 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
             this.language.package = command.newPackage;
             this._global.language.management.add.save(this.language);
             this._global.language.management.storage.refresh();
+            await this._systemLanguage.sendRequest({
+              name: this.language.name,
+              value: this.language.code,
+            });
             this._modalCtrl.dismiss({ role: 'Saved' });
           }
         }

@@ -7,13 +7,13 @@ const systemShop: string = system + 'shop/';
 
 const shopConfiguration: string = 'shopConfiguration';
 const user: string = 'user';
-
+const shop: string = 'shop/';
+const shopService: string = shop + '{shopId}/service';
 //Reporter
 const FunctionError: string = 'functionError';
 
 //OpenApi
 const OpenApiInstance: string = 'openApiInstance';
-
 const ChatGptTranslateRequest: string = 'chatGptTranslateRequest';
 const SystemLanguageTranslateRequest: string = 'systemLanguageTranslateRequest';
 
@@ -23,6 +23,9 @@ export const Context = {
   ChatGptTranslateRequest: ChatGptTranslateRequest,
   ShopConfiguration: shopConfiguration,
   User: user,
+  Shop: {
+    Service: shopService,
+  } as const,
   System: {
     Language: {
       Selection: systemLanguage + 'selection',
@@ -46,3 +49,5 @@ export const Context = {
     FunctionError: FunctionError,
   } as const,
 } as const;
+
+export const ShopService = (shopId: string): string => `shop/${shopId}/service/`;

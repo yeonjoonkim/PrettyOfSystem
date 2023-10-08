@@ -31,6 +31,30 @@ export const getSelected = async function (
   }
 };
 
+export const getDocument = async function (
+  serviceId: string,
+  shopId: string,
+  format: I.TextFormatType
+): Promise<I.ChatGptTranslateDocumentType | null> {
+  const querySnapshot = await firestore()
+    .collection(Db.Context.ChatGptTranslateRequest)
+    .where('format', '==', format)
+    .where('serviceId', '==', serviceId)
+    .where('shopId', '==', shopId)
+    .limit(1)
+    .get();
+
+  if (querySnapshot.empty) {
+    logger.error('There is no document found in ChatGptTranslateRequest');
+    return null;
+  } else {
+    const docSnapshot = querySnapshot.docs[0];
+    const data = docSnapshot.data() as I.ChatGptTranslateDocumentType;
+    logger.error('Document found in ChatGptTranslateRequest');
+    return data;
+  }
+};
+
 export const getPendings = async function (): Promise<I.ChatGptTranslateDocumentType[]> {
   const snapshot = await firestore()
     .collection(Db.Context.ChatGptTranslateRequest)
@@ -86,6 +110,20 @@ export const createDocument = async function (request: I.ChatGptTranslateDocumen
   try {
     request.id = newDoc.id;
     await newDoc.set(request);
+    return true;
+  } catch (error) {
+    logger.error('Create Translate Request Failed', error);
+    return false;
+  }
+};
+
+export const create = async function (request: I.ChatGptTranslateDocumentType) {
+  const documentationCollection = firestore()
+    .collection(Db.Context.ChatGptTranslateRequest)
+    .doc(request.id);
+
+  try {
+    await documentationCollection.set(request);
     return true;
   } catch (error) {
     logger.error('Create Translate Request Failed', error);

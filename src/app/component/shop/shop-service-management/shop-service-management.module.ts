@@ -1,0 +1,36 @@
+import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
+
+//Import Pipe
+import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
+
+//Import Module
+import { SharedFormModule } from 'src/app/component/form/form.module';
+import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.module';
+
+//Import Component
+import { ShopServiceManagementComponent } from './shop-service-management.component';
+import { ShopServiceGridComponent } from './shop-service-grid/shop-service-grid.component';
+import { ShopServiceComponent } from './shop-service/shop-service.component';
+import { ShopServiceLanguagePackageComponent } from './shop-service-language-package/shop-service-language-package.component';
+@NgModule({
+  declarations: [
+    ShopServiceManagementComponent,
+    ShopServiceGridComponent,
+    ShopServiceComponent,
+    ShopServiceLanguagePackageComponent,
+  ],
+  imports: [
+    CommonModule,
+    IonicModule,
+    FormsModule,
+    LanguageTransformPipeModule,
+    SharedFormModule,
+    KendoUiModule,
+  ],
+  exports: [ShopServiceManagementComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+})
+export class ShopServiceManagementModule {}

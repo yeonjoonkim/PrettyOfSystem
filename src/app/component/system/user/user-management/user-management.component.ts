@@ -51,9 +51,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   public async refresh() {
-    await this._global.loading.show();
     await this.loadingCriteria();
-    await this._global.loading.dismiss();
   }
 
   public onChangeQuery() {

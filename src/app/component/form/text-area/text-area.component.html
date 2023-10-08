@@ -1,0 +1,22 @@
+<kendo-label text="{{ title | languageTransform | async }}">
+  <div class="form-error-container" *ngIf="!validate && mode === 'form' && entered && isRequired">
+    <kendo-formerror>{{
+      'messageerror.description.textbox' | languageTransform | async
+    }}</kendo-formerror>
+  </div>
+
+  <kendo-textarea
+    [cols]="100"
+    [rows]="5"
+    [style.height.px]="110"
+    [readonly]="readOnly"
+    [placeholder]="placeholder"
+    [(ngModel)]="validatedValue"
+    [clearButton]="true"
+    [maxlength]="max"
+    (ngModelChange)="onChangeValue()">
+    <ng-template kendoTextBoxSuffixTemplate *ngIf="showCounter">
+      <span class="counter">{{ counter }}</span>
+    </ng-template></kendo-textarea
+  >
+</kendo-label>

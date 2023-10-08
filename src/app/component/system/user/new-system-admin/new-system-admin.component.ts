@@ -4,6 +4,7 @@ import { IFormHeaderModalProp, IUser } from 'src/app/interface';
 import * as Constant from '../../../../constant/constant';
 import { UserAdminService } from 'src/app/service/user-admin/user-admin.service';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
+import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
   selector: 'new-system-admin',
@@ -25,7 +26,7 @@ export class NewSystemAdminComponent implements OnInit {
   constructor(
     private _navParams: NavParams,
     private _systemAdmin: UserAdminService,
-    private _languageStorage: SystemLanguageStorageService
+    private _global: GlobalService
   ) {}
 
   async ngOnInit() {
@@ -46,7 +47,8 @@ export class NewSystemAdminComponent implements OnInit {
     this.user = this._paramUser ? this._paramUser : this._systemAdmin.defaultUser();
 
     if (!this.user.setting.preferLanguage) {
-      this.user.setting.preferLanguage = await this._languageStorage.getCurrentLanguage();
+      this.user.setting.preferLanguage =
+        await this._global.language.management.storage.getCurrentLanguage();
     }
   }
 
@@ -81,8 +83,7 @@ export class NewSystemAdminComponent implements OnInit {
   }
 
   public async onClickCreate() {
-    this.user.id = this._systemAdmin.getNewId();
-    console.group(this.user.id);
+    this.user.id = this._global.newId();
     await this._systemAdmin.handleCreate(this.user, true);
   }
 }

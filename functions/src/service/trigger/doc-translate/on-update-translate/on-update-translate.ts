@@ -25,13 +25,14 @@ export const getActionByLifeCycle = function (lc: I.ChatGptTranslateDocumentLife
   const startTranslate = lc.createToInProgress || lc.pendingToInProgress;
   const updateShopLanguagePackage = lc.inProgressToSuccess;
   const failAlert = lc.inProgressToFail || lc.successToFail;
-  const findPending = lc.successToCompleted;
+  const finalizedConnection = lc.inProgressToFail || lc.successToCompleted;
+
   const action: I.ChatGptTranslateDocumentChangeActionType = {
     tryReconnectOpenAPI: tryReconnect,
     startTranslate: startTranslate,
     updateShopLanguagePackage: updateShopLanguagePackage,
     failAlert: failAlert,
-    findPendingToInProgress: findPending,
+    finalisedConnection: finalizedConnection,
   };
   return action;
 };

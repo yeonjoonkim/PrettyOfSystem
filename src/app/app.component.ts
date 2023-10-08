@@ -29,6 +29,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this._global.storage.create();
+    this._user.activateAuthChangeListener();
     this.subscribeRouterChange();
     this.subscribeUserLoginStatus();
     this.subscribeNetworkStatus();

@@ -60,6 +60,10 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       if (event.isSendMsgRosterChange) {
         logger.info('Roster Changed');
       }
+
+      if (change.beforeActiveShopCount > change.afterActiveShopCount) {
+        await handleDeleteSpecializedEmployee(prev, current);
+      }
     } catch (error) {
       await Repository.Error.createErrorReport(current, error, 'update', 'onUserUpdate');
     }
@@ -75,6 +79,36 @@ export const onUserDelete = onDocumentDeleted(Db.Context.User + '/{userId}', asy
     await handleAuthenticationLogin(user, 'delete');
   }
 });
+
+const handleDeleteSpecializedEmployee = async function (before: I.IUser, after: I.IUser) {
+  const beforeShops = before.associatedShops.filter(s => s.active);
+  const afterShopsSet = new Set(after.associatedShops.filter(s => s.active).map(s => s.shopId));
+
+  const removedShops = beforeShops.filter(shop => !afterShopsSet.has(shop.shopId));
+
+  const promises = []; // To collect all promises
+
+  for (let shop of removedShops) {
+    const promise = Repository.Shop.Service.getSelectShop(shop.shopId).then(services => {
+      const adjustServices = services.filter(s =>
+        s.specializedEmployees.some(s => s.value === after.id)
+      );
+
+      return Promise.all(
+        adjustServices.map(service => {
+          service.specializedEmployees = service.specializedEmployees.filter(
+            s => s.value !== after.id
+          );
+          return Repository.Shop.Service.updateService(service);
+        })
+      );
+    });
+
+    promises.push(promise);
+  }
+
+  await Promise.all(promises);
+};
 
 const handleCurrentShopRoleUpdate = async function (user: I.IUser) {
   const currentShop = user.associatedShops.find(s => s.shopId === user.currentShopId);

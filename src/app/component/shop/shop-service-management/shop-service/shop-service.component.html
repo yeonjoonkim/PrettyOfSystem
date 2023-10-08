@@ -1,0 +1,147 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  (onClickDismiss)="dismiss()"
+  (onClickCreate)="handleCreate()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()"
+  (onClickDelete)="handleDelete()">
+</form-header>
+<ion-content [scrollable]="true" *ngIf="current">
+  <flex-col id="container">
+    <flex-row>
+      <flex-row id="selections">
+        <flex-row-item id="related-service">
+          <name-value-pair-single-dropdown-selection
+            [isRequired]="true"
+            [readOnly]="form.readOnly"
+            title="label.title.relatedservice"
+            [(selected)]="current.service.relatedService"
+            (selectedChange)="handleEnabledSaveBtn()"
+            [selection]="current.relatedServiceTypes"></name-value-pair-single-dropdown-selection>
+        </flex-row-item>
+        <flex-row-item id="specialized-employees">
+          <name-value-pair-multi-dropdown-selection
+            [readOnly]="form.readOnly"
+            title="label.title.specializedemployees"
+            [(selected)]="current.service.specializedEmployees"
+            [selection]="current.specializedEmployees"></name-value-pair-multi-dropdown-selection>
+        </flex-row-item>
+      </flex-row>
+      <flex-row-item>
+        <div id="insurance-cover">
+          <kendo-label text="{{ 'label.title.insurance' | languageTransform | async }}">
+            <input
+              kendoCheckBox
+              type="checkbox"
+              [disabled]="form.readOnly"
+              [(ngModel)]="current.service.isInsuranceCover"
+              (ngModelChange)="handleInsurance()" />
+          </kendo-label>
+        </div>
+        <div id="pregnant">
+          <kendo-label text="{{ 'label.title.pregnant' | languageTransform | async }}">
+            <input
+              kendoCheckBox
+              type="checkbox"
+              [disabled]="form.readOnly"
+              [(ngModel)]="current.service.recommandForPregnant"
+              (ngModelChange)="handleEnabledSaveBtn()" />
+          </kendo-label>
+        </div>
+      </flex-row-item>
+    </flex-row>
+
+    <flex-col-item>
+      <text-box
+        [readOnly]="form.readOnly"
+        [(value)]="current.service.titleProp"
+        [(validate)]="validator.title"
+        (valueChange)="onChangeTitleProp()"
+        title="label.title.title"
+        [min]="2"
+        [max]="100"
+        [isRequired]="true"></text-box>
+    </flex-col-item>
+
+    <flex-col-item id="description-container">
+      <text-area
+        title="label.title.description"
+        [readonly]="form.readOnly"
+        [isRequired]="true"
+        [min]="5"
+        (valueChange)="onChangeDescriptionProp()"
+        [(value)]="current.service.descriptionProp"
+        [(validate)]="validator.description">
+      </text-area>
+    </flex-col-item>
+
+    <flex-col-item id="option-container">
+      <legend>
+        {{ 'label.title.option' | languageTransform | async }}
+      </legend>
+      <button
+        kendoButton
+        id="option-add-button"
+        (click)="createOption()"
+        *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
+        <span class="k-icon k-i-plus"></span>
+      </button>
+    </flex-col-item>
+  </flex-col>
+  <flex-row class="options">
+    <flex-row-item class="minute-option mintue-title">
+      {{ 'label.title.minute' | languageTransform | async }}
+    </flex-row-item>
+    <flex-row-item class="price-option price-title">
+      {{ 'label.title.price' | languageTransform | async }}
+    </flex-row-item>
+    <flex-row-item
+      *ngIf="
+        !form.readOnly && (form.action === 'create' || form.action === 'edit')
+      "></flex-row-item>
+  </flex-row>
+  <div *ngFor="let opt of current.service.options">
+    <flex-row class="options" *ngIf="country !== undefined">
+      <!--Min -->
+      <flex-row-item class="minute-option">
+        <kendo-numerictextbox
+          format="##"
+          [(value)]="opt.min"
+          [decimals]="0"
+          [spinners]="false"
+          [min]="0"
+          [max]="180"
+          (valueChange)="onChangeOption(opt)"
+          [readonly]="form.readOnly"></kendo-numerictextbox>
+        <p>{{ 'label.title.minute' | languageTransform | async }}</p>
+      </flex-row-item>
+      <!-- Price -->
+      <flex-row-item class="price-option">
+        <p *ngIf="country.currency === 'AUD'">$</p>
+        <kendo-numerictextbox
+          [(value)]="opt.price"
+          [decimals]="2"
+          [min]="0"
+          [spinners]="false"
+          (valueChange)="onChangeOption(opt)"
+          [readonly]="form.readOnly"></kendo-numerictextbox>
+      </flex-row-item>
+
+      <flex-row-item
+        class="price-option"
+        *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
+        <button
+          kendoButton
+          themeColor="error"
+          id="option-add-button"
+          (click)="deleteOption(opt)"
+          *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
+          <span class="k-icon k-i-trash"></span>
+        </button>
+      </flex-row-item>
+    </flex-row>
+  </div>
+</ion-content>

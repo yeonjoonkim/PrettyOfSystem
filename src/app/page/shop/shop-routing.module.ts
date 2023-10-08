@@ -14,6 +14,13 @@ const routes: Routes = [
         m => m.ShopEmployeeManagementPageModule
       ),
   },
+  {
+    path: 'service-management',
+    loadChildren: () =>
+      import('./shop-service-management/shop-service-management.module').then(
+        m => m.ShopServiceManagementPageModule
+      ),
+  },
 ];
 
 @NgModule({

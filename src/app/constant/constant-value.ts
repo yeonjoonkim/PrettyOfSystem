@@ -34,6 +34,7 @@ export const Text = {
     Lower: 'lower',
     Title: 'title',
     Description: 'description',
+    None: '',
   } as const,
 } as const;
 

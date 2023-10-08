@@ -1,7 +1,7 @@
 import * as I from '../../interface';
 
 export const preCleansingTranslateProp = function (input: string): string {
-  return input.trim().replace(/[^\w\s-]/g, '');
+  return input.trim().replace(/["\r\n{}]+/g, '');
 };
 
 export const getTranslatedLowerFormat = function (translated: I.ILanguageTranslateResult) {

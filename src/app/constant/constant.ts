@@ -10,6 +10,7 @@ export {
   Login,
   Text,
 } from './constant-value';
+export { MassageDescriptionType } from './constant-massage';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
 import { API } from './constant-api';

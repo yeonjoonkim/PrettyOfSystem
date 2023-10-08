@@ -1,27 +1,15 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import {
-  combineLatest,
-  filter,
-  from,
-  lastValueFrom,
-  map,
-  mergeMap,
-  Observable,
-  of,
-  switchMap,
-  toArray,
-} from 'rxjs';
+import { combineLatest, filter, from, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import {
   ShopCategoryType,
   ShopConfigurationType,
   ShopCountryType,
 } from 'src/app/interface/shop/shop.interface';
-import { FirebaseService } from 'src/app/service/firebase/firebase.service';
 import { ShopSettingService } from 'src/app/service/system/system-shop/shop-setting/shop-setting.service';
-import { ShopSettingValiationResultType } from 'src/app/interface/shop/shop-setting.interface';
 import * as Db from 'src/app/constant/firebase-path';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
+import { DateTransformService } from 'src/app/service/global/date/date-transform/date-transform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,9 +19,9 @@ export class SystemShopConfigurationRepositoryService {
 
   constructor(
     private _afs: AngularFirestore,
-    private _firebaseService: FirebaseService,
     private _setting: ShopSettingService,
-    private _toaster: FirebaseToasterService
+    private _toaster: FirebaseToasterService,
+    private _dateTransform: DateTransformService
   ) {}
 
   public categoryListener(): Observable<ShopCategoryType[]> {
@@ -140,7 +128,7 @@ export class SystemShopConfigurationRepositoryService {
     }
   }
 
-  public async editExistingShopConfiguration(shopConfig: ShopConfigurationType): Promise<boolean> {
+  public async updateShopConfiguration(shopConfig: ShopConfigurationType): Promise<boolean> {
     const updatedConfig = { ...shopConfig, ...this._timeStamp };
     const collection = Db.Context.ShopConfiguration;
     try {
@@ -172,11 +160,11 @@ export class SystemShopConfigurationRepositoryService {
   ): Promise<ShopConfigurationType> {
     let validated = this._setting.getValidatedResult(sc.setting);
     sc.setting = validated.setting;
-    sc.plan.lastPaymentDate = this._firebaseService.toDate(sc.plan.lastPaymentDate);
-    sc.plan.paymentDate = this._firebaseService.toDate(sc.plan.paymentDate);
-    sc.activeFrom = this._firebaseService.toDate(sc.activeFrom);
+    sc.plan.lastPaymentDate = this._dateTransform.toDate(sc.plan.lastPaymentDate);
+    sc.plan.paymentDate = this._dateTransform.toDate(sc.plan.paymentDate);
+    sc.activeFrom = this._dateTransform.toDate(sc.activeFrom);
     if (sc.activeTo) {
-      sc.activeTo = this._firebaseService.toDate(sc.plan.lastPaymentDate);
+      sc.activeTo = this._dateTransform.toDate(sc.plan.lastPaymentDate);
     }
     return sc;
   }

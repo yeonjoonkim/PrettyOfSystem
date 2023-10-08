@@ -1,0 +1,84 @@
+#container {
+  margin-top: 15px;
+}
+
+#description-container {
+  display: flex;
+  flex-direction: row;
+}
+#description-title-container {
+  flex: 0.5;
+  #title {
+    padding-top: 37px;
+  }
+}
+
+#insurance-cover,
+#pregnant {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0px 0px 15px 0px;
+}
+
+#selections {
+  flex: 2;
+  #related-service,
+  #specialized-employees {
+    max-width: 200px;
+  }
+}
+
+#option-container {
+  display: flex;
+  flex-direction: row;
+}
+#option-add-button {
+  width: 40px;
+  height: 23px;
+  margin: 10px;
+}
+
+.options {
+  justify-content: flex-start;
+}
+
+.minute-option {
+  display: flex;
+  flex-direction: row;
+  max-width: 100px;
+  kendo-numerictextbox {
+    margin: 10px;
+    height: 28px;
+    max-width: 50px;
+  }
+}
+.mintue-title {
+  padding: 0px 0px 0px 13px;
+}
+.price-title {
+  padding: 0px 0px 0px 18px;
+}
+.price-option {
+  display: flex;
+  flex-direction: row;
+  max-width: 100px;
+  kendo-numerictextbox {
+    margin: 10px;
+    height: 28px;
+    max-width: 100px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #selections {
+    flex-direction: column;
+  }
+  #related-service,
+  #specialized-employees {
+    max-width: 170px;
+  }
+  #insurance-cover,
+  #pregnant {
+    font-size: 12px;
+  }
+}

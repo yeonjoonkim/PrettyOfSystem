@@ -84,6 +84,7 @@ const defaultTranslateDocumentType = function () {
     attempt: 0,
     translateResult: [],
     parentId: '',
+    isSystemAdmin: true,
   };
 
   return document;
