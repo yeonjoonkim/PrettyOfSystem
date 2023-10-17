@@ -96,6 +96,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   private async loadingCriteria() {
+    this._global.loading.init();
     this.criteria = await this._userAdmin.getUserManagementCriteria();
     this.onChangeQuery();
   }

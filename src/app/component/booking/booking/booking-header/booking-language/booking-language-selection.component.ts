@@ -35,7 +35,11 @@ export class BookingLanguageSelectionComponent implements OnInit, AfterViewInit 
     { name: 'English', value: 'en' }, // English
     { name: 'Indonesia', value: 'id_id' }, // Indonesian
     { name: 'Français', value: 'fr' }, // French
-    { name: 'ไทย', value: 'th' },
+    { name: 'ไทย', value: 'th' }, // Thai
+    { name: 'Svenska', value: 'sv' }, // Swedish
+    { name: 'Português', value: 'pt' }, //Portuguese
+    { name: 'Русский', value: 'ru' }, // Russian
+    { name: 'Türkçe', value: 'tr' }, // Turkish
   ];
   @Input() maxHeight: string = '150px';
 
@@ -46,7 +50,9 @@ export class BookingLanguageSelectionComponent implements OnInit, AfterViewInit 
     private _language: LanguageService,
     private _popoverCtrl: PopoverController,
     private _renderer: Renderer2
-  ) {}
+  ) {
+    this._selection.sort((a, b) => a.value.localeCompare(b.value));
+  }
 
   async ngOnInit() {
     await this.setDefault();

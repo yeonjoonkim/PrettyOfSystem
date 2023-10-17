@@ -111,7 +111,7 @@ export class NameValuePairDropdownMultiSelectionComponent
   }
 
   private async dismissListener(dropdownList: HTMLIonPopoverElement) {
-    let event = await dropdownList.onWillDismiss();
+    let event = await dropdownList.onDidDismiss();
     if (event?.data !== undefined) {
       this.selected = event.data?.selected;
       await this.setText();
@@ -141,7 +141,8 @@ export class NameValuePairDropdownMultiSelectionComponent
     return await this._popoverCtrl.create({
       component: NameValuePairMultiDropdownlistComponent,
       event: event,
-      translucent: false,
+      translucent: true,
+      backdropDismiss: true,
       size: 'cover',
       componentProps: {
         selected: this.selected,

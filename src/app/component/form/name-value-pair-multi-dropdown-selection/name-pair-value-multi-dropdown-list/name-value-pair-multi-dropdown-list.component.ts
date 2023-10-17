@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
 import { CellClickEvent } from '@progress/kendo-angular-grid';
 import {
@@ -14,6 +22,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
   styleUrls: ['./name-value-pair-multi-dropdown-list.component.scss'],
 })
 export class NameValuePairMultiDropdownlistComponent implements OnInit {
+  @ViewChild('multiDropdownList') dropdownListBtn!: ElementRef;
   public gridData: NameValuePairType[] = [];
   public selection: NameValuePairType[] = [];
   public queryParamList: PairNameValueTypeFilterParamType[] = [];
@@ -30,6 +39,8 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
   });
 
   constructor(
+    private _renderer: Renderer2,
+    private _el: ElementRef,
     private _navParams: NavParams,
     private _popoverCtrl: PopoverController,
     private _global: GlobalService
@@ -43,7 +54,6 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
     this.maxHeight = this._navParams.get('maxHeight');
     this.maxHeight = this.maxHeight.includes('px') ? this.maxHeight : this.maxHeight + 'px';
   }
-
   async ngOnInit() {
     const defaultKeyPairValue = await this._global.language.management.getDefaultKeyPairValueList();
     this._defaultLanguageKeyPairValue = defaultKeyPairValue;

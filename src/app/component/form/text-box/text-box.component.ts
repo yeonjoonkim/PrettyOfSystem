@@ -64,7 +64,9 @@ export class TextBoxComponent implements OnInit {
 
   public onChangeValue() {
     this.hasValue = this.validateInput();
-    this.validatedValue = this.transformTextValue();
+    if (this.isLowCaseFormat || this.isTitleFormat || this.isUpperFormat) {
+      this.validatedValue = this.transformTextValue();
+    }
     this.value = this.validatedValue;
     this.valueLengthCount = this.value.length;
     this.counter = `${this.valueLengthCount}/${this.max}`;

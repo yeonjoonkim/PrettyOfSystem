@@ -24,7 +24,10 @@ export class RoleManagementComponent implements OnInit {
     },
     rate: 0,
   };
-  constructor(private _systemRole: SystemRoleService, private _language: LanguageService) {}
+  constructor(
+    private _systemRole: SystemRoleService,
+    private _language: LanguageService
+  ) {}
 
   async ngOnInit() {
     await this.refresh();

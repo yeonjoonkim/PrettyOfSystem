@@ -59,7 +59,7 @@ export class TextAreaComponent implements OnInit {
     this.hasValue = this.validateInput();
     this.validatedValue =
       this.validatedValue.length > 0 && this.validatedValue !== null ? this.validatedValue : '';
-    this.value = this.validatedValue;
+    this.value = this._global.textTransform.deleteSpaces(this.validatedValue);
     this.valueLengthCount = this.value.length;
     this.counter = `${this.valueLengthCount}/${this.max}`;
     this.validate = this.hasValue;

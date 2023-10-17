@@ -36,9 +36,22 @@ export class ShopLanguagePackageService {
       return { name: l.description, value: l.code };
     });
 
-    if (relatedList.length > 0 && result.length > 0) {
+    const promises = languages.map(async l => {
+      const translated = await this._language.transform(l.description);
+      return { name: translated, value: l.code };
+    });
+
+    const translated = await Promise.all(promises);
+    translated.sort((a, b) => a.name.localeCompare(b.name));
+    translated.map(l => {
+      const description = languages.find(s => s.code === l.value);
+      const name = description !== undefined ? description.description : l.name;
+      return { name: name, value: l.value };
+    });
+
+    if (relatedList.length > 0 && translated.length > 0) {
       relatedList.forEach(r => {
-        result.forEach(l => {
+        translated.forEach(l => {
           const list = r.name.split('.');
           const code = list[2];
           if (code === l.value) {
@@ -47,7 +60,7 @@ export class ShopLanguagePackageService {
         });
       });
     }
-    result.sort((a, b) => a.name.localeCompare(b.name));
-    return result;
+    translated;
+    return translated;
   }
 }

@@ -34,6 +34,7 @@ export class UserService {
   public currentShop$!: Observable<NameValuePairType>;
   public currentRole$!: Observable<RoleConfigurationType | null>;
   public currentShopPlan$!: Observable<PlanConfigurationType | null>;
+  public employeName$!: Observable<string>;
 
   constructor(
     public modal: UserModalService,
@@ -48,22 +49,20 @@ export class UserService {
   ) {}
 
   public async init() {
-    this._global.loading.show();
     const language = await this._languageStorage.getCurrentLanguage();
     let userLanguage = '';
+
     const subscription = this.data$.pipe(take(1)).subscribe(async data => {
       if (data !== null) {
         const currentShop = data.associatedShops.find(s => s.shopId === data.currentShopId);
         this.navigateByRole(currentShop?.role?.accessLevel);
         userLanguage = data.setting.preferLanguage;
         subscription.unsubscribe();
+        if (language !== userLanguage && userLanguage.length > 0) {
+          await this._global.language.onLanguageChange(userLanguage);
+        }
       }
     });
-
-    if (language !== userLanguage && userLanguage.length > 0) {
-      await this._global.language.onLanguageChange(userLanguage);
-    }
-    await this._global.loading.dismiss();
   }
 
   private navigateByRole(accessLevel: RoleAccessLevelType | undefined) {
@@ -78,9 +77,7 @@ export class UserService {
 
   public async presentEdit() {
     combineLatest([this.data$, this.shopSelection$])
-      .pipe(
-        first() // take the first emission and complete
-      )
+      .pipe(first())
       .subscribe(([user, shopSelection]) => {
         if (user) {
           this.modal.presentEdit(user, shopSelection).then(modal => modal.present());
@@ -88,10 +85,20 @@ export class UserService {
       });
   }
 
+  public async fullName() {
+    const result = await firstValueFrom(this.employeName$);
+
+    return result ? result : null;
+  }
+
+  public async currentShopId() {
+    const config = await firstValueFrom(this.currentShopConfig$);
+
+    return config !== null ? config.id : null;
+  }
+
   public async verifyUserAccount(input: string) {
-    await this._global.loading.show();
     const result = await this._userRepo.verifyUserAccount(input);
-    await this._global.loading.dismiss();
     return result;
   }
 
@@ -104,14 +111,11 @@ export class UserService {
     this.data$.pipe(take(1)).subscribe(async user => {
       if (user !== null) {
         user.currentShopId = shopId;
-        await this._global.loading.show();
         await this._userRepo.updateUser(user);
 
         if (currentLanguage !== user.setting.preferLanguage) {
           await this._global.language.onLanguageChange(user.setting.preferLanguage);
         }
-
-        await this._global.loading.dismiss();
       }
     });
   }
@@ -146,6 +150,7 @@ export class UserService {
     this.activateUserShopSelectionListener();
     this.activeUserCurrentShopListener();
     this.activateCurrentRoleListener();
+    this.activateEmployeeNameListener();
   }
 
   private activateUserListener() {
@@ -155,6 +160,19 @@ export class UserService {
           return this._userRepo.subscribeValueChangeListener(user.uid);
         } else {
           return of(null);
+        }
+      })
+    );
+  }
+
+  private activateEmployeeNameListener() {
+    this.employeName$ = this.data$.pipe(
+      map(user => {
+        if (user !== null) {
+          const result = user.firstName + ' ' + user.lastName;
+          return result;
+        } else {
+          return '';
         }
       })
     );
@@ -206,17 +224,19 @@ export class UserService {
       })
     );
   }
+
   private activateCurrentShopPlanListener() {
     this.currentShopPlan$ = this.currentShopConfig$.pipe(
       switchMap(config => {
         if (config !== null) {
-          return this._planRepo.getSelectedPlan(config.plan.configurationId);
+          return this._planRepo.selectedPlanValuChangeListener(config.plan.configurationId);
         } else {
           return of(null);
         }
       })
     );
   }
+
   private activateUserShopSelectionListener() {
     this.shopSelection$ = this.data$.pipe(
       combineLatestWith(this.associatedShopConfigurations$),

@@ -36,6 +36,7 @@ export class LanguageManagementComponent implements OnInit, OnDestroy {
     this._translateRequestSubscription = this._systemLanguage
       .translateRequestValueChangeListener()
       .subscribe(request => {
+        console.log(request);
         this.translateRequest = request;
       });
   }

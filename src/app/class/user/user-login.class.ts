@@ -154,9 +154,9 @@ export class UserLogin implements IUserLogin {
   private async processLogin(credential: any) {
     const user = credential?.user;
     if (user !== undefined) {
-      await this._userService.init();
       await this.timer.end();
       await this.reset();
+      await this._userService.init();
     }
   }
 

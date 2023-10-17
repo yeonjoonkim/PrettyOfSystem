@@ -74,7 +74,7 @@ export const getPendings = async function (): Promise<I.ChatGptTranslateDocument
 export const getCompletes = async function (): Promise<I.ChatGptTranslateDocumentType[]> {
   const snapshot = await firestore()
     .collection(Db.Context.ChatGptTranslateRequest)
-    .where('status', '==', 'completed')
+    .where('status', '==', 'Completed')
     .get();
 
   const completes = snapshot.docs.map(doc => {

@@ -2,6 +2,7 @@ import { onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import * as Repository from '../../repository/index';
 import * as Db from '../../db';
 import * as Constant from '../../constant';
+import * as Service from '../../service/index';
 import * as I from '../../interface';
 import { logger } from 'firebase-functions/v2';
 
@@ -48,30 +49,40 @@ const pingPendingRequest = async function (vm: I.OpenApiInstanceType) {
   }
 };
 
-const handleExpiredDateChecker = async function (after: I.OpenApiInstanceType) {
-  const now = new Date();
-  const diff = after.expiredDate.getTime() - now.getTime();
-  const timeout = (ms: number) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  };
-  await timeout(diff);
+async function checkInstanceExpiry(instance: I.OpenApiInstanceType): Promise<void> {
   const currentInstance = await Repository.OpenApiInstance.getSelectedInstance(
-    after.shopId,
-    after.serviceId,
-    after.format
+    instance.shopId,
+    instance.serviceId,
+    instance.format
   );
 
-  if (currentInstance !== undefined) {
-    const request = await Repository.TranslateRequest.getDocument(
-      after.serviceId,
-      after.shopId,
-      after.format
-    );
-    if (request !== null) {
-      request.status = Constant.API.TranslateStatus.Failed;
-      await Repository.TranslateRequest.updateDocument(request);
-    }
+  if (!currentInstance) return;
 
-    await Repository.OpenApiInstance.updateNotInUseInstance(after);
+  const request = await Repository.TranslateRequest.getDocument(
+    instance.serviceId,
+    instance.shopId,
+    instance.format
+  );
+
+  if (request) {
+    request.status = Constant.API.TranslateStatus.Failed;
+    await Repository.TranslateRequest.updateDocument(request);
   }
+
+  await Repository.OpenApiInstance.updateNotInUseInstance(instance);
+}
+
+const handleExpiredDateChecker = async function (after: I.OpenApiInstanceType) {
+  const now = new Date();
+  const expired = Service.Date.toDate(after.expiredDate);
+  const diff = expired.getTime() - now.getTime();
+
+  if (diff <= 0) {
+    await checkInstanceExpiry(after);
+    return;
+  }
+
+  setTimeout(async () => {
+    await checkInstanceExpiry(after);
+  }, diff);
 };

@@ -55,13 +55,15 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
       );
 
       if (
+        lifeCycle.inProgressToPending ||
+        lifeCycle.successToPending ||
         lifeCycle.failToPending ||
-        lifeCycle.completedToPending ||
-        lifeCycle.inProgressToPending
+        lifeCycle.completedToPending
       ) {
         after.error = [];
         after.attempt = 0;
         after.result = [];
+        after.createdDate = new Date();
       }
 
       logger.info(after.id + ' triggered. Before: ' + before.status + ' | After: ' + after.status);
@@ -85,9 +87,16 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
       if (action.startTranslate && vm !== undefined) {
         logger.info(after.id + ' Start Translate');
         after.prop = Service.TextTransform.preCleansingTranslateProp(after.prop);
+
+        const english = await Service.Translate.EnglishProcess(vm, after.prop, after.format);
+
+        if (english !== null) {
+          after.prop = english.result.value;
+        }
+
         let translated = await Service.Translate.process(vm, after);
         logger.info(after.id + ' End Translate');
-        if (translated.error.length > 0) {
+        if (translated.error.length > 0 && english === null) {
           logger.info(after.id + ' Error In Translate - Move to Fail');
           translated.status = Constant.API.TranslateStatus.Failed;
           await Repository.TranslateRequest.updateDocument(translated);
@@ -179,12 +188,14 @@ const handleUpdateShopLanguagePackage = async function (doc: I.ChatGptTranslateD
 const handleMergeIntoParent = async function (child: I.ChatGptTranslateDocumentType) {
   logger.info('Retreving Parent Document');
   const parent = await Repository.TranslateRequest.getSelected(child.parentId);
+
   if (parent !== null) {
     logger.info('Start Merge');
     parent.result.concat(child.result);
     parent.translateResult.concat(child.translateResult);
-    logger.info('Start Completed');
+
     await Repository.TranslateRequest.updateDocument(parent);
     await Repository.TranslateRequest.deleteDocument(child);
+    logger.info('Start Completed');
   }
 };

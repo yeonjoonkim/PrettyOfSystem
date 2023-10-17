@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ShopServiceLanguagePackageComponent } from './shop-service-language-package.component';
+import { ShopLanguagePackageComponent } from './shop-language-package.component';
 
 describe('ShopServiceLanguagePackageComponent', () => {
-  let component: ShopServiceLanguagePackageComponent;
-  let fixture: ComponentFixture<ShopServiceLanguagePackageComponent>;
+  let component: ShopLanguagePackageComponent;
+  let fixture: ComponentFixture<ShopLanguagePackageComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopServiceLanguagePackageComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ShopLanguagePackageComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ShopServiceLanguagePackageComponent);
+    fixture = TestBed.createComponent(ShopLanguagePackageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

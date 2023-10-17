@@ -69,6 +69,7 @@ export const onShopDelete = onDocumentDeleted(
       await deleteFromUserAssociatedShops(shop);
       await deleteTranslatedRequests(shop.translatedRequestIds);
       await deleteCollection(Db.ShopService(shop.id));
+      await deleteCollection(Db.ShopExtra(shop.id));
     }
   }
 );

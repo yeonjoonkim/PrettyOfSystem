@@ -7,17 +7,20 @@ import {
   RoleConfigurationType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
+  ShopExtraDocumentType,
   ShopServiceDocumentType,
 } from 'src/app/interface';
 import { Observable, firstValueFrom, map, of, switchMap } from 'rxjs';
 import { ShopEmployeeManagementService } from '../shop-employee-management/shop-employee-management.service';
-import { ShopServiceRepositoryService } from 'src/app/firebase/shop-service-repository/shop-service-repository.service';
+import { ShopServiceRepositoryService } from 'src/app/firebase/shop-repository/shop-service-repository/shop-service-repository.service';
 import { TextTransformService } from '../../global/text-transform/text-transform.service';
-import { TranslateRequestRepositoryService } from 'src/app/firebase/system-repository/translate-request/translate-request-repository.service';
 import { ShopRelatedServiceService } from './shop-related-service/shop-related-service.service';
 import { ShopServiceModalService } from './shop-service-modal/shop-service-modal.service';
-import * as Constant from 'src/app/constant/constant';
-import { ShopLanguagePackageService } from './shop-language-package/shop-language-package.service';
+import { ShopLanguagePackageService } from '../shop-language-package/shop-language-package.service';
+import { LoadingService } from '../../global/loading/loading.service';
+import { ShopServiceMenuOptionControllerService } from './shop-service-menu-option-controller/shop-service-menu-option-controller.service';
+import { ShopTranslatedRequestService } from '../shop-translated-request/shop-translated-request.service';
+import { ShopExtraManagementService } from '../shop-extra-management/shop-extra-management.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -26,42 +29,34 @@ export class ShopServiceManagementService {
   public shopEmp$!: Observable<ShopEmployeeManagementUserType[]>;
   public currentRole$!: Observable<RoleConfigurationType | null>;
   public service$!: Observable<ShopServiceDocumentType[]>;
+  public extra$!: Observable<ShopExtraDocumentType[]>;
   public shopPlan$!: Observable<PlanConfigurationType | null>;
   public employeName$!: Observable<string>;
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
   constructor(
     private _user: UserService,
     private _shopEmp: ShopEmployeeManagementService,
-    private _shopServiceRepo: ShopServiceRepositoryService,
-    private _translate: TranslateRequestRepositoryService,
     public relateShopService: ShopRelatedServiceService,
     public modal: ShopServiceModalService,
     public textTransform: TextTransformService,
-    public languagePackage: ShopLanguagePackageService
+    public languagePackage: ShopLanguagePackageService,
+    public loading: LoadingService,
+    public menu: ShopServiceMenuOptionControllerService,
+    private _shopServiceRepo: ShopServiceRepositoryService,
+    private _translated: ShopTranslatedRequestService,
+    private _shopExtra: ShopExtraManagementService
   ) {
     this.currentShopConfig$ = this._user.currentShopConfig$;
     this.shopEmp$ = this._shopEmp.shopEmployees$;
     this.currentRole$ = this._user.currentRole$;
-    this.shopPlan$ = this._shopEmp.shopPlan$;
-    this.activateMassageShopServiceListener();
-    this.activateEmployeeNameListener();
-    this.activateTranslatedRequest();
+    this.shopPlan$ = this._user.currentShopPlan$;
+    this.employeName$ = this._user.employeName$;
+    this.translatedRequest$ = this._translated.translatedRequest$;
+    this.extra$ = this._shopExtra.extra$;
+    this.activateShopServiceListener();
   }
 
-  private activateEmployeeNameListener() {
-    this.employeName$ = this._user.data$.pipe(
-      map(user => {
-        if (user !== null) {
-          const result = user.firstName + ' ' + user.lastName;
-          return result;
-        } else {
-          return '';
-        }
-      })
-    );
-  }
-
-  private activateMassageShopServiceListener() {
+  private activateShopServiceListener() {
     this.service$ = this.currentShopConfig$.pipe(
       switchMap(config => {
         if (config !== null) {
@@ -71,33 +66,6 @@ export class ShopServiceManagementService {
         }
       })
     );
-  }
-
-  private activateTranslatedRequest() {
-    this.translatedRequest$ = this.currentShopConfig$.pipe(
-      switchMap(config => {
-        if (config !== null) {
-          return this._translate.selectedShopDocumentsValueChangeListener(config.id);
-        } else {
-          return of([] as ChatGptTranslateDocumentType[]);
-        }
-      })
-    );
-  }
-
-  public async updatePackage(relatedKeys: NameValuePairType[]) {
-    let config = await this.getShopConfig();
-    if (config !== null) {
-      config.package = this.languagePackage.updatePackage(config.package, relatedKeys);
-      try {
-        return await this._shopServiceRepo.shop.updateShopConfiguration(config);
-      } catch (error) {
-        console.error(error);
-        return false;
-      }
-    } else {
-      return false;
-    }
   }
 
   public async add(service: ShopServiceDocumentType) {
@@ -111,8 +79,14 @@ export class ShopServiceManagementService {
   }
 
   public async update(after: ShopServiceDocumentType) {
-    const updatedService = await this._shopServiceRepo.updateService(after);
-    return updatedService;
+    const empName = await this._user.fullName();
+    if (empName !== null) {
+      after.lastModifiedEmployee = empName;
+      after.lastModifiedDate = new Date();
+      return await this._shopServiceRepo.updateService(after);
+    } else {
+      return false;
+    }
   }
 
   public async getNewService(shopId: string, empName: string): Promise<ShopServiceDocumentType> {
@@ -128,11 +102,6 @@ export class ShopServiceManagementService {
   }
 
   public async requeueTranslatedRequest(doc: ChatGptTranslateDocumentType) {
-    doc.attempt = 0;
-    doc.createdDate = new Date();
-    doc.result = [];
-    doc.error = [];
-    doc.status = Constant.API.TranslateStatus.Pending;
-    return await this._translate.updateDocument(doc);
+    return await this._translated.requeueTranslatedRequest(doc);
   }
 }

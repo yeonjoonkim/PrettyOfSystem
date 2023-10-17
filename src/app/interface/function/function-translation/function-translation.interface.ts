@@ -25,6 +25,7 @@ export type ChatGptTranslateDocumentLifeCycleType = {
   failToPending: boolean;
   successToCompleted: boolean;
   completedToPending: boolean;
+  successToPending: boolean;
 };
 
 export type ChatGptTranslateDocumentChangeActionType = {

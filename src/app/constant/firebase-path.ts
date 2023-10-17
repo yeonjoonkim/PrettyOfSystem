@@ -9,6 +9,7 @@ const shopConfiguration: string = 'shopConfiguration';
 const user: string = 'user';
 const shop: string = 'shop/';
 const shopService: string = shop + '{shopId}/service';
+const shopExtra: string = shop + '{shopId}/extra';
 //Reporter
 const FunctionError: string = 'functionError';
 
@@ -25,6 +26,7 @@ export const Context = {
   User: user,
   Shop: {
     Service: shopService,
+    Extra: shopExtra,
   } as const,
   System: {
     Language: {
@@ -51,3 +53,4 @@ export const Context = {
 } as const;
 
 export const ShopService = (shopId: string): string => `shop/${shopId}/service/`;
+export const ShopExtra = (shopId: string): string => `shop/${shopId}/extra/`;

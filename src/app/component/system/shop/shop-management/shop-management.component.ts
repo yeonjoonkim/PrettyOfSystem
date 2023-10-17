@@ -14,7 +14,10 @@ export class ShopManagementComponent implements OnInit, OnDestroy {
   public configs: ShopConfigurationType[] = [];
   private _selectedConfig!: ShopConfigurationType;
   private _isModalOpen: boolean = false;
-  constructor(public device: DeviceWidthService, private _systemShop: SystemShopService) {}
+  constructor(
+    public device: DeviceWidthService,
+    private _systemShop: SystemShopService
+  ) {}
 
   async ngOnInit() {
     await this.setConfigs();

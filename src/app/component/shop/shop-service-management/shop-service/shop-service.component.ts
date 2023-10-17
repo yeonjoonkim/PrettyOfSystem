@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   IFormHeaderModalProp,
+  NameValuePairType,
   ShopCountryType,
   ShopServiceModalDocumentProp,
   ShopServiceOptionType,
@@ -23,6 +24,8 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   public country!: ShopCountryType;
   public form!: IFormHeaderModalProp;
   public current!: ShopServiceModalDocumentProp;
+  public extraSelection: NameValuePairType[] = [];
+  public selectedExtras: NameValuePairType[] = [];
   private _before!: ShopServiceModalDocumentProp;
 
   public validator = {
@@ -48,6 +51,13 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  public onChangeExtra() {
+    const id = this.selectedExtras.map(s => s.value);
+    this.current.service.extraIds = id;
+    this.handleEnabledSaveBtn();
+  }
+
   public onChangeOption(option: ShopServiceOptionType) {
     const index = this.current.service.options.findIndex(
       s => s.min === option.min && s.price === s.price
@@ -85,29 +95,34 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
 
   public async handleCreate() {
     this.current.service.options.sort((a, b) => a.min - b.min);
+    this.form.enabledSavebutton = false;
     const created = await this._shopService.add(this.current.service);
     if (created) {
       await this.dismiss();
     }
+    this.form.enabledSavebutton = true;
   }
 
   public async handleSave() {
-    this.current.service.lastModifiedDate = new Date();
+    this.form.enabledSavebutton = false;
     const saved = await this._shopService.update(this.current.service);
     if (saved) {
       await this.dismiss();
     }
+    this.form.enabledSavebutton = true;
   }
 
-  public async handleEdit() {
+  public handleEdit() {
     this.form.readOnly = false;
   }
 
   public async handleDelete() {
+    this.form.enabledSavebutton = false;
     const deleted = await this._shopService.delete(this.current.service);
     if (deleted) {
       await this.dismiss();
     }
+    this.form.enabledSavebutton = true;
   }
 
   public handleInsurance() {
@@ -158,6 +173,12 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
       this._before = cloneDeep(prop);
       this.current = cloneDeep(prop);
       this.form = cloneDeep(formProp);
+      this.extraSelection = this.current.extra.map(e => {
+        return { name: e.titleProp, value: e.id };
+      });
+      this.selectedExtras = this.extraSelection.filter(s =>
+        this.current.service.extraIds.includes(s.value)
+      );
     } else {
       await this._modalCtrl.dismiss();
     }

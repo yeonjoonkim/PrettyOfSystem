@@ -1,6 +1,6 @@
 #service-name {
   text-decoration: underline;
-  color: var(--hyperlink);
+  color: white;
   &:hover {
     color: var(--active);
     cursor: pointer;
@@ -48,4 +48,45 @@
   background-color: var(--completed);
   cursor: pointer;
   text-decoration: underline;
+}
+
+.options {
+  justify-content: flex-start;
+}
+
+.price-option {
+  display: flex;
+  flex-direction: row;
+  max-width: 100px;
+  kendo-numerictextbox {
+    margin: 10px;
+    height: 28px;
+    max-width: 100px;
+  }
+}
+
+.minute-option {
+  display: flex;
+  flex-direction: row;
+  max-width: 100px;
+  kendo-numerictextbox {
+    margin: 10px;
+    height: 28px;
+    max-width: 50px;
+  }
+}
+
+#options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#option-title {
+  padding: 0px 25px;
+}
+
+#insurance-cover,
+#pregnant {
+  display: flex;
+  justify-content: flex-end;
 }

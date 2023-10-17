@@ -44,6 +44,17 @@ export class SystemPlanRepositoryService {
       );
   }
 
+  public selectedPlanValuChangeListener(selectedId: string): Observable<PlanConfigurationType> {
+    return this._afs
+      .doc<PlanConfigurationType>(`${Db.Context.System.Plan.Option}/${selectedId}`)
+      .valueChanges()
+      .pipe(
+        map(snapshot => {
+          return snapshot as PlanConfigurationType;
+        })
+      );
+  }
+
   public getSelectedPlan(selectedId: string): Observable<PlanConfigurationType> {
     return this._afs
       .doc<PlanConfigurationType>(`${Db.Context.System.Plan.Option}/${selectedId}`)

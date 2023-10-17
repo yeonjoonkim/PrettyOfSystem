@@ -10,11 +10,12 @@ export type ShopServiceModalDocumentProp = {
   service: ShopServiceDocumentType;
   relatedServiceTypes: NameValuePairType[];
   specializedEmployees: NameValuePairType[];
+  extra: ShopExtraDocumentType[];
   titleStatus: string;
   descriptionStatus: string;
 };
 
-export type ShopServiceModalPackageProp = {
+export type ShopLanguagePackageModalProp = {
   relatedKeys: NameValuePairType[];
   languages: NameValuePairType[];
   title: string;
@@ -44,8 +45,19 @@ export type ShopServiceDocumentType = {
   relatedService: NameValuePairType;
   specializedEmployees: NameValuePairType[];
   options: ShopServiceOptionType[];
+  extraIds: string[];
   title: string;
   description: string;
   lastModifiedDate: Date;
   lastModifiedEmployee: string;
+};
+
+export type ShopExtraDocumentType = {
+  id: string;
+  shopId: string;
+  titleProp: string;
+  title: string;
+  lastModifiedDate: Date;
+  lastModifiedEmployee: string;
+  price: number;
 };

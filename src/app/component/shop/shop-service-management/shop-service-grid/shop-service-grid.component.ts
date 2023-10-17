@@ -2,10 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
 import {
   ChatGptTranslateDocumentType,
+  NameValuePairType,
   RoleConfigurationType,
   ShopServiceDocumentType,
   ShopServiceModalDocumentProp,
-  ShopServiceModalPackageProp,
+  ShopLanguagePackageModalProp,
+  ShopExtraDocumentType,
 } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employee-management/shop-employee-management.service';
@@ -17,13 +19,15 @@ import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-
   styleUrls: ['./shop-service-grid.component.scss'],
 })
 export class ShopServiceGridComponent implements OnInit {
-  @Output() onEditPackage = new EventEmitter<ShopServiceModalPackageProp>();
+  @Output() onEditPackage = new EventEmitter<ShopLanguagePackageModalProp>();
   @Output() onEdit = new EventEmitter<ShopServiceModalDocumentProp>();
   @Output() onCreate = new EventEmitter<boolean>();
 
   @Input() services: ShopServiceDocumentType[] = [];
+  @Input() extras: ShopExtraDocumentType[] = [];
   @Input() translatedRequests: ChatGptTranslateDocumentType[] = [];
   @Input() role: RoleConfigurationType | null = null;
+  @Input() specialists: NameValuePairType[] = [];
 
   constructor(
     private _shopEmp: ShopEmployeeManagementService,
@@ -47,13 +51,14 @@ export class ShopServiceGridComponent implements OnInit {
     option: 'title' | 'description'
   ) {
     const isFailed = doc.status === Constant.API.TranslateStatus.Failed;
-    const isInProgress = doc.status === Constant.API.TranslateStatus.Success;
+    const isSuccess = doc.status === Constant.API.TranslateStatus.Success;
+    const isInProgress = doc.status === Constant.API.TranslateStatus.InProgress;
     const createdDate = this._global.date.transform.toDate(doc.createdDate);
     const isCompleted = doc.status === Constant.API.TranslateStatus.Completed;
-    const threeMinutesAgo = new Date(Date.now() - 3 * 60 * 1000);
-    const isCreatedDateThreeMinsAgo = createdDate < threeMinutesAgo;
+    const FiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+    const isCreatedDateThreeMinsAgo = createdDate < FiveMinutesAgo;
 
-    if (isFailed || (isInProgress && isCreatedDateThreeMinsAgo)) {
+    if (isFailed || ((isInProgress || isSuccess) && isCreatedDateThreeMinsAgo)) {
       await this._shopService.requeueTranslatedRequest(doc);
     }
     if (isCompleted) {
@@ -82,10 +87,12 @@ export class ShopServiceGridComponent implements OnInit {
       const copiedService = cloneDeep(service);
       const copiedTitleStatus = cloneDeep(titleRequest.status);
       const copiedDescriptionStatus = cloneDeep(descriptionRequest.status);
+      const copiedExtra = cloneDeep(this.extras);
       const prop: ShopServiceModalDocumentProp = {
         service: copiedService,
         titleStatus: copiedTitleStatus,
         descriptionStatus: copiedDescriptionStatus,
+        extra: copiedExtra,
         specializedEmployees: [],
         relatedServiceTypes: [],
       };
@@ -109,12 +116,12 @@ export class ShopServiceGridComponent implements OnInit {
       );
       const languages = await this._shopService.languagePackage.getLanguages(relatedKeys);
       const translatedProp = isTitle ? s.titleProp : s.descriptionProp;
-      const prop: ShopServiceModalPackageProp = {
+      const prop: ShopLanguagePackageModalProp = {
         languages: languages,
         relatedKeys: relatedKeys,
         isTitle: isTitle,
         title: t,
-        prop: translatedProp,
+        prop: this._global.textTransform.preCleansingTranslateProp(translatedProp),
       };
       this.onEditPackage.emit(prop);
     }

@@ -4,6 +4,46 @@ import * as TextTransform from '../text/service-text';
 import * as Repo from '../../repository/index';
 import { logger } from 'firebase-functions/v2';
 
+export const EnglishProcess = async function (
+  vm: I.OpenApiInstanceType,
+  prop: string,
+  format: I.TextFormatType
+) {
+  let attempt = 0;
+  let error = false;
+
+  const performTranslation = async () => {
+    try {
+      let translated = await translateResult(vm, { name: 'English', value: 'en' }, format, prop);
+      if (!translated.error) {
+        error = false;
+        return translated;
+      } else {
+        error = true;
+        return translated;
+      }
+    } catch (e) {
+      logger.error('Default Translated Error in Performance Translataion: English', e);
+      error = true;
+      return null;
+    }
+  };
+
+  const sleep = async (duration: number) => {
+    return new Promise(resolve => setTimeout(resolve, duration));
+  };
+
+  let result = await performTranslation();
+
+  while (attempt < 3 && error) {
+    attempt++;
+    result = await performTranslation();
+    await sleep(1000);
+  }
+
+  return result;
+};
+
 export const process = async function (
   vm: I.OpenApiInstanceType,
   doc: I.ChatGptTranslateDocumentType
@@ -156,16 +196,16 @@ const setCommand = function (
   format: I.ILanguageTranslatedFormatCriteria
 ) {
   const cleansedProp = TextTransform.preCleansingTranslateProp(prop);
-  const formatCommand = format.isDescription ? 'at a professional level. input: "' : '. input: "';
+  const formatCommand = format.isDescription ? ' at a professional level. Input: "' : '. Input: "';
 
   return (
     'Please correct any grammatical errors in the input and then translate it to' +
     lang.name +
     formatCommand +
     cleansedProp +
-    '". Output: ' +
-    'It must be converted to the exact JSON format without any additional descriptions or information. Avoid any introductions.' +
-    'The translation should be provided in JSON format, without any additional information or descriptions. The JSON key should be "' +
+    '" Output: ' +
+    'It must be converted to the exact JSON format without any additional descriptions or information.' +
+    'The translation should be provided in JSON format, The JSON key should be "' +
     lang.value +
     '" and the value should be the translated string. ' +
     'Expect output: {"' +

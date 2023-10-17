@@ -33,7 +33,7 @@ export class SystemTranslateRequestRepositoryService {
   public systemLanguageRequestValueChangeListener() {
     return this._afs
       .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
-        ref.where('isSystemAdmin', '==', true).orderBy('reqeustDate', 'asc')
+        ref.where('isSystemAdmin', '==', true)
       )
       .valueChanges()
       .pipe(map(snapShots => snapShots.map(doc => doc as ChatGptTranslateDocumentType)));

@@ -13,16 +13,18 @@ import { SharedFormModule } from 'src/app/component/form/form.module';
 
 import { ShopServiceManagementPage } from './shop-service-management.page';
 import { ShopServiceManagementModule } from 'src/app/component/shop/shop-service-management/shop-service-management.module';
+import { ShopExtraManagementModule } from 'src/app/component/shop/shop-extra-management/shop-extra-management.module';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ShopServiceManagementPageRoutingModule,
-    ShopServiceManagementModule,
     LanguageTransformPipeModule,
     KendoUiModule,
     SharedFormModule,
+    ShopServiceManagementModule,
+    ShopExtraManagementModule,
   ],
   declarations: [ShopServiceManagementPage],
 })

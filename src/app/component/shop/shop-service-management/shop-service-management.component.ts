@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -8,7 +8,8 @@ import {
   ShopConfigurationType,
   ShopServiceDocumentType,
   ShopServiceModalDocumentProp,
-  ShopServiceModalPackageProp,
+  ShopLanguagePackageModalProp,
+  ShopExtraDocumentType,
 } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-management/shop-service-management.service';
@@ -21,22 +22,17 @@ import { cloneDeep } from 'lodash-es';
   styleUrls: ['./shop-service-management.component.scss'],
 })
 export class ShopServiceManagementComponent implements OnInit, OnDestroy {
-  private _employeeNameSubscription!: Subscription;
-  private _currentRoleSubscription!: Subscription;
-  private _currentConfigSubscription!: Subscription;
-  private _shopPlanSubscription!: Subscription;
-  private _shopServicesSubscription!: Subscription;
-  private _shopEmpSubscription!: Subscription;
-  private _translatedRequestSubscription!: Subscription;
+  private onDestory$: Subject<void> = new Subject<void>();
 
   private _isModalOpen: boolean = false;
   private _config!: ShopConfigurationType | null;
   private _plan!: PlanConfigurationType | null;
-  private _specializedEmployees!: NameValuePairType[];
   private _relatedServiceTypes!: NameValuePairType[];
 
   public role!: RoleConfigurationType | null;
   public employeeName!: string;
+  public extras!: ShopExtraDocumentType[];
+  public specializedEmployees!: NameValuePairType[];
   public translatedRequests!: ChatGptTranslateDocumentType[];
   public services!: ShopServiceDocumentType[];
 
@@ -45,7 +41,7 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
     private _global: GlobalService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.activateEmployeeNameListener();
     this.activateRoleListener();
     this.activateShopConfigListener();
@@ -53,16 +49,12 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
     this.activateShopServiceListener();
     this.activateShopEmployeeListener();
     this.activateShopTranslatedRequest();
+    this.activateShopExtraListener();
   }
 
   ngOnDestroy() {
-    this._currentConfigSubscription?.unsubscribe();
-    this._currentRoleSubscription?.unsubscribe();
-    this._shopPlanSubscription?.unsubscribe();
-    this._shopServicesSubscription?.unsubscribe();
-    this._shopEmpSubscription?.unsubscribe();
-    this._employeeNameSubscription?.unsubscribe();
-    this._translatedRequestSubscription?.unsubscribe();
+    this.onDestory$.next();
+    this.onDestory$.complete();
   }
 
   public async handleCreate() {
@@ -73,13 +65,14 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
         !this._isModalOpen &&
         this._config !== undefined &&
         this._relatedServiceTypes &&
-        this._specializedEmployees
+        this.specializedEmployees
       ) {
         this._isModalOpen = true;
         const prop: ShopServiceModalDocumentProp = {
           service: await this._shopService.getNewService(this._config.id, this.employeeName),
-          specializedEmployees: this._specializedEmployees,
+          specializedEmployees: this.specializedEmployees,
           relatedServiceTypes: this._relatedServiceTypes,
+          extra: this.extras,
           titleStatus: Constant.API.TranslateStatus.Create,
           descriptionStatus: Constant.API.TranslateStatus.Create,
         };
@@ -92,7 +85,7 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
     }
   }
 
-  public async handleEditPackage(prop: ShopServiceModalPackageProp) {
+  public async handleEditPackage(prop: ShopLanguagePackageModalProp) {
     if (this._config !== null && !this._isModalOpen) {
       this._isModalOpen = true;
       const copied = cloneDeep(prop);
@@ -104,13 +97,13 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
 
   public async handleEdit(prop: ShopServiceModalDocumentProp) {
     prop.relatedServiceTypes = this._relatedServiceTypes;
-    prop.specializedEmployees = this._specializedEmployees;
+    prop.specializedEmployees = this.specializedEmployees;
     if (
       this._config !== null &&
       !this._isModalOpen &&
       this._config !== undefined &&
       this._relatedServiceTypes &&
-      this._specializedEmployees
+      this.specializedEmployees
     ) {
       this._isModalOpen = true;
       prop.service.lastModifiedEmployee = this.employeeName;
@@ -127,33 +120,26 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
     }
   }
 
-  private isReachedToMax() {
-    if (this._plan?.limitedService) {
-      return this.services?.length >= this._plan?.limitedService;
-    } else {
-      return false;
-    }
-  }
-
-  private async presentReachedToMaxError() {
-    const msg = await this._global.language.transform('messageerror.description.outoflimitservice');
-    await this._global.toast.presentError(msg);
+  private activateShopExtraListener() {
+    this._shopService.extra$.pipe(takeUntil(this.onDestory$)).subscribe(extras => {
+      this.extras = extras;
+    });
   }
 
   private activateEmployeeNameListener() {
-    this._employeeNameSubscription = this._shopService.employeName$.subscribe(name => {
+    this._shopService.employeName$.pipe(takeUntil(this.onDestory$)).subscribe(name => {
       this.employeeName = name;
     });
   }
 
   private activateRoleListener() {
-    this._currentRoleSubscription = this._shopService.currentRole$.subscribe(role => {
+    this._shopService.currentRole$.pipe(takeUntil(this.onDestory$)).subscribe(role => {
       this.role = role;
     });
   }
 
   private activateShopConfigListener() {
-    this._currentConfigSubscription = this._shopService.currentShopConfig$.subscribe(config => {
+    this._shopService.currentShopConfig$.pipe(takeUntil(this.onDestory$)).subscribe(config => {
       this._config = config;
       if (config !== null) {
         this._relatedServiceTypes = this._shopService.relateShopService.getShopRelatedServiceTypes(
@@ -164,32 +150,43 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   }
 
   private activateShopPlanListener() {
-    this._shopPlanSubscription = this._shopService.shopPlan$.subscribe(plan => {
+    this._shopService.shopPlan$.pipe(takeUntil(this.onDestory$)).subscribe(plan => {
       this._plan = plan;
     });
   }
 
   private activateShopServiceListener() {
-    this._shopServicesSubscription = this._shopService.service$.subscribe(services => {
+    this._shopService.service$.pipe(takeUntil(this.onDestory$)).subscribe(services => {
       this.services = services;
     });
   }
 
   private activateShopTranslatedRequest() {
-    this._translatedRequestSubscription = this._shopService.translatedRequest$.subscribe(
-      requests => {
-        this.translatedRequests = requests;
-      }
-    );
+    this._shopService.translatedRequest$.pipe(takeUntil(this.onDestory$)).subscribe(requests => {
+      this.translatedRequests = requests;
+    });
   }
 
   private activateShopEmployeeListener() {
-    this._shopEmpSubscription = this._shopService.shopEmp$.subscribe(employees => {
-      this._specializedEmployees = employees
+    this._shopService.shopEmp$.pipe(takeUntil(this.onDestory$)).subscribe(employees => {
+      this.specializedEmployees = employees
         .filter(s => s.active && s.displayInSystem && !s.role.accessLevel.isReception)
         .map(emp => {
           return { name: emp.firstName + ' ' + emp.lastName, value: emp.userId };
         });
     });
+  }
+
+  private async presentReachedToMaxError() {
+    const msg = await this._global.language.transform('messageerror.description.outoflimitservice');
+    await this._global.toast.presentError(msg);
+  }
+
+  private isReachedToMax() {
+    if (this._plan?.limitedService) {
+      return this.services?.length >= this._plan?.limitedService;
+    } else {
+      return false;
+    }
   }
 }

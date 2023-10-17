@@ -2,14 +2,15 @@ import * as I from '../../../interface';
 import * as Constant from '../../../constant';
 import * as TextTransform from '../../text/service-text';
 import { logger } from 'firebase-functions/v2';
+import * as Repo from '../../../repository/index';
 
-export const prepareDocuments = function (
+export const prepareDocuments = async function (
   configs: I.ShopConfigurationType[],
   requestLanguage: I.SystemLanguageTranslateRequestType,
   completes: I.ChatGptTranslateDocumentType[]
 ) {
   const requestForms: I.ChatGptTranslateDocumentType[] = [];
-
+  const parents = await Repo.TranslateRequest.getCompletes();
   for (let config of configs) {
     const packageItems = transformEnglishNamePairValueList(config);
     logger.info('Retreiving ' + config.name + 'Packages');
@@ -18,14 +19,18 @@ export const prepareDocuments = function (
       const serviceId = reference[0];
       const format = reference[1];
       const previousLanguageType = reference[2];
+      const parent = parents.find(
+        p => p.serviceId === serviceId && p.format === format && config.id
+      );
 
-      if (previousLanguageType === 'en') {
+      if (previousLanguageType === 'en' && parent !== undefined) {
         const form = defaultTranslateDocumentType();
         form.shopId = config.id;
         form.languages = [{ name: requestLanguage.name, value: requestLanguage.code }];
         form.packageKey = serviceId;
         form.serviceId = serviceId;
         form.prop = TextTransform.preCleansingTranslateProp(item.value);
+        form.parentId = parent.id;
         form.format = Object.values(I.Text.Format).includes(
           format as 'upper' | 'lower' | 'title' | 'description'
         )

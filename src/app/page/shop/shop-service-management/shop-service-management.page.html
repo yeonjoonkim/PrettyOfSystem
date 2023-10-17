@@ -5,10 +5,32 @@
       <ion-menu-button auto-hide="true"></ion-menu-button>
     </ion-buttons>
     <!-- Title -->
-    <ion-title>{{'menucontent.title.servicemanagement'| languageTransform | async }} </ion-title>
+    <ion-title
+      >{{selected.name | languageTransform | async}} {{'label.title.management'| languageTransform
+      |async }}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <shop-service-management></shop-service-management>
+  <div id="selection-btn-container">
+    <div id="selection-btn">
+      <ng-container *ngFor="let btn of selection">
+        <div id="btn">
+          <div
+            id="icon-btn"
+            [ngClass]="{
+          activeIconBtn: isActive(btn.name),
+          deActiveIconBtn: !isActive(btn.name)
+        }"
+            (click)="buttonChange(btn)">
+            <div id="btn-img"><img [src]="btn.img" /></div>
+            <div id="btn-title">{{ btn.name | languageTransform | async }}</div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <shop-service-management *ngIf="selected.isServiceManagement"></shop-service-management>
+  <shop-extra-management *ngIf="selected.isExtraManagement"></shop-extra-management>
 </ion-content>

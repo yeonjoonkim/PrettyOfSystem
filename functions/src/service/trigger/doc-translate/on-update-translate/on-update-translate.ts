@@ -14,6 +14,7 @@ export const getLifeCycle = function (b: I.APITranslationStatus, a: I.APITransla
     failToPending: before.isFailed && after.isPending,
     successToCompleted: before.isSuccess && after.isCompleted,
     completedToPending: before.isCompleted && after.isPending,
+    successToPending: before.isSuccess && after.isPending,
   };
 
   return lifeCycle;
@@ -21,7 +22,11 @@ export const getLifeCycle = function (b: I.APITranslationStatus, a: I.APITransla
 
 export const getActionByLifeCycle = function (lc: I.ChatGptTranslateDocumentLifeCycleType) {
   const tryReconnect =
-    lc.createToPending || lc.failToPending || lc.inProgressToPending || lc.completedToPending;
+    lc.createToPending ||
+    lc.failToPending ||
+    lc.inProgressToPending ||
+    lc.completedToPending ||
+    lc.successToPending;
   const startTranslate = lc.createToInProgress || lc.pendingToInProgress;
   const updateShopLanguagePackage = lc.inProgressToSuccess;
   const failAlert = lc.inProgressToFail || lc.successToFail;

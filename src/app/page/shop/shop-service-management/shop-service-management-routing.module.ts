@@ -6,8 +6,8 @@ import { ShopServiceManagementPage } from './shop-service-management.page';
 const routes: Routes = [
   {
     path: '',
-    component: ShopServiceManagementPage
-  }
+    component: ShopServiceManagementPage,
+  },
 ];
 
 @NgModule({

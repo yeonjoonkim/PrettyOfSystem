@@ -12,3 +12,8 @@ export {
 } from './doc-shop-service/doc-shop-service';
 
 export { onOpenAPIInstanceUpdate } from './open-api-instance/open-api-instnace';
+export {
+  onShopExtraCreate,
+  onShopExtraDelete,
+  onShopExtraUpdated,
+} from './doc-shop-extra/doc-shop-extra';

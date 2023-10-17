@@ -1,5 +1,14 @@
+#translated-guide {
+  font-size: 8px;
+  padding: 0px 0px 0px 12px;
+}
+
 #container {
   margin-top: 15px;
+}
+
+#title-prop {
+  flex: 2;
 }
 
 #description-container {
@@ -21,9 +30,10 @@
 }
 
 #selections {
-  flex: 2;
+  flex: 1;
   #related-service,
-  #specialized-employees {
+  #specialized-employees,
+  #extra {
     max-width: 200px;
   }
 }
@@ -31,6 +41,12 @@
 #option-container {
   display: flex;
   flex-direction: row;
+}
+
+#option-delete-button {
+  width: 23px;
+  height: 23px;
+  margin: 10px;
 }
 #option-add-button {
   width: 40px;
@@ -72,11 +88,13 @@
 @media only screen and (max-width: 600px) {
   #selections {
     flex-direction: column;
+    #related-service,
+    #specialized-employees,
+    #extra {
+      max-width: 100%;
+    }
   }
-  #related-service,
-  #specialized-employees {
-    max-width: 170px;
-  }
+
   #insurance-cover,
   #pregnant {
     font-size: 12px;

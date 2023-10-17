@@ -4,30 +4,30 @@ import {
   IFormHeaderModalProp,
   ILanguageTranslatedCriteria,
   NameValuePairType,
-  ShopServiceModalPackageProp,
+  ShopLanguagePackageModalProp,
 } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
-import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-management/shop-service-management.service';
 import * as Constant from 'src/app/constant/constant';
 import { cloneDeep } from 'lodash-es';
 import { LanguageTranslateService } from 'src/app/service/global/language-translate/language-translate.service';
+import { ShopTranslatedRequestService } from 'src/app/service/shop/shop-translated-request/shop-translated-request.service';
 
 @Component({
-  selector: 'shop-service-language-package',
-  templateUrl: './shop-service-language-package.component.html',
-  styleUrls: ['./shop-service-language-package.component.scss'],
+  selector: 'shop-language-package',
+  templateUrl: './shop-language-package.component.html',
+  styleUrls: ['./shop-language-package.component.scss'],
 })
-export class ShopServiceLanguagePackageComponent implements OnInit {
+export class ShopLanguagePackageComponent implements OnInit {
   public form!: IFormHeaderModalProp;
-  public current!: ShopServiceModalPackageProp;
-  private _before!: ShopServiceModalPackageProp;
+  public current!: ShopLanguagePackageModalProp;
+  private _before!: ShopLanguagePackageModalProp;
   public _validator!: boolean[];
   constructor(
     private _modalCtrl: ModalController,
     private _navParams: NavParams,
     private _global: GlobalService,
-    private _shopService: ShopServiceManagementService,
-    private _languageTranslated: LanguageTranslateService
+    private _languageTranslated: LanguageTranslateService,
+    private _translated: ShopTranslatedRequestService
   ) {}
 
   async ngOnInit() {
@@ -70,17 +70,29 @@ export class ShopServiceLanguagePackageComponent implements OnInit {
         isUpper: false,
       },
     };
-    const result = await this._languageTranslated.get(this.current.prop, criteria, true);
 
-    if (!result.isEmpty) {
-      const translatedResult = result.translated[code[2]];
-      this.current.relatedKeys[index].value = translatedResult;
+    const splitParts = key.name.split('.');
+    splitParts[2] = 'en';
+    const english = splitParts.join('.');
+
+    const eng = this._before.relatedKeys.find(s => s.name === english);
+    if (eng !== undefined) {
+      const result = await this._languageTranslated.get(eng.value, criteria, true);
+      if (!result.isEmpty) {
+        const translatedResult = result.translated[code[2]];
+        this.current.relatedKeys[index].value = translatedResult;
+      } else {
+        const msg = await this._global.language.transform(
+          'messageeror.description.couldnottranslated'
+        );
+        await this._global.toast.presentError(msg);
+      }
     }
   }
 
   public async handleSave() {
     this.form.enabledSavebutton = false;
-    const update = await this._shopService.updatePackage(this.current.relatedKeys);
+    const update = await this._translated.updatePackage(this.current.relatedKeys);
     if (update) {
       await this.dismiss();
     } else {
@@ -100,7 +112,7 @@ export class ShopServiceLanguagePackageComponent implements OnInit {
     const formProp: IFormHeaderModalProp | undefined = this._navParams.get(
       Constant.Default.ComponentMode.Form
     );
-    const prop: ShopServiceModalPackageProp | undefined = this._navParams.get('prop');
+    const prop: ShopLanguagePackageModalProp | undefined = this._navParams.get('prop');
 
     if (formProp !== undefined && prop !== undefined) {
       this._before = cloneDeep(prop);

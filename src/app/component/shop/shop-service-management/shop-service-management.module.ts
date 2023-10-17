@@ -14,14 +14,9 @@ import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.modu
 import { ShopServiceManagementComponent } from './shop-service-management.component';
 import { ShopServiceGridComponent } from './shop-service-grid/shop-service-grid.component';
 import { ShopServiceComponent } from './shop-service/shop-service.component';
-import { ShopServiceLanguagePackageComponent } from './shop-service-language-package/shop-service-language-package.component';
+import { ShopLanguagePackageModule } from '../shop-language-package/shop-language-package.module';
 @NgModule({
-  declarations: [
-    ShopServiceManagementComponent,
-    ShopServiceGridComponent,
-    ShopServiceComponent,
-    ShopServiceLanguagePackageComponent,
-  ],
+  declarations: [ShopServiceManagementComponent, ShopServiceGridComponent, ShopServiceComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -29,6 +24,7 @@ import { ShopServiceLanguagePackageComponent } from './shop-service-language-pac
     LanguageTransformPipeModule,
     SharedFormModule,
     KendoUiModule,
+    ShopLanguagePackageModule,
   ],
   exports: [ShopServiceManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

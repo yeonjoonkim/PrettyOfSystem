@@ -61,6 +61,15 @@ ion-toolbar {
   background-color: var(--active);
 }
 
+.activeIconBtn {
+  opacity: 1;
+  font-weight: bold;
+}
+
+.deActiveIconBtn {
+  opacity: 0.5;
+}
+
 .k-button-text {
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif !important;
 }

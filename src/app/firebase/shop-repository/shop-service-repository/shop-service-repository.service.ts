@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import { SystemShopConfigurationRepositoryService } from '../system-repository/shop/system-shop-configuration-repository.service';
 import { ShopServiceDocumentType } from 'src/app/interface';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ShopService } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
-import { FirebaseToasterService } from '../firebase-toaster/firebase-toaster.service';
+import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import * as Constant from 'src/app/constant/constant';
 @Injectable({
   providedIn: 'root',
 })
 export class ShopServiceRepositoryService {
   constructor(
-    public shop: SystemShopConfigurationRepositoryService,
     private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService
   ) {}
@@ -79,6 +77,7 @@ export class ShopServiceRepositoryService {
       relatedService: { name: '', value: '' },
       specializedEmployees: [],
       options: [],
+      extraIds: [],
       title: '',
       description: '',
       lastModifiedDate: new Date(),
