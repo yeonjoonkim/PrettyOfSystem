@@ -73,6 +73,7 @@ export class ShopServiceRepositoryService {
       titleProp: '',
       descriptionProp: '',
       isInsuranceCover: false,
+      isOil: false,
       recommandForPregnant: false,
       relatedService: { name: '', value: '' },
       specializedEmployees: [],

@@ -196,19 +196,19 @@ const setCommand = function (
   format: I.ILanguageTranslatedFormatCriteria
 ) {
   const cleansedProp = TextTransform.preCleansingTranslateProp(prop);
-  const formatCommand = format.isDescription ? ' at a professional level. Input: "' : '. Input: "';
+  const formatCommand = format.isDescription
+    ? ' at a professional level. Translated Value is "'
+    : '. Translated Value is "';
 
   return (
     'Please correct any grammatical errors in the input and then translate it to' +
     lang.name +
     formatCommand +
     cleansedProp +
-    '" Output: ' +
-    'It must be converted to the exact JSON format without any additional descriptions or information.' +
-    'The translation should be provided in JSON format, The JSON key should be "' +
-    lang.value +
-    '" and the value should be the translated string. ' +
-    'Expect output: {"' +
+    '". ' +
+    'It must convert into exact same JSON format without any description or information. Do not say any introduction.' +
+    'Here is Output Example:' +
+    '{"' +
     lang.value +
     '":"translatedValue"}.'
   );

@@ -15,8 +15,14 @@ import { ShopServiceManagementComponent } from './shop-service-management.compon
 import { ShopServiceGridComponent } from './shop-service-grid/shop-service-grid.component';
 import { ShopServiceComponent } from './shop-service/shop-service.component';
 import { ShopLanguagePackageModule } from '../shop-language-package/shop-language-package.module';
+import { ShopPackageServicePopoverComponent } from '../shop-package-management/shop-package-service-popover/shop-package-service-popover.component';
 @NgModule({
-  declarations: [ShopServiceManagementComponent, ShopServiceGridComponent, ShopServiceComponent],
+  declarations: [
+    ShopServiceManagementComponent,
+    ShopServiceGridComponent,
+    ShopServiceComponent,
+    ShopPackageServicePopoverComponent,
+  ],
   imports: [
     CommonModule,
     IonicModule,

@@ -7,10 +7,6 @@
   margin-top: 15px;
 }
 
-#title-prop {
-  flex: 2;
-}
-
 #description-container {
   display: flex;
   flex-direction: row;
@@ -23,10 +19,18 @@
 }
 
 #insurance-cover,
-#pregnant {
+#pregnant,
+#oil {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin: 0px 0px 15px 0px;
+}
+
+#check-boxes {
+  padding: 0px 15px;
+}
+#check-box-container {
+  margin: 0px;
 }
 
 #selections {
@@ -48,6 +52,7 @@
   height: 23px;
   margin: 10px;
 }
+#service-add-button,
 #option-add-button {
   width: 40px;
   height: 23px;
@@ -96,7 +101,8 @@
   }
 
   #insurance-cover,
-  #pregnant {
+  #pregnant,
+  #oil {
     font-size: 12px;
   }
 }

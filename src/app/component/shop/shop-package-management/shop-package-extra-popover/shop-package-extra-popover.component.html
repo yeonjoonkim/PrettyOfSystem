@@ -1,0 +1,35 @@
+<ion-content>
+  <kendo-button id="apply-btn" (click)="apply()">{{
+    'label.title.apply' | languageTransform | async
+  }}</kendo-button>
+  <div id="container" [ngStyle]="{ 'max-height': '200px' }">
+    <ng-container *ngFor="let extra of extras">
+      <flex-row class="options">
+        <!--Check Box -->
+        <flex-row-item class="check-option">
+          <input
+            class="check-box"
+            kendoCheckBox
+            type="checkbox"
+            (click)="handleExtra(extra)"
+            [ngModel]="isSelectedExtra(extra.id)" />
+        </flex-row-item>
+        <!-- Title -->
+        <flex-row-item class="title-option">
+          <p>{{ extra.titleProp }}</p>
+        </flex-row-item>
+
+        <!-- Dollar -->
+        <flex-row-item class="price-option">
+          <p>$</p>
+          <kendo-numerictextbox
+            [(value)]="extra.price"
+            [decimals]="2"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </flex-row-item>
+      </flex-row>
+    </ng-container>
+  </div>
+</ion-content>

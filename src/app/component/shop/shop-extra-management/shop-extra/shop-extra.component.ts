@@ -22,7 +22,7 @@ export class ShopExtraComponent implements OnInit, OnDestroy {
   };
 
   private _before!: ShopExtraDocumentType;
-  private onDestory$ = new Subject<void>();
+  private _onDestroy$ = new Subject<void>();
   constructor(
     private _modalCtrl: ModalController,
     private _navParams: NavParams,
@@ -31,12 +31,12 @@ export class ShopExtraComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy() {
-    this.onDestory$.next();
-    this.onDestory$.complete();
+    this._onDestroy$.next();
+    this._onDestroy$.complete();
   }
 
   async ngOnInit() {
-    this._shopExtra.currentShopConfig$.pipe(takeUntil(this.onDestory$)).subscribe(config => {
+    this._shopExtra.currentShopConfig$.pipe(takeUntil(this._onDestroy$)).subscribe(config => {
       if (config !== null) {
         this.country = config.country;
       }

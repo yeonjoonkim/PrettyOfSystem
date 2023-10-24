@@ -14,6 +14,7 @@ import { SharedFormModule } from 'src/app/component/form/form.module';
 import { ShopServiceManagementPage } from './shop-service-management.page';
 import { ShopServiceManagementModule } from 'src/app/component/shop/shop-service-management/shop-service-management.module';
 import { ShopExtraManagementModule } from 'src/app/component/shop/shop-extra-management/shop-extra-management.module';
+import { ShopPackageManagementModule } from 'src/app/component/shop/shop-package-management/shop-package-management.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -25,6 +26,7 @@ import { ShopExtraManagementModule } from 'src/app/component/shop/shop-extra-man
     SharedFormModule,
     ShopServiceManagementModule,
     ShopExtraManagementModule,
+    ShopPackageManagementModule,
   ],
   declarations: [ShopServiceManagementPage],
 })

@@ -22,7 +22,7 @@ import { cloneDeep } from 'lodash-es';
   styleUrls: ['./shop-service-management.component.scss'],
 })
 export class ShopServiceManagementComponent implements OnInit, OnDestroy {
-  private onDestory$: Subject<void> = new Subject<void>();
+  private _onDestroy$: Subject<void> = new Subject<void>();
 
   private _isModalOpen: boolean = false;
   private _config!: ShopConfigurationType | null;
@@ -53,8 +53,8 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.onDestory$.next();
-    this.onDestory$.complete();
+    this._onDestroy$.next();
+    this._onDestroy$.complete();
   }
 
   public async handleCreate() {
@@ -121,25 +121,25 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   }
 
   private activateShopExtraListener() {
-    this._shopService.extra$.pipe(takeUntil(this.onDestory$)).subscribe(extras => {
+    this._shopService.extra$.pipe(takeUntil(this._onDestroy$)).subscribe(extras => {
       this.extras = extras;
     });
   }
 
   private activateEmployeeNameListener() {
-    this._shopService.employeName$.pipe(takeUntil(this.onDestory$)).subscribe(name => {
+    this._shopService.employeName$.pipe(takeUntil(this._onDestroy$)).subscribe(name => {
       this.employeeName = name;
     });
   }
 
   private activateRoleListener() {
-    this._shopService.currentRole$.pipe(takeUntil(this.onDestory$)).subscribe(role => {
+    this._shopService.currentRole$.pipe(takeUntil(this._onDestroy$)).subscribe(role => {
       this.role = role;
     });
   }
 
   private activateShopConfigListener() {
-    this._shopService.currentShopConfig$.pipe(takeUntil(this.onDestory$)).subscribe(config => {
+    this._shopService.currentShopConfig$.pipe(takeUntil(this._onDestroy$)).subscribe(config => {
       this._config = config;
       if (config !== null) {
         this._relatedServiceTypes = this._shopService.relateShopService.getShopRelatedServiceTypes(
@@ -150,31 +150,29 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   }
 
   private activateShopPlanListener() {
-    this._shopService.shopPlan$.pipe(takeUntil(this.onDestory$)).subscribe(plan => {
+    this._shopService.shopPlan$.pipe(takeUntil(this._onDestroy$)).subscribe(plan => {
       this._plan = plan;
     });
   }
 
   private activateShopServiceListener() {
-    this._shopService.service$.pipe(takeUntil(this.onDestory$)).subscribe(services => {
+    this._shopService.service$.pipe(takeUntil(this._onDestroy$)).subscribe(services => {
       this.services = services;
     });
   }
 
   private activateShopTranslatedRequest() {
-    this._shopService.translatedRequest$.pipe(takeUntil(this.onDestory$)).subscribe(requests => {
+    this._shopService.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(requests => {
       this.translatedRequests = requests;
     });
   }
 
   private activateShopEmployeeListener() {
-    this._shopService.shopEmp$.pipe(takeUntil(this.onDestory$)).subscribe(employees => {
-      this.specializedEmployees = employees
-        .filter(s => s.active && s.displayInSystem && !s.role.accessLevel.isReception)
-        .map(emp => {
-          return { name: emp.firstName + ' ' + emp.lastName, value: emp.userId };
-        });
-    });
+    this._shopService.specialisedEmployees$
+      .pipe(takeUntil(this._onDestroy$))
+      .subscribe(employees => {
+        this.specializedEmployees = employees;
+      });
   }
 
   private async presentReachedToMaxError() {

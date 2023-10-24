@@ -1,5 +1,13 @@
 import firebase from 'firebase/compat/app';
-import { Default, State, Date, Login, Text, BookingSearchIconType } from './constant-value';
+import {
+  Default,
+  State,
+  Date,
+  Login,
+  Text,
+  BookingSearchIconType,
+  PackageDiscountType,
+} from './constant-value';
 export {
   Default,
   State,
@@ -9,6 +17,7 @@ export {
   SystemSetting,
   Login,
   Text,
+  PackageDiscountType,
 } from './constant-value';
 export { MassageDescriptionType } from './constant-massage';
 import { TimeZone } from './timezone';
@@ -42,6 +51,9 @@ export type RoleAccessRateType =
 
 //PostCode
 export type AustraliaStateType = (typeof State.AustraliaType)[keyof typeof State.AustraliaType];
+
+//Discount
+export type PackageDiscountType = (typeof PackageDiscountType)[keyof typeof PackageDiscountType];
 
 //Form
 export type ComponentModeType = (typeof Default.ComponentMode)[keyof typeof Default.ComponentMode];

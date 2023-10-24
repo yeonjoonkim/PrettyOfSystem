@@ -1,9 +1,8 @@
 <ion-content id="multi-dropdown-list" #multiDropdownList>
   <flex-col>
     <flex-row id="search-apply-container">
-      <flex-row-item id="search-container">
+      <flex-row-item id="search-container" *ngIf="filterable">
         <kendo-textbox
-          *ngIf="filterable"
           [(ngModel)]="query"
           (ngModelChange)="onQueryChange()"
           placeholder="{{

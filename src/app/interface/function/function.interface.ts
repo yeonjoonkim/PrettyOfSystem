@@ -1,3 +1,5 @@
+import { ShopServiceOptionType } from '../shop/shop-service.interface';
+
 export type OnChangeUserType = {
   isLoginOptionChanged: boolean;
   isPhoneNumberChanged: boolean;
@@ -44,4 +46,15 @@ export type OnChangeShopActionType = {
   isResetRoster: boolean;
   isActiveStatusChange: boolean;
   isTranslatedRequestDelete: boolean;
+};
+
+export type OnChangeShopServiceOptionType = {
+  delete: ShopServiceOptionType[];
+  add: ShopServiceOptionType[];
+  update: OnChangeSopServiceOptionUpdateType[];
+};
+
+export type OnChangeSopServiceOptionUpdateType = {
+  previous: ShopServiceOptionType;
+  current: ShopServiceOptionType;
 };

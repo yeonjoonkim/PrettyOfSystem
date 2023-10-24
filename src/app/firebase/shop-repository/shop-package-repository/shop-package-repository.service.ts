@@ -1,0 +1,112 @@
+import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
+import {
+  ShopPackageDocumentType,
+  ShopPackageExtraType,
+  ShopPackageServiceType,
+  ShopWorkHoursType,
+} from 'src/app/interface';
+import * as Constant from '../../../constant/constant';
+import { ShopPackage } from 'src/app/constant/firebase-path';
+import { map } from 'rxjs';
+@Injectable({
+  providedIn: 'root',
+})
+export class ShopPackageRepositoryService {
+  constructor(
+    private _afs: AngularFirestore,
+    private _toaster: FirebaseToasterService
+  ) {}
+
+  public packageValueChangeListener(shopId: string) {
+    return this._afs
+      .collection<ShopPackageDocumentType>(ShopPackage(shopId))
+      .valueChanges()
+      .pipe(
+        map(packages =>
+          packages.map(pack => {
+            pack.services = this.orderServiceByMinASC(pack.services);
+            pack.extras = this.orderExtraByPriceASC(pack.extras);
+            return pack;
+          })
+        )
+      );
+  }
+
+  public async addPackage(doc: ShopPackageDocumentType) {
+    try {
+      this._afs.collection<ShopPackageDocumentType>(ShopPackage(doc.shopId)).doc(doc.id).set(doc);
+      await this._toaster.addSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.addFail(error);
+      console.error(error);
+      return false;
+    }
+  }
+
+  public async updatePackage(doc: ShopPackageDocumentType) {
+    try {
+      this._afs
+        .collection<ShopPackageDocumentType>(ShopPackage(doc.shopId))
+        .doc(doc.id)
+        .update(doc);
+      await this._toaster.updateSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.updateFail(error);
+      console.error(error);
+      return false;
+    }
+  }
+
+  public async deletePackage(doc: ShopPackageDocumentType) {
+    try {
+      this._afs.collection<ShopPackageDocumentType>(ShopPackage(doc.shopId)).doc(doc.id).delete();
+      await this._toaster.deleteSuccess();
+      return true;
+    } catch (error) {
+      await this._toaster.deleteFail(error);
+      console.error(error);
+      return false;
+    }
+  }
+
+  public defaultPackageDocument(workHours: ShopWorkHoursType, empName: string, shopId: string) {
+    let result: ShopPackageDocumentType = {
+      id: this._afs.createId(),
+      shopId: shopId,
+      title: '',
+      titleProp: '',
+      specializedEmployees: [],
+      services: [],
+      extras: [],
+      originalPrice: 0,
+      discountPrice: 0,
+      discountedAmount: 0,
+      totalMin: 0,
+      discount: {
+        type: Constant.PackageDiscountType.Percent,
+        value: 0,
+      },
+      lastModifiedDate: new Date(),
+      lastModifiedEmployee: empName,
+      recommandForPregnant: false,
+      limitedTime: null,
+    };
+
+    result.title = result.id + '.' + Constant.Text.Format.Title;
+    return result;
+  }
+
+  private orderServiceByMinASC(doc: ShopPackageServiceType[]) {
+    doc.sort((a, b) => a.option.min - b.option.min);
+    return doc;
+  }
+
+  private orderExtraByPriceASC(doc: ShopPackageExtraType[]) {
+    doc.sort((a, b) => a.price - b.price);
+    return doc;
+  }
+}

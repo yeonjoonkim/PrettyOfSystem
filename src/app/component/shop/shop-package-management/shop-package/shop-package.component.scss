@@ -1,0 +1,123 @@
+#container {
+  margin-top: 15px;
+}
+#translated-guide {
+  font-size: 8px;
+}
+
+#limited-day {
+  max-width: 260px;
+}
+
+#check-box-container {
+  margin-bottom: 10px;
+}
+
+#limited-time,
+#pregnant {
+  display: flex;
+  justify-content: flex-end;
+  margin: 5px 0px 5px 0px;
+}
+
+#service-title {
+  padding: 0px 11px;
+}
+
+#option-add-button {
+  width: 40px;
+  height: 23px;
+  margin: 10px;
+}
+
+.options {
+  justify-content: flex-start;
+}
+
+.minute-option {
+  margin: 0px 15px 0px 0px;
+  display: flex;
+  flex-direction: row;
+  max-width: 90px;
+  kendo-numerictextbox {
+    margin: 10px;
+    height: 28px;
+    max-width: 50px;
+  }
+}
+#total-min-container {
+  flex: 0.5;
+}
+
+#total-min-value {
+  max-width: 55px;
+}
+
+.discount-price,
+.total-min,
+.total-price-original,
+.total-price-discounted {
+  display: flex;
+  flex-direction: row;
+
+  kendo-numerictextbox {
+    height: 32px;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+}
+
+.option-title {
+  margin: 0px 0px 0px 16px;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  p {
+    width: fit-content;
+  }
+}
+
+.price-option {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  max-width: 100px;
+  kendo-numerictextbox {
+    margin: 10px;
+    height: 28px;
+    max-width: 100px;
+  }
+}
+
+#service-container,
+#extra-container,
+#information-container {
+  margin-bottom: 25px;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  margin: 0px 0px 0px 12px;
+  max-width: 130px;
+  legend {
+    margin: 0;
+  }
+  justify-content: space-between;
+}
+
+.scrollable-container {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+@media only screen and (max-width: 600px) {
+  #specialists-limited-day {
+    flex-direction: column;
+    #limited-day {
+      max-width: 600px;
+    }
+  }
+}

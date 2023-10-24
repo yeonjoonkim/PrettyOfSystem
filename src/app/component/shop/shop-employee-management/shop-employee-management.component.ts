@@ -8,7 +8,6 @@ import {
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
 } from 'src/app/interface';
-import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employee-management/shop-employee-management.service';
 
 @Component({
@@ -41,10 +40,7 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
     filter: [],
   };
 
-  constructor(
-    private _shopEmp: ShopEmployeeManagementService,
-    private _global: GlobalService
-  ) {}
+  constructor(private _shopEmp: ShopEmployeeManagementService) {}
 
   async ngOnInit() {
     this.subscribeEmployees();
@@ -52,7 +48,6 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
     this.subscribeRoles();
     this.subscribeShopConfig();
     this.subscribeAddNewEmployee();
-    await this._global.loading.init();
   }
 
   ngOnDestroy() {

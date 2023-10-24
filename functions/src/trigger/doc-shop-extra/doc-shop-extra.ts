@@ -54,6 +54,7 @@ export const onShopExtraUpdated = onDocumentUpdated(
 
     if (after !== null && before !== null) {
       const isTitleChange = before.titleProp !== after.titleProp;
+      const isPriceChange = before.price !== after.price;
 
       if (isTitleChange) {
         const titleRequestDocument = await Repository.TranslateRequest.getDocument(
@@ -79,6 +80,17 @@ export const onShopExtraUpdated = onDocumentUpdated(
           );
         }
       }
+
+      if (isPriceChange) {
+        const packages = await Repository.Shop.Package.getSelectShop(after.shopId);
+        const selected = packages.filter(p => p.extras.filter(ex => ex.id === after.id).length > 0);
+
+        for (let pack of selected) {
+          pack = Service.Trigger.ShopPackage.updateExtra(after, pack);
+          pack = Service.Trigger.ShopPackage.updatePrice(pack);
+          await Repository.Shop.Package.updatePackage(pack);
+        }
+      }
     }
   }
 );
@@ -97,7 +109,18 @@ export const onShopExtraDelete = onDocumentDeleted(
         extra.shopId,
         Constant.Text.Format.Title
       );
+      const sleep = async (duration: number) => {
+        return new Promise(resolve => setTimeout(resolve, duration));
+      };
 
+      for (let service of services) {
+        if (service.extraIds.includes(extra.id)) {
+          service.extraIds = service.extraIds.filter(id => extra.id !== id);
+          await Repository.Shop.Service.updateService(service);
+        }
+      }
+      await handleDeleteShopPackageExtra(extra);
+      await sleep(1000);
       if (titleRequestDocument !== null && shopC !== null) {
         const deleteIds = [titleRequestDocument.id];
         shopC.translatedRequestIds = shopC.translatedRequestIds.filter(
@@ -107,12 +130,6 @@ export const onShopExtraDelete = onDocumentDeleted(
 
         await Repository.Shop.Configuration.updateConfig(shopC);
         await Repository.TranslateRequest.deleteDocumentById(titleRequestDocument.id);
-      }
-      for (let service of services) {
-        if (service.extraIds.includes(extra.id)) {
-          service.extraIds = service.extraIds.filter(id => extra.id !== id);
-          await Repository.Shop.Service.updateService(service);
-        }
       }
     }
   }
@@ -131,4 +148,15 @@ const handleDeleteShopLanguagePackage = async function (
   }
 
   return updatedShopC;
+};
+
+const handleDeleteShopPackageExtra = async function (extra: I.ShopExtraDocumentType) {
+  const packages = await Repository.Shop.Package.getSelectShop(extra.shopId);
+  const selected = packages.filter(p => p.extras.filter(ex => ex.id === extra.id).length > 0);
+
+  for (let pack of selected) {
+    pack = Service.Trigger.ShopPackage.deleteExtra(extra, pack);
+    pack = Service.Trigger.ShopPackage.updatePrice(pack);
+    await Repository.Shop.Package.updatePackage(pack);
+  }
 };

@@ -8,7 +8,7 @@ import {
 } from 'src/app/interface/system/language/language.interface';
 import { PairKeyValueType } from 'src/app/interface/global/global.interface';
 import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
@@ -18,8 +18,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
 })
 export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
   private _selectedlanguage!: LanguageSelectionType | undefined;
-  private _saveCommandSubscription: Subscription | undefined;
-
+  private _onDestroy$: Subject<void> = new Subject<void>();
   public createStatus!: CreateNewPackageCommandType;
   public isSaving: boolean = false;
   public form!: IFormHeaderModalProp;
@@ -54,7 +53,8 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._saveCommandSubscription?.unsubscribe();
+    this._onDestroy$.next();
+    this._onDestroy$.complete();
   }
 
   private async onChangeForm(): Promise<void> {
@@ -79,8 +79,9 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.language.code,
       defaultKeyPairList
     );
-    this._saveCommandSubscription = this._global.language.management.add.status.subscribe(
-      async command => {
+    this._global.language.management.add.status
+      .pipe(takeUntil(this._onDestroy$))
+      .subscribe(async command => {
         if (command !== undefined) {
           this._global.language.management.add.handleTranslateCommand(command);
           this.createStatus = command;
@@ -99,8 +100,7 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
             this._modalCtrl.dismiss({ role: 'Saved' });
           }
         }
-      }
-    );
+      });
   }
 
   private async loadingFormCtrl() {

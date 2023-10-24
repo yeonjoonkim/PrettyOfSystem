@@ -96,7 +96,7 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
 
         let translated = await Service.Translate.process(vm, after);
         logger.info(after.id + ' End Translate');
-        if (translated.error.length > 0 && english === null) {
+        if (translated.error.length > 0 || english === null) {
           logger.info(after.id + ' Error In Translate - Move to Fail');
           translated.status = Constant.API.TranslateStatus.Failed;
           await Repository.TranslateRequest.updateDocument(translated);

@@ -17,7 +17,7 @@ import { ShopExtraManagementService } from 'src/app/service/shop/shop-extra-mana
   styleUrls: ['./shop-extra-management.component.scss'],
 })
 export class ShopExtraManagementComponent implements OnInit, OnDestroy {
-  private onDestory$: Subject<void> = new Subject<void>();
+  private _onDestroy$: Subject<void> = new Subject<void>();
   public extra: ShopExtraDocumentType[] = [];
   public translatedRequest: ChatGptTranslateDocumentType[] = [];
   public country!: ShopCountryType;
@@ -36,12 +36,12 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.onDestory$.next();
-    this.onDestory$.complete();
+    this._onDestroy$.next();
+    this._onDestroy$.complete();
   }
 
   private activateShopConfig() {
-    this._extraService.currentShopConfig$.pipe(takeUntil(this.onDestory$)).subscribe(config => {
+    this._extraService.currentShopConfig$.pipe(takeUntil(this._onDestroy$)).subscribe(config => {
       if (config !== null) {
         this._currentShopConfig = config;
         this.country = config.country;
@@ -50,19 +50,19 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
   }
 
   private activateShopPlan() {
-    this._extraService.currentShopPlan$.pipe(takeUntil(this.onDestory$)).subscribe(plan => {
+    this._extraService.currentShopPlan$.pipe(takeUntil(this._onDestroy$)).subscribe(plan => {
       this._plan = plan;
     });
   }
 
   private activateShopExtra() {
-    this._extraService.extra$.pipe(takeUntil(this.onDestory$)).subscribe(extra => {
+    this._extraService.extra$.pipe(takeUntil(this._onDestroy$)).subscribe(extra => {
       this.extra = extra;
     });
   }
 
   private activateTranslatedRequest() {
-    this._extraService.translatedRequest$.pipe(takeUntil(this.onDestory$)).subscribe(request => {
+    this._extraService.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
       this.translatedRequest = request;
     });
   }

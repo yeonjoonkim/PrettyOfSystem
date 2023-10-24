@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { TimeItemType } from 'src/app/interface/global/global.interface';
 
 @Component({
@@ -7,25 +7,28 @@ import { TimeItemType } from 'src/app/interface/global/global.interface';
   styleUrls: ['./time-from-to.component.scss'],
 })
 export class TimeFromToComponent implements OnInit {
-  public timeFromChange = new EventEmitter<TimeItemType>();
-  public timeToChange = new EventEmitter<TimeItemType>();
-  public inputTimeFrom!: TimeItemType;
-  public inputDateTo!: TimeItemType;
+  @Output() timeFromChange = new EventEmitter<TimeItemType>();
+  @Output() timeToChange = new EventEmitter<TimeItemType>();
+
+  private _timeFrom!: TimeItemType;
+  private _timeTo!: TimeItemType;
+
   @Input()
   get timeFrom(): TimeItemType {
-    return this.inputTimeFrom;
+    return this._timeFrom;
   }
   set timeFrom(time: TimeItemType) {
-    this.inputTimeFrom = time;
-    this.timeFromChange.emit(this.inputTimeFrom);
+    this._timeFrom = time;
+    this.timeFromChange.emit(this._timeFrom);
   }
+
   @Input()
   get timeTo(): TimeItemType {
-    return this.inputDateTo;
+    return this._timeTo;
   }
   set timeTo(time: TimeItemType) {
-    this.inputDateTo = time;
-    this.timeFromChange.emit(this.inputDateTo);
+    this._timeTo = time;
+    this.timeToChange.emit(this._timeTo);
   }
 
   constructor() {}

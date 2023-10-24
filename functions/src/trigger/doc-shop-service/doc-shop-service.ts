@@ -72,6 +72,9 @@ export const onShopServiceUpdated = onDocumentUpdated(
     if (after !== null && before !== null) {
       const isTitleChange = before.titleProp !== after.titleProp;
       const isDescriptionChange = before.descriptionProp !== after.descriptionProp;
+      const isOptionChanged = Service.Trigger.ShopService.onChangeOption(before, after);
+
+      await handleOptionChange(isOptionChanged, after.shopId, after.id);
 
       if (isTitleChange) {
         const titleRequestDocument = await Repository.TranslateRequest.getDocument(
@@ -146,6 +149,26 @@ export const onShopServiceDelete = onDocumentDeleted(
         Constant.Text.Format.Description
       );
 
+      let packages = await Repository.Shop.Package.getSelectShop(service.shopId);
+      packages = packages.filter(s => s.services.filter(s => s.id === service.id).length > 0);
+      packages = handleDeleteServiceInPackage(service.options, packages, service.id);
+
+      const deletePackage = packages.filter(s => s.services.length === 0);
+      const updatePackage = packages.filter(s => s.services.length > 0);
+
+      for (let d of deletePackage) {
+        await Repository.Shop.Package.deletePackage(d);
+      }
+
+      for (let u of updatePackage) {
+        u = Service.Trigger.ShopPackage.updatePrice(u);
+        if (u.discountPrice === 0) {
+          await Repository.Shop.Package.deletePackage(u);
+        } else {
+          await Repository.Shop.Package.updatePackage(u);
+        }
+      }
+
       if (titleRequestDocument !== null && descriptionRequestDocument !== null && shopC !== null) {
         const deleteIds = [titleRequestDocument.id, descriptionRequestDocument.id];
         shopC.translatedRequestIds = shopC.translatedRequestIds.filter(
@@ -174,4 +197,65 @@ const handleDeleteShopLanguagePackage = async function (
   }
 
   return updatedShopC;
+};
+
+const handleOptionChange = async function (
+  change: I.OnChangeShopServiceOptionType,
+  shopId: string,
+  serviceId: string
+) {
+  let packages = await Repository.Shop.Package.getSelectShop(shopId);
+  packages = packages.filter(s => s.services.filter(s => s.id === serviceId).length > 0);
+  packages = handleUpdateServiceInPackage(change.update, packages, serviceId);
+  packages = handleDeleteServiceInPackage(change.delete, packages, serviceId);
+
+  const deletePackage = packages.filter(s => s.services.length === 0);
+  const updatePackage = packages.filter(s => s.services.length > 0);
+
+  for (let d of deletePackage) {
+    await Repository.Shop.Package.deletePackage(d);
+  }
+
+  for (let u of updatePackage) {
+    u = Service.Trigger.ShopPackage.updatePrice(u);
+    await Repository.Shop.Package.updatePackage(u);
+  }
+};
+
+const handleDeleteServiceInPackage = function (
+  deletes: I.ShopServiceOptionType[],
+  packages: I.ShopPackageDocumentType[],
+  serviceId: string
+) {
+  for (let d of deletes) {
+    for (let pack of packages) {
+      pack.services = pack.services.filter(
+        s => !(s.id === serviceId && d.min === s.option.min && d.price === s.option.price)
+      );
+    }
+  }
+
+  return packages;
+};
+
+const handleUpdateServiceInPackage = function (
+  changes: I.OnChangeSopServiceOptionUpdateType[],
+  packages: I.ShopPackageDocumentType[],
+  serviceId: string
+) {
+  for (let c of changes) {
+    for (let pack of packages) {
+      let service = pack.services.find(s => s.id === serviceId && c.previous.min === s.option.min);
+      const index = pack.services.findIndex(
+        s => s.id === serviceId && c.previous.min === s.option.min
+      );
+
+      if (service !== null && service !== undefined) {
+        service.option.price = c.current.price;
+        pack.services[index] = service;
+      }
+    }
+  }
+
+  return packages;
 };

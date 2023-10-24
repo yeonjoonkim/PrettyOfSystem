@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/service/global/global.service';
 import {
   ISystemMenuOptionAction,
   SystemMenuOptionControllerService,
@@ -14,10 +15,14 @@ export class SystemConfigurationPage implements OnInit {
     this._systemMenuOptionCtrl.setDefaultSystemMenuOptionController();
   public systemMenu: ISystemMenuOptionAction[] = [];
 
-  constructor(private _systemMenuOptionCtrl: SystemMenuOptionControllerService) {}
+  constructor(
+    private _systemMenuOptionCtrl: SystemMenuOptionControllerService,
+    private _global: GlobalService
+  ) {}
 
   async ngOnInit() {
     await this.setDefaultSystemMenuOption();
+    await this._global.loading.init();
   }
 
   private async setDefaultSystemMenuOption() {

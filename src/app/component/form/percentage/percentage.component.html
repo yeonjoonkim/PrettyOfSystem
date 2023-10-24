@@ -1,11 +1,14 @@
 <kendo-label text="{{ title | languageTransform | async }}">
   <kendo-numerictextbox
-    format="p"
+    format="p2"
     [step]="step"
     [min]="min"
     [max]="max"
-    [(value)]="currentValue"
+    [(ngModel)]="currentValue"
+    (ngModelChange)="changeValue()"
     [autoCorrect]="true"
+    [decimals]="4"
+    [spinners]="false"
     [readonly]="readOnly"
     [rangeValidation]="true"
     [spinners]="!readOnly"></kendo-numerictextbox>

@@ -61,7 +61,7 @@
           <span id="pending" *ngIf="request.status === 'pending'">{{
             'label.title.pending' | languageTransform | async
           }}</span>
-          <span id="inprogress" *ngIf="request.status === 'inProgress'">{{
+          <span id="inprogress" *ngIf="request.status === 'inProgress' && !isFailed(request)">{{
             'label.title.inprogress' | languageTransform | async
           }}</span>
           <span id="success" *ngIf="request.status === 'Success'">{{
@@ -70,7 +70,7 @@
           <span id="completed" *ngIf="request.status === 'Completed'">{{
             'label.title.view' | languageTransform | async
           }}</span>
-          <span id="fail" *ngIf="request.status === 'Failed'">{{
+          <span id="fail" *ngIf="request.status === 'Failed' || isFailed(request)">{{
             'label.title.fail' | languageTransform | async
           }}</span>
         </div>
@@ -102,7 +102,7 @@
           <span id="pending" *ngIf="request.status === 'pending'">{{
             'label.title.pending' | languageTransform | async
           }}</span>
-          <span id="inprogress" *ngIf="request.status === 'inProgress'">{{
+          <span id="inprogress" *ngIf="request.status === 'inProgress' && !isFailed(request)">{{
             'label.title.inprogress' | languageTransform | async
           }}</span>
           <span id="success" *ngIf="request.status === 'Success'">{{
@@ -111,7 +111,7 @@
           <span id="completed" *ngIf="request.status === 'Completed'">{{
             'label.title.view' | languageTransform | async
           }}</span>
-          <span id="fail" *ngIf="request.status === 'Failed'">{{
+          <span id="fail" *ngIf="request.status === 'Failed' || isFailed(request)">{{
             'label.title.fail' | languageTransform | async
           }}</span>
         </div>
@@ -145,6 +145,11 @@
                   type="checkbox"
                   [disabled]="true"
                   [ngModel]="service.recommandForPregnant" />
+              </kendo-label>
+            </div>
+            <div id="oil">
+              <kendo-label text="{{ 'label.title.oil' | languageTransform | async }}">
+                <input kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="service.isOil" />
               </kendo-label>
             </div>
           </flex-row-item>

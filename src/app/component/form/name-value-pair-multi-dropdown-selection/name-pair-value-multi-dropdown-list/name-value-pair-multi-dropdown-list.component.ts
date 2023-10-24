@@ -1,14 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
-import { CellClickEvent } from '@progress/kendo-angular-grid';
 import {
   PairKeyValueType,
   NameValuePairType,
@@ -39,8 +30,6 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
   });
 
   constructor(
-    private _renderer: Renderer2,
-    private _el: ElementRef,
     private _navParams: NavParams,
     private _popoverCtrl: PopoverController,
     private _global: GlobalService

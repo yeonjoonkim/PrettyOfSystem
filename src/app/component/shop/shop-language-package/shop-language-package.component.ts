@@ -83,7 +83,7 @@ export class ShopLanguagePackageComponent implements OnInit {
         this.current.relatedKeys[index].value = translatedResult;
       } else {
         const msg = await this._global.language.transform(
-          'messageeror.description.couldnottranslated'
+          'messageerror.description.couldnottranslated'
         );
         await this._global.toast.presentError(msg);
       }

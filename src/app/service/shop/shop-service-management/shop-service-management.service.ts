@@ -19,8 +19,8 @@ import { ShopServiceModalService } from './shop-service-modal/shop-service-modal
 import { ShopLanguagePackageService } from '../shop-language-package/shop-language-package.service';
 import { LoadingService } from '../../global/loading/loading.service';
 import { ShopServiceMenuOptionControllerService } from './shop-service-menu-option-controller/shop-service-menu-option-controller.service';
-import { ShopTranslatedRequestService } from '../shop-translated-request/shop-translated-request.service';
-import { ShopExtraManagementService } from '../shop-extra-management/shop-extra-management.service';
+import { ShopService } from '../shop.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -32,10 +32,10 @@ export class ShopServiceManagementService {
   public extra$!: Observable<ShopExtraDocumentType[]>;
   public shopPlan$!: Observable<PlanConfigurationType | null>;
   public employeName$!: Observable<string>;
+  public specialisedEmployees$!: Observable<NameValuePairType[]>;
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
+
   constructor(
-    private _user: UserService,
-    private _shopEmp: ShopEmployeeManagementService,
     public relateShopService: ShopRelatedServiceService,
     public modal: ShopServiceModalService,
     public textTransform: TextTransformService,
@@ -43,29 +43,17 @@ export class ShopServiceManagementService {
     public loading: LoadingService,
     public menu: ShopServiceMenuOptionControllerService,
     private _shopServiceRepo: ShopServiceRepositoryService,
-    private _translated: ShopTranslatedRequestService,
-    private _shopExtra: ShopExtraManagementService
+    private _shop: ShopService
   ) {
-    this.currentShopConfig$ = this._user.currentShopConfig$;
-    this.shopEmp$ = this._shopEmp.shopEmployees$;
-    this.currentRole$ = this._user.currentRole$;
-    this.shopPlan$ = this._user.currentShopPlan$;
-    this.employeName$ = this._user.employeName$;
-    this.translatedRequest$ = this._translated.translatedRequest$;
-    this.extra$ = this._shopExtra.extra$;
-    this.activateShopServiceListener();
-  }
-
-  private activateShopServiceListener() {
-    this.service$ = this.currentShopConfig$.pipe(
-      switchMap(config => {
-        if (config !== null) {
-          return this._shopServiceRepo.serviceValueChangeListener(config.id);
-        } else {
-          return of([] as ShopServiceDocumentType[]);
-        }
-      })
-    );
+    this.currentShopConfig$ = this._shop.config$;
+    this.shopEmp$ = this._shop.employees$;
+    this.currentRole$ = this._shop.role$;
+    this.shopPlan$ = this._shop.plan$;
+    this.employeName$ = this._shop.userName$;
+    this.translatedRequest$ = this._shop.translatedRequests$;
+    this.extra$ = this._shop.extras$;
+    this.service$ = this._shop.services$;
+    this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
   }
 
   public async add(service: ShopServiceDocumentType) {
@@ -79,7 +67,7 @@ export class ShopServiceManagementService {
   }
 
   public async update(after: ShopServiceDocumentType) {
-    const empName = await this._user.fullName();
+    const empName = await this._shop.userName();
     if (empName !== null) {
       after.lastModifiedEmployee = empName;
       after.lastModifiedDate = new Date();
@@ -97,11 +85,10 @@ export class ShopServiceManagementService {
   }
 
   public async getShopConfig() {
-    const result = await firstValueFrom(this.currentShopConfig$);
-    return result;
+    return this._shop.config();
   }
 
   public async requeueTranslatedRequest(doc: ChatGptTranslateDocumentType) {
-    return await this._translated.requeueTranslatedRequest(doc);
+    return await this._shop.requeueTranslatedRequest(doc);
   }
 }

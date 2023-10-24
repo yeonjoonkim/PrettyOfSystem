@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { UserService } from '../../user/user.service';
 import { Observable, combineLatestWith, firstValueFrom, map, of, switchMap } from 'rxjs';
 import {
   NameValuePairType,
@@ -15,6 +14,7 @@ import { GlobalService } from '../../global/global.service';
 import { ShopEmployeeAccountModalService } from './shop-employee-account-modal/shop-employee-account-modal.service';
 import * as Constant from 'src/app/constant/constant';
 import { SystemLanguageStorageService } from '../../global/language/system-language-management/system-language-storage/system-language-storage.service';
+import { ShopService } from '../shop.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -29,17 +29,17 @@ export class ShopEmployeeManagementService {
 
   constructor(
     public modal: ShopEmployeeAccountModalService,
-    private _currentUser: UserService,
     private _userRepo: UserCredentialRepositoryService,
     private _roleRepo: SystemRoleRepositoryService,
     private _shopEmpAcc: ShopEmployeeAccountService,
     private _global: GlobalService,
-    private _languageStorage: SystemLanguageStorageService
+    private _languageStorage: SystemLanguageStorageService,
+    private _shop: ShopService
   ) {
-    this.role$ = this._currentUser.currentRole$;
-    this.shopConfig$ = this._currentUser.currentShopConfig$;
-    this.shopPlan$ = this._currentUser.currentShopPlan$;
-    this.activateAssociatedUsers();
+    this.role$ = this._shop.role$;
+    this.shopConfig$ = this._shop.config$;
+    this.shopPlan$ = this._shop.plan$;
+    this.shopEmployees$ = this._shop.employees$;
     this.activateAvailableRoles();
     this.activateRoleFilter();
     this.activateAddEmployee();
@@ -180,18 +180,6 @@ export class ShopEmployeeManagementService {
     }
   }
 
-  private activateAssociatedUsers() {
-    this.shopEmployees$ = this.shopConfig$.pipe(
-      switchMap(config => {
-        if (config !== null && config !== undefined) {
-          return this._userRepo.subscribeAssociatedShopUsers(config.id);
-        } else {
-          return of([]);
-        }
-      })
-    );
-  }
-
   private activateAddEmployee() {
     this.addNewEmployee$ = this.shopEmployees$.pipe(
       combineLatestWith(this.shopPlan$),
@@ -223,17 +211,7 @@ export class ShopEmployeeManagementService {
   }
 
   private async isAuthorisedUser() {
-    const requestRole = await firstValueFrom(this.role$);
-
-    if (requestRole !== null) {
-      return (
-        requestRole.accessLevel.isSystemAdmin ||
-        requestRole.accessLevel.isAdmin ||
-        requestRole.accessLevel.isManager
-      );
-    } else {
-      return false;
-    }
+    return await this._shop.role.isManagerAccess();
   }
 
   public isManagerAccessLevel(r: RoleConfigurationType) {

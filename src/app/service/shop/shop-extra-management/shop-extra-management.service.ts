@@ -2,18 +2,17 @@ import { Injectable } from '@angular/core';
 import { UserService } from '../../user/user.service';
 import {
   ChatGptTranslateDocumentType,
-  NameValuePairType,
   PlanConfigurationType,
   RoleConfigurationType,
   ShopConfigurationType,
   ShopExtraDocumentType,
 } from 'src/app/interface';
-import { Observable, firstValueFrom, of, switchMap } from 'rxjs';
-import { ShopTranslatedRequestService } from '../shop-translated-request/shop-translated-request.service';
+import { Observable } from 'rxjs';
 import { ShopExtraRepositoryService } from 'src/app/firebase/shop-repository/shop-extra-repository/shop-extra-repository.service';
 import { LoadingService } from '../../global/loading/loading.service';
 import { ShopLanguagePackageService } from '../shop-language-package/shop-language-package.service';
 import { ShopExtraModalService } from './shop-extra-modal/shop-extra-modal.service';
+import { ShopService } from '../shop.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,29 +26,17 @@ export class ShopExtraManagementService {
 
   constructor(
     private _user: UserService,
-    private _translated: ShopTranslatedRequestService,
     private _shopExtraRepo: ShopExtraRepositoryService,
+    private _shop: ShopService,
     public loading: LoadingService,
     public languagePackage: ShopLanguagePackageService,
     public modal: ShopExtraModalService
   ) {
-    this.currentShopConfig$ = this._user.currentShopConfig$;
-    this.currentShopPlan$ = this._user.currentShopPlan$;
-    this.currentRole$ = this.currentRole$;
-    this.translatedRequest$ = this._translated.translatedRequest$;
-    this.activateShopExtraListener();
-  }
-
-  private activateShopExtraListener() {
-    this.extra$ = this.currentShopConfig$.pipe(
-      switchMap(config => {
-        if (config !== null) {
-          return this._shopExtraRepo.extraValueChangeListener(config.id);
-        } else {
-          return of([] as ShopExtraDocumentType[]);
-        }
-      })
-    );
+    this.currentRole$ = this._shop.role$;
+    this.currentShopConfig$ = this._shop.config$;
+    this.currentShopPlan$ = this._shop.plan$;
+    this.extra$ = this._shop.extras$;
+    this.translatedRequest$ = this._shop.translatedRequests$;
   }
 
   public async add(extra: ShopExtraDocumentType) {
@@ -87,11 +74,10 @@ export class ShopExtraManagementService {
   }
 
   public async getShopConfig() {
-    const result = await firstValueFrom(this.currentShopConfig$);
-    return result;
+    return await this._shop.config();
   }
 
   public async requeueTranslatedRequest(doc: ChatGptTranslateDocumentType) {
-    return await this._translated.requeueTranslatedRequest(doc);
+    return await this._shop.requeueTranslatedRequest(doc);
   }
 }

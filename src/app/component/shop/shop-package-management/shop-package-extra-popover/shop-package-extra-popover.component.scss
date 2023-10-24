@@ -1,0 +1,46 @@
+#apply-btn {
+  width: 100%;
+  height: 32px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.options,
+.check-option,
+.title-option,
+.price-option {
+  margin: 0;
+}
+
+.options {
+  justify-content: flex-start;
+  margin-right: 20px;
+}
+
+.check-option {
+  max-width: 40px;
+  display: flex;
+  justify-content: center;
+  .check-box {
+    margin: 15px 0px 0px 0px;
+  }
+}
+
+.title-option {
+  display: flex;
+  flex-direction: row;
+  max-width: 80px;
+}
+
+.price-option {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  max-width: 80px;
+  kendo-numerictextbox {
+    margin: 10px 0px 0px 0px;
+    height: 28px;
+    max-width: 100px;
+  }
+}

@@ -77,11 +77,6 @@ const handleExpiredDateChecker = async function (after: I.OpenApiInstanceType) {
   const expired = Service.Date.toDate(after.expiredDate);
   const diff = expired.getTime() - now.getTime();
 
-  if (diff <= 0) {
-    await checkInstanceExpiry(after);
-    return;
-  }
-
   setTimeout(async () => {
     await checkInstanceExpiry(after);
   }, diff);
