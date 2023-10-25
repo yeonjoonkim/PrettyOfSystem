@@ -14,20 +14,18 @@ import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/syste
 import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/role/system-role-repository.service';
 import { UserAdminPopoverService } from './user-admin-popover/user-admin-popover.service';
 import * as Constant from 'src/app/constant/constant';
-import { FirebaseService } from '../firebase/firebase.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 @Injectable({
   providedIn: 'root',
 })
 export class UserAdminService {
   constructor(
     public modal: UserAdminModalService,
-
     public popover: UserAdminPopoverService,
     private _global: GlobalService,
     private _userRepo: UserCredentialRepositoryService,
     private _shopRepo: SystemShopConfigurationRepositoryService,
-    private _roleRepo: SystemRoleRepositoryService,
-    private _firebaseService: FirebaseService
+    private _roleRepo: SystemRoleRepositoryService
   ) {}
 
   public async updateUser(after: IUser, before: IUser) {
@@ -46,10 +44,6 @@ export class UserAdminService {
     } else {
       return await this._userRepo.updateUser(after);
     }
-  }
-
-  public getNewId() {
-    return this._firebaseService.newId();
   }
 
   public defaultUser(): IUser {

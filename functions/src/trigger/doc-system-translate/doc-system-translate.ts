@@ -13,7 +13,7 @@ export const onCreateNewLanguage = onDocumentCreated(
       logger.info('Retreving All Shop Configs and Completed Document');
       const configs = await Repository.Shop.Configuration.getAll();
       const compeltedDocs = await Repository.TranslateRequest.getCompletes();
-      const forms = Service.Trigger.SystemTranslateRequest.prepareDocuments(
+      const forms = await Service.Trigger.SystemTranslateRequest.prepareDocuments(
         configs,
         requestData,
         compeltedDocs

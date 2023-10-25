@@ -1,0 +1,18 @@
+<div id="container">
+  <kendo-label *ngIf="value" text="{{ value.title | languageTransform | async }}">
+    <p id="label">{{ value.current }} / {{ value.max }}</p>
+    <kendo-progressbar
+      id="progress-bar"
+      [min]="0"
+      [max]="value.max"
+      [indeterminate]="value.indeterminate"
+      [label]="{ visible: false }"
+      [value]="value.current"></kendo-progressbar>
+  </kendo-label>
+  <kendo-skeleton
+    id="skeleton"
+    *ngIf="value === undefined"
+    shape="text"
+    animation="pulse"
+    width="100%"></kendo-skeleton>
+</div>

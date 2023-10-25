@@ -1,5 +1,17 @@
 #language-selection-list {
-  margin-top: 25px;
+  padding-top: 25px;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  kendo-grid {
+    min-width: 300px;
+    max-width: 800px;
+  }
+}
+#language-request-list {
+  padding-top: 50px;
   height: fit-content;
   display: flex;
   justify-content: center;

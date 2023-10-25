@@ -18,6 +18,7 @@ import { TimerService } from './timer/timer.service';
 import { NetworkConnectionStatusService } from './network-connection-status/network-connection-status.service';
 import { CryptService } from './crypt/crypt.service';
 import { AgreementModalService } from './agreement-modal/agreement-modal.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -42,10 +43,15 @@ export class GlobalService {
     public date: DateService,
     public timer: TimerService,
     public networkConnection: NetworkConnectionStatusService,
-    public crypt: CryptService
+    public crypt: CryptService,
+    private _afs: AngularFirestore
   ) {}
 
   public isUndefinedOrNull(data: any): boolean {
     return data === undefined || data === null;
+  }
+
+  public newId() {
+    return this._afs.createId();
   }
 }

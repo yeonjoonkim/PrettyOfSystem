@@ -29,6 +29,13 @@ export class LoadingService {
     loading.present();
   }
 
+  async init() {
+    await this.show();
+    setTimeout(() => {
+      this.dismiss();
+    }, 1000);
+  }
+
   async dismiss() {
     const loading = await this._loadingCtrl.getTop();
     if (loading !== undefined) {

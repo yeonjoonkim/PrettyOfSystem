@@ -83,8 +83,7 @@ export class UserEditComponent implements OnInit, DoCheck {
       this.user.loginOption.email && this.resetPassword
         ? this._encryptedPassword
         : this.user.encryptedPassword;
-    this._paramUser;
-    console.log(this._paramUser);
+
     const result = await this._user.updateUser(this.user, this._paramUser);
     if (result) {
       await this._user.modal.dismiss();

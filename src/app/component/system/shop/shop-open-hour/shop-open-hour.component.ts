@@ -226,6 +226,9 @@ export class ShopOpenHourComponent implements OnInit {
     this.validator.mon = valid.result;
     this.inputWorkHours.mon.workHours = valid.workHours;
     this.setCloseDay(Constant.Date.DayIndex.Mon, this.inputWorkHours.mon.isOpen);
+    this.inputWorkHours.mon.isOpen = !this.inputWorkHours.closeDay.includes(
+      Constant.Date.DayIndex.Mon
+    );
     this.validate = this.setValidator();
     this.workHours = this.inputWorkHours;
   }
@@ -244,6 +247,9 @@ export class ShopOpenHourComponent implements OnInit {
     this.validator.tue = valid.result;
     this.inputWorkHours.tue.workHours = valid.workHours;
     this.setCloseDay(Constant.Date.DayIndex.Tue, this.inputWorkHours.tue.isOpen);
+    this.inputWorkHours.tue.isOpen = !this.inputWorkHours.closeDay.includes(
+      Constant.Date.DayIndex.Tue
+    );
     this.validate = this.setValidator();
     this.workHours = this.inputWorkHours;
   }
@@ -262,6 +268,9 @@ export class ShopOpenHourComponent implements OnInit {
     this.validator.wed = valid.result;
     this.inputWorkHours.wed.workHours = valid.workHours;
     this.setCloseDay(Constant.Date.DayIndex.Wed, this.inputWorkHours.wed.isOpen);
+    this.inputWorkHours.wed.isOpen = !this.inputWorkHours.closeDay.includes(
+      Constant.Date.DayIndex.Wed
+    );
     this.validate = this.setValidator();
     this.workHours = this.inputWorkHours;
   }
@@ -280,6 +289,9 @@ export class ShopOpenHourComponent implements OnInit {
     this.validator.thu = valid.result;
     this.inputWorkHours.thu.workHours = valid.workHours;
     this.setCloseDay(Constant.Date.DayIndex.Thu, this.inputWorkHours.thu.isOpen);
+    this.inputWorkHours.thu.isOpen = !this.inputWorkHours.closeDay.includes(
+      Constant.Date.DayIndex.Thu
+    );
     this.validate = this.setValidator();
     this.workHours = this.inputWorkHours;
   }
@@ -298,6 +310,9 @@ export class ShopOpenHourComponent implements OnInit {
     this.validator.fri = valid.result;
     this.inputWorkHours.fri.workHours = valid.workHours;
     this.setCloseDay(Constant.Date.DayIndex.Fri, this.inputWorkHours.fri.isOpen);
+    this.inputWorkHours.fri.isOpen = !this.inputWorkHours.closeDay.includes(
+      Constant.Date.DayIndex.Fri
+    );
     this.validate = this.setValidator();
     this.workHours = this.inputWorkHours;
   }
@@ -316,6 +331,9 @@ export class ShopOpenHourComponent implements OnInit {
     this.validator.sat = valid.result;
     this.inputWorkHours.sat.workHours = valid.workHours;
     this.setCloseDay(Constant.Date.DayIndex.Sat, this.inputWorkHours.sat.isOpen);
+    this.inputWorkHours.sat.isOpen = !this.inputWorkHours.closeDay.includes(
+      Constant.Date.DayIndex.Sat
+    );
     this.validate = this.setValidator();
     this.workHours = this.inputWorkHours;
   }
@@ -334,6 +352,9 @@ export class ShopOpenHourComponent implements OnInit {
     this.validator.sun = valid.result;
     this.inputWorkHours.sun.workHours = valid.workHours;
     this.setCloseDay(Constant.Date.DayIndex.Sun, this.inputWorkHours.sun.isOpen);
+    this.inputWorkHours.sun.isOpen = !this.inputWorkHours.closeDay.includes(
+      Constant.Date.DayIndex.Sun
+    );
     this.validate = this.setValidator();
     this.workHours = this.inputWorkHours;
   }

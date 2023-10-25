@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MenuCategoryType, MenuContentType } from 'src/app/interface/menu/menu.interface';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { firstValueFrom, from, lastValueFrom, map, Observable } from 'rxjs';
+import { from, lastValueFrom, map, Observable } from 'rxjs';
 import * as Db from 'src/app/constant/firebase-path';
 import { RoleAccessLevelType } from 'src/app/interface/system/role/role.interface';
 import { RoleRateService } from 'src/app/service/authentication/role-rate/role-rate.service';
@@ -62,7 +62,7 @@ export class SystemMenuRepositoryService {
   public subscribeAccessGrantedMenu(
     accessLevel: RoleAccessLevelType
   ): Observable<MenuCategoryType[]> {
-    return this.getSystemMenuCategories().pipe(
+    return this.valueChangeListener().pipe(
       map(menu => {
         return menu.filter(category => {
           let categoryAccessLevel: number = this._roleRate.getSystemRoleRateSettingByConfiguration(

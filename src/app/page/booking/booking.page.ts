@@ -14,9 +14,18 @@ export class BookingPage implements OnInit {
     },
     shopCategoryName: Constant.BookingSearchIconType.MassageTheraphy,
   };
+  public isLoaded = false;
   constructor() {}
 
   ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.isLoaded = true;
+  }
+
+  ionViewWillLeave() {
+    this.isLoaded = false;
+  }
 
   public async onAddressQuery(query: PostCodeItemType) {
     this.query.address = query;

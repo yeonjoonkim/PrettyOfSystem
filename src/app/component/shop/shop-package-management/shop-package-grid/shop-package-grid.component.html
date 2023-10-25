@@ -1,0 +1,120 @@
+<kendo-grid [kendoGridBinding]="packages" [height]="600" [sortable]="true">
+  <!-- Add -->
+  <ng-template kendoGridToolbarTemplate>
+    <button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole && !isReachMax">
+      <span class="k-icon k-i-plus"></span>
+    </button>
+  </ng-template>
+
+  <!-- Name -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="titleProp"
+    title="{{ 'label.title.name' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p (click)="onClickEdit(package)" id="package-name">{{ package.titleProp }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Original Price -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="originalPrice"
+    title="{{ 'label.title.originalprice' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p>${{ package.originalPrice }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Discounted Price -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="discountPrice"
+    title="{{ 'label.title.discountedprice' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p>${{ package.discountPrice }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Total Min -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="totalMin"
+    title="{{ 'label.title.minute' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p>{{ package.totalMin }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Services -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="services.length"
+    title="{{ 'label.title.service' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p>{{ package.services.length }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Extra -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="extras.length"
+    title="{{ 'label.title.extra' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p>{{ package.extras.length }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Limited time -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="package.limitedTime !== null"
+    title="{{ 'label.title.limitedday' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <input kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="isLimitedDate(package)" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Title -->
+  <kendo-grid-column [width]="70" title="{{ 'label.title.title' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-service>
+      <div *ngFor="let request of translatedRequests">
+        <div
+          class="translated-status-container"
+          [ngClass]="{
+            create: request.status === 'create',
+            pending: request.status === 'pending',
+            inprogress: request.status === 'inProgress',
+            success: request.status === 'Success',
+            completed: request.status === 'Completed',
+            failed: request.status === 'Failed'
+          }"
+          (click)="handleRequeue(request, service)"
+          *ngIf="request.serviceId === service.id && request.format === 'title'">
+          <span id="create" *ngIf="request.status === 'create'">{{
+            'label.title.created' | languageTransform | async
+          }}</span>
+          <span id="pending" *ngIf="request.status === 'pending'">{{
+            'label.title.pending' | languageTransform | async
+          }}</span>
+          <span id="inprogress" *ngIf="request.status === 'inProgress'">{{
+            'label.title.inprogress' | languageTransform | async
+          }}</span>
+          <span id="success" *ngIf="request.status === 'Success'">{{
+            'label.title.success' | languageTransform | async
+          }}</span>
+          <span id="completed" *ngIf="request.status === 'Completed'">{{
+            'label.title.view' | languageTransform | async
+          }}</span>
+          <span id="fail" *ngIf="request.status === 'Failed'">{{
+            'label.title.fail' | languageTransform | async
+          }}</span>
+        </div>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- NO Data-->
+  <ng-template kendoGridNoRecordsTemplate></ng-template>
+</kendo-grid>

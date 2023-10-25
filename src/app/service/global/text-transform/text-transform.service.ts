@@ -14,6 +14,9 @@ export class TextTransformService {
   /** This will retreive capitalzed word as a single string value.
    * Recommand to use a single string value.
    */
+  public preCleansingTranslateProp(input: string): string {
+    return input.trim().replace(/["\r\n{}]+/g, '');
+  }
   public getCapitalzedWord(str: string): string {
     let lowcaseValue: string = str.toLowerCase();
     let capitalzedWord: string = str.charAt(0).toUpperCase() + lowcaseValue.slice(1);

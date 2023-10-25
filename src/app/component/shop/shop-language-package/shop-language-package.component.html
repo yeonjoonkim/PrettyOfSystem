@@ -1,0 +1,52 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  [isDeleteRequired]="false"
+  (onClickDismiss)="dismiss()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()">
+</form-header>
+<ion-content [scrollable]="true" *ngIf="current">
+  <div id="container">
+    <div *ngFor="let lang of current.languages">
+      <div *ngFor="let key of current.relatedKeys; let i = index">
+        <div *ngIf="key.name === lang.value && current.isTitle">
+          <flex-col id="title-container">
+            <flex-col-item>
+              <button
+                kendoButton
+                id="refresh-btn"
+                icon="refresh"
+                *ngIf="!form.readOnly"
+                (click)="refresh(key, lang)"></button>
+              <text-box
+                [title]="lang.name"
+                [(value)]="key.value"
+                [readOnly]="form.readOnly"
+                (valueChange)="onChangeProp(key)"></text-box>
+            </flex-col-item>
+          </flex-col>
+        </div>
+        <div *ngIf="key.name === lang.value && !current.isTitle">
+          <flex-col id="description-container">
+            <flex-col-item>
+              <button
+                kendoButton
+                id="refresh-btn"
+                icon="refresh"
+                *ngIf="!form.readOnly"
+                (click)="refresh(key, lang)"></button>
+              <text-area
+                [title]="lang.name"
+                [(value)]="key.value"
+                [readOnly]="form.readOnly"
+                (valueChange)="onChangeProp(key)"></text-area>
+            </flex-col-item>
+          </flex-col>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

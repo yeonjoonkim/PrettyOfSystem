@@ -10,6 +10,11 @@ export const BookingSearchIconType = {
   SkinCare: 'label.title.skincare',
 } as const;
 
+export const PackageDiscountType = {
+  Percent: 'Percent',
+  Dollar: 'Dollar',
+} as const;
+
 export const ShopSetting = {
   General: {
     TaxRate: 0.1,
@@ -34,6 +39,7 @@ export const Text = {
     Lower: 'lower',
     Title: 'title',
     Description: 'description',
+    None: '',
   } as const,
 } as const;
 

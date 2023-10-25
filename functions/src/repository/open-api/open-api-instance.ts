@@ -2,11 +2,13 @@ import { firestore } from 'firebase-admin';
 import * as Db from '../../db';
 import * as I from '../../interface';
 import { logger } from 'firebase-functions/v2';
+import * as Service from '../../service/index';
 
 export const getAll = async function (): Promise<I.OpenApiInstanceType[]> {
   const snapshot = await firestore().collection(Db.Context.OpenApiInstance).get();
   const instnaces = snapshot.docs.map(doc => {
-    const data = doc.data() as I.OpenApiInstanceType;
+    let data = doc.data() as I.OpenApiInstanceType;
+    data.expiredDate = Service.Date.toDate(data.expiredDate);
     return {
       ...data,
     };
@@ -14,9 +16,26 @@ export const getAll = async function (): Promise<I.OpenApiInstanceType[]> {
   return instnaces;
 };
 
+export const updateExpiredInstanceToAvailable = async function () {
+  try {
+    const now = new Date();
+    const all = await getAll();
+    const expiredInstances = all.filter(s => s.expiredDate < now && s.inUse);
+
+    if (expiredInstances.length > 0) {
+      await Promise.all(expiredInstances.map(instance => updateNotInUseInstance(instance)));
+      return true;
+    }
+    return false;
+  } catch (error) {
+    logger.error('Failed to update expired instances:', error);
+    return false;
+  }
+};
+
 export const getUsefulInstances = async function () {
   const instances = await getAll();
-  const usefulInstances = instances.filter(s => !s.inUse).sort(s => s.index);
+  const usefulInstances = instances.filter(s => !s.inUse).sort((a, b) => a.index - b.index);
   return usefulInstances;
 };
 
@@ -31,7 +50,7 @@ export const getSelectedInstance = async function (sId: string, serviceId: strin
 
 export const updateInUseInstance = async function (
   vm: I.OpenApiInstanceType,
-  f: string,
+  f: I.TextFormatType,
   serviceId: string,
   shopId: string
 ) {
@@ -43,10 +62,12 @@ export const updateInUseInstance = async function (
 
     if (data.exists) {
       try {
+        const now = new Date();
         vm.format = f;
         vm.serviceId = serviceId;
         vm.shopId = shopId;
         vm.inUse = true;
+        vm.expiredDate = new Date(now.getTime() + 4 * 60 * 1000);
         await documentation.update(vm);
         logger.log('Open API Instance IN USE Mode Updated success', vm);
         return true;

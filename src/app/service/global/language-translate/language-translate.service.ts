@@ -11,7 +11,7 @@ import { TextTransformService } from '../text-transform/text-transform.service';
 })
 export class LanguageTranslateService {
   private readonly _correctGrammer: string = 'Correct grammar ';
-  private readonly _translateTo: string = 'Translate to ';
+  private readonly _translateTo: string = 'translate to ';
   private readonly _returnAs: string = 'return as ';
   private readonly _singleString: string = 'a single String Value.';
 
@@ -181,7 +181,9 @@ export class LanguageTranslateService {
   }
 
   private setCommandSentenceFormat(sentence: string) {
-    return '. The Translated Value is "' + sentence.replace(/"/g, '') + '".';
+    return (
+      ' at a professional level. The Translated Value is "' + sentence.replace(/"/g, '') + '".'
+    );
   }
 
   private deleteSpaces(str: string): string {

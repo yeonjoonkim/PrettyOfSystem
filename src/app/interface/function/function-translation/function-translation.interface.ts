@@ -25,6 +25,7 @@ export type ChatGptTranslateDocumentLifeCycleType = {
   failToPending: boolean;
   successToCompleted: boolean;
   completedToPending: boolean;
+  successToPending: boolean;
 };
 
 export type ChatGptTranslateDocumentChangeActionType = {
@@ -32,7 +33,7 @@ export type ChatGptTranslateDocumentChangeActionType = {
   startTranslate: boolean;
   updateShopLanguagePackage: boolean;
   failAlert: boolean;
-  findPendingToInProgress: boolean;
+  finalisedConnection: boolean;
 };
 
 export type OpenApiInstanceType = {
@@ -41,9 +42,10 @@ export type OpenApiInstanceType = {
   key: string;
   param: OpenApiParameterType;
   inUse: boolean;
+  expiredDate: Date;
   shopId: string;
   serviceId: string;
-  format: string;
+  format: 'upper' | 'lower' | 'title' | 'description' | '';
 };
 
 export type OpenApiHeaderType = {
@@ -87,6 +89,7 @@ export type ChatGptTranslateDocumentType = {
   attempt: number;
   translateResult: ChatGptTranslateResult[];
   parentId: string;
+  isSystemAdmin: boolean;
 };
 
 export type ChatGptTranslateResult = {

@@ -1,4 +1,8 @@
-<div class="flex-row-container">
-  <time-picker title="date.time.from" [(time)]="timeFrom"></time-picker>
-  <time-picker title="date.time.to" [(time)]="timeTo"></time-picker>
-</div>
+<flex-row>
+  <flex-row-item>
+    <time-picker title="date.title.start" [(time)]="timeFrom"></time-picker>
+  </flex-row-item>
+  <flex-row-item>
+    <time-picker title="date.title.end" [(time)]="timeTo"></time-picker>
+  </flex-row-item>
+</flex-row>

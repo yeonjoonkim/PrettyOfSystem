@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { GlobalService } from './service/global/global.service';
 import { NetworkConnectionStatusService } from './service/global/network-connection-status/network-connection-status.service';
 import { ConnectionStatus } from '@capacitor/network';
@@ -12,14 +12,11 @@ import { UserService } from './service/user/user.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private _deviceTypeSubscription!: Subscription;
-  private _internetConnectionSubscription!: Subscription;
-  private _languageChangeActionSubscription!: Subscription;
-  private _loginStatusSubscription!: Subscription;
-  private _routerChangeSubscription!: Subscription;
+  private _onDestroy$ = new Subject<void>();
   public isLoaded: boolean = false;
   public internetStatus!: ConnectionStatus;
   public isLogin: boolean = false;
+
   constructor(
     private _global: GlobalService,
     public networkStatus: NetworkConnectionStatusService,
@@ -29,42 +26,31 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this._global.storage.create();
-    this.subscribeRouterChange();
-    this.subscribeUserLoginStatus();
-    this.subscribeNetworkStatus();
-    this.subscribeDeviceWidth();
-    this.subscribeLanguageChangeAction();
+    this._user.activateAuthChangeListener();
+    this.routerChangeListener();
+    this.deviceWidthListener();
+    this.languageChangeListener();
+    this.userLoginStatusListener();
+    this.networkStatusListener();
   }
 
   async ngOnDestroy() {
-    this._deviceTypeSubscription?.unsubscribe();
-    this._languageChangeActionSubscription?.unsubscribe();
-    this._internetConnectionSubscription?.unsubscribe();
-    this._routerChangeSubscription?.unsubscribe();
-    this._loginStatusSubscription?.unsubscribe();
+    this._onDestroy$.next();
+    this._onDestroy$.complete();
   }
 
   public isLoginPage() {
     return this._router.url === '/login';
   }
 
-  private async subscribeUserLoginStatus() {
-    this._loginStatusSubscription = this._user.isLoggedin$.subscribe(isLogin => {
+  private async userLoginStatusListener() {
+    this._user.isLoggedin$.pipe(takeUntil(this._onDestroy$)).subscribe(isLogin => {
       this.isLogin = isLogin;
     });
   }
 
-  private async subscribeLanguageChangeAction() {
-    this._languageChangeActionSubscription = this._global.language.changeLanguageAction.subscribe(
-      async () => {
-        this.ngOnDestroy();
-        window.location.reload();
-      }
-    );
-  }
-
-  private subscribeRouterChange() {
-    this._routerChangeSubscription = this._router.events.subscribe(async change => {
+  private routerChangeListener() {
+    this._router.events.pipe(takeUntil(this._onDestroy$)).subscribe(async change => {
       if (change instanceof NavigationEnd) {
         const connection = await this._global.networkConnection.getStatus();
         await this._global.networkConnection.handleStatus(connection);
@@ -73,21 +59,31 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  private subscribeNetworkStatus() {
-    this._internetConnectionSubscription = this._global.networkConnection
+  private async languageChangeListener() {
+    this._global.language.changeLanguageAction
+      .pipe(takeUntil(this._onDestroy$))
+      .subscribe(async () => {
+        this.ngOnDestroy();
+        window.location.reload();
+      });
+  }
+
+  private networkStatusListener() {
+    this._global.networkConnection
       .activateListener()
+      .pipe(takeUntil(this._onDestroy$))
       .subscribe(async status => {
         this.internetStatus = status;
         await this._global.networkConnection.handleStatus(status);
       });
   }
 
-  private async subscribeDeviceWidth() {
-    this._deviceTypeSubscription = this._global.deviceWidth.deviceTypeObservable.subscribe(
-      device => {
+  private async deviceWidthListener() {
+    this._global.deviceWidth.deviceTypeObservable
+      .pipe(takeUntil(this._onDestroy$))
+      .subscribe(device => {
         this._global.deviceWidth.deviceType = device;
-      }
-    );
+      });
   }
 
   private async loadLanguage() {

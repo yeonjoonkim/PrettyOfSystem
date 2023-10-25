@@ -74,7 +74,7 @@ export interface ShopConfigurationType {
   country: ShopCountryType;
   plan: ShopPlanType;
   package: ShopConfigurationLanguagePackageType;
-  translatedRequestIds: [];
+  translatedRequestIds: string[];
   activeFrom: Date;
   activeTo: Date | null;
   setting: IShopSetting;

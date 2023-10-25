@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _storageKey from './storage.key';
-import { Storage } from '@ionic/storage-angular';
+import { Storage, StorageConfig } from '@ionic/storage-angular';
 import { CryptService } from '../crypt/crypt.service';
 import { DateTransformService } from '../date/date-transform/date-transform.service';
 
@@ -20,8 +20,8 @@ export class StorageService {
   public async create() {
     await this._storage.create();
   }
-  public clear() {
-    this._storage.clear();
+  public async clear() {
+    await this._storage.clear();
   }
 
   public async store(key: string, value: any) {
@@ -55,6 +55,7 @@ export class StorageService {
   public async getLanguageSelectionExpireDateTime(): Promise<Date | null> {
     let result = await this.get(_storageKey.default.languageSelectionExpiredDateTime);
     let returnValue: Date | null = null;
+
     try {
       if (typeof result === 'string') {
         const dateObj = new Date(result);

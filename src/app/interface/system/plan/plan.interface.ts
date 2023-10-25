@@ -12,8 +12,10 @@ export type PlanConfigurationType = {
   annuallyPrice: PlanPriceType;
   isTestPlan: boolean;
   isPremium: boolean;
-  limitedService: number;
   limitedPackage: number;
+  limitedService: number;
+  limitedCoupon: number;
+  limitedExtra: number;
   limitedProduct: number;
   limitedUser: number;
 };

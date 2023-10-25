@@ -1,38 +1,84 @@
-<div id="language-selection-list">
-  <div id="language-selection-title">
-    <legend>
-      {{ 'label.title.languageselection' | languageTransform | async }}
-    </legend>
+<flex-col>
+  <div id="language-selection-list">
+    <div id="language-selection-title">
+      <legend>
+        {{ 'label.title.languageselection' | languageTransform | async }}
+      </legend>
+    </div>
+
+    <!--Grid-->
+    <kendo-grid
+      [kendoGridBinding]="languageSelection"
+      [height]="500"
+      [sortable]="true"
+      [autoSize]="true"
+      [selectable]="true"
+      (cellClick)="onClickLanguage($event)">
+      <ng-template kendoGridToolbarTemplate>
+        <button kendoGridAddCommand (click)="onClickCreate()">
+          {{ 'button.title.add' | languageTransform | async }}
+        </button>
+      </ng-template>
+
+      <!-- Name -->
+      <kendo-grid-column title="{{ 'label.title.name' | languageTransform | async }}" field="name">
+      </kendo-grid-column>
+      <!-- Code -->
+      <kendo-grid-column title="{{ 'label.title.code' | languageTransform | async }}" field="code">
+      </kendo-grid-column>
+
+      <!--Default-->
+      <kendo-grid-column
+        title="{{ 'label.title.default' | languageTransform | async }}"
+        field="isDefault">
+        <ng-template kendoGridCellTemplate let-selection>
+          <input type="checkbox" kendoCheckBox [checked]="selection.isDefault" disabled />
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
   </div>
 
-  <!--Grid-->
-  <kendo-grid
-    [kendoGridBinding]="languageSelection"
-    [height]="500"
-    [sortable]="true"
-    [autoSize]="true"
-    [selectable]="true"
-    (cellClick)="onClickLanguage($event)">
-    <ng-template kendoGridToolbarTemplate>
-      <button kendoGridAddCommand (click)="onClickCreate()">
-        {{ 'button.title.add' | languageTransform | async }}
-      </button>
-    </ng-template>
+  <!--Request-->
 
-    <!-- Name -->
-    <kendo-grid-column title="{{ 'label.title.name' | languageTransform | async }}" field="name">
-    </kendo-grid-column>
-    <!-- Code -->
-    <kendo-grid-column title="{{ 'label.title.code' | languageTransform | async }}" field="code">
-    </kendo-grid-column>
+  <div id="language-request-list">
+    <div id="language-request-title">
+      <legend>
+        {{ 'label.title.systemtranslaterequest' | languageTransform | async }}
+      </legend>
+    </div>
+    <!--Grid-->
+    <kendo-grid
+      [kendoGridBinding]="translateRequest"
+      [height]="300"
+      [sortable]="true"
+      [autoSize]="true"
+      [selectable]="true"
+      (cellClick)="onClickLanguage($event)">
+      <!-- Shop Id -->
+      <kendo-grid-column title="Shop Id" field="shopId"> </kendo-grid-column>
+      <!-- Service Id -->
+      <kendo-grid-column title="Service Id" field="serviceId"> </kendo-grid-column>
+      <!-- Format -->
+      <kendo-grid-column
+        title="{{ 'label.title.format' | languageTransform | async }}"
+        field="format">
+      </kendo-grid-column>
+      <!--Prop-->
+      <kendo-grid-column title="prop" field="prop"> </kendo-grid-column>
+      <!-- Status -->
+      <kendo-grid-column title="Status" field="status">
+        <ng-template kendoGridCellTemplate let-request>
+          <span *ngIf="request.status !== 'Failed'">{{ request.status }}</span>
+          <span *ngIf="request.status === 'Failed'">{{ request.status }}</span>
+        </ng-template>
+      </kendo-grid-column>
 
-    <!--Default-->
-    <kendo-grid-column
-      title="{{ 'label.title.default' | languageTransform | async }}"
-      field="isDefault">
-      <ng-template kendoGridCellTemplate let-selection>
-        <input type="checkbox" kendoCheckBox [checked]="selection.isDefault" disabled />
-      </ng-template>
-    </kendo-grid-column>
-  </kendo-grid>
-</div>
+      <!--Default-->
+      <kendo-grid-column>
+        <ng-template kendoGridCellTemplate let-request>
+          <span *ngIf="request.status === 'Failed'" (click)="reSendRequest(request)">Requeue</span>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+  </div>
+</flex-col>

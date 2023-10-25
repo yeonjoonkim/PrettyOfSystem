@@ -17,7 +17,7 @@
         <input
           kendoCheckBox
           type="checkbox"
-          [disabled]="form.readOnly"
+          [disabled]="form.readOnly || isReachToMax"
           [(ngModel)]="employee.active"
           (ngModelChange)="onChangeActive()" />
       </kendo-label>

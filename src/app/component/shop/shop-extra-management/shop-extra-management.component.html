@@ -1,0 +1,13 @@
+<flex-col id="shop-extra">
+  <felx-col-item id="shop-extra-grid">
+    <shop-limited-progressbar [progressbar]="progressBar$"></shop-limited-progressbar>
+    <shop-extra-grid
+      [extras]="extra"
+      [country]="country"
+      [isReachToMax]="isReachToMax"
+      [translatedRequests]="translatedRequest"
+      (onCreate)="handleCreate()"
+      (onEdit)="handleEdit($event)"
+      (onEditPackage)="handleEditPackage($event)"></shop-extra-grid>
+  </felx-col-item>
+</flex-col>

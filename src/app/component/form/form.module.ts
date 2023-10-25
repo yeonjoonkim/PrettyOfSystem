@@ -16,6 +16,7 @@ import { NameValuePairMultiSelectionModule } from './name-value-pair-multi-dropd
 import { PasswordConfirmationModule } from './password-confirmation/password-confirmation.module';
 import { AppTermsAndConditionModule } from '../agreement/app/app-terms-and-conditions/app-terms-and-condition.module';
 import { AppPrivacyPolicyModule } from '../agreement/app/app-privacy-policy/app-privacy-policy.module';
+import { TextAreaModule } from './text-area/text-area.module';
 @NgModule({
   declarations: [],
   imports: [],
@@ -37,6 +38,7 @@ import { AppPrivacyPolicyModule } from '../agreement/app/app-privacy-policy/app-
     PasswordConfirmationModule,
     AppTermsAndConditionModule,
     AppPrivacyPolicyModule,
+    TextAreaModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

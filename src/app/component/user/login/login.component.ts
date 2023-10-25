@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: false,
     otp: false,
   };
+  public sendingVerification: boolean = false;
   public sendOTP: boolean = false;
   public enableOTPVerificationBtn: boolean = false;
   public showPassword: boolean = false;
@@ -87,6 +88,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public async sendPhoneOTP() {
+    this._global.loading.show();
     try {
       await this.login.sendOtpVerification(this._recaptcha);
       await this.subscribeTimer();
@@ -95,12 +97,15 @@ export class LoginComponent implements OnInit, OnDestroy {
       console.error(error);
       this.sendOTP = false;
     }
+    this._global.loading.dismiss();
   }
 
   public async resendOTP() {
+    this._global.loading.show();
     this.login.otp = '';
     this.login.errorMsg = '';
     await this.login.resendOtpVerification(this._recaptcha);
+    this._global.loading.dismiss();
   }
 
   public async verifyPhoneOTP() {

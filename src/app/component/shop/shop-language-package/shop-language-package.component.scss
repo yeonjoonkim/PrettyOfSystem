@@ -1,0 +1,17 @@
+#container {
+  margin-top: 15px;
+}
+#title-container,
+#description-container {
+  margin-bottom: 15px;
+}
+
+#refresh-btn {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  margin-bottom: 5px;
+  &:hover {
+    background: var(--active);
+  }
+}

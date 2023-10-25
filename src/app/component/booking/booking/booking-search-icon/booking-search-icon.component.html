@@ -3,8 +3,8 @@
     <div
       id="booking-search-icon-btn"
       [ngClass]="{
-        activeSearchIconBtn: isActive(btn.name),
-        deactiveSearchIconBtn: !isActive(btn.name)
+        activeIconBtn: isActive(btn.name),
+        deActiveIconBtn: !isActive(btn.name)
       }"
       (click)="onChangeIcon(btn)">
       <div id="btn-img"><img [src]="btn.value" /></div>

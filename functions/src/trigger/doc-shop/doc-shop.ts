@@ -8,6 +8,7 @@ import * as Db from '../../db';
 import * as I from '../../interface';
 import { logger } from 'firebase-functions/v2';
 import * as Service from '../../service/index';
+import { firestore } from 'firebase-admin';
 
 export const onShopCreate = onDocumentCreated(
   Db.Context.ShopConfiguration + '/{shopId}',
@@ -67,6 +68,9 @@ export const onShopDelete = onDocumentDeleted(
     if (shop !== null) {
       await deleteFromUserAssociatedShops(shop);
       await deleteTranslatedRequests(shop.translatedRequestIds);
+      await deleteCollection(Db.ShopService(shop.id));
+      await deleteCollection(Db.ShopExtra(shop.id));
+      await deleteCollection(Db.ShopPackage(shop.id));
     }
   }
 );
@@ -125,6 +129,13 @@ const deleteTranslatedRequests = async function (reqeustedIds: string[]) {
     await sleep(500);
   }
 };
+
+async function deleteCollection(collectionPath: string) {
+  const docs = await firestore().collection(collectionPath).listDocuments();
+  for (let doc of docs) {
+    await doc.delete();
+  }
+}
 
 const sleep = async (duration: number) => {
   return new Promise(resolve => setTimeout(resolve, duration));

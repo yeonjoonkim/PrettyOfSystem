@@ -12,6 +12,7 @@ export const onCreateChatGptTranslateRequest = onDocumentCreated(
   async event => {
     let requestData = event.data?.data() as I.ChatGptTranslateDocumentType | null;
     if (requestData) {
+      await Repository.OpenApiInstance.updateExpiredInstanceToAvailable();
       const connection = await tryConnectTheOpenAPIInstance(requestData);
 
       if (connection) {
@@ -53,10 +54,16 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
         after.format
       );
 
-      if (lifeCycle.failToPending || lifeCycle.completedToPending) {
+      if (
+        lifeCycle.inProgressToPending ||
+        lifeCycle.successToPending ||
+        lifeCycle.failToPending ||
+        lifeCycle.completedToPending
+      ) {
         after.error = [];
         after.attempt = 0;
         after.result = [];
+        after.createdDate = new Date();
       }
 
       logger.info(after.id + ' triggered. Before: ' + before.status + ' | After: ' + after.status);
@@ -80,9 +87,16 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
       if (action.startTranslate && vm !== undefined) {
         logger.info(after.id + ' Start Translate');
         after.prop = Service.TextTransform.preCleansingTranslateProp(after.prop);
+
+        const english = await Service.Translate.EnglishProcess(vm, after.prop, after.format);
+
+        if (english !== null) {
+          after.prop = english.result.value;
+        }
+
         let translated = await Service.Translate.process(vm, after);
         logger.info(after.id + ' End Translate');
-        if (translated.error.length > 0) {
+        if (translated.error.length > 0 || english === null) {
           logger.info(after.id + ' Error In Translate - Move to Fail');
           translated.status = Constant.API.TranslateStatus.Failed;
           await Repository.TranslateRequest.updateDocument(translated);
@@ -115,14 +129,15 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
         await Repository.TranslateRequest.updateDocument(after);
       }
 
-      if (action.findPendingToInProgress) {
-        await switchPendingRequestToInProgress(after);
+      if (action.finalisedConnection && vm !== undefined) {
+        await Repository.OpenApiInstance.updateNotInUseInstance(vm);
       }
-      if (action.failAlert && vm !== undefined) {
-        //Alert to System Admin
-        await switchPendingRequestToInProgress(after);
-      }
-      if (after.status === Constant.API.TranslateStatus.Completed && after.parentId.length > 0) {
+
+      if (
+        after.status === Constant.API.TranslateStatus.Completed &&
+        after.parentId.length > 0 &&
+        after.isSystemAdmin
+      ) {
         await handleMergeIntoParent(after);
       }
     }
@@ -130,46 +145,28 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
 );
 
 const tryConnectTheOpenAPIInstance = async function (request: I.ChatGptTranslateDocumentType) {
-  const vms = await Repository.OpenApiInstance.getUsefulInstances();
+  const isPreviousConnection = await Repository.OpenApiInstance.getSelectedInstance(
+    request.shopId,
+    request.serviceId,
+    request.format
+  );
 
-  let success = false;
-  for (let index = 0; index < vms.length && !success; index++) {
-    success = await Repository.OpenApiInstance.updateInUseInstance(
-      vms[index],
-      request.format,
-      request.serviceId,
-      request.shopId
-    );
-  }
-  return success;
-};
-
-const switchPendingRequestToInProgress = async function (c: I.ChatGptTranslateDocumentType) {
-  logger.info('switchPendingRequestToInProgress - Looking for pendings');
-  let vm = await Repository.OpenApiInstance.getSelectedInstance(c.shopId, c.serviceId, c.format);
-  const pendingRequests = await Repository.TranslateRequest.getPendings();
-  if (vm !== undefined && pendingRequests.length > 0) {
-    //Transform to In Progress
-    let topOne = pendingRequests[0];
-    topOne.prop = Service.TextTransform.preCleansingTranslateProp(topOne.prop);
-    topOne.status = Constant.API.TranslateStatus.InProgress;
-
-    await Repository.OpenApiInstance.updateInUseInstance(
-      vm,
-      topOne.format,
-      topOne.serviceId,
-      topOne.shopId
-    );
-    await Repository.TranslateRequest.updateDocument(topOne);
-    logger.info('switchPendingRequestToInProgress Success');
+  if (isPreviousConnection) {
     return true;
-  } else if (vm !== undefined && pendingRequests.length === 0) {
-    await Repository.OpenApiInstance.updateNotInUseInstance(vm);
-    logger.info('switchPendingRequestToInProgress - Instance to be not in use - No Pendings');
-    return false;
   } else {
-    logger.error('switchPendingRequestToInProgress Failed - No Pendings or Instance');
-    return false;
+    const vms = await Repository.OpenApiInstance.getUsefulInstances();
+
+    let success = false;
+    for (let index = 0; index < vms.length && !success; index++) {
+      success = await Repository.OpenApiInstance.updateInUseInstance(
+        vms[index],
+        request.format,
+        request.serviceId,
+        request.shopId
+      );
+    }
+
+    return success;
   }
 };
 
@@ -191,12 +188,14 @@ const handleUpdateShopLanguagePackage = async function (doc: I.ChatGptTranslateD
 const handleMergeIntoParent = async function (child: I.ChatGptTranslateDocumentType) {
   logger.info('Retreving Parent Document');
   const parent = await Repository.TranslateRequest.getSelected(child.parentId);
+
   if (parent !== null) {
     logger.info('Start Merge');
     parent.result.concat(child.result);
     parent.translateResult.concat(child.translateResult);
-    logger.info('Start Completed');
+
     await Repository.TranslateRequest.updateDocument(parent);
     await Repository.TranslateRequest.deleteDocument(child);
+    logger.info('Start Completed');
   }
 };

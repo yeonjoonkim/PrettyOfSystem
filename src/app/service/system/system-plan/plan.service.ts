@@ -35,9 +35,11 @@ export class PlanService {
       annuallyPrice: { tax: 0, net: 0, total: 0 },
       isPremium: false,
       isTestPlan: false,
+      limitedCoupon: 0,
       limitedService: 0,
       limitedProduct: 0,
       limitedPackage: 0,
+      limitedExtra: 0,
       limitedUser: 0,
     };
   }
@@ -68,9 +70,8 @@ export class PlanService {
   }
 
   public async processDeletePlan(selectedPlanId: string, selectedPlanName: string) {
-    const deleteConfirmation = await this._global.confirmAlert.getDeleteConfirmationWithName(
-      selectedPlanName
-    );
+    const deleteConfirmation =
+      await this._global.confirmAlert.getDeleteConfirmationWithName(selectedPlanName);
     if (deleteConfirmation) {
       await this._planRepo.deleteSystemPlanOption(selectedPlanId);
     }

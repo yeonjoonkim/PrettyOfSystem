@@ -17,6 +17,7 @@ import { ShopEmployeeComponent } from './shop-employee/shop-employee.component';
 import { GenderSelectionModule } from '../../user/gender-selection/gender-selection.module';
 import { LoginOptionSelectionModule } from '../../user/login-option-selection/login-option-selection.module';
 import { LanguageSelectionModule } from '../../global/langauge-selection/language-selection.module';
+import { ShopLimitedProgressModule } from '../shop-limited-progressbar/shop-limited-progressbar.module.ts';
 @NgModule({
   declarations: [ShopEmployeeGridComponent, ShopEmployeeManagementComponent, ShopEmployeeComponent],
   imports: [
@@ -29,6 +30,7 @@ import { LanguageSelectionModule } from '../../global/langauge-selection/languag
     GenderSelectionModule,
     LoginOptionSelectionModule,
     LanguageSelectionModule,
+    ShopLimitedProgressModule,
   ],
   exports: [ShopEmployeeManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

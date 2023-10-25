@@ -13,8 +13,8 @@ export class PercentageComponent implements OnInit {
   @Input() title: string = '';
   @Input() readOnly: boolean = false;
   @Input() min: number = 0;
-  @Input() max: number = 0;
-  @Input() step: number = 1;
+  @Input() max: number = 1;
+  @Input() step: number = 0.05;
 
   @Input()
   get value() {
@@ -32,5 +32,9 @@ export class PercentageComponent implements OnInit {
 
   ngOnInit() {
     this.currentValue = this._global.numberTransform.nullReplaceToZero(this.currentValue);
+  }
+  changeValue() {
+    this.currentValue = this._global.numberTransform.nullReplaceToZero(this.currentValue);
+    this.value = this.currentValue;
   }
 }

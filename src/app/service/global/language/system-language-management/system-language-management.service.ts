@@ -146,6 +146,11 @@ export class SystemLanguageManagementService {
     const isIndonesian = locale?.includes('id');
     const isFrench = locale?.includes('fr');
     const isThai = locale?.includes('th');
+    const isSwedish = locale?.includes('sv');
+    const isPortuguese = locale?.includes('pt');
+    const isRussian = locale?.includes('ru');
+    const isTurkish = locale?.includes('tr');
+
     let result = isKorean
       ? 'ko'
       : isChinese
@@ -168,6 +173,14 @@ export class SystemLanguageManagementService {
       ? 'fr'
       : isThai
       ? 'th'
+      : isSwedish
+      ? 'sv'
+      : isPortuguese
+      ? 'pt'
+      : isRussian
+      ? 'ru'
+      : isTurkish
+      ? 'tr'
       : 'en';
 
     currentSetting !== null && typeof currentSetting === 'string' && currentSetting !== undefined

@@ -1,5 +1,6 @@
 export type SystemLanguageTranslateRequestType = {
+  id: string;
   name: string;
   code: string;
-  reqeustDate: string;
+  reqeustDate: Date;
 };

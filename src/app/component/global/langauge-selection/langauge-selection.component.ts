@@ -37,10 +37,16 @@ export class LangaugeSelectionComponent implements OnInit {
     { name: 'English', value: 'en' }, // English
     { name: 'Indonesia', value: 'id_id' }, // Indonesian
     { name: 'Français', value: 'fr' }, // French
-    { name: 'ไทย', value: 'th' },
+    { name: 'ไทย', value: 'th' }, // Thai
+    { name: 'Svenska', value: 'sv' }, // Swedish
+    { name: 'Português', value: 'pt' }, //Portuguese
+    { name: 'Русский', value: 'ru' }, // Russian
+    { name: 'Türkçe', value: 'tr' }, // Turkish
   ];
 
-  constructor() {}
+  constructor() {
+    this.languages.sort((a, b) => a.value.localeCompare(b.value));
+  }
 
   async ngOnInit() {}
 

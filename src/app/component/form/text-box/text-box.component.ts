@@ -1,4 +1,12 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 
@@ -56,7 +64,9 @@ export class TextBoxComponent implements OnInit {
 
   public onChangeValue() {
     this.hasValue = this.validateInput();
-    this.validatedValue = this.transformTextValue();
+    if (this.isLowCaseFormat || this.isTitleFormat || this.isUpperFormat) {
+      this.validatedValue = this.transformTextValue();
+    }
     this.value = this.validatedValue;
     this.valueLengthCount = this.value.length;
     this.counter = `${this.valueLengthCount}/${this.max}`;

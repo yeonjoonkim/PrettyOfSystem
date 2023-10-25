@@ -135,7 +135,7 @@ export class NameValuePairSingleDropdownSelectionComponent
   private async setLoaded() {
     this.loading = this.selection?.length > 0 ? false : true;
     let isRequired = this.selectedSelection === undefined && this.isRequired;
-    if (isRequired) {
+    if (isRequired || (this.isRequired && this.selectedSelection?.value.length === 0)) {
       this.selectedSelection = { name: 'messageerror.description.dropdownoptions', value: '' };
     }
   }
