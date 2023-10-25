@@ -13,6 +13,7 @@ import { ShopLanguagePackageModule } from '../shop-language-package/shop-languag
 import { ShopExtraManagementComponent } from './shop-extra-management.component';
 import { ShopExtraComponent } from './shop-extra/shop-extra.component';
 import { ShopExtraGridComponent } from './shop-extra-grid/shop-extra-grid.component';
+import { ShopLimitedProgressModule } from '../shop-limited-progressbar/shop-limited-progressbar.module.ts';
 
 //Import Component
 @NgModule({
@@ -25,6 +26,7 @@ import { ShopExtraGridComponent } from './shop-extra-grid/shop-extra-grid.compon
     SharedFormModule,
     KendoUiModule,
     ShopLanguagePackageModule,
+    ShopLimitedProgressModule,
   ],
   exports: [ShopExtraManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

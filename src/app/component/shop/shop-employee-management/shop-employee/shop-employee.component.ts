@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {
   EmployeeManagementRolePropType,
@@ -7,12 +7,14 @@ import {
   RoleConfigurationType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
+  ShopLimitedProgpressBarType,
 } from 'src/app/interface';
 import { NavParams } from '@ionic/angular';
 import * as Constant from 'src/app/constant/constant';
 import { cloneDeep } from 'lodash-es';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employee-management/shop-employee-management.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'shop-employee',
@@ -20,7 +22,7 @@ import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employe
   styleUrls: ['./shop-employee.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShopEmployeeComponent implements OnInit {
+export class ShopEmployeeComponent implements OnInit, OnDestroy {
   public form!: IFormHeaderModalProp;
   public availableRoleFilter: NameValuePairType[] = [];
   public selectedRole: NameValuePairType = { name: '', value: '' };
@@ -38,6 +40,8 @@ export class ShopEmployeeComponent implements OnInit {
 
   private _roles!: RoleConfigurationType[];
   private _encryptedPassword: string = '';
+  private _onDestroy$ = new Subject<void>();
+  public isReachToMax: boolean = false;
 
   constructor(
     private _modalCtrl: ModalController,
@@ -45,8 +49,14 @@ export class ShopEmployeeComponent implements OnInit {
     private _global: GlobalService,
     private _shopEmp: ShopEmployeeManagementService
   ) {}
+
   async ngOnInit() {
     await this.loadingFormCtrl();
+  }
+
+  ngOnDestroy(): void {
+    this._onDestroy$.next();
+    this._onDestroy$.complete();
   }
 
   public async dismiss() {
@@ -201,6 +211,7 @@ export class ShopEmployeeComponent implements OnInit {
     const roleProp: EmployeeManagementRolePropType | undefined =
       this._navParams.get('availableRole');
     const shopConfigProp: ShopConfigurationType | undefined = this._navParams.get('shopConfig');
+    const isReachToMax: boolean | undefined = this._navParams.get('isReachToMax');
     if (formProp !== undefined && employeeProp !== undefined) {
       this.form = formProp;
       this.employee = cloneDeep(employeeProp);
@@ -208,6 +219,12 @@ export class ShopEmployeeComponent implements OnInit {
       this.selectedRole = { name: this.employee.role.name, value: this.employee.role.id };
       this._roles = roleProp !== undefined ? roleProp.role : [];
       this.shopConfig = shopConfigProp;
+      this.isReachToMax =
+        isReachToMax !== undefined && this.employee.active
+          ? false
+          : this.employee.active && isReachToMax
+          ? true
+          : true;
       this.loading = false;
     } else {
       await this.dismiss();

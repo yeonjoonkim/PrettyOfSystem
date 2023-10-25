@@ -7,6 +7,13 @@ export type ShopServiceTranslateDocumentsType = {
   description: ChatGptTranslateDocumentType;
 };
 
+export type ShopLimitedProgpressBarType = {
+  title: string;
+  indeterminate: boolean;
+  max: number;
+  current: number;
+};
+
 export type ShopServiceModalDocumentProp = {
   service: ShopServiceDocumentType;
   relatedServiceTypes: NameValuePairType[];

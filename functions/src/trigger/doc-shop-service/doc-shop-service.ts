@@ -209,8 +209,8 @@ const handleOptionChange = async function (
   packages = handleUpdateServiceInPackage(change.update, packages, serviceId);
   packages = handleDeleteServiceInPackage(change.delete, packages, serviceId);
 
-  const deletePackage = packages.filter(s => s.services.length === 0);
-  const updatePackage = packages.filter(s => s.services.length > 0);
+  const deletePackage = packages.filter(s => s.services.length === 0 || s.discountPrice === 0);
+  const updatePackage = packages.filter(s => s.services.length > 0 || s.discountPrice === 0);
 
   for (let d of deletePackage) {
     await Repository.Shop.Package.deletePackage(d);

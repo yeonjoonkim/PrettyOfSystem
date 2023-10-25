@@ -11,16 +11,14 @@ import {
   styleUrls: ['./shop-service-management.page.scss'],
 })
 export class ShopServiceManagementPage implements OnInit {
-  public selected: IShopServiceMenuOptionAction = this._menuCtrl.getPackage();
+  public selected: IShopServiceMenuOptionAction = this._menuCtrl.setDefault();
   public selection: IShopServiceMenuOptionAction[] = this._menuCtrl.buttons();
   constructor(
     private _menuCtrl: ShopServiceMenuOptionControllerService,
     private _global: GlobalService
   ) {}
 
-  ngOnInit() {
-    this._global.loading.init();
-  }
+  ngOnInit() {}
 
   public buttonChange(selected: IShopServiceMenuOptionAction) {
     this.selected = selected;

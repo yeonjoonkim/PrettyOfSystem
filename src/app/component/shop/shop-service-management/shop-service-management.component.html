@@ -1,9 +1,11 @@
 <flex-col id="shop-service">
   <flex-col-item id="shop-service-grid">
+    <shop-limited-progressbar [progressbar]="progressBar$"></shop-limited-progressbar>
     <shop-service-grid
       [services]="services"
       [translatedRequests]="translatedRequests"
       [specialists]="specializedEmployees"
+      [isReachToMax]="isReachToMax"
       [role]="role"
       [extras]="extras"
       (onCreate)="handleCreate()"

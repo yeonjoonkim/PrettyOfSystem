@@ -20,9 +20,59 @@
   <kendo-grid-column
     [sortable]="true"
     field="originalPrice"
-    title="{{ 'label.title.price' | languageTransform | async }}">
+    title="{{ 'label.title.originalprice' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-package>
       <p>${{ package.originalPrice }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Discounted Price -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="discountPrice"
+    title="{{ 'label.title.discountedprice' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p>${{ package.discountPrice }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Total Min -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="totalMin"
+    title="{{ 'label.title.minute' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p>{{ package.totalMin }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Services -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="services.length"
+    title="{{ 'label.title.service' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p>{{ package.services.length }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Extra -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="extras.length"
+    title="{{ 'label.title.extra' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <p>{{ package.extras.length }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Limited time -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="package.limitedTime !== null"
+    title="{{ 'label.title.limitedday' | languageTransform | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <input kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="isLimitedDate(package)" />
     </ng-template>
   </kendo-grid-column>
 
@@ -48,7 +98,7 @@
           <span id="pending" *ngIf="request.status === 'pending'">{{
             'label.title.pending' | languageTransform | async
           }}</span>
-          <span id="inprogress" *ngIf="request.status === 'inProgress' && !isFailed(request)">{{
+          <span id="inprogress" *ngIf="request.status === 'inProgress'">{{
             'label.title.inprogress' | languageTransform | async
           }}</span>
           <span id="success" *ngIf="request.status === 'Success'">{{
@@ -57,7 +107,7 @@
           <span id="completed" *ngIf="request.status === 'Completed'">{{
             'label.title.view' | languageTransform | async
           }}</span>
-          <span id="fail" *ngIf="request.status === 'Failed' || isFailed(request)">{{
+          <span id="fail" *ngIf="request.status === 'Failed'">{{
             'label.title.fail' | languageTransform | async
           }}</span>
         </div>

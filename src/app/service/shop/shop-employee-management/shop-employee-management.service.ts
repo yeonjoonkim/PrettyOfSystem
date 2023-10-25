@@ -6,6 +6,7 @@ import {
   RoleConfigurationType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
+  ShopLimitedProgpressBarType,
 } from 'src/app/interface';
 import { UserCredentialRepositoryService } from 'src/app/firebase/user-repository/user-credential-repository/user-credential-repository.service';
 import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/role/system-role-repository.service';
@@ -26,6 +27,7 @@ export class ShopEmployeeManagementService {
   public availableRoles$!: Observable<RoleConfigurationType[]>;
   public availableRoleFilter$!: Observable<NameValuePairType[]>;
   public addNewEmployee$!: Observable<boolean>;
+  public progressBar$!: Observable<ShopLimitedProgpressBarType>;
 
   constructor(
     public modal: ShopEmployeeAccountModalService,
@@ -43,6 +45,7 @@ export class ShopEmployeeManagementService {
     this.activateAvailableRoles();
     this.activateRoleFilter();
     this.activateAddEmployee();
+    this.activeProgressBar();
   }
 
   public async buildNewEmployee() {
@@ -188,6 +191,29 @@ export class ShopEmployeeManagementService {
         const result = plan?.limitedUser ? plan.limitedUser > activeEmps.length : false;
 
         return result;
+      })
+    );
+  }
+
+  private activeProgressBar() {
+    this.progressBar$ = this.shopEmployees$.pipe(
+      combineLatestWith(this.shopPlan$),
+      switchMap(([emp, plan]: [ShopEmployeeManagementUserType[], PlanConfigurationType | null]) => {
+        if (plan !== null) {
+          return of({
+            current: emp.filter(e => e.active).length,
+            max: plan.limitedUser,
+            title: 'label.title.maximumactiveemployees',
+            indeterminate: false,
+          });
+        } else {
+          return of({
+            current: 0,
+            max: 0,
+            title: 'label.title.maximumactiveemployees',
+            indeterminate: false,
+          });
+        }
       })
     );
   }

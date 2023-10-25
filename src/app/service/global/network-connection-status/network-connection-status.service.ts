@@ -9,7 +9,10 @@ import { StorageService } from '../storage/storage.service';
 })
 export class NetworkConnectionStatusService {
   public status!: ConnectionStatus;
-  constructor(private _router: Router, private _storage: StorageService) {}
+  constructor(
+    private _router: Router,
+    private _storage: StorageService
+  ) {}
 
   public activateListener(): Observable<ConnectionStatus> {
     return new Observable<ConnectionStatus>(observer => {
@@ -31,9 +34,9 @@ export class NetworkConnectionStatusService {
   }
 
   public async isConnected() {
-    return Network.getStatus().then(status => {
-      return status.connected;
-    });
+    const status = await Network.getStatus();
+
+    return status.connected;
   }
 
   public async getStatus() {
@@ -63,9 +66,8 @@ export class NetworkConnectionStatusService {
 
   private async routeToPreviousAccess() {
     let previousUrl: string = await this._storage.get('previousUrl');
-    this._storage.removeItem('previousUrl');
     if (typeof previousUrl === 'string') {
-      this._router.navigateByUrl(previousUrl);
+      await this._router.navigateByUrl(previousUrl);
     }
   }
 }

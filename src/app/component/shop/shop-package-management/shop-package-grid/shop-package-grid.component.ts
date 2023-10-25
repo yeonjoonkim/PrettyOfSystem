@@ -61,6 +61,10 @@ export class ShopPackageGridComponent implements OnInit {
     }
   }
 
+  public isLimitedDate(pack: ShopPackageDocumentType) {
+    return pack.limitedTime !== null;
+  }
+
   public async handleRequeue(doc: ChatGptTranslateDocumentType, pack: ShopPackageDocumentType) {
     const isFailed = doc.status === Constant.API.TranslateStatus.Failed;
     const isSuccess = doc.status === Constant.API.TranslateStatus.Success;
@@ -76,14 +80,6 @@ export class ShopPackageGridComponent implements OnInit {
     if (isCompleted) {
       await this.handlePackageProp(pack);
     }
-  }
-
-  public isFailed(doc: ChatGptTranslateDocumentType) {
-    const FiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
-    const isInProgress = doc.status === Constant.API.TranslateStatus.InProgress;
-    const createdDate = this._global.date.transform.toDate(doc.createdDate);
-    const isCreatedDateThreeMinsAgo = createdDate < FiveMinutesAgo;
-    return isInProgress && isCreatedDateThreeMinsAgo;
   }
 
   private async handlePackageProp(s: ShopPackageDocumentType) {

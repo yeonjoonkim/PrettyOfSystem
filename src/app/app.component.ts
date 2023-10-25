@@ -28,10 +28,10 @@ export class AppComponent implements OnInit, OnDestroy {
     await this._global.storage.create();
     this._user.activateAuthChangeListener();
     this.routerChangeListener();
-    this.userLoginStatusListener();
-    this.networkStatusListener();
     this.deviceWidthListener();
     this.languageChangeListener();
+    this.userLoginStatusListener();
+    this.networkStatusListener();
   }
 
   async ngOnDestroy() {

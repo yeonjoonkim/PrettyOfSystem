@@ -28,6 +28,7 @@ export class ShopServiceGridComponent implements OnInit {
   @Input() translatedRequests: ChatGptTranslateDocumentType[] = [];
   @Input() role: RoleConfigurationType | null = null;
   @Input() specialists: NameValuePairType[] = [];
+  @Input() isReachToMax: boolean = true;
 
   constructor(
     private _shopEmp: ShopEmployeeManagementService,

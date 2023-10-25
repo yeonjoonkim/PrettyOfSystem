@@ -102,26 +102,8 @@
     <!-- Option-->
     <legend>{{ 'label.title.option' | languageTransform | async }}</legend>
     <div>
-      <!-- Limited Service -->
-      <kendo-floatinglabel text="{{ 'label.title.service' | languageTransform | async }}">
-        <kendo-numerictextbox
-          [spinners]="false"
-          [disabled]="isReadonly"
-          [style.width.px]="70"
-          rounded="large"
-          format="n0"
-          [autoCorrect]="true"
-          [step]="1"
-          [min]="0"
-          [max]="100"
-          [changeValueOnScroll]="false"
-          [(value)]="plan.limitedService"
-          (valueChange)="onChangeLimitedService()">
-        </kendo-numerictextbox>
-      </kendo-floatinglabel>
-
-      <!-- Limited Product -->
-      <kendo-floatinglabel text="{{ 'label.title.product' | languageTransform | async }}">
+      <!-- Limited Coupons -->
+      <kendo-floatinglabel text="{{ 'label.title.coupon' | languageTransform | async }}">
         <kendo-numerictextbox
           [spinners]="false"
           [disabled]="isReadonly"
@@ -133,8 +115,8 @@
           [min]="0"
           [max]="100"
           [changeValueOnScroll]="false"
-          [(value)]="plan.limitedProduct"
-          (valueChange)="onChangeLimitedProduct()">
+          [(value)]="plan.limitedCoupon"
+          (valueChange)="onChangeLimitedCoupon()">
         </kendo-numerictextbox>
       </kendo-floatinglabel>
 
@@ -153,6 +135,60 @@
           [changeValueOnScroll]="false"
           [(value)]="plan.limitedPackage"
           (valueChange)="onChangeLimitedPackage()">
+        </kendo-numerictextbox>
+      </kendo-floatinglabel>
+
+      <!-- Limited Service -->
+      <kendo-floatinglabel text="{{ 'label.title.service' | languageTransform | async }}">
+        <kendo-numerictextbox
+          [spinners]="false"
+          [disabled]="isReadonly"
+          [style.width.px]="70"
+          rounded="large"
+          format="n0"
+          [autoCorrect]="true"
+          [step]="1"
+          [min]="0"
+          [max]="100"
+          [changeValueOnScroll]="false"
+          [(value)]="plan.limitedService"
+          (valueChange)="onChangeLimitedService()">
+        </kendo-numerictextbox>
+      </kendo-floatinglabel>
+
+      <!-- Limited Extra -->
+      <kendo-floatinglabel text="{{ 'label.title.extra' | languageTransform | async }}">
+        <kendo-numerictextbox
+          [spinners]="false"
+          [disabled]="isReadonly"
+          [style.width.px]="70"
+          rounded="large"
+          format="n0"
+          [autoCorrect]="true"
+          [step]="1"
+          [min]="0"
+          [max]="100"
+          [changeValueOnScroll]="false"
+          [(value)]="plan.limitedExtra"
+          (valueChange)="onChangeLimitedExtra()">
+        </kendo-numerictextbox>
+      </kendo-floatinglabel>
+
+      <!-- Limited Product -->
+      <kendo-floatinglabel text="{{ 'label.title.product' | languageTransform | async }}">
+        <kendo-numerictextbox
+          [spinners]="false"
+          [disabled]="isReadonly"
+          [style.width.px]="60"
+          rounded="large"
+          format="n0"
+          [autoCorrect]="true"
+          [step]="1"
+          [min]="0"
+          [max]="100"
+          [changeValueOnScroll]="false"
+          [(value)]="plan.limitedProduct"
+          (valueChange)="onChangeLimitedProduct()">
         </kendo-numerictextbox>
       </kendo-floatinglabel>
 

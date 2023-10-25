@@ -45,7 +45,7 @@
     "@ionic/angular": "^7.4.1",
     "@ionic/angular-server": "^7.0.0-rc.5",
     "@ionic/storage": "^3.0.6",
-    "@ionic/storage-angular": "^4.0.0-next.4",
+    "@ionic/storage-angular": "^4.0.0",
     "@progress/kendo-angular-barcodes": "^13.5.0",
     "@progress/kendo-angular-buttons": "^13.5.0",
     "@progress/kendo-angular-charts": "^13.5.0",

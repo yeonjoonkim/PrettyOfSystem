@@ -170,6 +170,7 @@ export class ShopPackageComponent implements OnInit {
     }) as Constant.DayIndexType[];
 
     if (this.current.package.limitedTime !== null) {
+      console.log(days);
       this.current.package.limitedTime.offeredDateIndex = days;
     }
   }
@@ -233,12 +234,19 @@ export class ShopPackageComponent implements OnInit {
   private setDaySelection(prop: ShopPackageModalDocumentProp) {
     const time = this._shopPackage.limitedTime.get(prop.operatingHours);
     const days = this._shopPackage.limitedTime.days;
-    const available = time !== null ? time?.offeredDateIndex.map(s => s.toString()) : [];
-
+    const available = time !== null ? time.offeredDateIndex.map(s => s.toString()) : [];
     this.daySelection = available.length > 0 ? days.filter(d => available.includes(d.value)) : days;
     if (this.current.package.limitedTime != null) {
       const offerdays = this.current.package.limitedTime.offeredDateIndex.map(s => s.toString());
-      this.selectedDays = days.filter(s => offerdays.includes(s.value));
+      this.selectedDays =
+        this.current.package.limitedTime.offeredDateIndex.length > 0
+          ? days.filter(
+              s =>
+                this.current.package.limitedTime?.offeredDateIndex.includes(
+                  Number(s.value) as Constant.DayIndexType
+                )
+            )
+          : [];
     } else {
       this.selectedDays = [];
     }

@@ -10,6 +10,9 @@
   (onClickDelete)="handleDelete()">
 </form-header>
 <ion-content [scrollable]="true" *ngIf="current">
+  <p *ngIf="form.action !== 'read' && !form.readOnly" id="translated-guide">
+    {{ 'label.description.translatedvalueguiance' | languageTransform | async }}
+  </p>
   <flex-col id="container">
     <flex-col id="information-container">
       <flex-row>
@@ -43,7 +46,7 @@
                   type="checkbox"
                   (click)="onClickLimitedTime()"
                   [disabled]="form.readOnly"
-                  [value]="current.package.limitedTime !== null" />
+                  [ngModel]="current.package.limitedTime !== null" />
               </kendo-label>
             </div>
           </flex-col>
@@ -63,10 +66,12 @@
         <flex-row-item *ngIf="current.package.limitedTime !== null" id="limited-day">
           <name-value-pair-multi-dropdown-selection
             [readOnly]="form.readOnly"
-            title="label.title.limitedday"
+            title="label.title..allowedday"
             [orderByName]="false"
             [filterable]="false"
+            [sortByValueTitle]="true"
             [(selected)]="selectedDays"
+            (selectedChange)="onChangeLimitedDay()"
             [selection]="daySelection"></name-value-pair-multi-dropdown-selection>
         </flex-row-item>
       </flex-row>

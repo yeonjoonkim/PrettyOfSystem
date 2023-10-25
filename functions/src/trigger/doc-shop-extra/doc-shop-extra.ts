@@ -82,13 +82,17 @@ export const onShopExtraUpdated = onDocumentUpdated(
       }
 
       if (isPriceChange) {
-        const packages = await Repository.Shop.Package.getSelectShop(after.shopId);
-        const selected = packages.filter(p => p.extras.filter(ex => ex.id === after.id).length > 0);
+        let packages = await Repository.Shop.Package.getSelectShop(after.shopId);
+        packages = packages.filter(s => s.extras.filter(s => s.id === after.id).length > 0);
 
-        for (let pack of selected) {
+        for (let pack of packages) {
           pack = Service.Trigger.ShopPackage.updateExtra(after, pack);
           pack = Service.Trigger.ShopPackage.updatePrice(pack);
-          await Repository.Shop.Package.updatePackage(pack);
+          if (pack.discountPrice === 0) {
+            await Repository.Shop.Package.deletePackage(pack);
+          } else {
+            await Repository.Shop.Package.updatePackage(pack);
+          }
         }
       }
     }
@@ -109,9 +113,7 @@ export const onShopExtraDelete = onDocumentDeleted(
         extra.shopId,
         Constant.Text.Format.Title
       );
-      const sleep = async (duration: number) => {
-        return new Promise(resolve => setTimeout(resolve, duration));
-      };
+      await handleDeleteShopPackageExtra(extra);
 
       for (let service of services) {
         if (service.extraIds.includes(extra.id)) {
@@ -119,8 +121,7 @@ export const onShopExtraDelete = onDocumentDeleted(
           await Repository.Shop.Service.updateService(service);
         }
       }
-      await handleDeleteShopPackageExtra(extra);
-      await sleep(1000);
+
       if (titleRequestDocument !== null && shopC !== null) {
         const deleteIds = [titleRequestDocument.id];
         shopC.translatedRequestIds = shopC.translatedRequestIds.filter(
@@ -157,6 +158,10 @@ const handleDeleteShopPackageExtra = async function (extra: I.ShopExtraDocumentT
   for (let pack of selected) {
     pack = Service.Trigger.ShopPackage.deleteExtra(extra, pack);
     pack = Service.Trigger.ShopPackage.updatePrice(pack);
-    await Repository.Shop.Package.updatePackage(pack);
+    if (pack.discountPrice === 0) {
+      await Repository.Shop.Package.deletePackage(pack);
+    } else {
+      await Repository.Shop.Package.updatePackage(pack);
+    }
   }
 };

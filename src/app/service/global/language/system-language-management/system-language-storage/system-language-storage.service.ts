@@ -26,7 +26,7 @@ export class SystemLanguageStorageService {
   ) {}
 
   public async create() {
-    this._stroage.create();
+    await this._stroage.create();
   }
 
   public async setDefault(isConnected: boolean) {

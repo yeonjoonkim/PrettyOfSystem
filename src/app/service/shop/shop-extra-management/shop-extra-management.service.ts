@@ -6,8 +6,9 @@ import {
   RoleConfigurationType,
   ShopConfigurationType,
   ShopExtraDocumentType,
+  ShopLimitedProgpressBarType,
 } from 'src/app/interface';
-import { Observable } from 'rxjs';
+import { Observable, combineLatestWith, map, of, switchMap } from 'rxjs';
 import { ShopExtraRepositoryService } from 'src/app/firebase/shop-repository/shop-extra-repository/shop-extra-repository.service';
 import { LoadingService } from '../../global/loading/loading.service';
 import { ShopLanguagePackageService } from '../shop-language-package/shop-language-package.service';
@@ -23,6 +24,8 @@ export class ShopExtraManagementService {
   public currentRole$!: Observable<RoleConfigurationType | null>;
   public extra$!: Observable<ShopExtraDocumentType[]>;
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
+  public isReachToMax$!: Observable<boolean>;
+  public progressBar$!: Observable<ShopLimitedProgpressBarType>;
 
   constructor(
     private _user: UserService,
@@ -37,6 +40,45 @@ export class ShopExtraManagementService {
     this.currentShopPlan$ = this._shop.plan$;
     this.extra$ = this._shop.extras$;
     this.translatedRequest$ = this._shop.translatedRequests$;
+    this.isReachToMaxListener();
+    this.activeProgressBar();
+  }
+
+  private isReachToMaxListener() {
+    this.isReachToMax$ = this.extra$.pipe(
+      combineLatestWith(this.currentShopPlan$),
+      map(([packages, plan]: [ShopExtraDocumentType[], PlanConfigurationType | null]) => {
+        if (plan !== null) {
+          const isMaxReached = packages.length > plan.limitedExtra;
+          return isMaxReached;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+
+  private activeProgressBar() {
+    this.progressBar$ = this.extra$.pipe(
+      combineLatestWith(this.currentShopPlan$),
+      switchMap(([extra, plan]: [ShopExtraDocumentType[], PlanConfigurationType | null]) => {
+        if (plan !== null) {
+          return of({
+            current: extra.length,
+            max: plan.limitedExtra,
+            title: 'label.title.maximumactiveextras',
+            indeterminate: false,
+          });
+        } else {
+          return of({
+            current: 0,
+            max: 0,
+            title: 'label.title.maximumactiveemployees',
+            indeterminate: false,
+          });
+        }
+      })
+    );
   }
 
   public async add(extra: ShopExtraDocumentType) {

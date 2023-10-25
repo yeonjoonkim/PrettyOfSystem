@@ -41,6 +41,7 @@ export class NameValuePairDropdownMultiSelectionComponent
   @Input() orderByName: boolean = true;
   @Input() maxHeight: string = '150px';
   @Input() isRequiredTitle: boolean = true;
+  @Input() sortByValueTitle: boolean = false;
   @Input()
   get selected(): NameValuePairType[] | undefined {
     return this.selectedSelection;
@@ -189,9 +190,12 @@ export class NameValuePairDropdownMultiSelectionComponent
         ? this.selectedSelection.map(r => r.value)
         : [];
     const selectedFilter = this.queryList
-      .sort((a, b) => a.translatedName.localeCompare(b.translatedName))
-      .filter(q => selectedValueList.includes(q.value));
-
+      .filter(q => selectedValueList.includes(q.value))
+      .sort((a, b) =>
+        this.sortByValueTitle
+          ? a.value.localeCompare(b.value)
+          : a.translatedName.localeCompare(b.translatedName)
+      );
     this.selectedText =
       selectedFilter.length > 0 ? selectedFilter.map(s => s.translatedName).join(', ') : all;
   }

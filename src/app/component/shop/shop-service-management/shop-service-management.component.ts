@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -10,6 +10,7 @@ import {
   ShopServiceModalDocumentProp,
   ShopLanguagePackageModalProp,
   ShopExtraDocumentType,
+  ShopLimitedProgpressBarType,
 } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-management/shop-service-management.service';
@@ -26,7 +27,6 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
 
   private _isModalOpen: boolean = false;
   private _config!: ShopConfigurationType | null;
-  private _plan!: PlanConfigurationType | null;
   private _relatedServiceTypes!: NameValuePairType[];
 
   public role!: RoleConfigurationType | null;
@@ -35,6 +35,9 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   public specializedEmployees!: NameValuePairType[];
   public translatedRequests!: ChatGptTranslateDocumentType[];
   public services!: ShopServiceDocumentType[];
+  public isReachToMax: boolean = true;
+  public progressBar$: Observable<ShopLimitedProgpressBarType> =
+    this._shopService.progressBar$.pipe(takeUntil(this._onDestroy$));
 
   constructor(
     private _shopService: ShopServiceManagementService,
@@ -45,11 +48,11 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
     this.activateEmployeeNameListener();
     this.activateRoleListener();
     this.activateShopConfigListener();
-    this.activateShopPlanListener();
     this.activateShopServiceListener();
     this.activateShopEmployeeListener();
     this.activateShopTranslatedRequest();
     this.activateShopExtraListener();
+    this.activeIsReachToMaxListener();
   }
 
   ngOnDestroy() {
@@ -58,8 +61,7 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   }
 
   public async handleCreate() {
-    const isReachedToMax = this.isReachedToMax();
-    if (!isReachedToMax) {
+    if (!this.isReachToMax) {
       if (
         this._config !== null &&
         !this._isModalOpen &&
@@ -126,6 +128,12 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
     });
   }
 
+  private activeIsReachToMaxListener() {
+    this._shopService.isReachToMax$.pipe(takeUntil(this._onDestroy$)).subscribe(isReachMax => {
+      this.isReachToMax = isReachMax;
+    });
+  }
+
   private activateEmployeeNameListener() {
     this._shopService.employeName$.pipe(takeUntil(this._onDestroy$)).subscribe(name => {
       this.employeeName = name;
@@ -146,12 +154,6 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
           config.category
         );
       }
-    });
-  }
-
-  private activateShopPlanListener() {
-    this._shopService.shopPlan$.pipe(takeUntil(this._onDestroy$)).subscribe(plan => {
-      this._plan = plan;
     });
   }
 
@@ -178,13 +180,5 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   private async presentReachedToMaxError() {
     const msg = await this._global.language.transform('messageerror.description.outoflimitservice');
     await this._global.toast.presentError(msg);
-  }
-
-  private isReachedToMax() {
-    if (this._plan?.limitedService) {
-      return this.services?.length >= this._plan?.limitedService;
-    } else {
-      return false;
-    }
   }
 }

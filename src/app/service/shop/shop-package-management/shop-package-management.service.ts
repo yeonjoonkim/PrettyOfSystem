@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest, combineLatestWith, firstValueFrom, map } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  combineLatestWith,
+  firstValueFrom,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -7,6 +15,7 @@ import {
   RoleConfigurationType,
   ShopConfigurationType,
   ShopExtraDocumentType,
+  ShopLimitedProgpressBarType,
   ShopPackageDocumentType,
   ShopPackageFilterDocumentProp,
   ShopPackageModalDocumentProp,
@@ -37,7 +46,7 @@ export class ShopPackageManagementService {
   public operatingWorkHour$!: Observable<ShopWorkHoursType | null>;
   public isReachToMax$!: Observable<boolean>;
   public filterProp$!: Observable<ShopPackageFilterDocumentProp>;
-
+  public progressBar$!: Observable<ShopLimitedProgpressBarType>;
   constructor(
     private _shop: ShopService,
     private _packageRepo: ShopPackageRepositoryService,
@@ -59,6 +68,7 @@ export class ShopPackageManagementService {
     this.operatingWorkHour$ = this._shop.operatingWorkHours$;
     this.isReachToMaxListener();
     this.filterPropListener();
+    this.activeProgressBar();
   }
 
   public async getDefaultModalProp(pack: ShopPackageDocumentType | null) {
@@ -79,6 +89,29 @@ export class ShopPackageManagementService {
     } else {
       return null;
     }
+  }
+
+  private activeProgressBar() {
+    this.progressBar$ = this.packages$.pipe(
+      combineLatestWith(this.plan$),
+      switchMap(([service, plan]: [ShopPackageDocumentType[], PlanConfigurationType | null]) => {
+        if (plan !== null) {
+          return of({
+            current: service.length,
+            max: plan.limitedPackage,
+            title: 'label.title.maximumactivepackages',
+            indeterminate: false,
+          });
+        } else {
+          return of({
+            current: 0,
+            max: 0,
+            title: 'label.title.maximumactivepackages',
+            indeterminate: false,
+          });
+        }
+      })
+    );
   }
 
   private filterPropListener() {
@@ -103,7 +136,7 @@ export class ShopPackageManagementService {
       combineLatestWith(this.plan$),
       map(([packages, plan]: [ShopPackageDocumentType[], PlanConfigurationType | null]) => {
         if (plan !== null) {
-          const isMaxReached = packages.length >= plan.limitedPackage;
+          const isMaxReached = packages.length > plan.limitedPackage;
           return isMaxReached;
         } else {
           return false;

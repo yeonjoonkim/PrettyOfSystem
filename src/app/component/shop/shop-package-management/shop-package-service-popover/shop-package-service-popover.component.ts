@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash-es';
 import { ShopPackageServiceType, ShopServiceDocumentType } from 'src/app/interface';
 
 @Component({
-  selector: 'app-shop-package-service-popover',
+  selector: 'shop-package-service-popover',
   templateUrl: './shop-package-service-popover.component.html',
   styleUrls: ['./shop-package-service-popover.component.scss'],
 })

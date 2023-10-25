@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   ShopExtraDocumentType,
   ShopLanguagePackageModalProp,
+  ShopLimitedProgpressBarType,
   ShopPackageDocumentType,
   ShopPackageFilterDocumentProp,
   ShopPackageModalDocumentProp,
@@ -32,6 +33,9 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   private _services!: ShopServiceDocumentType[];
   private _operatingWorkHour: ShopWorkHoursType | null = null;
   private _loaded = false;
+  public progressBar$: Observable<ShopLimitedProgpressBarType> =
+    this._shopPackage.progressBar$.pipe(takeUntil(this._onDestroy$));
+
   constructor(
     private _shopPackage: ShopPackageManagementService,
     private _global: GlobalService

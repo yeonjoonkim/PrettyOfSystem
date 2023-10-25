@@ -6,6 +6,7 @@ export interface IShopServiceMenuOptionAction {
   isServiceManagement: boolean;
   isExtraManagement: boolean;
   isPackageManagement: boolean;
+  isCouponManagement: boolean;
 }
 
 @Injectable({
@@ -17,6 +18,7 @@ export class ShopServiceMenuOptionControllerService {
     serviceManagement: 'service',
     extraManagement: 'extra',
     packageManagement: 'package',
+    couponManagement: 'coupon',
   };
   constructor() {}
 
@@ -24,7 +26,8 @@ export class ShopServiceMenuOptionControllerService {
     const service = this.getService();
     const extra = this.getExtra();
     const pack = this.getPackage();
-    return [pack, service, extra];
+    const coupon = this.getCoupon();
+    return [coupon, pack, service, extra];
   }
 
   public getService(): IShopServiceMenuOptionAction {
@@ -34,6 +37,7 @@ export class ShopServiceMenuOptionControllerService {
       isServiceManagement: true,
       isExtraManagement: false,
       isPackageManagement: false,
+      isCouponManagement: false,
     };
   }
 
@@ -44,6 +48,18 @@ export class ShopServiceMenuOptionControllerService {
       isServiceManagement: false,
       isExtraManagement: false,
       isPackageManagement: true,
+      isCouponManagement: false,
+    };
+  }
+
+  public setDefault(): IShopServiceMenuOptionAction {
+    return {
+      name: '',
+      img: '',
+      isServiceManagement: false,
+      isExtraManagement: false,
+      isPackageManagement: false,
+      isCouponManagement: false,
     };
   }
 
@@ -54,6 +70,18 @@ export class ShopServiceMenuOptionControllerService {
       isServiceManagement: false,
       isExtraManagement: true,
       isPackageManagement: false,
+      isCouponManagement: false,
+    };
+  }
+
+  private getCoupon(): IShopServiceMenuOptionAction {
+    return {
+      name: this._labelTitle + this._menuOption.couponManagement,
+      img: 'assets/shop-service/coupon.svg',
+      isServiceManagement: false,
+      isExtraManagement: false,
+      isPackageManagement: false,
+      isCouponManagement: true,
     };
   }
 }

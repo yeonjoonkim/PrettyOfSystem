@@ -16,6 +16,7 @@ import { ShopServiceGridComponent } from './shop-service-grid/shop-service-grid.
 import { ShopServiceComponent } from './shop-service/shop-service.component';
 import { ShopLanguagePackageModule } from '../shop-language-package/shop-language-package.module';
 import { ShopPackageServicePopoverComponent } from '../shop-package-management/shop-package-service-popover/shop-package-service-popover.component';
+import { ShopLimitedProgressModule } from '../shop-limited-progressbar/shop-limited-progressbar.module.ts';
 @NgModule({
   declarations: [
     ShopServiceManagementComponent,
@@ -31,6 +32,7 @@ import { ShopPackageServicePopoverComponent } from '../shop-package-management/s
     SharedFormModule,
     KendoUiModule,
     ShopLanguagePackageModule,
+    ShopLimitedProgressModule,
   ],
   exports: [ShopServiceManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

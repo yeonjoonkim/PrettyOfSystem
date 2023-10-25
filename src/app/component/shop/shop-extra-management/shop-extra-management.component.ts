@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, of, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   PlanConfigurationType,
@@ -8,6 +8,7 @@ import {
   ShopCountryType,
   ShopExtraDocumentType,
   ShopLanguagePackageModalProp,
+  ShopLimitedProgpressBarType,
 } from 'src/app/interface';
 import { ShopExtraManagementService } from 'src/app/service/shop/shop-extra-management/shop-extra-management.service';
 
@@ -21,6 +22,9 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
   public extra: ShopExtraDocumentType[] = [];
   public translatedRequest: ChatGptTranslateDocumentType[] = [];
   public country!: ShopCountryType;
+  public isReachToMax: boolean = true;
+  public progressBar$: Observable<ShopLimitedProgpressBarType> =
+    this._extraService.progressBar$.pipe(takeUntil(this._onDestroy$));
 
   private _currentShopConfig!: ShopConfigurationType | null;
   private _plan!: PlanConfigurationType | null;
@@ -33,6 +37,7 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
     this.activateShopPlan();
     this.activateShopExtra();
     this.activateTranslatedRequest();
+    this.activateIsReachToMax();
   }
 
   ngOnDestroy() {
@@ -55,6 +60,12 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
     });
   }
 
+  private activateIsReachToMax() {
+    this._extraService.isReachToMax$.pipe(takeUntil(this._onDestroy$)).subscribe(isReachToMax => {
+      this.isReachToMax = isReachToMax;
+    });
+  }
+
   private activateShopExtra() {
     this._extraService.extra$.pipe(takeUntil(this._onDestroy$)).subscribe(extra => {
       this.extra = extra;
@@ -73,7 +84,8 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
       this._currentShopConfig !== null &&
       this._plan !== null &&
       !this._isModalOpen &&
-      newDoc !== null
+      newDoc !== null &&
+      !this.isReachToMax
     ) {
       this._isModalOpen = true;
       const modal = await this._extraService.modal.presentNewExtra(newDoc);

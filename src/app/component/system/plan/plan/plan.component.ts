@@ -61,6 +61,16 @@ export class PlanComponent implements OnInit {
     );
   }
 
+  public onChangeLimitedCoupon() {
+    this.plan.limitedCoupon = this._global.numberTransform.nullReplaceToZero(
+      this.plan.limitedCoupon
+    );
+  }
+
+  public onChangeLimitedExtra() {
+    this.plan.limitedExtra = this._global.numberTransform.nullReplaceToZero(this.plan.limitedExtra);
+  }
+
   public onChangeLimitedProduct() {
     this.plan.limitedProduct = this._global.numberTransform.nullReplaceToZero(
       this.plan.limitedProduct

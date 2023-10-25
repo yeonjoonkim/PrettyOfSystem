@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import {
   EmployeeManagementEditUserPropType,
   EmployeeManagementRolePropType,
@@ -7,6 +7,7 @@ import {
   RoleConfigurationType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
+  ShopLimitedProgpressBarType,
 } from 'src/app/interface';
 import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employee-management/shop-employee-management.service';
 
@@ -16,13 +17,7 @@ import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employe
   styleUrls: ['./shop-employee-management.component.scss'],
 })
 export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
-  private _shopEmployeesSubscription!: Subscription;
-  private _shopPlanSubscription!: Subscription;
-  private _roleFilterSubscription!: Subscription;
-  private _availableRoleSubscription!: Subscription;
-  private _currentRoleSubscription!: Subscription;
-  private _shopConfigSubscription!: Subscription;
-  private _addNewEmployeeSubscription!: Subscription;
+  private _onDestroy$ = new Subject<void>();
 
   public employees: ShopEmployeeManagementUserType[] = [];
   public currentRole: RoleConfigurationType | null = null;
@@ -39,64 +34,62 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
     role: [],
     filter: [],
   };
+  public progressBar$: Observable<ShopLimitedProgpressBarType> = this._shopEmp.progressBar$.pipe(
+    takeUntil(this._onDestroy$)
+  );
 
   constructor(private _shopEmp: ShopEmployeeManagementService) {}
 
   async ngOnInit() {
-    this.subscribeEmployees();
-    this.subscribePlan();
-    this.subscribeRoles();
-    this.subscribeShopConfig();
-    this.subscribeAddNewEmployee();
+    this.shopEmployees();
+    this.shopConfig();
+    this.shopPlan();
+    this.userRoles();
+    this.addNewEmployee();
   }
 
   ngOnDestroy() {
-    this._shopEmployeesSubscription?.unsubscribe();
-    this._shopPlanSubscription?.unsubscribe();
-    this._availableRoleSubscription?.unsubscribe();
-    this._roleFilterSubscription?.unsubscribe();
-    this._currentRoleSubscription?.unsubscribe();
-    this._shopConfigSubscription?.unsubscribe();
-    this._addNewEmployeeSubscription?.unsubscribe();
+    this._onDestroy$.next();
+    this._onDestroy$.complete();
   }
 
-  private subscribeEmployees() {
-    this._shopEmployeesSubscription = this._shopEmp.shopEmployees$.subscribe(emps => {
+  private shopEmployees() {
+    this._shopEmp.shopEmployees$.pipe(takeUntil(this._onDestroy$)).subscribe(emps => {
       this.employees = emps;
       this.usage.currentActiveUsers = this.employees.filter(emp => emp.active).length;
       this.usage.currentDeactiveUsers = this.employees.filter(emp => !emp.active).length;
     });
   }
 
-  private subscribeRoles() {
-    this._availableRoleSubscription = this._shopEmp.availableRoles$.subscribe(roles => {
+  private userRoles() {
+    this._shopEmp.availableRoles$.pipe(takeUntil(this._onDestroy$)).subscribe(roles => {
       this._roleProp.role = roles;
     });
-    this._roleFilterSubscription = this._shopEmp.availableRoleFilter$.subscribe(filter => {
+    this._shopEmp.availableRoleFilter$.pipe(takeUntil(this._onDestroy$)).subscribe(filter => {
       this._roleProp.filter = filter;
     });
-    this._currentRoleSubscription = this._shopEmp.role$.subscribe(r => {
+    this._shopEmp.role$.pipe(takeUntil(this._onDestroy$)).subscribe(r => {
       this.currentRole = r;
     });
   }
 
-  private subscribeShopConfig() {
-    this._shopConfigSubscription = this._shopEmp.shopConfig$.subscribe(config => {
+  private shopConfig() {
+    this._shopEmp.shopConfig$.pipe(takeUntil(this._onDestroy$)).subscribe(config => {
       if (config !== null) {
         this._shopConfig = config;
       }
     });
   }
 
-  private subscribePlan() {
-    this._shopPlanSubscription = this._shopEmp.shopPlan$.subscribe(plan => {
+  private shopPlan() {
+    this._shopEmp.shopPlan$.pipe(takeUntil(this._onDestroy$)).subscribe(plan => {
       if (plan !== null) {
         this.usage.maximumUsers = plan.limitedUser;
       }
     });
   }
-  private subscribeAddNewEmployee() {
-    this._addNewEmployeeSubscription = this._shopEmp.addNewEmployee$.subscribe(add => {
+  private addNewEmployee() {
+    this._shopEmp.addNewEmployee$.pipe(takeUntil(this._onDestroy$)).subscribe(add => {
       this._addNewEmployee = add;
     });
   }
@@ -105,7 +98,11 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
     if (this._addNewEmployee) {
       const newEmployee = await this._shopEmp.buildNewEmployee();
       if (newEmployee !== null && this._shopConfig !== null && !this._isModalOpen) {
-        const modal = await this._shopEmp.modal.presentNewEmployee(newEmployee, this._roleProp);
+        const modal = await this._shopEmp.modal.presentNewEmployee(
+          newEmployee,
+          this._roleProp,
+          !this._addNewEmployee
+        );
 
         this._isModalOpen = true;
         await modal.present();
@@ -118,11 +115,16 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
 
   public async handleClickEditUser(param: EmployeeManagementEditUserPropType) {
     const modal = param.isReadOnly
-      ? await this._shopEmp.modal.presentReadOnlyEmployee(param.employee, this._shopConfig)
+      ? await this._shopEmp.modal.presentReadOnlyEmployee(
+          param.employee,
+          this._shopConfig,
+          !this._addNewEmployee
+        )
       : await this._shopEmp.modal.presentEditEmployee(
           param.employee,
           this._roleProp,
-          this._shopConfig
+          this._shopConfig,
+          !this._addNewEmployee
         );
 
     if (!this._isModalOpen) {

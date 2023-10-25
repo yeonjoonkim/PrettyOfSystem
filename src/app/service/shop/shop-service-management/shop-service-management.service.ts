@@ -8,10 +8,10 @@ import {
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
   ShopExtraDocumentType,
+  ShopLimitedProgpressBarType,
   ShopServiceDocumentType,
 } from 'src/app/interface';
-import { Observable, firstValueFrom, map, of, switchMap } from 'rxjs';
-import { ShopEmployeeManagementService } from '../shop-employee-management/shop-employee-management.service';
+import { Observable, combineLatestWith, map, of, switchMap } from 'rxjs';
 import { ShopServiceRepositoryService } from 'src/app/firebase/shop-repository/shop-service-repository/shop-service-repository.service';
 import { TextTransformService } from '../../global/text-transform/text-transform.service';
 import { ShopRelatedServiceService } from './shop-related-service/shop-related-service.service';
@@ -34,6 +34,8 @@ export class ShopServiceManagementService {
   public employeName$!: Observable<string>;
   public specialisedEmployees$!: Observable<NameValuePairType[]>;
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
+  public isReachToMax$!: Observable<boolean>;
+  public progressBar$!: Observable<ShopLimitedProgpressBarType>;
 
   constructor(
     public relateShopService: ShopRelatedServiceService,
@@ -54,6 +56,45 @@ export class ShopServiceManagementService {
     this.extra$ = this._shop.extras$;
     this.service$ = this._shop.services$;
     this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
+    this.isReachToMaxListener();
+    this.activeProgressBar();
+  }
+
+  private isReachToMaxListener() {
+    this.isReachToMax$ = this.service$.pipe(
+      combineLatestWith(this.shopPlan$),
+      map(([packages, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
+        if (plan !== null) {
+          const isMaxReached = packages.length > plan.limitedService;
+          return isMaxReached;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+
+  private activeProgressBar() {
+    this.progressBar$ = this.service$.pipe(
+      combineLatestWith(this.shopPlan$),
+      switchMap(([service, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
+        if (plan !== null) {
+          return of({
+            current: service.length,
+            max: plan.limitedService,
+            title: 'label.title.maximumactiveservices',
+            indeterminate: false,
+          });
+        } else {
+          return of({
+            current: 0,
+            max: 0,
+            title: 'label.title.maximumactiveservices',
+            indeterminate: false,
+          });
+        }
+      })
+    );
   }
 
   public async add(service: ShopServiceDocumentType) {

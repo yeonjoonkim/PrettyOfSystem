@@ -62,7 +62,6 @@ export class ShopPackageLimitedTimeService {
   private getWorkHours(op: ShopWorkHoursType): ShopOperatingHoursType | null {
     const operatingHours = getOperatingHours(op);
     const open = operatingHours.filter(op => op.isOpen);
-
     return open.length > 0 ? open[0].operatingHours : null;
   }
 }
@@ -148,8 +147,8 @@ function getDays(operatingHours: ShopWorkHoursType) {
     close: operatingHours.closeDay,
     open:
       operatingHours.closeDay.length > 0
-        ? []
-        : allday.filter(day => !operatingHours.closeDay.includes(day)),
+        ? allday.filter(day => !operatingHours.closeDay.includes(day))
+        : [],
   };
 
   return day;
