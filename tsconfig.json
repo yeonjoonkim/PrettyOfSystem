@@ -20,7 +20,8 @@
     "module": "es2022",
     "resolveJsonModule": true,
     "lib": ["ES2022.Intl", "dom"],
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "types": ["chrome"]  // Add this line
   },
   "include": [
     "src/**/*",

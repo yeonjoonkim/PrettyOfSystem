@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { TranslateRequestRepositoryService } from 'src/app/firebase/system-repository/translate-request/translate-request-repository.service';
 import { UserService } from '../../user/user.service';
 import { Observable, firstValueFrom, of, switchMap } from 'rxjs';
-import { ChatGptTranslateDocumentType, NameValuePairType } from 'src/app/interface';
+import {
+  ChatGptTranslateDocumentType,
+  ChatGptTranslateResult,
+  NameValuePairType,
+} from 'src/app/interface';
 import * as Constant from 'src/app/constant/constant';
 import { ShopLanguagePackageService } from '../shop-language-package/shop-language-package.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
@@ -26,6 +30,33 @@ export class ShopTranslatedRequestService {
     private _languagePackage: ShopLanguagePackageService,
     private _shopRepo: SystemShopConfigurationRepositoryService
   ) {}
+
+  public serviceIdTracker(shopId: string, serviceIds: string[]) {
+    return this._translateRepo.selectedShopServiceValueChangeListener(shopId, serviceIds);
+  }
+
+  public async createTitle(shopId: string, serviceId: string, prop: string) {
+    const title = this._translateRepo.getTitleDocument(shopId, serviceId, prop);
+    const request = await this._translateRepo.request(title);
+    return {
+      doc: title,
+      requested: request,
+    };
+  }
+
+  public async createDescription(shopId: string, serviceId: string, prop: string) {
+    const title = this._translateRepo.getDescriptionDocument(shopId, serviceId, prop);
+    const request = await this._translateRepo.request(title);
+
+    return {
+      doc: title,
+      requested: request,
+    };
+  }
+
+  public async delete(id: string) {
+    return await this._translateRepo.delete(id);
+  }
 
   public async requeueTranslatedRequest(doc: ChatGptTranslateDocumentType) {
     doc.attempt = 0;

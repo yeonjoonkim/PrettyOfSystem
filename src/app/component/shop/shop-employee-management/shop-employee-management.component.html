@@ -1,5 +1,5 @@
 <flex-col id="shop-employee-grid-usage">
-  <flex-col-item>
+  <flex-col-item *ngIf="!loading()">
     <shop-limited-progressbar [progressbar]="progressBar$"></shop-limited-progressbar>
     <shop-employee-grid
       [employees]="employees"
@@ -7,4 +7,8 @@
       (onEdit)="handleClickEditUser($event)"
       (onCreate)="handleClickCreateUser()"></shop-employee-grid>
   </flex-col-item>
+
+  <div class="loading-container" *ngIf="loading()">
+    <kendo-loader size="large"></kendo-loader>
+  </div>
 </flex-col>

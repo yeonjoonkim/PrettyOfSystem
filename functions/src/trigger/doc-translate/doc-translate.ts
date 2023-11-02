@@ -11,9 +11,13 @@ export const onCreateChatGptTranslateRequest = onDocumentCreated(
   Db.Context.ChatGptTranslateRequest + '/{requestId}',
   async event => {
     let requestData = event.data?.data() as I.ChatGptTranslateDocumentType | null;
-    if (requestData) {
+    if (requestData && requestData?.status === Constant.API.TranslateStatus.Create) {
       await Repository.OpenApiInstance.updateExpiredInstanceToAvailable();
       const connection = await tryConnectTheOpenAPIInstance(requestData);
+
+      const lang = await Repository.System.Language.getAllNameValueTypeList();
+      requestData.languages = lang;
+      logger.info('Getting Language', lang);
 
       if (connection) {
         requestData.status = Constant.API.TranslateStatus.InProgress;
@@ -25,6 +29,13 @@ export const onCreateChatGptTranslateRequest = onDocumentCreated(
         requestData.prop = Service.TextTransform.preCleansingTranslateProp(requestData.prop);
         logger.info('1. Status - Pending', requestData);
         await Repository.TranslateRequest.updateDocument(requestData);
+      }
+
+      let config = await Repository.Shop.Configuration.getSelectedConfig(requestData.shopId);
+
+      if (config !== null) {
+        config.translatedRequestIds.push(requestData.id);
+        await Repository.Shop.Configuration.updateConfig(config);
       }
     }
   }
@@ -93,6 +104,8 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
         if (english !== null) {
           after.prop = english.result.value;
         }
+
+        after.prop = Service.TextTransform.preCleansingTranslateProp(after.prop);
 
         let translated = await Service.Translate.process(vm, after);
         logger.info(after.id + ' End Translate');
@@ -172,13 +185,18 @@ const tryConnectTheOpenAPIInstance = async function (request: I.ChatGptTranslate
 
 const handleUpdateShopLanguagePackage = async function (doc: I.ChatGptTranslateDocumentType) {
   let shopConfig = await Repository.Shop.Configuration.getSelectedConfig(doc.shopId);
+
+  logger.info('shopConfig: ' + shopConfig);
   if (shopConfig !== null) {
     for (let translated of doc.result) {
       const key = doc.packageKey + '.' + doc.format + '.' + translated.name;
       const value = translated.value;
       shopConfig.package[key] = value;
+      logger.info('Adding - ' + key + ' : ' + value);
     }
+
     const update = await Repository.Shop.Configuration.updateConfig(shopConfig);
+    logger.info(update);
     return update;
   } else {
     return false;

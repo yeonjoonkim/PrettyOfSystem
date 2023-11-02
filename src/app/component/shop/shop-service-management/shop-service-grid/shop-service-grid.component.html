@@ -31,6 +31,7 @@
 
   <!--Specialist-->
   <kendo-grid-column
+    *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     title="{{ 'label.title.specializedemployees' | languageTransform | async }}">
     <ng-template kendoGridCellTemplate let-service>

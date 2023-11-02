@@ -11,6 +11,18 @@ export class ShopRelatedServiceService {
       value: Constant.MassageDescriptionType.DeepTissueMassage,
     },
     {
+      name: 'label.title.remedialmassage',
+      value: Constant.MassageDescriptionType.RemedialMassage,
+    },
+    {
+      name: 'label.title.footmassage',
+      value: Constant.MassageDescriptionType.FootMassage,
+    },
+    {
+      name: 'label.title.spamassage',
+      value: Constant.MassageDescriptionType.SpaMassage,
+    },
+    {
       name: 'label.title.hotstonemassage',
       value: Constant.MassageDescriptionType.HotStoneMassage,
     },

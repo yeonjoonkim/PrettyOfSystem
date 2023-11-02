@@ -11,10 +11,10 @@ import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
 import { SystemShopService } from '../system-shop.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
-import { ShopSettingService } from '../shop-setting/shop-setting.service';
 import { SystemShopWorkHoursService } from '../system-shop-work-hours/system-shop-work-hours.service';
 import { ModalController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
+import { IShopSetting } from 'src/app/interface';
 export interface ShopConfigurationTypeValidator {
   name: boolean;
   email: boolean;
@@ -43,7 +43,6 @@ export class ShopConfigurationService {
     private _systemShop: SystemShopService,
     private _modalCtrl: ModalController,
     private _systemShopConfigRepo: SystemShopConfigurationRepositoryService,
-    private _systemShopSetting: ShopSettingService,
     private _systemWorkHoursService: SystemShopWorkHoursService
   ) {}
 
@@ -104,7 +103,7 @@ export class ShopConfigurationService {
 
   public setDefaultConfig(): ShopConfigurationType {
     return {
-      id: '',
+      id: this.global.newId(),
       name: '',
       phoneNumber: '',
       email: '',
@@ -122,7 +121,7 @@ export class ShopConfigurationService {
       category: this.getDefaultCategory(),
       country: this.getDefaultCountry(),
       plan: this.getDefaultPlan(),
-      setting: this._systemShopSetting.getDefaultShopSetting(),
+      setting: this.defaultShopSetting(),
       activeFrom: new Date(),
       activeTo: null,
       translatedRequestIds: [],
@@ -283,5 +282,18 @@ export class ShopConfigurationService {
     }
 
     return price;
+  }
+
+  private defaultShopSetting() {
+    const result: IShopSetting = {
+      timePicker: {
+        intervalMin: Constant.ShopSetting.TimePicker.IntervalMin,
+      },
+      general: {
+        taxRate: Constant.ShopSetting.General.TaxRate,
+        surchargeRate: Constant.ShopSetting.General.SurchargeRate,
+      },
+    };
+    return result;
   }
 }

@@ -110,7 +110,7 @@ export const createDocument = async function (request: I.ChatGptTranslateDocumen
   try {
     request.id = newDoc.id;
     await newDoc.set(request);
-    return true;
+    return request.id;
   } catch (error) {
     logger.error('Create Translate Request Failed', error);
     return false;

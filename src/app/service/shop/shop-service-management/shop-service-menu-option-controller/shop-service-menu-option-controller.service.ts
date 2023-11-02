@@ -54,7 +54,7 @@ export class ShopServiceMenuOptionControllerService {
 
   public setDefault(): IShopServiceMenuOptionAction {
     return {
-      name: '',
+      name: 'label.title.product',
       img: '',
       isServiceManagement: false,
       isExtraManagement: false,

@@ -2,7 +2,10 @@
   <!-- Add -->
 
   <ng-template kendoGridToolbarTemplate>
-    <button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole()">
+    <button
+      kendoGridAddCommand
+      (click)="onClickCreate()"
+      *ngIf="isAuthorisedRole() && !isReachToMax">
       {{ 'button.title.adduser' | languageTransform | async }}
     </button>
   </ng-template>
@@ -44,6 +47,7 @@
 
   <!-- Active -->
   <kendo-grid-column
+    *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     [width]="75"
     field="active"
@@ -60,6 +64,7 @@
 
   <!-- Active -->
   <kendo-grid-column
+    *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     [width]="75"
     field="displayInSystem"

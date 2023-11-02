@@ -10,6 +10,7 @@ export class UserLogin implements IUserLogin {
   private _emailAddress: string = '';
   private _password: string = '';
   private _errorMsg: string = '';
+  private _verifying: boolean = false;
   private _cypo: CryptService;
   public confirmationResult: any;
   public timer: TimerService;
@@ -77,7 +78,16 @@ export class UserLogin implements IUserLogin {
     this._errorMsg = errorMsg;
   }
 
+  get verifying(): boolean {
+    return this._verifying;
+  }
+
+  set verifying(value: boolean) {
+    this._verifying = value;
+  }
+
   public async reset() {
+    this.verifying = false;
     this.emailAddress = '';
     this.password = '';
     this.phoneNumber = '';
@@ -141,11 +151,14 @@ export class UserLogin implements IUserLogin {
 
   public async verifyOTP() {
     try {
+      this.verifying = true;
       const userCredential = await this.confirmationResult.confirm(this.otp);
       if (userCredential) {
+        this.verifying = false;
         await this.processLogin(userCredential);
       }
     } catch (err) {
+      this.verifying = false;
       const error: string = JSON.stringify(err);
       this.handleError(error);
     }

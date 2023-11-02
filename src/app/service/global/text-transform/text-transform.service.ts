@@ -15,8 +15,30 @@ export class TextTransformService {
    * Recommand to use a single string value.
    */
   public preCleansingTranslateProp(input: string): string {
-    return input.trim().replace(/["\r\n{}]+/g, '');
+    // Replace escaped double quotes with single quotes
+    let cleanedString = input.replace(/\\"/g, "'");
+
+    // Remove unescaped double quotes
+    cleanedString = cleanedString.replace(/"([^"]*)"/g, '$1');
+
+    // Replace multiple white spaces (including new lines and tabs) with a single space
+    cleanedString = cleanedString.replace(/\s+/g, ' ');
+
+    // Trim leading and trailing white spaces
+    cleanedString = cleanedString.trim();
+
+    // Remove all double quotes
+    cleanedString = cleanedString.replace(/"/g, '');
+
+    // Replace multiple white spaces (including new lines and tabs) with a single space
+    const compressedString = cleanedString.replace(/\s+/g, ' ');
+
+    // Trim leading and trailing white spaces
+    const trimmedString = compressedString.trim();
+
+    return trimmedString;
   }
+
   public getCapitalzedWord(str: string): string {
     let lowcaseValue: string = str.toLowerCase();
     let capitalzedWord: string = str.charAt(0).toUpperCase() + lowcaseValue.slice(1);

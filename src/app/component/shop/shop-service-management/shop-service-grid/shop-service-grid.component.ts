@@ -13,6 +13,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employee-management/shop-employee-management.service';
 import * as Constant from 'src/app/constant/constant';
 import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-management/shop-service-management.service';
+import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
 @Component({
   selector: 'shop-service-grid',
   templateUrl: './shop-service-grid.component.html',
@@ -33,7 +34,8 @@ export class ShopServiceGridComponent implements OnInit {
   constructor(
     private _shopEmp: ShopEmployeeManagementService,
     private _global: GlobalService,
-    private _shopService: ShopServiceManagementService
+    private _shopService: ShopServiceManagementService,
+    public device: DeviceWidthService
   ) {}
 
   ngOnInit() {}

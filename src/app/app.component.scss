@@ -6,3 +6,11 @@ side-menu {
 ion-menu {
   --background: #191919;
 }
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}

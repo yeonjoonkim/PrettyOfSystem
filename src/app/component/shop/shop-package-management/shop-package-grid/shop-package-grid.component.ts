@@ -4,12 +4,12 @@ import {
   NameValuePairType,
   ShopLanguagePackageModalProp,
   ShopPackageDocumentType,
-  ShopPackageModalDocumentProp,
 } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
 import { ShopPackageManagementService } from 'src/app/service/shop/shop-package-management/shop-package-management.service';
 import { cloneDeep } from 'lodash-es';
+import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
 
 @Component({
   selector: 'shop-package-grid',
@@ -30,7 +30,8 @@ export class ShopPackageGridComponent implements OnInit {
   isAuthorisedRole: boolean = false;
   constructor(
     private _global: GlobalService,
-    private _shopPackage: ShopPackageManagementService
+    private _shopPackage: ShopPackageManagementService,
+    public device: DeviceWidthService
   ) {}
 
   async ngOnInit() {

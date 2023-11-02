@@ -1,63 +1,9 @@
-import {
-  onDocumentCreated,
-  onDocumentDeleted,
-  onDocumentUpdated,
-} from 'firebase-functions/v2/firestore';
+import { onDocumentDeleted, onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import * as Repository from '../../repository/index';
 import * as Db from '../../db';
 import * as I from '../../interface';
 import * as Service from '../../service/index';
 import * as Constant from '../../constant';
-
-export const onShopServiceCreate = onDocumentCreated(
-  Db.Context.Shop.Service + '/{serviceId}',
-  async event => {
-    const shopServiceSnapshot = event.data;
-    const shopServiceData = !shopServiceSnapshot ? null : shopServiceSnapshot.data();
-    const service =
-      shopServiceData !== null ? (shopServiceData as I.ShopServiceDocumentType) : null;
-
-    if (service !== null) {
-      const shopC = await Repository.Shop.Configuration.getSelectedConfig(service.shopId);
-      const lang = await Repository.System.Language.getAllNameValueTypeList();
-      const titleProp = Service.TextTransform.preCleansingTranslateProp(service.titleProp);
-      const descriptionProp = Service.TextTransform.preCleansingTranslateProp(
-        service.descriptionProp
-      );
-      if (shopC !== null && lang.length > 0) {
-        const titleRequest = Service.Trigger.ShopService.getTranslateRequestDocument(
-          lang,
-          shopC.id,
-          service.id,
-          titleProp,
-          Constant.Text.Format.Title
-        );
-
-        const descriptionRequest = Service.Trigger.ShopService.getTranslateRequestDocument(
-          lang,
-          shopC.id,
-          service.id,
-          descriptionProp,
-          Constant.Text.Format.Description
-        );
-
-        shopC.translatedRequestIds.push(titleRequest.id);
-        shopC.translatedRequestIds.push(descriptionRequest.id);
-
-        const updateShopConfig = await Repository.Shop.Configuration.updateConfig(shopC);
-
-        if (updateShopConfig) {
-          const sleep = async (duration: number) => {
-            return new Promise(resolve => setTimeout(resolve, duration));
-          };
-          await Repository.TranslateRequest.create(titleRequest);
-          await sleep(1000);
-          await Repository.TranslateRequest.create(descriptionRequest);
-        }
-      }
-    }
-  }
-);
 
 export const onShopServiceUpdated = onDocumentUpdated(
   Db.Context.Shop.Service + '/{serviceId}',
@@ -74,9 +20,17 @@ export const onShopServiceUpdated = onDocumentUpdated(
       const isDescriptionChange = before.descriptionProp !== after.descriptionProp;
       const isOptionChanged = Service.Trigger.ShopService.onChangeOption(before, after);
 
-      await handleOptionChange(isOptionChanged, after.shopId, after.id);
-
+      await handleOptionChangePacakge(isOptionChanged, after.shopId, after.id);
+      await handleUpdateCoupon(isOptionChanged, after.shopId, after.id);
       if (isTitleChange) {
+        const coupons = await Repository.Shop.Coupon.getSelectShop(after.shopId);
+        const selectedCoupons = coupons.filter(s => s.serviceId === after.id);
+
+        for (let coupon of selectedCoupons) {
+          coupon.titleProp = Service.TextTransform.preCleansingTranslateProp(after.titleProp);
+          await Repository.Shop.Coupon.updateCoupon(coupon);
+        }
+
         const titleRequestDocument = await Repository.TranslateRequest.getDocument(
           after.id,
           after.shopId,
@@ -137,19 +91,10 @@ export const onShopServiceDelete = onDocumentDeleted(
     const service = serviceData !== null ? (serviceData as I.ShopServiceDocumentType) : null;
 
     if (service !== null) {
-      let shopC = await Repository.Shop.Configuration.getSelectedConfig(service.shopId);
-      const titleRequestDocument = await Repository.TranslateRequest.getDocument(
-        service.id,
-        service.shopId,
-        Constant.Text.Format.Title
-      );
-      const descriptionRequestDocument = await Repository.TranslateRequest.getDocument(
-        service.id,
-        service.shopId,
-        Constant.Text.Format.Description
-      );
-
       let packages = await Repository.Shop.Package.getSelectShop(service.shopId);
+      let coupons = await Repository.Shop.Coupon.getSelectShop(service.shopId);
+
+      //Delete Package;
       packages = packages.filter(s => s.services.filter(s => s.id === service.id).length > 0);
       packages = handleDeleteServiceInPackage(service.options, packages, service.id);
 
@@ -169,37 +114,16 @@ export const onShopServiceDelete = onDocumentDeleted(
         }
       }
 
-      if (titleRequestDocument !== null && descriptionRequestDocument !== null && shopC !== null) {
-        const deleteIds = [titleRequestDocument.id, descriptionRequestDocument.id];
-        shopC.translatedRequestIds = shopC.translatedRequestIds.filter(
-          id => !deleteIds.includes(id)
-        );
-        shopC = await handleDeleteShopLanguagePackage(shopC, service.id);
-
-        await Repository.Shop.Configuration.updateConfig(shopC);
-        await Repository.TranslateRequest.deleteDocumentById(titleRequestDocument.id);
-        await Repository.TranslateRequest.deleteDocumentById(descriptionRequestDocument.id);
+      //Delete Coupons
+      coupons = coupons.filter(s => s.serviceId === service.id);
+      for (let c of coupons) {
+        await Repository.Shop.Coupon.deleteCoupon(c);
       }
     }
   }
 );
 
-const handleDeleteShopLanguagePackage = async function (
-  shopC: I.ShopConfigurationType,
-  serviceId: string
-): Promise<I.ShopConfigurationType> {
-  const updatedShopC = { ...shopC, package: { ...shopC.package } };
-
-  for (let key in updatedShopC.package) {
-    if (key.includes(serviceId)) {
-      delete updatedShopC.package[key];
-    }
-  }
-
-  return updatedShopC;
-};
-
-const handleOptionChange = async function (
+const handleOptionChangePacakge = async function (
   change: I.OnChangeShopServiceOptionType,
   shopId: string,
   serviceId: string
@@ -219,6 +143,36 @@ const handleOptionChange = async function (
   for (let u of updatePackage) {
     u = Service.Trigger.ShopPackage.updatePrice(u);
     await Repository.Shop.Package.updatePackage(u);
+  }
+};
+
+const handleUpdateCoupon = async function (
+  change: I.OnChangeShopServiceOptionType,
+  shopId: string,
+  serviceId: string
+) {
+  let coupons = await Repository.Shop.Coupon.getSelectShop(shopId);
+  const updateCoupons = coupons.filter(
+    s =>
+      s.serviceId === serviceId &&
+      change.update.filter(u => u.previous.min === s.option.min).length > 0
+  );
+  const deleteCoupons = coupons.filter(
+    c => change.delete.filter(s => c.option.min === s.min && c.option.price === s.price).length > 0
+  );
+
+  for (let d of deleteCoupons) {
+    await Repository.Shop.Coupon.deleteCoupon(d);
+  }
+
+  for (let u of updateCoupons) {
+    const updateOption = change.update.find(
+      c => c.previous.min === u.option.min && c.previous.price === u.option.price
+    );
+    if (updateOption !== undefined) {
+      u = Service.Trigger.ShopCoupon.updateDocumentFormServiceOption(u, updateOption.current);
+      await Repository.Shop.Coupon.updateCoupon(u);
+    }
   }
 };
 
@@ -259,3 +213,42 @@ const handleUpdateServiceInPackage = function (
 
   return packages;
 };
+
+// let shopC = await Repository.Shop.Configuration.getSelectedConfig(service.shopId);
+// const titleRequestDocument = await Repository.TranslateRequest.getDocument(
+//   service.id,
+//   service.shopId,
+//   Constant.Text.Format.Title
+// );
+// const descriptionRequestDocument = await Repository.TranslateRequest.getDocument(
+//   service.id,
+//   service.shopId,
+//   Constant.Text.Format.Description
+// );
+
+// if (titleRequestDocument !== null && descriptionRequestDocument !== null && shopC !== null) {
+//   const deleteIds = [titleRequestDocument.id, descriptionRequestDocument.id];
+//   shopC.translatedRequestIds = shopC.translatedRequestIds.filter(
+//     id => !deleteIds.includes(id)
+//   );
+//   shopC = await handleDeleteShopLanguagePackage(shopC, service.id);
+
+//   await Repository.Shop.Configuration.updateConfig(shopC);
+//   await Repository.TranslateRequest.deleteDocumentById(titleRequestDocument.id);
+//   await Repository.TranslateRequest.deleteDocumentById(descriptionRequestDocument.id);
+// }
+
+// const handleDeleteShopLanguagePackage = async function (
+//   shopC: I.ShopConfigurationType,
+//   serviceId: string
+// ): Promise<I.ShopConfigurationType> {
+//   const updatedShopC = { ...shopC, package: { ...shopC.package } };
+
+//   for (let key in updatedShopC.package) {
+//     if (key.includes(serviceId)) {
+//       delete updatedShopC.package[key];
+//     }
+//   }
+
+//   return updatedShopC;
+// };

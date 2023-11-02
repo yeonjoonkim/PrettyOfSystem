@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { UserService } from '../../user/user.service';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -52,12 +51,12 @@ export class ShopServiceManagementService {
     this.currentRole$ = this._shop.role$;
     this.shopPlan$ = this._shop.plan$;
     this.employeName$ = this._shop.userName$;
-    this.translatedRequest$ = this._shop.translatedRequests$;
     this.extra$ = this._shop.extras$;
     this.service$ = this._shop.services$;
     this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
     this.isReachToMaxListener();
     this.activeProgressBar();
+    this.translateRequest();
   }
 
   private isReachToMaxListener() {
@@ -69,6 +68,22 @@ export class ShopServiceManagementService {
           return isMaxReached;
         } else {
           return false;
+        }
+      })
+    );
+  }
+
+  private translateRequest() {
+    this.translatedRequest$ = this.currentShopConfig$.pipe(
+      combineLatestWith(this.service$),
+      switchMap(([config, services]: [ShopConfigurationType | null, ShopServiceDocumentType[]]) => {
+        if (config !== null && services.length > 0) {
+          const serviceIds: string[] = services.map(s => {
+            return s.id;
+          });
+          return this._shop.translatedRequestFilterByServiceIds(config.id, serviceIds);
+        } else {
+          return of([] as ChatGptTranslateDocumentType[]);
         }
       })
     );
@@ -98,8 +113,38 @@ export class ShopServiceManagementService {
   }
 
   public async add(service: ShopServiceDocumentType) {
+    await this.loading.start('label.title.addnewservice');
     const newService = await this._shopServiceRepo.addService(service);
-    return newService;
+    const sleep = async (duration: number) => {
+      return new Promise(resolve => setTimeout(resolve, duration));
+    };
+    if (newService) {
+      const titleTranslated = await this._shop.translated.createTitle(
+        service.shopId,
+        service.id,
+        service.titleProp
+      );
+      sleep(1000);
+      const descTranslated = await this._shop.translated.createDescription(
+        service.shopId,
+        service.id,
+        service.descriptionProp
+      );
+
+      if (!titleTranslated.requested || !descTranslated.requested) {
+        await this.delete(service);
+        await this._shop.translated.delete(titleTranslated.doc.id);
+        await this._shop.translated.delete(descTranslated.doc.id);
+        await this.loading.end();
+        return false;
+      }
+
+      await this.loading.end();
+      return true;
+    }
+
+    await this.loading.end();
+    return false;
   }
 
   public async delete(service: ShopServiceDocumentType) {

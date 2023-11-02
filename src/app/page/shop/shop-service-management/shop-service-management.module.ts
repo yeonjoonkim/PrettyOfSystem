@@ -15,6 +15,7 @@ import { ShopServiceManagementPage } from './shop-service-management.page';
 import { ShopServiceManagementModule } from 'src/app/component/shop/shop-service-management/shop-service-management.module';
 import { ShopExtraManagementModule } from 'src/app/component/shop/shop-extra-management/shop-extra-management.module';
 import { ShopPackageManagementModule } from 'src/app/component/shop/shop-package-management/shop-package-management.module';
+import { ShopCouponManagementModule } from 'src/app/component/shop/shop-coupon-management/shop-coupon-management.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,6 +28,7 @@ import { ShopPackageManagementModule } from 'src/app/component/shop/shop-package
     ShopServiceManagementModule,
     ShopExtraManagementModule,
     ShopPackageManagementModule,
+    ShopCouponManagementModule,
   ],
   declarations: [ShopServiceManagementPage],
 })

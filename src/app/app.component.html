@@ -6,3 +6,9 @@
   </ion-menu>
   <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-app>
+
+<ion-app *ngIf="!isLoaded">
+  <div class="loading-container">
+    <kendo-loader size="large"></kendo-loader>
+  </div>
+</ion-app>
