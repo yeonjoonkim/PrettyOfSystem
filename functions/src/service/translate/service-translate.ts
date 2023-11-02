@@ -148,6 +148,19 @@ const translatedObjectResult = async function (
     const endIndex = result.lastIndexOf('}') + 1;
     const jsonString = result.substring(startIndex, endIndex);
     object = JSON.parse(jsonString);
+
+    const json = safeJsonParse(jsonString, 10);
+    if (json.error) {
+      await Repo.Error.createErrorReport(
+        result,
+        JSON.stringify(json),
+        'update',
+        'LanguageTransJSON'
+      );
+      logger.error('Failed to parse JSON:', json);
+    } else {
+      object = json.data;
+    }
   } catch (error) {
     await Repo.Error.createErrorReport(
       result,
@@ -236,4 +249,65 @@ const defaultResult = function () {
     error: false,
   };
   return result;
+};
+
+const safeJsonParse = function (jsonString: string, maxAttempts: number) {
+  let lastError = null;
+
+  for (let attempts = 0; attempts < maxAttempts; attempts++) {
+    try {
+      const result = JSON.parse(jsonString);
+      return { error: null, data: result };
+    } catch (error) {
+      if (!(error instanceof SyntaxError) || typeof error.message !== 'string') {
+        return { error: new Error('Unexpected error during JSON parsing'), data: null };
+      }
+
+      lastError = error;
+      const errorPosition = extractErrorPosition(error.message);
+      if (errorPosition === null) {
+        return { error, data: null };
+      }
+
+      jsonString = tryFixingJsonError(jsonString, errorPosition);
+    }
+  }
+
+  return {
+    error: lastError ?? new Error('Unable to parse JSON after multiple attempts'),
+    data: null,
+  };
+};
+
+const extractErrorPosition = function (errorMessage: string): number | null {
+  const match = errorMessage.match(/at position (\d+)/);
+  return match ? parseInt(match[1], 10) : null;
+};
+
+const tryFixingJsonError = function (jsonString: string, errorPosition: number): string {
+  const fixes = [
+    { pattern: /,\s*}/, replacement: '}' },
+    { pattern: /,\s*\]/, replacement: ']' },
+    { pattern: /"(\w+)"\s*:([^"])/g, replacement: '"$1":$2', offset: -1 },
+    { pattern: /(\w+)\s*:/, replacement: '"$1":', offset: 0 },
+    { pattern: /:\s*([^"\d\s}\]])/, replacement: ': "$1', offset: 0 },
+    { pattern: /([^\d\s"{}\]])\s*([,}])/, replacement: '$1"$2', offset: 0 },
+    { pattern: /\n/g, replacement: '\\n', offset: 0 },
+    { pattern: /"\s*}/, replacement: '"}', offset: 0 },
+    { pattern: /"\s*]/, replacement: '"]', offset: 0 },
+    { pattern: /"{2,}/g, replacement: '"', offset: 0 },
+  ];
+
+  for (const { pattern, replacement, offset = 0 } of fixes) {
+    const localErrorPosition = errorPosition + offset;
+    const beforeError = jsonString.slice(0, localErrorPosition);
+    const afterError = jsonString.slice(localErrorPosition);
+    const updatedAfterError = afterError.replace(pattern, replacement);
+
+    if (updatedAfterError !== afterError) {
+      return beforeError + updatedAfterError;
+    }
+  }
+
+  return jsonString;
 };

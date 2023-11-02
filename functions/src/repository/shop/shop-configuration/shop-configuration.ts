@@ -10,6 +10,7 @@ export const getAll = async function (): Promise<I.ShopConfigurationType[]> {
   const allShopConfigs = allSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopConfigurationType;
     config = transformTimeStampToDate(config);
+    config.setting = Service.Shop.Config.override(config.setting);
     return {
       ...config,
     };
@@ -28,6 +29,7 @@ export const getActiveConfigs = async function (): Promise<I.ShopConfigurationTy
   const activeShopConfigs = activeSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopConfigurationType;
     config = transformTimeStampToDate(config);
+    config.setting = Service.Shop.Config.override(config.setting);
     return {
       ...config,
     };
@@ -46,6 +48,7 @@ export const getDeactiveConfigs = async function (): Promise<I.ShopConfiguration
   const activeShopConfigs = activeSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopConfigurationType;
     config = transformTimeStampToDate(config);
+    config.setting = Service.Shop.Config.override(config.setting);
     return {
       ...config,
     };
@@ -120,6 +123,7 @@ export const getSelectedConfig = async function (id: string) {
     }
     let config = configSnapShot.data() as I.ShopConfigurationType;
     config = transformTimeStampToDate(config);
+    config.setting = Service.Shop.Config.override(config.setting);
     return config;
   } catch (error) {
     logger.error(' Cannot retreive', error);

@@ -6,6 +6,7 @@ import {
   PlanConfigurationType,
   RoleConfigurationType,
   ShopConfigurationType,
+  ShopCouponDocumentType,
   ShopEmployeeManagementUserType,
   ShopExtraDocumentType,
   ShopPackageDocumentType,
@@ -19,6 +20,7 @@ import { ShopServiceRepositoryService } from 'src/app/firebase/shop-repository/s
 import { ShopExtraRepositoryService } from 'src/app/firebase/shop-repository/shop-extra-repository/shop-extra-repository.service';
 import { UserRoleService } from '../user/user-role/user-role.service';
 import { ShopPackageRepositoryService } from 'src/app/firebase/shop-repository/shop-package-repository/shop-package-repository.service';
+import { ShopCouponRepositoryService } from 'src/app/firebase/shop-repository/shop-coupon-repository/shop-coupon-repository.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,21 +39,23 @@ export class ShopService {
   public extraFilter$!: Observable<NameValuePairType[]>;
   public serviceFilter$!: Observable<NameValuePairType[]>;
   public operatingWorkHours$!: Observable<ShopWorkHoursType | null>;
+  public coupons$!: Observable<ShopCouponDocumentType[]>;
 
   constructor(
     public role: UserRoleService,
     private _user: UserService,
-    private _translated: ShopTranslatedRequestService,
+    public translated: ShopTranslatedRequestService,
     private _userRepo: UserCredentialRepositoryService,
     private _serviceRepo: ShopServiceRepositoryService,
     private _extraRepo: ShopExtraRepositoryService,
-    private _packageRepo: ShopPackageRepositoryService
+    private _packageRepo: ShopPackageRepositoryService,
+    private _couponRepo: ShopCouponRepositoryService
   ) {
     this.userName$ = this._user.employeName$;
     this.config$ = this._user.currentShopConfig$;
     this.role$ = this._user.currentRole$;
     this.plan$ = this._user.currentShopPlan$;
-    this.translatedRequests$ = this._translated.translatedRequest$;
+    this.translatedRequests$ = this.translated.translatedRequest$;
     this.associatedUserListener();
     this.shopServiceListener();
     this.shopExtraListener();
@@ -60,6 +64,15 @@ export class ShopService {
     this.extraFilterListener();
     this.serviceFilterListener();
     this.operatingHoursListener();
+    this.shopCouponListener();
+  }
+
+  public translatedRequestFilterByServiceIds(shopId: string, serviceIds: string[]) {
+    if (serviceIds.length > 0) {
+      return this.translated.serviceIdTracker(shopId, serviceIds);
+    } else {
+      return of([]);
+    }
   }
 
   private shopPackageListener() {
@@ -69,6 +82,18 @@ export class ShopService {
           return this._packageRepo.packageValueChangeListener(config.id);
         } else {
           return of([] as ShopPackageDocumentType[]);
+        }
+      })
+    );
+  }
+
+  private shopCouponListener() {
+    this.coupons$ = this.config$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return this._couponRepo.valueChangeListener(config.id);
+        } else {
+          return of([] as ShopCouponDocumentType[]);
         }
       })
     );
@@ -155,7 +180,7 @@ export class ShopService {
   }
 
   public async requeueTranslatedRequest(doc: ChatGptTranslateDocumentType) {
-    return await this._translated.requeueTranslatedRequest(doc);
+    return await this.translated.requeueTranslatedRequest(doc);
   }
 
   public async config() {

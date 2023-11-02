@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   public timer!: ITimer;
   private _timerSubscription!: Subscription;
   public _recaptcha!: RecaptchaVerifier;
-
   constructor(
     private _afa: AngularFireAuth,
     private _userService: UserService,

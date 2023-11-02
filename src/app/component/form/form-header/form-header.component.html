@@ -16,7 +16,7 @@
 
   <!--Title-->
   <ion-title *ngIf="status === 'creating'">{{ title | languageTransform | async }}</ion-title>
-  <ion-title *ngIf="status !== 'creating'">{{ title }}</ion-title>
+  <ion-title *ngIf="status !== 'creating'">{{ title | languageTransform | async }}</ion-title>
 
   <kendo-buttongroup slot="end">
     <!-- Edit -->

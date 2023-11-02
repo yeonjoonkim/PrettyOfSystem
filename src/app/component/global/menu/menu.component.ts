@@ -6,7 +6,7 @@ import { StorageService } from 'src/app/service/global/storage/storage.service';
 import { UserService } from 'src/app/service/user/user.service';
 import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { NameValuePairType, UserAssociatedShopType } from 'src/app/interface';
 import { AgreementModalService } from 'src/app/service/global/agreement-modal/agreement-modal.service';
 
@@ -16,10 +16,7 @@ import { AgreementModalService } from 'src/app/service/global/agreement-modal/ag
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit, OnDestroy {
-  private _menuSubscription!: Subscription;
-  private _shopSelectionSubscription!: Subscription;
-  private _selectShopSubscription!: Subscription;
-
+  private _onDestroy$ = new Subject<void>();
   public shopSelection: NameValuePairType[] = [];
   public selectedShop: NameValuePairType = { name: '', value: '' };
   public selectedLangauge: string = '';
@@ -44,9 +41,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._menuSubscription?.unsubscribe();
-    this._selectShopSubscription?.unsubscribe();
-    this._shopSelectionSubscription?.unsubscribe();
+    this._onDestroy$.next();
+    this._onDestroy$.complete();
   }
   public async onChangeMenu(url: string) {
     let selectedMenu = this.menus.find(s => {
@@ -86,16 +82,16 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   private async subscribeShopSelection() {
-    this._shopSelectionSubscription = this.user.shopSelection$.subscribe(selection => {
+    this.user.shopSelection$.pipe(takeUntil(this._onDestroy$)).subscribe(selection => {
       this.shopSelection = selection;
     });
-    this._selectShopSubscription = this.user.currentShop$.subscribe(selected => {
+    this.user.currentShop$.pipe(takeUntil(this._onDestroy$)).subscribe(selected => {
       this.selectedShop = selected;
     });
   }
 
   private async subscribeUserMenu() {
-    this._menuSubscription = this.user.menu$.subscribe(async menu => {
+    this.user.menu$.pipe(takeUntil(this._onDestroy$)).subscribe(async menu => {
       this.menus = menu;
       await this.validateCurrentPath().then(async () => {
         await this.setDefaultTitleHeading();

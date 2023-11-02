@@ -19,7 +19,7 @@ import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employe
 export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
   private _onDestroy$ = new Subject<void>();
 
-  public employees: ShopEmployeeManagementUserType[] = [];
+  public employees!: ShopEmployeeManagementUserType[];
   public currentRole: RoleConfigurationType | null = null;
   public usage: EmployeeManagementUsageType = {
     currentActiveUsers: 0,
@@ -140,5 +140,9 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
     if (dismiss) {
       this._isModalOpen = false;
     }
+  }
+
+  public loading() {
+    return this.employees === undefined;
   }
 }

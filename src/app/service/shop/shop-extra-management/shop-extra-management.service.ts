@@ -39,9 +39,9 @@ export class ShopExtraManagementService {
     this.currentShopConfig$ = this._shop.config$;
     this.currentShopPlan$ = this._shop.plan$;
     this.extra$ = this._shop.extras$;
-    this.translatedRequest$ = this._shop.translatedRequests$;
     this.isReachToMaxListener();
     this.activeProgressBar();
+    this.translateRequest();
   }
 
   private isReachToMaxListener() {
@@ -53,6 +53,23 @@ export class ShopExtraManagementService {
           return isMaxReached;
         } else {
           return false;
+        }
+      })
+    );
+  }
+
+  private translateRequest() {
+    this.translatedRequest$ = this.currentShopConfig$.pipe(
+      combineLatestWith(this.extra$),
+      switchMap(([config, services]: [ShopConfigurationType | null, ShopExtraDocumentType[]]) => {
+        if (config !== null && services.length > 0) {
+          const serviceIds: string[] = services.map(s => {
+            return s.id;
+          });
+
+          return this._shop.translatedRequestFilterByServiceIds(config.id, serviceIds);
+        } else {
+          return of([] as ChatGptTranslateDocumentType[]);
         }
       })
     );
@@ -73,7 +90,7 @@ export class ShopExtraManagementService {
           return of({
             current: 0,
             max: 0,
-            title: 'label.title.maximumactiveemployees',
+            title: 'label.title.maximumactiveextras',
             indeterminate: false,
           });
         }
@@ -82,8 +99,28 @@ export class ShopExtraManagementService {
   }
 
   public async add(extra: ShopExtraDocumentType) {
+    await this.loading.start('label.title.addnewextra');
     const newExtra = await this._shopExtraRepo.addExtra(extra);
-    return newExtra;
+
+    if (newExtra) {
+      const titleTranslatedRequest = await this._shop.translated.createTitle(
+        extra.shopId,
+        extra.id,
+        extra.titleProp
+      );
+
+      if (!titleTranslatedRequest.requested) {
+        await this._shopExtraRepo.deleteExtra(extra);
+        await this._shop.translated.delete(titleTranslatedRequest.doc.id);
+        await this.loading.end();
+        return false;
+      }
+      await this.loading.end();
+      return true;
+    }
+
+    await this.loading.end();
+    return false;
   }
 
   public async delete(extra: ShopExtraDocumentType) {

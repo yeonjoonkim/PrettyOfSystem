@@ -4,14 +4,16 @@ import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.
 import { ChatGptTranslateDocumentType, ShopServiceDocumentType } from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
 import { firstValueFrom, map, switchMap } from 'rxjs';
-
+import * as Constant from 'src/app/constant/constant';
+import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 @Injectable({
   providedIn: 'root',
 })
 export class TranslateRequestRepositoryService {
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
+    private _toaster: FirebaseToasterService,
+    private _textTransform: TextTransformService
   ) {}
 
   public async request(doc: ChatGptTranslateDocumentType) {
@@ -24,6 +26,19 @@ export class TranslateRequestRepositoryService {
       return true;
     } catch (error) {
       await this._toaster.requestFail(error);
+      console.error(error);
+      return false;
+    }
+  }
+
+  public async delete(id: string) {
+    try {
+      await this._afs
+        .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest)
+        .doc(id)
+        .delete();
+      return true;
+    } catch (error) {
       console.error(error);
       return false;
     }
@@ -42,6 +57,25 @@ export class TranslateRequestRepositoryService {
     return this._afs
       .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
         ref.where('shopId', '==', shopId).where('isSystemAdmin', '==', false)
+      )
+      .valueChanges()
+      .pipe(
+        map(snapShots =>
+          snapShots.map(doc => {
+            const data = doc as ChatGptTranslateDocumentType;
+            return data;
+          })
+        )
+      );
+  }
+
+  public selectedShopServiceValueChangeListener(shopId: string, serviceIds: string[]) {
+    return this._afs
+      .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
+        ref
+          .where('shopId', '==', shopId)
+          .where('isSystemAdmin', '==', false)
+          .where('serviceId', 'in', serviceIds)
       )
       .valueChanges()
       .pipe(
@@ -85,8 +119,47 @@ export class TranslateRequestRepositoryService {
     return null;
   }
 
-  private orderOptionsByMinASC(doc: ShopServiceDocumentType) {
-    doc.options.sort((a, b) => a.min - b.min);
-    return doc;
+  public getTitleDocument(shopId: string, serviceId: string, prop: string) {
+    const result: ChatGptTranslateDocumentType = {
+      id: this._afs.createId(),
+      shopId: shopId,
+      serviceId: serviceId,
+      packageKey: serviceId,
+      format: Constant.Text.Format.Title,
+      languages: [],
+      result: [],
+      prop: this._textTransform.preCleansingTranslateProp(prop),
+      status: Constant.API.TranslateStatus.Create,
+      createdDate: new Date(),
+      error: [],
+      attempt: 0,
+      translateResult: [],
+      parentId: '',
+      isSystemAdmin: false,
+    };
+
+    return result;
+  }
+
+  public getDescriptionDocument(shopId: string, serviceId: string, prop: string) {
+    const result: ChatGptTranslateDocumentType = {
+      id: this._afs.createId(),
+      shopId: shopId,
+      serviceId: serviceId,
+      packageKey: serviceId,
+      format: Constant.Text.Format.Description,
+      languages: [],
+      result: [],
+      prop: this._textTransform.preCleansingTranslateProp(prop),
+      status: Constant.API.TranslateStatus.Create,
+      createdDate: new Date(),
+      error: [],
+      attempt: 0,
+      translateResult: [],
+      parentId: '',
+      isSystemAdmin: false,
+    };
+
+    return result;
   }
 }

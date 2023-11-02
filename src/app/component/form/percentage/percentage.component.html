@@ -1,5 +1,6 @@
 <kendo-label text="{{ title | languageTransform | async }}">
   <kendo-numerictextbox
+    id="percent"
     format="p2"
     [step]="step"
     [min]="min"
@@ -8,7 +9,6 @@
     (ngModelChange)="changeValue()"
     [autoCorrect]="true"
     [decimals]="4"
-    [spinners]="false"
     [readonly]="readOnly"
     [rangeValidation]="true"
     [spinners]="!readOnly"></kendo-numerictextbox>

@@ -170,7 +170,6 @@ export class ShopPackageComponent implements OnInit {
     }) as Constant.DayIndexType[];
 
     if (this.current.package.limitedTime !== null) {
-      console.log(days);
       this.current.package.limitedTime.offeredDateIndex = days;
     }
   }

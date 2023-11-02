@@ -54,6 +54,7 @@ export type AustraliaStateType = (typeof State.AustraliaType)[keyof typeof State
 
 //Discount
 export type PackageDiscountType = (typeof PackageDiscountType)[keyof typeof PackageDiscountType];
+export type CouponDiscountType = 'Percent';
 
 //Form
 export type ComponentModeType = (typeof Default.ComponentMode)[keyof typeof Default.ComponentMode];

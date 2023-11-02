@@ -15,15 +15,6 @@ export const PackageDiscountType = {
   Dollar: 'Dollar',
 } as const;
 
-export const ShopSetting = {
-  General: {
-    TaxRate: 0.1,
-  } as const,
-  TimePicker: {
-    IntervalMin: 15,
-  } as const,
-} as const;
-
 export const Login = {
   Status: {
     Selection: 'Selection',
@@ -165,5 +156,15 @@ export const Date = {
     HalfYear: 'HalfYear',
     Annually: 'Annually',
     Custom: 'Custom',
+  } as const,
+} as const;
+
+export const ShopSetting = {
+  General: {
+    TaxRate: 0.1,
+    SurchargeRate: 0.01,
+  } as const,
+  TimePicker: {
+    IntervalMin: 15,
   } as const,
 } as const;

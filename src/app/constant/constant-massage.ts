@@ -17,4 +17,7 @@ export const MassageDescriptionType = {
   ScalpMassage: 'Scalp Massage',
   BarefootBarTherapy: 'Barefoot Bar Therapy',
   NeuromuscularTherapy: 'Neuromuscular Therapy',
+  RemedialMassage: 'Remedial Massage',
+  FootMassage: 'Foot Massage',
+  SpaMassage: 'Spa Massage',
 } as const;

@@ -76,6 +76,7 @@ export type ShopPackageDocumentType = {
   shopId: string;
   title: string;
   titleProp: string;
+  isInsuranceCover: boolean;
   specializedEmployees: NameValuePairType[];
   services: ShopPackageServiceType[];
   extras: ShopPackageExtraType[];
@@ -126,4 +127,33 @@ export type ShopPackageExtraType = {
   id: string;
   title: string;
   price: number;
+};
+
+export type ShopCouponModalProp = {
+  services: ShopServiceDocumentType[];
+  serviceFilters: NameValuePairType[];
+  coupon: ShopCouponDocumentType;
+};
+
+export type ShopCouponDocumentType = {
+  id: string;
+  shopId: string;
+  title: string;
+  titleProp: string;
+  description: string;
+  numOfCoupon: number;
+  discount: ShopCouponDiscountType;
+  discountPrice: number;
+  discountAmount: number;
+  expiryMonth: number;
+  originalPrice: number;
+  lastModifiedDate: Date;
+  lastModifiedEmployee: string;
+  serviceId: string;
+  option: ShopServiceOptionType;
+};
+
+export type ShopCouponDiscountType = {
+  type: Constant.CouponDiscountType;
+  value: number;
 };

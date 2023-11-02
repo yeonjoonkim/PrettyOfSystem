@@ -71,6 +71,7 @@ export const onShopDelete = onDocumentDeleted(
       await deleteCollection(Db.ShopService(shop.id));
       await deleteCollection(Db.ShopExtra(shop.id));
       await deleteCollection(Db.ShopPackage(shop.id));
+      await deleteCollection(Db.ShopCoupon(shop.id));
     }
   }
 );

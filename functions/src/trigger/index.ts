@@ -13,18 +13,6 @@ export { onOpenAPIInstanceUpdate } from './open-api-instance/open-api-instnace';
 export { onShopCreate, onShopDelete, onShopUpdate } from './doc-shop/doc-shop';
 
 //Shop Services
-export {
-  onShopServiceCreate,
-  onShopServiceDelete,
-  onShopServiceUpdated,
-} from './doc-shop-service/doc-shop-service';
-export {
-  onShopExtraCreate,
-  onShopExtraDelete,
-  onShopExtraUpdated,
-} from './doc-shop-extra/doc-shop-extra';
-export {
-  onShopPackageCreate,
-  onShopPackageDeleted,
-  onShopPackageUpdated,
-} from './doc-shop-package/doc-shop-package';
+export { onShopServiceDelete, onShopServiceUpdated } from './doc-shop-service/doc-shop-service';
+export { onShopExtraDelete, onShopExtraUpdated } from './doc-shop-extra/doc-shop-extra';
+export { onShopPackageUpdated } from './doc-shop-package/doc-shop-package';

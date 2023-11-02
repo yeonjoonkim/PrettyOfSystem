@@ -1,7 +1,8 @@
 <flex-col id="shop-service">
-  <flex-col-item id="shop-service-grid">
+  <flex-col-item id="shop-service-grid" *ngIf="!loading()">
     <shop-limited-progressbar [progressbar]="progressBar$"></shop-limited-progressbar>
     <shop-service-grid
+      *ngIf="services"
       [services]="services"
       [translatedRequests]="translatedRequests"
       [specialists]="specializedEmployees"
@@ -12,4 +13,8 @@
       (onEdit)="handleEdit($event)"
       (onEditPackage)="handleEditPackage($event)"></shop-service-grid>
   </flex-col-item>
+
+  <div class="loading-container" *ngIf="loading()">
+    <kendo-loader size="large"></kendo-loader>
+  </div>
 </flex-col>

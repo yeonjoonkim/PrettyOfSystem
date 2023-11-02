@@ -6,3 +6,10 @@
 #maximum-employee-progress-bar {
   margin: 12px 0px 10px;
 }
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 50vh;
+}

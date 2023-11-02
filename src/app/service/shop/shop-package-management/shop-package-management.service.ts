@@ -1,24 +1,14 @@
 import { Injectable } from '@angular/core';
-import {
-  Observable,
-  combineLatest,
-  combineLatestWith,
-  firstValueFrom,
-  map,
-  of,
-  switchMap,
-} from 'rxjs';
+import { Observable, combineLatest, combineLatestWith, map, of, switchMap } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
   PlanConfigurationType,
-  RoleConfigurationType,
   ShopConfigurationType,
   ShopExtraDocumentType,
   ShopLimitedProgpressBarType,
   ShopPackageDocumentType,
   ShopPackageFilterDocumentProp,
-  ShopPackageModalDocumentProp,
   ShopServiceDocumentType,
   ShopWorkHoursType,
 } from 'src/app/interface';
@@ -29,6 +19,7 @@ import { ShopLanguagePackageService } from '../shop-language-package/shop-langua
 import { ShopPackagePriceCalculationService } from './shop-package-price-calculation/shop-package-price-calculation.service';
 import { ShopPackagePopoverService } from './shop-package-popover/shop-package-popover.service';
 import { ShopPackageLimitedTimeService } from './shop-package-limited-time/shop-package-limited-time.service';
+import { LoadingService } from '../../global/loading/loading.service';
 
 @Injectable({
   providedIn: 'root',
@@ -54,11 +45,11 @@ export class ShopPackageManagementService {
     public languagePackage: ShopLanguagePackageService,
     public priceCalculator: ShopPackagePriceCalculationService,
     public limitedTime: ShopPackageLimitedTimeService,
-    public popover: ShopPackagePopoverService
+    public popover: ShopPackagePopoverService,
+    public loading: LoadingService
   ) {
     this.config$ = this._shop.config$;
     this.plan$ = this._shop.plan$;
-    this.translatedRequest$ = this._shop.translatedRequests$;
     this.services$ = this._shop.services$;
     this.extras$ = this._shop.extras$;
     this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
@@ -69,26 +60,23 @@ export class ShopPackageManagementService {
     this.isReachToMaxListener();
     this.filterPropListener();
     this.activeProgressBar();
+    this.translateRequest();
   }
 
-  public async getDefaultModalProp(pack: ShopPackageDocumentType | null) {
-    const filterProp = await firstValueFrom(this.filterProp$);
-    const extras = await firstValueFrom(this.extras$);
-    const services = await firstValueFrom(this.services$);
-    const operatingHours = await firstValueFrom(this.operatingWorkHour$);
-
-    if (filterProp !== undefined && operatingHours !== null && pack !== null) {
-      const prop: ShopPackageModalDocumentProp = {
-        package: pack,
-        filter: filterProp,
-        services: services,
-        extras: extras,
-        operatingHours: operatingHours,
-      };
-      return prop;
-    } else {
-      return null;
-    }
+  private translateRequest() {
+    this.translatedRequest$ = this.config$.pipe(
+      combineLatestWith(this.packages$),
+      switchMap(([config, services]: [ShopConfigurationType | null, ShopPackageDocumentType[]]) => {
+        if (config !== null && services.length > 0) {
+          const serviceIds: string[] = services.map(s => {
+            return s.id;
+          });
+          return this._shop.translatedRequestFilterByServiceIds(config.id, serviceIds);
+        } else {
+          return of([] as ChatGptTranslateDocumentType[]);
+        }
+      })
+    );
   }
 
   private activeProgressBar() {
@@ -154,8 +142,29 @@ export class ShopPackageManagementService {
   }
 
   public async add(pack: ShopPackageDocumentType) {
+    await this.loading.start('label.title.addnewpacakge');
     const newPackage = await this._packageRepo.addPackage(pack);
-    return newPackage;
+
+    if (newPackage) {
+      const titleTranslatedRequest = await this._shop.translated.createTitle(
+        pack.shopId,
+        pack.id,
+        pack.titleProp
+      );
+
+      if (!titleTranslatedRequest.requested) {
+        await this.delete(pack);
+        await this._shop.translated.delete(titleTranslatedRequest.doc.id);
+        await this.loading.end();
+        return false;
+      }
+
+      await this.loading.end();
+      return true;
+    }
+
+    await this.loading.end();
+    return false;
   }
 
   public async delete(pack: ShopPackageDocumentType) {
@@ -178,7 +187,7 @@ export class ShopPackageManagementService {
     const config = await this._shop.config();
     const userName = await this._shop.userName();
     if (config !== null && userName !== null) {
-      return this._packageRepo.defaultPackageDocument(config.operatingHours, userName, config.id);
+      return this._packageRepo.defaultPackageDocument(userName, config.id);
     } else {
       return null;
     }

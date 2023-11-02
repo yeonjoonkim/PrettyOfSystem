@@ -87,6 +87,7 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
       this.current.service.options.splice(index, 1);
       this.current.service.options.sort((a, b) => a.min - b.min);
     }
+    this.handleEnabledSaveBtn();
   }
 
   public async dismiss() {
@@ -149,17 +150,10 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   }
 
   public onChangeTitleProp() {
-    this.current.service.titleProp = this._global.textTransform.preCleansingTranslateProp(
-      this.current.service.titleProp
-    );
     this.handleEnabledSaveBtn();
   }
 
   public onChangeDescriptionProp() {
-    this.current.service.descriptionProp = this._global.textTransform.preCleansingTranslateProp(
-      this.current.service.descriptionProp
-    );
-
     this.handleEnabledSaveBtn();
   }
 

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, pairwise, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   ShopExtraDocumentType,
@@ -22,8 +22,8 @@ import { ShopPackageManagementService } from 'src/app/service/shop/shop-package-
   styleUrls: ['./shop-package-management.component.scss'],
 })
 export class ShopPackageManagementComponent implements OnInit, OnDestroy {
-  public packages: ShopPackageDocumentType[] = [];
-  public translatedRequests: ChatGptTranslateDocumentType[] = [];
+  public packages!: ShopPackageDocumentType[];
+  public translatedRequests!: ChatGptTranslateDocumentType[];
   public isModalOpen: boolean = false;
   public isReachToMax: boolean = true;
 
@@ -32,7 +32,7 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   private _extras!: ShopExtraDocumentType[];
   private _services!: ShopServiceDocumentType[];
   private _operatingWorkHour: ShopWorkHoursType | null = null;
-  private _loaded = false;
+
   public progressBar$: Observable<ShopLimitedProgpressBarType> =
     this._shopPackage.progressBar$.pipe(takeUntil(this._onDestroy$));
 
@@ -49,7 +49,6 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
     this.servicesListener();
     this.extrasListener();
     this.operatingHoursListener();
-    this._loaded = true;
   }
 
   ngOnDestroy() {
@@ -67,6 +66,24 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
     this._shopPackage.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(requests => {
       this.translatedRequests = requests;
     });
+    this._shopPackage.translatedRequest$
+      .pipe(pairwise(), takeUntil(this._onDestroy$))
+      .subscribe(([before, after]) => {
+        const updatedStatusArray = after.reduce(
+          (acc: ChatGptTranslateDocumentType[], afterItem) => {
+            const beforeItem = before.find(b => b.id === afterItem.id);
+            if (beforeItem && beforeItem.status !== afterItem.status) {
+              acc.push(afterItem);
+            }
+            return acc;
+          },
+          []
+        );
+
+        if (updatedStatusArray.length > 0) {
+          console.log('Updated Status:', updatedStatusArray);
+        }
+      });
   }
 
   private isReachToMaxListener() {
@@ -101,7 +118,7 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
 
   public async handleEdit(doc: ShopPackageDocumentType) {
     const prop = this.setModalProp(doc);
-    if (!this.isModalOpen && prop !== null && this._loaded) {
+    if (!this.isModalOpen && prop !== null) {
       this.isModalOpen = true;
       const copied = cloneDeep(prop);
       const modal = await this._shopPackage.modal.presentEditPackage(copied);
@@ -111,7 +128,7 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   }
 
   public async handleEditLanguagePackage(prop: ShopLanguagePackageModalProp) {
-    if (!this.isModalOpen && this._loaded) {
+    if (!this.isModalOpen) {
       this.isModalOpen = true;
       const copied = cloneDeep(prop);
       const modal = await this._shopPackage.modal.presentEditLanguagePackage(copied);
@@ -121,7 +138,7 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   }
 
   public async handleCreate() {
-    if (this._operatingWorkHour !== null && this._loaded) {
+    if (this._operatingWorkHour !== null) {
       if (!this.isReachToMax) {
         const newPackage = await this._shopPackage.getNewPackage();
         const prop = this.setModalProp(newPackage);
@@ -162,5 +179,9 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
     }
 
     return null;
+  }
+
+  public loading() {
+    return this.packages === undefined && this.translatedRequests === undefined;
   }
 }

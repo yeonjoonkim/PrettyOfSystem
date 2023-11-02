@@ -1,0 +1,153 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  (onClickDismiss)="dismiss()"
+  (onClickCreate)="handleCreate()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()"
+  (onClickDelete)="handleDelete()">
+</form-header>
+
+<ion-content [scrollable]="true" *ngIf="current">
+  <flex-col>
+    <!--Service Selection-->
+    <flex-col-item>
+      <name-value-pair-single-dropdown-selection
+        title="label.title.service"
+        [isRequired]="true"
+        [selection]="current.serviceFilters"
+        [(selected)]="selectedServiceFilter"
+        [readOnly]="form.readOnly"
+        (selectedChange)="onChangeServiceFilter()"></name-value-pair-single-dropdown-selection>
+    </flex-col-item>
+
+    <ng-container *ngFor="let option of selectedServiceOptions">
+      <ng-container
+        *ngIf="
+          (!form.readOnly && (form.action === 'create' || form.action === 'edit')) ||
+          isSelectedOption(option)
+        ">
+        <flex-col-item>
+          <flex-row class="option">
+            <flex-row-item class="check-box">
+              <input
+                id="check-box-input"
+                kendoCheckBox
+                type="checkbox"
+                (click)="onServiceOptionChange(option)"
+                [ngModel]="isSelectedOption(option)"
+                [disabled]="form.readOnly" />
+            </flex-row-item>
+            <flex-row-item class="price-option">
+              <p>$</p>
+              <kendo-numerictextbox
+                [(value)]="option.price"
+                [decimals]="2"
+                [min]="0"
+                [spinners]="false"
+                [readonly]="true"></kendo-numerictextbox>
+            </flex-row-item>
+            <flex-row-item class="minute-option">
+              <kendo-numerictextbox
+                format="##"
+                [(value)]="option.min"
+                [decimals]="0"
+                [spinners]="false"
+                [min]="0"
+                [readonly]="true"></kendo-numerictextbox>
+              <p>{{ 'label.title.minute' | languageTransform | async }}</p>
+            </flex-row-item>
+          </flex-row>
+        </flex-col-item>
+      </ng-container>
+    </ng-container>
+
+    <!-- Number of Coupon & Expiry Month-->
+    <flex-row>
+      <flex-row-item>
+        <kendo-label [text]="'label.title.coupon' | languageTransform | async">
+          <kendo-numerictextbox
+            id="number-of-coupon"
+            [(ngModel)]="current.coupon.numOfCoupon"
+            [decimals]="0"
+            format="##"
+            [min]="1"
+            [max]="30"
+            [spinners]="true"
+            [autoCorrect]="true"
+            [rangeValidation]="true"
+            [readonly]="form.readOnly"
+            (ngModelChange)="onChangeNumOfCoupon()"></kendo-numerictextbox>
+        </kendo-label>
+      </flex-row-item>
+      <flex-row-item>
+        <kendo-label [text]="'label.title.expirymonth' | languageTransform | async">
+          <kendo-numerictextbox
+            id="expired-month"
+            [(ngModel)]="current.coupon.expiryMonth"
+            [decimals]="0"
+            format="##"
+            [min]="1"
+            [max]="36"
+            [rangeValidation]="true"
+            [disable]
+            [spinners]="true"
+            [autoCorrect]="true"
+            [readonly]="form.readOnly"
+            (ngModelChange)="onChangeExpiryMonth()"></kendo-numerictextbox>
+        </kendo-label>
+      </flex-row-item>
+    </flex-row>
+
+    <!-- Discount Rate -->
+    <flex-row>
+      <flex-row-item>
+        <name-value-pair-single-dropdown-selection
+          title="label.title.discounttype"
+          [selection]="discountTypes"
+          [(selected)]="selectedDiscount"
+          [readOnly]="true"></name-value-pair-single-dropdown-selection>
+      </flex-row-item>
+      <flex-row-item>
+        <percentage
+          title="label.title.discountpercent"
+          [(value)]="current.coupon.discount.value"
+          [readOnly]="form.readOnly"
+          [max]="0.5"
+          [autoCorrect]="true"
+          (valueChange)="onChangeDiscountRate()"></percentage>
+      </flex-row-item>
+    </flex-row>
+    <!-- Price -->
+    <flex-row>
+      <flex-row-item>
+        <kendo-label
+          text="{{ 'label.title.originalprice' | languageTransform | async }}"></kendo-label>
+        <div class="total-price-original">
+          <p>$</p>
+          <kendo-numerictextbox
+            [(value)]="current.coupon.originalPrice"
+            [decimals]="2"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </div>
+      </flex-row-item>
+      <flex-row-item>
+        <kendo-label
+          text="{{ 'label.title.discountedprice' | languageTransform | async }}"></kendo-label>
+        <div class="total-price-discounted">
+          <p>$</p>
+          <kendo-numerictextbox
+            [(value)]="current.coupon.discountPrice"
+            [decimals]="2"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </div>
+      </flex-row-item>
+    </flex-row>
+  </flex-col>
+</ion-content>

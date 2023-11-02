@@ -9,6 +9,7 @@ import { LanguageSelectionType } from 'src/app/interface';
   providedIn: 'root',
 })
 export class LoadingService {
+  private loading!: HTMLIonLoadingElement;
   public message: string = '';
 
   constructor(
@@ -41,6 +42,27 @@ export class LoadingService {
     if (loading !== undefined) {
       await this._loadingCtrl.dismiss();
     }
+  }
+
+  public async start(key: string) {
+    this.message = await this.transform(key);
+    let loading = await this._loadingCtrl.create({
+      spinner: 'dots',
+      message: this.message,
+      cssClass: 'logo-loading',
+      translucent: false,
+    });
+    this.loading = loading;
+    await this.loading.present();
+  }
+
+  public async changeMessage(key: string) {
+    const msg = await this.transform(key);
+    this.loading.message = msg;
+  }
+
+  public async end() {
+    await this.loading.dismiss();
   }
 
   private async transform(key: string) {

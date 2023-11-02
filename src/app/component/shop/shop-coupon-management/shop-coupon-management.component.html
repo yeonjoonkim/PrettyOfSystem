@@ -1,0 +1,16 @@
+<flex-col id="shop-coupon">
+  <flex-col-item id="shop-coupon-grid" *ngIf="!loading()">
+    <shop-limited-progressbar [progressbar]="progressBar$"></shop-limited-progressbar>
+    <shop-coupon-grid
+      [coupons]="coupons"
+      [isReachToMax]="isReachToMax"
+      [isAuthorisedRole]="isAuthorisedRole"
+      [isModalOpen]="isModalOpen"
+      (onCreate)="handleCreate()"
+      (onEdit)="handleEdit($event)"></shop-coupon-grid>
+  </flex-col-item>
+
+  <div class="loading-container" *ngIf="loading()">
+    <kendo-loader size="large"></kendo-loader>
+  </div>
+</flex-col>

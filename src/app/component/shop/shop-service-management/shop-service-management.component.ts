@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, pairwise, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -167,6 +167,24 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
     this._shopService.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(requests => {
       this.translatedRequests = requests;
     });
+    this._shopService.translatedRequest$
+      .pipe(pairwise(), takeUntil(this._onDestroy$))
+      .subscribe(([before, after]) => {
+        const updatedStatusArray = after.reduce(
+          (acc: ChatGptTranslateDocumentType[], afterItem) => {
+            const beforeItem = before.find(b => b.id === afterItem.id);
+            if (beforeItem && beforeItem.status !== afterItem.status) {
+              acc.push(afterItem);
+            }
+            return acc;
+          },
+          []
+        );
+
+        if (updatedStatusArray.length > 0) {
+          console.log('Updated Status:', updatedStatusArray);
+        }
+      });
   }
 
   private activateShopEmployeeListener() {
@@ -180,5 +198,9 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   private async presentReachedToMaxError() {
     const msg = await this._global.language.transform('messageerror.description.outoflimitservice');
     await this._global.toast.presentError(msg);
+  }
+
+  public loading() {
+    return this.services === undefined && this.translatedRequests === undefined;
   }
 }

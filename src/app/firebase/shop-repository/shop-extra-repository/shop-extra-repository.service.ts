@@ -5,6 +5,7 @@ import { ShopExtraDocumentType } from 'src/app/interface';
 import { ShopExtra } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
 import * as Constant from 'src/app/constant/constant';
+import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ import * as Constant from 'src/app/constant/constant';
 export class ShopExtraRepositoryService {
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
+    private _toaster: FirebaseToasterService,
+    private _textTransform: TextTransformService
   ) {}
 
   public extraValueChangeListener(shopId: string) {
@@ -23,6 +25,7 @@ export class ShopExtraRepositoryService {
   }
 
   public async addExtra(doc: ShopExtraDocumentType) {
+    doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     try {
       this._afs.collection<ShopExtraDocumentType>(ShopExtra(doc.shopId)).doc(doc.id).set(doc);
       await this._toaster.addSuccess();
@@ -35,6 +38,7 @@ export class ShopExtraRepositoryService {
   }
 
   public async updateExtra(doc: ShopExtraDocumentType) {
+    doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     try {
       this._afs.collection<ShopExtraDocumentType>(ShopExtra(doc.shopId)).doc(doc.id).update(doc);
       await this._toaster.updateSuccess();

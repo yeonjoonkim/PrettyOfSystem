@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
-import { Observable, Subject, of, takeUntil } from 'rxjs';
+import { Observable, Subject, of, pairwise, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   PlanConfigurationType,
@@ -19,8 +19,8 @@ import { ShopExtraManagementService } from 'src/app/service/shop/shop-extra-mana
 })
 export class ShopExtraManagementComponent implements OnInit, OnDestroy {
   private _onDestroy$: Subject<void> = new Subject<void>();
-  public extra: ShopExtraDocumentType[] = [];
-  public translatedRequest: ChatGptTranslateDocumentType[] = [];
+  public extra!: ShopExtraDocumentType[];
+  public translatedRequest!: ChatGptTranslateDocumentType[];
   public country!: ShopCountryType;
   public isReachToMax: boolean = true;
   public progressBar$: Observable<ShopLimitedProgpressBarType> =
@@ -76,6 +76,24 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
     this._extraService.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
       this.translatedRequest = request;
     });
+    this._extraService.translatedRequest$
+      .pipe(pairwise(), takeUntil(this._onDestroy$))
+      .subscribe(([before, after]) => {
+        const updatedStatusArray = after.reduce(
+          (acc: ChatGptTranslateDocumentType[], afterItem) => {
+            const beforeItem = before.find(b => b.id === afterItem.id);
+            if (beforeItem && beforeItem.status !== afterItem.status) {
+              acc.push(afterItem);
+            }
+            return acc;
+          },
+          []
+        );
+
+        if (updatedStatusArray.length > 0) {
+          console.log('Updated Status:', updatedStatusArray);
+        }
+      });
   }
 
   public async handleCreate() {
@@ -118,5 +136,9 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
     if (close) {
       this._isModalOpen = false;
     }
+  }
+
+  public loading() {
+    return this.extra === undefined && this.translatedRequest === undefined;
   }
 }

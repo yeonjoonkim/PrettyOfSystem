@@ -10,13 +10,15 @@ import {
 import * as Constant from '../../../constant/constant';
 import { ShopPackage } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
+import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 @Injectable({
   providedIn: 'root',
 })
 export class ShopPackageRepositoryService {
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
+    private _toaster: FirebaseToasterService,
+    private _textTransform: TextTransformService
   ) {}
 
   public packageValueChangeListener(shopId: string) {
@@ -35,6 +37,7 @@ export class ShopPackageRepositoryService {
   }
 
   public async addPackage(doc: ShopPackageDocumentType) {
+    doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     try {
       this._afs.collection<ShopPackageDocumentType>(ShopPackage(doc.shopId)).doc(doc.id).set(doc);
       await this._toaster.addSuccess();
@@ -47,6 +50,7 @@ export class ShopPackageRepositoryService {
   }
 
   public async updatePackage(doc: ShopPackageDocumentType) {
+    doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     try {
       this._afs
         .collection<ShopPackageDocumentType>(ShopPackage(doc.shopId))
@@ -73,7 +77,7 @@ export class ShopPackageRepositoryService {
     }
   }
 
-  public defaultPackageDocument(workHours: ShopWorkHoursType, empName: string, shopId: string) {
+  public defaultPackageDocument(empName: string, shopId: string) {
     let result: ShopPackageDocumentType = {
       id: this._afs.createId(),
       shopId: shopId,
@@ -86,6 +90,7 @@ export class ShopPackageRepositoryService {
       discountPrice: 0,
       discountedAmount: 0,
       totalMin: 0,
+      isInsuranceCover: false,
       discount: {
         type: Constant.PackageDiscountType.Percent,
         value: 0,

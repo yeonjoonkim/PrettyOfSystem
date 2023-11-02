@@ -30,6 +30,16 @@
         <flex-row-item>
           <flex-col id="check-box-container">
             <div id="pregnant">
+              <kendo-label text="{{ 'label.title.insurance' | languageTransform | async }}">
+                <input
+                  kendoCheckBox
+                  type="checkbox"
+                  [disabled]="form.readOnly"
+                  [(ngModel)]="current.package.isInsuranceCover"
+                  (ngModelChange)="handleEnabledSaveBtn()" />
+              </kendo-label>
+            </div>
+            <div id="pregnant">
               <kendo-label text="{{ 'label.title.pregnant' | languageTransform | async }}">
                 <input
                   kendoCheckBox

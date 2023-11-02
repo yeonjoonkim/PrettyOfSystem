@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GlobalService } from 'src/app/service/global/global.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-shop-employee-management',
@@ -7,9 +6,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
   styleUrls: ['./shop-employee-management.page.scss'],
 })
 export class ShopEmployeeManagementPage implements OnInit {
-  constructor(private _global: GlobalService) {}
+  constructor() {}
 
-  ngOnInit() {
-    this._global.loading.init();
-  }
+  ngOnInit() {}
 }

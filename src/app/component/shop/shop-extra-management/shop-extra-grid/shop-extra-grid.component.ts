@@ -20,7 +20,7 @@ export class ShopExtraGridComponent implements OnInit {
   @Output() onCreate = new EventEmitter<boolean>();
 
   @Input() extras: ShopExtraDocumentType[] = [];
-  @Input() translatedRequests: ChatGptTranslateDocumentType[] = [];
+  @Input() translatedRequests!: ChatGptTranslateDocumentType[];
   @Input() country!: ShopCountryType;
   @Input() isReachToMax: boolean = true;
 

@@ -5,13 +5,15 @@ import { ShopService } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import * as Constant from 'src/app/constant/constant';
+import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 @Injectable({
   providedIn: 'root',
 })
 export class ShopServiceRepositoryService {
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
+    private _toaster: FirebaseToasterService,
+    private _textTransform: TextTransformService
   ) {}
 
   public serviceValueChangeListener(shopId: string) {
@@ -28,6 +30,8 @@ export class ShopServiceRepositoryService {
   }
 
   public async addService(doc: ShopServiceDocumentType) {
+    doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
+    doc.descriptionProp = this._textTransform.preCleansingTranslateProp(doc.descriptionProp);
     try {
       this._afs.collection<ShopServiceDocumentType>(ShopService(doc.shopId)).doc(doc.id).set(doc);
       await this._toaster.addSuccess();
@@ -40,6 +44,8 @@ export class ShopServiceRepositoryService {
   }
 
   public async updateService(doc: ShopServiceDocumentType) {
+    doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
+    doc.descriptionProp = this._textTransform.preCleansingTranslateProp(doc.descriptionProp);
     try {
       this._afs
         .collection<ShopServiceDocumentType>(ShopService(doc.shopId))
