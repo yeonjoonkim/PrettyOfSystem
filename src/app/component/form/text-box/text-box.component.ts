@@ -20,6 +20,9 @@ export class TextBoxComponent implements OnInit {
   public hasValue!: boolean;
   public valueLengthCount: number = 0;
   public entered: boolean = false;
+  public isOverMin: boolean = false;
+  public isOverMax: boolean = false;
+
   @Output() valueChange = new EventEmitter<string>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() title!: string;
@@ -70,6 +73,8 @@ export class TextBoxComponent implements OnInit {
     this.value = this.validatedValue;
     this.valueLengthCount = this.value.length;
     this.counter = `${this.valueLengthCount}/${this.max}`;
+    this.isOverMax = this.valueLengthCount < this.max;
+    this.isOverMin = this.valueLengthCount < this.min;
     this.validate = this.hasValue;
     this.entered = true;
   }

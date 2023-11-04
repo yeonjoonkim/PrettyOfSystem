@@ -8,3 +8,9 @@
   display: flex;
   justify-content: flex-end;
 }
+
+@media only screen and (max-width: 450px) {
+  #login-gender-container {
+    flex-direction: column;
+  }
+}

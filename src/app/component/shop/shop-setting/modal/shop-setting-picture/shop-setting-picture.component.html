@@ -1,0 +1,11 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  [isDeleteRequired]="false"
+  (onClickDismiss)="dismiss()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()">
+</form-header>
+<ion-content [scrollable]="true" *ngIf="setting"></ion-content>

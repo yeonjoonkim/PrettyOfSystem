@@ -122,6 +122,7 @@
     "ng-packagr": "^16.2.3",
     "ng2-search-filter": "^0.5.1",
     "ngx-bootstrap": "^11.0.2",
+    "ngx-image-cropper": "^7.1.1",
     "ngx-intl-tel-input": "^3.2.0",
     "ngx-intl-tel-input-gg": "^1.0.7",
     "ngx-localstorage": "^5.0.0",

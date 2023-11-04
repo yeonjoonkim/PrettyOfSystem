@@ -1,6 +1,8 @@
 <flex-col id="work-hours-container">
   <!--Title-->
-  <legend>{{ 'label.title.operatinghours' | languageTransform | async }}</legend>
+  <legend *ngIf="requiresTitle">
+    {{ 'label.title.operatinghours' | languageTransform | async }}
+  </legend>
   <flex-row-item
     id="time-container"
     *ngIf="!readOnly && (action === 'create' || action === 'edit')">

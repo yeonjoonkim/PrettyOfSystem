@@ -6,8 +6,8 @@ import { StorageService } from 'src/app/service/global/storage/storage.service';
 import { UserService } from 'src/app/service/user/user.service';
 import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { NameValuePairType, UserAssociatedShopType } from 'src/app/interface';
+import { Subject, takeUntil } from 'rxjs';
+import { NameValuePairType } from 'src/app/interface';
 import { AgreementModalService } from 'src/app/service/global/agreement-modal/agreement-modal.service';
 
 @Component({
@@ -26,7 +26,6 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   constructor(
     public user: UserService,
-    private _language: LanguageService,
     private _storage: StorageService,
     private _location: Location,
     private _menuCtrl: MenuController,
@@ -93,22 +92,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   private async subscribeUserMenu() {
     this.user.menu$.pipe(takeUntil(this._onDestroy$)).subscribe(async menu => {
       this.menus = menu;
-      await this.validateCurrentPath().then(async () => {
-        await this.setDefaultTitleHeading();
-      });
+      await this.setDefaultTitleHeading();
     });
-  }
-
-  private async validateCurrentPath() {
-    const currentUrl = this._location.path();
-    const urls = this.menus.reduce<string[]>((acc, m) => {
-      return acc.concat(m.content.map(s => s.url));
-    }, []);
-    const isInURL = urls.includes(currentUrl);
-
-    if (!isInURL && !currentUrl.includes('login')) {
-      this._router.navigateByUrl('/booking');
-    }
   }
 
   private async setDefaultTitleHeading() {

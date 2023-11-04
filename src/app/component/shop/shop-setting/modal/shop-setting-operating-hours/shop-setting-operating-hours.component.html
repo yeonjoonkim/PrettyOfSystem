@@ -1,0 +1,25 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  [isDeleteRequired]="false"
+  (onClickDismiss)="dismiss()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()">
+</form-header>
+<ion-content [scrollable]="true" *ngIf="config">
+  <flex-col id="container">
+    <flex-col-item>
+      <operating-hours
+        [intervalMin]="config.setting.calender.intervalMin"
+        [(workHours)]="config.operatingHours"
+        [readOnly]="form.readOnly"
+        [action]="form.action"
+        [timezone]="config.timezone"
+        [requiresTitle]="false"
+        [(validate)]="validator.workHours"
+        (workHoursChange)="handleEnabledSaveBtn()"></operating-hours>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

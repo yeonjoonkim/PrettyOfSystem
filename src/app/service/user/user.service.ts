@@ -51,18 +51,15 @@ export class UserService {
   public async init() {
     const language = await this._languageStorage.getCurrentLanguage();
     let userLanguage = '';
-
-    const subscription = this.data$.pipe(take(1)).subscribe(async data => {
-      if (data !== null) {
-        const currentShop = data.associatedShops.find(s => s.shopId === data.currentShopId);
-        this.navigateByRole(currentShop?.role?.accessLevel);
-        userLanguage = data.setting.preferLanguage;
-        subscription.unsubscribe();
-        if (language !== userLanguage && userLanguage.length > 0) {
-          await this._global.language.onLanguageChange(userLanguage);
-        }
+    const data = await firstValueFrom(this.data$);
+    if (data !== null) {
+      const currentShop = data.associatedShops.find(s => s.shopId === data.currentShopId);
+      this.navigateByRole(currentShop?.role?.accessLevel);
+      userLanguage = data.setting.preferLanguage;
+      if (language !== userLanguage && userLanguage.length > 0) {
+        await this._global.language.onLanguageChange(userLanguage);
       }
-    });
+    }
   }
 
   private navigateByRole(accessLevel: RoleAccessLevelType | undefined) {
