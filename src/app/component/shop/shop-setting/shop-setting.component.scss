@@ -1,0 +1,29 @@
+#container {
+  display: flex;
+  margin: auto;
+}
+#options {
+  width: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+#option {
+  width: 90px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-self: center;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 520px) {
+  #options {
+    justify-content: center;
+  }
+}

@@ -23,8 +23,9 @@ export class ShopOpenHourComponent implements OnInit {
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() readOnly: boolean = false;
   @Input() timezone: Constant.TimeZoneType = Constant.TimeZone.AustraliaBrisbane;
-  @Input() intervalMin: number = Constant.ShopSetting.TimePicker.IntervalMin;
+  @Input() intervalMin: number = Constant.ShopSetting.Calender.IntervalMin;
   @Input() action: Constant.FormActionType = Constant.Default.FormAction.Create;
+  @Input() requiresTitle: boolean = true;
   @Input()
   get workHours(): ShopWorkHoursType {
     return this.inputWorkHours;

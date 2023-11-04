@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ZonedDate } from '@progress/kendo-date-math';
@@ -13,7 +23,7 @@ import { ZonedDate } from '@progress/kendo-date-math';
   templateUrl: './date-picker.component.html',
   styleUrls: ['./date-picker.component.scss'],
 })
-export class DatePickerComponent implements OnInit {
+export class DatePickerComponent implements OnInit, OnChanges {
   @Output() dateChange = new EventEmitter<Date>();
   @Input() title: string = '';
   @Input() dateFormatter: Constant.DateFormatType = Constant.Date.Format.Australia;
@@ -40,6 +50,19 @@ export class DatePickerComponent implements OnInit {
   }
 
   constructor(private _global: GlobalService) {}
+  ngOnChanges() {
+    this.miniumDate = this._global.date.transform.getMinumSelectionDate(
+      new Date(),
+      this.shopTimeZone,
+      this.restrictedFromToday,
+      this.displayPreviousDay
+    );
+    this.maxDate = this._global.date.transform.getMaxiumSelectionDate(
+      new Date(),
+      this.shopTimeZone,
+      this.displayNextDay
+    );
+  }
 
   ngOnInit() {
     this.miniumDate = this._global.date.transform.getMinumSelectionDate(

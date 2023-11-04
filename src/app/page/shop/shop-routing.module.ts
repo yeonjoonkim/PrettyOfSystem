@@ -21,6 +21,11 @@ const routes: Routes = [
         m => m.ShopServiceManagementPageModule
       ),
   },
+  {
+    path: 'setting',
+    loadChildren: () =>
+      import('./shop-setting/shop-setting.module').then(m => m.ShopSettingPageModule),
+  },
 ];
 
 @NgModule({

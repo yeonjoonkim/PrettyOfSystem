@@ -1,0 +1,86 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  [isDeleteRequired]="false"
+  (onClickDismiss)="dismiss()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()">
+</form-header>
+<ion-content [scrollable]="true" *ngIf="config">
+  <flex-col id="container">
+    <flex-col-item>
+      <shop-category #category [readOnly]="true" [(shopCategory)]="config.category">
+      </shop-category>
+    </flex-col-item>
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          #businessName
+          title="label.title.businessname"
+          [readOnly]="form.readOnly"
+          [(value)]="config.name"
+          [(validate)]="validator.name"
+          [isTitleFormat]="true"
+          [isRequired]="true"
+          (valueChange)="handleEnabledSaveBtn()"
+          [min]="2">
+        </text-box>
+      </flex-row-item>
+      <flex-row-item>
+        <text-box
+          #taxNumber
+          title="label.title.taxnumber"
+          [readOnly]="form.readOnly"
+          [(value)]="config.taxNumber"
+          [(validate)]="validator.taxNumber"
+          [isTitleFormat]="true"
+          [maxLength]="15"
+          [isRequired]="true"
+          (valueChange)="handleEnabledSaveBtn()"
+          [showCounter]="false">
+        </text-box>
+      </flex-row-item>
+    </flex-row>
+    <!--Phone Number and Email-->
+    <flex-row>
+      <flex-row-item>
+        <phone-number
+          mode="form"
+          [readOnly]="form.readOnly"
+          [(phone)]="config.phoneNumber"
+          (phoneChange)="handleEnabledSaveBtn()"
+          [(validate)]="validator.phone">
+        </phone-number>
+      </flex-row-item>
+      <flex-row-item>
+        <e-mail
+          #email
+          [(email)]="config.email"
+          [(validate)]="validator.email"
+          [readOnly]="form.readOnly"
+          (emailChange)="handleEnabledSaveBtn()"
+          [isRequired]="true">
+        </e-mail>
+      </flex-row-item>
+    </flex-row>
+    <address
+      [isRequired]="true"
+      [(address)]="config.address"
+      [(validate)]="validator.address"
+      [readOnly]="form.readOnly"
+      (addressChange)="handleEnabledSaveBtn()"
+      [isIncludeTitle]="false"
+      [excludeStreet]="false"></address>
+    <flex-col-item id="timezone">
+      <time-zone
+        #timezone
+        [(timeZone)]="config.timezone"
+        [(validate)]="validator.timezone"
+        (timeZoneChange)="handleEnabledSaveBtn()"
+        [readOnly]="true">
+      </time-zone>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

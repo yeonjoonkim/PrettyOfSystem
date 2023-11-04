@@ -21,7 +21,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
   @Output() timeChange = new EventEmitter<TimeItemType>();
   @Input() readOnly: boolean = false;
   @Input() timezone: Constant.TimeZoneType = Constant.TimeZone.EuropeRiga;
-  @Input() intervalMin: number = Constant.ShopSetting.TimePicker.IntervalMin;
+  @Input() intervalMin: number = Constant.ShopSetting.Calender.IntervalMin;
   @Input() title: string = '';
   @Input() openTime!: TimeItemType;
   @Input() closeTime!: TimeItemType;
@@ -44,6 +44,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     let timeChanges = changes['time'];
     this.handleChange(timeChanges);
+    this.handleIntervalChange();
   }
 
   async ngOnInit() {
@@ -57,18 +58,17 @@ export class TimePickerComponent implements OnInit, OnChanges {
       this.handReceivingEvent();
     }
   }
+
+  private handleIntervalChange() {
+    this.steps = this._global.date.getTimePickerIncrementalSteps(this.intervalMin);
+  }
   public onChangeDate() {
     this.time = this._global.date.getTimeItem(this.date);
   }
 
   private setDefault() {
-    this.setDefaultStep();
     this.setDefaultMinTimePicker();
     this.setDefaultMaxTimePicker();
-  }
-
-  private setDefaultStep() {
-    this.steps = this._global.date.getTimePickerIncrementalSteps(this.intervalMin);
   }
 
   private setDefaultMinTimePicker() {
@@ -88,6 +88,8 @@ export class TimePickerComponent implements OnInit, OnChanges {
   }
 
   private handReceivingEvent() {
+    this.inputTime =
+      this.inputTime !== undefined ? this.inputTime : this._global.date.getTimeItem(new Date());
     this.date.setHours(this.inputTime.hr);
     this.date.setMinutes(this.inputTime.min);
     this.date.setSeconds(0);

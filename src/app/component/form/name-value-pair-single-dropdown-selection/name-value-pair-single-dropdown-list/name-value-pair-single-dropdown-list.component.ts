@@ -74,7 +74,9 @@ export class NameValuePairSingleDropdownlistComponent implements OnInit {
           q.paramEnglish?.toLowerCase()?.includes(queryParam)
       )
       .sort((a, b) =>
-        this.orderByName ? a.paramTranslatedName.localeCompare(b.paramTranslatedName) : 0
+        this.orderByName
+          ? a.paramTranslatedName.localeCompare(b.paramTranslatedName)
+          : a.paramValue.localeCompare(b.paramValue)
       )
       .map(q => {
         return { name: q.paramName, value: q.paramValue };

@@ -38,6 +38,7 @@
 
   <!-- Total Min -->
   <kendo-grid-column
+    id="total-min"
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="totalMin"
@@ -49,6 +50,7 @@
 
   <!-- Services -->
   <kendo-grid-column
+    id="services"
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="services.length"
@@ -60,6 +62,7 @@
 
   <!-- Extra -->
   <kendo-grid-column
+    id="extras"
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="extras.length"
@@ -71,6 +74,7 @@
 
   <!-- Limited time -->
   <kendo-grid-column
+    id="limited-day"
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="package.limitedTime !== null"

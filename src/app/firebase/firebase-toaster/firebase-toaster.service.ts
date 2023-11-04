@@ -19,6 +19,7 @@ export class FirebaseToasterService {
       edit: this._success + 'edit',
       add: this._success + 'add',
       request: this._success + 'request',
+      upload: this._success + 'upload',
     },
     fail: {
       update: this._fail + 'update',
@@ -27,6 +28,7 @@ export class FirebaseToasterService {
       edit: this._fail + 'edit',
       add: this._fail + 'add',
       request: this._fail + 'request',
+      upload: this._fail + 'upload',
     },
   };
   private readonly _errorCodes: NameValuePairType[] = [
@@ -70,6 +72,11 @@ export class FirebaseToasterService {
     await this.presentSuccess(msg);
   }
 
+  public async uploadSuccess() {
+    const msg = await this.transform(this._msg.success.upload);
+    await this.presentSuccess(msg);
+  }
+
   // Fail
   public async updateFail(error: any) {
     const msg = await this.transform(this._msg.fail.update);
@@ -98,6 +105,11 @@ export class FirebaseToasterService {
 
   public async requestFail(error: any) {
     const msg = await this.transform(this._msg.fail.request);
+    await this.presentError(msg, error);
+  }
+
+  public async uploadFail(error: any) {
+    const msg = await this.transform(this._msg.fail.upload);
     await this.presentError(msg, error);
   }
 

@@ -124,3 +124,9 @@
     }
   }
 }
+
+@media only screen and (max-width: 450px) {
+  #discount-type-value-container {
+    flex-direction: column;
+  }
+}

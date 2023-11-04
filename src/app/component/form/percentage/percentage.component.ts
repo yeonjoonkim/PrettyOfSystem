@@ -15,6 +15,7 @@ export class PercentageComponent implements OnInit {
   @Input() min: number = 0;
   @Input() max: number = 1;
   @Input() step: number = 0.05;
+  @Input() autoCorrect: boolean = true;
 
   @Input()
   get value() {

@@ -5,15 +5,13 @@ import * as Constant from '../../../constant/constant';
 import { ShopCoupon } from 'src/app/constant/firebase-path';
 import { ShopCouponDocumentType } from 'src/app/interface';
 import { map } from 'rxjs';
-import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 @Injectable({
   providedIn: 'root',
 })
 export class ShopCouponRepositoryService {
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService,
-    private _textTransform: TextTransformService
+    private _toaster: FirebaseToasterService
   ) {}
 
   public valueChangeListener(shopId: string) {

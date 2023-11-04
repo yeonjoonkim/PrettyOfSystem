@@ -18,6 +18,7 @@
 
   <!-- Original Price -->
   <kendo-grid-column
+    id="original-price"
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="originalPrice"
@@ -49,6 +50,7 @@
 
   <!-- expired Month -->
   <kendo-grid-column
+    id="expiry-month"
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="expiryMonth"
@@ -58,8 +60,9 @@
     </ng-template>
   </kendo-grid-column>
 
-  <!-- Discount Price -->
+  <!-- Service Price -->
   <kendo-grid-column
+    id="service-price"
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="option.price"
@@ -69,8 +72,9 @@
     </ng-template>
   </kendo-grid-column>
 
-  <!-- Discount Price -->
+  <!-- Service Min -->
   <kendo-grid-column
+    id="service-min"
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="option.min"

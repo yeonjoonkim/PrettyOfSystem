@@ -286,12 +286,22 @@ export class ShopConfigurationService {
 
   private defaultShopSetting() {
     const result: IShopSetting = {
-      timePicker: {
-        intervalMin: Constant.ShopSetting.TimePicker.IntervalMin,
+      calender: {
+        intervalMin: Constant.ShopSetting.Calender.IntervalMin,
+        nextAvailableBookingMin: Constant.ShopSetting.Calender.NextAvailableBookingMin,
+        maximumAvailableFutureBookingDays:
+          Constant.ShopSetting.Calender.MaximumAvailableFutureBookingDays,
       },
-      general: {
-        taxRate: Constant.ShopSetting.General.TaxRate,
-        surchargeRate: Constant.ShopSetting.General.SurchargeRate,
+      financial: {
+        taxRate: Constant.ShopSetting.Financial.TaxRate,
+        cardSurchargeRate: Constant.ShopSetting.Financial.CardSurchargeRate,
+        cashDiscountRate: Constant.ShopSetting.Financial.CashDiscountRate,
+      },
+      picture: {
+        logoUrl: Constant.ShopSetting.Picture.LogoUrl,
+        shopImage1: Constant.ShopSetting.Picture.Placeholder,
+        shopImage2: Constant.ShopSetting.Picture.Placeholder,
+        shopImage3: Constant.ShopSetting.Picture.Placeholder,
       },
     };
     return result;

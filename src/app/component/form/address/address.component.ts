@@ -36,6 +36,7 @@ export class AddressComponent implements OnInit, OnChanges {
   @Input() defaultSuburb: string = 'SUNNYBANK';
   @Input() isRequired: boolean = true;
   @Input() excludeStreet: boolean = false;
+  @Input() isIncludeTitle: boolean = true;
   @Input()
   get address() {
     return this.inputAddress;
@@ -69,7 +70,10 @@ export class AddressComponent implements OnInit, OnChanges {
     state: false,
   };
 
-  constructor(private _postcode: PostcodeService, private _global: GlobalService) {}
+  constructor(
+    private _postcode: PostcodeService,
+    private _global: GlobalService
+  ) {}
 
   async ngOnInit() {
     await this.setDefaultPlaceHolder();

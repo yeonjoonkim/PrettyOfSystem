@@ -1,0 +1,14 @@
+<div id="container">
+  <div id="options">
+    <ng-container *ngFor="let option of options">
+      <div id="option" (click)="handleClickOption(option)">
+        <div class="svg-icon-container">
+          <div class="svg-icon">
+            <img [src]="option.img" />
+          </div>
+        </div>
+        <p class="svg-icon-title">{{ option.name | languageTransform | async }}</p>
+      </div>
+    </ng-container>
+  </div>
+</div>

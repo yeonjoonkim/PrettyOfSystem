@@ -24,7 +24,9 @@
           deActiveIconBtn: !isActive(btn.name)
         }"
             (click)="buttonChange(btn)">
-            <div id="btn-img"><img [src]="btn.img" /></div>
+            <div class="svg-icon-container">
+              <div class="svg-icon"><img [src]="btn.img" /></div>
+            </div>
             <div id="btn-title">{{ btn.name | languageTransform | async }}</div>
           </div>
         </div>

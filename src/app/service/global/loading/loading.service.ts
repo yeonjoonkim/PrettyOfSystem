@@ -21,9 +21,10 @@ export class LoadingService {
 
   async show() {
     const loadingMsg = await this.transform('label.title.loading');
+    const loadingMessage = loadingMsg !== 'label.title.loading' ? loadingMsg : 'Loading';
     let loading = await this._loadingCtrl.create({
       spinner: 'dots',
-      message: loadingMsg,
+      message: loadingMessage,
       cssClass: 'logo-loading',
       translucent: false,
     });

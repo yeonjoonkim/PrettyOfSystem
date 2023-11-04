@@ -1,5 +1,5 @@
 <!--Title-->
-<flex-row>
+<flex-row *ngIf="isIncludeTitle">
   <flex-row-item>
     <legend>{{ 'label.title.address' | languageTransform | async }}</legend>
   </flex-row-item>

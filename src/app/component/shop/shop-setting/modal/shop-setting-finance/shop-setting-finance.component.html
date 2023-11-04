@@ -1,0 +1,41 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  [isDeleteRequired]="false"
+  (onClickDismiss)="dismiss()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()">
+</form-header>
+<ion-content [scrollable]="true" *ngIf="setting">
+  <flex-col id="container">
+    <flex-col-item>
+      <percentage
+        title="label.title.tax"
+        [(value)]="setting.financial.taxRate"
+        [readOnly]="form.readOnly"
+        [max]="0.5"
+        [autoCorrect]="true"
+        (valueChange)="onChangeTaxRate()"></percentage>
+    </flex-col-item>
+    <flex-col-item>
+      <percentage
+        title="label.title.cardsurcharge"
+        [(value)]="setting.financial.cardSurchargeRate"
+        [readOnly]="form.readOnly"
+        [max]="0.5"
+        [autoCorrect]="true"
+        (onChangeValue)="onChangeCardSurcharge()"></percentage>
+    </flex-col-item>
+    <flex-col-item>
+      <percentage
+        title="label.title.cashdiscount"
+        [(value)]="setting.financial.cashDiscountRate"
+        [readOnly]="form.readOnly"
+        [max]="0.5"
+        [autoCorrect]="true"
+        (onChangeValue)="onChangeCashDiscount()"></percentage>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

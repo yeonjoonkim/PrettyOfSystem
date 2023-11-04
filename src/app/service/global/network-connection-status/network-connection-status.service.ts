@@ -56,7 +56,6 @@ export class NetworkConnectionStatusService {
   private async routeToNoInternetAccess() {
     let currentUrl = window.location.pathname;
     let previousUrl: string | null = await this._storage.get('previousUrl');
-
     if (previousUrl === null) {
       await this._storage.store('previousUrl', currentUrl);
     }
@@ -66,7 +65,9 @@ export class NetworkConnectionStatusService {
 
   private async routeToPreviousAccess() {
     let previousUrl: string = await this._storage.get('previousUrl');
+
     if (typeof previousUrl === 'string') {
+      await this._storage.removeItem('previousUrl');
       await this._router.navigateByUrl(previousUrl);
     }
   }

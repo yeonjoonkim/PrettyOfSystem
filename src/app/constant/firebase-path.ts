@@ -60,3 +60,14 @@ export const ShopService = (shopId: string): string => `shop/${shopId}/service/`
 export const ShopExtra = (shopId: string): string => `shop/${shopId}/extra/`;
 export const ShopPackage = (shopId: string): string => `shop/${shopId}/package/`;
 export const ShopCoupon = (shopId: string): string => `shop/${shopId}/coupon/`;
+export const ShopLogo = (shopId: string, file: File): string =>
+  `logo/${shopId}/${new Date().getTime()}/${file.name}`;
+
+export const ShopImage1 = (shopId: string, file: File): string =>
+  `shopimage1/${shopId}/${new Date().getTime()}/${file.name}`;
+
+export const ShopImage2 = (shopId: string, file: File): string =>
+  `shopimage2/${shopId}/${new Date().getTime()}/${file.name}`;
+
+export const ShopImage3 = (shopId: string, file: File): string =>
+  `shopimage3/${shopId}/${new Date().getTime()}/${file.name}`;

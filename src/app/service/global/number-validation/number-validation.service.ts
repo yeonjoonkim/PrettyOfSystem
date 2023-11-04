@@ -10,6 +10,10 @@ export class NumberValidationService {
     return number === undefined || number === null || isNaN(number) ? 0 : number;
   }
 
+  public hasValue(number: number): boolean {
+    return number > 0;
+  }
+
   public roundToDecimalPlaces(number: number, decimal: number) {
     number = this.nullReplaceToZero(number);
     let factor = Math.pow(10, decimal);
