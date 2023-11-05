@@ -17,7 +17,7 @@ export type ShopCalenderType = {
 };
 
 export type ShopPictureType = {
-  logoUrl: string;
+  logo: string;
   shopImage1: string;
   shopImage2: string;
   shopImage3: string;

@@ -17,6 +17,7 @@ import { PasswordConfirmationModule } from './password-confirmation/password-con
 import { AppTermsAndConditionModule } from '../agreement/app/app-terms-and-conditions/app-terms-and-condition.module';
 import { AppPrivacyPolicyModule } from '../agreement/app/app-privacy-policy/app-privacy-policy.module';
 import { TextAreaModule } from './text-area/text-area.module';
+import { ImageCropModule } from './image-crop/image-crop.module';
 @NgModule({
   declarations: [],
   imports: [],
@@ -39,6 +40,7 @@ import { TextAreaModule } from './text-area/text-area.module';
     AppTermsAndConditionModule,
     AppPrivacyPolicyModule,
     TextAreaModule,
+    ImageCropModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

@@ -92,6 +92,7 @@ const insertIntoSystemAdminAssociatedShops = async function (shop: I.ShopConfigu
           active: true,
           displayInSystem: false,
           role: systemAdminRole,
+          nextWeekRoster: shop.operatingHours,
         };
         admin.associatedShops.push(associated);
         admin.associatedShopIds.push(associated.shopId);
@@ -117,6 +118,7 @@ const resetShopUserRoster = async function (shop: I.ShopConfigurationType) {
       if (associated !== undefined && associated !== null) {
         user.associatedShops = user.associatedShops.filter(s => s.shopId !== shop.id);
         associated.roster = shop.operatingHours;
+        associated.nextWeekRoster = shop.operatingHours;
         user.associatedShops.push(associated);
         await Repository.User.updateSelectedUser(user);
       }

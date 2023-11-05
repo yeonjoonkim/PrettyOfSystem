@@ -6,16 +6,20 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
+import { TextBoxComponent } from '@progress/kendo-angular-inputs';
 
 @Component({
   selector: 'text-box',
   templateUrl: './text-box.component.html',
   styleUrls: ['./text-box.component.scss'],
 })
-export class TextBoxComponent implements OnInit {
+export class InputTextBoxComponent implements OnInit {
+  @ViewChild('textBox')
+  public textBox!: TextBoxComponent;
   public validatedValue!: string;
   public hasValue!: boolean;
   public valueLengthCount: number = 0;
@@ -37,6 +41,7 @@ export class TextBoxComponent implements OnInit {
   @Input() isRequired: boolean = false;
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input() placeholder: string = '';
+  @Input() type: 'number' | 'text' = 'text';
   @Input()
   get value() {
     return this.validatedValue;
@@ -63,6 +68,11 @@ export class TextBoxComponent implements OnInit {
     this.validate = this.validateInput();
     this.valueLengthCount = this.value.length;
     await this.setDefaultPlaceHolder();
+
+    const element = this.textBox.input.nativeElement;
+    if (element) {
+      element.type = this.type;
+    }
   }
 
   public onChangeValue() {

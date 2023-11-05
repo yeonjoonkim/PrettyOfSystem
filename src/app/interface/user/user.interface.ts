@@ -58,6 +58,7 @@ export interface UserAssociatedShopType {
   active: boolean;
   displayInSystem: boolean;
   roster: ShopWorkHoursType;
+  nextWeekRoster: ShopWorkHoursType;
 }
 
 export type UserManagementCriteria = {

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { InputTextBoxComponent } from './text-box.component';
+import { ImageCropComponent } from './image-crop.component';
 
-describe('TextBoxComponent', () => {
-  let component: InputTextBoxComponent;
-  let fixture: ComponentFixture<InputTextBoxComponent>;
+describe('ImageCropComponent', () => {
+  let component: ImageCropComponent;
+  let fixture: ComponentFixture<ImageCropComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [InputTextBoxComponent],
-      imports: [IonicModule.forRoot()],
+      declarations: [ ImageCropComponent ],
+      imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InputTextBoxComponent);
+    fixture = TestBed.createComponent(ImageCropComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

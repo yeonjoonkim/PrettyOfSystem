@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { ShopImage1, ShopImage2, ShopLogo } from 'src/app/constant/firebase-path';
-import { finalize, map, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

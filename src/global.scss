@@ -162,6 +162,10 @@ ion-loading {
   box-shadow: none;
 }
 
+ion-menu-button {
+  --color: white;
+}
+
 ion-popover {
   --backdrop-opacity: 0.8;
   --color: white;

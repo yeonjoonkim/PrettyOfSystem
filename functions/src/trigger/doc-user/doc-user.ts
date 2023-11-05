@@ -266,6 +266,7 @@ const transformToAssociatedShop = function (
       activeTo: null,
       active: true,
       displayInSystem: false,
+      nextWeekRoster: config.operatingHours,
     };
     return associatedShop;
   });
