@@ -298,7 +298,7 @@ export class ShopConfigurationService {
         cashDiscountRate: Constant.ShopSetting.Financial.CashDiscountRate,
       },
       picture: {
-        logoUrl: Constant.ShopSetting.Picture.LogoUrl,
+        logo: Constant.ShopSetting.Picture.Placeholder,
         shopImage1: Constant.ShopSetting.Picture.Placeholder,
         shopImage2: Constant.ShopSetting.Picture.Placeholder,
         shopImage3: Constant.ShopSetting.Picture.Placeholder,

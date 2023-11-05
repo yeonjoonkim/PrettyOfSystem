@@ -57,15 +57,11 @@ const maximumAvailableFutureBookingDays = function (min: number | undefined | nu
 // Picture
 const picture = function (picture: I.ShopPictureType | undefined) {
   return {
-    logoUrl: logoUrl(picture?.logoUrl),
+    logo: placeholder(picture?.logo),
     shopImage1: placeholder(picture?.shopImage1),
     shopImage2: placeholder(picture?.shopImage2),
     shopImage3: placeholder(picture?.shopImage3),
   };
-};
-
-const logoUrl = function (url: string | undefined | null) {
-  return typeof url === 'string' ? url : Constant.ShopSetting.Picture.LogoUrl;
 };
 
 const placeholder = function (url: string | undefined | null) {

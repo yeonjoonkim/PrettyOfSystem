@@ -38,6 +38,7 @@
               },
               "src/theme/variables.scss",
               "node_modules/intl-tel-input/build/css/intlTelInput.css",
+              "node_modules/ngx-photo-editor/photo-editor.css",
               "src/global.scss"
             ],
             "scripts": []

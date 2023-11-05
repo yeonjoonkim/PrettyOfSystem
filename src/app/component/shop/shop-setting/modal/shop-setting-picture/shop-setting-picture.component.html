@@ -5,7 +5,32 @@
   [action]="form.action"
   [isDeleteRequired]="false"
   (onClickDismiss)="dismiss()"
-  (onClickEdit)="handleEdit()"
-  (onClickSave)="handleSave()">
+  (onClickSave)="handleSave()"
+  (onClickEdit)="handleEdit()">
 </form-header>
-<ion-content [scrollable]="true" *ngIf="setting"></ion-content>
+<ion-content [scrollable]="true" *ngIf="setting" id="container">
+  <image-crop
+    title="label.title.logo"
+    type="logo"
+    [readOnly]="form.readOnly"
+    [(currentImage)]="setting.picture.logo"
+    (fileChange)="onChangeLogoImage($event)"></image-crop>
+  <image-crop
+    title="label.title.picture"
+    type="picture"
+    [readOnly]="form.readOnly"
+    [(currentImage)]="setting.picture.shopImage1"
+    (fileChange)="onChangeImage1($event)"></image-crop>
+  <image-crop
+    title="label.title.picture"
+    type="picture"
+    [readOnly]="form.readOnly"
+    [(currentImage)]="setting.picture.shopImage2"
+    (fileChange)="onChangeImage2($event)"></image-crop>
+  <image-crop
+    title="label.title.picture"
+    type="picture"
+    [readOnly]="form.readOnly"
+    [(currentImage)]="setting.picture.shopImage3"
+    (fileChange)="onChangeImage3($event)"></image-crop>
+</ion-content>

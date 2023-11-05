@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, ModalController, PopoverController } from '@ionic/angular';
+import {
+  LoadingController,
+  MenuController,
+  ModalController,
+  PopoverController,
+} from '@ionic/angular';
 
 @Component({
   selector: 'no-internet',
@@ -10,13 +15,15 @@ export class NoInternetPage implements OnInit {
   constructor(
     private _modalCtrl: ModalController,
     private _popoverCtrl: PopoverController,
-    private _loadingCtrl: LoadingController
+    private _loadingCtrl: LoadingController,
+    private _menuCtrl: MenuController
   ) {}
 
   async ngOnInit() {
     await this.dismissModal();
     await this.dismissPopover();
     await this.dismissLoading();
+    await this.dissmissMenu();
   }
 
   private async dismissModal() {
@@ -37,6 +44,13 @@ export class NoInternetPage implements OnInit {
     const loading = await this._loadingCtrl.getTop();
     if (loading) {
       await this._loadingCtrl.dismiss();
+    }
+  }
+
+  private async dissmissMenu() {
+    const menu = await this._menuCtrl.isOpen();
+    if (menu) {
+      await this._menuCtrl.close();
     }
   }
 }

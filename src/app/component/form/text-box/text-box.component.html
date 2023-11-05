@@ -5,6 +5,7 @@
     }}</kendo-formerror>
   </div>
   <kendo-textbox
+    #textBox
     [(ngModel)]="validatedValue"
     (ngModelChange)="onChangeValue()"
     [readonly]="readOnly"

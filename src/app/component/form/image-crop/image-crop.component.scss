@@ -1,0 +1,27 @@
+.logo {
+  width: 100px;
+  height: 100px;
+}
+
+.picture {
+  width: 300px;
+  height: 200px;
+}
+
+#title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0.5;
+}
+
+#change-button-container {
+  width: 50px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#change-button {
+  height: 28px;
+  width: 28px;
+}

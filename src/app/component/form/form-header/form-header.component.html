@@ -34,7 +34,8 @@
           status === 'creating' ||
           status === 'saving' ||
           status === 'deleting') &&
-        !readOnly
+        !readOnly &&
+        isSaveRequired
       "
       [disabled]="!enabledSavebutton"
       icon="save"
