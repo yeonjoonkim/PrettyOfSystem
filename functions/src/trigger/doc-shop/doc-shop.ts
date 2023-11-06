@@ -9,6 +9,7 @@ import * as I from '../../interface';
 import { logger } from 'firebase-functions/v2';
 import * as Service from '../../service/index';
 import { firestore } from 'firebase-admin';
+import * as admin from 'firebase-admin';
 
 export const onShopCreate = onDocumentCreated(
   Db.Context.ShopConfiguration + '/{shopId}',
@@ -72,6 +73,10 @@ export const onShopDelete = onDocumentDeleted(
       await deleteCollection(Db.ShopExtra(shop.id));
       await deleteCollection(Db.ShopPackage(shop.id));
       await deleteCollection(Db.ShopCoupon(shop.id));
+      await deleteStorage(Db.Storage.Shop.Logo(shop.id));
+      await deleteStorage(Db.Storage.Shop.Image1(shop.id));
+      await deleteStorage(Db.Storage.Shop.Image2(shop.id));
+      await deleteStorage(Db.Storage.Shop.Image3(shop.id));
     }
   }
 );
@@ -138,6 +143,24 @@ async function deleteCollection(collectionPath: string) {
   for (let doc of docs) {
     await doc.delete();
   }
+}
+
+async function deleteStorage(storagePath: string) {
+  const bucket = admin.storage().bucket();
+
+  // Get a list of files under the specified storagePath
+  const [files] = await bucket.getFiles({ prefix: storagePath });
+  logger.info(files);
+  // Create an array of promises to delete each file
+  const deletePromises = files.map(file =>
+    file.delete().catch(err => {
+      logger.error(`Failed to delete file ${file.name}:`, err);
+      return null;
+    })
+  );
+
+  // Execute all of the file deletion promises
+  await Promise.all(deletePromises);
 }
 
 const sleep = async (duration: number) => {

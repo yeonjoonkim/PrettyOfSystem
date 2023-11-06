@@ -164,6 +164,9 @@ export const ShopSetting = {
     TaxRate: 0.1,
     CardSurchargeRate: 0.018,
     CashDiscountRate: 0.03,
+    OpeningBalance: 250,
+    OpeningHour: 0,
+    ClosingHour: 0,
   } as const,
   Calender: {
     IntervalMin: 15,

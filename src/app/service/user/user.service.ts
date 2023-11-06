@@ -8,6 +8,7 @@ import {
   RoleAccessLevelType,
   RoleConfigurationType,
   ShopConfigurationType,
+  UserClaimType,
 } from 'src/app/interface';
 import { Observable, combineLatest, firstValueFrom, map, of, switchMap } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -19,6 +20,8 @@ import { GlobalService } from '../global/global.service';
 import { UserModalService } from './user-modal/user-modal.service';
 import { SystemPlanRepositoryService } from 'src/app/firebase/system-repository/plan/system-plan-repository.service';
 import { SystemLanguageStorageService } from '../global/language/system-language-management/system-language-storage/system-language-storage.service';
+import { IdTokenResult } from 'firebase/auth';
+import { LoadingService } from '../global/loading/loading.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +38,7 @@ export class UserService {
   public currentRole$!: Observable<RoleConfigurationType | null>;
   public currentShopPlan$!: Observable<PlanConfigurationType | null>;
   public employeName$!: Observable<string>;
+  public claim$!: Observable<IdTokenResult | null>;
 
   constructor(
     public modal: UserModalService,
@@ -45,7 +49,8 @@ export class UserService {
     private _menuRepo: SystemMenuRepositoryService,
     private _planRepo: SystemPlanRepositoryService,
     private _global: GlobalService,
-    private _languageStorage: SystemLanguageStorageService
+    private _languageStorage: SystemLanguageStorageService,
+    private _loading: LoadingService
   ) {}
 
   public async init() {
@@ -107,8 +112,20 @@ export class UserService {
   public async updateCurrentShop(shopId: string, currentLanguage: string) {
     this.data$.pipe(take(1)).subscribe(async user => {
       if (user !== null) {
+        await this._loading.show();
         user.currentShopId = shopId;
         await this._userRepo.updateUser(user);
+        const sleep = async (duration: number) => {
+          return new Promise(resolve => setTimeout(resolve, duration));
+        };
+        sleep(1000);
+        const auth = await firstValueFrom(this._afAuth.authState);
+        await this._loading.dismiss();
+        if (auth !== null) {
+          const result = await auth.getIdTokenResult(true);
+          const claim = result.claims as UserClaimType;
+          this.navigateByRole(claim.role);
+        }
 
         if (currentLanguage !== user.setting.preferLanguage) {
           await this._global.language.onLanguageChange(user.setting.preferLanguage);
@@ -148,6 +165,7 @@ export class UserService {
     this.activeUserCurrentShopListener();
     this.activateCurrentRoleListener();
     this.activateEmployeeNameListener();
+    this.claim();
   }
 
   private activateUserListener() {
@@ -158,6 +176,14 @@ export class UserService {
         } else {
           return of(null);
         }
+      })
+    );
+  }
+
+  private claim() {
+    this.claim$ = this._afAuth.idTokenResult.pipe(
+      map(result => {
+        return result;
       })
     );
   }

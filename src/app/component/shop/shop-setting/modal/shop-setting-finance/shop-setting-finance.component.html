@@ -10,14 +10,43 @@
 </form-header>
 <ion-content [scrollable]="true" *ngIf="setting">
   <flex-col id="container">
+    <flex-row>
+      <flex-row-item>
+        <opening-closing-hour-picker
+          title="label.title.autoopeningtime"
+          [readOnly]="true"
+          [(hour)]="setting.financial.openingHour"></opening-closing-hour-picker>
+      </flex-row-item>
+      <flex-row-item>
+        <opening-closing-hour-picker
+          title="label.title.autoclosingtime"
+          [readOnly]="true"
+          [(hour)]="setting.financial.closingHour"></opening-closing-hour-picker>
+      </flex-row-item>
+    </flex-row>
+    <flex-col-item>
+      <kendo-label text="{{ 'label.title.openingbalance' | languageTransform | async }}">
+        <div id="opening-balance-section">
+          <p>$</p>
+          <kendo-numerictextbox
+            id="opening-balance-input"
+            [(value)]="setting.financial.openingBalance"
+            [decimals]="2"
+            [min]="0"
+            [spinners]="false"
+            (valueChange)="onChangeOpeningBalance()"
+            [readonly]="form.readOnly"></kendo-numerictextbox>
+        </div>
+      </kendo-label>
+    </flex-col-item>
     <flex-col-item>
       <percentage
-        title="label.title.tax"
-        [(value)]="setting.financial.taxRate"
+        title="label.title.cashdiscount"
+        [(value)]="setting.financial.cashDiscountRate"
         [readOnly]="form.readOnly"
         [max]="0.5"
         [autoCorrect]="true"
-        (valueChange)="onChangeTaxRate()"></percentage>
+        (onChangeValue)="onChangeCashDiscount()"></percentage>
     </flex-col-item>
     <flex-col-item>
       <percentage
@@ -30,12 +59,12 @@
     </flex-col-item>
     <flex-col-item>
       <percentage
-        title="label.title.cashdiscount"
-        [(value)]="setting.financial.cashDiscountRate"
+        title="label.title.tax"
+        [(value)]="setting.financial.taxRate"
         [readOnly]="form.readOnly"
         [max]="0.5"
         [autoCorrect]="true"
-        (onChangeValue)="onChangeCashDiscount()"></percentage>
+        (valueChange)="onChangeTaxRate()"></percentage>
     </flex-col-item>
   </flex-col>
 </ion-content>

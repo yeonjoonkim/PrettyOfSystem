@@ -20,12 +20,15 @@ export class ImageCropComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput!: ElementRef;
   @Output() currentImageChange = new EventEmitter<string>();
   @Output() fileChange = new EventEmitter<File>();
+  @Output() imageLoad = new EventEmitter<boolean>();
   private _destroy$ = new Subject<void>();
   @Input() title: string = '';
   @Input() isRequiredTitle: boolean = true;
   @Input() currentImage: string = '';
   @Input() type: 'picture' | 'logo' = 'logo';
   @Input() readOnly: boolean = true;
+
+  public loaded: boolean = false;
 
   constructor(private _photo: NgxPhotoEditorService) {}
 
@@ -49,7 +52,10 @@ export class ImageCropComponent implements OnInit, OnDestroy {
   openFileDialog() {
     this.fileInput.nativeElement.click();
   }
-
+  onImageLoad() {
+    this.imageLoad.emit(true);
+    this.loaded = true;
+  }
   ngOnDestroy() {
     this._destroy$.next();
     this._destroy$.complete();

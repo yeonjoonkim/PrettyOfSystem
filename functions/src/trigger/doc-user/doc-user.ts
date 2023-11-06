@@ -36,7 +36,7 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
     try {
       const change = Service.Trigger.User.OnChange.getChangeDectection(prev, current);
       const event = Service.Trigger.User.OnChange.getChangeAction(change, current);
-
+      logger.info(event);
       if (change.isLoginOptionChanged) {
         await handleAuthenticationLogin(prev, 'delete');
         await handleAuthenticationLogin(current, 'create');
@@ -44,19 +44,21 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       if (event.isAuthUpdate) {
         await handleAuthenticationLogin(current, 'update');
       }
+
       if (event.isDeactiveAccount) {
         current = await handleDeactiveLogin(current);
       }
       if (event.isActivateAccount) {
         current = await handleActiveLogin(current);
       }
+      if (event.isUpdateClaim) {
+        await handleClaimUpdate(current);
+      }
 
       if (event.isCurrentShopRoleUpdate || event.isCurrentShopIdUpdate) {
         await handleCurrentShopRoleUpdate(current);
       }
-      if (event.isUpdateClaim) {
-        await handleClaimUpdate(current);
-      }
+
       if (event.isSendMsgRosterChange) {
         logger.info('Roster Changed');
       }
@@ -274,12 +276,15 @@ const transformToAssociatedShop = function (
 
 const handleClaimUpdate = async function (user: I.IUser) {
   const claim = getCurrentUserClaim(user);
+  logger.info(claim);
   admin.auth().updateUser(user.id, { disabled: user.disabledAccount });
+  logger.info(claim);
   await Repository.Auth.Claim.update(user.id, claim);
 };
 
 const getCurrentUserClaim = function (user: I.IUser) {
   const currentShop = user.associatedShops.find(shop => user.currentShopId === shop.shopId);
+  logger.info(currentShop);
   const claim: I.UserClaimType = {
     role: {
       isSystemAdmin: user.isSystemAdmin,
@@ -292,8 +297,11 @@ const getCurrentUserClaim = function (user: I.IUser) {
     language: user.setting.preferLanguage,
     disableAccount: user.disabledAccount,
   };
-  claim.role = currentShop !== undefined ? currentShop?.role.accessLevel : claim.role;
+
+  claim.role = currentShop !== undefined ? currentShop.role.accessLevel : claim.role;
+  logger.info(claim);
   claim.language = user.setting.preferLanguage;
   claim.currentShopId = user.currentShopId;
+  logger.info(claim);
   return claim;
 };

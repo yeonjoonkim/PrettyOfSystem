@@ -21,6 +21,7 @@ import { ShopExtraRepositoryService } from 'src/app/firebase/shop-repository/sho
 import { UserRoleService } from '../user/user-role/user-role.service';
 import { ShopPackageRepositoryService } from 'src/app/firebase/shop-repository/shop-package-repository/shop-package-repository.service';
 import { ShopCouponRepositoryService } from 'src/app/firebase/shop-repository/shop-coupon-repository/shop-coupon-repository.service';
+import { ShopPictureRepositoryService } from 'src/app/firebase/shop-repository/shop-picture-repository/shop-picture-repository.service';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,10 @@ export class ShopService {
   public serviceFilter$!: Observable<NameValuePairType[]>;
   public operatingWorkHours$!: Observable<ShopWorkHoursType | null>;
   public coupons$!: Observable<ShopCouponDocumentType[]>;
+  public logoImage$!: Observable<Blob | null>;
+  public shopImage1$!: Observable<Blob | null>;
+  public shopImage2$!: Observable<Blob | null>;
+  public shopImage3$!: Observable<Blob | null>;
 
   constructor(
     public role: UserRoleService,
@@ -49,7 +54,8 @@ export class ShopService {
     private _serviceRepo: ShopServiceRepositoryService,
     private _extraRepo: ShopExtraRepositoryService,
     private _packageRepo: ShopPackageRepositoryService,
-    private _couponRepo: ShopCouponRepositoryService
+    private _couponRepo: ShopCouponRepositoryService,
+    private _pictureRepo: ShopPictureRepositoryService
   ) {
     this.userName$ = this._user.employeName$;
     this.config$ = this._user.currentShopConfig$;
@@ -65,6 +71,10 @@ export class ShopService {
     this.serviceFilterListener();
     this.operatingHoursListener();
     this.shopCouponListener();
+    this.logoImageListener();
+    this.shopImage1Listener();
+    this.shopImage2Listener();
+    this.shopImage3Listener();
   }
 
   public translatedRequestFilterByServiceIds(shopId: string, serviceIds: string[]) {
@@ -179,6 +189,53 @@ export class ShopService {
     );
   }
 
+  public logoImageListener() {
+    this.logoImage$ = this.config$.pipe(
+      switchMap(config => {
+        if (config != null) {
+          return this._pictureRepo.getFile(config.setting.picture.logo);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
+  private shopImage1Listener() {
+    this.shopImage1$ = this.config$.pipe(
+      switchMap(config => {
+        if (config != null) {
+          return this._pictureRepo.getFile(config.setting.picture.shopImage1);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
+  private shopImage2Listener() {
+    this.shopImage2$ = this.config$.pipe(
+      switchMap(config => {
+        if (config != null) {
+          return this._pictureRepo.getFile(config.setting.picture.shopImage2);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
+  private shopImage3Listener() {
+    this.shopImage3$ = this.config$.pipe(
+      switchMap(config => {
+        if (config != null) {
+          return this._pictureRepo.getFile(config.setting.picture.shopImage3);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
   public async requeueTranslatedRequest(doc: ChatGptTranslateDocumentType) {
     return await this.translated.requeueTranslatedRequest(doc);
   }

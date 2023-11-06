@@ -78,10 +78,10 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
     const mins = [5, 10, 15, 30, 60];
     const days = [7, 14, 21, 28];
 
-    const intervalMin = mins.includes(this.setting.calender.intervalMin);
-    const nextAvailableMin = mins.includes(this.setting.calender.nextAvailableBookingMin);
+    const intervalMin = mins.includes(this.setting.calendar.intervalMin);
+    const nextAvailableMin = mins.includes(this.setting.calendar.nextAvailableBookingMin);
     const maxAvailableFutureDays = days.includes(
-      this.setting.calender.maximumAvailableFutureBookingDays
+      this.setting.calendar.maximumAvailableFutureBookingDays
     );
     this.form.enabledSavebutton = intervalMin && nextAvailableMin && maxAvailableFutureDays;
   }
@@ -107,19 +107,19 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
 
   public onChangeIntervalMin() {
     const selectedMin = Number(this.selectedIntervalMin.value);
-    this.setting.calender.intervalMin = selectedMin;
+    this.setting.calendar.intervalMin = selectedMin;
     this.handleEnabledSaveBtn();
   }
 
   public onChangeNextAvailableMin() {
     const selectedMin = Number(this.selectedNextAvailableMin.value);
-    this.setting.calender.nextAvailableBookingMin = selectedMin;
+    this.setting.calendar.nextAvailableBookingMin = selectedMin;
     this.handleEnabledSaveBtn();
   }
 
   public onChangeMaximumAvailableFutureBookingDays() {
     const selectedDays = Number(this.selectedMaximumAvailableFutureBookingDays.value);
-    this.setting.calender.maximumAvailableFutureBookingDays = selectedDays;
+    this.setting.calendar.maximumAvailableFutureBookingDays = selectedDays;
     this.handleEnabledSaveBtn();
   }
 
@@ -130,7 +130,7 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
 
   private setIntervalMin(setting: IShopSetting) {
     const selected = this.intervalMinSelection.find(
-      s => s.value === setting.calender.intervalMin.toString()
+      s => s.value === setting.calendar.intervalMin.toString()
     );
     if (selected) {
       this.selectedIntervalMin = selected;
@@ -139,7 +139,7 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
 
   private setNextAvailableMin(setting: IShopSetting) {
     const selected = this.nextAvailableMinSelection.find(
-      s => s.value === setting.calender.nextAvailableBookingMin.toString()
+      s => s.value === setting.calendar.nextAvailableBookingMin.toString()
     );
     if (selected) {
       this.selectedNextAvailableMin = selected;
@@ -148,7 +148,7 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
 
   private setMaximumAvailableFutureBookingDays(setting: IShopSetting) {
     const selected = this.maximumAvailableFutureBookingDaysSelection.find(
-      s => s.value === setting.calender.maximumAvailableFutureBookingDays.toString()
+      s => s.value === setting.calendar.maximumAvailableFutureBookingDays.toString()
     );
     if (selected) {
       this.selectedMaximumAvailableFutureBookingDays = selected;

@@ -3,7 +3,7 @@ import * as Constant from '../../../constant';
 
 export const override = function (s: I.IShopSetting) {
   s.financial = financeSetting(s?.financial);
-  s.calender = timePickerSetting(s?.calender);
+  s.calendar = calendarSetting(s?.calendar);
   s.picture = picture(s?.picture);
   return s;
 };
@@ -14,6 +14,9 @@ const financeSetting = function (financial: I.ShopFinancialRateType | undefined)
     taxRate: taxRate(financial?.taxRate),
     cardSurchargeRate: cardSurchargeRate(financial?.cardSurchargeRate),
     cashDiscountRate: cashDiscounteRate(financial?.cashDiscountRate),
+    openingBalance: openingBalance(financial?.openingBalance),
+    openingHour: openingHour(financial?.openingHour),
+    closingHour: closingHour(financial?.closingHour),
   };
 };
 
@@ -29,8 +32,20 @@ const cashDiscounteRate = function (rate: number | undefined | null) {
   return typeof rate === 'number' ? rate : Constant.ShopSetting.Financial.CashDiscountRate;
 };
 
-//Calender
-const timePickerSetting = function (timePicker: I.ShopCalenderType | undefined) {
+const openingBalance = function (balance: number | undefined | null) {
+  return typeof balance === 'number' ? balance : Constant.ShopSetting.Financial.OpeningBalance;
+};
+
+const openingHour = function (hour: number | undefined | null) {
+  return typeof hour === 'number' ? hour : Constant.ShopSetting.Financial.OpeningHour;
+};
+
+const closingHour = function (hour: number | undefined | null) {
+  return typeof hour === 'number' ? hour : Constant.ShopSetting.Financial.ClosingHour;
+};
+
+//Calendar
+const calendarSetting = function (timePicker: I.ShopCalendarType | undefined) {
   return {
     intervalMin: intervalMin(timePicker?.intervalMin),
     nextAvailableBookingMin: nextAvailableBookingMin(timePicker?.nextAvailableBookingMin),

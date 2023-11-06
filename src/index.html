@@ -32,6 +32,26 @@
     <!-- add to homescreen for ios -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <!--run time chrome -->
+    <script>
+      (function () {
+        var originalAddEventListener = EventTarget.prototype.addEventListener;
+
+        EventTarget.prototype.addEventListener = function (type, listener, options) {
+          var passiveEventTypes = ['touchstart', 'touchmove', 'mousewheel'];
+          if (passiveEventTypes.indexOf(type) > -1) {
+            if (options === undefined || typeof options === 'boolean') {
+              options = {};
+            }
+
+            options.passive = true;
+          }
+
+          return originalAddEventListener.call(this, type, listener, options);
+        };
+      })();
+    </script>
   </head>
   <body>
     <app-root></app-root>

@@ -71,3 +71,12 @@ export const ShopImage2 = (shopId: string, file: File): string =>
 
 export const ShopImage3 = (shopId: string, file: File): string =>
   `shopimage3/${shopId}/${new Date().getTime()}/${file.name}`;
+
+export const Storage = {
+  Shop: {
+    Logo: (shopId: string) => `logo/${shopId}/`,
+    Image1: (shopId: string) => `shopimage1/${shopId}/`,
+    Image2: (shopId: string) => `shopimage2/${shopId}/`,
+    Image3: (shopId: string) => `shopimage3/${shopId}/`,
+  } as const,
+} as const;
