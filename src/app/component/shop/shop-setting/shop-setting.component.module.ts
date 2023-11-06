@@ -9,7 +9,7 @@ import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { SystemShopFormModule } from '../../system/shop/system-shop-copoment.module';
 import { ShopSettingComponent } from 'src/app/component/shop/shop-setting/shop-setting.component';
-
+import { OpeningClosingHourPickerModule } from '../../form/opening-closing-hour-picker/opening-closing-hour-picker.module';
 //Modal
 import { ShopSettingCalendarComponent } from './modal/shop-setting-calendar/shop-setting-calendar.component';
 import { ShopSettingPictureComponent } from './modal/shop-setting-picture/shop-setting-picture.component';
@@ -27,6 +27,7 @@ import { SystemPlanModule } from '../../system/plan/plan/plan.module';
     LanguageTransformPipeModule,
     SystemShopFormModule,
     SystemPlanModule,
+    OpeningClosingHourPickerModule,
   ],
   declarations: [
     ShopSettingComponent,

@@ -150,9 +150,14 @@ async function deleteStorage(storagePath: string) {
 
   // Get a list of files under the specified storagePath
   const [files] = await bucket.getFiles({ prefix: storagePath });
-
+  logger.info(files);
   // Create an array of promises to delete each file
-  const deletePromises = files.map(file => file.delete());
+  const deletePromises = files.map(file =>
+    file.delete().catch(err => {
+      logger.error(`Failed to delete file ${file.name}:`, err);
+      return null;
+    })
+  );
 
   // Execute all of the file deletion promises
   await Promise.all(deletePromises);

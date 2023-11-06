@@ -46,6 +46,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this._user.isLoggedin$.pipe(takeUntil(this._onDestroy$)).subscribe(isLogin => {
       this.isLogin = isLogin;
     });
+    this._user.claim$.pipe(takeUntil(this._onDestroy$)).subscribe(s => {
+      console.log(s?.claims);
+    });
   }
 
   private routerChangeListener() {

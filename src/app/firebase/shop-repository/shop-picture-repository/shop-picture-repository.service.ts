@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { ShopImage1, ShopImage2, ShopLogo } from 'src/app/constant/firebase-path';
+import { ShopImage1, ShopImage2, ShopImage3, ShopLogo } from 'src/app/constant/firebase-path';
 import { Observable, firstValueFrom, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -59,7 +59,7 @@ export class ShopPictureRepositoryService {
 
   public async uploadShopImage3(shopId: string, file: File) {
     try {
-      const path = ShopImage2(shopId, file);
+      const path = ShopImage3(shopId, file);
       const uploadTask = await this._afstorage.upload(path, file);
       const url = await uploadTask.ref.getDownloadURL();
       await this._toaster.updateSuccess();

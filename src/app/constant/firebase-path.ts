@@ -77,6 +77,6 @@ export const Storage = {
     Logo: (shopId: string) => `logo/${shopId}/`,
     Image1: (shopId: string) => `shopimage1/${shopId}/`,
     Image2: (shopId: string) => `shopimage2/${shopId}/`,
-    Image3: (shopId: string) => `shopimage2/${shopId}/`,
+    Image3: (shopId: string) => `shopimage3/${shopId}/`,
   } as const,
 } as const;

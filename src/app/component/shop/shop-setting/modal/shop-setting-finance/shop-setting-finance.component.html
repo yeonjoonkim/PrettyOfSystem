@@ -10,33 +10,20 @@
 </form-header>
 <ion-content [scrollable]="true" *ngIf="setting">
   <flex-col id="container">
-    <flex-col-item>
-      <percentage
-        title="label.title.tax"
-        [(value)]="setting.financial.taxRate"
-        [readOnly]="form.readOnly"
-        [max]="0.5"
-        [autoCorrect]="true"
-        (valueChange)="onChangeTaxRate()"></percentage>
-    </flex-col-item>
-    <flex-col-item>
-      <percentage
-        title="label.title.cardsurcharge"
-        [(value)]="setting.financial.cardSurchargeRate"
-        [readOnly]="form.readOnly"
-        [max]="0.5"
-        [autoCorrect]="true"
-        (onChangeValue)="onChangeCardSurcharge()"></percentage>
-    </flex-col-item>
-    <flex-col-item>
-      <percentage
-        title="label.title.cashdiscount"
-        [(value)]="setting.financial.cashDiscountRate"
-        [readOnly]="form.readOnly"
-        [max]="0.5"
-        [autoCorrect]="true"
-        (onChangeValue)="onChangeCashDiscount()"></percentage>
-    </flex-col-item>
+    <flex-row>
+      <flex-row-item>
+        <opening-closing-hour-picker
+          title="label.title.autoopeningtime"
+          [readOnly]="true"
+          [(hour)]="setting.financial.openingHour"></opening-closing-hour-picker>
+      </flex-row-item>
+      <flex-row-item>
+        <opening-closing-hour-picker
+          title="label.title.autoclosingtime"
+          [readOnly]="true"
+          [(hour)]="setting.financial.closingHour"></opening-closing-hour-picker>
+      </flex-row-item>
+    </flex-row>
     <flex-col-item>
       <kendo-label text="{{ 'label.title.openingbalance' | languageTransform | async }}">
         <div id="opening-balance-section">
@@ -51,6 +38,33 @@
             [readonly]="form.readOnly"></kendo-numerictextbox>
         </div>
       </kendo-label>
+    </flex-col-item>
+    <flex-col-item>
+      <percentage
+        title="label.title.cashdiscount"
+        [(value)]="setting.financial.cashDiscountRate"
+        [readOnly]="form.readOnly"
+        [max]="0.5"
+        [autoCorrect]="true"
+        (onChangeValue)="onChangeCashDiscount()"></percentage>
+    </flex-col-item>
+    <flex-col-item>
+      <percentage
+        title="label.title.cardsurcharge"
+        [(value)]="setting.financial.cardSurchargeRate"
+        [readOnly]="form.readOnly"
+        [max]="0.5"
+        [autoCorrect]="true"
+        (onChangeValue)="onChangeCardSurcharge()"></percentage>
+    </flex-col-item>
+    <flex-col-item>
+      <percentage
+        title="label.title.tax"
+        [(value)]="setting.financial.taxRate"
+        [readOnly]="form.readOnly"
+        [max]="0.5"
+        [autoCorrect]="true"
+        (valueChange)="onChangeTaxRate()"></percentage>
     </flex-col-item>
   </flex-col>
 </ion-content>
