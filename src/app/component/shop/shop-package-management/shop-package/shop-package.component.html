@@ -11,7 +11,7 @@
 </form-header>
 <ion-content [scrollable]="true" *ngIf="current">
   <p *ngIf="form.action !== 'read' && !form.readOnly" id="translated-guide">
-    {{ 'label.description.translatedvalueguiance' | languageTransform | async }}
+    {{ 'label.description.translatedvalueguiance' | languageTransform: 'System' | async }}
   </p>
   <flex-col id="container">
     <flex-col id="information-container">
@@ -30,7 +30,8 @@
         <flex-row-item>
           <flex-col id="check-box-container">
             <div id="pregnant">
-              <kendo-label text="{{ 'label.title.insurance' | languageTransform | async }}">
+              <kendo-label
+                text="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
                   type="checkbox"
@@ -40,7 +41,8 @@
               </kendo-label>
             </div>
             <div id="pregnant">
-              <kendo-label text="{{ 'label.title.pregnant' | languageTransform | async }}">
+              <kendo-label
+                text="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
                   type="checkbox"
@@ -50,7 +52,8 @@
               </kendo-label>
             </div>
             <div id="limited-time">
-              <kendo-label text="{{ 'label.title.limitedtime' | languageTransform | async }}">
+              <kendo-label
+                text="{{ 'label.title.limitedtime' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
                   type="checkbox"
@@ -88,7 +91,7 @@
       <flex-col-item *ngIf="current.package.limitedTime !== null && !validator.limitedTime">
         <div class="form-error-container">
           <kendo-formerror>{{
-            'messageerror.description.workhours' | languageTransform | async
+            'messageerror.description.workhours' | languageTransform: 'System' | async
           }}</kendo-formerror>
         </div>
       </flex-col-item>
@@ -103,7 +106,7 @@
     <!-- Service -->
     <flex-col id="service-container">
       <flex-col-item class="title-container">
-        <legend>{{ 'label.title.service' | languageTransform | async }}</legend>
+        <legend>{{ 'label.title.service' | languageTransform: 'System' | async }}</legend>
         <button
           kendoButton
           id="service-add-button"
@@ -136,7 +139,7 @@
                 [spinners]="false"
                 [min]="0"
                 [readonly]="true"></kendo-numerictextbox>
-              <p>{{ 'label.title.minute' | languageTransform | async }}</p>
+              <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
             </flex-row-item>
           </flex-row>
         </ng-container>
@@ -151,7 +154,7 @@
           (!form.readOnly && (form.action === 'create' || form.action === 'edit')) ||
           current.package.extras.length > 0
         ">
-        <legend>{{ 'label.title.extra' | languageTransform | async }}</legend>
+        <legend>{{ 'label.title.extra' | languageTransform: 'System' | async }}</legend>
         <button
           kendoButton
           id="extra-add-button"
@@ -181,7 +184,7 @@
     <!-- Price -->
     <flex-col>
       <flex-col-item>
-        <legend>{{ 'label.title.price' | languageTransform | async }}</legend>
+        <legend>{{ 'label.title.price' | languageTransform: 'System' | async }}</legend>
       </flex-col-item>
     </flex-col>
     <flex-row id="discount-type-value-container">
@@ -205,7 +208,9 @@
       </flex-row-item>
       <flex-row-item *ngIf="current.package.discount.type === 'Dollar'">
         <kendo-label
-          text="{{ 'label.title.discountamount' | languageTransform | async }}"></kendo-label>
+          text="{{
+            'label.title.discountamount' | languageTransform: 'System' | async
+          }}"></kendo-label>
         <div class="discount-price">
           <p>$</p>
           <kendo-numerictextbox
@@ -223,7 +228,9 @@
     <flex-row>
       <flex-row-item>
         <kendo-label
-          text="{{ 'label.title.originalprice' | languageTransform | async }}"></kendo-label>
+          text="{{
+            'label.title.originalprice' | languageTransform: 'System' | async
+          }}"></kendo-label>
         <div class="total-price-original">
           <p>$</p>
           <kendo-numerictextbox
@@ -236,7 +243,9 @@
       </flex-row-item>
       <flex-row-item>
         <kendo-label
-          text="{{ 'label.title.discountedprice' | languageTransform | async }}"></kendo-label>
+          text="{{
+            'label.title.discountedprice' | languageTransform: 'System' | async
+          }}"></kendo-label>
         <div class="total-price-discounted">
           <p>$</p>
           <kendo-numerictextbox
@@ -259,7 +268,7 @@
             [min]="0"
             [spinners]="false"
             [readonly]="true"></kendo-numerictextbox>
-          <p>{{ 'label.title.minute' | languageTransform | async }}</p>
+          <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
         </div>
       </flex-row-item>
     </flex-row>

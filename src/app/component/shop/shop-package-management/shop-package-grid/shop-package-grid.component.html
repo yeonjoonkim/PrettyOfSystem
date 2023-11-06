@@ -10,9 +10,20 @@
   <kendo-grid-column
     [sortable]="true"
     field="titleProp"
-    title="{{ 'label.title.name' | languageTransform | async }}">
+    title="{{ 'label.title.name' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
-      <p (click)="onClickEdit(package)" id="package-name">{{ package.titleProp }}</p>
+      <p
+        (click)="onClickEdit(package)"
+        id="package-name"
+        *ngIf="!isCompletedRequest(package.id) && translatedRequests">
+        {{ package.titleProp }}
+      </p>
+      <p
+        (click)="onClickEdit(package)"
+        id="service-name"
+        *ngIf="isCompletedRequest(package.id) && translatedRequests">
+        {{ package.title | languageTransform: 'User' | async }}
+      </p>
     </ng-template>
   </kendo-grid-column>
 
@@ -20,7 +31,7 @@
   <kendo-grid-column
     [sortable]="true"
     field="originalPrice"
-    title="{{ 'label.title.originalprice' | languageTransform | async }}">
+    title="{{ 'label.title.originalprice' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
       <p>${{ package.originalPrice }}</p>
     </ng-template>
@@ -30,7 +41,7 @@
   <kendo-grid-column
     [sortable]="true"
     field="discountPrice"
-    title="{{ 'label.title.discountedprice' | languageTransform | async }}">
+    title="{{ 'label.title.discountedprice' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
       <p>${{ package.discountPrice }}</p>
     </ng-template>
@@ -42,7 +53,7 @@
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="totalMin"
-    title="{{ 'label.title.minute' | languageTransform | async }}">
+    title="{{ 'label.title.minute' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
       <p>{{ package.totalMin }}</p>
     </ng-template>
@@ -54,7 +65,7 @@
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="services.length"
-    title="{{ 'label.title.service' | languageTransform | async }}">
+    title="{{ 'label.title.service' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
       <p>{{ package.services.length }}</p>
     </ng-template>
@@ -66,7 +77,7 @@
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="extras.length"
-    title="{{ 'label.title.extra' | languageTransform | async }}">
+    title="{{ 'label.title.extra' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
       <p>{{ package.extras.length }}</p>
     </ng-template>
@@ -78,14 +89,16 @@
     *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="package.limitedTime !== null"
-    title="{{ 'label.title.limitedday' | languageTransform | async }}">
+    title="{{ 'label.title.limitedday' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
       <input kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="isLimitedDate(package)" />
     </ng-template>
   </kendo-grid-column>
 
   <!-- Title -->
-  <kendo-grid-column [width]="70" title="{{ 'label.title.title' | languageTransform | async }}">
+  <kendo-grid-column
+    [width]="70"
+    title="{{ 'label.title.title' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
       <div *ngFor="let request of translatedRequests">
         <div
@@ -101,22 +114,22 @@
           (click)="handleRequeue(request, service)"
           *ngIf="request.serviceId === service.id && request.format === 'title'">
           <span id="create" *ngIf="request.status === 'create'">{{
-            'label.title.created' | languageTransform | async
+            'label.title.created' | languageTransform: 'System' | async
           }}</span>
           <span id="pending" *ngIf="request.status === 'pending'">{{
-            'label.title.pending' | languageTransform | async
+            'label.title.pending' | languageTransform: 'System' | async
           }}</span>
           <span id="inprogress" *ngIf="request.status === 'inProgress'">{{
-            'label.title.inprogress' | languageTransform | async
+            'label.title.inprogress' | languageTransform: 'System' | async
           }}</span>
           <span id="success" *ngIf="request.status === 'Success'">{{
-            'label.title.success' | languageTransform | async
+            'label.title.success' | languageTransform: 'System' | async
           }}</span>
           <span id="completed" *ngIf="request.status === 'Completed'">{{
-            'label.title.view' | languageTransform | async
+            'label.title.view' | languageTransform: 'System' | async
           }}</span>
           <span id="fail" *ngIf="request.status === 'Failed'">{{
-            'label.title.fail' | languageTransform | async
+            'label.title.fail' | languageTransform: 'System' | async
           }}</span>
         </div>
       </div>

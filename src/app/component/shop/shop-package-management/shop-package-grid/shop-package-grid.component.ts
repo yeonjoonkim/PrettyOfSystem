@@ -44,6 +44,15 @@ export class ShopPackageGridComponent implements OnInit {
     }
   }
 
+  public isCompletedRequest(serviceId: string) {
+    const titleRequest = this.translatedRequests?.find(
+      s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
+    );
+    return titleRequest !== undefined
+      ? titleRequest.status === Constant.API.TranslateStatus.Completed
+      : false;
+  }
+
   public async onClickEdit(prop: ShopPackageDocumentType) {
     const titleRequest = this.translatedRequests.find(
       r => r.serviceId === prop.id && Constant.Text.Format.Title === r.format

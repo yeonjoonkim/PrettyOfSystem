@@ -39,6 +39,7 @@ export class UserService {
   public currentShopPlan$!: Observable<PlanConfigurationType | null>;
   public employeName$!: Observable<string>;
   public claim$!: Observable<IdTokenResult | null>;
+  public preferLanguage$!: Observable<string>;
 
   constructor(
     public modal: UserModalService,
@@ -165,6 +166,7 @@ export class UserService {
     this.activeUserCurrentShopListener();
     this.activateCurrentRoleListener();
     this.activateEmployeeNameListener();
+    this.activatePreferLanguageListener();
     this.claim();
   }
 
@@ -196,6 +198,18 @@ export class UserService {
           return result;
         } else {
           return '';
+        }
+      })
+    );
+  }
+
+  private activatePreferLanguageListener() {
+    this.preferLanguage$ = this.data$.pipe(
+      map(user => {
+        if (user !== null) {
+          return user.setting.preferLanguage;
+        } else {
+          return 'en';
         }
       })
     );

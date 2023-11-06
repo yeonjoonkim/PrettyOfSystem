@@ -2,10 +2,10 @@
 <ion-item (click)="editMode && presentIconSelection($event)">
   <!--Icon Label -->
   <ion-label id="icon-label">
-    {{ 'label.title.icon' | languageTransform | async }}
+    {{ 'label.title.icon' | languageTransform: 'System' | async }}
     <p id="selected-icon"><ion-icon *ngIf="icon" [name]="icon"></ion-icon></p>
     <p id="no-selection-label" *ngIf="!icon">
-      {{ 'label.title.selection' | languageTransform | async }}
+      {{ 'label.title.selection' | languageTransform: 'System' | async }}
     </p>
 
     <!--Icon Selection Popover Controller-->

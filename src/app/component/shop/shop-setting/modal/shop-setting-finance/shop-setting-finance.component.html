@@ -25,7 +25,7 @@
       </flex-row-item>
     </flex-row>
     <flex-col-item>
-      <kendo-label text="{{ 'label.title.openingbalance' | languageTransform | async }}">
+      <kendo-label text="{{ 'label.title.openingbalance' | languageTransform: 'System' | async }}">
         <div id="opening-balance-section">
           <p>$</p>
           <kendo-numerictextbox

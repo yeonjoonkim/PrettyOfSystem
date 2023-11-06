@@ -5,10 +5,10 @@
 
   <div id="btn-container">
     <button id="login-btn" kendoButton *ngIf="isLogout$ | async" (click)="logIn()">
-      {{ 'label.title.login' | languageTransform | async }}
+      {{ 'label.title.login' | languageTransform: 'System' | async }}
     </button>
     <button id="logout-btn" kendoButton *ngIf="isLogin$ | async" (click)="logout()">
-      {{ 'label.title.logout' | languageTransform | async }}
+      {{ 'label.title.logout' | languageTransform: 'System' | async }}
     </button>
     <booking-language-selection></booking-language-selection>
   </div>

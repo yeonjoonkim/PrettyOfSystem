@@ -1,19 +1,21 @@
-<legend>{{ 'label.title.subscriptionservice' | languageTransform | async }}</legend>
+<legend>{{ 'label.title.subscriptionservice' | languageTransform: 'System' | async }}</legend>
 
 <kendo-grid [kendoGridBinding]="planOptions" [sortable]="true">
   <!-- Add Button -->
   <ng-template kendoGridToolbarTemplate>
     <button kendoGridAddCommand (click)="onClickAddPlan()">
-      {{ 'button.title.add' | languageTransform | async }}
+      {{ 'button.title.add' | languageTransform: 'System' | async }}
     </button>
   </ng-template>
 
-  <kendo-grid-column field="name" title="{{ 'label.title.name' | languageTransform | async }}">
+  <kendo-grid-column
+    field="name"
+    title="{{ 'label.title.name' | languageTransform: 'System' | async }}">
   </kendo-grid-column>
 
   <kendo-grid-column
     field="isPlanManagement"
-    title="{{ 'label.title.premium' | languageTransform | async }}">
+    title="{{ 'label.title.premium' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-plan>
       <input type="checkbox" kendoCheckBox [checked]="plan.isPremium" disabled />
     </ng-template>
@@ -22,7 +24,7 @@
   <kendo-grid-column
     *ngIf="global.deviceWidth.deviceType.isDesktop"
     field="isTestPlan"
-    title="{{ 'label.title.test' | languageTransform | async }}">
+    title="{{ 'label.title.test' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-plan>
       <input type="checkbox" kendoCheckBox [checked]="plan.isTestPlan" disabled />
     </ng-template>
@@ -31,53 +33,54 @@
   <kendo-grid-column
     *ngIf="global.deviceWidth.deviceType.isDesktop"
     field="limitedService"
-    title="{{ 'label.title.service' | languageTransform | async }}">
+    title="{{ 'label.title.service' | languageTransform: 'System' | async }}">
   </kendo-grid-column>
 
   <kendo-grid-column
     *ngIf="global.deviceWidth.deviceType.isDesktop"
     field="limitedProduct"
-    title="{{ 'label.title.product' | languageTransform | async }}">
+    title="{{ 'label.title.product' | languageTransform: 'System' | async }}">
   </kendo-grid-column>
 
   <kendo-grid-column
     *ngIf="global.deviceWidth.deviceType.isDesktop"
     field="limitedPackage"
-    title="{{ 'label.title.package' | languageTransform | async }}">
+    title="{{ 'label.title.package' | languageTransform: 'System' | async }}">
   </kendo-grid-column>
 
   <kendo-grid-column
     *ngIf="global.deviceWidth.deviceType.isDesktop"
     field="limitedUser"
-    title="{{ 'label.title.user' | languageTransform | async }}">
+    title="{{ 'label.title.user' | languageTransform: 'System' | async }}">
   </kendo-grid-column>
 
   <ng-template kendoGridDetailTemplate let-plan let-rowIndex="rowIndex">
     <category-details [category]="plan">
       <p>
-        ({{ 'date.title.weekly' | languageTransform | async }})
-        {{ 'label.title.total' | languageTransform | async }}:
+        ({{ 'date.title.weekly' | languageTransform: 'System' | async }})
+        {{ 'label.title.total' | languageTransform: 'System' | async }}:
         {{ plan.weeklyPrice.total | currency }} |
-        {{ 'label.title.tax' | languageTransform | async }}: {{ plan.weeklyPrice.tax | currency }} |
-        {{ 'label.title.excludingtax' | languageTransform | async }}:
+        {{ 'label.title.tax' | languageTransform: 'System' | async }}:
+        {{ plan.weeklyPrice.tax | currency }} |
+        {{ 'label.title.excludingtax' | languageTransform: 'System' | async }}:
         {{ plan.weeklyPrice.net | currency }}
       </p>
       <p>
-        ({{ 'date.title.monthly' | languageTransform | async }})
-        {{ 'label.title.total' | languageTransform | async }}:
+        ({{ 'date.title.monthly' | languageTransform: 'System' | async }})
+        {{ 'label.title.total' | languageTransform: 'System' | async }}:
         {{ plan.monthlyPrice.total | currency }} |
-        {{ 'label.title.tax' | languageTransform | async }}:
+        {{ 'label.title.tax' | languageTransform: 'System' | async }}:
         {{ plan.monthlyPrice.tax | currency }} |
-        {{ 'label.title.excludingtax' | languageTransform | async }}:
+        {{ 'label.title.excludingtax' | languageTransform: 'System' | async }}:
         {{ plan.monthlyPrice.net | currency }}
       </p>
       <p>
-        ({{ 'date.title.annually' | languageTransform | async }})
-        {{ 'label.title.total' | languageTransform | async }}:
+        ({{ 'date.title.annually' | languageTransform: 'System' | async }})
+        {{ 'label.title.total' | languageTransform: 'System' | async }}:
         {{ plan.annuallyPrice.total | currency }} |
-        {{ 'label.title.tax' | languageTransform | async }}:
+        {{ 'label.title.tax' | languageTransform: 'System' | async }}:
         {{ plan.annuallyPrice.tax | currency }} |
-        {{ 'label.title.excludingtax' | languageTransform | async }}:
+        {{ 'label.title.excludingtax' | languageTransform: 'System' | async }}:
         {{ plan.annuallyPrice.net | currency }}
       </p>
     </category-details>

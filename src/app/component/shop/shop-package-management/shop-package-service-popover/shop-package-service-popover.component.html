@@ -1,10 +1,10 @@
 <ion-content>
   <kendo-button id="apply-btn" (click)="apply()">{{
-    'label.title.apply' | languageTransform | async
+    'label.title.apply' | languageTransform: 'System' | async
   }}</kendo-button>
   <div id="container" [ngStyle]="{ 'max-height': '200px' }">
     <ng-container *ngFor="let service of services">
-      <legend id="service-title">{{ service.titleProp }}</legend>
+      <legend id="service-title">{{ service.title | languageTransform: 'User' | async }}</legend>
       <ng-container *ngFor="let option of service.options">
         <flex-row class="options">
           <!--Check Box -->
@@ -25,7 +25,7 @@
               [spinners]="false"
               [min]="0"
               [readonly]="true"></kendo-numerictextbox>
-            <p>{{ 'label.title.minute' | languageTransform | async }}</p>
+            <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
           </flex-row-item>
 
           <!-- Dollar -->

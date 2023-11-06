@@ -1,6 +1,6 @@
 <div id="shop-configuration-list">
   <legend>
-    {{ 'label.title.shopconfiguration' | languageTransform | async }}
+    {{ 'label.title.shopconfiguration' | languageTransform: 'System' | async }}
   </legend>
   <kendo-grid
     [kendoGridBinding]="configs"
@@ -14,13 +14,13 @@
     <!-- Add Button -->
     <ng-template kendoGridToolbarTemplate>
       <button kendoGridAddCommand (click)="onClickCreateShopConfiguration()">
-        {{ 'button.title.add' | languageTransform | async }}
+        {{ 'button.title.add' | languageTransform: 'System' | async }}
       </button>
     </ng-template>
 
     <!-- Name -->
     <kendo-grid-column
-      title="{{ 'label.title.name' | languageTransform | async }}"
+      title="{{ 'label.title.name' | languageTransform: 'System' | async }}"
       [filterable]="true"
       field="name">
       <ng-template kendoGridCellTemplate let-config>{{ config.name }}</ng-template>
@@ -32,7 +32,7 @@
 
     <!-- Suburb -->
     <kendo-grid-column
-      title="{{ 'label.title.suburb' | languageTransform | async }}"
+      title="{{ 'label.title.suburb' | languageTransform: 'System' | async }}"
       field="address.suburb"
       [filterable]="true">
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
@@ -43,18 +43,18 @@
 
     <!-- Category -->
     <kendo-grid-column
-      title="{{ 'label.title.category' | languageTransform | async }}"
+      title="{{ 'label.title.category' | languageTransform: 'System' | async }}"
       field="category.name"
       [filterable]="false">
       <ng-template kendoGridCellTemplate let-config>
-        {{ config.category.name | languageTransform | async }}
+        {{ config.category.name | languageTransform: 'System' | async }}
       </ng-template>
     </kendo-grid-column>
 
     <!--Active-->
     <kendo-grid-column
       *ngIf="!device.deviceType.isMobile"
-      title="{{ 'label.title.active' | languageTransform | async }}"
+      title="{{ 'label.title.active' | languageTransform: 'System' | async }}"
       field="active"
       [filterable]="false">
       <ng-template kendoGridCellTemplate let-config>
@@ -65,7 +65,7 @@
     <!--Over Due-->
     <kendo-grid-column
       *ngIf="!device.deviceType.isMobile"
-      title="{{ 'label.title.overdue' | languageTransform | async }}"
+      title="{{ 'label.title.overdue' | languageTransform: 'System' | async }}"
       field="plan.isOverDue"
       [filterable]="false">
       <ng-template kendoGridCellTemplate let-config>

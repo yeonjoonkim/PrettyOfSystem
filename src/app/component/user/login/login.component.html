@@ -5,7 +5,9 @@
   <!--Error Message-->
   <flex-col *ngIf="login.errorMsg">
     <flex-col-item id="error-col-item">
-      <error-message-item>{{ login.errorMsg | languageTransform | async }}</error-message-item>
+      <error-message-item>{{
+        login.errorMsg | languageTransform: 'System' | async
+      }}</error-message-item>
     </flex-col-item>
   </flex-col>
   <flex-col *ngIf="!sendOTP">
@@ -27,7 +29,7 @@
     </flex-col-item>
     <flex-col-item *ngIf="!sendOTP && loginOption.phoneNumber">
       <button id="otp-btn" kendoButton [disabled]="!validator.phone" (click)="sendPhoneOTP()">
-        {{ 'label.title.sendverification' | languageTransform | async }}
+        {{ 'label.title.sendverification' | languageTransform: 'System' | async }}
       </button>
     </flex-col-item>
   </flex-col>
@@ -35,8 +37,12 @@
   <!-- OTP Verification (Phone) -->
   <flex-col *ngIf="sendOTP && loginOption.phoneNumber">
     <flex-col-item id="otp-verification-title">
-      <legend>{{ 'label.title.securityconfirmation' | languageTransform | async }}</legend>
-      <p>{{ 'messagesuccess.description.verificationotpsend' | languageTransform | async }}</p>
+      <legend>
+        {{ 'label.title.securityconfirmation' | languageTransform: 'System' | async }}
+      </legend>
+      <p>
+        {{ 'messagesuccess.description.verificationotpsend' | languageTransform: 'System' | async }}
+      </p>
       <p id="otp-verification-phone-number">{{ login.phoneNumber }}</p>
     </flex-col-item>
     <flex-col-item>
@@ -57,10 +63,10 @@
     <flex-col-item>
       <section id="otp-tool">
         <button id="otp-tool-btn" kendoButton (click)="reset()">
-          {{ 'label.title.back' | languageTransform | async }}
+          {{ 'label.title.back' | languageTransform: 'System' | async }}
         </button>
         <button id="otp-tool-btn" kendoButton (click)="resendOTP()">
-          {{ 'label.title.resend' | languageTransform | async }}
+          {{ 'label.title.resend' | languageTransform: 'System' | async }}
         </button>
       </section>
     </flex-col-item>
@@ -70,7 +76,7 @@
         kendoButton
         [disabled]="!enableOTPVerificationBtn || login.verifying"
         (click)="verifyPhoneOTP()">
-        {{ 'label.title.login' | languageTransform | async }}
+        {{ 'label.title.login' | languageTransform: 'System' | async }}
       </button>
     </flex-col-item>
   </flex-col>
@@ -83,10 +89,10 @@
         [isRequired]="true"></e-mail>
     </flex-col-item>
     <flex-col-item>
-      <kendo-label text="{{ 'label.title.password' | languageTransform | async }}">
+      <kendo-label text="{{ 'label.title.password' | languageTransform: 'System' | async }}">
         <kendo-textbox
           #textbox
-          placeholder="{{ 'placeholder.title.required' | languageTransform | async }}"
+          placeholder="{{ 'placeholder.title.required' | languageTransform: 'System' | async }}"
           [clearButton]="true"
           [(value)]="login.password"
           (valueChange)="onChangePassword()">
@@ -112,7 +118,7 @@
         kendoButton
         [disabled]="!validator.password || !validator.email"
         (click)="onClickLoginWithEmail()">
-        {{ 'label.title.login' | languageTransform | async }}
+        {{ 'label.title.login' | languageTransform: 'System' | async }}
       </button>
     </flex-col-item>
   </flex-col>
@@ -120,10 +126,10 @@
   <flex-col>
     <flex-col-item id="login-policy-container">
       <button id="privacy-policy-btn" (click)="presentPrivacyPolicy()">
-        {{ 'label.title.privacypolicy' | languageTransform | async }}
+        {{ 'label.title.privacypolicy' | languageTransform: 'System' | async }}
       </button>
       <button id="terms-and-condition-btn" (click)="presentTermandCondition()">
-        {{ 'label.title.termsandconditions' | languageTransform | async }}
+        {{ 'label.title.termsandconditions' | languageTransform: 'System' | async }}
       </button>
     </flex-col-item>
   </flex-col>

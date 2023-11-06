@@ -5,6 +5,7 @@ import { NetworkConnectionStatusService } from './service/global/network-connect
 import { ConnectionStatus } from '@capacitor/network';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from './service/user/user.service';
+import { UserClaimType } from './interface';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isLogin = isLogin;
     });
     this._user.claim$.pipe(takeUntil(this._onDestroy$)).subscribe(s => {
-      console.log(s?.claims);
+      console.log(s);
     });
   }
 

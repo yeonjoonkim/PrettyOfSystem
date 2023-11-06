@@ -47,7 +47,7 @@ export class SystemLanguageStorageService {
     if (refresh && isConnected) {
       await this.refresh();
       await this._stroage.storeExpiredDateTime();
-      console.log('language package refreshed');
+      console.log('language refreshed');
     }
     this.currentLanguage = await this.getCurrentLanguage();
     this.currentSelection = await this.getCurrentSelection();

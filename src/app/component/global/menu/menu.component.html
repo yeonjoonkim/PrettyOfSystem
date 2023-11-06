@@ -17,7 +17,7 @@
         >
         <ion-card-subtitle
           ><p *ngIf="{ role: user.currentRole$ | async } as data">
-            {{ data.role?.name | languageTransform | async }}
+            {{ data.role?.name | languageTransform: 'System' | async }}
           </p></ion-card-subtitle
         >
       </div>
@@ -36,7 +36,7 @@
           class="menu-selector"
           (click)="onChangeMenu('/booking')">
           <ion-icon slot="start" name="home-outline"></ion-icon>
-          {{ 'label.title.homepage' | languageTransform | async }}
+          {{ 'label.title.homepage' | languageTransform: 'System' | async }}
         </ion-item>
       </ion-accordion>
     </ion-accordion-group>
@@ -49,7 +49,7 @@
           class="menu-selector"
           [ngClass]="menu.name === selectedTitleHeading ? 'menu-active' : ''">
           <ion-icon slot="start" [name]="menu.icon"></ion-icon>
-          {{ menu.name | languageTransform | async }}
+          {{ menu.name | languageTransform: 'System' | async }}
         </ion-item>
 
         <!--Content-->
@@ -61,7 +61,7 @@
             class="content-selector"
             (click)="onChangeMenu(content.url)">
             <ion-icon slot="start" name="{{ content.icon }}"></ion-icon>
-            {{ content.name | languageTransform | async }}
+            {{ content.name | languageTransform: 'System' | async }}
           </ion-item>
         </ion-list>
       </ion-accordion>
@@ -70,19 +70,19 @@
         <flex-col id="footer">
           <flex-col-item id="log-in-out-btn">
             <span id="log-out-btn" *ngIf="user.isLoggedin$ | async" (click)="logout()">
-              {{ 'button.title.logout' | languageTransform | async }}</span
+              {{ 'button.title.logout' | languageTransform: 'System' | async }}</span
             >
             <span *ngIf="user.isLoggedout$ | async" id="log-in-btn" (click)="login()">
-              {{ 'button.title.login' | languageTransform | async }}
+              {{ 'button.title.login' | languageTransform: 'System' | async }}
             </span>
           </flex-col-item>
           <flex-col-item id="privacy-terms-condition-btn">
             <span id="version">V 0.0.0</span>
             <span id="terms-conditions" (click)="presentTermsandConditions()">{{
-              'label.title.termsandconditions' | languageTransform | async
+              'label.title.termsandconditions' | languageTransform: 'System' | async
             }}</span>
             <span id="privacy" (click)="presentPrivacyPolicy()">{{
-              'label.title.privacypolicy' | languageTransform | async
+              'label.title.privacypolicy' | languageTransform: 'System' | async
             }}</span>
           </flex-col-item>
         </flex-col>

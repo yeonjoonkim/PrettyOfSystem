@@ -19,6 +19,7 @@
         [isRequired]="true"
         [selection]="current.serviceFilters"
         [(selected)]="selectedServiceFilter"
+        type="user"
         [readOnly]="form.readOnly"
         (selectedChange)="onChangeServiceFilter()"></name-value-pair-single-dropdown-selection>
     </flex-col-item>
@@ -57,7 +58,7 @@
                 [spinners]="false"
                 [min]="0"
                 [readonly]="true"></kendo-numerictextbox>
-              <p>{{ 'label.title.minute' | languageTransform | async }}</p>
+              <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
             </flex-row-item>
           </flex-row>
         </flex-col-item>
@@ -67,7 +68,7 @@
     <!-- Number of Coupon & Expiry Month-->
     <flex-row>
       <flex-row-item>
-        <kendo-label [text]="'label.title.coupon' | languageTransform | async">
+        <kendo-label [text]="'label.title.coupon' | languageTransform: 'System' | async">
           <kendo-numerictextbox
             id="number-of-coupon"
             [(ngModel)]="current.coupon.numOfCoupon"
@@ -83,7 +84,7 @@
         </kendo-label>
       </flex-row-item>
       <flex-row-item>
-        <kendo-label [text]="'label.title.expirymonth' | languageTransform | async">
+        <kendo-label [text]="'label.title.expirymonth' | languageTransform: 'System' | async">
           <kendo-numerictextbox
             id="expired-month"
             [(ngModel)]="current.coupon.expiryMonth"
@@ -124,7 +125,9 @@
     <flex-row>
       <flex-row-item>
         <kendo-label
-          text="{{ 'label.title.originalprice' | languageTransform | async }}"></kendo-label>
+          text="{{
+            'label.title.originalprice' | languageTransform: 'System' | async
+          }}"></kendo-label>
         <div class="total-price-original">
           <p>$</p>
           <kendo-numerictextbox
@@ -137,7 +140,9 @@
       </flex-row-item>
       <flex-row-item>
         <kendo-label
-          text="{{ 'label.title.discountedprice' | languageTransform | async }}"></kendo-label>
+          text="{{
+            'label.title.discountedprice' | languageTransform: 'System' | async
+          }}"></kendo-label>
         <div class="total-price-discounted">
           <p>$</p>
           <kendo-numerictextbox

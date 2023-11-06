@@ -6,7 +6,7 @@
       kendoGridAddCommand
       (click)="onClickCreate()"
       *ngIf="isAuthorisedRole() && !isReachToMax">
-      {{ 'button.title.adduser' | languageTransform | async }}
+      {{ 'button.title.adduser' | languageTransform: 'System' | async }}
     </button>
   </ng-template>
 
@@ -15,7 +15,7 @@
     [sortable]="true"
     [width]="100"
     field="firstName"
-    title="{{ 'label.title.firstName' | languageTransform | async }}">
+    title="{{ 'label.title.firstName' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-emp>
       <p (click)="onClickEdit(emp)" id="full-name">{{ emp.firstName }} {{ emp.lastName }}</p>
     </ng-template>
@@ -26,9 +26,9 @@
     [sortable]="true"
     [width]="75"
     field="email"
-    title="{{ 'label.title.role' | languageTransform | async }}">
+    title="{{ 'label.title.role' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-emp>
-      <p>{{ emp.role.name | languageTransform | async }}</p>
+      <p>{{ emp.role.name | languageTransform: 'System' | async }}</p>
     </ng-template>
   </kendo-grid-column>
 
@@ -37,7 +37,7 @@
     [sortable]="true"
     [width]="125"
     field="phoneNumber"
-    title="{{ 'label.title.phoneNumber' | languageTransform | async }}">
+    title="{{ 'label.title.phoneNumber' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-emp>
       <a id="phone-number" href="tel:{{ emp.phoneNumber }}"
         ><span>{{ emp.phoneNumber }}</span></a
@@ -51,7 +51,7 @@
     [sortable]="true"
     [width]="75"
     field="active"
-    title="{{ 'label.title.active' | languageTransform | async }}">
+    title="{{ 'label.title.active' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-emp>
       <input
         id="active-check-box"
@@ -68,7 +68,7 @@
     [sortable]="true"
     [width]="75"
     field="displayInSystem"
-    title="{{ 'label.title.schedule' | languageTransform | async }}">
+    title="{{ 'label.title.schedule' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-emp>
       <input
         id="display-check-box"

@@ -4,7 +4,9 @@
       *ngIf="filterable"
       [(ngModel)]="query"
       (ngModelChange)="onQueryChange()"
-      placeholder="{{ 'placeholder.title.search' | languageTransform | async }}"></kendo-textbox>
+      placeholder="{{
+        'placeholder.title.search' | languageTransform: 'System' | async
+      }}"></kendo-textbox>
   </flex-col-item>
   <flex-col-item>
     <kendo-grid
@@ -17,11 +19,11 @@
       (cellClick)="onClickCell($event)">
       <kendo-grid-column>
         <ng-template kendoGridCellTemplate let-data>
-          {{ data.name | languageTransform | async }}
+          {{ data.name | languageTransform: 'System' | async }}
         </ng-template>
       </kendo-grid-column>
       <ng-template kendoGridNoRecordsTemplate>
-        <p>{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
+        <p>{{ 'placeholder.description.nodata' | languageTransform: 'System' | async }}</p>
       </ng-template>
     </kendo-grid>
   </flex-col-item>

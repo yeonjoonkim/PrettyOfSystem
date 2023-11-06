@@ -1,4 +1,4 @@
-<kendo-label text="{{ 'language.title.language' | languageTransform | async }}">
+<kendo-label text="{{ 'language.title.language' | languageTransform: 'System' | async }}">
   <name-value-pair-single-dropdown-selection
     [selection]="languages"
     [(selected)]="selected"

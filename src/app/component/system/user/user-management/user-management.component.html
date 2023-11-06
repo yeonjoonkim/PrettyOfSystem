@@ -2,7 +2,7 @@
   <flex-col>
     <flex-col-item>
       <legend>
-        {{ 'label.title.user' | languageTransform | async }}
+        {{ 'label.title.user' | languageTransform: 'System' | async }}
       </legend>
     </flex-col-item>
     <flex-row>
@@ -32,17 +32,17 @@
         <ng-template kendoGridToolbarTemplate>
           <button kendoGridEditCommand icon="refresh" (click)="refresh()"></button>
           <button kendoGridAddCommand (click)="onClickCreateSystemAdmin()">
-            {{ 'label.title.newsystemadmin' | languageTransform | async }}
+            {{ 'label.title.newsystemadmin' | languageTransform: 'System' | async }}
           </button>
           <button kendoGridAddCommand (click)="onClickCreateUser()">
-            {{ 'button.title.adduser' | languageTransform | async }}
+            {{ 'button.title.adduser' | languageTransform: 'System' | async }}
           </button>
         </ng-template>
 
         <!-- First Name -->
         <kendo-grid-column
           *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
-          title="{{ 'label.title.firstname' | languageTransform | async }}"
+          title="{{ 'label.title.firstname' | languageTransform: 'System' | async }}"
           field="firstName">
           <ng-template kendoGridCellTemplate let-user>
             <span
@@ -57,7 +57,7 @@
         <!-- Last Name -->
         <kendo-grid-column
           *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
-          title="{{ 'label.title.lastname' | languageTransform | async }}"
+          title="{{ 'label.title.lastname' | languageTransform: 'System' | async }}"
           field="lastName">
           <ng-template kendoGridCellTemplate let-user>
             <span>{{ user.lastName }}</span>
@@ -66,7 +66,7 @@
 
         <!--Full Name-->
         <kendo-grid-column
-          title="{{ 'label.title.name' | languageTransform | async }}"
+          title="{{ 'label.title.name' | languageTransform: 'System' | async }}"
           *ngIf="device.deviceType.isMobile"
           field="firstName">
           <ng-template kendoGridCellTemplate let-user>
@@ -81,7 +81,7 @@
 
         <!--Phone-->
         <kendo-grid-column
-          title="{{ 'label.title.phone' | languageTransform | async }}"
+          title="{{ 'label.title.phone' | languageTransform: 'System' | async }}"
           field="phoneNumber">
           <ng-template kendoGridCellTemplate let-user>
             <a id="phone-number" href="tel:{{ user.phoneNumber }}"
@@ -95,7 +95,7 @@
         <!--Email-->
         <kendo-grid-column
           *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
-          title="{{ 'label.title.email' | languageTransform | async }}"
+          title="{{ 'label.title.email' | languageTransform: 'System' | async }}"
           field="email">
           <ng-template kendoGridCellTemplate let-user>
             <a id="email" href="mailto: {{ user.email }}"
@@ -111,7 +111,7 @@
           *ngIf="device.deviceType.isDesktop || device.deviceType.isTablet"
           id="shop-count"
           field="associatedShops.length"
-          title="{{ 'label.title.shop' | languageTransform | async }}">
+          title="{{ 'label.title.shop' | languageTransform: 'System' | async }}">
           <ng-template kendoGridCellTemplate let-user>
             <span>{{ user.associatedShops.length }}</span>
           </ng-template>
@@ -120,7 +120,7 @@
         <!--Associated Shop Name-->
         <kendo-grid-column
           *ngIf="!device.deviceType.isMobile"
-          title="{{ 'label.title.associatedShop' | languageTransform | async }}">
+          title="{{ 'label.title.associatedShop' | languageTransform: 'System' | async }}">
           <ng-template kendoGridCellTemplate let-user>
             <div id="associated-shop-name">
               <ng-container *ngFor="let shop of criteria.shopFilter; let i = index">
@@ -160,7 +160,7 @@
                       i === 0 &&
                       z === 0
                     ">
-                    <span>{{ 'label.title.all' | languageTransform | async }}</span>
+                    <span>{{ 'label.title.all' | languageTransform: 'System' | async }}</span>
                   </div>
                 </ng-container>
               </ng-container>
@@ -173,7 +173,7 @@
           *ngIf="!device.deviceType.isMobile"
           id="admin"
           field="isSystemAdmin"
-          title="{{ 'label.title.admin' | languageTransform | async }}">
+          title="{{ 'label.title.admin' | languageTransform: 'System' | async }}">
           <ng-template kendoGridCellTemplate let-data>
             <input type="checkbox" kendoCheckBox [checked]="data.isSystemAdmin" disabled />
           </ng-template>
@@ -183,7 +183,7 @@
         <kendo-grid-column
           id="disabled"
           field="disabledAccount"
-          title="{{ 'label.title.active' | languageTransform | async }}">
+          title="{{ 'label.title.active' | languageTransform: 'System' | async }}">
           <ng-template kendoGridCellTemplate let-data>
             <input type="checkbox" kendoCheckBox [checked]="!data.disabledAccount" disabled />
           </ng-template>

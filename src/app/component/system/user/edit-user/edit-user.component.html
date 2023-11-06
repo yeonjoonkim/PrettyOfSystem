@@ -17,7 +17,7 @@
         [toggleable]="true"
         [selected]="page.name === currentPage.name"
         (selectedChange)="onPageChange(page)">
-        {{ page.name | languageTransform | async }}
+        {{ page.name | languageTransform: 'System' | async }}
       </button>
     </kendo-buttongroup>
   </flex-col>
@@ -115,7 +115,7 @@
   <flex-col *ngIf="currentPage.value === 'page2'">
     <flex-col-item>
       <legend>
-        {{ 'label.title.associatedshop' | languageTransform | async }}
+        {{ 'label.title.associatedshop' | languageTransform: 'System' | async }}
       </legend>
     </flex-col-item>
     <flex-col-item>
@@ -126,11 +126,11 @@
             kendoGridAddCommand
             (click)="onClickAddAssociatedShopRole($event)"
             *ngIf="!form.readOnly">
-            {{ 'button.title.add' | languageTransform | async }}
+            {{ 'button.title.add' | languageTransform: 'System' | async }}
           </button>
         </ng-template>
         <kendo-grid-column
-          title="{{ 'label.title.businessname' | languageTransform | async }}"
+          title="{{ 'label.title.businessname' | languageTransform: 'System' | async }}"
           [width]="150">
           <ng-template kendoGridCellTemplate let-associatedShop>
             <ng-container *ngFor="let shop of shopFilters">
@@ -139,7 +139,7 @@
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column
-          title="{{ 'label.title.role' | languageTransform | async }}"
+          title="{{ 'label.title.role' | languageTransform: 'System' | async }}"
           [width]="125">
           <ng-template kendoGridCellTemplate let-shop>
             <name-value-pair-single-dropdown-selection
@@ -157,7 +157,7 @@
         </kendo-grid-column>
         <kendo-grid-column
           [width]="75"
-          title="{{ 'label.title.displayinbooking' | languageTransform | async }}">
+          title="{{ 'label.title.displayinbooking' | languageTransform: 'System' | async }}">
           <ng-template kendoGridCellTemplate let-shop>
             <input
               id="associated-shop-active"
@@ -168,7 +168,7 @@
               [disabled]="form.readOnly" />
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column title="{{ 'label.title.active' | languageTransform | async }}">
+        <kendo-grid-column title="{{ 'label.title.active' | languageTransform: 'System' | async }}">
           <ng-template kendoGridCellTemplate let-shop>
             <input
               id="associated-shop-active"

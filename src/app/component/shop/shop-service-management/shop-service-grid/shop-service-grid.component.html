@@ -13,27 +13,76 @@
   <kendo-grid-column
     [sortable]="true"
     field="titleProp"
-    title="{{ 'label.title.name' | languageTransform | async }}">
+    title="{{ 'label.title.name' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
-      <p (click)="onClickEdit(service)" id="service-name">{{ service.titleProp }}</p>
+      <p
+        (click)="onClickEdit(service)"
+        id="service-name"
+        *ngIf="!isCompletedRequest(service.id) && translatedRequests">
+        {{ service.titleProp }}
+      </p>
+      <p
+        (click)="onClickEdit(service)"
+        id="service-name"
+        *ngIf="isCompletedRequest(service.id) && translatedRequests">
+        {{ service.title | languageTransform: 'User' | async }}
+      </p>
     </ng-template>
   </kendo-grid-column>
 
-  <!-- Category -->
   <kendo-grid-column
     [sortable]="true"
-    field="relatedService.value"
-    title="{{ 'label.title.category' | languageTransform | async }}">
+    field="insurance"
+    title="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
-      <p>{{ service.relatedService.name | languageTransform | async }}</p>
+      <input
+        id="check-box"
+        kendoCheckBox
+        type="checkbox"
+        [disabled]="true"
+        [ngModel]="service.isInsuranceCover" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column
+    *ngIf="!device.deviceType.isMobile"
+    [sortable]="true"
+    id="recommandForPregnant"
+    field="recommandForPregnant"
+    title="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
+    <ng-template kendoGridCellTemplate let-service>
+      <input
+        id="check-box"
+        kendoCheckBox
+        type="checkbox"
+        [disabled]="true"
+        [ngModel]="service.recommandForPregnant" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!--Oil-->
+  <kendo-grid-column
+    *ngIf="!device.deviceType.isMobile"
+    id="oil"
+    [sortable]="true"
+    field="isOil"
+    title="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
+    <ng-template kendoGridCellTemplate let-service>
+      <input
+        id="check-box"
+        kendoCheckBox
+        type="checkbox"
+        [disabled]="true"
+        [ngModel]="service.isOil" />
     </ng-template>
   </kendo-grid-column>
 
   <!--Specialist-->
   <kendo-grid-column
     *ngIf="!device.deviceType.isMobile"
+    id="specialist"
     [sortable]="true"
-    title="{{ 'label.title.specializedemployees' | languageTransform | async }}">
+    title="{{ 'label.title.specializedemployees' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
       <name-value-pair-multi-dropdown-selection
         [selected]="service.specializedEmployees"
@@ -44,7 +93,7 @@
   </kendo-grid-column>
 
   <!-- Title -->
-  <kendo-grid-column [width]="70" title="{{ 'label.title.title' | languageTransform | async }}">
+  <kendo-grid-column title="{{ 'label.title.title' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
       <div *ngFor="let request of translatedRequests">
         <div
@@ -60,22 +109,22 @@
           (click)="handleRequeue(request, service, 'title')"
           *ngIf="request.serviceId === service.id && request.format === 'title'">
           <span id="create" *ngIf="request.status === 'create'">{{
-            'label.title.created' | languageTransform | async
+            'label.title.created' | languageTransform: 'System' | async
           }}</span>
           <span id="pending" *ngIf="request.status === 'pending'">{{
-            'label.title.pending' | languageTransform | async
+            'label.title.pending' | languageTransform: 'System' | async
           }}</span>
           <span id="inprogress" *ngIf="request.status === 'inProgress'">{{
-            'label.title.inprogress' | languageTransform | async
+            'label.title.inprogress' | languageTransform: 'System' | async
           }}</span>
           <span id="success" *ngIf="request.status === 'Success'">{{
-            'label.title.success' | languageTransform | async
+            'label.title.success' | languageTransform: 'System' | async
           }}</span>
           <span id="completed" *ngIf="request.status === 'Completed'">{{
-            'label.title.view' | languageTransform | async
+            'label.title.view' | languageTransform: 'System' | async
           }}</span>
           <span id="fail" *ngIf="request.status === 'Failed'">{{
-            'label.title.fail' | languageTransform | async
+            'label.title.fail' | languageTransform: 'System' | async
           }}</span>
         </div>
       </div>
@@ -83,9 +132,7 @@
   </kendo-grid-column>
 
   <!-- Description -->
-  <kendo-grid-column
-    [width]="70"
-    title="{{ 'label.title.description' | languageTransform | async }}">
+  <kendo-grid-column title="{{ 'label.title.description' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
       <div *ngFor="let request of translatedRequests">
         <div
@@ -101,22 +148,22 @@
           (click)="handleRequeue(request, service, 'description')"
           *ngIf="request.serviceId === service.id && request.format === 'description'">
           <span id="create" *ngIf="request.status === 'create'">{{
-            'label.title.created' | languageTransform | async
+            'label.title.created' | languageTransform: 'System' | async
           }}</span>
           <span id="pending" *ngIf="request.status === 'pending'">{{
-            'label.title.pending' | languageTransform | async
+            'label.title.pending' | languageTransform: 'System' | async
           }}</span>
           <span id="inprogress" *ngIf="request.status === 'inProgress' && !isFailed(request)">{{
-            'label.title.inprogress' | languageTransform | async
+            'label.title.inprogress' | languageTransform: 'System' | async
           }}</span>
           <span id="success" *ngIf="request.status === 'Success'">{{
-            'label.title.success' | languageTransform | async
+            'label.title.success' | languageTransform: 'System' | async
           }}</span>
           <span id="completed" *ngIf="request.status === 'Completed'">{{
-            'label.title.view' | languageTransform | async
+            'label.title.view' | languageTransform: 'System' | async
           }}</span>
           <span id="fail" *ngIf="request.status === 'Failed' || isFailed(request)">{{
-            'label.title.fail' | languageTransform | async
+            'label.title.fail' | languageTransform: 'System' | async
           }}</span>
         </div>
       </div>
@@ -128,62 +175,32 @@
       <flex-col>
         <flex-row id="options">
           <flex-row-item>
-            <legend id="option-title">
-              {{ 'label.title.option' | languageTransform | async }}
-            </legend>
-          </flex-row-item>
-          <flex-row-item>
-            <div id="insurance-cover">
-              <kendo-label text="{{ 'label.title.insurance' | languageTransform | async }}">
-                <input
-                  kendoCheckBox
-                  type="checkbox"
-                  [disabled]="true"
-                  [ngModel]="service.isInsuranceCover" />
-              </kendo-label>
-            </div>
-            <div id="pregnant">
-              <kendo-label text="{{ 'label.title.pregnant' | languageTransform | async }}">
-                <input
-                  kendoCheckBox
-                  type="checkbox"
-                  [disabled]="true"
-                  [ngModel]="service.recommandForPregnant" />
-              </kendo-label>
-            </div>
-            <div id="oil">
-              <kendo-label text="{{ 'label.title.oil' | languageTransform | async }}">
-                <input kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="service.isOil" />
-              </kendo-label>
+            <div *ngFor="let opt of service.options">
+              <!--Min -->
+              <flex-row class="options">
+                <flex-row-item class="minute-option">
+                  <kendo-numerictextbox
+                    format="##"
+                    [(value)]="opt.min"
+                    [decimals]="0"
+                    [spinners]="false"
+                    [readonly]="true"></kendo-numerictextbox>
+                  <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
+                </flex-row-item>
+                <!-- Price -->
+                <flex-row-item class="price-option">
+                  <p>$</p>
+                  <kendo-numerictextbox
+                    [(value)]="opt.price"
+                    [decimals]="2"
+                    [min]="0"
+                    [spinners]="false"
+                    [readonly]="true"></kendo-numerictextbox>
+                </flex-row-item>
+              </flex-row>
             </div>
           </flex-row-item>
         </flex-row>
-        <flex-col-item>
-          <div *ngFor="let opt of service.options">
-            <!--Min -->
-            <flex-row class="options">
-              <flex-row-item class="minute-option">
-                <kendo-numerictextbox
-                  format="##"
-                  [(value)]="opt.min"
-                  [decimals]="0"
-                  [spinners]="false"
-                  [readonly]="true"></kendo-numerictextbox>
-                <p>{{ 'label.title.minute' | languageTransform | async }}</p>
-              </flex-row-item>
-              <!-- Price -->
-              <flex-row-item class="price-option">
-                <p>$</p>
-                <kendo-numerictextbox
-                  [(value)]="opt.price"
-                  [decimals]="2"
-                  [min]="0"
-                  [spinners]="false"
-                  [readonly]="true"></kendo-numerictextbox>
-              </flex-row-item>
-            </flex-row>
-          </div>
-        </flex-col-item>
       </flex-col>
     </div>
   </ng-template>

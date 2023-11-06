@@ -15,7 +15,7 @@
     <kendo-buttongroup selection="single" width="100%">
       <!--Information Button -->
       <button kendoButton [toggleable]="true" (click)="onClickInfo()" [(selected)]="display.info">
-        {{ 'label.title.info' | languageTransform | async }}
+        {{ 'label.title.info' | languageTransform: 'System' | async }}
       </button>
       <!--Subscription Button-->
       <button
@@ -23,7 +23,7 @@
         [toggleable]="true"
         (click)="onClickHours()"
         [(selected)]="display.workHours">
-        {{ 'label.title.workhours' | languageTransform | async }}
+        {{ 'label.title.workhours' | languageTransform: 'System' | async }}
       </button>
       <!--Address Button-->
       <button
@@ -31,7 +31,7 @@
         [toggleable]="true"
         (click)="onClickAddress()"
         [(selected)]="display.address">
-        {{ 'label.title.address' | languageTransform | async }}
+        {{ 'label.title.address' | languageTransform: 'System' | async }}
       </button>
       <!--Subscription Button-->
       <button
@@ -39,7 +39,7 @@
         [toggleable]="true"
         (click)="onClickSubscription()"
         [(selected)]="display.subscription">
-        {{ 'label.title.subscription' | languageTransform | async }}
+        {{ 'label.title.subscription' | languageTransform: 'System' | async }}
       </button>
     </kendo-buttongroup>
 
@@ -47,11 +47,11 @@
     <div *ngIf="display.info" id="info-container">
       <flex-row>
         <flow-row-item>
-          <legend>{{ 'label.title.info' | languageTransform | async }}</legend>
+          <legend>{{ 'label.title.info' | languageTransform: 'System' | async }}</legend>
         </flow-row-item>
         <!--Active-->
         <flex-row-item id="active-box">
-          <kendo-label text="{{ 'label.title.active' | languageTransform | async }}">
+          <kendo-label text="{{ 'label.title.active' | languageTransform: 'System' | async }}">
             <input
               type="checkbox"
               kendoCheckBox
@@ -170,11 +170,11 @@
       <flex-row id="subscription-title">
         <flex-row-item>
           <legend>
-            {{ 'label.title.subscription' | languageTransform | async }}
+            {{ 'label.title.subscription' | languageTransform: 'System' | async }}
           </legend>
         </flex-row-item>
         <flex-row-item id="active-box">
-          <kendo-label text="{{ 'label.title.overdue' | languageTransform | async }}">
+          <kendo-label text="{{ 'label.title.overdue' | languageTransform: 'System' | async }}">
             <input
               type="checkbox"
               kendoCheckBox

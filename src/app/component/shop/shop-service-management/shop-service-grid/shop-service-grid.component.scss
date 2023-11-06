@@ -75,6 +75,10 @@
     max-width: 50px;
   }
 }
+#check-box {
+  margin: 0px;
+  margin-left: 5px;
+}
 
 #options {
   display: flex;
@@ -85,9 +89,10 @@
   padding: 0px 25px;
 }
 
-#insurance-cover,
-#pregnant,
-#oil {
-  display: flex;
-  justify-content: flex-end;
+@media (max-width: 500px) {
+  #recommandForPregnant,
+  #oil,
+  #specialist {
+    display: none;
+  }
 }

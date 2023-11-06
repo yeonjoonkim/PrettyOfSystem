@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, firstValueFrom, map, of, switchMap } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  combineLatestWith,
+  firstValueFrom,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -22,6 +30,7 @@ import { UserRoleService } from '../user/user-role/user-role.service';
 import { ShopPackageRepositoryService } from 'src/app/firebase/shop-repository/shop-package-repository/shop-package-repository.service';
 import { ShopCouponRepositoryService } from 'src/app/firebase/shop-repository/shop-coupon-repository/shop-coupon-repository.service';
 import { ShopPictureRepositoryService } from 'src/app/firebase/shop-repository/shop-picture-repository/shop-picture-repository.service';
+import { SystemLanguageManagementService } from '../global/language/system-language-management/system-language-management.service';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +64,8 @@ export class ShopService {
     private _extraRepo: ShopExtraRepositoryService,
     private _packageRepo: ShopPackageRepositoryService,
     private _couponRepo: ShopCouponRepositoryService,
-    private _pictureRepo: ShopPictureRepositoryService
+    private _pictureRepo: ShopPictureRepositoryService,
+    private _systemLanguage: SystemLanguageManagementService
   ) {
     this.userName$ = this._user.employeName$;
     this.config$ = this._user.currentShopConfig$;
@@ -170,21 +180,55 @@ export class ShopService {
   }
 
   private extraFilterListener() {
-    this.extraFilter$ = this.extras$.pipe(
-      map(extras => {
-        return extras.map(ex => {
-          return { name: ex.titleProp, value: ex.id };
-        });
+    this.extraFilter$ = combineLatest([this.config$, this.extras$]).pipe(
+      map(([config, extras]) => {
+        if (config !== null) {
+          return extras
+            .map(s => {
+              return {
+                name: s.title + '.' + this._systemLanguage.currentLanguage,
+                value: s.id,
+                titleProp: s.titleProp,
+              };
+            })
+            .map(s => {
+              const translated = config.package[s.name];
+              const name = translated !== undefined ? translated : s.titleProp;
+              return { name: name, value: s.value };
+            });
+        } else {
+          return extras.map(s => {
+            return { name: s.titleProp, value: s.id };
+          });
+        }
       })
     );
   }
 
   private serviceFilterListener() {
-    this.serviceFilter$ = this.services$.pipe(
-      map(services => {
-        return services.map(service => {
-          return { name: service.titleProp, value: service.id };
-        });
+    this.serviceFilter$ = combineLatest([this.config$, this.services$]).pipe(
+      map(([config, services]) => {
+        if (config !== null) {
+          const result = services
+            .map(s => {
+              return {
+                name: s.title + '.' + this._systemLanguage.currentLanguage,
+                value: s.id,
+                titleProp: s.titleProp,
+              };
+            })
+            .map(s => {
+              const translated = config.package[s.name];
+              const name = translated !== undefined ? translated : s.titleProp;
+              return { name: name, value: s.value };
+            });
+
+          return result;
+        } else {
+          return services.map(s => {
+            return { name: s.titleProp, value: s.id };
+          });
+        }
       })
     );
   }

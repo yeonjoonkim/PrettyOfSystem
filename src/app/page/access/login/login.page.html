@@ -5,7 +5,7 @@
     </div>
     <div id="btn-container">
       <button id="homepage-btn" kendoButton (click)="redirectToBooking()">
-        {{ 'label.title.homepage' | languageTransform | async }}
+        {{ 'label.title.homepage' | languageTransform:'System' | async }}
       </button>
       <booking-language-selection></booking-language-selection>
     </div>

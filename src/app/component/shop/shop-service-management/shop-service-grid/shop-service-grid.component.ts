@@ -24,9 +24,9 @@ export class ShopServiceGridComponent implements OnInit {
   @Output() onEdit = new EventEmitter<ShopServiceModalDocumentProp>();
   @Output() onCreate = new EventEmitter<boolean>();
 
-  @Input() services: ShopServiceDocumentType[] = [];
-  @Input() extras: ShopExtraDocumentType[] = [];
-  @Input() translatedRequests: ChatGptTranslateDocumentType[] = [];
+  @Input() services!: ShopServiceDocumentType[];
+  @Input() extras!: ShopExtraDocumentType[];
+  @Input() translatedRequests!: ChatGptTranslateDocumentType[];
   @Input() role: RoleConfigurationType | null = null;
   @Input() specialists: NameValuePairType[] = [];
   @Input() isReachToMax: boolean = true;
@@ -68,6 +68,15 @@ export class ShopServiceGridComponent implements OnInit {
       const isTitle = option === 'title';
       await this.handlePackageProp(service, isTitle);
     }
+  }
+
+  public isCompletedRequest(serviceId: string) {
+    const titleRequest = this.translatedRequests?.find(
+      s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
+    );
+    return titleRequest !== undefined
+      ? titleRequest.status === Constant.API.TranslateStatus.Completed
+      : false;
   }
 
   public isFailed(doc: ChatGptTranslateDocumentType) {
