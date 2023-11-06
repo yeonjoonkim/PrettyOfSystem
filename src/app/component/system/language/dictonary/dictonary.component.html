@@ -26,23 +26,23 @@
           <ng-template kendoGridToolbarTemplate>
             <button kendoGridAddCommand (click)="setLanguageSelection()" icon="refresh"></button>
             <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
-              {{ 'button.title.add' | languageTransform | async }}
+              {{ 'button.title.add' | languageTransform: 'System' | async }}
             </button>
             <button kendoGridAddCommand (click)="export()">
-              {{ 'button.title.download' | languageTransform | async }}
+              {{ 'button.title.download' | languageTransform: 'System' | async }}
             </button>
             <button kendoGridAddCommand (click)="allExport()">
-              {{ 'button.title.downloadall' | languageTransform | async }}
+              {{ 'button.title.downloadall' | languageTransform: 'System' | async }}
             </button>
           </ng-template>
           <kendo-grid-column
-            title="{{ 'label.title.key' | languageTransform | async }}"
+            title="{{ 'label.title.key' | languageTransform: 'System' | async }}"
             [filterable]="true"
             field="key">
           </kendo-grid-column>
 
           <kendo-grid-column
-            title="{{ 'label.title.value' | languageTransform | async }}"
+            title="{{ 'label.title.value' | languageTransform: 'System' | async }}"
             [filterable]="true"
             field="value">
           </kendo-grid-column>

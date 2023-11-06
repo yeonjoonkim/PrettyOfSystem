@@ -1,7 +1,7 @@
 <flex-col id="work-hours-container">
   <!--Title-->
   <legend *ngIf="requiresTitle">
-    {{ 'label.title.operatinghours' | languageTransform | async }}
+    {{ 'label.title.operatinghours' | languageTransform: 'System' | async }}
   </legend>
   <flex-row-item
     id="time-container"
@@ -17,7 +17,7 @@
         [intervalMin]="intervalMin"
         [readOnly]="readOnly"></time-picker>
       <button kendoButton id="copy-button" (click)="onClickCopy()">
-        {{ 'button.title.copy' | languageTransform | async }}
+        {{ 'button.title.copy' | languageTransform: 'System' | async }}
       </button>
     </time-picker-group>
   </flex-row-item>
@@ -27,7 +27,7 @@
       class="form-error-container"
       *ngIf="!inputValidator && (action === 'create' || action === 'edit')">
       <kendo-formerror>{{
-        'messageerror.description.workhours' | languageTransform | async
+        'messageerror.description.workhours' | languageTransform: 'System' | async
       }}</kendo-formerror>
     </div>
   </flex-col-item>

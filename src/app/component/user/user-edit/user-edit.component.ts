@@ -4,6 +4,7 @@ import { IFormHeaderModalProp, IUser, NameValuePairType } from 'src/app/interfac
 import { UserService } from 'src/app/service/user/user.service';
 import * as Constant from 'src/app/constant/constant';
 import { cloneDeep } from 'lodash-es';
+import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
   selector: 'user-edit',
@@ -28,11 +29,13 @@ export class UserEditComponent implements OnInit, DoCheck {
     password: false,
   };
   public user!: IUser;
+  private _previousLanguage: string = '';
   private _encryptedPassword: string = '';
   private _paramUser!: IUser;
   constructor(
     private _navParams: NavParams,
-    private _user: UserService
+    private _user: UserService,
+    private _global: GlobalService
   ) {}
   async ngDoCheck() {
     this.handleEnabledSaveBtn();
@@ -86,7 +89,13 @@ export class UserEditComponent implements OnInit, DoCheck {
 
     const result = await this._user.updateUser(this.user, this._paramUser);
     if (result) {
-      await this._user.modal.dismiss();
+      const isLanguageChange = this.user.setting.preferLanguage !== this._previousLanguage;
+
+      if (isLanguageChange) {
+        await this._global.language.onLanguageChange(this.user.setting.preferLanguage);
+      } else {
+        await this._user.modal.dismiss();
+      }
     }
   }
 
@@ -109,6 +118,7 @@ export class UserEditComponent implements OnInit, DoCheck {
       this.user = user;
       this.shopSelection = shopSelection;
       this.loading = false;
+      this._previousLanguage = this.user.setting.preferLanguage;
     }
   }
 }

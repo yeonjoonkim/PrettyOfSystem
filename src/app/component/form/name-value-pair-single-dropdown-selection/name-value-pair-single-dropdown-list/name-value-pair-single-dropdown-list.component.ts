@@ -55,6 +55,7 @@ export class NameValuePairSingleDropdownlistComponent implements OnInit {
 
   public onQueryChange() {
     const queryParam: string = this.query.toLowerCase();
+
     const english = this._defaultLanguageKeyPairValue.filter(eng =>
       eng.value.toLowerCase().includes(queryParam)
     );

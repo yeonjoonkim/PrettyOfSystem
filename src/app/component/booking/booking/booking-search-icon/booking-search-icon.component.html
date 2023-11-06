@@ -8,7 +8,7 @@
       }"
       (click)="onChangeIcon(btn)">
       <div id="btn-img"><img [src]="btn.value" /></div>
-      <div id="btn-title">{{ btn.name | languageTransform | async }}</div>
+      <div id="btn-title">{{ btn.name | languageTransform: 'System' | async }}</div>
     </div>
   </flex-row-item>
 </flex-row>

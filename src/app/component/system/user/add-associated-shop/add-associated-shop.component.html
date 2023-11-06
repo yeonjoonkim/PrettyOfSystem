@@ -23,6 +23,6 @@
 
   <!--Save Button-->
   <ion-button expand="block" (click)="onClickAdd()" [disabled]="!selectedRole.value">{{
-    'button.title.add' | languageTransform | async
+    'button.title.add' | languageTransform: 'System' | async
   }}</ion-button>
 </section>

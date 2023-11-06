@@ -1,6 +1,6 @@
 <ion-content>
   <!--Label-->
-  <kendo-label text="{{ 'label.title.description' | languageTransform | async }}">
+  <kendo-label text="{{ 'label.title.description' | languageTransform: 'System' | async }}">
     <kendo-textbox [(ngModel)]="category.description" size="large" [clearButton]="true">
     </kendo-textbox>
   </kendo-label>
@@ -34,9 +34,9 @@
 
   <!--Button-->
   <ion-button *ngIf="!editMode" expand="full" (click)="onClickSaveNewCategory()">{{
-    'button.title.save' | languageTransform | async
+    'button.title.save' | languageTransform: 'System' | async
   }}</ion-button>
   <ion-button *ngIf="editMode" expand="full" (click)="onClickEditCategory()">{{
-    'button.title.edit' | languageTransform | async
+    'button.title.edit' | languageTransform: 'System' | async
   }}</ion-button>
 </ion-content>

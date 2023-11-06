@@ -1,13 +1,13 @@
 <ion-content>
   <!--Label-->
   <ion-item>
-    <ion-label>{{ 'label.title.description' | languageTransform | async }}</ion-label>
+    <ion-label>{{ 'label.title.description' | languageTransform: 'System' | async }}</ion-label>
     <ion-input [(ngModel)]="categoryContent.description"></ion-input>
   </ion-item>
 
   <!--URL-->
   <ion-item>
-    <ion-label>{{ 'label.upper.url' | languageTransform | async }}</ion-label>
+    <ion-label>{{ 'label.upper.url' | languageTransform: 'System' | async }}</ion-label>
     <ion-input [(ngModel)]="categoryContent.url"></ion-input>
   </ion-item>
   <!--Icon-->
@@ -15,9 +15,9 @@
 
   <!--Button-->
   <ion-button *ngIf="!editMode" expand="full" (click)="onClickSaveNewCategoryContent()">{{
-    'button.title.save' | languageTransform | async
+    'button.title.save' | languageTransform: 'System' | async
   }}</ion-button>
   <ion-button *ngIf="editMode" expand="full" (click)="onClickEditCategoryContent()">{{
-    'button.title.edit' | languageTransform | async
+    'button.title.edit' | languageTransform: 'System' | async
   }}</ion-button>
 </ion-content>

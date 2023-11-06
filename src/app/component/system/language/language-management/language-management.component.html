@@ -2,7 +2,7 @@
   <div id="language-selection-list">
     <div id="language-selection-title">
       <legend>
-        {{ 'label.title.languageselection' | languageTransform | async }}
+        {{ 'label.title.languageselection' | languageTransform: 'System' | async }}
       </legend>
     </div>
 
@@ -16,20 +16,24 @@
       (cellClick)="onClickLanguage($event)">
       <ng-template kendoGridToolbarTemplate>
         <button kendoGridAddCommand (click)="onClickCreate()">
-          {{ 'button.title.add' | languageTransform | async }}
+          {{ 'button.title.add' | languageTransform: 'System' | async }}
         </button>
       </ng-template>
 
       <!-- Name -->
-      <kendo-grid-column title="{{ 'label.title.name' | languageTransform | async }}" field="name">
+      <kendo-grid-column
+        title="{{ 'label.title.name' | languageTransform: 'System' | async }}"
+        field="name">
       </kendo-grid-column>
       <!-- Code -->
-      <kendo-grid-column title="{{ 'label.title.code' | languageTransform | async }}" field="code">
+      <kendo-grid-column
+        title="{{ 'label.title.code' | languageTransform: 'System' | async }}"
+        field="code">
       </kendo-grid-column>
 
       <!--Default-->
       <kendo-grid-column
-        title="{{ 'label.title.default' | languageTransform | async }}"
+        title="{{ 'label.title.default' | languageTransform: 'System' | async }}"
         field="isDefault">
         <ng-template kendoGridCellTemplate let-selection>
           <input type="checkbox" kendoCheckBox [checked]="selection.isDefault" disabled />
@@ -43,7 +47,7 @@
   <div id="language-request-list">
     <div id="language-request-title">
       <legend>
-        {{ 'label.title.systemtranslaterequest' | languageTransform | async }}
+        {{ 'label.title.systemtranslaterequest' | languageTransform: 'System' | async }}
       </legend>
     </div>
     <!--Grid-->
@@ -60,7 +64,7 @@
       <kendo-grid-column title="Service Id" field="serviceId"> </kendo-grid-column>
       <!-- Format -->
       <kendo-grid-column
-        title="{{ 'label.title.format' | languageTransform | async }}"
+        title="{{ 'label.title.format' | languageTransform: 'System' | async }}"
         field="format">
       </kendo-grid-column>
       <!--Prop-->

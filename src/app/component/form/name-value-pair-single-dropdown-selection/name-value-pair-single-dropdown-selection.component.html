@@ -1,7 +1,7 @@
-<kendo-label text="{{ title | languageTransform | async }}" *ngIf="isRequiredTitle">
+<kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="isRequiredTitle">
   <kendo-button id="dropdown-list-btn" #dropdownListBtn>
     <span id="selected-name" #selectedName
-      >{{ selectedSelection?.name | languageTransform | async }}
+      >{{ selectedSelection?.name | languageTransform: 'System' | async }}
     </span>
     <span #dropDownArrow id="dropdown-list-down" class="k-icon k-i-arrow-60-down"></span>
   </kendo-button>
@@ -9,7 +9,7 @@
 
 <kendo-button id="dropdown-list-btn" #dropdownListBtn *ngIf="!isRequiredTitle">
   <span id="selected-name" #selectedName
-    >{{ selectedSelection?.name | languageTransform | async }}
+    >{{ selectedSelection?.name | languageTransform: 'System' | async }}
   </span>
   <span #dropDownArrow id="dropdown-list-down" class="k-icon k-i-arrow-60-down"></span>
 </kendo-button>

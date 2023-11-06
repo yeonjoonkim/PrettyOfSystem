@@ -1,14 +1,14 @@
-<kendo-label text="{{ title | languageTransform | async }}" *ngIf="isTitleRequired">
+<kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="isTitleRequired">
   <div class="form-error-container">
     <kendo-formerror *ngIf="!validated && isRequired && entered">{{
-      'messageerror.description.invalidphone' | languageTransform | async
+      'messageerror.description.invalidphone' | languageTransform: 'System' | async
     }}</kendo-formerror>
   </div>
   <form [formGroup]="phoneNumberForm">
     <ngx-intl-tel-input
       [cssClass]="'custom-tel-input'"
       formControlName="phone"
-      customPlaceholder="{{ placeholder | languageTransform | async }}"
+      customPlaceholder="{{ placeholder | languageTransform: 'System' | async }}"
       [enableAutoCountrySelect]="true"
       [enablePlaceholder]="false"
       [searchCountryFlag]="true"
@@ -26,14 +26,14 @@
 <div *ngIf="!isTitleRequired">
   <div class="form-error-container">
     <kendo-formerror *ngIf="!validated && isRequired && entered">{{
-      'messageerror.description.invalidphone' | languageTransform | async
+      'messageerror.description.invalidphone' | languageTransform: 'System' | async
     }}</kendo-formerror>
   </div>
   <form [formGroup]="phoneNumberForm">
     <ngx-intl-tel-input
       [cssClass]="'custom-tel-input'"
       formControlName="phone"
-      customPlaceholder="{{ placeholder | languageTransform | async }}"
+      customPlaceholder="{{ placeholder | languageTransform: 'System' | async }}"
       [enableAutoCountrySelect]="true"
       [enablePlaceholder]="false"
       [searchCountryFlag]="true"

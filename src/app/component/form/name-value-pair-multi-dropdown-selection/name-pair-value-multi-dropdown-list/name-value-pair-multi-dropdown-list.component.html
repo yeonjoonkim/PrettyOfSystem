@@ -6,12 +6,12 @@
           [(ngModel)]="query"
           (ngModelChange)="onQueryChange()"
           placeholder="{{
-            'placeholder.title.search' | languageTransform | async
+            'placeholder.title.search' | languageTransform: 'System' | async
           }}"></kendo-textbox>
       </flex-row-item>
       <flex-row-item id="apply-container">
         <kendo-button id="apply-btn" (click)="apply()">{{
-          'label.title.apply' | languageTransform | async
+          'label.title.apply' | languageTransform: 'System' | async
         }}</kendo-button>
       </flex-row-item>
     </flex-row>
@@ -23,16 +23,16 @@
           id="btn"
           (click)="all()"
           [ngClass]="{ active: selected?.length === 0 }">
-          <span id="name"> {{ 'label.title.all' | languageTransform | async }}</span>
+          <span id="name"> {{ 'label.title.all' | languageTransform: 'System' | async }}</span>
         </div>
 
         <div *ngFor="let btn of gridData; let i = index" id="btn-list">
           <div id="btn" [ngClass]="{ active: isInclude(btn) }" (click)="onClickCell(btn)">
-            <span id="name">{{ btn.name | languageTransform | async }}</span>
+            <span id="name">{{ btn.name | languageTransform: 'System' | async }}</span>
           </div>
         </div>
         <div *ngIf="gridData.length === 0">
-          <p>{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
+          <p>{{ 'placeholder.description.nodata' | languageTransform: 'System' | async }}</p>
         </div>
       </div>
     </flex-col-item>

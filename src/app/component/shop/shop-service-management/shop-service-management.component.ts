@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription, pairwise, takeUntil } from 'rxjs';
+import { Observable, Subject, pairwise, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
-  PlanConfigurationType,
   RoleConfigurationType,
   ShopConfigurationType,
   ShopServiceDocumentType,

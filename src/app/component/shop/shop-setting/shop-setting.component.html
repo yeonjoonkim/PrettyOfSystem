@@ -7,7 +7,7 @@
             <img [src]="option.img" />
           </div>
         </div>
-        <p class="svg-icon-title">{{ option.name | languageTransform | async }}</p>
+        <p class="svg-icon-title">{{ option.name | languageTransform: 'System' | async }}</p>
       </div>
     </ng-container>
   </div>

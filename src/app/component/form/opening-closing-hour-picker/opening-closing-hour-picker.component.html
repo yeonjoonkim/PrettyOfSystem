@@ -1,4 +1,4 @@
-<kendo-label text="{{ title | languageTransform | async }}" *ngIf="title">
+<kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="title">
   <kendo-timepicker
     adaptiveMode="auto"
     class="time-picker"

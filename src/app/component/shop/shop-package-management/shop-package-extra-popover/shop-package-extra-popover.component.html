@@ -1,6 +1,6 @@
 <ion-content>
   <kendo-button id="apply-btn" (click)="apply()">{{
-    'label.title.apply' | languageTransform | async
+    'label.title.apply' | languageTransform: 'System' | async
   }}</kendo-button>
   <div id="container" [ngStyle]="{ 'max-height': '200px' }">
     <ng-container *ngFor="let extra of extras">
@@ -16,7 +16,7 @@
         </flex-row-item>
         <!-- Title -->
         <flex-row-item class="title-option">
-          <p>{{ extra.titleProp }}</p>
+          <p>{{ extra.title | languageTransform: 'User' | async }}</p>
         </flex-row-item>
 
         <!-- Dollar -->

@@ -8,28 +8,30 @@
   <flex-col>
     <!-- 1. Information -->
     <flex-col-item>
-      <legend class="title">{{ 'label.title.introduction' | languageTransform | async }}</legend>
-      {{ 'confirmation.description.appintroduction' | languageTransform | async }}
+      <legend class="title">
+        {{ 'label.title.introduction' | languageTransform: 'System' | async }}
+      </legend>
+      {{ 'confirmation.description.appintroduction' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 2. Information We Collect -->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.informationwecollect' | languageTransform | async }}
+        {{ 'label.title.informationwecollect' | languageTransform: 'System' | async }}
       </legend>
       <div class="information-we-collect-detail">
-        <span>{{ 'label.title.name' | languageTransform | async }}</span>
-        <span>{{ 'label.title.contactinformation' | languageTransform | async }}</span>
-        <span>{{ 'label.title.transactiondetails' | languageTransform | async }}</span>
-        <span> {{ 'label.title.ipaddress' | languageTransform | async }}</span>
+        <span>{{ 'label.title.name' | languageTransform: 'System' | async }}</span>
+        <span>{{ 'label.title.contactinformation' | languageTransform: 'System' | async }}</span>
+        <span>{{ 'label.title.transactiondetails' | languageTransform: 'System' | async }}</span>
+        <span> {{ 'label.title.ipaddress' | languageTransform: 'System' | async }}</span>
 
-        <span> {{ 'label.title.macaddress' | languageTransform | async }}</span>
+        <span> {{ 'label.title.macaddress' | languageTransform: 'System' | async }}</span>
 
-        <span> {{ 'label.title.cookies' | languageTransform | async }}</span>
+        <span> {{ 'label.title.cookies' | languageTransform: 'System' | async }}</span>
 
         <span>{{
           'label.description.additionalpertinentinformationforserviceprovision'
-            | languageTransform
+            | languageTransform: 'System'
             | async
         }}</span>
       </div>
@@ -38,31 +40,47 @@
     <!-- 3. Reasons For Collecting MAC and IP Address -->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.reasonsforcollectingmacandipaddress' | languageTransform | async }}
+        {{
+          'label.title.reasonsforcollectingmacandipaddress' | languageTransform: 'System' | async
+        }}
       </legend>
       {{
         'confirmation.description.appreasonsforcollectingmacandipaddress'
-          | languageTransform
+          | languageTransform: 'System'
           | async
       }}
     </flex-col-item>
 
     <!-- 4. Cookies Detail-->
     <flex-col-item>
-      <legend class="title">{{ 'label.title.cookiesdetail' | languageTransform | async }}</legend>
+      <legend class="title">
+        {{ 'label.title.cookiesdetail' | languageTransform: 'System' | async }}
+      </legend>
 
       <div class="cookies-detail">
         <span>
-          {{ 'confirmation.title.strictlynecessarycookies' | languageTransform | async
-          }}{{ 'confirmation.description.strictlynecessarycookies' | languageTransform | async }}
+          {{ 'confirmation.title.strictlynecessarycookies' | languageTransform: 'System' | async
+          }}{{
+            'confirmation.description.strictlynecessarycookies'
+              | languageTransform: 'System'
+              | async
+          }}
         </span>
         <span>
-          {{ 'confirmation.title.performancecookies' | languageTransform | async
-          }}{{ 'confirmation.description.performancecookies' | languageTransform | async }}
+          {{ 'confirmation.title.performancecookies' | languageTransform: 'System' | async
+          }}{{
+            'confirmation.description.performancecookies' | languageTransform: 'System' | async
+          }}
         </span>
         <span>
-          {{ 'confirmation.title.targetingadvertisingcookies' | languageTransform | async }}
-          {{ 'confirmation.description.targetingadvertisingcookies' | languageTransform | async }}
+          {{
+            'confirmation.title.targetingadvertisingcookies' | languageTransform: 'System' | async
+          }}
+          {{
+            'confirmation.description.targetingadvertisingcookies'
+              | languageTransform: 'System'
+              | async
+          }}
         </span>
       </div>
     </flex-col-item>
@@ -70,147 +88,173 @@
     <!-- 5. Third Party Provider -->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.thridpartyprovider' | languageTransform | async }}
+        {{ 'label.title.thridpartyprovider' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.appthridpartyprovider' | languageTransform | async }}
+      {{ 'confirmation.description.appthridpartyprovider' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 6. How We Use Your Information-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.howweuseyourinformation' | languageTransform | async }}
+        {{ 'label.title.howweuseyourinformation' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.howweuseyourinformation' | languageTransform | async }}
+      {{ 'confirmation.description.howweuseyourinformation' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 7. How We Share Your Information-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.howweshareyourinformation' | languageTransform | async }}
+        {{ 'label.title.howweshareyourinformation' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.howweshareyourinformation' | languageTransform | async }}
+      {{
+        'confirmation.description.howweshareyourinformation' | languageTransform: 'System' | async
+      }}
     </flex-col-item>
 
     <!-- 8. Children’s Privacy-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.childrensprivacy' | languageTransform | async }}
+        {{ 'label.title.childrensprivacy' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.childrensprivacy' | languageTransform | async }}
+      {{ 'confirmation.description.childrensprivacy' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 9. Data Security Measures-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.datasecuritymeasures' | languageTransform | async }}
+        {{ 'label.title.datasecuritymeasures' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.datasecuritymeasures' | languageTransform | async }}
+      {{ 'confirmation.description.datasecuritymeasures' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 10. Your Rights and User Consent-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.yourrightsanduserconsent' | languageTransform | async }}
+        {{ 'label.title.yourrightsanduserconsent' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.yourrightsanduserconsent' | languageTransform | async }}
+      {{
+        'confirmation.description.yourrightsanduserconsent' | languageTransform: 'System' | async
+      }}
     </flex-col-item>
 
     <!-- 11. Data Retention and Deletion-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.dataretentionanddeletion' | languageTransform | async }}
+        {{ 'label.title.dataretentionanddeletion' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.dataretentionanddeletion' | languageTransform | async }}
+      {{
+        'confirmation.description.dataretentionanddeletion' | languageTransform: 'System' | async
+      }}
     </flex-col-item>
 
     <!-- 12. User Consent and Withdrawal-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.userconsentandwithdrawal' | languageTransform | async }}
+        {{ 'label.title.userconsentandwithdrawal' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.userconsentandwithdrawal' | languageTransform | async }}
+      {{
+        'confirmation.description.userconsentandwithdrawal' | languageTransform: 'System' | async
+      }}
     </flex-col-item>
 
     <!-- 13. Data Breach Procedures-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.databreachprocedures' | languageTransform | async }}
+        {{ 'label.title.databreachprocedures' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.databreachprocedures' | languageTransform | async }}
+      {{ 'confirmation.description.databreachprocedures' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 14. Opt-Out Process-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.optoutprocess' | languageTransform | async }}
+        {{ 'label.title.optoutprocess' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.optoutprocess' | languageTransform | async }}
+      {{ 'confirmation.description.optoutprocess' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 15. Complaints Process-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.complaintsprocess' | languageTransform | async }}
+        {{ 'label.title.complaintsprocess' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.complaintsprocess' | languageTransform | async }}
+      {{ 'confirmation.description.complaintsprocess' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 16. Consequences of Non-Provision of Data-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.consequencesofnonprovisionofdata' | languageTransform | async }}
+        {{ 'label.title.consequencesofnonprovisionofdata' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.consequencesofnonprovisionofdata' | languageTransform | async }}
+      {{
+        'confirmation.description.consequencesofnonprovisionofdata'
+          | languageTransform: 'System'
+          | async
+      }}
     </flex-col-item>
 
     <!-- 17. Legitimate Interests-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.legitimateinterests' | languageTransform | async }}
+        {{ 'label.title.legitimateinterests' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.legitimateinterests' | languageTransform | async }}
+      {{ 'confirmation.description.legitimateinterests' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 18. Jurisdiction and Governing Law-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.jurisdictionandgoverninglaw' | languageTransform | async }}
+        {{ 'label.title.jurisdictionandgoverninglaw' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.jurisdictionandgoverninglaw' | languageTransform | async }}
+      {{
+        'confirmation.description.jurisdictionandgoverninglaw' | languageTransform: 'System' | async
+      }}
     </flex-col-item>
 
     <!-- 19. User Rights under Australian Privacy Laws-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.userrightsunderaustralianprivacylaws' | languageTransform | async }}
+        {{
+          'label.title.userrightsunderaustralianprivacylaws' | languageTransform: 'System' | async
+        }}
       </legend>
       {{
-        'confirmation.description.userrightsunderaustralianprivacylaws' | languageTransform | async
+        'confirmation.description.userrightsunderaustralianprivacylaws'
+          | languageTransform: 'System'
+          | async
       }}
     </flex-col-item>
 
     <!-- 20. Third Party Links-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.thirdpartylinks' | languageTransform | async }}
+        {{ 'label.title.thirdpartylinks' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.thirdpartylinks' | languageTransform | async }}
+      {{ 'confirmation.description.thirdpartylinks' | languageTransform: 'System' | async }}
     </flex-col-item>
 
     <!-- 21. Modifications and Updates to Policy-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.modificationsandupdatestopolicy' | languageTransform | async }}
+        {{ 'label.title.modificationsandupdatestopolicy' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.modificationsandupdatestopolicy' | languageTransform | async }}
+      {{
+        'confirmation.description.modificationsandupdatestopolicy'
+          | languageTransform: 'System'
+          | async
+      }}
     </flex-col-item>
 
     <!-- 22. Contact Information For Inquiries And Concerns-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.contactinformationforinquiriesandconcerns' | languageTransform | async }}
+        {{
+          'label.title.contactinformationforinquiriesandconcerns'
+            | languageTransform: 'System'
+            | async
+        }}
       </legend>
-      {{ 'confirmation.description.appcontact' | languageTransform | async }}
+      {{ 'confirmation.description.appcontact' | languageTransform: 'System' | async }}
     </flex-col-item>
     <flex-col-item id="contact-info">
       <a href="tel:+61439007010"><span>+61439007010</span></a>
@@ -220,9 +264,9 @@
     <!-- 23. Privacy Policy Conclusion-->
     <flex-col-item>
       <legend class="title">
-        {{ 'label.title.privacypolicyconclusion' | languageTransform | async }}
+        {{ 'label.title.privacypolicyconclusion' | languageTransform: 'System' | async }}
       </legend>
-      {{ 'confirmation.description.privacypolicyconclusion' | languageTransform | async }}
+      {{ 'confirmation.description.privacypolicyconclusion' | languageTransform: 'System' | async }}
     </flex-col-item>
   </flex-col>
 </ion-content>

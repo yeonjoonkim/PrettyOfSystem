@@ -1,7 +1,7 @@
-<kendo-label text="{{ 'label.title.timezone' | languageTransform | async }}">
+<kendo-label text="{{ 'label.title.timezone' | languageTransform: 'System' | async }}">
   <div class="form-error-container">
     <kendo-formerror *ngIf="!validate && entered">{{
-      'messageerror.description.autocomplete' | languageTransform | async
+      'messageerror.description.autocomplete' | languageTransform: 'System' | async
     }}</kendo-formerror>
   </div>
   <kendo-autocomplete
@@ -12,6 +12,6 @@
     (ngModelChange)="onChangeTimeZone()"
     [filterable]="true"
     (filterChange)="onChangeTimezoneInput($event)"
-    placeholder="{{ 'placeholder.title.required' | languageTransform | async }}">
+    placeholder="{{ 'placeholder.title.required' | languageTransform: 'System' | async }}">
   </kendo-autocomplete>
 </kendo-label>

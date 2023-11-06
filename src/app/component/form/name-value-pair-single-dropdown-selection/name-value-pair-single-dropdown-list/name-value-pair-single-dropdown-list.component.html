@@ -5,18 +5,22 @@
         *ngIf="filterable"
         [(ngModel)]="query"
         (ngModelChange)="onQueryChange()"
-        placeholder="{{ 'placeholder.title.search' | languageTransform | async }}"></kendo-textbox>
+        placeholder="{{
+          'placeholder.title.search' | languageTransform: 'System' | async
+        }}"></kendo-textbox>
     </flex-col-item>
     <flex-col-item>
       <div id="container" [ngStyle]="{ 'max-height': maxHeight }">
         <div *ngFor="let btn of gridData" id="btn-list">
           <div id="btn" (click)="onClickCell(btn)" [ngClass]="{ active: isActive(btn) }">
-            <span id="name">{{ btn.name | languageTransform | async }}</span>
+            <span id="name">{{ btn.name | languageTransform: 'System' | async }}</span>
           </div>
         </div>
       </div>
       <div *ngIf="gridData.length === 0">
-        <p id="no-data">{{ 'placeholder.description.nodata' | languageTransform | async }}</p>
+        <p id="no-data">
+          {{ 'placeholder.description.nodata' | languageTransform: 'System' | async }}
+        </p>
       </div>
     </flex-col-item>
   </flex-col>

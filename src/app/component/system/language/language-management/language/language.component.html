@@ -60,13 +60,13 @@
       <flex-col-item>
         <kendo-grid [kendoGridBinding]="keyPairValueList" [height]="200">
           <kendo-grid-column
-            title="{{ 'label.title.key' | languageTransform | async }}"
+            title="{{ 'label.title.key' | languageTransform: 'System' | async }}"
             [filterable]="true"
             field="key">
           </kendo-grid-column>
 
           <kendo-grid-column
-            title="{{ 'label.title.value' | languageTransform | async }}"
+            title="{{ 'label.title.value' | languageTransform: 'System' | async }}"
             [filterable]="true"
             field="value">
           </kendo-grid-column>

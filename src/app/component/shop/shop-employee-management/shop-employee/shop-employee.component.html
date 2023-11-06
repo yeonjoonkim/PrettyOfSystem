@@ -13,7 +13,7 @@
   <!--Page 1. Information-->
   <flex-col id="info-container">
     <flex-col-item id="active">
-      <kendo-label text="{{ 'label.title.active' | languageTransform | async }}">
+      <kendo-label text="{{ 'label.title.active' | languageTransform: 'System' | async }}">
         <input
           kendoCheckBox
           type="checkbox"
@@ -23,7 +23,8 @@
       </kendo-label>
     </flex-col-item>
     <flex-col-item id="display-in-booking">
-      <kendo-label text="{{ 'label.title.displayinBooking' | languageTransform | async }}">
+      <kendo-label
+        text="{{ 'label.title.displayinBooking' | languageTransform: 'System' | async }}">
         <input
           kendoCheckBox
           type="checkbox"

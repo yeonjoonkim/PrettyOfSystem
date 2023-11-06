@@ -1,5 +1,5 @@
 <div id="container">
-  <kendo-label *ngIf="value" text="{{ value.title | languageTransform | async }}">
+  <kendo-label *ngIf="value" text="{{ value.title | languageTransform: 'System' | async }}">
     <p id="label">{{ value.current }} / {{ value.max }}</p>
     <kendo-progressbar
       id="progress-bar"

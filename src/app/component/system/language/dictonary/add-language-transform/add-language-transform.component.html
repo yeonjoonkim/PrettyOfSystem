@@ -22,6 +22,6 @@
 
   <!--Save Button-->
   <ion-button expand="block" (click)="onClickSaveButton()" [disabled]="!validator.name">{{
-    'button.title.save' | languageTransform | async
+    'button.title.save' | languageTransform: 'System' | async
   }}</ion-button>
 </section>

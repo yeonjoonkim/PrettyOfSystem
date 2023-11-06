@@ -1,8 +1,12 @@
 <ion-card>
   <!--Header-->
   <ion-card-header>
-    <ion-card-title>{{ 'label.title.content' | languageTransform | async }}</ion-card-title>
-    <ion-card-subtitle>{{ selectedCategoryName | languageTransform | async }} </ion-card-subtitle>
+    <ion-card-title>{{
+      'label.title.content' | languageTransform: 'System' | async
+    }}</ion-card-title>
+    <ion-card-subtitle
+      >{{ selectedCategoryName | languageTransform: 'System' | async }}
+    </ion-card-subtitle>
     <p *ngIf="selectedCategoryName" (click)="onClickAddNewContent($event)">
       <ion-icon class="ion-card-title-icon" name="add-outline" slot="end"></ion-icon>
     </p>
@@ -15,19 +19,19 @@
         <ion-item lines="full">
           <ion-label class="ion-text-wrap"
             ><ion-icon [name]="content.icon"></ion-icon>
-            {{ content.name | languageTransform | async }}</ion-label
+            {{ content.name | languageTransform: 'System' | async }}</ion-label
           >
           <ion-label class="ion-text-wrap">{{ content.url }}</ion-label>
         </ion-item>
 
         <ion-item-options side="start">
           <ion-item-option color="danger" (click)="onClickDeleteContent(content)">
-            <p>{{ 'button.title.delete' | languageTransform | async }}</p>
+            <p>{{ 'button.title.delete' | languageTransform: 'System' | async }}</p>
           </ion-item-option>
         </ion-item-options>
         <ion-item-options side="end">
           <ion-item-option (click)="onClickEditContent($event, content)">
-            <p>{{ 'button.title.edit' | languageTransform | async }}</p>
+            <p>{{ 'button.title.edit' | languageTransform: 'System' | async }}</p>
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>

@@ -12,7 +12,7 @@
 <ion-content [scrollable]="true" *ngIf="current && country" id="container">
   <flex-col id="container">
     <p *ngIf="form.action !== 'read' && !form.readOnly" id="translated-guide">
-      {{ 'label.description.translatedvalueguiance' | languageTransform | async }}
+      {{ 'label.description.translatedvalueguiance' | languageTransform: 'System' | async }}
     </p>
     <flex-col-item id="title-prop">
       <text-box
@@ -26,7 +26,7 @@
       </text-box>
     </flex-col-item>
     <flex-col-item id="price">
-      <kendo-label text="{{ 'label.title.price' | languageTransform | async }}">
+      <kendo-label text="{{ 'label.title.price' | languageTransform: 'System' | async }}">
         <div id="price-section">
           <p *ngIf="country.currency === 'AUD'" id="symbol">$</p>
           <kendo-numerictextbox

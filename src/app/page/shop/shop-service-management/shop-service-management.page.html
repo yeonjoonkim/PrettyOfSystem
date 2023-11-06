@@ -6,8 +6,8 @@
     </ion-buttons>
     <!-- Title -->
     <ion-title
-      >{{selected.name | languageTransform | async}} {{'label.title.management'| languageTransform
-      |async }}
+      >{{selected.name | languageTransform: 'System' | async }} {{'label.title.management' |
+      languageTransform: 'System' | async }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -27,7 +27,7 @@
             <div class="svg-icon-container">
               <div class="svg-icon"><img [src]="btn.img" /></div>
             </div>
-            <div id="btn-title">{{ btn.name | languageTransform | async }}</div>
+            <div id="btn-title">{{ btn.name | languageTransform:'System' | async }}</div>
           </div>
         </div>
       </ng-container>
