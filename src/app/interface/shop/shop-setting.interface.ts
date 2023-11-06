@@ -1,5 +1,5 @@
 export interface IShopSetting {
-  calender: ShopCalenderType;
+  calendar: ShopCalendarType;
   financial: ShopFinancialRateType;
   picture: ShopPictureType;
 }
@@ -8,9 +8,12 @@ export type ShopFinancialRateType = {
   taxRate: number;
   cardSurchargeRate: number;
   cashDiscountRate: number;
+  openingBalance: number;
+  openingHour: number;
+  closingHour: number;
 };
 
-export type ShopCalenderType = {
+export type ShopCalendarType = {
   intervalMin: number;
   nextAvailableBookingMin: number;
   maximumAvailableFutureBookingDays: number;

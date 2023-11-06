@@ -12,7 +12,13 @@
     <flex-row-item>
       <img
         [src]="currentImage"
-        [ngClass]="{ logo: type === 'logo', picture: type === 'picture' }" />
+        (load)="onImageLoad()"
+        [ngClass]="{ loadingimg: !loaded, logo: type === 'logo', picture: type === 'picture' }" />
+      <div
+        [ngClass]="{ logoloading: type === 'logo', pictureloading: type === 'picture' }"
+        *ngIf="!loaded">
+        <kendo-loader size="large"></kendo-loader>
+      </div>
     </flex-row-item>
   </flex-row>
 </flex-col>

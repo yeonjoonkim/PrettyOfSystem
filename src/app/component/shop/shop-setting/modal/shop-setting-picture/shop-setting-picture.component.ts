@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { IFormHeaderModalProp, IShopSetting } from 'src/app/interface';
-import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -21,10 +20,13 @@ export class ShopSettingPictureComponent implements OnInit, OnDestroy {
   private _image1File!: File | undefined;
   private _image2File!: File | undefined;
   private _image3File!: File | undefined;
+  public logo: boolean = false;
+  public image1: boolean = false;
+  public image2: boolean = false;
+  public image3: boolean = false;
 
   constructor(
     private _modalCtrl: ModalController,
-    private _global: GlobalService,
     private _shopSetting: ShopSettingService,
     private _formCtrl: FormControllerService
   ) {

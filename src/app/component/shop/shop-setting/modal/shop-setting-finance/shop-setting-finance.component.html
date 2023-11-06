@@ -37,5 +37,20 @@
         [autoCorrect]="true"
         (onChangeValue)="onChangeCashDiscount()"></percentage>
     </flex-col-item>
+    <flex-col-item>
+      <kendo-label text="{{ 'label.title.openingbalance' | languageTransform | async }}">
+        <div id="opening-balance-section">
+          <p>$</p>
+          <kendo-numerictextbox
+            id="opening-balance-input"
+            [(value)]="setting.financial.openingBalance"
+            [decimals]="2"
+            [min]="0"
+            [spinners]="false"
+            (valueChange)="onChangeOpeningBalance()"
+            [readonly]="form.readOnly"></kendo-numerictextbox>
+        </div>
+      </kendo-label>
+    </flex-col-item>
   </flex-col>
 </ion-content>

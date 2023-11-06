@@ -20,6 +20,9 @@ export class ShopSettingFinanceComponent implements OnInit, OnDestroy {
     tax: false,
     cardSurcharge: false,
     cashDiscount: false,
+    openingBalance: false,
+    openingHour: false,
+    closingHour: false,
   };
 
   constructor(
@@ -79,6 +82,14 @@ export class ShopSettingFinanceComponent implements OnInit, OnDestroy {
     );
     this.handleEnabledSaveBtn();
   }
+
+  public onChangeOpeningBalance() {
+    this.setting.financial.openingBalance = this._global.numberTransform.nullReplaceToZero(
+      this.setting.financial.openingBalance
+    );
+  }
+
+  public onChangeClosingTime() {}
 
   private handleEnabledSaveBtn() {
     this._validator.cardSurcharge = this.setting.financial.cardSurchargeRate > 0;

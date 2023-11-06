@@ -7,7 +7,7 @@ import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/syste
 import { PlanModalService } from '../../system/system-plan/plan-modal/plan-modal.service';
 import { LoadingService } from '../../global/loading/loading.service';
 import { ShopPictureRepositoryService } from 'src/app/firebase/shop-repository/shop-picture-repository/shop-picture-repository.service';
-
+import * as Constant from 'src/app/constant/constant';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,6 +15,11 @@ export class ShopSettingService {
   public config$!: Observable<ShopConfigurationType | null>;
   public setting$!: Observable<IShopSetting | null>;
   public timezone$!: Observable<string | null>;
+  public logoImage$!: Observable<Blob | null>;
+  public shopImage1$!: Observable<Blob | null>;
+  public shopImage2$!: Observable<Blob | null>;
+  public shopImage3$!: Observable<Blob | null>;
+
   constructor(
     private _shop: ShopService,
     public option: ShopSettingOptionService,
@@ -24,6 +29,10 @@ export class ShopSettingService {
     private _pictureRepo: ShopPictureRepositoryService
   ) {
     this.config$ = this._shop.config$;
+    this.logoImage$ = this._shop.logoImage$;
+    this.shopImage1$ = this._shop.shopImage1$;
+    this.shopImage2$ = this._shop.shopImage2$;
+    this.shopImage3$ = this._shop.shopImage3$;
     this.setting();
     this.timezone();
   }
@@ -87,40 +96,112 @@ export class ShopSettingService {
     image2: File | undefined,
     image3: File | undefined
   ) {
-    const config = await this._shop.config();
+    let config = await this._shop.config();
     if (config !== null) {
       await this._loading.start('label.title.confirmingimages');
-      const logoUrl =
-        logoFile !== undefined
-          ? await this._pictureRepo.uploadLogo(config.id, logoFile)
-          : config.setting.picture.logo;
-      const image1Url =
-        image1 !== undefined
-          ? await this._pictureRepo.uploadShopImage1(config.id, image1)
-          : config.setting.picture.shopImage1;
 
-      const image2Url =
-        image2 !== undefined
-          ? await this._pictureRepo.uploadShopImage2(config.id, image2)
-          : config.setting.picture.shopImage2;
-      const image3Url =
-        image3 !== undefined
-          ? await this._pictureRepo.uploadShopImage3(config.id, image3)
-          : config.setting.picture.shopImage3;
+      await this._loading.changeMessage('label.title.logo');
+      const logo = await this.handleUploadLogoImage(
+        logoFile,
+        config.id,
+        config.setting.picture.logo
+      );
+      await this._loading.changeMessage('label.title.picture');
+      const i1 = await this.handleUploadImage1(
+        image1,
+        config.id,
+        config.setting.picture.shopImage1
+      );
+      const i2 = await this.handleUploadImage2(
+        image2,
+        config.id,
+        config.setting.picture.shopImage2
+      );
+      const i3 = await this.handleUploadImage3(
+        image3,
+        config.id,
+        config.setting.picture.shopImage3
+      );
 
-      config.setting.picture.logo = logoUrl !== null ? logoUrl : config.setting.picture.logo;
-      config.setting.picture.shopImage1 =
-        image1Url !== null ? image1Url : config.setting.picture.shopImage1;
-      config.setting.picture.shopImage2 =
-        image2Url !== null ? image2Url : config.setting.picture.shopImage2;
-      config.setting.picture.shopImage3 =
-        image3Url !== null ? image3Url : config.setting.picture.shopImage3;
+      config.setting.picture.logo = logo !== null ? logo : config.setting.picture.logo;
+      config.setting.picture.shopImage1 = i1 !== null ? i1 : config.setting.picture.shopImage1;
+      config.setting.picture.shopImage2 = i2 !== null ? i2 : config.setting.picture.shopImage2;
+      config.setting.picture.shopImage3 = i3 !== null ? i3 : config.setting.picture.shopImage3;
 
       const updated = await this.shopConfigRepo.updateShopConfiguration(config);
       await this._loading.end();
       return updated;
     } else {
       return false;
+    }
+  }
+
+  private async handleUploadLogoImage(logoFile: File | undefined, shopId: string, current: string) {
+    const isPlaceholder = current === Constant.ShopSetting.Picture.Placeholder;
+    if (logoFile !== undefined) {
+      if (!isPlaceholder) {
+        await this._loading.changeMessage('label.title.deletingpreviousimage');
+        const deleted = await this._pictureRepo.deleteFile(current);
+        if (!deleted) {
+          return current;
+        }
+      }
+      await this._loading.changeMessage('label.title.savingimage');
+      return await this._pictureRepo.uploadLogo(shopId, logoFile);
+    } else {
+      return current;
+    }
+  }
+
+  private async handleUploadImage1(image: File | undefined, shopId: string, current: string) {
+    const isPlaceholder = current === Constant.ShopSetting.Picture.Placeholder;
+    if (image !== undefined) {
+      if (!isPlaceholder) {
+        await this._loading.changeMessage('label.title.deletingpreviousimage');
+        const deleted = await this._pictureRepo.deleteFile(current);
+        if (!deleted) {
+          return current;
+        }
+      }
+      await this._loading.changeMessage('label.title.savingimage');
+      return await this._pictureRepo.uploadShopImage1(shopId, image);
+    } else {
+      return current;
+    }
+  }
+
+  private async handleUploadImage2(logoFile: File | undefined, shopId: string, current: string) {
+    const isPlaceholder = current === Constant.ShopSetting.Picture.Placeholder;
+    if (logoFile !== undefined) {
+      if (!isPlaceholder) {
+        await this._loading.changeMessage('label.title.deletingpreviousimage');
+        const deleted = await this._pictureRepo.deleteFile(current);
+        if (!deleted) {
+          return current;
+        }
+      }
+
+      await this._loading.changeMessage('label.title.savingimage');
+      return await this._pictureRepo.uploadShopImage2(shopId, logoFile);
+    } else {
+      return current;
+    }
+  }
+
+  private async handleUploadImage3(image: File | undefined, shopId: string, current: string) {
+    const isPlaceholder = current === Constant.ShopSetting.Picture.Placeholder;
+    if (image !== undefined) {
+      if (!isPlaceholder) {
+        await this._loading.changeMessage('label.title.deletingpreviousimage');
+        const deleted = await this._pictureRepo.deleteFile(current);
+        if (!deleted) {
+          return current;
+        }
+      }
+      await this._loading.changeMessage('label.title.savingimage');
+      return await this._pictureRepo.uploadShopImage3(shopId, image);
+    } else {
+      return current;
     }
   }
 }

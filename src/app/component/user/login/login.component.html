@@ -41,10 +41,11 @@
     </flex-col-item>
     <flex-col-item>
       <text-box
+        #otp
         [(value)]="login.otp"
         [min]="5"
         [max]="6"
-        type="number"
+        [spinner]="false"
         [(validate)]="validator.otp"
         (valueChange)="onChangeOTP()"></text-box>
     </flex-col-item>

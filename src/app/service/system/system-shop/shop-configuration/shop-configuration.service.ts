@@ -286,7 +286,7 @@ export class ShopConfigurationService {
 
   private defaultShopSetting() {
     const result: IShopSetting = {
-      calender: {
+      calendar: {
         intervalMin: Constant.ShopSetting.Calender.IntervalMin,
         nextAvailableBookingMin: Constant.ShopSetting.Calender.NextAvailableBookingMin,
         maximumAvailableFutureBookingDays:
@@ -296,6 +296,9 @@ export class ShopConfigurationService {
         taxRate: Constant.ShopSetting.Financial.TaxRate,
         cardSurchargeRate: Constant.ShopSetting.Financial.CardSurchargeRate,
         cashDiscountRate: Constant.ShopSetting.Financial.CashDiscountRate,
+        openingBalance: Constant.ShopSetting.Financial.OpeningBalance,
+        openingHour: Constant.ShopSetting.Financial.OpeningHour,
+        closingHour: Constant.ShopSetting.Financial.ClosingHour,
       },
       picture: {
         logo: Constant.ShopSetting.Picture.Placeholder,
