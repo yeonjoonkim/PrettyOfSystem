@@ -1,13 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { TextBoxComponent } from '@progress/kendo-angular-inputs';
@@ -36,6 +27,7 @@ export class InputTextBoxComponent implements OnInit {
   @Input() isLowCaseFormat: boolean = false;
   @Input() readOnly: boolean = false;
   @Input() showCounter: boolean = false;
+  @Input() tooltip: string = '';
   @Input() max: number = 1000;
   @Input() min: number = 0;
   @Input() isRequired: boolean = false;
@@ -90,7 +82,7 @@ export class InputTextBoxComponent implements OnInit {
   }
 
   private validateInput() {
-    return this.validatedValue.length > this.min;
+    return this.validatedValue.length >= this.min;
   }
 
   private transformTextValue() {

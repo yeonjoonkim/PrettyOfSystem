@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { cloneDeep } from 'lodash-es';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
   ShopCouponDocumentType,
   ShopCouponModalProp,
-  ShopLanguagePackageModalProp,
   ShopLimitedProgpressBarType,
   ShopServiceDocumentType,
 } from 'src/app/interface';
@@ -22,6 +20,7 @@ export class ShopCouponManagementComponent implements OnInit, OnDestroy {
   private _service!: ShopServiceDocumentType[];
   private _serviceFilter!: NameValuePairType[];
   public coupons!: ShopCouponDocumentType[];
+  public translatedRequest!: ChatGptTranslateDocumentType[];
   public progressBar$: Observable<ShopLimitedProgpressBarType> =
     this._couponService.progressBar$.pipe(takeUntil(this._onDestroy$));
   public isReachToMax: boolean = true;
@@ -43,6 +42,9 @@ export class ShopCouponManagementComponent implements OnInit, OnDestroy {
     });
     this._couponService.coupons$.pipe(takeUntil(this._onDestroy$)).subscribe(c => {
       this.coupons = c;
+    });
+    this._couponService.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
+      this.translatedRequest = request;
     });
   }
 
@@ -90,6 +92,6 @@ export class ShopCouponManagementComponent implements OnInit, OnDestroy {
   }
 
   public loading() {
-    return this.coupons === undefined;
+    return this.coupons === undefined && this.translatedRequest === undefined;
   }
 }

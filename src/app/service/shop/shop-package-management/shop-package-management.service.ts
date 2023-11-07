@@ -20,6 +20,7 @@ import { ShopPackagePriceCalculationService } from './shop-package-price-calcula
 import { ShopPackagePopoverService } from './shop-package-popover/shop-package-popover.service';
 import { ShopPackageLimitedTimeService } from './shop-package-limited-time/shop-package-limited-time.service';
 import { LoadingService } from '../../global/loading/loading.service';
+import { TextTransformService } from '../../global/text-transform/text-transform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +42,7 @@ export class ShopPackageManagementService {
   constructor(
     private _shop: ShopService,
     private _packageRepo: ShopPackageRepositoryService,
+    private _textTransform: TextTransformService,
     public modal: ShopPackageModalService,
     public languagePackage: ShopLanguagePackageService,
     public priceCalculator: ShopPackagePriceCalculationService,
@@ -142,6 +144,7 @@ export class ShopPackageManagementService {
   }
 
   public async add(pack: ShopPackageDocumentType) {
+    pack.titleProp = this._textTransform.getTitleFormat(pack.titleProp);
     await this.loading.start('label.title.addnewpacakge');
     const newPackage = await this._packageRepo.addPackage(pack);
 
@@ -173,6 +176,7 @@ export class ShopPackageManagementService {
   }
 
   public async update(after: ShopPackageDocumentType) {
+    after.titleProp = this._textTransform.getTitleFormat(after.titleProp);
     const userName = await this._shop.userName();
     if (userName !== null) {
       after.lastModifiedDate = new Date();

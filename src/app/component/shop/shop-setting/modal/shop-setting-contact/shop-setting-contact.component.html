@@ -9,7 +9,7 @@
   (onClickSave)="handleSave()">
 </form-header>
 <ion-content [scrollable]="true" *ngIf="config">
-  <flex-col id="container">
+  <flex-col class="modal-container">
     <flex-col-item>
       <shop-category #category [readOnly]="true" [(shopCategory)]="config.category">
       </shop-category>

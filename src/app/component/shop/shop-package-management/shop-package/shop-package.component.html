@@ -10,18 +10,16 @@
   (onClickDelete)="handleDelete()">
 </form-header>
 <ion-content [scrollable]="true" *ngIf="current">
-  <p *ngIf="form.action !== 'read' && !form.readOnly" id="translated-guide">
-    {{ 'label.description.translatedvalueguiance' | languageTransform: 'System' | async }}
-  </p>
-  <flex-col id="container">
+  <flex-col class="modal-container">
     <flex-col id="information-container">
       <flex-row>
         <flex-row-item>
           <text-box
+            title="label.title.title"
+            tooltip="label.description.translatedvalueguiance"
             [readOnly]="form.readOnly"
             [(value)]="current.package.titleProp"
             (valueChange)="onChangeTitleProp()"
-            title="label.title.title"
             [min]="2"
             [max]="100"
             [isRequired]="true"></text-box>

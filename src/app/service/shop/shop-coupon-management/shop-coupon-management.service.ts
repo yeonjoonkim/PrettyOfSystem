@@ -72,8 +72,8 @@ export class ShopCouponManagementService {
 
   private translateRequest() {
     this.translatedRequest$ = this.config$.pipe(
-      combineLatestWith(this.coupons$),
-      switchMap(([config, services]: [ShopConfigurationType | null, ShopCouponDocumentType[]]) => {
+      combineLatestWith(this.services$),
+      switchMap(([config, services]: [ShopConfigurationType | null, ShopServiceDocumentType[]]) => {
         if (config !== null && services.length > 0) {
           const serviceIds: string[] = services.map(s => {
             return s.id;

@@ -11,7 +11,7 @@
 </form-header>
 <ion-content [scrollable]="true">
   <!--Page 1. Information-->
-  <flex-col id="info-container">
+  <flex-col class="modal-container">
     <flex-col-item id="active">
       <kendo-label text="{{ 'label.title.active' | languageTransform: 'System' | async }}">
         <input
@@ -78,6 +78,8 @@
           [readOnly]="form.readOnly"
           [isRequired]="true"
           [isTitleFormat]="true"
+          [max]="100"
+          [min]="1"
           [(validate)]="validator.firstName"
           (validateChange)="handleEnabledSaveBtn()"></text-box>
       </flex-row-item>
@@ -88,6 +90,8 @@
           [readOnly]="form.readOnly"
           [isRequired]="true"
           [isTitleFormat]="true"
+          [max]="100"
+          [min]="1"
           [(validate)]="validator.lastName"
           (validateChange)="handleEnabledSaveBtn()"></text-box>
       </flex-row-item>

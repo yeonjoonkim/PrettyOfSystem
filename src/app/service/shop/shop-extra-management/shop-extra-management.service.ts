@@ -14,6 +14,7 @@ import { LoadingService } from '../../global/loading/loading.service';
 import { ShopLanguagePackageService } from '../shop-language-package/shop-language-package.service';
 import { ShopExtraModalService } from './shop-extra-modal/shop-extra-modal.service';
 import { ShopService } from '../shop.service';
+import { TextTransformService } from '../../global/text-transform/text-transform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,7 @@ export class ShopExtraManagementService {
     private _user: UserService,
     private _shopExtraRepo: ShopExtraRepositoryService,
     private _shop: ShopService,
+    private _textTransform: TextTransformService,
     public loading: LoadingService,
     public languagePackage: ShopLanguagePackageService,
     public modal: ShopExtraModalService
@@ -100,6 +102,7 @@ export class ShopExtraManagementService {
 
   public async add(extra: ShopExtraDocumentType) {
     await this.loading.start('label.title.addnewextra');
+    extra.titleProp = this._textTransform.getTitleFormat(extra.titleProp);
     const newExtra = await this._shopExtraRepo.addExtra(extra);
 
     if (newExtra) {
@@ -129,6 +132,7 @@ export class ShopExtraManagementService {
   }
 
   public async update(extra: ShopExtraDocumentType) {
+    extra.titleProp = this._textTransform.getTitleFormat(extra.titleProp);
     const empName = await this._user.fullName();
     if (empName !== null) {
       extra.lastModifiedEmployee = empName;
