@@ -10,58 +10,63 @@
   (onClickDelete)="handleDelete()">
 </form-header>
 <ion-content [scrollable]="true" *ngIf="current">
-  <flex-col id="modal-container">
-    <flex-row id="check-boxes">
-      <flex-row-item id="check-box-container">
-        <div id="insurance-cover">
-          <kendo-label text="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
-            <input
-              kendoCheckBox
-              type="checkbox"
-              [disabled]="form.readOnly"
-              [(ngModel)]="current.service.isInsuranceCover"
-              (ngModelChange)="handleEnabledSaveBtn()" />
-          </kendo-label>
-        </div>
+  <flex-col class="modal-container">
+    <flex-row id="info">
+      <flex-row-item>
+        <text-box
+          title="label.title.title"
+          tooltip="label.description.translatedvalueguiance"
+          [readOnly]="form.readOnly"
+          [(value)]="current.service.titleProp"
+          [(validate)]="validator.title"
+          (valueChange)="onChangeTitleProp()"
+          [min]="2"
+          [max]="100"
+          [isRequired]="true"></text-box>
       </flex-row-item>
-      <flex-row-item id="check-box-container">
-        <div id="pregnant">
-          <kendo-label text="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
-            <input
-              kendoCheckBox
-              type="checkbox"
-              [disabled]="form.readOnly"
-              [(ngModel)]="current.service.recommandForPregnant"
-              (ngModelChange)="handleEnabledSaveBtn()" />
-          </kendo-label>
-        </div>
-      </flex-row-item>
-      <flex-row-item id="check-box-container">
-        <div id="oil">
-          <kendo-label text="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
-            <input
-              kendoCheckBox
-              type="checkbox"
-              [disabled]="form.readOnly"
-              [(ngModel)]="current.service.isOil"
-              (ngModelChange)="handleEnabledSaveBtn()" />
-          </kendo-label>
-        </div>
+      <flex-row-item>
+        <flex-col id="check-boxes">
+          <flex-col-item id="check-box-container">
+            <div id="insurance-cover">
+              <kendo-label
+                text="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
+                <input
+                  kendoCheckBox
+                  type="checkbox"
+                  [disabled]="form.readOnly"
+                  [(ngModel)]="current.service.isInsuranceCover"
+                  (ngModelChange)="handleEnabledSaveBtn()" />
+              </kendo-label>
+            </div>
+          </flex-col-item>
+          <flex-col-item id="check-box-container">
+            <div id="pregnant">
+              <kendo-label
+                text="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
+                <input
+                  kendoCheckBox
+                  type="checkbox"
+                  [disabled]="form.readOnly"
+                  [(ngModel)]="current.service.recommandForPregnant"
+                  (ngModelChange)="handleEnabledSaveBtn()" />
+              </kendo-label>
+            </div>
+          </flex-col-item>
+          <flex-col-item id="check-box-container">
+            <div id="oil">
+              <kendo-label text="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
+                <input
+                  kendoCheckBox
+                  type="checkbox"
+                  [disabled]="form.readOnly"
+                  [(ngModel)]="current.service.isOil"
+                  (ngModelChange)="handleEnabledSaveBtn()" />
+              </kendo-label>
+            </div>
+          </flex-col-item>
+        </flex-col>
       </flex-row-item>
     </flex-row>
-
-    <flex-col-item>
-      <text-box
-        title="label.title.title"
-        tooltip="label.description.translatedvalueguiance"
-        [readOnly]="form.readOnly"
-        [(value)]="current.service.titleProp"
-        [(validate)]="validator.title"
-        (valueChange)="onChangeTitleProp()"
-        [min]="2"
-        [max]="100"
-        [isRequired]="true"></text-box>
-    </flex-col-item>
 
     <flex-col-item id="description-container">
       <text-area

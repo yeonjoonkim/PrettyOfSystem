@@ -9,32 +9,34 @@
   (onClickEdit)="handleEdit()">
 </form-header>
 <ion-content [scrollable]="true" *ngIf="setting" class="modal-container">
-  <image-crop
-    title="label.title.logo"
-    type="logo"
-    [readOnly]="form.readOnly"
-    [(currentImage)]="setting.picture.logo"
-    (imageLoad)="logo = true"
-    (fileChange)="onChangeLogoImage($event)"></image-crop>
-  <image-crop
-    title="label.title.picture"
-    type="picture"
-    [readOnly]="form.readOnly"
-    (imageLoad)="image1 = true"
-    [(currentImage)]="setting.picture.shopImage1"
-    (fileChange)="onChangeImage1($event)"></image-crop>
-  <image-crop
-    title="label.title.picture"
-    type="picture"
-    [readOnly]="form.readOnly"
-    (imageLoad)="image2 = true"
-    [(currentImage)]="setting.picture.shopImage2"
-    (fileChange)="onChangeImage2($event)"></image-crop>
-  <image-crop
-    title="label.title.picture"
-    type="picture"
-    [readOnly]="form.readOnly"
-    (imageLoad)="image3 = true"
-    [(currentImage)]="setting.picture.shopImage3"
-    (fileChange)="onChangeImage3($event)"></image-crop>
+  <flex-col class="modal-container">
+    <image-crop
+      title="label.title.logo"
+      type="logo"
+      [readOnly]="form.readOnly"
+      [(currentImage)]="setting.picture.logo"
+      (imageLoad)="logo = true"
+      (fileChange)="onChangeLogoImage($event)"></image-crop>
+    <image-crop
+      title="label.title.picture"
+      type="picture"
+      [readOnly]="form.readOnly"
+      (imageLoad)="image1 = true"
+      [(currentImage)]="setting.picture.shopImage1"
+      (fileChange)="onChangeImage1($event)"></image-crop>
+    <image-crop
+      title="label.title.picture"
+      type="picture"
+      [readOnly]="form.readOnly"
+      (imageLoad)="image2 = true"
+      [(currentImage)]="setting.picture.shopImage2"
+      (fileChange)="onChangeImage2($event)"></image-crop>
+    <image-crop
+      title="label.title.picture"
+      type="picture"
+      [readOnly]="form.readOnly"
+      (imageLoad)="image3 = true"
+      [(currentImage)]="setting.picture.shopImage3"
+      (fileChange)="onChangeImage3($event)"></image-crop>
+  </flex-col>
 </ion-content>

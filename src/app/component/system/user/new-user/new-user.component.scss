@@ -37,3 +37,9 @@ password-confirmation {
     font-size: 8px;
   }
 }
+
+@media (max-width: 560px) {
+  #option-container {
+    flex-direction: column-reverse;
+  }
+}

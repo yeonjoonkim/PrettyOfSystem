@@ -15,6 +15,7 @@ import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/
 import { UserAdminPopoverService } from './user-admin-popover/user-admin-popover.service';
 import * as Constant from 'src/app/constant/constant';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { TextTransformService } from '../global/text-transform/text-transform.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -25,10 +26,13 @@ export class UserAdminService {
     private _global: GlobalService,
     private _userRepo: UserCredentialRepositoryService,
     private _shopRepo: SystemShopConfigurationRepositoryService,
+    private _textTransform: TextTransformService,
     private _roleRepo: SystemRoleRepositoryService
   ) {}
 
   public async updateUser(after: IUser, before: IUser) {
+    after.firstName = this._textTransform.getTitleFormat(after.firstName);
+    after.lastName = this._textTransform.getTitleFormat(after.lastName);
     const isLoginOptionChanged = this.isLoginOptionChanged(before, after);
     if (isLoginOptionChanged) {
       const loginMethod = after.loginOption.phoneNumber ? after.phoneNumber : after.email;
@@ -90,6 +94,8 @@ export class UserAdminService {
   }
 
   public async handleCreate(user: IUser, isSystemAdmin: boolean) {
+    user.firstName = this._textTransform.getTitleFormat(user.firstName);
+    user.lastName = this._textTransform.getTitleFormat(user.lastName);
     this._global.loading.show();
     user.isSystemAdmin = isSystemAdmin;
     user.encryptedPassword = user.loginOption.email ? user.encryptedPassword : '';

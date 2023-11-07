@@ -105,6 +105,7 @@ export type ShopPackageModalDocumentProp = {
   services: ShopServiceDocumentType[];
   extras: ShopExtraDocumentType[];
   operatingHours: ShopWorkHoursType;
+  translateRequests: ChatGptTranslateDocumentType[];
 };
 
 export type ShopPackageFilterDocumentProp = {

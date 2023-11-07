@@ -9,7 +9,7 @@
   </form-header>
 
   <form-container>
-    <flex-row>
+    <flex-row id="login-otion">
       <flex-row-item>
         <login-option-selection
           mode="form"
@@ -27,7 +27,6 @@
         <text-box
           title="label.title.firstname"
           [(value)]="user.firstName"
-          [isTitleFormat]="true"
           [(validate)]="validator.firstName"
           [isRequired]="true"
           [readOnly]="form.readOnly"
@@ -39,11 +38,10 @@
         <text-box
           title="label.title.lastname"
           [(value)]="user.lastName"
-          [isTitleFormat]="true"
           [isRequired]="true"
           [readOnly]="form.readOnly"
           [(validate)]="validator.lastName"
-          [min]="0"
+          [min]="1"
           [max]="100"
           (valueChange)="handleFormEnableSaveBtn()"></text-box>
       </flex-row-item>

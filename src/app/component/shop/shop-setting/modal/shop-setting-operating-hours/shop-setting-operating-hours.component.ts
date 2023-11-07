@@ -43,7 +43,7 @@ export class ShopSettingOperatingHoursComponent implements OnInit, OnDestroy {
 
   public async handleSave() {
     this.form.enabledSavebutton = false;
-    const updated = await this._shopSetting.updateConfig(this.config);
+    const updated = await this._shopSetting.updateOperatingHours(this.config.operatingHours);
     if (updated) {
       await this.dismiss();
     } else {

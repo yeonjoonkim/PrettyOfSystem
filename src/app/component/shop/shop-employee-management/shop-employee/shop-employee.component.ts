@@ -7,7 +7,6 @@ import {
   RoleConfigurationType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
-  ShopLimitedProgpressBarType,
 } from 'src/app/interface';
 import { NavParams } from '@ionic/angular';
 import * as Constant from 'src/app/constant/constant';

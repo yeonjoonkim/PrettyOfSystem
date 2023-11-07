@@ -31,6 +31,37 @@
       }}</kendo-formerror>
     </div>
   </flex-col-item>
+
+  <!-- Sunday -->
+  <flex-col-item>
+    <flex-row>
+      <div id="title">
+        <legend [ngClass]="{ 'error-text': !validator.sun }">Sun</legend>
+        <input
+          id="close-open-button"
+          type="checkbox"
+          kendoCheckBox
+          [(ngModel)]="inputWorkHours.sun.isOpen"
+          (ngModelChange)="onChangeSun()"
+          [disabled]="readOnly" />
+      </div>
+      <flex-row-item id="time-container">
+        <time-picker-group *ngIf="inputWorkHours.sun.isOpen">
+          <time-picker
+            [(time)]="inputWorkHours.sun.operatingHours.openTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeSun()"></time-picker>
+          <p id="time-picker-seperator">-</p>
+          <time-picker
+            [(time)]="inputWorkHours.sun.operatingHours.closeTime"
+            [intervalMin]="intervalMin"
+            [readOnly]="readOnly"
+            (timeChange)="onChangeSun()"></time-picker>
+        </time-picker-group>
+      </flex-row-item>
+    </flex-row>
+  </flex-col-item>
   <!--Monday-->
   <flex-col-item>
     <flex-row>
@@ -210,37 +241,6 @@
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
             (timeChange)="onChangeSat()"></time-picker>
-        </time-picker-group>
-      </flex-row-item>
-    </flex-row>
-  </flex-col-item>
-
-  <!-- Sunday -->
-  <flex-col-item>
-    <flex-row>
-      <div id="title">
-        <legend [ngClass]="{ 'error-text': !validator.sun }">Sun</legend>
-        <input
-          id="close-open-button"
-          type="checkbox"
-          kendoCheckBox
-          [(ngModel)]="inputWorkHours.sun.isOpen"
-          (ngModelChange)="onChangeSun()"
-          [disabled]="readOnly" />
-      </div>
-      <flex-row-item id="time-container">
-        <time-picker-group *ngIf="inputWorkHours.sun.isOpen">
-          <time-picker
-            [(time)]="inputWorkHours.sun.operatingHours.openTime"
-            [intervalMin]="intervalMin"
-            [readOnly]="readOnly"
-            (timeChange)="onChangeSun()"></time-picker>
-          <p id="time-picker-seperator">-</p>
-          <time-picker
-            [(time)]="inputWorkHours.sun.operatingHours.closeTime"
-            [intervalMin]="intervalMin"
-            [readOnly]="readOnly"
-            (timeChange)="onChangeSun()"></time-picker>
         </time-picker-group>
       </flex-row-item>
     </flex-row>

@@ -91,3 +91,11 @@ export interface ShopConfigurationTypeFilterOption {
   phoneNumber: string;
   planConfigurationId: string;
 }
+
+export type ShopUpdateContactProp = {
+  phone: string;
+  name: string;
+  email: string;
+  address: AddressType;
+  taxNumber: string;
+};

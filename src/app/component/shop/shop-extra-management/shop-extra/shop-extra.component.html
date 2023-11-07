@@ -11,9 +11,6 @@
 </form-header>
 <ion-content [scrollable]="true" *ngIf="current && country">
   <flex-col class="modal-container">
-    <p *ngIf="form.action !== 'read' && !form.readOnly" id="translated-guide">
-      {{ 'label.description.translatedvalueguiance' | languageTransform: 'System' | async }}
-    </p>
     <flex-col-item id="title-prop">
       <text-box
         title="label.title.title"

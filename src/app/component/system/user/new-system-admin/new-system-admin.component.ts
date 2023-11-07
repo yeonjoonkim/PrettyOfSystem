@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { IFormHeaderModalProp, IUser } from 'src/app/interface';
 import * as Constant from '../../../../constant/constant';
 import { UserAdminService } from 'src/app/service/user-admin/user-admin.service';
-import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({

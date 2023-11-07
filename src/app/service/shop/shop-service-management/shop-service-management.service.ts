@@ -40,12 +40,12 @@ export class ShopServiceManagementService {
   constructor(
     public relateShopService: ShopRelatedServiceService,
     public modal: ShopServiceModalService,
-    public textTransform: TextTransformService,
     public languagePackage: ShopLanguagePackageService,
     public loading: LoadingService,
     public menu: ShopServiceMenuOptionControllerService,
     private _shopServiceRepo: ShopServiceRepositoryService,
-    private _shop: ShopService
+    private _shop: ShopService,
+    private _textTransform: TextTransformService
   ) {
     this.currentShopConfig$ = this._shop.config$;
     this.shopEmp$ = this._shop.employees$;
@@ -116,6 +116,7 @@ export class ShopServiceManagementService {
 
   public async add(service: ShopServiceDocumentType) {
     await this.loading.start('label.title.addnewservice');
+    service.titleProp = this._textTransform.getTitleFormat(service.titleProp);
     const newService = await this._shopServiceRepo.addService(service);
     const sleep = async (duration: number) => {
       return new Promise(resolve => setTimeout(resolve, duration));
@@ -155,6 +156,7 @@ export class ShopServiceManagementService {
   }
 
   public async update(after: ShopServiceDocumentType) {
+    after.titleProp = this._textTransform.getTitleFormat(after.titleProp);
     const empName = await this._shop.userName();
     if (empName !== null) {
       after.lastModifiedEmployee = empName;

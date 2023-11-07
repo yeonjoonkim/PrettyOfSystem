@@ -136,6 +136,8 @@ export class UserService {
   }
 
   public async updateUser(after: IUser, before: IUser) {
+    after.lastName = this._global.textTransform.getTitleFormat(after.lastName);
+    after.firstName = this._global.textTransform.getTitleFormat(after.firstName);
     const beforeLoginInput = before.loginOption.email ? before.email : before.phoneNumber;
     const afterLoginInput = after.loginOption.email ? after.email : after.phoneNumber;
     const onChangeLoginOption = beforeLoginInput !== afterLoginInput;

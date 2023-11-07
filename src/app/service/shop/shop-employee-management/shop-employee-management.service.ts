@@ -16,6 +16,7 @@ import { ShopEmployeeAccountModalService } from './shop-employee-account-modal/s
 import * as Constant from 'src/app/constant/constant';
 import { SystemLanguageStorageService } from '../../global/language/system-language-management/system-language-storage/system-language-storage.service';
 import { ShopService } from '../shop.service';
+import { TextTransformService } from '../../global/text-transform/text-transform.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -36,6 +37,7 @@ export class ShopEmployeeManagementService {
     private _shopEmpAcc: ShopEmployeeAccountService,
     private _global: GlobalService,
     private _languageStorage: SystemLanguageStorageService,
+    private _textTransform: TextTransformService,
     private _shop: ShopService
   ) {
     this.role$ = this._shop.role$;
@@ -80,6 +82,8 @@ export class ShopEmployeeManagementService {
   }
 
   public async createNewUser(se: ShopEmployeeManagementUserType) {
+    se.firstName = this._textTransform.getTitleFormat(se.firstName);
+    se.lastName = this._textTransform.getTitleFormat(se.lastName);
     const isAuthroisedUser = await this.isAuthorisedUser();
     const loginInput: string = se.loginOption.phoneNumber ? se.phoneNumber : se.email;
     if (isAuthroisedUser) {
@@ -139,6 +143,8 @@ export class ShopEmployeeManagementService {
   }
 
   public async updateUser(se: ShopEmployeeManagementUserType) {
+    se.firstName = this._textTransform.getTitleFormat(se.firstName);
+    se.lastName = this._textTransform.getTitleFormat(se.lastName);
     const isAuthroisedUser = await this.isAuthorisedUser();
     const loginInput: string = se.loginOption.phoneNumber ? se.phoneNumber : se.email;
     //Auth

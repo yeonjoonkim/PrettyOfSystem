@@ -1,3 +1,9 @@
 #opening-balance-section {
   display: flex;
 }
+
+@media (max-width: 450px) {
+  #auto-detection {
+    flex-direction: column;
+  }
+}

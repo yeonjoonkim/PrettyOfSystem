@@ -22,7 +22,7 @@
 
   <!--Page 1. Information-->
   <flex-col id="info-container" *ngIf="currentPage.value === 'page1'">
-    <flex-row>
+    <flex-row id="option-container">
       <flex-col id="login-gender-container">
         <flex-col-item id="login-option-container">
           <login-option-selection
@@ -55,7 +55,6 @@
           [(value)]="user.firstName"
           [readOnly]="form.readOnly"
           [isRequired]="true"
-          [isTitleFormat]="true"
           [(validate)]="validator.firstName"
           (validateChange)="handleEnabledSaveBtn()"></text-box>
       </flex-row-item>
@@ -65,7 +64,6 @@
           [(value)]="user.lastName"
           [readOnly]="form.readOnly"
           [isRequired]="true"
-          [isTitleFormat]="true"
           [(validate)]="validator.lastName"
           (validateChange)="handleEnabledSaveBtn()"></text-box>
       </flex-row-item>

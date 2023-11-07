@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
-import { Observable, Subject, pairwise, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatest, pairwise, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   ShopExtraDocumentType,
@@ -32,6 +32,9 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   private _extras!: ShopExtraDocumentType[];
   private _services!: ShopServiceDocumentType[];
   private _operatingWorkHour: ShopWorkHoursType | null = null;
+
+  private _serviceTranslatedRequest!: ChatGptTranslateDocumentType[];
+  private _extraTranslatedRequest!: ChatGptTranslateDocumentType[];
 
   public progressBar$: Observable<ShopLimitedProgpressBarType> =
     this._shopPackage.progressBar$.pipe(takeUntil(this._onDestroy$));
@@ -65,6 +68,15 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   private translatedRequest() {
     this._shopPackage.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(requests => {
       this.translatedRequests = requests;
+    });
+    this._shopPackage.serviceTranslatedRequest$
+      .pipe(takeUntil(this._onDestroy$))
+      .subscribe(request => {
+        this._serviceTranslatedRequest = request;
+      });
+
+    this._shopPackage.extraServiceRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
+      this._extraTranslatedRequest = request;
     });
     this._shopPackage.translatedRequest$
       .pipe(pairwise(), takeUntil(this._onDestroy$))
@@ -174,6 +186,7 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
         services: this._services,
         extras: this._extras,
         operatingHours: this._operatingWorkHour,
+        translateRequests: [...this._extraTranslatedRequest, ...this._serviceTranslatedRequest],
       };
       return prop;
     }
