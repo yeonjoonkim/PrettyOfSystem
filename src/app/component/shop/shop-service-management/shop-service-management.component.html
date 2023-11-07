@@ -1,5 +1,5 @@
 <flex-col id="shop-service">
-  <flex-col-item id="shop-service-grid" *ngIf="!loading()">
+  <flex-col-item id="shop-service-grid" *ngIf="!loading() && config">
     <shop-limited-progressbar [progressbar]="progressBar$"></shop-limited-progressbar>
     <shop-service-grid
       *ngIf="services"
@@ -8,6 +8,7 @@
       [specialists]="specializedEmployees"
       [isReachToMax]="isReachToMax"
       [role]="role"
+      [extraFilter]="extraFilter"
       [extras]="extras"
       (onCreate)="handleCreate()"
       (onEdit)="handleEdit($event)"

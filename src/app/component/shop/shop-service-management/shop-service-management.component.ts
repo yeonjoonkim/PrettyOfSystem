@@ -25,12 +25,13 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   private _onDestroy$: Subject<void> = new Subject<void>();
 
   private _isModalOpen: boolean = false;
-  private _config!: ShopConfigurationType | null;
+  public _config!: ShopConfigurationType | null;
   private _relatedServiceTypes!: NameValuePairType[];
 
   public role!: RoleConfigurationType | null;
   public employeeName!: string;
   public extras!: ShopExtraDocumentType[];
+  public extraFilter!: NameValuePairType[];
   public specializedEmployees!: NameValuePairType[];
   public translatedRequests!: ChatGptTranslateDocumentType[];
   public services!: ShopServiceDocumentType[];
@@ -74,6 +75,7 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
           specializedEmployees: this.specializedEmployees,
           relatedServiceTypes: this._relatedServiceTypes,
           extra: this.extras,
+          extraFilter: this.extraFilter,
           titleStatus: Constant.API.TranslateStatus.Create,
           descriptionStatus: Constant.API.TranslateStatus.Create,
         };
@@ -124,6 +126,9 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   private activateShopExtraListener() {
     this._shopService.extra$.pipe(takeUntil(this._onDestroy$)).subscribe(extras => {
       this.extras = extras;
+    });
+    this._shopService.extraFilter$.pipe(takeUntil(this._onDestroy$)).subscribe(extraFilter => {
+      this.extraFilter = extraFilter;
     });
   }
 

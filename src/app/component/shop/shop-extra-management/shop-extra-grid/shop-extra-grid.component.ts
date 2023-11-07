@@ -56,6 +56,7 @@ export class ShopExtraGridComponent implements OnInit {
     const titleRequest = this.translatedRequests?.find(
       s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
     );
+
     return titleRequest !== undefined
       ? titleRequest.status === Constant.API.TranslateStatus.Completed
       : false;

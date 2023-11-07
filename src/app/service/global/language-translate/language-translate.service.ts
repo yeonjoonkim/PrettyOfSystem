@@ -172,7 +172,14 @@ export class LanguageTranslateService {
     }
 
     try {
-      resultItem = JSON.parse(response);
+      const startIndex = response.lastIndexOf('{');
+      const endIndex = response.lastIndexOf('}') + 1;
+      const jsonString = response.substring(startIndex, endIndex);
+      const json = safeJsonParse(jsonString, 10);
+      resultItem = json.error ? resultItem : json.data;
+      if (json.error) {
+        console.error(json);
+      }
     } catch (error) {
       console.error('Failed to parse JSON:', error);
       // Handle error accordingly, maybe set a default value or take another action.
@@ -212,3 +219,64 @@ export class LanguageTranslateService {
   }
 }
 export { ILanguageTranslateResult };
+
+const safeJsonParse = function (jsonString: string, maxAttempts: number) {
+  let lastError = null;
+
+  for (let attempts = 0; attempts < maxAttempts; attempts++) {
+    try {
+      const result = JSON.parse(jsonString);
+      return { error: null, data: result };
+    } catch (error) {
+      if (!(error instanceof SyntaxError) || typeof error.message !== 'string') {
+        return { error: new Error('Unexpected error during JSON parsing'), data: null };
+      }
+
+      lastError = error;
+      const errorPosition = extractErrorPosition(error.message);
+      if (errorPosition === null) {
+        return { error, data: null };
+      }
+
+      jsonString = tryFixingJsonError(jsonString, errorPosition);
+    }
+  }
+
+  return {
+    error: lastError ?? new Error('Unable to parse JSON after multiple attempts'),
+    data: null,
+  };
+};
+
+const extractErrorPosition = function (errorMessage: string): number | null {
+  const match = errorMessage.match(/at position (\d+)/);
+  return match ? parseInt(match[1], 10) : null;
+};
+
+const tryFixingJsonError = function (jsonString: string, errorPosition: number): string {
+  const fixes = [
+    { pattern: /,\s*}/, replacement: '}' },
+    { pattern: /,\s*\]/, replacement: ']' },
+    { pattern: /"(\w+)"\s*:([^"])/g, replacement: '"$1":$2', offset: -1 },
+    { pattern: /(\w+)\s*:/, replacement: '"$1":', offset: 0 },
+    { pattern: /:\s*([^"\d\s}\]])/, replacement: ': "$1', offset: 0 },
+    { pattern: /([^\d\s"{}\]])\s*([,}])/, replacement: '$1"$2', offset: 0 },
+    { pattern: /\n/g, replacement: '\\n', offset: 0 },
+    { pattern: /"\s*}/, replacement: '"}', offset: 0 },
+    { pattern: /"\s*]/, replacement: '"]', offset: 0 },
+    { pattern: /"{2,}/g, replacement: '"', offset: 0 },
+  ];
+
+  for (const { pattern, replacement, offset = 0 } of fixes) {
+    const localErrorPosition = errorPosition + offset;
+    const beforeError = jsonString.slice(0, localErrorPosition);
+    const afterError = jsonString.slice(localErrorPosition);
+    const updatedAfterError = afterError.replace(pattern, replacement);
+
+    if (updatedAfterError !== afterError) {
+      return beforeError + updatedAfterError;
+    }
+  }
+
+  return jsonString;
+};

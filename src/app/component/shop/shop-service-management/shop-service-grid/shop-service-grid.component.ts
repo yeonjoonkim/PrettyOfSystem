@@ -8,6 +8,8 @@ import {
   ShopServiceModalDocumentProp,
   ShopLanguagePackageModalProp,
   ShopExtraDocumentType,
+  IShopSetting,
+  ShopConfigurationType,
 } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employee-management/shop-employee-management.service';
@@ -30,6 +32,7 @@ export class ShopServiceGridComponent implements OnInit {
   @Input() role: RoleConfigurationType | null = null;
   @Input() specialists: NameValuePairType[] = [];
   @Input() isReachToMax: boolean = true;
+  @Input() extraFilter: NameValuePairType[] = [];
 
   constructor(
     private _shopEmp: ShopEmployeeManagementService,
@@ -108,6 +111,7 @@ export class ShopServiceGridComponent implements OnInit {
       const copiedTitleStatus = cloneDeep(titleRequest.status);
       const copiedDescriptionStatus = cloneDeep(descriptionRequest.status);
       const copiedExtra = cloneDeep(this.extras);
+      const copiedExtraFilter = cloneDeep(this.extraFilter);
       const prop: ShopServiceModalDocumentProp = {
         service: copiedService,
         titleStatus: copiedTitleStatus,
@@ -115,6 +119,7 @@ export class ShopServiceGridComponent implements OnInit {
         extra: copiedExtra,
         specializedEmployees: [],
         relatedServiceTypes: [],
+        extraFilter: copiedExtraFilter,
       };
       if (
         !unableToViewStatuses.includes(copiedTitleStatus) &&

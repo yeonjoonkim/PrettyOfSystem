@@ -2,6 +2,7 @@ import { ChatGptTranslateDocumentType } from '../function/function-translation/f
 import { NameValuePairType, TimeItemType } from '../global/global.interface';
 import * as Constant from '../../constant/constant';
 import { ShopWorkHoursType } from './shop.interface';
+
 export type ShopServiceTranslateDocumentsType = {
   title: ChatGptTranslateDocumentType;
   description: ChatGptTranslateDocumentType;
@@ -20,6 +21,7 @@ export type ShopServiceModalDocumentProp = {
   specializedEmployees: NameValuePairType[];
   extra: ShopExtraDocumentType[];
   titleStatus: string;
+  extraFilter: NameValuePairType[];
   descriptionStatus: string;
 };
 
