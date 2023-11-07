@@ -22,7 +22,7 @@
         (click)="onClickEdit(extra)"
         id="extra-name"
         *ngIf="isCompletedRequest(extra.id) && translatedRequests">
-        {{ extra.titleProp }}
+        {{ extra.title | languageTransform: 'User' | async }}
       </p>
     </ng-template>
   </kendo-grid-column>

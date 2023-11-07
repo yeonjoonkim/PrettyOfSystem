@@ -35,6 +35,7 @@ export class ShopServiceManagementService {
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
   public isReachToMax$!: Observable<boolean>;
   public progressBar$!: Observable<ShopLimitedProgpressBarType>;
+  public extraFilter$!: Observable<NameValuePairType[]>;
 
   constructor(
     public relateShopService: ShopRelatedServiceService,
@@ -54,6 +55,7 @@ export class ShopServiceManagementService {
     this.extra$ = this._shop.extras$;
     this.service$ = this._shop.services$;
     this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
+    this.extraFilter$ = this._shop.extraFilter$;
     this.isReachToMaxListener();
     this.activeProgressBar();
     this.translateRequest();

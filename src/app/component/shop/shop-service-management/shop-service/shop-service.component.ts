@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   IFormHeaderModalProp,
+  IShopSetting,
   NameValuePairType,
+  ShopConfigurationType,
   ShopCountryType,
   ShopServiceModalDocumentProp,
   ShopServiceOptionType,
@@ -162,14 +164,11 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
       Constant.Default.ComponentMode.Form
     );
     const prop: ShopServiceModalDocumentProp | undefined = this._navParams.get('prop');
-
     if (formProp !== undefined && prop !== undefined) {
       this._before = cloneDeep(prop);
       this.current = cloneDeep(prop);
       this.form = cloneDeep(formProp);
-      this.extraSelection = this.current.extra.map(e => {
-        return { name: e.titleProp, value: e.id };
-      });
+      this.extraSelection = this.current.extraFilter;
       this.selectedExtras = this.extraSelection.filter(s =>
         this.current.service.extraIds.includes(s.value)
       );

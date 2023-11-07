@@ -13,9 +13,9 @@ export class OpenAiService {
 
   //API DEFAULT PARAM
   private readonly _defaultParams = {
-    model: 'gpt-3.5-turbo-16k',
+    model: 'gpt-4-1106-preview',
     temperature: 0.4,
-    max_tokens: 16000,
+    max_tokens: 4096,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
