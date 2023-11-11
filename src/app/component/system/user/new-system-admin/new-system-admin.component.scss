@@ -5,3 +5,9 @@ form-container {
   justify-content: center;
   align-items: center;
 }
+
+@media only screen and (max-width: 500px) {
+  #login-otion {
+    flex-direction: column;
+  }
+}

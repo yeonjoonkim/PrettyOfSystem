@@ -68,6 +68,15 @@ export class ShopPackageComponent implements OnInit {
     await this._modalCtrl.dismiss();
   }
 
+  public isCompletedRequest(serviceId: string) {
+    const titleRequest = this.current.translateRequests?.find(
+      s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
+    );
+    return titleRequest !== undefined
+      ? titleRequest.status === Constant.API.TranslateStatus.Completed
+      : false;
+  }
+
   public async handleCreate() {
     this.form.enabledSavebutton = false;
     const created = await this._shopPackage.add(this.current.package);

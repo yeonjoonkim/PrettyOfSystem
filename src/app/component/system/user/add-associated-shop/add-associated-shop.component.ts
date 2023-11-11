@@ -7,6 +7,7 @@ import {
   UserAssociatedShopType,
   UserManagementCriteria,
 } from 'src/app/interface';
+import { DateService } from 'src/app/service/global/date/date.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
@@ -26,7 +27,8 @@ export class AddAssociatedShopComponent implements OnInit {
   constructor(
     private _popover: PopoverController,
     private _navParam: NavParams,
-    private _global: GlobalService
+    private _global: GlobalService,
+    private _date: DateService
   ) {}
 
   async ngOnInit() {
@@ -97,7 +99,7 @@ export class AddAssociatedShopComponent implements OnInit {
         shopId: shop.id,
         userId: this._user.id,
         role: role,
-        activeFrom: new Date(),
+        activeFrom: this._date.shopTimeStamp(null),
         activeTo: null,
         active: true,
         displayInSystem: this.displayInBooking,

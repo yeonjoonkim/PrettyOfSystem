@@ -24,3 +24,19 @@
 #timezone {
   margin-top: 10px;
 }
+
+@media only screen and (max-width: 600px) {
+  #info-btn,
+  #subscription-btn,
+  #address-btn,
+  #workhours-btn {
+    font-size: 10px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #business-info,
+  #phone-email {
+    flex-direction: column;
+  }
+}

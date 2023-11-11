@@ -3,10 +3,6 @@
   padding: 0px 0px 0px 12px;
 }
 
-#container {
-  margin-top: 15px;
-}
-
 #description-container {
   display: flex;
   flex-direction: row;
@@ -26,11 +22,10 @@
   margin: 0px 0px 15px 0px;
 }
 
-#check-boxes {
-  padding: 0px 15px;
-}
 #check-box-container {
-  margin: 0px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0px 15px 0px 0px;
 }
 
 #selections {
@@ -99,10 +94,10 @@
       max-width: 100%;
     }
   }
+}
 
-  #insurance-cover,
-  #pregnant,
-  #oil {
-    font-size: 12px;
+@media only screen and (max-width: 360px) {
+  #info {
+    flex-direction: column-reverse;
   }
 }

@@ -1,6 +1,6 @@
 <section id="menu-container">
   <div id="user-info-card" *ngIf="user.isLoggedin$ | async">
-    <div id="shop-container">
+    <div id="shop-container" *ngIf="shopSelection.length > 0">
       <name-value-pair-single-dropdown-selection
         [(selected)]="selectedShop"
         [selection]="shopSelection"

@@ -113,6 +113,8 @@ export class ShopEmployeeAccountService {
       email: se.email,
       encryptedPassword: se.encryptedPassword,
       disabledAccount: false,
+      visitedShopIds: [],
+      address: null,
     };
     const associatedShop = this.transformIntoAssociatedShopUser(acc, se);
     acc.associatedShops = [associatedShop];

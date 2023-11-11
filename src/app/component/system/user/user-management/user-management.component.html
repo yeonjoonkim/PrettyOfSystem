@@ -128,11 +128,7 @@
                   <div *ngIf="criteria.shopFilter.length !== user.associatedShops.length">
                     <!--Single -->
                     <span
-                      *ngIf="
-                        userShop.shopId === shop.value &&
-                        i === 0 &&
-                        user.associatedShops.length === i + 1
-                      "
+                      *ngIf="userShop.shopId === shop.value && user.associatedShops.length === 1"
                       >{{ shop.name }}</span
                     >
                     <!--Multiple Start-->

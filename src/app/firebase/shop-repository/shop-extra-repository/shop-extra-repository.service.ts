@@ -6,6 +6,7 @@ import { ShopExtra } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
 import * as Constant from 'src/app/constant/constant';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
+import { DateService } from 'src/app/service/global/date/date.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class ShopExtraRepositoryService {
   constructor(
     private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
-    private _textTransform: TextTransformService
+    private _textTransform: TextTransformService,
+    private _date: DateService
   ) {}
 
   public extraValueChangeListener(shopId: string) {
@@ -69,7 +71,7 @@ export class ShopExtraRepositoryService {
       titleProp: '',
       title: '',
       price: 0,
-      lastModifiedDate: new Date(),
+      lastModifiedDate: this._date.shopTimeStamp(null),
       lastModifiedEmployee: '',
     };
 

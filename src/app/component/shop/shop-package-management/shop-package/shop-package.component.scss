@@ -1,6 +1,3 @@
-#container {
-  margin-top: 15px;
-}
 #translated-guide {
   font-size: 8px;
   padding: 0px 0px 0px 12px;
@@ -42,7 +39,7 @@
   flex-direction: row;
   max-width: 90px;
   kendo-numerictextbox {
-    margin: 10px;
+    margin: 11px;
     height: 28px;
     max-width: 50px;
   }
@@ -71,6 +68,10 @@
 }
 
 .option-title {
+  font-size: 12px;
+  text-align: center;
+  align-items: center;
+  display: flex;
   margin: 0px 0px 0px 16px;
   max-width: 150px;
   white-space: nowrap;
@@ -88,7 +89,7 @@
   max-width: 100px;
   kendo-numerictextbox {
     margin: 0;
-    margin-top: 10px;
+    margin-top: 11px;
     height: 28px;
     max-width: 100px;
   }
@@ -126,7 +127,11 @@
 }
 
 @media only screen and (max-width: 450px) {
-  #discount-type-value-container {
+  #discount-type-value-container,
+  #discount-price-value-container {
     flex-direction: column;
+  }
+  #info {
+    flex-direction: column-reverse;
   }
 }

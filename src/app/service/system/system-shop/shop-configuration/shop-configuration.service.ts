@@ -122,7 +122,7 @@ export class ShopConfigurationService {
       country: this.getDefaultCountry(),
       plan: this.getDefaultPlan(),
       setting: this.defaultShopSetting(),
-      activeFrom: new Date(),
+      activeFrom: this.global.date.shopTimeStamp(null),
       activeTo: null,
       translatedRequestIds: [],
     };
@@ -161,8 +161,8 @@ export class ShopConfigurationService {
     return {
       configurationId: '',
       isOverDue: false,
-      lastPaymentDate: new Date(),
-      paymentDate: new Date(),
+      lastPaymentDate: this.global.date.shopTimeStamp(null),
+      paymentDate: this.global.date.shopTimeStamp(null),
       period: {
         name: 'date.title.weekly',
         type: 'Weekly',

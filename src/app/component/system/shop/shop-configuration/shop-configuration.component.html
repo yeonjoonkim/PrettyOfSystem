@@ -14,11 +14,18 @@
     <!-- Button -->
     <kendo-buttongroup selection="single" width="100%">
       <!--Information Button -->
-      <button kendoButton [toggleable]="true" (click)="onClickInfo()" [(selected)]="display.info">
+
+      <button
+        id="info-btn"
+        kendoButton
+        [toggleable]="true"
+        (click)="onClickInfo()"
+        [(selected)]="display.info">
         {{ 'label.title.info' | languageTransform: 'System' | async }}
       </button>
-      <!--Subscription Button-->
+      <!--Work hour Button-->
       <button
+        id="workhours-btn"
         kendoButton
         [toggleable]="true"
         (click)="onClickHours()"
@@ -27,6 +34,7 @@
       </button>
       <!--Address Button-->
       <button
+        id="address-btn"
         kendoButton
         [toggleable]="true"
         (click)="onClickAddress()"
@@ -35,6 +43,7 @@
       </button>
       <!--Subscription Button-->
       <button
+        id="subscription-btn"
         kendoButton
         [toggleable]="true"
         (click)="onClickSubscription()"
@@ -61,7 +70,7 @@
           </kendo-label>
         </flex-row-item>
       </flex-row>
-      <flex-row>
+      <flex-row id="business-info">
         <flex-row-item>
           <text-box
             #businessName
@@ -81,15 +90,15 @@
             [readOnly]="form.readOnly"
             [(value)]="config.taxNumber"
             [(validate)]="validator.taxNumber"
-            [isTitleFormat]="true"
-            [maxLength]="15"
+            [max]="20"
+            [min]="5"
             [isRequired]="true"
             [showCounter]="false">
           </text-box>
         </flex-row-item>
       </flex-row>
       <!--Phone Number and Email-->
-      <flex-row>
+      <flex-row id="phone-email">
         <flex-row-item>
           <phone-number
             mode="form"
@@ -194,7 +203,8 @@
           <date-period-picker
             [isPlanFormat]="true"
             [(period)]="config.plan.period"
-            [readOnly]="form.readOnly"></date-period-picker>
+            [readOnly]="form.readOnly"
+            (periodChange)="onPlanPeriodChange()"></date-period-picker>
         </flex-row-item>
         <flex-row-item>
           <shop-plan-price

@@ -92,7 +92,7 @@ const insertIntoSystemAdminAssociatedShops = async function (shop: I.ShopConfigu
           userId: admin.id,
           shopId: shop.id,
           roster: shop.operatingHours,
-          activeFrom: new Date(),
+          activeFrom: Service.Date.shopTimeStamp(null),
           activeTo: null,
           active: true,
           displayInSystem: false,

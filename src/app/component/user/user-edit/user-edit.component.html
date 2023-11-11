@@ -11,7 +11,7 @@
 
   <!-- Page Button -->
   <flex-col>
-    <kendo-buttongroup selection="single" width="100%">
+    <kendo-buttongroup selection="single" width="100%" *ngIf="user.associatedShops.length > 0">
       <button
         kendoButton
         *ngFor="let page of pages"
@@ -46,7 +46,6 @@
           [(value)]="user.firstName"
           [readOnly]="form.readOnly"
           [isRequired]="true"
-          [isTitleFormat]="true"
           [(validate)]="validator.firstName"></text-box>
       </flex-row-item>
       <flex-row-item>
@@ -55,7 +54,6 @@
           [(value)]="user.lastName"
           [readOnly]="form.readOnly"
           [isRequired]="true"
-          [isTitleFormat]="true"
           [(validate)]="validator.lastName"></text-box>
       </flex-row-item>
     </flex-row>

@@ -20,6 +20,9 @@ import { ShopPackagePriceCalculationService } from './shop-package-price-calcula
 import { ShopPackagePopoverService } from './shop-package-popover/shop-package-popover.service';
 import { ShopPackageLimitedTimeService } from './shop-package-limited-time/shop-package-limited-time.service';
 import { LoadingService } from '../../global/loading/loading.service';
+import { TextTransformService } from '../../global/text-transform/text-transform.service';
+import { ShopServiceManagementService } from '../shop-service-management/shop-service-management.service';
+import { ShopExtraManagementService } from '../shop-extra-management/shop-extra-management.service';
 
 @Injectable({
   providedIn: 'root',
@@ -38,9 +41,14 @@ export class ShopPackageManagementService {
   public isReachToMax$!: Observable<boolean>;
   public filterProp$!: Observable<ShopPackageFilterDocumentProp>;
   public progressBar$!: Observable<ShopLimitedProgpressBarType>;
+  public serviceTranslatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
+  public extraServiceRequest$!: Observable<ChatGptTranslateDocumentType[]>;
   constructor(
     private _shop: ShopService,
     private _packageRepo: ShopPackageRepositoryService,
+    private _textTransform: TextTransformService,
+    private _shopService: ShopServiceManagementService,
+    private _shopExtra: ShopExtraManagementService,
     public modal: ShopPackageModalService,
     public languagePackage: ShopLanguagePackageService,
     public priceCalculator: ShopPackagePriceCalculationService,
@@ -57,6 +65,8 @@ export class ShopPackageManagementService {
     this.extraFilter$ = this._shop.extraFilter$;
     this.serviceFilter$ = this._shop.serviceFilter$;
     this.operatingWorkHour$ = this._shop.operatingWorkHours$;
+    this.serviceTranslatedRequest$ = this._shopService.translatedRequest$;
+    this.extraServiceRequest$ = this._shopExtra.translatedRequest$;
     this.isReachToMaxListener();
     this.filterPropListener();
     this.activeProgressBar();
@@ -142,6 +152,7 @@ export class ShopPackageManagementService {
   }
 
   public async add(pack: ShopPackageDocumentType) {
+    pack.titleProp = this._textTransform.getTitleFormat(pack.titleProp);
     await this.loading.start('label.title.addnewpacakge');
     const newPackage = await this._packageRepo.addPackage(pack);
 
@@ -173,9 +184,10 @@ export class ShopPackageManagementService {
   }
 
   public async update(after: ShopPackageDocumentType) {
+    after.titleProp = this._textTransform.getTitleFormat(after.titleProp);
     const userName = await this._shop.userName();
     if (userName !== null) {
-      after.lastModifiedDate = new Date();
+      after.lastModifiedDate = await this._shop.timeStamp();
       after.lastModifiedEmployee = userName;
       return await this._packageRepo.updatePackage(after);
     } else {

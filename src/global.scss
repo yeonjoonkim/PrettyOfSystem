@@ -37,8 +37,9 @@
   --active: #787586;
   --error: #b02b36;
   --title: #cd7867;
-  --hyperlink: #8a84ee;
+  --hyperlink: #f3ecff;
   --completed: #474554;
+  --inprogress: #008ae9;
   --created: #008b6a;
   --success: #8a84ee;
 }
@@ -152,23 +153,8 @@ ion-toolbar {
 }
 
 .modal-container {
-  margin: 5px;
-  background-color: var(--background);
-}
-
-ion-loading {
-  --backdrop-opacity: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-ion-menu-button {
-  --color: white;
-}
-
-ion-popover {
-  --backdrop-opacity: 0.8;
-  --color: white;
+  margin-top: 12px;
+  background: var(--background);
 }
 
 .logo-loading {
@@ -232,14 +218,14 @@ ion-popover {
   transition: none !important;
 }
 
-.date-pick-popup-container::before {
+.date-pick-popup-container::after {
   content: '';
   display: block;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* Viewport width */
-  height: 100vh; /* Viewport height */
+  width: 100%; /* Viewport width */
+  height: 100%; /* Viewport height */
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
   z-index: -1; /* Behind the content of the container */
 }
@@ -303,6 +289,21 @@ legend {
   .k-checkbox {
     margin-left: 5px;
   }
+}
+
+ion-loading {
+  --backdrop-opacity: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+ion-menu-button {
+  --color: white;
+}
+
+ion-popover {
+  --backdrop-opacity: 0.8;
+  --color: white;
 }
 
 yes-no-selection-group {

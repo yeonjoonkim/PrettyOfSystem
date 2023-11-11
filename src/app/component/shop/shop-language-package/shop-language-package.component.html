@@ -9,7 +9,7 @@
   (onClickSave)="handleSave()">
 </form-header>
 <ion-content [scrollable]="true" *ngIf="current">
-  <div id="container">
+  <div class="modal-container">
     <div *ngFor="let lang of current.languages">
       <div *ngFor="let key of current.relatedKeys; let i = index">
         <div *ngIf="key.name === lang.value && current.isTitle">

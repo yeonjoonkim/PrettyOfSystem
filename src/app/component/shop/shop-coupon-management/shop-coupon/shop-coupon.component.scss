@@ -25,19 +25,19 @@
   max-width: 100px;
   kendo-numerictextbox {
     margin: 0;
-    margin-top: 10px;
+    margin-top: 11px;
     height: 28px;
     max-width: 100px;
   }
 }
 
 .minute-option {
-  margin: 0px 15px 0px 0px;
+  margin: 0px 0px 0px 15px;
   display: flex;
   flex-direction: row;
-  max-width: 90px;
+  max-width: 120px;
   kendo-numerictextbox {
-    margin: 10px;
+    margin-top: 11px;
     height: 28px;
     max-width: 50px;
   }
@@ -57,7 +57,9 @@
 }
 
 @media only screen and (max-width: 450px) {
-  #discount-type-value-container {
+  #discount-type-value-container,
+  #price,
+  #coupons {
     flex-direction: column;
   }
 }

@@ -33,35 +33,37 @@
 
 <!--Role Label-->
 <ion-content>
-  <section class="modal-container">
-    <!-- Role Description-->
-    <kendo-label text="{{ 'label.title.role' | languageTransform: 'System' | async }}">
-      <kendo-textbox [(ngModel)]="role.description" size="large" [clearButton]="true">
-      </kendo-textbox>
-    </kendo-label>
+  <flex-col class="modal-container">
+    <flex-col-item>
+      <!-- Role Description-->
+      <kendo-label text="{{ 'label.title.role' | languageTransform: 'System' | async }}">
+        <kendo-textbox [(ngModel)]="role.description" size="large" [clearButton]="true">
+        </kendo-textbox>
+      </kendo-label>
 
-    <!--Role Config -->
-    <yes-no-selection-group>
-      <yes-no-selection
-        title="label.title.systemadmin"
-        [(value)]="role.accessLevel.isSystemAdmin"
-        (valueChange)="onChangeSystemAdminAccessCtrl($event)"></yes-no-selection>
-      <yes-no-selection
-        title="label.title.admin"
-        [(value)]="role.accessLevel.isAdmin"
-        (valueChange)="onChangeAdminAccessCtrl($event)"></yes-no-selection>
-      <yes-no-selection
-        title="label.title.manager"
-        [(value)]="role.accessLevel.isManager"
-        (valueChange)="onChangeManagerAccessCtrl($event)"></yes-no-selection>
-      <yes-no-selection
-        title="label.title.employee"
-        [(value)]="role.accessLevel.isEmployee"
-        (valueChange)="onChangeEmployeeAccessCtrl($event)"></yes-no-selection>
-      <yes-no-selection
-        title="label.title.reception"
-        [(value)]="role.accessLevel.isReception"
-        (valueChange)="onChangeReceptionAccessCtrl($event)"></yes-no-selection>
-    </yes-no-selection-group>
-  </section>
+      <!--Role Config -->
+      <yes-no-selection-group>
+        <yes-no-selection
+          title="label.title.systemadmin"
+          [(value)]="role.accessLevel.isSystemAdmin"
+          (valueChange)="onChangeSystemAdminAccessCtrl($event)"></yes-no-selection>
+        <yes-no-selection
+          title="label.title.admin"
+          [(value)]="role.accessLevel.isAdmin"
+          (valueChange)="onChangeAdminAccessCtrl($event)"></yes-no-selection>
+        <yes-no-selection
+          title="label.title.manager"
+          [(value)]="role.accessLevel.isManager"
+          (valueChange)="onChangeManagerAccessCtrl($event)"></yes-no-selection>
+        <yes-no-selection
+          title="label.title.employee"
+          [(value)]="role.accessLevel.isEmployee"
+          (valueChange)="onChangeEmployeeAccessCtrl($event)"></yes-no-selection>
+        <yes-no-selection
+          title="label.title.reception"
+          [(value)]="role.accessLevel.isReception"
+          (valueChange)="onChangeReceptionAccessCtrl($event)"></yes-no-selection>
+      </yes-no-selection-group>
+    </flex-col-item>
+  </flex-col>
 </ion-content>

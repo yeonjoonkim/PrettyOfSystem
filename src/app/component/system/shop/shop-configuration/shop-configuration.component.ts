@@ -56,11 +56,10 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
   }
 
   public async onPlanPeriodChange() {
-    let newPaymentDate = this._shopConfig.global.date.transform.addDay(
+    this.config.plan.paymentDate = this._shopConfig.global.date.addDay(
       this.config.plan.lastPaymentDate,
       this.config.plan.period.day
     );
-    this.config.plan.paymentDate = newPaymentDate.toUTCDate();
     this.validator.planPeriod = true;
     this.onChangeForm();
   }
@@ -91,7 +90,7 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
     if (this.config.active) {
       this.config.activeTo = null;
     } else {
-      this.config.activeTo = new Date();
+      this.config.activeTo = this._shopConfig.global.date.shopTimeStamp(null);
     }
   }
 

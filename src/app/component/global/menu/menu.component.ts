@@ -1,7 +1,6 @@
 import { MenuCategoryType } from 'src/app/interface/menu/menu.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { LanguageService } from 'src/app/service/global/language/language.service';
 import { StorageService } from 'src/app/service/global/storage/storage.service';
 import { UserService } from 'src/app/service/user/user.service';
 import { MenuController } from '@ionic/angular';

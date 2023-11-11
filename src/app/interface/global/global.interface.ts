@@ -7,6 +7,11 @@ import {
   PeriodType,
 } from '../../constant/constant';
 
+export type StartEndStringDateType = {
+  start: string;
+  end: string;
+};
+
 export interface ITimer {
   timerSettingMin: number;
   startDateTime: Date;

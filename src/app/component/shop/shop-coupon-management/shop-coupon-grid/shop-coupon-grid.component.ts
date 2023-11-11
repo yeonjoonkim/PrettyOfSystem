@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ShopCouponDocumentType, ShopLanguagePackageModalProp } from 'src/app/interface';
+import {
+  ChatGptTranslateDocumentType,
+  ShopCouponDocumentType,
+  ShopLanguagePackageModalProp,
+} from 'src/app/interface';
 import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
-
+import * as Constant from 'src/app/constant/constant';
 @Component({
   selector: 'shop-coupon-grid',
   templateUrl: './shop-coupon-grid.component.html',
@@ -13,6 +17,7 @@ export class ShopCouponGridComponent implements OnInit {
   @Output() onCreate = new EventEmitter<boolean>();
 
   @Input() coupons: ShopCouponDocumentType[] = [];
+  @Input() translatedRequest: ChatGptTranslateDocumentType[] = [];
   @Input() isReachToMax: boolean = true;
   @Input() isModalOpen: boolean = false;
   @Input() isAuthorisedRole: boolean = false;
@@ -20,6 +25,14 @@ export class ShopCouponGridComponent implements OnInit {
 
   ngOnInit() {}
 
+  public isCompletedRequest(serviceId: string) {
+    const titleRequest = this.translatedRequest?.find(
+      s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
+    );
+    return titleRequest !== undefined
+      ? titleRequest.status === Constant.API.TranslateStatus.Completed
+      : false;
+  }
   public onClickCreate() {
     this.onCreate.emit(true);
   }

@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ShopService } from '../shop.service';
-import { IShopSetting, ShopConfigurationType } from 'src/app/interface';
+import {
+  IShopSetting,
+  ShopConfigurationType,
+  ShopUpdateContactProp,
+  ShopWorkHoursType,
+} from 'src/app/interface';
 import { Observable, of, switchMap } from 'rxjs';
 import { ShopSettingOptionService } from './shop-setting-option/shop-setting-option.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
@@ -8,6 +13,7 @@ import { PlanModalService } from '../../system/system-plan/plan-modal/plan-modal
 import { LoadingService } from '../../global/loading/loading.service';
 import { ShopPictureRepositoryService } from 'src/app/firebase/shop-repository/shop-picture-repository/shop-picture-repository.service';
 import * as Constant from 'src/app/constant/constant';
+import { TextTransformService } from '../../global/text-transform/text-transform.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -26,7 +32,8 @@ export class ShopSettingService {
     private shopConfigRepo: SystemShopConfigurationRepositoryService,
     private _planModal: PlanModalService,
     private _loading: LoadingService,
-    private _pictureRepo: ShopPictureRepositoryService
+    private _pictureRepo: ShopPictureRepositoryService,
+    private _textTransform: TextTransformService
   ) {
     this.config$ = this._shop.config$;
     this.logoImage$ = this._shop.logoImage$;
@@ -83,11 +90,34 @@ export class ShopSettingService {
     }
   }
 
-  public async updateConfig(config: ShopConfigurationType) {
-    await this._loading.show();
-    const update = await this.shopConfigRepo.updateShopConfiguration(config);
-    await this._loading.dismiss();
-    return update;
+  public async updateOperatingHours(operatingHours: ShopWorkHoursType) {
+    let config = await this._shop.config();
+    if (config !== null) {
+      config.operatingHours = operatingHours;
+      await this._loading.show();
+      const update = await this.shopConfigRepo.updateShopConfiguration(config);
+      await this._loading.dismiss();
+      return update;
+    } else {
+      return false;
+    }
+  }
+
+  public async updateContact(prop: ShopUpdateContactProp) {
+    let config = await this._shop.config();
+    if (config !== null) {
+      config.name = this._textTransform.getTitleFormat(prop.name);
+      config.taxNumber = prop.taxNumber;
+      config.phoneNumber = prop.phone;
+      config.email = prop.email;
+      config.address = prop.address;
+      await this._loading.show();
+      const update = await this.shopConfigRepo.updateShopConfiguration(config);
+      await this._loading.dismiss();
+      return update;
+    } else {
+      return false;
+    }
   }
 
   public async uploadPicture(

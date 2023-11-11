@@ -1,12 +1,29 @@
 import { Injectable } from '@angular/core';
-import { DateTransformService } from './date-transform/date-transform.service';
+import { DateTransformService, DateType } from './date-transform/date-transform.service';
 import * as Constant from '../../../constant/constant';
 import {
   IDateIndexPairDay,
   DatePeriodType,
   TimeItemType,
 } from 'src/app/interface/global/global.interface';
-import { TimePickerIncrementalSteps } from '@progress/kendo-angular-dateinputs';
+import { utcToZonedTime } from 'date-fns-tz';
+import {
+  addDays,
+  addHours,
+  addMinutes,
+  addMonths,
+  addYears,
+  differenceInHours,
+  differenceInMinutes,
+  eachDayOfInterval,
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  intervalToDuration,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+} from 'date-fns';
 
 @Injectable({
   providedIn: 'root',
@@ -32,91 +49,163 @@ export class DateService {
 
   constructor(public transform: DateTransformService) {}
 
-  public differenceTime(start: Date, end: Date, decimal: number): number {
-    let diff: number = (end.getTime() - start.getTime()) / 1000 / 60 / 60;
-    let factor = Math.pow(10, decimal);
-    return Math.round(diff * factor) / factor;
-  }
-
-  public getTimePickerIncrementalSteps(mins: number): TimePickerIncrementalSteps {
-    let mintues = mins % 60;
-    return { minute: mintues };
-  }
-
-  public getTimeItem(date: Date): TimeItemType {
-    let currentDayNightType: Constant.DateDayNightType =
-      date.getHours() > 11 ? Constant.Date.DayNightType.NIGHT : Constant.Date.DayNightType.DAY;
-    let timeString = date.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
+  timeItem(date: Date): TimeItemType {
     return {
       hr: date.getHours(),
       min: date.getMinutes(),
-      dayNightType: currentDayNightType,
-      strValue: timeString,
+      dayNightType: getDateDayNightType(date.getHours()),
+      strValue: timeString(date),
     };
   }
 
-  public getDateIndexPairDay(date: Date): IDateIndexPairDay {
-    let dayIndex = date.getDay();
-    return this.day[dayIndex];
+  shopNow(timezone: Constant.TimeZoneType | undefined | null) {
+    return timezone ? utcToZonedTime(Date.now(), timezone) : new Date();
   }
 
-  public isSunday(date: Date): boolean {
-    let dateIndexPairDay = this.getDateIndexPairDay(date);
-    return (
-      dateIndexPairDay.index === Constant.Date.DayIndex.Sun &&
-      dateIndexPairDay.day === Constant.Date.Day.Sun
-    );
+  shopTimeStamp(timezone: Constant.TimeZoneType | undefined | null) {
+    const now = this.shopNow(timezone);
+    return this.transform.formatLocalDateTime(now);
   }
 
-  public isMonday(date: Date): boolean {
-    let dateIndexPairDay = this.getDateIndexPairDay(date);
-    return (
-      dateIndexPairDay.index === Constant.Date.DayIndex.Mon &&
-      dateIndexPairDay.day === Constant.Date.Day.Mon
-    );
+  addMin(date: DateType, min: number) {
+    const localDate = this.transform.toLocalDateTime(date);
+    const added = addMinutes(localDate, min);
+    const format = this.transform.formatLocalDateTime(added);
+    return format;
   }
 
-  public isTuesday(date: Date): boolean {
-    let dateIndexPairDay = this.getDateIndexPairDay(date);
-    return (
-      dateIndexPairDay.index === Constant.Date.DayIndex.Tue &&
-      dateIndexPairDay.day === Constant.Date.Day.Tue
-    );
+  addHour(date: DateType, hour: number) {
+    const localDate = this.transform.toLocalDateTime(date);
+    const added = addHours(localDate, hour);
+    const format = this.transform.formatLocalDateTime(added);
+    return format;
   }
 
-  public isWednesday(date: Date): boolean {
-    let dateIndexPairDay = this.getDateIndexPairDay(date);
-    return (
-      dateIndexPairDay.index === Constant.Date.DayIndex.Wed &&
-      dateIndexPairDay.day === Constant.Date.Day.Wed
-    );
+  addDay(date: DateType, day: number) {
+    const localDate = this.transform.toLocalDateTime(date);
+    const added = addDays(localDate, day);
+    const format = this.transform.formatLocalDateTime(added);
+    return format;
   }
 
-  public isThursday(date: Date): boolean {
-    let dateIndexPairDay = this.getDateIndexPairDay(date);
-    return (
-      dateIndexPairDay.index === Constant.Date.DayIndex.Thu &&
-      dateIndexPairDay.day === Constant.Date.Day.Thu
-    );
+  addMonth(date: DateType, month: number) {
+    const localDate = this.transform.toLocalDateTime(date);
+    const added = addMonths(localDate, month);
+    const format = this.transform.formatLocalDateTime(added);
+    return format;
   }
 
-  public isFriday(date: Date): boolean {
-    let dateIndexPairDay = this.getDateIndexPairDay(date);
-    return (
-      dateIndexPairDay.index === Constant.Date.DayIndex.Fri &&
-      dateIndexPairDay.day === Constant.Date.Day.Fri
-    );
+  addYear(date: DateType, year: number) {
+    const localDate = this.transform.toLocalDateTime(date);
+    const added = addYears(localDate, year);
+    const format = this.transform.formatLocalDateTime(added);
+    return format;
   }
 
-  public isSaturday(date: Date): boolean {
-    let dateIndexPairDay = this.getDateIndexPairDay(date);
-    return (
-      dateIndexPairDay.index === Constant.Date.DayIndex.Sat &&
-      dateIndexPairDay.day === Constant.Date.Day.Sat
+  duration(start: DateType, end: DateType) {
+    const interval: Interval = {
+      start: this.transform.toLocalDateTime(start),
+      end: this.transform.toLocalDateTime(end),
+    };
+    const result = intervalToDuration(interval);
+    console.log(result);
+    return result;
+  }
+
+  differenceInTime(start: DateType, end: DateType, decimal: number) {
+    const startDate = this.transform.toLocalDateTime(start);
+    const endDate = this.transform.toLocalDateTime(end);
+    const diff = (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60;
+    const factor = Math.pow(10, decimal);
+    return Math.round(diff * factor) / factor;
+  }
+
+  differenceInMintues(start: DateType, end: DateType, decimal: number) {
+    const startDate = this.transform.toLocalDateTime(start);
+    const endDate = this.transform.toLocalDateTime(end);
+    const diff = differenceInMinutes(startDate, endDate);
+    return diff;
+  }
+
+  differenceInHours(start: DateType, end: DateType, decimal: number) {
+    const startDate = this.transform.toLocalDateTime(start);
+    const endDate = this.transform.toLocalDateTime(end);
+    const diff = differenceInHours(startDate, endDate);
+    return diff;
+  }
+
+  startDay(date: DateType) {
+    const local = this.transform.toLocalDateTime(date);
+    const start = startOfDay(local);
+    return this.transform.formatLocalDateTime(start);
+  }
+
+  endDay(date: DateType) {
+    const local = this.transform.toLocalDateTime(date);
+    const end = endOfDay(local);
+    return this.transform.formatLocalDateTime(end);
+  }
+
+  startMonth(date: DateType) {
+    const local = this.transform.toLocalDateTime(date);
+    const start = startOfMonth(local);
+    return this.transform.formatLocalDateTime(start);
+  }
+
+  endMonth(date: DateType) {
+    const local = this.transform.toLocalDateTime(date);
+    const end = endOfMonth(local);
+    return this.transform.formatLocalDateTime(end);
+  }
+
+  minimumDate(timezone: Constant.TimeZoneType, restrictedFromToday: boolean, previousDay: number) {
+    const now = this.shopNow(timezone);
+    const startDate = this.startDay(now);
+    return restrictedFromToday
+      ? startDate
+      : previousDay
+      ? this.addDay(startDate, -previousDay)
+      : new Date(2000, 0, 1);
+  }
+
+  maximumDate(timezone: Constant.TimeZoneType, displayNextDay: number) {
+    const now = this.shopNow(timezone);
+    const startDate = this.startDay(now);
+    return displayNextDay ? this.addDay(startDate, +displayNextDay) : new Date(2050, 11, 31);
+  }
+
+  shopAllDaysThisWeek(timezone: Constant.TimeZoneType) {
+    const date = this.transform.toLocalDateTime(this.startDay(this.shopNow(timezone)));
+    const start = startOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const end = endOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const interval = eachDayOfInterval({ start, end });
+    return interval.map(date => {
+      return this.transform.toLocalDateTime(date);
+    });
+  }
+
+  shopAllDaysNextWeek(timezone: Constant.TimeZoneType) {
+    const date = this.transform.toLocalDateTime(
+      this.startDay(this.addDay(this.shopNow(timezone), 7))
     );
+    const start = startOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const end = endOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const interval = eachDayOfInterval({ start, end });
+    return interval.map(date => {
+      return this.transform.toLocalDateTime(date);
+    });
   }
 }
+
+//Function
+const getDateDayNightType = function (hour: number) {
+  return hour > 11 ? Constant.Date.DayNightType.NIGHT : Constant.Date.DayNightType.DAY;
+};
+
+const timeString = function (date: Date) {
+  return date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+};

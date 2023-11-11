@@ -72,8 +72,8 @@ export class ShopCouponManagementService {
 
   private translateRequest() {
     this.translatedRequest$ = this.config$.pipe(
-      combineLatestWith(this.coupons$),
-      switchMap(([config, services]: [ShopConfigurationType | null, ShopCouponDocumentType[]]) => {
+      combineLatestWith(this.services$),
+      switchMap(([config, services]: [ShopConfigurationType | null, ShopServiceDocumentType[]]) => {
         if (config !== null && services.length > 0) {
           const serviceIds: string[] = services.map(s => {
             return s.id;
@@ -125,7 +125,7 @@ export class ShopCouponManagementService {
   public async update(after: ShopCouponDocumentType) {
     const userName = await this._shop.userName();
     if (userName !== null) {
-      after.lastModifiedDate = new Date();
+      after.lastModifiedDate = await this._shop.timeStamp();
       after.lastModifiedEmployee = userName;
       return await this._couponRepo.updateCoupon(after);
     } else {

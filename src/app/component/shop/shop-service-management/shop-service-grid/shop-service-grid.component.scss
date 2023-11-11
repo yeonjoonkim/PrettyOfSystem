@@ -29,7 +29,7 @@
 }
 
 .inprogress {
-  background-color: var(--hyperlink);
+  background-color: var(--inprogress);
   cursor: pointer;
   text-decoration: underline;
 }
@@ -72,7 +72,7 @@
 .minute-option {
   display: flex;
   flex-direction: row;
-  max-width: 75px;
+  max-width: 110px;
   margin: 0;
   margin: 0;
   kendo-numerictextbox {

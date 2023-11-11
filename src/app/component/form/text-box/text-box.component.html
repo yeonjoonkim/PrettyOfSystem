@@ -1,9 +1,18 @@
 <kendo-label text="{{ title | languageTransform: 'System' | async }}">
-  <div class="form-error-container" *ngIf="!validate && mode === 'form' && entered && isRequired">
-    <kendo-formerror>{{
-      'messageerror.description.textbox' | languageTransform: 'System' | async
-    }}</kendo-formerror>
+  <div class="form-error-container">
+    <kendo-formerror *ngIf="!validate && mode === 'form' && entered && isRequired"
+      >{{ 'messageerror.description.textbox' | languageTransform: 'System' | async }}
+      {{ 'label.title.minimum' | languageTransform: 'System' | async }}: {{ min
+      }}{{ 'label.title.characters' | languageTransform: 'System' | async }}
+      {{ 'label.title.maximum' | languageTransform: 'System' | async }}: {{ max
+      }}{{ 'label.title.characters' | languageTransform: 'System' | async }}
+    </kendo-formerror>
+
+    <p id="tooltip" *ngIf="!validate && mode === 'form' && tooltip && !entered">
+      {{ tooltip | languageTransform: 'System' | async }}
+    </p>
   </div>
+
   <kendo-textbox
     #textBox
     [(ngModel)]="validatedValue"

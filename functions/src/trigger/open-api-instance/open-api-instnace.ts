@@ -74,7 +74,7 @@ async function checkInstanceExpiry(instance: I.OpenApiInstanceType): Promise<voi
 
 const handleExpiredDateChecker = async function (after: I.OpenApiInstanceType) {
   const now = new Date();
-  const expired = Service.Date.toDate(after.expiredDate);
+  const expired = Service.Date.toLocalDateTime(after.expiredDate);
   const diff = expired.getTime() - now.getTime();
 
   setTimeout(async () => {

@@ -1,7 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
-import { IFormHeaderModalProp, IShopSetting, ShopConfigurationType } from 'src/app/interface';
+import {
+  IFormHeaderModalProp,
+  IShopSetting,
+  ShopConfigurationType,
+  ShopUpdateContactProp,
+} from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 
@@ -51,7 +56,14 @@ export class ShopSettingContactComponent implements OnInit, OnDestroy {
 
   public async handleSave() {
     this.form.enabledSavebutton = false;
-    const updated = await this._shopSetting.updateConfig(this.config);
+    const updateProp: ShopUpdateContactProp = {
+      name: this.config.name,
+      taxNumber: this.config.taxNumber,
+      address: this.config.address,
+      phone: this.config.phoneNumber,
+      email: this.config.email,
+    };
+    const updated = await this._shopSetting.updateContact(updateProp);
     if (updated) {
       await this.dismiss();
     } else {

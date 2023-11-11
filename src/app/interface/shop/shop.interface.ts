@@ -26,8 +26,8 @@ export type ShopCountryType = {
 export type ShopPlanType = {
   configurationId: string;
   isOverDue: boolean;
-  lastPaymentDate: Date;
-  paymentDate: Date;
+  lastPaymentDate: string;
+  paymentDate: string;
   period: DatePeriodType;
 };
 
@@ -75,8 +75,8 @@ export interface ShopConfigurationType {
   plan: ShopPlanType;
   package: ShopConfigurationLanguagePackageType;
   translatedRequestIds: string[];
-  activeFrom: Date;
-  activeTo: Date | null;
+  activeFrom: string;
+  activeTo: string | null;
   setting: IShopSetting;
   timezone: string;
 }
@@ -91,3 +91,11 @@ export interface ShopConfigurationTypeFilterOption {
   phoneNumber: string;
   planConfigurationId: string;
 }
+
+export type ShopUpdateContactProp = {
+  phone: string;
+  name: string;
+  email: string;
+  address: AddressType;
+  taxNumber: string;
+};

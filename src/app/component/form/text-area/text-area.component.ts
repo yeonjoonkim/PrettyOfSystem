@@ -15,6 +15,7 @@ export class TextAreaComponent implements OnInit {
   @Output() valueChange = new EventEmitter<string>();
   @Output() validateChange = new EventEmitter<boolean>();
   @Input() title!: string;
+  @Input() tooltip!: string;
   @Input() errMsg!: string;
   @Input() isTitleFormat: boolean = false;
   @Input() isUpperFormat: boolean = false;

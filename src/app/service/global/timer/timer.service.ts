@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { ITimer, TimerDurationType, TimerPercentType } from 'src/app/interface';
 import { DateTransformService } from '../date/date-transform/date-transform.service';
+import { DateService } from '../date/date.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +18,9 @@ export class TimerService {
     percent: { remain: 100, used: 0 },
     label: '',
   };
+
   private _dateTransform: DateTransformService;
+  private _date: DateService;
   private _valueSubject: BehaviorSubject<ITimer> = new BehaviorSubject<ITimer>(this._defaultValue);
   public value$: Observable<ITimer> = this._valueSubject.asObservable();
   private _subscription!: Subscription;
@@ -26,13 +29,13 @@ export class TimerService {
 
   constructor() {
     this._dateTransform = new DateTransformService();
+    this._date = new DateService(this._dateTransform);
   }
 
   public startTimerByMin(min: number) {
     const now = new Date();
-    const endDateTime = this._dateTransform.addMin(now, min);
-    const duration = this.calculateDiffEndAndCurrent(endDateTime, now);
-
+    const endDateTime = this.addMins(now, min);
+    const duration = this.calculateDiffEndAndCurrent(now, endDateTime);
     const start: ITimer = {
       ...this._defaultValue,
       timerSettingMin: min,
@@ -52,10 +55,10 @@ export class TimerService {
     let currentTimer = this._valueSubject.getValue();
     if (!currentTimer.end && currentTimer.inProgress) {
       currentTimer.currentDateTime = new Date();
-      currentTimer.endDateTime = this._dateTransform.addMin(currentTimer.endDateTime, min);
+      currentTimer.endDateTime = this.addMins(currentTimer.endDateTime, min);
       currentTimer.duration = this.calculateDiffEndAndCurrent(
-        currentTimer.endDateTime,
-        currentTimer.currentDateTime
+        currentTimer.currentDateTime,
+        currentTimer.endDateTime
       );
       currentTimer.percent = this.calculatePercent(
         currentTimer.startDateTime,
@@ -66,9 +69,14 @@ export class TimerService {
     }
   }
 
-  private calculateDiffEndAndCurrent(end: Date, current: Date): TimerDurationType {
-    let duration = this._dateTransform.diff(end, current);
-    return { hour: duration.hours(), min: duration.minutes(), sec: duration.seconds() };
+  private calculateDiffEndAndCurrent(start: Date, end: Date): TimerDurationType {
+    let duration = this._date.duration(start, end);
+
+    return {
+      hour: duration.hours ? duration.hours : 0,
+      min: duration.minutes ? duration.minutes : 0,
+      sec: duration.seconds ? duration.seconds : 0,
+    };
   }
 
   private inProgress() {
@@ -136,7 +144,7 @@ export class TimerService {
   private updateTimer() {
     let currentTimer = this._valueSubject.getValue();
     let now = new Date();
-    let diff = this.calculateDiffEndAndCurrent(currentTimer.endDateTime, now);
+    let diff = this.calculateDiffEndAndCurrent(now, currentTimer.endDateTime);
     let duration = this.replaceNegativeDiffToZero(diff);
     let percent = this.calculatePercent(currentTimer.startDateTime, now, currentTimer.endDateTime);
     let updateTimer: ITimer = {
@@ -153,5 +161,10 @@ export class TimerService {
     updateTimer.label = this.setLabel(updateTimer.duration);
 
     this._valueSubject.next(updateTimer);
+  }
+
+  addMins(date: Date, min: number) {
+    const formatted = this._date.addMin(date, min);
+    return this._date.transform.toLocalDateTime(formatted);
   }
 }

@@ -9,12 +9,12 @@
   (onClickSave)="handleSave()">
 </form-header>
 <ion-content [scrollable]="true" *ngIf="config">
-  <flex-col id="container">
+  <flex-col class="modal-container">
     <flex-col-item>
       <shop-category #category [readOnly]="true" [(shopCategory)]="config.category">
       </shop-category>
     </flex-col-item>
-    <flex-row>
+    <flex-row id="business-name">
       <flex-row-item>
         <text-box
           #businessName
@@ -22,10 +22,10 @@
           [readOnly]="form.readOnly"
           [(value)]="config.name"
           [(validate)]="validator.name"
-          [isTitleFormat]="true"
           [isRequired]="true"
           (valueChange)="handleEnabledSaveBtn()"
-          [min]="2">
+          [min]="1"
+          [max]="100">
         </text-box>
       </flex-row-item>
       <flex-row-item>
@@ -35,8 +35,8 @@
           [readOnly]="form.readOnly"
           [(value)]="config.taxNumber"
           [(validate)]="validator.taxNumber"
-          [isTitleFormat]="true"
-          [maxLength]="15"
+          [min]="1"
+          [max]="20"
           [isRequired]="true"
           (valueChange)="handleEnabledSaveBtn()"
           [showCounter]="false">
@@ -44,7 +44,7 @@
       </flex-row-item>
     </flex-row>
     <!--Phone Number and Email-->
-    <flex-row>
+    <flex-row id="phone-email">
       <flex-row-item>
         <phone-number
           mode="form"

@@ -35,210 +35,205 @@
 </ion-toolbar>
 
 <ion-content>
-  <section class="modal-container">
-    <flex-col id="container">
-      <flex-col-item>
-        <!-- Name -->
-        <kendo-label text="{{ 'label.title.name' | languageTransform: 'System' | async }}">
-          <kendo-textbox
+  <flex-col class="modal-container">
+    <flex-col-item>
+      <!-- Name -->
+      <kendo-label text="{{ 'label.title.name' | languageTransform: 'System' | async }}">
+        <kendo-textbox
+          [disabled]="isReadonly"
+          [(ngModel)]="plan.name"
+          size="large"
+          [clearButton]="true"
+          (valueChange)="onNameChange()">
+        </kendo-textbox>
+      </kendo-label>
+    </flex-col-item>
+    <flex-col-item>
+      <!-- Price-->
+      <legend>{{ 'label.title.price' | languageTransform: 'System' | async }}</legend>
+      <div>
+        <!--Weekly Price-->
+        <kendo-floatinglabel text="{{ 'date.title.weekly' | languageTransform: 'System' | async }}">
+          <kendo-numerictextbox
+            [spinners]="false"
             [disabled]="isReadonly"
-            [(ngModel)]="plan.name"
-            size="large"
-            [clearButton]="true"
-            (valueChange)="onNameChange()">
-          </kendo-textbox>
-        </kendo-label>
-      </flex-col-item>
-      <flex-col-item>
-        <!-- Price-->
-        <legend>{{ 'label.title.price' | languageTransform: 'System' | async }}</legend>
-        <div>
-          <!--Weekly Price-->
-          <kendo-floatinglabel
-            text="{{ 'date.title.weekly' | languageTransform: 'System' | async }}">
-            <kendo-numerictextbox
-              [spinners]="false"
-              [disabled]="isReadonly"
-              [style.width.px]="90"
-              rounded="large"
-              format="c2"
-              [min]="0"
-              [(value)]="plan.weeklyPrice.total"
-              [changeValueOnScroll]="false"
-              (valueChange)="onChangeWeekPrice()">
-            </kendo-numerictextbox>
-          </kendo-floatinglabel>
+            [style.width.px]="90"
+            rounded="large"
+            format="c2"
+            [min]="0"
+            [(value)]="plan.weeklyPrice.total"
+            [changeValueOnScroll]="false"
+            (valueChange)="onChangeWeekPrice()">
+          </kendo-numerictextbox>
+        </kendo-floatinglabel>
 
-          <!--Monthly Price-->
-          <kendo-floatinglabel
-            text="{{ 'date.title.monthly' | languageTransform: 'System' | async }}">
-            <kendo-numerictextbox
-              [spinners]="false"
-              [disabled]="isReadonly"
-              [style.width.px]="90"
-              rounded="large"
-              [autoCorrect]="true"
-              format="c"
-              [step]="0.5"
-              [min]="0"
-              [changeValueOnScroll]="false"
-              [(value)]="plan.monthlyPrice.total"
-              (valueChange)="onChangeMonthPrice()">
-            </kendo-numerictextbox>
-          </kendo-floatinglabel>
+        <!--Monthly Price-->
+        <kendo-floatinglabel
+          text="{{ 'date.title.monthly' | languageTransform: 'System' | async }}">
+          <kendo-numerictextbox
+            [spinners]="false"
+            [disabled]="isReadonly"
+            [style.width.px]="90"
+            rounded="large"
+            [autoCorrect]="true"
+            format="c"
+            [step]="0.5"
+            [min]="0"
+            [changeValueOnScroll]="false"
+            [(value)]="plan.monthlyPrice.total"
+            (valueChange)="onChangeMonthPrice()">
+          </kendo-numerictextbox>
+        </kendo-floatinglabel>
 
-          <!--Annually Price-->
-          <kendo-floatinglabel
-            text="{{ 'date.title.annually' | languageTransform: 'System' | async }}">
-            <kendo-numerictextbox
-              [spinners]="false"
-              [disabled]="isReadonly"
-              [style.width.px]="90"
-              rounded="large"
-              format="c2"
-              [step]="0.5"
-              [min]="0"
-              [changeValueOnScroll]="false"
-              [(value)]="plan.annuallyPrice.total"
-              (valueChange)="onChangeAnnualPrice()">
-            </kendo-numerictextbox>
-          </kendo-floatinglabel>
-        </div>
-      </flex-col-item>
-      <flex-col-item>
-        <!-- Option-->
-        <legend>{{ 'label.title.option' | languageTransform: 'System' | async }}</legend>
-        <div>
-          <!-- Limited Coupons -->
-          <kendo-floatinglabel
-            text="{{ 'label.title.coupon' | languageTransform: 'System' | async }}">
-            <kendo-numerictextbox
-              [spinners]="false"
-              [disabled]="isReadonly"
-              [style.width.px]="60"
-              rounded="large"
-              format="n0"
-              [autoCorrect]="true"
-              [step]="1"
-              [min]="0"
-              [max]="100"
-              [changeValueOnScroll]="false"
-              [(value)]="plan.limitedCoupon"
-              (valueChange)="onChangeLimitedCoupon()">
-            </kendo-numerictextbox>
-          </kendo-floatinglabel>
+        <!--Annually Price-->
+        <kendo-floatinglabel
+          text="{{ 'date.title.annually' | languageTransform: 'System' | async }}">
+          <kendo-numerictextbox
+            [spinners]="false"
+            [disabled]="isReadonly"
+            [style.width.px]="90"
+            rounded="large"
+            format="c2"
+            [step]="0.5"
+            [min]="0"
+            [changeValueOnScroll]="false"
+            [(value)]="plan.annuallyPrice.total"
+            (valueChange)="onChangeAnnualPrice()">
+          </kendo-numerictextbox>
+        </kendo-floatinglabel>
+      </div>
+    </flex-col-item>
+    <flex-col-item>
+      <!-- Option-->
+      <legend>{{ 'label.title.option' | languageTransform: 'System' | async }}</legend>
+      <div>
+        <!-- Limited Coupons -->
+        <kendo-floatinglabel
+          text="{{ 'label.title.coupon' | languageTransform: 'System' | async }}">
+          <kendo-numerictextbox
+            [spinners]="false"
+            [disabled]="isReadonly"
+            [style.width.px]="60"
+            rounded="large"
+            format="n0"
+            [autoCorrect]="true"
+            [step]="1"
+            [min]="0"
+            [max]="100"
+            [changeValueOnScroll]="false"
+            [(value)]="plan.limitedCoupon"
+            (valueChange)="onChangeLimitedCoupon()">
+          </kendo-numerictextbox>
+        </kendo-floatinglabel>
 
-          <!-- Limited Package -->
-          <kendo-floatinglabel
-            text="{{ 'label.title.package' | languageTransform: 'System' | async }}">
-            <kendo-numerictextbox
-              [spinners]="false"
-              [disabled]="isReadonly"
-              [style.width.px]="60"
-              rounded="large"
-              format="n0"
-              [autoCorrect]="true"
-              [step]="1"
-              [min]="0"
-              [max]="100"
-              [changeValueOnScroll]="false"
-              [(value)]="plan.limitedPackage"
-              (valueChange)="onChangeLimitedPackage()">
-            </kendo-numerictextbox>
-          </kendo-floatinglabel>
+        <!-- Limited Package -->
+        <kendo-floatinglabel
+          text="{{ 'label.title.package' | languageTransform: 'System' | async }}">
+          <kendo-numerictextbox
+            [spinners]="false"
+            [disabled]="isReadonly"
+            [style.width.px]="60"
+            rounded="large"
+            format="n0"
+            [autoCorrect]="true"
+            [step]="1"
+            [min]="0"
+            [max]="100"
+            [changeValueOnScroll]="false"
+            [(value)]="plan.limitedPackage"
+            (valueChange)="onChangeLimitedPackage()">
+          </kendo-numerictextbox>
+        </kendo-floatinglabel>
 
-          <!-- Limited Service -->
-          <kendo-floatinglabel
-            text="{{ 'label.title.service' | languageTransform: 'System' | async }}">
-            <kendo-numerictextbox
-              [spinners]="false"
-              [disabled]="isReadonly"
-              [style.width.px]="70"
-              rounded="large"
-              format="n0"
-              [autoCorrect]="true"
-              [step]="1"
-              [min]="0"
-              [max]="100"
-              [changeValueOnScroll]="false"
-              [(value)]="plan.limitedService"
-              (valueChange)="onChangeLimitedService()">
-            </kendo-numerictextbox>
-          </kendo-floatinglabel>
+        <!-- Limited Service -->
+        <kendo-floatinglabel
+          text="{{ 'label.title.service' | languageTransform: 'System' | async }}">
+          <kendo-numerictextbox
+            [spinners]="false"
+            [disabled]="isReadonly"
+            [style.width.px]="70"
+            rounded="large"
+            format="n0"
+            [autoCorrect]="true"
+            [step]="1"
+            [min]="0"
+            [max]="100"
+            [changeValueOnScroll]="false"
+            [(value)]="plan.limitedService"
+            (valueChange)="onChangeLimitedService()">
+          </kendo-numerictextbox>
+        </kendo-floatinglabel>
 
-          <!-- Limited Extra -->
-          <kendo-floatinglabel
-            text="{{ 'label.title.extra' | languageTransform: 'System' | async }}">
-            <kendo-numerictextbox
-              [spinners]="false"
-              [disabled]="isReadonly"
-              [style.width.px]="70"
-              rounded="large"
-              format="n0"
-              [autoCorrect]="true"
-              [step]="1"
-              [min]="0"
-              [max]="100"
-              [changeValueOnScroll]="false"
-              [(value)]="plan.limitedExtra"
-              (valueChange)="onChangeLimitedExtra()">
-            </kendo-numerictextbox>
-          </kendo-floatinglabel>
+        <!-- Limited Extra -->
+        <kendo-floatinglabel text="{{ 'label.title.extra' | languageTransform: 'System' | async }}">
+          <kendo-numerictextbox
+            [spinners]="false"
+            [disabled]="isReadonly"
+            [style.width.px]="70"
+            rounded="large"
+            format="n0"
+            [autoCorrect]="true"
+            [step]="1"
+            [min]="0"
+            [max]="100"
+            [changeValueOnScroll]="false"
+            [(value)]="plan.limitedExtra"
+            (valueChange)="onChangeLimitedExtra()">
+          </kendo-numerictextbox>
+        </kendo-floatinglabel>
 
-          <!-- Limited Product -->
-          <kendo-floatinglabel
-            text="{{ 'label.title.product' | languageTransform: 'System' | async }}">
-            <kendo-numerictextbox
-              [spinners]="false"
-              [disabled]="isReadonly"
-              [style.width.px]="60"
-              rounded="large"
-              format="n0"
-              [autoCorrect]="true"
-              [step]="1"
-              [min]="0"
-              [max]="100"
-              [changeValueOnScroll]="false"
-              [(value)]="plan.limitedProduct"
-              (valueChange)="onChangeLimitedProduct()">
-            </kendo-numerictextbox>
-          </kendo-floatinglabel>
+        <!-- Limited Product -->
+        <kendo-floatinglabel
+          text="{{ 'label.title.product' | languageTransform: 'System' | async }}">
+          <kendo-numerictextbox
+            [spinners]="false"
+            [disabled]="isReadonly"
+            [style.width.px]="60"
+            rounded="large"
+            format="n0"
+            [autoCorrect]="true"
+            [step]="1"
+            [min]="0"
+            [max]="100"
+            [changeValueOnScroll]="false"
+            [(value)]="plan.limitedProduct"
+            (valueChange)="onChangeLimitedProduct()">
+          </kendo-numerictextbox>
+        </kendo-floatinglabel>
 
-          <!-- Limited Product -->
-          <kendo-floatinglabel
-            text="{{ 'label.title.user' | languageTransform: 'System' | async }}">
-            <kendo-numerictextbox
-              [spinners]="false"
-              [disabled]="isReadonly"
-              [style.width.px]="60"
-              rounded="large"
-              format="n0"
-              [autoCorrect]="true"
-              [step]="1"
-              [min]="0"
-              [max]="100"
-              [changeValueOnScroll]="false"
-              [(value)]="plan.limitedUser"
-              (valueChange)="onChangeLimitedUser()">
-            </kendo-numerictextbox>
-          </kendo-floatinglabel>
-        </div>
-      </flex-col-item>
+        <!-- Limited Product -->
+        <kendo-floatinglabel text="{{ 'label.title.user' | languageTransform: 'System' | async }}">
+          <kendo-numerictextbox
+            [spinners]="false"
+            [disabled]="isReadonly"
+            [style.width.px]="60"
+            rounded="large"
+            format="n0"
+            [autoCorrect]="true"
+            [step]="1"
+            [min]="0"
+            [max]="100"
+            [changeValueOnScroll]="false"
+            [(value)]="plan.limitedUser"
+            (valueChange)="onChangeLimitedUser()">
+          </kendo-numerictextbox>
+        </kendo-floatinglabel>
+      </div>
+    </flex-col-item>
 
-      <flex-col-item>
-        <legend>{{ 'label.title.extra' | languageTransform: 'System' | async }}</legend>
-        <yes-no-selection-group>
-          <yes-no-selection
-            title="label.title.premiumplan"
-            [(value)]="plan.isPremium"
-            [readOnly]="isReadonly"></yes-no-selection>
-          <yes-no-selection
-            *ngIf="!isReadonly"
-            title="label.title.testplan"
-            [(value)]="plan.isTestPlan"
-            [readOnly]="isReadonly"></yes-no-selection>
-        </yes-no-selection-group>
-      </flex-col-item>
-    </flex-col>
-  </section>
+    <flex-col-item>
+      <legend>{{ 'label.title.extra' | languageTransform: 'System' | async }}</legend>
+      <yes-no-selection-group>
+        <yes-no-selection
+          title="label.title.premiumplan"
+          [(value)]="plan.isPremium"
+          [readOnly]="isReadonly"></yes-no-selection>
+        <yes-no-selection
+          *ngIf="!isReadonly"
+          title="label.title.testplan"
+          [(value)]="plan.isTestPlan"
+          [readOnly]="isReadonly"></yes-no-selection>
+      </yes-no-selection-group>
+    </flex-col-item>
+  </flex-col>
 </ion-content>

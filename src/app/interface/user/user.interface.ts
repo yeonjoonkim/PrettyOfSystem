@@ -1,7 +1,7 @@
 import { RoleAccessLevelType, RoleConfigurationType } from '../system/role/role.interface';
 import { ShopWorkHoursType } from '../shop/shop.interface';
 import * as Constant from '../../constant/constant';
-import { NameValuePairType } from '../global/global.interface';
+import { AddressType, NameValuePairType } from '../global/global.interface';
 
 export interface IUser {
   id: string;
@@ -18,6 +18,8 @@ export interface IUser {
   email: string;
   encryptedPassword: string;
   disabledAccount: boolean;
+  visitedShopIds: string[];
+  address: AddressType | null;
 }
 
 export type UserClaimType = {
@@ -53,8 +55,8 @@ export interface UserAssociatedShopType {
   shopId: string;
   userId: string;
   role: RoleConfigurationType;
-  activeFrom: Date;
-  activeTo: Date | null;
+  activeFrom: string;
+  activeTo: string | null;
   active: boolean;
   displayInSystem: boolean;
   roster: ShopWorkHoursType;

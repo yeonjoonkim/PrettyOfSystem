@@ -12,7 +12,16 @@
     field="titleProp"
     title="{{ 'label.title.name' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-coupon>
-      <p (click)="onClickEdit(coupon)" id="coupon-name">
+      <p
+        (click)="onClickEdit(coupon)"
+        id="coupon-name"
+        *ngIf="!isCompletedRequest(coupon.serviceId) && translatedRequest">
+        {{ coupon.titleProp }}
+      </p>
+      <p
+        (click)="onClickEdit(coupon)"
+        id="coupon-name"
+        *ngIf="isCompletedRequest(coupon.serviceId) && translatedRequest">
         {{ coupon.title | languageTransform: 'User' | async }}
       </p>
     </ng-template>

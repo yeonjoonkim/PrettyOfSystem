@@ -1,30 +1,15 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ZonedDate } from '@progress/kendo-date-math';
 
-/**This Componet will return the datetime value based on shop time zone
- * Local: Fri Jul 07 2023 14:31:16 GMT+1000 (Australian Eastern Standard Time)
- * ShopDateTime: Fri Jul 7 2023 14:31:16 GMT+0200 (CEST)
- * Local Time (GMT+1000) => Shop Local Time (GMT+0200)
- */
 @Component({
   selector: 'date-picker',
   templateUrl: './date-picker.component.html',
   styleUrls: ['./date-picker.component.scss'],
 })
 export class DatePickerComponent implements OnInit, OnChanges {
-  @Output() dateChange = new EventEmitter<Date>();
+  @Output() dateChange = new EventEmitter<string>();
   @Input() title: string = '';
   @Input() dateFormatter: Constant.DateFormatType = Constant.Date.Format.Australia;
   @Input() shopTimeZone: Constant.TimeZoneType = Constant.TimeZone.AustraliaBrisbane;
@@ -32,61 +17,45 @@ export class DatePickerComponent implements OnInit, OnChanges {
   @Input() displayNextDay: number = 0;
   @Input() restrictedFromToday: boolean = false;
   @Input() readOnly: boolean = false;
+  @Input() type: 'start' | 'end' = 'start';
   public inputDate: Date = new Date();
-  public miniumDate: Date = new Date();
+  public minDate: Date = new Date();
   public maxDate: Date = new Date();
   @Input()
-  get date(): Date {
-    return this.inputDate;
+  get date(): string {
+    return this._global.date.transform.formatLocalDateTime(this.inputDate);
   }
-  set date(input: Date) {
-    //INPUT
-    let inputDate: ZonedDate = this._global.date.transform.toShopDateTime(input, this.shopTimeZone);
-    let shopTime = inputDate.toTimezone(this.shopTimeZone);
-    this.inputDate = this._global.date.transform.convertToLocalShopDateTime(
-      shopTime,
-      this.shopTimeZone
-    );
+  set date(input: string) {
+    const ofDay =
+      this.type === 'start' ? this._global.date.startDay(input) : this._global.date.endDay(input);
+    this.inputDate = this._global.date.transform.toLocalDateTime(ofDay);
   }
 
   constructor(private _global: GlobalService) {}
+
   ngOnChanges() {
-    this.miniumDate = this._global.date.transform.getMinumSelectionDate(
-      new Date(),
+    this.setMinMaxDate();
+  }
+
+  ngOnInit() {}
+
+  public transformDate(selectedDate: Date) {
+    const ofDay =
+      this.type === 'start'
+        ? this._global.date.startDay(selectedDate)
+        : this._global.date.endDay(selectedDate);
+    this.inputDate = this._global.date.transform.toLocalDateTime(ofDay);
+    this.dateChange.emit(ofDay);
+  }
+
+  private setMinMaxDate() {
+    const minDate = this._global.date.minimumDate(
       this.shopTimeZone,
       this.restrictedFromToday,
       this.displayPreviousDay
     );
-    this.maxDate = this._global.date.transform.getMaxiumSelectionDate(
-      new Date(),
-      this.shopTimeZone,
-      this.displayNextDay
-    );
-  }
-
-  ngOnInit() {
-    this.miniumDate = this._global.date.transform.getMinumSelectionDate(
-      new Date(),
-      this.shopTimeZone,
-      this.restrictedFromToday,
-      this.displayPreviousDay
-    );
-    this.maxDate = this._global.date.transform.getMaxiumSelectionDate(
-      new Date(),
-      this.shopTimeZone,
-      this.displayNextDay
-    );
-  }
-
-  /**Default Behavior is 00:00:00 */
-  public transformDate(selectedDate: any) {
-    this.date = selectedDate;
-    //OUTPUT
-    let outputDate: ZonedDate = this._global.date.transform.convertShopTimeZoneDateTime(
-      selectedDate,
-      this.shopTimeZone
-    );
-    let outputShopTime = outputDate.toUTCDate();
-    this.dateChange.emit(outputShopTime);
+    const maxDate = this._global.date.maximumDate(this.shopTimeZone, this.displayNextDay);
+    this.minDate = this._global.date.transform.toLocalDateTime(minDate);
+    this.maxDate = this._global.date.transform.toLocalDateTime(maxDate);
   }
 }
