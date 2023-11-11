@@ -11,7 +11,7 @@
 
   <!-- Page Button -->
   <flex-col>
-    <kendo-buttongroup selection="single" width="100%">
+    <kendo-buttongroup selection="single" width="100%" *ngIf="user.associatedShops.length > 0">
       <button
         kendoButton
         *ngFor="let page of pages"

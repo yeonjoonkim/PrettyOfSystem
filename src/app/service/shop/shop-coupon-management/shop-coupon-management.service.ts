@@ -125,7 +125,7 @@ export class ShopCouponManagementService {
   public async update(after: ShopCouponDocumentType) {
     const userName = await this._shop.userName();
     if (userName !== null) {
-      after.lastModifiedDate = new Date();
+      after.lastModifiedDate = await this._shop.timeStamp();
       after.lastModifiedEmployee = userName;
       return await this._couponRepo.updateCoupon(after);
     } else {

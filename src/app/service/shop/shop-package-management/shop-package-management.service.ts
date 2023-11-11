@@ -187,7 +187,7 @@ export class ShopPackageManagementService {
     after.titleProp = this._textTransform.getTitleFormat(after.titleProp);
     const userName = await this._shop.userName();
     if (userName !== null) {
-      after.lastModifiedDate = new Date();
+      after.lastModifiedDate = await this._shop.timeStamp();
       after.lastModifiedEmployee = userName;
       return await this._packageRepo.updatePackage(after);
     } else {

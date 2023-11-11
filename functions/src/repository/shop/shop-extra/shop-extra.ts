@@ -1,14 +1,12 @@
 import { firestore } from 'firebase-admin';
 import * as Db from '../../../db';
 import * as I from '../../../interface';
-import * as Service from '../../../service/index';
 import * as Repository from '../../index';
 
 export const getAll = async function (): Promise<I.ShopExtraDocumentType[]> {
   const allSnapshot = await firestore().collection(Db.Context.Shop.Extra).get();
   const allExtras = allSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopExtraDocumentType;
-    config = transformTimeStampToDate(config);
     return {
       ...config,
     };
@@ -21,7 +19,6 @@ export const getSelectShop = async function (shopId: string): Promise<I.ShopExtr
   const allSnapshot = await firestore().collection(Db.ShopExtra(shopId)).get();
   const allExtras = allSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopExtraDocumentType;
-    config = transformTimeStampToDate(config);
     return {
       ...config,
     };
@@ -44,9 +41,4 @@ export const updateExtra = async function (config: I.ShopExtraDocumentType): Pro
   } else {
     return false;
   }
-};
-
-const transformTimeStampToDate = function (config: I.ShopExtraDocumentType) {
-  config.lastModifiedDate = Service.Date.toDate(config.lastModifiedDate);
-  return config;
 };

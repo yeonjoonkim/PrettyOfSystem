@@ -377,17 +377,8 @@ export class ShopOpenHourComponent implements OnInit {
   }
 
   private validateOpenAndCloseTimes(open: TimeItemType, close: TimeItemType) {
-    let tempDate: Date = new Date();
-    let openTime: Date = this._global.date.transform.convertShopTimeZoneDateTimeItem(
-      tempDate,
-      this.timezone,
-      open
-    );
-    let closeTime: Date = this._global.date.transform.convertShopTimeZoneDateTimeItem(
-      tempDate,
-      this.timezone,
-      close
-    );
+    const openTime = this._global.date.transform.formatByTimeItem(this.timezone, open);
+    const closeTime = this._global.date.transform.formatByTimeItem(this.timezone, close);
     let is24Hours: boolean =
       open.hr === 0 &&
       open.min === 0 &&
@@ -397,7 +388,7 @@ export class ShopOpenHourComponent implements OnInit {
       close.dayNightType === Constant.Date.DayNightType.DAY;
     let workHours: number = is24Hours
       ? 24.0
-      : this._global.date.differenceTime(openTime, closeTime, 2);
+      : this._global.date.differenceInTime(openTime, closeTime, 2);
     let validator: boolean = is24Hours ? true : openTime < closeTime;
 
     return { result: validator, workHours: workHours };

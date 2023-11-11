@@ -80,9 +80,9 @@ export class UserService {
 
   public async presentEdit() {
     combineLatest([this.data$, this.shopSelection$])
-      .pipe(first())
+      .pipe(take(1))
       .subscribe(([user, shopSelection]) => {
-        if (user) {
+        if (user && shopSelection) {
           this.modal.presentEdit(user, shopSelection).then(modal => modal.present());
         }
       });
@@ -243,7 +243,11 @@ export class UserService {
             .map(s => {
               return s.shopId;
             });
-          return this._systemShop.assocatedShopConfigurationValueChangeListener(shopIds);
+          if (shopIds.length > 0) {
+            return this._systemShop.assocatedShopConfigurationValueChangeListener(shopIds);
+          } else {
+            return of([]);
+          }
         } else {
           return of([]);
         }
@@ -308,7 +312,6 @@ export class UserService {
     );
   }
 
-  //
   private activateCurrentRoleListener() {
     this.currentRole$ = this.data$.pipe(
       switchMap(user => {

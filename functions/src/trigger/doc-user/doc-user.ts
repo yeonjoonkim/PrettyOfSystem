@@ -45,12 +45,6 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
         await handleAuthenticationLogin(current, 'update');
       }
 
-      if (event.isDeactiveAccount) {
-        current = await handleDeactiveLogin(current);
-      }
-      if (event.isActivateAccount) {
-        current = await handleActiveLogin(current);
-      }
       if (event.isUpdateClaim) {
         await handleClaimUpdate(current);
       }
@@ -66,6 +60,13 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       if (change.beforeActiveShopCount > change.afterActiveShopCount) {
         await handleDeleteSpecializedEmployeeInService(prev, current);
         await handleDeleteSpecializedEmployeeInPackage(prev, current);
+      }
+
+      if (event.isDeactiveAccount) {
+        current = await handleDeactiveLogin(current);
+      }
+      if (event.isActivateAccount) {
+        current = await handleActiveLogin(current);
       }
     } catch (error) {
       await Repository.Error.createErrorReport(current, error, 'update', 'onUserUpdate');
@@ -153,34 +154,6 @@ const handleCurrentShopRoleUpdate = async function (user: I.IUser) {
   }
 };
 
-const handleDeactiveLogin = async function (user: I.IUser) {
-  try {
-    const claim = getCurrentUserClaim(user);
-    claim.disableAccount = true;
-    admin.auth().updateUser(user.id, { disabled: claim.disableAccount });
-    await Repository.Auth.Claim.update(user.id, claim);
-    user.disabledAccount = claim.disableAccount;
-    return user;
-  } catch (error) {
-    await Repository.Error.createErrorReport(user, error, 'update', 'handleDeactiveLogin');
-    return user;
-  }
-};
-
-const handleActiveLogin = async function (user: I.IUser) {
-  try {
-    const claim = getCurrentUserClaim(user);
-    claim.disableAccount = false;
-    admin.auth().updateUser(user.id, { disabled: claim.disableAccount });
-    await Repository.Auth.Claim.update(user.id, claim);
-    user.disabledAccount = claim.disableAccount;
-    return user;
-  } catch (error) {
-    await Repository.Error.createErrorReport(user, error, 'update', 'handleDeactiveLogin');
-    return user;
-  }
-};
-
 const handleAuthenticationLogin = async function (user: I.IUser, action: Constant.APIActionType) {
   const authenticationExisted = await Repository.Auth.Verify.isExistedUserById(user.id);
   try {
@@ -264,7 +237,7 @@ const transformToAssociatedShop = function (
       shopId: config.id,
       role: adminRole,
       roster: config.operatingHours,
-      activeFrom: new Date(),
+      activeFrom: Service.Date.shopTimeStamp(null),
       activeTo: null,
       active: true,
       displayInSystem: false,
@@ -304,4 +277,34 @@ const getCurrentUserClaim = function (user: I.IUser) {
   claim.currentShopId = user.currentShopId;
   logger.info(claim);
   return claim;
+};
+
+const handleDeactiveLogin = async function (user: I.IUser) {
+  try {
+    const claim = getCurrentUserClaim(user);
+    claim.role.isSystemAdmin = false;
+    claim.role.isAdmin = false;
+    claim.role.isManager = false;
+    claim.role.isReception = false;
+    claim.role.isEmployee = false;
+    await Repository.Auth.Claim.update(user.id, claim);
+    return user;
+  } catch (error) {
+    await Repository.Error.createErrorReport(user, error, 'update', 'handleDeactiveLogin');
+    return user;
+  }
+};
+
+const handleActiveLogin = async function (user: I.IUser) {
+  try {
+    const claim = getCurrentUserClaim(user);
+    claim.disableAccount = false;
+    admin.auth().updateUser(user.id, { disabled: claim.disableAccount });
+    await Repository.Auth.Claim.update(user.id, claim);
+    user.disabledAccount = claim.disableAccount;
+    return user;
+  } catch (error) {
+    await Repository.Error.createErrorReport(user, error, 'update', 'handleDeactiveLogin');
+    return user;
+  }
 };

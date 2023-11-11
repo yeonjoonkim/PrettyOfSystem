@@ -203,7 +203,8 @@
           <date-period-picker
             [isPlanFormat]="true"
             [(period)]="config.plan.period"
-            [readOnly]="form.readOnly"></date-period-picker>
+            [readOnly]="form.readOnly"
+            (periodChange)="onPlanPeriodChange()"></date-period-picker>
         </flex-row-item>
         <flex-row-item>
           <shop-plan-price

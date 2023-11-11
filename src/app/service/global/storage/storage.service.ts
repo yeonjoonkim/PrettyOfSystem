@@ -3,6 +3,7 @@ import * as _storageKey from './storage.key';
 import { Storage, StorageConfig } from '@ionic/storage-angular';
 import { CryptService } from '../crypt/crypt.service';
 import { DateTransformService } from '../date/date-transform/date-transform.service';
+import { DateService } from '../date/date.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +12,12 @@ export class StorageService {
   private _storage: Storage;
   private _crypt: CryptService;
   private _dateTransform: DateTransformService;
+  private _date: DateService;
   constructor() {
     this._storage = new Storage();
     this._crypt = new CryptService();
     this._dateTransform = new DateTransformService();
+    this._date = new DateService(this._dateTransform);
   }
 
   public async create() {
@@ -58,10 +61,7 @@ export class StorageService {
 
     try {
       if (typeof result === 'string') {
-        const dateObj = new Date(result);
-        if (!isNaN(dateObj.getTime())) {
-          returnValue = dateObj;
-        }
+        returnValue = this._date.transform.toLocalDateTime(result);
       }
     } catch (error) {
       console.error('Error processing the date:', error);
@@ -72,9 +72,8 @@ export class StorageService {
 
   public async storeExpiredDateTime() {
     let now: Date = new Date();
-    let expiredDateTime: Date = this._dateTransform.addMin(now, 30);
-    let expiredDateString = expiredDateTime.toString();
-    await this.store(_storageKey.default.languageSelectionExpiredDateTime, expiredDateString);
+    let formatted = this._date.addMin(now, 30);
+    await this.store(_storageKey.default.languageSelectionExpiredDateTime, formatted);
   }
 
   public async getLanguageSelectionKey() {

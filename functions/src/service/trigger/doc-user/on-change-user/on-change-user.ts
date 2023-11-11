@@ -26,8 +26,6 @@ export const getChangeAction = function (c: I.OnChangeUserType, after: I.IUser) 
     (!c.isLoginOptionChanged && c.isEmailChanged && after.loginOption.email) ||
     (!c.isLoginOptionChanged && c.isPasswordChanged && after.loginOption.email) ||
     (!c.isLoginOptionChanged && c.isPhoneNumberChanged && after.loginOption.phoneNumber);
-  event.isActivateAccount = c.beforeActiveShopCount === 0 && c.afterActiveShopCount > 0;
-  event.isDeactiveAccount = c.beforeActiveShopCount > 0 && c.afterActiveShopCount === 0;
   event.isCurrentShopIdUpdate = c.isShopActiveCountChanged;
   event.isCurrentShopRoleUpdate = c.isCurrentShopRoleChange;
   event.isSendMsgRosterChange = c.isRosterChange;
@@ -38,6 +36,8 @@ export const getChangeAction = function (c: I.OnChangeUserType, after: I.IUser) 
     c.isCurrentShopRoleChange ||
     c.isCurrentShopIdChange ||
     event.isCurrentShopIdUpdate;
+  event.isActivateAccount = c.beforeActiveShopCount === 0 && c.afterActiveShopCount > 0;
+  event.isDeactiveAccount = c.beforeActiveShopCount > 0 && c.afterActiveShopCount === 0;
 
   return event;
 };

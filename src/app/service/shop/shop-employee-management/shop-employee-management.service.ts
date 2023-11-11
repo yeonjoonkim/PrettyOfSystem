@@ -69,7 +69,7 @@ export class ShopEmployeeManagementService {
         email: '',
         encryptedPassword: '',
         active: true,
-        activeFrom: new Date(),
+        activeFrom: await this._shop.timeStamp(),
         activeTo: null,
         displayInSystem: true,
         roster: shop.operatingHours,
@@ -79,6 +79,10 @@ export class ShopEmployeeManagementService {
     } else {
       return null;
     }
+  }
+
+  public async timestamp() {
+    return await this._shop.timeStamp();
   }
 
   public async createNewUser(se: ShopEmployeeManagementUserType) {

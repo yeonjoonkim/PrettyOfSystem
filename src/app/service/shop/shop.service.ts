@@ -1,13 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  Observable,
-  combineLatest,
-  combineLatestWith,
-  firstValueFrom,
-  map,
-  of,
-  switchMap,
-} from 'rxjs';
+import { Observable, combineLatest, firstValueFrom, map, of, switchMap } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -31,13 +23,15 @@ import { ShopPackageRepositoryService } from 'src/app/firebase/shop-repository/s
 import { ShopCouponRepositoryService } from 'src/app/firebase/shop-repository/shop-coupon-repository/shop-coupon-repository.service';
 import { ShopPictureRepositoryService } from 'src/app/firebase/shop-repository/shop-picture-repository/shop-picture-repository.service';
 import { SystemLanguageManagementService } from '../global/language/system-language-management/system-language-management.service';
-
+import * as Constant from 'src/app/constant/constant';
+import { DateService } from '../global/date/date.service';
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
   public role$!: Observable<RoleConfigurationType | null>;
   public config$!: Observable<ShopConfigurationType | null>;
+  public timezone$!: Observable<string | null>;
   public plan$!: Observable<PlanConfigurationType | null>;
   public translatedRequests$!: Observable<ChatGptTranslateDocumentType[]>;
   public services$!: Observable<ShopServiceDocumentType[]>;
@@ -65,13 +59,15 @@ export class ShopService {
     private _packageRepo: ShopPackageRepositoryService,
     private _couponRepo: ShopCouponRepositoryService,
     private _pictureRepo: ShopPictureRepositoryService,
-    private _systemLanguage: SystemLanguageManagementService
+    private _systemLanguage: SystemLanguageManagementService,
+    private _date: DateService
   ) {
     this.userName$ = this._user.employeName$;
     this.config$ = this._user.currentShopConfig$;
     this.role$ = this._user.currentRole$;
     this.plan$ = this._user.currentShopPlan$;
     this.translatedRequests$ = this.translated.translatedRequest$;
+    this.timezoneListener();
     this.associatedUserListener();
     this.shopServiceListener();
     this.shopExtraListener();
@@ -93,6 +89,18 @@ export class ShopService {
     } else {
       return of([]);
     }
+  }
+
+  private timezoneListener() {
+    this.timezone$ = this.config$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return of(config.timezone);
+        } else {
+          return of(Constant.TimeZone.AustraliaBrisbane);
+        }
+      })
+    );
   }
 
   private shopPackageListener() {
@@ -302,6 +310,15 @@ export class ShopService {
   public async userName() {
     const result = await firstValueFrom(this.userName$);
     return result?.length > 0 ? result : null;
+  }
+
+  public async timezone() {
+    return await firstValueFrom(this.timezone$);
+  }
+
+  public async timeStamp() {
+    const timezone = await this.timezone();
+    return this._date.shopTimeStamp(timezone);
   }
 
   public async isReachToMaxPackage() {

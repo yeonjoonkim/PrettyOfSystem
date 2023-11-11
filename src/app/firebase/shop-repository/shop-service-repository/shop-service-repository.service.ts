@@ -6,6 +6,7 @@ import { map } from 'rxjs';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import * as Constant from 'src/app/constant/constant';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
+import { DateService } from 'src/app/service/global/date/date.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +14,8 @@ export class ShopServiceRepositoryService {
   constructor(
     private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
-    private _textTransform: TextTransformService
+    private _textTransform: TextTransformService,
+    private _date: DateService
   ) {}
 
   public serviceValueChangeListener(shopId: string) {
@@ -87,7 +89,7 @@ export class ShopServiceRepositoryService {
       extraIds: [],
       title: '',
       description: '',
-      lastModifiedDate: new Date(),
+      lastModifiedDate: this._date.shopTimeStamp(null),
       lastModifiedEmployee: '',
     };
 

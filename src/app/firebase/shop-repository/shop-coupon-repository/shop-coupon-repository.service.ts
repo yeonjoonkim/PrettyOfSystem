@@ -5,13 +5,15 @@ import * as Constant from '../../../constant/constant';
 import { ShopCoupon } from 'src/app/constant/firebase-path';
 import { ShopCouponDocumentType } from 'src/app/interface';
 import { map } from 'rxjs';
+import { DateService } from 'src/app/service/global/date/date.service';
 @Injectable({
   providedIn: 'root',
 })
 export class ShopCouponRepositoryService {
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
+    private _toaster: FirebaseToasterService,
+    private _date: DateService
   ) {}
 
   public valueChangeListener(shopId: string) {
@@ -79,7 +81,7 @@ export class ShopCouponRepositoryService {
       expiryMonth: 1,
       numOfCoupon: 1,
       originalPrice: 0,
-      lastModifiedDate: new Date(),
+      lastModifiedDate: this._date.shopTimeStamp(null),
       lastModifiedEmployee: empName,
       option: {
         min: 0,

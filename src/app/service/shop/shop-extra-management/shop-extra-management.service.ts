@@ -136,7 +136,7 @@ export class ShopExtraManagementService {
     const empName = await this._user.fullName();
     if (empName !== null) {
       extra.lastModifiedEmployee = empName;
-      extra.lastModifiedDate = new Date();
+      extra.lastModifiedDate = await this._shop.timeStamp();
       return await this._shopExtraRepo.updateExtra(extra);
     } else {
       return false;

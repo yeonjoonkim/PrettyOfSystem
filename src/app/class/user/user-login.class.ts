@@ -126,7 +126,7 @@ export class UserLogin implements IUserLogin {
           this._phoneNumber,
           recaptcha
         );
-        this.timer.startTimerByMin(0.5);
+        this.timer.startTimerByMin(1);
       } catch (err) {
         const error: string = JSON.stringify(err);
 

@@ -11,6 +11,7 @@ import * as Constant from '../../../constant/constant';
 import { ShopPackage } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
+import { DateService } from 'src/app/service/global/date/date.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -18,7 +19,8 @@ export class ShopPackageRepositoryService {
   constructor(
     private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
-    private _textTransform: TextTransformService
+    private _textTransform: TextTransformService,
+    private _date: DateService
   ) {}
 
   public packageValueChangeListener(shopId: string) {
@@ -95,7 +97,7 @@ export class ShopPackageRepositoryService {
         type: Constant.PackageDiscountType.Percent,
         value: 0,
       },
-      lastModifiedDate: new Date(),
+      lastModifiedDate: this._date.shopTimeStamp(null),
       lastModifiedEmployee: empName,
       recommandForPregnant: false,
       limitedTime: null,

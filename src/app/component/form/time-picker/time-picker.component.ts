@@ -60,10 +60,10 @@ export class TimePickerComponent implements OnInit, OnChanges {
   }
 
   private handleIntervalChange() {
-    this.steps = this._global.date.getTimePickerIncrementalSteps(this.intervalMin);
+    this.steps = { minute: this.intervalMin % 60 };
   }
   public onChangeDate() {
-    this.time = this._global.date.getTimeItem(this.date);
+    this.time = this._global.date.timeItem(this.date);
   }
 
   private setDefault() {
@@ -89,7 +89,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
 
   private handReceivingEvent() {
     this.inputTime =
-      this.inputTime !== undefined ? this.inputTime : this._global.date.getTimeItem(new Date());
+      this.inputTime !== undefined ? this.inputTime : this._global.date.timeItem(new Date());
     this.date.setHours(this.inputTime.hr);
     this.date.setMinutes(this.inputTime.min);
     this.date.setSeconds(0);

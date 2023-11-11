@@ -59,7 +59,7 @@ export class ShopServiceGridComponent implements OnInit {
     const isFailed = doc.status === Constant.API.TranslateStatus.Failed;
     const isSuccess = doc.status === Constant.API.TranslateStatus.Success;
     const isInProgress = doc.status === Constant.API.TranslateStatus.InProgress;
-    const createdDate = this._global.date.transform.toDate(doc.createdDate);
+    const createdDate = this._global.date.transform.toLocalDateTime(doc.createdDate);
     const isCompleted = doc.status === Constant.API.TranslateStatus.Completed;
     const FiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
     const isCreatedDateThreeMinsAgo = createdDate < FiveMinutesAgo;
@@ -85,7 +85,7 @@ export class ShopServiceGridComponent implements OnInit {
   public isFailed(doc: ChatGptTranslateDocumentType) {
     const FiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
     const isInProgress = doc.status === Constant.API.TranslateStatus.InProgress;
-    const createdDate = this._global.date.transform.toDate(doc.createdDate);
+    const createdDate = this._global.date.transform.toLocalDateTime(doc.createdDate);
     const isCreatedDateThreeMinsAgo = createdDate < FiveMinutesAgo;
     return isInProgress && isCreatedDateThreeMinsAgo;
   }

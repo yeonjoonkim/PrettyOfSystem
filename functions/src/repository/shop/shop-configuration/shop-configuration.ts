@@ -9,7 +9,6 @@ export const getAll = async function (): Promise<I.ShopConfigurationType[]> {
   const allSnapshot = await firestore().collection(Db.Context.ShopConfiguration).get();
   const allShopConfigs = allSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopConfigurationType;
-    config = transformTimeStampToDate(config);
     config.setting = Service.Shop.Config.override(config.setting);
     return {
       ...config,
@@ -28,7 +27,6 @@ export const getActiveConfigs = async function (): Promise<I.ShopConfigurationTy
 
   const activeShopConfigs = activeSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopConfigurationType;
-    config = transformTimeStampToDate(config);
     config.setting = Service.Shop.Config.override(config.setting);
     return {
       ...config,
@@ -47,7 +45,6 @@ export const getDeactiveConfigs = async function (): Promise<I.ShopConfiguration
 
   const activeShopConfigs = activeSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopConfigurationType;
-    config = transformTimeStampToDate(config);
     config.setting = Service.Shop.Config.override(config.setting);
     return {
       ...config,
@@ -57,12 +54,12 @@ export const getDeactiveConfigs = async function (): Promise<I.ShopConfiguration
   return activeShopConfigs;
 };
 
-export const deactivate = async function (configId: string): Promise<boolean> {
+export const deactivate = async function (configId: string, timezone: string): Promise<boolean> {
   const configRef = firestore().collection(Db.Context.ShopConfiguration).doc(configId);
   try {
     const updatedConfig: Partial<I.ShopConfigurationType> = {
       active: false,
-      activeTo: new Date(),
+      activeTo: Service.Date.shopTimeStamp(timezone),
     };
 
     await configRef.update(updatedConfig);
@@ -122,7 +119,6 @@ export const getSelectedConfig = async function (id: string) {
       return null;
     }
     let config = configSnapShot.data() as I.ShopConfigurationType;
-    config = transformTimeStampToDate(config);
     config.setting = Service.Shop.Config.override(config.setting);
     return config;
   } catch (error) {
@@ -146,13 +142,4 @@ export const deleteConfig = async function (configId: string): Promise<boolean> 
   } else {
     return false;
   }
-};
-
-const transformTimeStampToDate = function (config: I.ShopConfigurationType) {
-  config.plan.paymentDate = Service.Date.toDate(config.plan.paymentDate);
-  config.plan.lastPaymentDate = Service.Date.toDate(config.plan.lastPaymentDate);
-  config.activeFrom = Service.Date.toDate(config.activeFrom);
-  config.activeTo = config.activeTo !== null ? Service.Date.toDate(config.activeTo) : null;
-
-  return config;
 };

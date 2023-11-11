@@ -8,7 +8,7 @@ export const getAll = async function (): Promise<I.OpenApiInstanceType[]> {
   const snapshot = await firestore().collection(Db.Context.OpenApiInstance).get();
   const instnaces = snapshot.docs.map(doc => {
     let data = doc.data() as I.OpenApiInstanceType;
-    data.expiredDate = Service.Date.toDate(data.expiredDate);
+    data.expiredDate = Service.Date.toLocalDateTime(data.expiredDate);
     return {
       ...data,
     };
@@ -67,7 +67,7 @@ export const updateInUseInstance = async function (
         vm.serviceId = serviceId;
         vm.shopId = shopId;
         vm.inUse = true;
-        vm.expiredDate = new Date(now.getTime() + 4 * 60 * 1000);
+        vm.expiredDate = new Date(now.getTime() + 10 * 60 * 1000);
         await documentation.update(vm);
         logger.log('Open API Instance IN USE Mode Updated success', vm);
         return true;

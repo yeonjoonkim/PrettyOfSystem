@@ -59,7 +59,7 @@ export type ShopServiceDocumentType = {
   extraIds: string[];
   title: string;
   description: string;
-  lastModifiedDate: Date;
+  lastModifiedDate: string;
   lastModifiedEmployee: string;
 };
 
@@ -68,7 +68,7 @@ export type ShopExtraDocumentType = {
   shopId: string;
   titleProp: string;
   title: string;
-  lastModifiedDate: Date;
+  lastModifiedDate: string;
   lastModifiedEmployee: string;
   price: number;
 };
@@ -87,7 +87,7 @@ export type ShopPackageDocumentType = {
   discountedAmount: number;
   totalMin: number;
   discount: ShopPackageDiscountType;
-  lastModifiedDate: Date;
+  lastModifiedDate: string;
   lastModifiedEmployee: string;
   recommandForPregnant: boolean;
   limitedTime: ShopPackageLimitedTime | null;
@@ -150,7 +150,7 @@ export type ShopCouponDocumentType = {
   discountAmount: number;
   expiryMonth: number;
   originalPrice: number;
-  lastModifiedDate: Date;
+  lastModifiedDate: string;
   lastModifiedEmployee: string;
   serviceId: string;
   option: ShopServiceOptionType;

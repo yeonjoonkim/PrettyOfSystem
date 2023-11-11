@@ -31,15 +31,11 @@ export class ShopExtraGridComponent implements OnInit {
 
   ngOnInit() {}
 
-  public async handleRequeue(
-    doc: ChatGptTranslateDocumentType,
-    extra: ShopExtraDocumentType,
-    option: 'title' | 'description'
-  ) {
+  public async handleRequeue(doc: ChatGptTranslateDocumentType, extra: ShopExtraDocumentType) {
     const isFailed = doc.status === Constant.API.TranslateStatus.Failed;
     const isSuccess = doc.status === Constant.API.TranslateStatus.Success;
     const isInProgress = doc.status === Constant.API.TranslateStatus.InProgress;
-    const createdDate = this._global.date.transform.toDate(doc.createdDate);
+    const createdDate = this._global.date.transform.toLocalDateTime(doc.createdDate);
     const isCompleted = doc.status === Constant.API.TranslateStatus.Completed;
     const FiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
     const isCreatedDateThreeMinsAgo = createdDate < FiveMinutesAgo;

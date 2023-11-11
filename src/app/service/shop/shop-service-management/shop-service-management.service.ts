@@ -160,7 +160,7 @@ export class ShopServiceManagementService {
     const empName = await this._shop.userName();
     if (empName !== null) {
       after.lastModifiedEmployee = empName;
-      after.lastModifiedDate = new Date();
+      after.lastModifiedDate = await this._shop.timeStamp();
       return await this._shopServiceRepo.updateService(after);
     } else {
       return false;

@@ -69,6 +69,8 @@ export class UserAdminService {
       },
       setting: this.setDefaultUserSetting(),
       disabledAccount: false,
+      visitedShopIds: [],
+      address: null,
     };
   }
 

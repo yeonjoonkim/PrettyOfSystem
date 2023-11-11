@@ -141,12 +141,6 @@ export class SystemShopConfigurationRepositoryService {
 
   public overrideConfig(sc: ShopConfigurationType) {
     sc.setting = override(sc.setting);
-    sc.plan.lastPaymentDate = this._dateTransform.toDate(sc.plan.lastPaymentDate);
-    sc.plan.paymentDate = this._dateTransform.toDate(sc.plan.paymentDate);
-    sc.activeFrom = this._dateTransform.toDate(sc.activeFrom);
-    if (sc.activeTo) {
-      sc.activeTo = this._dateTransform.toDate(sc.plan.lastPaymentDate);
-    }
     return sc;
   }
 }

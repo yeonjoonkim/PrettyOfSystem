@@ -100,12 +100,12 @@ export class ShopEmployeeComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onChangeActive() {
+  public async onChangeActive() {
     if (this.employee.active) {
-      this.employee.activeFrom = new Date();
+      this.employee.activeFrom = await this._shopEmp.timestamp();
       this.employee.activeTo = null;
     } else {
-      this.employee.activeTo = new Date();
+      this.employee.activeTo = await this._shopEmp.timestamp();
     }
     this.handleEnabledSaveBtn();
   }

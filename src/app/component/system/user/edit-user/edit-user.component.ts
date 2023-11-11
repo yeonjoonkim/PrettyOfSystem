@@ -178,7 +178,7 @@ export class EditUserComponent implements OnInit {
         this.user.currentShopId = activeShop.length > 0 ? activeShop[0].shopId : '';
       }
       if (!selectedShop.active) {
-        selectedShop.activeTo = new Date();
+        selectedShop.activeTo = this._global.date.shopTimeStamp(null);
         this.user.associatedShops[selectedShopIndex] = selectedShop;
       } else {
         selectedShop.activeTo = null;

@@ -32,8 +32,8 @@ export type ShopEmployeeManagementUserType = {
   email: string;
   encryptedPassword: string;
   active: boolean;
-  activeFrom: Date;
-  activeTo: Date | null;
+  activeFrom: string;
+  activeTo: string | null;
   displayInSystem: boolean;
   roster: ShopWorkHoursType;
   setting: UserSettingType;
