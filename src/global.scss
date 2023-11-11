@@ -218,14 +218,14 @@ ion-toolbar {
   transition: none !important;
 }
 
-.date-pick-popup-container::before {
+.date-pick-popup-container::after {
   content: '';
   display: block;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* Viewport width */
-  height: 100vh; /* Viewport height */
+  width: 100%; /* Viewport width */
+  height: 100%; /* Viewport height */
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
   z-index: -1; /* Behind the content of the container */
 }

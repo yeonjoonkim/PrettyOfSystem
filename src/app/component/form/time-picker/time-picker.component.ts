@@ -41,6 +41,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
   public steps: TimePickerIncrementalSteps = { minute: 0 };
 
   constructor(private _global: GlobalService) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     let timeChanges = changes['time'];
     this.handleChange(timeChanges);
