@@ -26,6 +26,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./shop-setting/shop-setting.module').then(m => m.ShopSettingPageModule),
   },
+  {
+    path: 'employee-schedule',
+    loadChildren: () =>
+      import('./shop-employee-schedule/shop-employee-schedule.module').then(
+        m => m.ShopEmployeeSchedulePageModule
+      ),
+  },
 ];
 
 @NgModule({

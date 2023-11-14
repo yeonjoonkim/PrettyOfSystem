@@ -180,7 +180,7 @@ export class DateService {
     const end = endOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
     const interval = eachDayOfInterval({ start, end });
     return interval.map(date => {
-      return this.transform.toLocalDateTime(date);
+      return this.transform.formatLocalDateTime(date);
     });
   }
 
@@ -192,8 +192,28 @@ export class DateService {
     const end = endOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
     const interval = eachDayOfInterval({ start, end });
     return interval.map(date => {
-      return this.transform.toLocalDateTime(date);
+      return this.transform.formatLocalDateTime(date);
     });
+  }
+
+  shopStartOfThisWeek(timezone: string) {
+    const thisWeek = this.shopAllDaysThisWeek(timezone);
+    return thisWeek[0];
+  }
+
+  shopEndOfThisWeek(timezone: string) {
+    const thisWeek = this.shopAllDaysThisWeek(timezone);
+    return thisWeek[thisWeek.length - 1];
+  }
+
+  shopStartOfNextWeek(timezone: string) {
+    const nextWeek = this.shopAllDaysNextWeek(timezone);
+    return nextWeek[0];
+  }
+
+  shopEndOfNextWeek(timezone: string) {
+    const nextWeek = this.shopAllDaysNextWeek(timezone);
+    return nextWeek[nextWeek.length - 1];
   }
 }
 

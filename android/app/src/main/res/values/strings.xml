@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">pretty-of-system</string>
-    <string name="title_activity_main">pretty-of-system</string>
-    <string name="package_name">com.prettyofsystem.app</string>
-    <string name="custom_url_scheme">com.prettyofsystem.app</string>
+    <string name="app_name">Pretty Of System</string>
+    <string name="title_activity_main">Pretty Of System</string>
+    <string name="package_name">com.prettyofsystem.posapp</string>
+    <string name="custom_url_scheme">com.prettyofsystem.posapp</string>
 </resources>
