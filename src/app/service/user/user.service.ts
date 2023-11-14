@@ -73,6 +73,8 @@ export class UserService {
       this._router.navigateByUrl('system/user');
     } else if (accessLevel?.isAdmin || accessLevel?.isManager) {
       this._router.navigateByUrl('shop/employee-management');
+    } else if (accessLevel?.isReception) {
+      this._router.navigateByUrl('reservation/price-list');
     } else {
       this._router.navigateByUrl('booking');
     }

@@ -57,7 +57,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Sun).length > 0
           ? this.employee.roster.closeDay
           : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Sun];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -84,7 +84,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Mon).length > 0
           ? this.employee.roster.closeDay
           : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Mon];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -111,7 +111,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Tue).length > 0
           ? this.employee.roster.closeDay
           : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Tue];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -138,7 +138,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Wed).length > 0
           ? this.employee.roster.closeDay
           : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Wed];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -165,7 +165,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Thu).length > 0
           ? this.employee.roster.closeDay
           : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Thu];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -192,7 +192,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Fri).length > 0
           ? this.employee.roster.closeDay
           : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Fri];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -219,7 +219,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Sat).length > 0
           ? this.employee.roster.closeDay
           : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Sat];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -248,7 +248,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
               .length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Sun];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -276,7 +276,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
               .length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Mon];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -304,7 +304,6 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
               .length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Tue];
-        console.log(this.employee);
         await this._scheduler.update(this.employee);
       }
     }
@@ -332,7 +331,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
               .length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Wed];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -360,7 +359,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
               .length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Thu];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -388,7 +387,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
               .length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Fri];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }
@@ -416,7 +415,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
               .length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Sat];
-        console.log(this.employee);
+
         await this._scheduler.update(this.employee);
       }
     }

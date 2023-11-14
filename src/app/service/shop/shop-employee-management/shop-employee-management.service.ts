@@ -248,7 +248,7 @@ export class ShopEmployeeManagementService {
   }
 
   private async isAuthorisedUser() {
-    return await this._shop.role.isManagerAccess();
+    return await this._shop.role.isReceptionistAccess();
   }
 
   public isManagerAccessLevel(r: RoleConfigurationType) {
