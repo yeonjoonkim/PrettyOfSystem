@@ -1,10 +1,13 @@
 <ion-app *ngIf="isLoaded">
-  <ion-menu
-    contentId="main-content"
-    [disabled]="!internetStatus.connected || isLoginPage() || !isLogin">
-    <side-menu></side-menu>
-  </ion-menu>
-  <ion-router-outlet id="main-content"></ion-router-outlet>
+  <div id="app-container">
+    <ion-menu
+      id="menu"
+      contentId="main-content"
+      [disabled]="!internetStatus.connected || isLoginPage() || !isLogin">
+      <side-menu></side-menu>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </div>
 </ion-app>
 
 <ion-app *ngIf="!isLoaded">

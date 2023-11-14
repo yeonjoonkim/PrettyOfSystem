@@ -34,6 +34,7 @@
   --ion-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
   --form-background-color: white;
   --background: #191919;
+  --black: #000000;
   --active: #787586;
   --error: #b02b36;
   --title: #cd7867;
@@ -42,6 +43,7 @@
   --inprogress: #008ae9;
   --created: #008b6a;
   --success: #8a84ee;
+  --work: #2a2836;
 }
 
 ion-app,
@@ -57,9 +59,9 @@ ion-content {
 }
 
 ion-toolbar {
-  --ion-background-color: var(--active);
-  background: var(--active);
-  background-color: var(--active);
+  --ion-background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
 }
 
 .svg-icon-container {

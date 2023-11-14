@@ -92,7 +92,7 @@ export class ShopEmployeeAccountService {
       active: se.active,
       displayInSystem: se.displayInSystem,
       roster: se.roster,
-      nextWeekRoster: se.roster,
+      nextWeekRoster: se.nextWeekRoster,
     };
     return result;
   }

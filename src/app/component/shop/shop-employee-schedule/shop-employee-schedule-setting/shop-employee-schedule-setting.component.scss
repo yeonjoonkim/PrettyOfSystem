@@ -1,0 +1,17 @@
+#is-day-off {
+  display: flex;
+  justify-content: flex-end;
+  align-items: start;
+}
+
+@media (max-width: 500px) {
+  legend {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 450px) {
+  legend {
+    font-size: 14px;
+  }
+}

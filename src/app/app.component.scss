@@ -14,3 +14,8 @@ ion-menu {
   text-align: center;
   min-height: 100vh;
 }
+
+#main-content,
+#menu {
+  margin-top: 0; /* Reset margin */
+}

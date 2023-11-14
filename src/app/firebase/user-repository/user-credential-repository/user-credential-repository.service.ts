@@ -214,6 +214,7 @@ export class UserCredentialRepositoryService {
         active: as.active,
         displayInSystem: as.displayInSystem,
         roster: as.roster,
+        nextWeekRoster: as.nextWeekRoster,
         setting: u.setting,
       };
 

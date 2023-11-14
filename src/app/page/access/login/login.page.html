@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" scroll-y="false">
+<ion-header>
   <div id="header">
     <div id="logo-container" (click)="redirectToBooking()">
       <img src="assets/logo/prettyofsystem-logo-white.svg" alt="Prettyofsystem Logo" />
@@ -10,6 +10,8 @@
       <booking-language-selection></booking-language-selection>
     </div>
   </div>
+</ion-header>
+<ion-content [fullscreen]="true" scroll-y="false">
   <div id="login-container">
     <login></login>
   </div>

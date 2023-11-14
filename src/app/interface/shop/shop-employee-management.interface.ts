@@ -1,8 +1,12 @@
 import { RoleConfigurationType } from '../system/role/role.interface';
-import { ShopWorkHoursType } from './shop.interface';
+import {
+  ShopOperatingDailyType,
+  ShopOperatingHoursType,
+  ShopWorkHoursType,
+} from './shop.interface';
 import * as Constant from '../../constant/constant';
 import { IUserLoginOption, UserSettingType } from '../user/user.interface';
-import { NameValuePairType } from '../global/global.interface';
+import { NameValuePairType, StartEndStringDateType } from '../global/global.interface';
 
 export type EmployeeManagementUsageType = {
   currentActiveUsers: number;
@@ -36,5 +40,24 @@ export type ShopEmployeeManagementUserType = {
   activeTo: string | null;
   displayInSystem: boolean;
   roster: ShopWorkHoursType;
+  nextWeekRoster: ShopWorkHoursType;
   setting: UserSettingType;
+};
+
+export type ShopEmployeeScheduleTimeType = {
+  thisWeeks: string[];
+  nextWeeks: string[];
+  thisWeek: StartEndStringDateType;
+  nextWeek: StartEndStringDateType;
+  timezone: string;
+  shopNow: string;
+  operatingHours: ShopWorkHoursType;
+};
+
+export type ShopEmployeeScheduleSettingProp = {
+  name: string;
+  date: string;
+  day: string;
+  roster: ShopOperatingDailyType;
+  operating: ShopOperatingHoursType;
 };

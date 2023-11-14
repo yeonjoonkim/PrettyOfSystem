@@ -1,4 +1,4 @@
-<ion-content>
+<ion-toolbar>
   <form-header
     [title]="form.headerTitle"
     [readOnly]="form.readOnly"
@@ -8,7 +8,8 @@
     (onClickDismiss)="dismiss()"
     (onClickEdit)="handleEdit()"
     (onClickSave)="handleSave()"></form-header>
-
+</ion-toolbar>
+<ion-content>
   <!-- Page Button -->
   <flex-col>
     <kendo-buttongroup selection="single" width="100%" *ngIf="user.associatedShops.length > 0">

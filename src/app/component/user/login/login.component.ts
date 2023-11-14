@@ -87,7 +87,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public async sendPhoneOTP() {
-    this._global.loading.show();
     try {
       await this.login.sendOtpVerification(this._recaptcha);
       await this.subscribeTimer();
@@ -96,7 +95,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       console.error(error);
       this.sendOTP = false;
     }
-    this._global.loading.dismiss();
   }
 
   public async resendOTP() {

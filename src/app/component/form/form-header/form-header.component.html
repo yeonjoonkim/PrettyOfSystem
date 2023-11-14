@@ -1,57 +1,59 @@
-<ion-toolbar>
-  <!--Delete-->
-  <kendo-buttongroup slot="start">
-    <kendo-button
-      id="start-btn"
-      *ngIf="
-        (status === 'editing' || status === 'saving' || status === 'deleting') &&
-        status &&
-        !readOnly &&
-        isDeleteRequired
-      "
-      icon="trash"
-      themeColor="error"
-      (click)="onClickDeleteButton()"></kendo-button>
-  </kendo-buttongroup>
+<ion-header>
+  <ion-toolbar id="header">
+    <!--Delete-->
+    <kendo-buttongroup slot="start">
+      <kendo-button
+        id="start-btn"
+        *ngIf="
+          (status === 'editing' || status === 'saving' || status === 'deleting') &&
+          status &&
+          !readOnly &&
+          isDeleteRequired
+        "
+        icon="trash"
+        themeColor="error"
+        (click)="onClickDeleteButton()"></kendo-button>
+    </kendo-buttongroup>
 
-  <!--Title-->
-  <ion-title *ngIf="status === 'creating'">{{
-    title | languageTransform: 'System' | async
-  }}</ion-title>
-  <ion-title *ngIf="status !== 'creating'">{{
-    title | languageTransform: 'System' | async
-  }}</ion-title>
+    <!--Title-->
+    <ion-title *ngIf="status === 'creating'">{{
+      title | languageTransform: 'System' | async
+    }}</ion-title>
+    <ion-title *ngIf="status !== 'creating'">{{
+      title | languageTransform: 'System' | async
+    }}</ion-title>
 
-  <kendo-buttongroup slot="end">
-    <!-- Edit -->
-    <kendo-button
-      id="end-btn"
-      *ngIf="status === 'editing' && readOnly"
-      icon="edit"
-      themeColor="success"
-      (click)="onClickEditButton()"></kendo-button>
+    <kendo-buttongroup slot="end">
+      <!-- Edit -->
+      <kendo-button
+        id="end-btn"
+        *ngIf="status === 'editing' && readOnly"
+        icon="edit"
+        themeColor="success"
+        (click)="onClickEditButton()"></kendo-button>
 
-    <kendo-button
-      id="end-btn"
-      *ngIf="
-        (status === 'editing' ||
-          status === 'creating' ||
-          status === 'saving' ||
-          status === 'deleting') &&
-        !readOnly &&
-        isSaveRequired
-      "
-      [disabled]="!enabledSavebutton"
-      icon="save"
-      themeColor="success"
-      (click)="onClickSaveButton()"></kendo-button>
-    {{ status }}
-  </kendo-buttongroup>
+      <kendo-button
+        id="end-btn"
+        *ngIf="
+          (status === 'editing' ||
+            status === 'creating' ||
+            status === 'saving' ||
+            status === 'deleting') &&
+          !readOnly &&
+          isSaveRequired
+        "
+        [disabled]="!enabledSavebutton"
+        icon="save"
+        themeColor="success"
+        (click)="onClickSaveButton()"></kendo-button>
+      {{ status }}
+    </kendo-buttongroup>
 
-  <!--Close-->
-  <ion-icon
-    class="toolbar-icon"
-    name="close-outline"
-    slot="end"
-    (click)="onClickDismissButton()"></ion-icon>
-</ion-toolbar>
+    <!--Close-->
+    <ion-icon
+      class="toolbar-icon"
+      name="close-outline"
+      slot="end"
+      (click)="onClickDismissButton()"></ion-icon>
+  </ion-toolbar>
+</ion-header>

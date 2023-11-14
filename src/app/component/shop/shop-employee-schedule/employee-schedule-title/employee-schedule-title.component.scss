@@ -1,0 +1,93 @@
+#container {
+  justify-content: flex-start;
+
+  margin-bottom: 20px;
+}
+
+#period,
+#week {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 5px;
+  font-weight: 900;
+  font-size: 18px;
+}
+#peirod-title {
+  color: var(--title);
+  margin: 0;
+}
+
+#btn-container {
+  display: flex;
+  justify-content: center;
+  margin: 5px;
+  flex: 0;
+  align-items: flex-end;
+}
+
+#title {
+  color: var(--title);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+#date {
+  color: var(--title);
+  font-size: 12px;
+}
+.employee-name {
+  margin: 5px;
+}
+#employee-name-title {
+  color: var(--title);
+  font-size: 16px;
+  font-weight: 900;
+  margin: 0px;
+  margin-top: 11px;
+}
+
+@media (max-width: 620px) {
+  #period {
+    display: none;
+  }
+  #title {
+    font-size: 12px;
+  }
+  #date {
+    display: none;
+  }
+
+  .day {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 5px;
+  }
+  .employee-name {
+    margin: 5px;
+  }
+  #employee-name-title {
+    font-size: 12px;
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 500px) {
+  #title {
+    font-size: 12px;
+  }
+
+  #date {
+    display: none;
+  }
+  .day {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 5px;
+  }
+  #employee-name-title {
+    font-size: 12px;
+  }
+}

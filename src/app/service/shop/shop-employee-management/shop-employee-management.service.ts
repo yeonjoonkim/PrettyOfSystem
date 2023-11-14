@@ -73,6 +73,7 @@ export class ShopEmployeeManagementService {
         activeTo: null,
         displayInSystem: true,
         roster: shop.operatingHours,
+        nextWeekRoster: shop.operatingHours,
         setting: { preferLanguage: typeof currentLanguage === 'string' ? currentLanguage : 'en' },
       };
       return result;

@@ -88,25 +88,25 @@ ion-list {
 }
 
 @media only screen and (max-height: 1180px) {
-  #menu {
+  #menu-content {
     max-height: 700px;
   }
 }
 
 @media only screen and (max-height: 712px) {
-  #menu {
+  #menu-content {
     max-height: 450px;
   }
 }
 
 @media only screen and (max-height: 630px) {
-  #menu {
+  #menu-content {
     max-height: 390px;
   }
 }
 
 @media only screen and (max-height: 550px) {
-  #menu {
+  #menu-content {
     max-height: 350px;
   }
 }

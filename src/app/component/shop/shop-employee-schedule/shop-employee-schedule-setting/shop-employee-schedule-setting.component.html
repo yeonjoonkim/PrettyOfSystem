@@ -1,0 +1,61 @@
+<ion-header>
+  <form-header
+    [title]="form.headerTitle"
+    [readOnly]="form.readOnly"
+    [enabledSavebutton]="form.enabledSavebutton"
+    [action]="form.action"
+    [isDeleteRequired]="false"
+    [isSkipEdit]="true"
+    (onClickDismiss)="dismiss()"
+    (onClickEdit)="handleEdit()"
+    (onClickSave)="handleSave()"></form-header>
+</ion-header>
+
+<ion-content>
+  <flex-col class="modal-container">
+    <flex-row>
+      <flex-row-item>
+        <legend>
+          {{ prop.date | dateTransform: 'LongDate' }}
+          {{ prop.day | languageTransform: 'System' | async }}
+        </legend>
+      </flex-row-item>
+      <flex-row-item id="is-day-off">
+        <yes-no-selection
+          title="label.title.dayoff"
+          [value]="!prop.roster.isOpen"
+          [readOnly]="form.readOnly"
+          (valueChange)="onChangeDayOff()"></yes-no-selection>
+      </flex-row-item>
+    </flex-row>
+
+    <flex-col-item id="error-container">
+      <div class="form-error-container" *ngIf="changed && !form.enabledSavebutton">
+        <kendo-formerror>{{
+          'messageerror.description.workhours' | languageTransform: 'System' | async
+        }}</kendo-formerror>
+      </div>
+    </flex-col-item>
+
+    <flex-row>
+      <flex-row-item *ngIf="prop.roster.isOpen">
+        <time-picker
+          title="date.title.start"
+          [(time)]="prop.roster.operatingHours.openTime"
+          [readOnly]="form.readOnly"
+          [openTime]="prop.operating.openTime"
+          [closeTime]="prop.operating.closeTime"
+          (timeChange)="handleEnabledSaveBtn()"></time-picker>
+      </flex-row-item>
+      <flex-row-item *ngIf="prop.roster.isOpen">
+        <time-picker
+          title="date.title.end"
+          [(time)]="prop.roster.operatingHours.closeTime"
+          [readOnly]="form.readOnly"
+          [openTime]="prop.operating.openTime"
+          [closeTime]="prop.operating.closeTime"
+          (timeChange)="handleEnabledSaveBtn()"></time-picker>
+      </flex-row-item>
+    </flex-row>
+  </flex-col>
+</ion-content>

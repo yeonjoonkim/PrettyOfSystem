@@ -4,10 +4,12 @@
   justify-content: center;
   margin-top: 30px;
 }
+
 #booking-query-container {
   max-width: 800px;
   margin: auto;
 }
+
 @media (max-width: 768px) {
   #booking-container {
     flex-direction: column;

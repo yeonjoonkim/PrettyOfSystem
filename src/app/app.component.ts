@@ -5,7 +5,6 @@ import { NetworkConnectionStatusService } from './service/global/network-connect
 import { ConnectionStatus } from '@capacitor/network';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from './service/user/user.service';
-import { UserClaimType } from './interface';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

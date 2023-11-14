@@ -17,6 +17,7 @@ export class FormHeaderComponent implements OnInit {
   @Input() enabledSavebutton: boolean = true;
   @Input() isDeleteRequired: boolean = true;
   @Input() isSaveRequired: boolean = true;
+  @Input() isSkipEdit: boolean = false;
   @Input() title!: string;
   @Input() action: Constant.FormActionType = Constant.Default.FormAction.Read;
   public status: Constant.FormStatusType = Constant.Default.FormStatus.Reading;
@@ -25,6 +26,7 @@ export class FormHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.setDefaultStatus();
+    this.skipEdit();
   }
 
   private setDefaultStatus() {
@@ -65,6 +67,12 @@ export class FormHeaderComponent implements OnInit {
     let editConfirmation: boolean = await this._global.confirmAlert.getEditConfirmation();
     if (editConfirmation) {
       this.onClickSave.emit(true);
+    }
+  }
+
+  public async skipEdit() {
+    if (this.isSkipEdit) {
+      this.onClickEditButton();
     }
   }
 
