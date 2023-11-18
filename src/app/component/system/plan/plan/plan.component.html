@@ -1,38 +1,40 @@
 <!-- Title -->
-<ion-toolbar id="header">
-  <kendo-buttongroup *ngIf="!isReadonly" slot="start">
-    <!-- Save -->
-    <button
-      *ngIf="!editMode"
-      kendoButton
-      size="large"
-      rounded="large"
-      (click)="onClickSavePlanButton()">
-      {{ 'button.title.save' | languageTransform: 'System' | async }}
-    </button>
+<ion-header>
+  <ion-toolbar id="header">
+    <kendo-buttongroup *ngIf="!isReadonly" slot="start">
+      <!-- Save -->
+      <button
+        *ngIf="!editMode"
+        kendoButton
+        size="large"
+        rounded="large"
+        (click)="onClickSavePlanButton()">
+        {{ 'button.title.save' | languageTransform: 'System' | async }}
+      </button>
 
-    <!-- Edit -->
-    <button
-      *ngIf="editMode"
-      kendoButton
-      size="large"
-      rounded="large"
-      (click)="onClickEditPlanButton()"
-      themeColor="success">
-      {{ 'button.title.edit' | languageTransform: 'System' | async }}
-    </button>
-  </kendo-buttongroup>
-  <ion-title *ngIf="!editMode && !isReadonly">{{
-    'label.title.addplan' | languageTransform: 'System' | async
-  }}</ion-title>
-  <ion-title *ngIf="editMode && !isReadonly">{{
-    'label.title.editplan' | languageTransform: 'System' | async
-  }}</ion-title>
-  <ion-title *ngIf="isReadonly">{{
-    'label.title.viewsubscriptionplan' | languageTransform: 'System' | async
-  }}</ion-title>
-  <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="dismiss()"></ion-icon>
-</ion-toolbar>
+      <!-- Edit -->
+      <button
+        *ngIf="editMode"
+        kendoButton
+        size="large"
+        rounded="large"
+        (click)="onClickEditPlanButton()"
+        themeColor="success">
+        {{ 'button.title.edit' | languageTransform: 'System' | async }}
+      </button>
+    </kendo-buttongroup>
+    <ion-title *ngIf="!editMode && !isReadonly">{{
+      'label.title.addplan' | languageTransform: 'System' | async
+    }}</ion-title>
+    <ion-title *ngIf="editMode && !isReadonly">{{
+      'label.title.editplan' | languageTransform: 'System' | async
+    }}</ion-title>
+    <ion-title *ngIf="isReadonly">{{
+      'label.title.viewsubscriptionplan' | languageTransform: 'System' | async
+    }}</ion-title>
+    <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="dismiss()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content>
   <flex-col class="modal-container">

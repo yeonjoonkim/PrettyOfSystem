@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
-import { Observable, Subject, combineLatest, pairwise, takeUntil } from 'rxjs';
+import { Observable, Subject, pairwise, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   ShopExtraDocumentType,
@@ -24,6 +24,8 @@ import { ShopPackageManagementService } from 'src/app/service/shop/shop-package-
 export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   public packages!: ShopPackageDocumentType[];
   public translatedRequests!: ChatGptTranslateDocumentType[];
+  public serviceTranslatedRequest!: ChatGptTranslateDocumentType[];
+  public extraTranslatedRequest!: ChatGptTranslateDocumentType[];
   public isModalOpen: boolean = false;
   public isReachToMax: boolean = true;
 
@@ -32,9 +34,6 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   private _extras!: ShopExtraDocumentType[];
   private _services!: ShopServiceDocumentType[];
   private _operatingWorkHour: ShopWorkHoursType | null = null;
-
-  private _serviceTranslatedRequest!: ChatGptTranslateDocumentType[];
-  private _extraTranslatedRequest!: ChatGptTranslateDocumentType[];
 
   public progressBar$: Observable<ShopLimitedProgpressBarType> =
     this._shopPackage.progressBar$.pipe(takeUntil(this._onDestroy$));
@@ -72,11 +71,11 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
     this._shopPackage.serviceTranslatedRequest$
       .pipe(takeUntil(this._onDestroy$))
       .subscribe(request => {
-        this._serviceTranslatedRequest = request;
+        this.serviceTranslatedRequest = request;
       });
 
     this._shopPackage.extraServiceRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
-      this._extraTranslatedRequest = request;
+      this.extraTranslatedRequest = request;
     });
     this._shopPackage.translatedRequest$
       .pipe(pairwise(), takeUntil(this._onDestroy$))
@@ -118,7 +117,7 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
 
   private servicesListener() {
     this._shopPackage.services$.pipe(takeUntil(this._onDestroy$)).subscribe(services => {
-      this._services = services.filter(service => !service.isInsuranceCover);
+      this._services = services;
     });
   }
 
@@ -179,14 +178,20 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   }
 
   private setModalProp(doc: ShopPackageDocumentType | null) {
-    if (this._operatingWorkHour !== null && this._filterProp && doc !== null) {
+    if (
+      this._operatingWorkHour !== null &&
+      this._filterProp &&
+      doc !== null &&
+      this.extraTranslatedRequest != null &&
+      this.serviceTranslatedRequest != null
+    ) {
       const prop: ShopPackageModalDocumentProp = {
         package: doc,
         filter: this._filterProp,
         services: this._services,
         extras: this._extras,
         operatingHours: this._operatingWorkHour,
-        translateRequests: [...this._extraTranslatedRequest, ...this._serviceTranslatedRequest],
+        translateRequests: [...this.extraTranslatedRequest, ...this.serviceTranslatedRequest],
       };
       return prop;
     }

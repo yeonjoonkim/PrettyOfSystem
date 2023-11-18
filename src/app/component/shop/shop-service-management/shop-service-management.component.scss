@@ -2,18 +2,10 @@
   display: flex;
   justify-content: center;
   justify-self: center;
-  margin-top: 25px;
+  margin: 25px 15px 10px 15px;
 }
 
 #shop-service-grid {
   max-width: 1000px;
   margin: auto;
-}
-
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 50vh;
 }

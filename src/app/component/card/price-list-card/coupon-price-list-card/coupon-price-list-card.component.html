@@ -1,0 +1,53 @@
+<ion-card *ngIf="coupon" class="price-card coupon-card">
+  <ion-card-content>
+    <flex-col>
+      <flex-col-item class="tool-tip">
+        <div class="tip">
+          {{ coupon.discount.value | percentTransform }}
+          {{ 'label.title.discount' | languageTransform: 'System' | async }}
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+      </flex-col-item>
+      <flex-col-item class="card-title">
+        <ion-card-title>{{ coupon.title | languageTransform: type | async }}</ion-card-title>
+      </flex-col-item>
+    </flex-col>
+
+    <flex-row>
+      <flex-row-item class="package-card-footer">
+        <price-card-tooltip
+          [enabledToolTip]="true"
+          [type]="type"
+          [title]="coupon.title"
+          [description]="coupon.description"></price-card-tooltip>
+        <div class="package-limited-time">
+          <p class="package-limited-day">
+            {{ 'label.title.numberofcoupon' | languageTransform: 'System' | async }}:
+            {{ coupon.numOfCoupon }}
+          </p>
+          <p class="package-limited-time">
+            {{ 'label.title.expirationperiod' | languageTransform: 'System' | async }}:
+            {{ coupon.expiryMonth
+            }}{{ 'label.title.periodmonths' | languageTransform: 'System' | async }}
+          </p>
+        </div>
+      </flex-row-item>
+
+      <flex-row-item class="prices">
+        <p class="discount-price">
+          {{ coupon.option.min | minuteTransform | async }} x {{ coupon.numOfCoupon }}
+        </p>
+        <p class="discount-price">
+          <span class="original-price"> {{ coupon.originalPrice | currencyTransform }}</span>
+          {{ coupon.discountPrice | currencyTransform }}
+        </p>
+      </flex-row-item>
+    </flex-row>
+
+    <div class="option-add package-add" *ngIf="enabledAdd">
+      <button class="add-btn" kendoButton (click)="onClickAdd()">
+        {{ 'button.title.add' | languageTransform: 'System' | async }}
+      </button>
+    </div>
+  </ion-card-content>
+</ion-card>

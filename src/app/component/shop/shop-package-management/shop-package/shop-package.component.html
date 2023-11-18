@@ -39,6 +39,16 @@
               </kendo-label>
             </div>
             <div id="pregnant">
+              <kendo-label text="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
+                <input
+                  kendoCheckBox
+                  type="checkbox"
+                  [disabled]="form.readOnly"
+                  [(ngModel)]="current.package.isOil"
+                  (ngModelChange)="handleEnabledSaveBtn()" />
+              </kendo-label>
+            </div>
+            <div id="pregnant">
               <kendo-label
                 text="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
                 <input
@@ -49,9 +59,10 @@
                   (ngModelChange)="handleEnabledSaveBtn()" />
               </kendo-label>
             </div>
+
             <div id="limited-time">
               <kendo-label
-                text="{{ 'label.title.limitedtime' | languageTransform: 'System' | async }}">
+                text="{{ 'label.title.limitedoffer' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
                   type="checkbox"
@@ -124,25 +135,12 @@
                 {{ service.title | languageTransform: 'User' | async }}
               </p>
             </flex-row-item>
-            <flex-row-item class="price-option">
-              <p>$</p>
-              <kendo-numerictextbox
-                [(value)]="option.price"
-                [decimals]="2"
-                [min]="0"
-                [spinners]="false"
-                [readonly]="true"></kendo-numerictextbox>
+            <flex-row-item class="option-title">
+              <p>{{ option.price | currencyTransform }}</p>
             </flex-row-item>
             <!--Min -->
-            <flex-row-item class="minute-option">
-              <kendo-numerictextbox
-                format="##"
-                [(value)]="option.min"
-                [decimals]="0"
-                [spinners]="false"
-                [min]="0"
-                [readonly]="true"></kendo-numerictextbox>
-              <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
+            <flex-row-item class="option-title">
+              <p>{{ option.min | minuteTransform | async }}</p>
             </flex-row-item>
           </flex-row>
         </ng-container>
@@ -176,14 +174,8 @@
               {{ extra.title | languageTransform: 'User' | async }}
             </p>
           </flex-row-item>
-          <flex-row-item class="price-option">
-            <p>$</p>
-            <kendo-numerictextbox
-              [(value)]="extra.price"
-              [decimals]="2"
-              [min]="0"
-              [spinners]="false"
-              [readonly]="true"></kendo-numerictextbox>
+          <flex-row-item class="option-title">
+            <p>{{ extra.price | currencyTransform }}</p>
           </flex-row-item>
         </flex-row>
       </ng-container>
@@ -267,17 +259,7 @@
     </flex-row>
     <flex-row>
       <flex-row-item>
-        <div class="total-min">
-          <kendo-numerictextbox
-            id="total-min-value"
-            [value]="current.package.totalMin"
-            [decimals]="0"
-            format="##"
-            [min]="0"
-            [spinners]="false"
-            [readonly]="true"></kendo-numerictextbox>
-          <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
-        </div>
+        <p>{{ current.package.totalMin | minuteTransform | async }}</p>
       </flex-row-item>
     </flex-row>
   </flex-col>

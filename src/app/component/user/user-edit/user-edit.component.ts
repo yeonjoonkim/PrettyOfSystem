@@ -1,10 +1,11 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { IFormHeaderModalProp, IUser, NameValuePairType } from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
 import * as Constant from 'src/app/constant/constant';
 import { cloneDeep } from 'lodash-es';
 import { GlobalService } from 'src/app/service/global/global.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'user-edit',
@@ -13,10 +14,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
 })
 export class UserEditComponent implements OnInit, DoCheck {
   public loading: boolean = true;
-  public pages: NameValuePairType[] = [
-    { name: 'label.title.information', value: 'page1' },
-    { name: 'label.title.associatedshop', value: 'page2' },
-  ];
+  public pages: NameValuePairType[] = [{ name: 'label.title.information', value: 'page1' }];
   public currentPage: NameValuePairType = { name: 'label.title.information', value: 'page1' };
   public form!: IFormHeaderModalProp;
   public shopSelection: NameValuePairType[] = [];
@@ -32,6 +30,7 @@ export class UserEditComponent implements OnInit, DoCheck {
   private _previousLanguage: string = '';
   private _encryptedPassword: string = '';
   private _paramUser!: IUser;
+  public hasRole = true;
   constructor(
     private _navParams: NavParams,
     private _user: UserService,
@@ -66,7 +65,7 @@ export class UserEditComponent implements OnInit, DoCheck {
       this.validator.firstName &&
       this.validator.lastName &&
       this.validator.phone &&
-      this.validator.email;
+      (this.validator.email || !this.hasRole);
 
     if (this.user.loginOption.email) {
       validation = this.resetPassword ? validation && this.validator.password : validation;
@@ -105,6 +104,7 @@ export class UserEditComponent implements OnInit, DoCheck {
     );
     const shopSelection: NameValuePairType[] | undefined = this._navParams.get('shopSelection');
     const user: IUser | undefined = this._navParams.get('user');
+    const role = await firstValueFrom(this._user.currentRole$);
     if (form !== undefined && shopSelection !== undefined && user !== undefined) {
       this.form = form
         ? form
@@ -119,6 +119,12 @@ export class UserEditComponent implements OnInit, DoCheck {
       this.shopSelection = shopSelection;
       this.loading = false;
       this._previousLanguage = this.user.setting.preferLanguage;
+      this.hasRole = role !== null;
+      if (this.hasRole) {
+        this.pages.push({ name: 'label.title.associatedshop', value: 'page2' });
+      }
+      this.pages.push({ name: 'label.title.preference', value: 'page3' });
+      this.handleEnabledSaveBtn();
     }
   }
 }

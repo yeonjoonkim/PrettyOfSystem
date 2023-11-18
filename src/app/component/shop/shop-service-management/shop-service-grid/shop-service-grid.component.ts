@@ -8,14 +8,14 @@ import {
   ShopServiceModalDocumentProp,
   ShopLanguagePackageModalProp,
   ShopExtraDocumentType,
-  IShopSetting,
-  ShopConfigurationType,
 } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employee-management/shop-employee-management.service';
 import * as Constant from 'src/app/constant/constant';
 import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-management/shop-service-management.service';
-import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
+import { PopoverController } from '@ionic/angular';
+import { ShopServiceOptionPopoverComponent } from '../shop-service-option-popover/shop-service-option-popover.component';
+
 @Component({
   selector: 'shop-service-grid',
   templateUrl: './shop-service-grid.component.html',
@@ -38,7 +38,7 @@ export class ShopServiceGridComponent implements OnInit {
     private _shopEmp: ShopEmployeeManagementService,
     private _global: GlobalService,
     private _shopService: ShopServiceManagementService,
-    public device: DeviceWidthService
+    private _popover: PopoverController
   ) {}
 
   ngOnInit() {}
@@ -49,6 +49,18 @@ export class ShopServiceGridComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  public async onClickOption(doc: ShopServiceDocumentType, event: any) {
+    const popover = await this._popover.create({
+      component: ShopServiceOptionPopoverComponent,
+      translucent: true,
+      event: event,
+      componentProps: {
+        options: cloneDeep(doc.options),
+      },
+    });
+    await popover.present();
   }
 
   public async handleRequeue(

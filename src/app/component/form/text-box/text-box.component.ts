@@ -34,6 +34,7 @@ export class InputTextBoxComponent implements OnInit {
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input() placeholder: string = '';
   @Input() type: 'number' | 'text' = 'text';
+  @Input() isRequireLabel: boolean = true;
   @Input()
   get value() {
     return this.validatedValue;

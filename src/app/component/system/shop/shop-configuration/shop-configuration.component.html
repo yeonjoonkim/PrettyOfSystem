@@ -1,15 +1,15 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  (onClickDismiss)="dismiss()"
+  (onClickCreate)="handleCreate()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()"
+  (onClickDelete)="handleDelete()">
+</form-header>
 <ion-content [scrollable]="true">
-  <form-header
-    [title]="form.headerTitle"
-    [readOnly]="form.readOnly"
-    [enabledSavebutton]="form.enabledSavebutton"
-    [action]="form.action"
-    (onClickDismiss)="dismiss()"
-    (onClickCreate)="handleCreate()"
-    (onClickEdit)="handleEdit()"
-    (onClickSave)="handleSave()"
-    (onClickDelete)="handleDelete()">
-  </form-header>
   <form-container>
     <!-- Button -->
     <kendo-buttongroup selection="single" width="100%">

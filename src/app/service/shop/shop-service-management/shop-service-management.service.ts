@@ -151,18 +151,33 @@ export class ShopServiceManagementService {
   }
 
   public async delete(service: ShopServiceDocumentType) {
+    const sleep = async (duration: number) => {
+      return new Promise(resolve => setTimeout(resolve, duration));
+    };
+
+    await this.loading.start('label.title.deleting');
     const deleteService = await this._shopServiceRepo.deleteService(service);
+    await sleep(1000);
+    await this.loading.end();
     return deleteService;
   }
 
   public async update(after: ShopServiceDocumentType) {
     after.titleProp = this._textTransform.getTitleFormat(after.titleProp);
     const empName = await this._shop.userName();
+    await this.loading.start('label.title.updating');
+    const sleep = async (duration: number) => {
+      return new Promise(resolve => setTimeout(resolve, duration));
+    };
     if (empName !== null) {
       after.lastModifiedEmployee = empName;
       after.lastModifiedDate = await this._shop.timeStamp();
-      return await this._shopServiceRepo.updateService(after);
+      const result = await this._shopServiceRepo.updateService(after);
+      await sleep(1000);
+      await this.loading.end();
+      return result;
     } else {
+      await this.loading.end();
       return false;
     }
   }

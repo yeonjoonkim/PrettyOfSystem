@@ -1,0 +1,71 @@
+<ion-card *ngIf="service" class="price-card service-card">
+  <ion-card-content class="service-content">
+    <flex-col>
+      <flex-col-item class="tool-tip">
+        <div *ngIf="service.isInsuranceCover" class="tip">
+          {{ 'label.title.insurance' | languageTransform: 'System' | async }}
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div *ngIf="service.isOil" class="tip">
+          {{ 'label.title.oil' | languageTransform: 'System' | async }}
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div *ngIf="service.recommandForPregnant" class="tip">
+          {{ 'label.title.pregnant' | languageTransform: 'System' | async }}
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div *ngIf="!service.recommandForPregnant && !service.isOil && !service.isInsuranceCover">
+          <div class="empty-tool-tip"></div>
+        </div>
+      </flex-col-item>
+      <flex-col-item class="card-title">
+        <ion-card-title>{{ service.title | languageTransform: type | async }}</ion-card-title>
+      </flex-col-item>
+    </flex-col>
+
+    <div>
+      <ion-card-subtitle
+        class="card-description"
+        [ngClass]="{ 'card-description-expand': isExpanded }">
+        {{ service.description | languageTransform: type | async }}
+      </ion-card-subtitle>
+    </div>
+    <flex-col>
+      <p class="starting-price">
+        {{ 'label.title.startingprice' | languageTransform: 'System' | async }}
+      </p>
+      <flex-col-item class="service-option" [ngClass]="{ 'service-option-expand': isExpanded }">
+        <ng-container *ngFor="let option of service.options; let i = index">
+          <flex-row>
+            <flex-row-item class="option-min" [ngClass]="{ 'option-start': i === 0 }">
+              {{ option.min | minuteTransform | async }}
+            </flex-row-item>
+            <flex-row-item class="option-price" [ngClass]="{ 'option-start': i === 0 }">
+              {{ option.price | currencyTransform }}
+            </flex-row-item>
+            <flex-row-item
+              class="option-add"
+              [ngClass]="{ 'option-start': i === 0 }"
+              *ngIf="enabledAdd">
+              <button class="add-btn" kendoButton (click)="onClickAdd()">
+                {{ 'button.title.add' | languageTransform: 'System' | async }}
+              </button>
+            </flex-row-item>
+          </flex-row>
+        </ng-container>
+      </flex-col-item>
+    </flex-col>
+  </ion-card-content>
+  <div (click)="onClickExpand()">
+    <div class="expand-btn">
+      <ion-icon *ngIf="!isExpanded" name="chevron-down-outline"></ion-icon>
+      <ion-icon *ngIf="isExpanded" name="chevron-up-outline"></ion-icon>
+    </div>
+    <div class="expand-description">
+      <p *ngIf="!isExpanded">
+        {{ 'label.title.viewmoreoption' | languageTransform: 'System' | async }}
+      </p>
+      <p *ngIf="isExpanded">{{ 'label.title.close' | languageTransform: 'System' | async }}</p>
+    </div>
+  </div>
+</ion-card>

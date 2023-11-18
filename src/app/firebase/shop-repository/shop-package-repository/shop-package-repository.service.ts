@@ -93,6 +93,7 @@ export class ShopPackageRepositoryService {
       discountedAmount: 0,
       totalMin: 0,
       isInsuranceCover: false,
+      isOil: false,
       discount: {
         type: Constant.PackageDiscountType.Percent,
         value: 0,

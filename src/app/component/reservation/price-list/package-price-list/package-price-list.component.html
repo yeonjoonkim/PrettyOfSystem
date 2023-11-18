@@ -1,0 +1,19 @@
+<div id="container">
+  <div *ngIf="packages$ | async as packages; else loading" class="vertical-price-list">
+    <ng-container *ngFor="let pack of packages">
+      <package-price-list-card
+        *ngIf="timezone"
+        type="User"
+        [pack]="pack"
+        [enabledAdd]="false"
+        [timezone]="timezone">
+      </package-price-list-card>
+    </ng-container>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-container">
+      <kendo-loader size="large"></kendo-loader>
+    </div>
+  </ng-template>
+</div>

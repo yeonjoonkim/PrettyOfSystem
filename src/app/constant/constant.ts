@@ -63,6 +63,8 @@ export type FormStatusType = (typeof Default.FormStatus)[keyof typeof Default.Fo
 export type PhoneCodeType = (typeof Default.PhoneCode)[keyof typeof Default.PhoneCode];
 export type CurrencyType = (typeof Default.CurrencyType)[keyof typeof Default.CurrencyType];
 export type TextFormatType = (typeof Text.Format)[keyof typeof Text.Format];
+export type LanguageTransformType =
+  (typeof Default.LanguageTransformType)[keyof typeof Default.LanguageTransformType];
 
 //API
 export type APIResponseType = (typeof API.Response)[keyof typeof API.Response];

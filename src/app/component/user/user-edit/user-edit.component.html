@@ -71,7 +71,7 @@
         <e-mail
           [(email)]="user.email"
           [readOnly]="form.readOnly"
-          [isRequired]="true"
+          [isRequired]="hasRole"
           [(validate)]="validator.email"></e-mail>
       </flex-row-item>
     </flex-row>

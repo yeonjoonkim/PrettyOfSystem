@@ -134,45 +134,58 @@
         !form.readOnly && (form.action === 'create' || form.action === 'edit')
       "></flex-row-item>
   </flex-row>
-  <div *ngFor="let opt of current.service.options">
-    <flex-row class="options" *ngIf="country !== undefined">
-      <!--Min -->
-      <flex-row-item class="minute-option">
-        <kendo-numerictextbox
-          format="##"
-          [(value)]="opt.min"
-          [decimals]="0"
-          [spinners]="false"
-          [min]="0"
-          [max]="180"
-          (valueChange)="onChangeOption(opt)"
-          [readonly]="form.readOnly"></kendo-numerictextbox>
-        <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
-      </flex-row-item>
-      <!-- Price -->
-      <flex-row-item class="price-option">
-        <p *ngIf="country.currency === 'AUD'">$</p>
-        <kendo-numerictextbox
-          [(value)]="opt.price"
-          [decimals]="2"
-          [min]="0"
-          [spinners]="false"
-          (valueChange)="onChangeOption(opt)"
-          [readonly]="form.readOnly"></kendo-numerictextbox>
-      </flex-row-item>
+  <div *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
+    <div *ngFor="let opt of current.service.options">
+      <flex-row class="options" *ngIf="country !== undefined">
+        <!--Min -->
+        <flex-row-item class="minute-option">
+          <kendo-numerictextbox
+            format="##"
+            [(value)]="opt.min"
+            [decimals]="0"
+            [spinners]="false"
+            [min]="0"
+            [max]="180"
+            (valueChange)="onChangeOption(opt)"
+            [readonly]="form.readOnly"></kendo-numerictextbox>
+          <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
+        </flex-row-item>
+        <!-- Price -->
+        <flex-row-item class="price-option">
+          <p *ngIf="country.currency === 'AUD'">$</p>
+          <kendo-numerictextbox
+            [(value)]="opt.price"
+            [decimals]="2"
+            [min]="0"
+            [spinners]="false"
+            (valueChange)="onChangeOption(opt)"
+            [readonly]="form.readOnly"></kendo-numerictextbox>
+        </flex-row-item>
 
-      <flex-row-item
-        class="price-option"
-        *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
-        <button
-          kendoButton
-          themeColor="error"
-          id="option-delete-button"
-          (click)="deleteOption(opt)"
+        <flex-row-item
+          class="price-option"
           *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
-          <span class="k-icon k-i-trash"></span>
-        </button>
-      </flex-row-item>
-    </flex-row>
+          <button
+            kendoButton
+            themeColor="error"
+            id="option-delete-button"
+            (click)="deleteOption(opt)"
+            *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
+            <span class="k-icon k-i-trash"></span>
+          </button>
+        </flex-row-item>
+      </flex-row>
+    </div>
+  </div>
+
+  <div *ngIf="form.readOnly">
+    <div *ngFor="let opt of current.service.options">
+      <flex-row>
+        <flex-row-item id="readonly-option-min">
+          {{ opt.min | minuteTransform | async }}
+        </flex-row-item>
+        <flex-row-item> {{ opt.price | currencyTransform }} </flex-row-item>
+      </flex-row>
+    </div>
   </div>
 </ion-content>

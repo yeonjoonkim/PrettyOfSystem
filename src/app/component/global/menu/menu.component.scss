@@ -87,26 +87,36 @@ ion-list {
   font-size: 8px;
 }
 
-@media only screen and (max-height: 1180px) {
+@media (max-height: 1180px) {
   #menu-content {
     max-height: 700px;
   }
 }
 
-@media only screen and (max-height: 712px) {
+@media (max-height: 712px) {
   #menu-content {
     max-height: 450px;
   }
 }
 
-@media only screen and (max-height: 630px) {
+@media (max-height: 630px) {
   #menu-content {
     max-height: 390px;
   }
 }
 
-@media only screen and (max-height: 550px) {
+@media (max-height: 550px) {
   #menu-content {
-    max-height: 350px;
+    max-height: 200px;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+}
+
+@media (max-height: 420px) {
+  #menu-content {
+    max-height: 190px;
+    overflow: hidden;
+    overflow-y: scroll;
   }
 }

@@ -44,12 +44,3 @@
   cursor: pointer;
   text-decoration: underline;
 }
-
-@media (max-width: 750px) {
-  #services,
-  #total-min,
-  #extras,
-  #limited-day {
-    display: none;
-  }
-}

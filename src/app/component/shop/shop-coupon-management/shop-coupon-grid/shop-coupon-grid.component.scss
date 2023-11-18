@@ -44,12 +44,3 @@
   cursor: pointer;
   text-decoration: underline;
 }
-
-@media (max-width: 750px) {
-  #original-price,
-  #expiry-month,
-  #service-price,
-  #service-min {
-    display: none;
-  }
-}

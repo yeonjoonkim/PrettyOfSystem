@@ -48,6 +48,11 @@ export class ShopService {
   public shopImage1$!: Observable<Blob | null>;
   public shopImage2$!: Observable<Blob | null>;
   public shopImage3$!: Observable<Blob | null>;
+  //Price List
+  public couponPriceList$!: Observable<ShopCouponDocumentType[]>;
+  public packagePriceList$!: Observable<ShopPackageDocumentType[]>;
+  public servicePriceList$!: Observable<ShopServiceDocumentType[]>;
+  public extraPriceList$!: Observable<ShopExtraDocumentType[]>;
 
   constructor(
     public role: UserRoleService,
@@ -81,6 +86,10 @@ export class ShopService {
     this.shopImage1Listener();
     this.shopImage2Listener();
     this.shopImage3Listener();
+    this.couponPriceListListener();
+    this.servicePriceListListener();
+    this.packagePriceListListener();
+    this.extraPriceListListener();
   }
 
   public translatedRequestFilterByServiceIds(shopId: string, serviceIds: string[]) {
@@ -288,6 +297,67 @@ export class ShopService {
       })
     );
   }
+
+  private couponPriceListListener() {
+    this.couponPriceList$ = combineLatest([this.config$, this.coupons$]).pipe(
+      map(([config, coupons]) => {
+        if (config !== null) {
+          const language = this._systemLanguage.storage.currentLanguage;
+          return coupons.filter(
+            coupon =>
+              config.package[`${coupon.title}.${language}`] !== undefined &&
+              config.package[`${coupon.description}.${language}`] !== undefined
+          );
+        } else {
+          return [] as ShopCouponDocumentType[];
+        }
+      })
+    );
+  }
+
+  private servicePriceListListener() {
+    this.servicePriceList$ = combineLatest([this.config$, this.services$]).pipe(
+      map(([config, servcies]) => {
+        if (config !== null) {
+          const language = this._systemLanguage.storage.currentLanguage;
+          return servcies.filter(
+            servcie =>
+              config.package[`${servcie.title}.${language}`] !== undefined &&
+              config.package[`${servcie.description}.${language}`] !== undefined
+          );
+        } else {
+          return [] as ShopServiceDocumentType[];
+        }
+      })
+    );
+  }
+
+  private packagePriceListListener() {
+    this.packagePriceList$ = combineLatest([this.config$, this.packages$]).pipe(
+      map(([config, packages]) => {
+        if (config !== null) {
+          const language = this._systemLanguage.storage.currentLanguage;
+          return packages.filter(pack => config.package[`${pack.title}.${language}`] !== undefined);
+        } else {
+          return [] as ShopPackageDocumentType[];
+        }
+      })
+    );
+  }
+
+  private extraPriceListListener() {
+    this.extraPriceList$ = combineLatest([this.config$, this.extras$]).pipe(
+      map(([config, extras]) => {
+        if (config !== null) {
+          const language = this._systemLanguage.storage.currentLanguage;
+          return extras.filter(extra => config.package[`${extra.title}.${language}`] !== undefined);
+        } else {
+          return [] as ShopExtraDocumentType[];
+        }
+      })
+    );
+  }
+
   public async requeueTranslatedRequest(doc: ChatGptTranslateDocumentType) {
     return await this.translated.requeueTranslatedRequest(doc);
   }

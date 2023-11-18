@@ -25,11 +25,7 @@
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
 
-@import './theme/pretty-of-system-dark-theme/dist/scss';
-@import './theme/variables.scss';
-
 /* Set variables for all modes */
-
 :root {
   --ion-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
   --form-background-color: white;
@@ -44,7 +40,16 @@
   --created: #008b6a;
   --success: #8a84ee;
   --work: #2a2836;
+  --card: #35373b;
+  --card-add: #56585d;
+  --card-add-hover: #636e75;
+  --card-title: #cd7867;
 }
+
+@import './theme/pretty-of-system-dark-theme/dist/scss';
+@import './theme/itl-phone/itl-phone.scss';
+@import './theme/variables.scss';
+@import './theme/price-card//price-card.scss';
 
 ion-app,
 ion-content {
@@ -59,9 +64,9 @@ ion-content {
 }
 
 ion-toolbar {
-  --ion-background-color: var(--background);
-  background: var(--background);
-  background-color: var(--background);
+  --ion-background-color: var(--black);
+  background: var(--black);
+  background-color: var(--black);
 }
 
 .svg-icon-container {
@@ -78,8 +83,8 @@ ion-toolbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 48px;
-  height: 48px;
+  width: 28px;
+  height: 28px;
 }
 
 .svg-icon img {
@@ -92,10 +97,10 @@ ion-toolbar {
   content: '';
   background-color: white;
   position: absolute;
-  top: 1px;
+  top: 0.5px;
   left: 1px;
-  width: 96%;
-  height: 96%;
+  width: 93%;
+  height: 95%;
   z-index: -1;
   border-radius: 50%;
   opacity: 0.7;
@@ -209,6 +214,14 @@ ion-toolbar {
   background-size: contain;
   width: 100px;
   height: 100px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 50vh;
 }
 
 .date-pick-popup-container {
@@ -419,93 +432,6 @@ error-message-item {
     border-color: rgba(255, 255, 255, 0.16);
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
     outline: unset;
-  }
-}
-
-/*itl-phone*/
-.iti__flag-container {
-  position: relative;
-}
-
-/*itl-phone*/
-.iti__selected-flag {
-  padding: 0px 5px;
-}
-
-/*itl-phone*/
-.iti--allow-dropdown input[type='tel'] {
-  height: 30px;
-  width: 100%;
-  padding-right: 0px;
-  padding-left: 0px;
-  margin-left: 0px;
-  background-color: unset;
-  border-radius: unset;
-  border: unset;
-  &:hover {
-    border: unset;
-  }
-  &:focus-visible {
-    border-color: unset;
-    box-shadow: unset;
-    outline: unset;
-  }
-  &:disabled {
-    color: white;
-  }
-}
-
-/*itl-phone*/
-.iti--allow-dropdown input::placeholder,
-.iti--allow-dropdown input:disabled {
-  color: white;
-  font-size: 14px;
-}
-
-/*itl-phone*/
-.dropdown-menu.country-dropdown.show {
-  border: rgba(255, 255, 255, 0.08) 1px solid;
-  border-radius: 0px;
-  background-color: #101010;
-  min-width: 200px;
-  max-width: 260px;
-  padding: 0px;
-  border-collapse: collapse;
-  .iti__country {
-    padding: 5px 0px;
-  }
-  .search-container,
-  .iti__country-list {
-    font-size: 14px;
-    color: white;
-    #country-search-box {
-      padding: 15px;
-      background-color: #101010;
-      border-bottom: unset;
-      border: unset;
-      height: 30px;
-      &:hover {
-        border: unset;
-      }
-      &:focus-visible {
-        border-color: unset;
-        box-shadow: unset;
-        outline: unset;
-      }
-    }
-    &:hover {
-      border: unset;
-    }
-    &:focus-visible {
-      border-color: unset;
-      box-shadow: unset;
-      outline: unset;
-    }
-  }
-  .iti__country-list {
-    background: #101010;
-    color: white;
-    max-width: 300px;
   }
 }
 

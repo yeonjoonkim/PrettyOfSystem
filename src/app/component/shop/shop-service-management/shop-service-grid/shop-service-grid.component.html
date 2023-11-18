@@ -32,7 +32,7 @@
 
   <kendo-grid-column
     [sortable]="true"
-    field="insurance"
+    field="isInsuranceCover"
     title="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
       <input
@@ -45,9 +45,8 @@
   </kendo-grid-column>
 
   <kendo-grid-column
-    *ngIf="!device.deviceType.isMobile"
+    media="(min-width: 590px)"
     [sortable]="true"
-    id="recommandForPregnant"
     field="recommandForPregnant"
     title="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
@@ -62,8 +61,7 @@
 
   <!--Oil-->
   <kendo-grid-column
-    *ngIf="!device.deviceType.isMobile"
-    id="oil"
+    media="(min-width: 690px)"
     [sortable]="true"
     field="isOil"
     title="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
@@ -79,9 +77,10 @@
 
   <!--Specialist-->
   <kendo-grid-column
-    *ngIf="!device.deviceType.isMobile"
-    id="specialist"
+    media="(min-width: 790px)"
     [sortable]="true"
+    [width]="100"
+    field="specializedEmployees.length"
     title="{{ 'label.title.specializedemployees' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
       <name-value-pair-multi-dropdown-selection
@@ -89,6 +88,23 @@
         [isRequiredTitle]="false"
         [selection]="specialists"
         [readOnly]="true"></name-value-pair-multi-dropdown-selection>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Option -->
+  <kendo-grid-column
+    media="(min-width: 390px)"
+    [sortable]="true"
+    field="options.length"
+    title="{{ 'label.title.option' | languageTransform: 'System' | async }}">
+    <ng-template kendoGridCellTemplate let-service>
+      <div class="translated-status-container completed" (click)="onClickOption(service, $event)">
+        <span id="completed"
+          >{{ 'label.title.view' | languageTransform: 'System' | async }} ({{
+            service.options.length
+          }})</span
+        >
+      </div>
     </ng-template>
   </kendo-grid-column>
 
@@ -170,36 +186,6 @@
     </ng-template>
   </kendo-grid-column>
 
-  <ng-template kendoGridDetailTemplate let-service let-rowIndex="rowIndex" id="detail">
-      <flex-row id="options">
-        <flex-row-item>
-          <div *ngFor="let opt of service.options">
-            <!--Min -->
-            <flex-row class="options">
-              <flex-row-item class="minute-option">
-                <kendo-numerictextbox
-                  format="##"
-                  [(value)]="opt.min"
-                  [decimals]="0"
-                  [spinners]="false"
-                  [readonly]="true"></kendo-numerictextbox>
-                <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
-              </flex-row-item>
-              <!-- Price -->
-              <flex-row-item class="price-option">
-                <p>$</p>
-                <kendo-numerictextbox
-                  [(value)]="opt.price"
-                  [decimals]="2"
-                  [min]="0"
-                  [spinners]="false"
-                  [readonly]="true"></kendo-numerictextbox>
-              </flex-row-item>
-            </flex-row>
-          </div>
-        </flex-row-item>
-      </flex-row>
-  </ng-template>
   <!-- NO Data-->
   <ng-template kendoGridNoRecordsTemplate></ng-template>
 </kendo-grid>

@@ -108,7 +108,6 @@ export class DateService {
       end: this.transform.toLocalDateTime(end),
     };
     const result = intervalToDuration(interval);
-    console.log(result);
     return result;
   }
 

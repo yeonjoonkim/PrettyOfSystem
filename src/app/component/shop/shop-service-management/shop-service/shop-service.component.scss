@@ -61,7 +61,7 @@
 .minute-option {
   display: flex;
   flex-direction: row;
-  max-width: 100px;
+  max-width: 130px;
   kendo-numerictextbox {
     margin: 10px;
     height: 28px;
@@ -83,6 +83,11 @@
     height: 28px;
     max-width: 100px;
   }
+}
+
+#readonly-option-min {
+  max-width: 113px;
+  padding-left: 10px;
 }
 
 @media only screen and (max-width: 600px) {

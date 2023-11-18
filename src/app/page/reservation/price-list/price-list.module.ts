@@ -11,6 +11,9 @@ import { PriceListPage } from './price-list.page';
 //Import Pipe
 import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
 
+//Import Module
+import { PriceListModule } from 'src/app/component/reservation/price-list/price-list.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -20,6 +23,7 @@ import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pi
     KendoUiModule,
     SharedFormModule,
     LanguageTransformPipeModule,
+    PriceListModule,
   ],
   declarations: [PriceListPage],
 })
