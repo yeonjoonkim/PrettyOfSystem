@@ -145,10 +145,7 @@ function getDays(operatingHours: ShopWorkHoursType) {
   const allday = getAllDays();
   const day: ShopPackageLimitedTimeValidator = {
     close: operatingHours.closeDay,
-    open:
-      operatingHours.closeDay.length > 0
-        ? allday.filter(day => !operatingHours.closeDay.includes(day))
-        : [],
+    open: operatingHours.closeDay.length > 0 ? allday.filter(day => !operatingHours.closeDay.includes(day)) : [],
   };
 
   return day;

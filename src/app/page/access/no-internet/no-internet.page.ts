@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  LoadingController,
-  MenuController,
-  ModalController,
-  PopoverController,
-} from '@ionic/angular';
+import { LoadingController, MenuController, ModalController, PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'no-internet',

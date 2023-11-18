@@ -47,9 +47,7 @@ export class LanguageTranslationPackageService {
     let result: ILanguageTrasnlationResult = this.defaultResult();
     result.isEmpty = item.isEmpty;
     if (!result.isEmpty) {
-      let defaultDescription = this._texTransform.getDefaultLanguageTranslateResult(
-        item.translated
-      );
+      let defaultDescription = this._texTransform.getDefaultLanguageTranslateResult(item.translated);
       result.name = objectName + defaultDescription.toLowerCase().replace(' ', '');
       result.description = defaultDescription;
       let keyValidation = await this.validateKeyPairValue({
@@ -62,9 +60,7 @@ export class LanguageTranslationPackageService {
     return result;
   }
 
-  private async validateKeyPairValue(
-    pair: PairKeyValueType
-  ): Promise<IAddLanguageTransformSaveCommand> {
+  private async validateKeyPairValue(pair: PairKeyValueType): Promise<IAddLanguageTransformSaveCommand> {
     let key: ILanguageKey = await this._storage.getKey();
     let result = {
       hasValue: pair.value.length > 0,

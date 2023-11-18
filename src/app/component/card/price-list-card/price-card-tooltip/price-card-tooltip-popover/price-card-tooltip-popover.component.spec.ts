@@ -9,8 +9,8 @@ describe('PriceCardTooltipPopoverComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PriceCardTooltipPopoverComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PriceCardTooltipPopoverComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PriceCardTooltipPopoverComponent);

@@ -12,16 +12,10 @@
     field="titleProp"
     title="{{ 'label.title.name' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-extra>
-      <p
-        (click)="onClickEdit(extra)"
-        id="extra-name"
-        *ngIf="!isCompletedRequest(extra.id) && translatedRequests">
+      <p (click)="onClickEdit(extra)" id="extra-name" *ngIf="!isCompletedRequest(extra.id) && translatedRequests">
         {{ extra.titleProp }}
       </p>
-      <p
-        (click)="onClickEdit(extra)"
-        id="extra-name"
-        *ngIf="isCompletedRequest(extra.id) && translatedRequests">
+      <p (click)="onClickEdit(extra)" id="extra-name" *ngIf="isCompletedRequest(extra.id) && translatedRequests">
         {{ extra.title | languageTransform: 'User' | async }}
       </p>
     </ng-template>
@@ -38,9 +32,7 @@
   </kendo-grid-column>
 
   <!--Title Prop-->
-  <kendo-grid-column
-    [width]="70"
-    title="{{ 'label.title.title' | languageTransform: 'System' | async }}">
+  <kendo-grid-column [width]="70" title="{{ 'label.title.title' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-extra>
       <div *ngFor="let request of translatedRequests">
         <div

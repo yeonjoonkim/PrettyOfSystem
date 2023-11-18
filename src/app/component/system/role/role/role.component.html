@@ -3,12 +3,7 @@
   <ion-toolbar>
     <kendo-buttongroup slot="start">
       <!-- Save -->
-      <button
-        *ngIf="!editMode"
-        kendoButton
-        size="large"
-        rounded="large"
-        (click)="onClickSaveRoleConfiguration()">
+      <button *ngIf="!editMode" kendoButton size="large" rounded="large" (click)="onClickSaveRoleConfiguration()">
         {{ 'button.title.save' | languageTransform: 'System' | async }}
       </button>
       <!-- Edit -->
@@ -22,9 +17,7 @@
         {{ 'button.title.edit' | languageTransform: 'System' | async }}
       </button>
     </kendo-buttongroup>
-    <ion-title *ngIf="!editMode">{{
-      'label.title.newrole' | languageTransform: 'System' | async
-    }}</ion-title>
+    <ion-title *ngIf="!editMode">{{ 'label.title.newrole' | languageTransform: 'System' | async }}</ion-title>
     <ion-title *ngIf="editMode"
       >{{ editedTitle | languageTransform: 'System' | async }}
       {{ 'label.title.editrole' | languageTransform: 'System' | async }}</ion-title
@@ -38,8 +31,7 @@
     <flex-col-item>
       <!-- Role Description-->
       <kendo-label text="{{ 'label.title.role' | languageTransform: 'System' | async }}">
-        <kendo-textbox [(ngModel)]="role.description" size="large" [clearButton]="true">
-        </kendo-textbox>
+        <kendo-textbox [(ngModel)]="role.description" size="large" [clearButton]="true"> </kendo-textbox>
       </kendo-label>
 
       <!--Role Config -->

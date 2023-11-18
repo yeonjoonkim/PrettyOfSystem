@@ -6,7 +6,10 @@ import { AlertOptions, AlertController } from '@ionic/angular';
   providedIn: 'root',
 })
 export class DeleteConfirmationAlert {
-  constructor(private _language: LanguageService, private _alertCtrl: AlertController) {}
+  constructor(
+    private _language: LanguageService,
+    private _alertCtrl: AlertController
+  ) {}
 
   public async getDeleteConfirmation() {
     let confirmationAlert = await this.setConfirmationDeleteAlert('', false);

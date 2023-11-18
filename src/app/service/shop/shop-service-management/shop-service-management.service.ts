@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
-  PlanConfigurationType,
   RoleConfigurationType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
@@ -29,7 +28,6 @@ export class ShopServiceManagementService {
   public currentRole$!: Observable<RoleConfigurationType | null>;
   public service$!: Observable<ShopServiceDocumentType[]>;
   public extra$!: Observable<ShopExtraDocumentType[]>;
-  public shopPlan$!: Observable<PlanConfigurationType | null>;
   public employeName$!: Observable<string>;
   public specialisedEmployees$!: Observable<NameValuePairType[]>;
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
@@ -50,29 +48,14 @@ export class ShopServiceManagementService {
     this.currentShopConfig$ = this._shop.config$;
     this.shopEmp$ = this._shop.employees$;
     this.currentRole$ = this._shop.role$;
-    this.shopPlan$ = this._shop.plan$;
     this.employeName$ = this._shop.userName$;
     this.extra$ = this._shop.extras$;
     this.service$ = this._shop.services$;
     this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
     this.extraFilter$ = this._shop.extraFilter$;
-    this.isReachToMaxListener();
-    this.activeProgressBar();
     this.translateRequest();
-  }
-
-  private isReachToMaxListener() {
-    this.isReachToMax$ = this.service$.pipe(
-      combineLatestWith(this.shopPlan$),
-      map(([packages, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
-          const isMaxReached = packages.length > plan.limitedService;
-          return isMaxReached;
-        } else {
-          return false;
-        }
-      })
-    );
+    // this.isReachToMaxListener();
+    // this.activeProgressBar();
   }
 
   private translateRequest() {
@@ -91,28 +74,42 @@ export class ShopServiceManagementService {
     );
   }
 
-  private activeProgressBar() {
-    this.progressBar$ = this.service$.pipe(
-      combineLatestWith(this.shopPlan$),
-      switchMap(([service, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
-          return of({
-            current: service.length,
-            max: plan.limitedService,
-            title: 'label.title.maximumactiveservices',
-            indeterminate: false,
-          });
-        } else {
-          return of({
-            current: 0,
-            max: 0,
-            title: 'label.title.maximumactiveservices',
-            indeterminate: false,
-          });
-        }
-      })
-    );
-  }
+  // private isReachToMaxListener() {
+  //   this.isReachToMax$ = this.service$.pipe(
+  //     combineLatestWith(this.shopPlan$),
+  //     map(([packages, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
+  //       if (plan !== null) {
+  //         const isMaxReached = packages.length > plan.limitedService;
+  //         return isMaxReached;
+  //       } else {
+  //         return false;
+  //       }
+  //     })
+  //   );
+  // }
+
+  // private activeProgressBar() {
+  //   this.progressBar$ = this.service$.pipe(
+  //     combineLatestWith(this.shopPlan$),
+  //     switchMap(([service, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
+  //       if (plan !== null) {
+  //         return of({
+  //           current: service.length,
+  //           max: plan.limitedService,
+  //           title: 'label.title.maximumactiveservices',
+  //           indeterminate: false,
+  //         });
+  //       } else {
+  //         return of({
+  //           current: 0,
+  //           max: 0,
+  //           title: 'label.title.maximumactiveservices',
+  //           indeterminate: false,
+  //         });
+  //       }
+  //     })
+  //   );
+  // }
 
   public async add(service: ShopServiceDocumentType) {
     await this.loading.start('label.title.addnewservice');

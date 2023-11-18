@@ -4,7 +4,6 @@ import {
   ShopCategoryType,
   ShopConfigurationType,
   ShopCountryType,
-  ShopPlanType,
   ShopWorkHoursType,
 } from 'src/app/interface/shop/shop.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
@@ -63,9 +62,7 @@ export class ShopConfigurationService {
 
   private async isExistingBusinessName(config: ShopConfigurationType): Promise<boolean> {
     let existingConfig: ShopConfigurationType[] = await this.getAllSystemShopConfiguration();
-    let existingBusinessName: string[] = existingConfig
-      .filter(c => c.id !== config.id)
-      .map(c => c.name);
+    let existingBusinessName: string[] = existingConfig.filter(c => c.id !== config.id).map(c => c.name);
 
     return existingBusinessName.includes(config.name);
   }
@@ -77,9 +74,7 @@ export class ShopConfigurationService {
   public async handleSave(config: ShopConfigurationType, form: IFormHeaderModalProp) {
     let isExistingBusinessName: boolean = await this.isExistingBusinessName(config);
     await this.global.loading.show();
-    let saved = !isExistingBusinessName
-      ? await this._systemShopConfigRepo.updateShopConfiguration(config)
-      : false;
+    let saved = !isExistingBusinessName ? await this._systemShopConfigRepo.updateShopConfiguration(config) : false;
 
     if (saved) {
       await this.global.loading.dismiss();
@@ -120,7 +115,6 @@ export class ShopConfigurationService {
       operatingHours: this.setWorkHours(),
       category: this.getDefaultCategory(),
       country: this.getDefaultCountry(),
-      plan: this.getDefaultPlan(),
       setting: this.defaultShopSetting(),
       activeFrom: this.global.date.shopTimeStamp(null),
       activeTo: null,
@@ -154,21 +148,6 @@ export class ShopConfigurationService {
       prefixedPhoneCode: Constant.Default.PhoneCode.AU,
       dateFormat: Constant.Date.Format.Australia,
       code: Constant.Default.CountryCodeType.Australia,
-    };
-  }
-
-  private getDefaultPlan(): ShopPlanType {
-    return {
-      configurationId: '',
-      isOverDue: false,
-      lastPaymentDate: this.global.date.shopTimeStamp(null),
-      paymentDate: this.global.date.shopTimeStamp(null),
-      period: {
-        name: 'date.title.weekly',
-        type: 'Weekly',
-        week: 1,
-        day: 7,
-      },
     };
   }
 
@@ -265,32 +244,12 @@ export class ShopConfigurationService {
     };
   }
 
-  public async getSelectedTotalPrice(selectedId: string, period: DatePeriodType) {
-    let selectedPlan = (await this._systemShop.getSystemShopPlanConfigList()).find(
-      p => p.id === selectedId
-    );
-    let price: number = 0;
-    if (selectedPlan !== undefined) {
-      price =
-        period.type === Constant.Date.Period.Weekly
-          ? selectedPlan.weeklyPrice.total
-          : period.type === Constant.Date.Period.Monthly
-          ? selectedPlan.monthlyPrice.total
-          : period.type === Constant.Date.Period.Annually
-          ? selectedPlan.annuallyPrice.total
-          : 0;
-    }
-
-    return price;
-  }
-
   private defaultShopSetting() {
     const result: IShopSetting = {
       calendar: {
         intervalMin: Constant.ShopSetting.Calender.IntervalMin,
         nextAvailableBookingMin: Constant.ShopSetting.Calender.NextAvailableBookingMin,
-        maximumAvailableFutureBookingDays:
-          Constant.ShopSetting.Calender.MaximumAvailableFutureBookingDays,
+        maximumAvailableFutureBookingDays: Constant.ShopSetting.Calender.MaximumAvailableFutureBookingDays,
       },
       financial: {
         taxRate: Constant.ShopSetting.Financial.TaxRate,

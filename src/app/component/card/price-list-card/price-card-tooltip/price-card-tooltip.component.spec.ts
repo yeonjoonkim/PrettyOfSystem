@@ -9,8 +9,8 @@ describe('PriceCardTooltipComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PriceCardTooltipComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PriceCardTooltipComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PriceCardTooltipComponent);

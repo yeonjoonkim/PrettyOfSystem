@@ -54,10 +54,7 @@ export class UserCredentialRepositoryService {
 
   public subscribeUserByPhoneNumber(phoneNumber: string): Observable<IUser | null> {
     const userCollectionRef = this._afs.collection<IUser>(Db.Context.User, ref =>
-      ref
-        .where('phoneNumber', '==', phoneNumber)
-        .where('loginOption.phoneNumber', '==', true)
-        .limit(1)
+      ref.where('phoneNumber', '==', phoneNumber).where('loginOption.phoneNumber', '==', true).limit(1)
     );
 
     return userCollectionRef.get().pipe(
@@ -99,9 +96,7 @@ export class UserCredentialRepositoryService {
     );
   }
 
-  public subscribeAssociatedShopUsers(
-    shopId: string
-  ): Observable<ShopEmployeeManagementUserType[]> {
+  public subscribeAssociatedShopUsers(shopId: string): Observable<ShopEmployeeManagementUserType[]> {
     return this._afs
       .collection<IUser>(Db.Context.User, ref =>
         ref.where('associatedShopIds', 'array-contains', shopId).where('isSystemAdmin', '!=', true)
@@ -109,9 +104,7 @@ export class UserCredentialRepositoryService {
       .snapshotChanges()
       .pipe(
         map(users =>
-          users.map(user =>
-            this.transformIntoShopEmployeeManagementUserType(user.payload.doc.data(), shopId)
-          )
+          users.map(user => this.transformIntoShopEmployeeManagementUserType(user.payload.doc.data(), shopId))
         ),
         map(users => users.filter(user => user !== null) as ShopEmployeeManagementUserType[])
       );

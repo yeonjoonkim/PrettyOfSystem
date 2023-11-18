@@ -9,8 +9,8 @@ describe('TimePickerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimePickerComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [TimePickerComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimePickerComponent);

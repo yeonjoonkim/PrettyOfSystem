@@ -14,23 +14,29 @@ shop-coupon-management {
   }
 }
 
+#edit-btn {
+  margin-right: 12px;
+  kendo-button {
+    width: 23px;
+    height: 23px;
+  }
+}
+
 #selection-btn-container {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
 }
 
 #selection-btn {
   display: flex;
   flex-direction: row;
   flex: 1;
-  max-width: 500px;
-  min-width: 0px;
+  margin: 10px;
   justify-content: center;
 }
 
 #btn {
-  width: 80px;
+  margin: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -44,7 +50,6 @@ shop-coupon-management {
   }
 }
 #btn-title {
-  margin-top: 5px;
   display: flex;
   justify-content: center;
   &:hover {

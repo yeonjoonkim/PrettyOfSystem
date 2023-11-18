@@ -27,8 +27,7 @@
     <ng-container *ngFor="let option of selectedServiceOptions">
       <ng-container
         *ngIf="
-          (!form.readOnly && (form.action === 'create' || form.action === 'edit')) ||
-          isSelectedOption(option)
+          (!form.readOnly && (form.action === 'create' || form.action === 'edit')) || isSelectedOption(option)
         ">
         <flex-col-item>
           <flex-row class="option">
@@ -108,13 +107,11 @@
           (valueChange)="onChangeDiscountRate()"></percentage>
       </flex-row-item>
     </flex-row>
+
     <!-- Price -->
     <flex-row id="price">
       <flex-row-item>
-        <kendo-label
-          text="{{
-            'label.title.originalprice' | languageTransform: 'System' | async
-          }}"></kendo-label>
+        <kendo-label text="{{ 'label.title.originalprice' | languageTransform: 'System' | async }}"></kendo-label>
         <div class="total-price-original">
           <p>$</p>
           <kendo-numerictextbox
@@ -127,9 +124,7 @@
       </flex-row-item>
       <flex-row-item>
         <kendo-label
-          text="{{
-            'label.title.discountedprice' | languageTransform: 'System' | async
-          }}"></kendo-label>
+          text="{{ 'label.title.discountedprice' | languageTransform: 'System' | async }}"></kendo-label>
         <div class="total-price-discounted">
           <p>$</p>
           <kendo-numerictextbox

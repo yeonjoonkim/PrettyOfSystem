@@ -1,10 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
-import {
-  PairKeyValueType,
-  NameValuePairType,
-  PairNameValueTypeFilterParamType,
-} from 'src/app/interface';
+import { PairKeyValueType, NameValuePairType, PairNameValueTypeFilterParamType } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
@@ -25,8 +21,7 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
   private _defaultLanguageKeyPairValue: PairKeyValueType[] = [];
 
   public rowClass = (args: { dataItem: { value: string | undefined } }) => ({
-    'k-selected':
-      this.selected?.some(r => r?.value === args.dataItem?.value) || this.selected?.length === 0,
+    'k-selected': this.selected?.some(r => r?.value === args.dataItem?.value) || this.selected?.length === 0,
   });
 
   constructor(
@@ -76,9 +71,7 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
       return false; // or true, depending on your business logic
     }
 
-    return (
-      this.selected.filter(s => s?.value === data.value).length > 0 || this.selected.length === 0
-    );
+    return this.selected.filter(s => s?.value === data.value).length > 0 || this.selected.length === 0;
   }
 
   public async apply() {
@@ -87,9 +80,7 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
 
   public onQueryChange() {
     const queryParam: string = this.query.toLowerCase();
-    const english = this._defaultLanguageKeyPairValue.filter(eng =>
-      eng.value.toLowerCase().includes(queryParam)
-    );
+    const english = this._defaultLanguageKeyPairValue.filter(eng => eng.value.toLowerCase().includes(queryParam));
     const queryResult: NameValuePairType[] = this.queryParamList
       .map(param => {
         let eng = english.find(eng => eng.key === param.name);
@@ -105,9 +96,7 @@ export class NameValuePairMultiDropdownlistComponent implements OnInit {
           q.paramTranslatedName.toLowerCase().includes(queryParam) ||
           q.paramEnglish?.toLowerCase()?.includes(queryParam)
       )
-      .sort((a, b) =>
-        this.orderByName ? a.paramTranslatedName.localeCompare(b.paramTranslatedName) : 0
-      )
+      .sort((a, b) => (this.orderByName ? a.paramTranslatedName.localeCompare(b.paramTranslatedName) : 0))
       .map(q => {
         return { name: q.paramName, value: q.paramValue };
       });

@@ -1,5 +1,5 @@
-import { Component, ComponentRef, OnInit } from '@angular/core';
-import { ModalController, ModalOptions } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { IShopSettingOptionType } from 'src/app/service/shop/shop-setting/shop-setting-option/shop-setting-option.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 import { ShopSettingFinanceComponent } from './modal/shop-setting-finance/shop-setting-finance.component';
@@ -37,8 +37,6 @@ export class ShopSettingComponent implements OnInit {
       await this.openPicture();
     } else if (option.isOperatingHours) {
       await this.openOperatingHours();
-    } else if (option.isPlan) {
-      await this.openPlan();
     }
   }
 
@@ -87,19 +85,6 @@ export class ShopSettingComponent implements OnInit {
       });
       await modal.present();
       await this.handleModalClose(modal);
-    }
-  }
-
-  private async openPlan() {
-    if (!this._isOpen) {
-      this._isOpen = true;
-      const modal = await this._setting.openPlan();
-      if (modal !== null) {
-        await modal.present();
-        await this.handleModalClose(modal);
-      } else {
-        this._isOpen = false;
-      }
     }
   }
 

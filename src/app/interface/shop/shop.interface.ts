@@ -1,5 +1,5 @@
 import * as Constant from '../../constant/constant';
-import { AddressType, DatePeriodType, TimeItemType } from '../global/global.interface';
+import { AddressType, TimeItemType } from '../global/global.interface';
 import { IShopSetting } from './shop-setting.interface';
 
 export type ShopCategoryType = {
@@ -13,6 +13,17 @@ export type ShopCategoryType = {
   name: string;
 };
 
+export type ShopOptionType = {
+  id: string;
+  limitedPackage: number;
+  limitedService: number;
+  limitedCoupon: number;
+  limitedExtra: number;
+  limitedProduct: number;
+  limitedUser: number;
+  isPremium: boolean;
+};
+
 export type ShopCountryType = {
   id: string;
   currency: Constant.CurrencyType;
@@ -21,20 +32,6 @@ export type ShopCountryType = {
   prefixedPhoneCode: Constant.PhoneCodeType;
   dateFormat: Constant.DateFormatType;
   code: Constant.CountryCodeType;
-};
-
-export type ShopPlanType = {
-  configurationId: string;
-  isOverDue: boolean;
-  lastPaymentDate: string;
-  paymentDate: string;
-  period: DatePeriodType;
-};
-
-export type ShopPlanOptionType = {
-  isWeekly: boolean;
-  isMonthly: boolean;
-  isAnnually: boolean;
 };
 
 export type ShopWorkHoursType = {
@@ -72,7 +69,6 @@ export interface ShopConfigurationType {
   operatingHours: ShopWorkHoursType;
   category: ShopCategoryType;
   country: ShopCountryType;
-  plan: ShopPlanType;
   package: ShopConfigurationLanguagePackageType;
   translatedRequestIds: string[];
   activeFrom: string;

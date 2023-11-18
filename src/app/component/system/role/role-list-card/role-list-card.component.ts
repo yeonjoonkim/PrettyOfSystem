@@ -1,13 +1,5 @@
 import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { SystemRoleService } from 'src/app/service/system/system-role/system-system-role.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 
@@ -45,7 +37,10 @@ export class RoleListCardComponent implements OnInit, OnChanges {
   };
   private _isModalOpen: boolean = false;
 
-  constructor(public global: GlobalService, private _systemRole: SystemRoleService) {}
+  constructor(
+    public global: GlobalService,
+    private _systemRole: SystemRoleService
+  ) {}
   ngOnChanges(changes: SimpleChanges): void {
     let roleList: RoleConfigurationType[] | null = changes['roles'].currentValue;
     this.setGridDataList(roleList);

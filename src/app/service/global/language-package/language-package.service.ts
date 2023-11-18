@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PairKeyValueType } from 'src/app/interface/global/global.interface';
-import {
-  TextTransformObjectType,
-  TextTransformService,
-} from '../text-transform/text-transform.service';
+import { TextTransformObjectType, TextTransformService } from '../text-transform/text-transform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -79,12 +76,7 @@ export class LanguagePackageService {
 
   //** Determine Third Path is exist.*/
   private hasThirdPath(pack: any, path: string[]) {
-    if (
-      pack &&
-      pack[path[0]] &&
-      pack[path[0]][path[1]] &&
-      typeof pack[path[0]][path[1]][path[2]] === 'string'
-    ) {
+    if (pack && pack[path[0]] && pack[path[0]][path[1]] && typeof pack[path[0]][path[1]][path[2]] === 'string') {
       return true;
     }
     return false;

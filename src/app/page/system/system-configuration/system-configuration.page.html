@@ -5,9 +5,7 @@
       <ion-menu-button auto-hide="true"></ion-menu-button>
     </ion-buttons>
     <!-- Title -->
-    <ion-title
-      >{{'label.title.systemconfiguration'| languageTransform:'System' | async }}</ion-title
-    >
+    <ion-title>{{'label.title.systemconfiguration'| languageTransform:'System' | async }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -25,5 +23,4 @@
   </kendo-buttongroup>
   <system-menu-management *ngIf="selectedSystemMenu.isMenuManagement"></system-menu-management>
   <system-role-management *ngIf="selectedSystemMenu.isRoleManagement"></system-role-management>
-  <system-plan-management *ngIf="selectedSystemMenu.isPlanManagement"></system-plan-management>
 </ion-content>

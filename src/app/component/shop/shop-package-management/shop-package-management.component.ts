@@ -35,8 +35,9 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   private _services!: ShopServiceDocumentType[];
   private _operatingWorkHour: ShopWorkHoursType | null = null;
 
-  public progressBar$: Observable<ShopLimitedProgpressBarType> =
-    this._shopPackage.progressBar$.pipe(takeUntil(this._onDestroy$));
+  public progressBar$: Observable<ShopLimitedProgpressBarType> = this._shopPackage.progressBar$.pipe(
+    takeUntil(this._onDestroy$)
+  );
 
   constructor(
     private _shopPackage: ShopPackageManagementService,
@@ -68,11 +69,9 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
     this._shopPackage.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(requests => {
       this.translatedRequests = requests;
     });
-    this._shopPackage.serviceTranslatedRequest$
-      .pipe(takeUntil(this._onDestroy$))
-      .subscribe(request => {
-        this.serviceTranslatedRequest = request;
-      });
+    this._shopPackage.serviceTranslatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
+      this.serviceTranslatedRequest = request;
+    });
 
     this._shopPackage.extraServiceRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
       this.extraTranslatedRequest = request;
@@ -80,16 +79,13 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
     this._shopPackage.translatedRequest$
       .pipe(pairwise(), takeUntil(this._onDestroy$))
       .subscribe(([before, after]) => {
-        const updatedStatusArray = after.reduce(
-          (acc: ChatGptTranslateDocumentType[], afterItem) => {
-            const beforeItem = before.find(b => b.id === afterItem.id);
-            if (beforeItem && beforeItem.status !== afterItem.status) {
-              acc.push(afterItem);
-            }
-            return acc;
-          },
-          []
-        );
+        const updatedStatusArray = after.reduce((acc: ChatGptTranslateDocumentType[], afterItem) => {
+          const beforeItem = before.find(b => b.id === afterItem.id);
+          if (beforeItem && beforeItem.status !== afterItem.status) {
+            acc.push(afterItem);
+          }
+          return acc;
+        }, []);
 
         if (updatedStatusArray.length > 0) {
           console.log('Updated Status:', updatedStatusArray);

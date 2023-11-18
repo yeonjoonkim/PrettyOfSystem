@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { UserService } from '../../user/user.service';
 import {
   ChatGptTranslateDocumentType,
-  PlanConfigurationType,
   RoleConfigurationType,
   ShopConfigurationType,
   ShopExtraDocumentType,
@@ -21,7 +20,6 @@ import { TextTransformService } from '../../global/text-transform/text-transform
 })
 export class ShopExtraManagementService {
   public currentShopConfig$!: Observable<ShopConfigurationType | null>;
-  public currentShopPlan$!: Observable<PlanConfigurationType | null>;
   public currentRole$!: Observable<RoleConfigurationType | null>;
   public extra$!: Observable<ShopExtraDocumentType[]>;
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
@@ -39,25 +37,10 @@ export class ShopExtraManagementService {
   ) {
     this.currentRole$ = this._shop.role$;
     this.currentShopConfig$ = this._shop.config$;
-    this.currentShopPlan$ = this._shop.plan$;
     this.extra$ = this._shop.extras$;
-    this.isReachToMaxListener();
-    this.activeProgressBar();
     this.translateRequest();
-  }
-
-  private isReachToMaxListener() {
-    this.isReachToMax$ = this.extra$.pipe(
-      combineLatestWith(this.currentShopPlan$),
-      map(([packages, plan]: [ShopExtraDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
-          const isMaxReached = packages.length > plan.limitedExtra;
-          return isMaxReached;
-        } else {
-          return false;
-        }
-      })
-    );
+    // this.isReachToMaxListener();
+    // this.activeProgressBar();
   }
 
   private translateRequest() {
@@ -77,28 +60,42 @@ export class ShopExtraManagementService {
     );
   }
 
-  private activeProgressBar() {
-    this.progressBar$ = this.extra$.pipe(
-      combineLatestWith(this.currentShopPlan$),
-      switchMap(([extra, plan]: [ShopExtraDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
-          return of({
-            current: extra.length,
-            max: plan.limitedExtra,
-            title: 'label.title.maximumactiveextras',
-            indeterminate: false,
-          });
-        } else {
-          return of({
-            current: 0,
-            max: 0,
-            title: 'label.title.maximumactiveextras',
-            indeterminate: false,
-          });
-        }
-      })
-    );
-  }
+  // private isReachToMaxListener() {
+  //   this.isReachToMax$ = this.extra$.pipe(
+  //     combineLatestWith(this.currentShopPlan$),
+  //     map(([packages, plan]: [ShopExtraDocumentType[], PlanConfigurationType | null]) => {
+  //       if (plan !== null) {
+  //         const isMaxReached = packages.length > plan.limitedExtra;
+  //         return isMaxReached;
+  //       } else {
+  //         return false;
+  //       }
+  //     })
+  //   );
+  // }
+
+  // private activeProgressBar() {
+  //   this.progressBar$ = this.extra$.pipe(
+  //     combineLatestWith(this.currentShopPlan$),
+  //     switchMap(([extra, plan]: [ShopExtraDocumentType[], PlanConfigurationType | null]) => {
+  //       if (plan !== null) {
+  //         return of({
+  //           current: extra.length,
+  //           max: plan.limitedExtra,
+  //           title: 'label.title.maximumactiveextras',
+  //           indeterminate: false,
+  //         });
+  //       } else {
+  //         return of({
+  //           current: 0,
+  //           max: 0,
+  //           title: 'label.title.maximumactiveextras',
+  //           indeterminate: false,
+  //         });
+  //       }
+  //     })
+  //   );
+  // }
 
   public async add(extra: ShopExtraDocumentType) {
     await this.loading.start('label.title.addnewextra');

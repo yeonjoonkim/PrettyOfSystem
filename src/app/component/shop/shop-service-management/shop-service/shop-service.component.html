@@ -28,8 +28,7 @@
         <flex-col id="check-boxes">
           <flex-col-item id="check-box-container">
             <div id="insurance-cover">
-              <kendo-label
-                text="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
+              <kendo-label text="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
                   type="checkbox"
@@ -41,8 +40,7 @@
           </flex-col-item>
           <flex-col-item id="check-box-container">
             <div id="pregnant">
-              <kendo-label
-                text="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
+              <kendo-label text="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
                   type="checkbox"
@@ -129,10 +127,7 @@
     <flex-row-item class="price-option price-title">
       {{ 'label.title.price' | languageTransform: 'System' | async }}
     </flex-row-item>
-    <flex-row-item
-      *ngIf="
-        !form.readOnly && (form.action === 'create' || form.action === 'edit')
-      "></flex-row-item>
+    <flex-row-item *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')"></flex-row-item>
   </flex-row>
   <div *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
     <div *ngFor="let opt of current.service.options">

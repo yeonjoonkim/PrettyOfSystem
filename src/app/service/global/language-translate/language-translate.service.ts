@@ -16,8 +16,7 @@ export class LanguageTranslateService {
   private readonly _singleString: string = 'a single String Value.';
 
   //command
-  private readonly _correctGrammerThenTranslateTo: string =
-    this._correctGrammer + 'then ' + this._translateTo;
+  private readonly _correctGrammerThenTranslateTo: string = this._correctGrammer + 'then ' + this._translateTo;
   private readonly _returnAsSingleString: string = this._returnAs + this._singleString;
   private readonly _convertJSON: string =
     'It must convert into exact same JSON format without any description or information. Do not say any introduction.';
@@ -43,67 +42,35 @@ export class LanguageTranslateService {
     return { isEmpty: validated, translated: translated };
   }
 
-  public async getTitleFormat(
-    value: string,
-    criteria: ILanguageTranslatedCriteria,
-    loading: boolean
-  ) {
+  public async getTitleFormat(value: string, criteria: ILanguageTranslatedCriteria, loading: boolean) {
     let command = this.getTranslatedCommand(value, criteria);
     let response: string = await this.openAi.receiveResult(command, loading);
-    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(
-      response,
-      criteria.code
-    );
-    let titleFormat: ILanguageTranslateResult =
-      this.textTransform.getTranslatedTitleFormat(jsonFormat);
+    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
+    let titleFormat: ILanguageTranslateResult = this.textTransform.getTranslatedTitleFormat(jsonFormat);
     return titleFormat;
   }
 
-  private async getDescriptionFormat(
-    value: string,
-    criteria: ILanguageTranslatedCriteria,
-    loading: boolean
-  ) {
+  private async getDescriptionFormat(value: string, criteria: ILanguageTranslatedCriteria, loading: boolean) {
     let command = this.getTranslatedCommand(value, criteria);
     let response: string = await this.openAi.receiveResult(command, loading);
-    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(
-      response,
-      criteria.code
-    );
-    let descriptionFormat: ILanguageTranslateResult =
-      this.textTransform.getTranslatedDescrptionFormat(jsonFormat);
+    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
+    let descriptionFormat: ILanguageTranslateResult = this.textTransform.getTranslatedDescrptionFormat(jsonFormat);
     return descriptionFormat;
   }
 
-  private async getUpperFormat(
-    value: string,
-    criteria: ILanguageTranslatedCriteria,
-    loading: boolean
-  ) {
+  private async getUpperFormat(value: string, criteria: ILanguageTranslatedCriteria, loading: boolean) {
     let command = this.getTranslatedCommand(value, criteria);
     let response: string = await this.openAi.receiveResult(command, loading);
-    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(
-      response,
-      criteria.code
-    );
-    let descriptionFormat: ILanguageTranslateResult =
-      this.textTransform.getTranslatedUpperFormat(jsonFormat);
+    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
+    let descriptionFormat: ILanguageTranslateResult = this.textTransform.getTranslatedUpperFormat(jsonFormat);
     return descriptionFormat;
   }
 
-  private async getLowerFormat(
-    value: string,
-    criteria: ILanguageTranslatedCriteria,
-    loading: boolean
-  ) {
+  private async getLowerFormat(value: string, criteria: ILanguageTranslatedCriteria, loading: boolean) {
     let command = this.getTranslatedCommand(value, criteria);
     let response: string = await this.openAi.receiveResult(command, loading);
-    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(
-      response,
-      criteria.code
-    );
-    let descriptionFormat: ILanguageTranslateResult =
-      this.textTransform.getTranslatedLowerFormat(jsonFormat);
+    let jsonFormat: ILanguageTranslateResult = this.setLanguageTranslateResult(response, criteria.code);
+    let descriptionFormat: ILanguageTranslateResult = this.textTransform.getTranslatedLowerFormat(jsonFormat);
     return descriptionFormat;
   }
 
@@ -113,8 +80,7 @@ export class LanguageTranslateService {
     value: string,
     loading: boolean
   ): Promise<string> {
-    let command =
-      selectedLanguage + this.setCommandSentenceFormat(value) + this._returnAsSingleString;
+    let command = selectedLanguage + this.setCommandSentenceFormat(value) + this._returnAsSingleString;
     let response = await this.openAi.receiveResult(command, loading);
     let result: string = this.deleteSpaces(response);
     return result;
@@ -138,8 +104,7 @@ export class LanguageTranslateService {
     let commandFormat = this.setCommandSentenceFormat(value);
     let allLanguageCommand = criteria.name.join(', ');
     let jsonFormatCommand = this.setJSONFormatCommand(criteria.code);
-    let command =
-      firstCommand + allLanguageCommand + commandFormat + this._convertJSON + jsonFormatCommand;
+    let command = firstCommand + allLanguageCommand + commandFormat + this._convertJSON + jsonFormatCommand;
 
     return command;
   }
@@ -188,9 +153,7 @@ export class LanguageTranslateService {
   }
 
   private setCommandSentenceFormat(sentence: string) {
-    return (
-      ' at a professional level. The Translated Value is "' + sentence.replace(/"/g, '') + '".'
-    );
+    return ' at a professional level. The Translated Value is "' + sentence.replace(/"/g, '') + '".';
   }
 
   private deleteSpaces(str: string): string {

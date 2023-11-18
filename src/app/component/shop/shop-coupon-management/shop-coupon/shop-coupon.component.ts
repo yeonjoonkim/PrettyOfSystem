@@ -37,10 +37,7 @@ export class ShopCouponComponent implements OnInit {
   }
 
   public isSelectedOption(option: ShopServiceOptionType) {
-    return (
-      this.current.coupon.option.min === option.min &&
-      this.current.coupon.option.price === option.price
-    );
+    return this.current.coupon.option.min === option.min && this.current.coupon.option.price === option.price;
   }
 
   public handleEdit() {
@@ -104,8 +101,7 @@ export class ShopCouponComponent implements OnInit {
     this.current.coupon.numOfCoupon = this._global.numberTransform.nullReplaceToZero(
       this.current.coupon.numOfCoupon
     );
-    this.current.coupon.numOfCoupon =
-      this.current.coupon.numOfCoupon > 0 ? this.current.coupon.numOfCoupon : 1;
+    this.current.coupon.numOfCoupon = this.current.coupon.numOfCoupon > 0 ? this.current.coupon.numOfCoupon : 1;
     this.updatePrice();
     this.handleEnabledSaveBtn();
   }
@@ -119,14 +115,11 @@ export class ShopCouponComponent implements OnInit {
     this.current.coupon.expiryMonth = this._global.numberTransform.nullReplaceToZero(
       this.current.coupon.expiryMonth
     );
-    this.current.coupon.expiryMonth =
-      this.current.coupon.expiryMonth > 0 ? this.current.coupon.expiryMonth : 1;
+    this.current.coupon.expiryMonth = this.current.coupon.expiryMonth > 0 ? this.current.coupon.expiryMonth : 1;
   }
 
   private async loadingFormCtrl() {
-    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(
-      Constant.Default.ComponentMode.Form
-    );
+    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(Constant.Default.ComponentMode.Form);
     const prop: ShopCouponModalProp | undefined = this._navParams.get('prop');
 
     if (formProp !== undefined && prop !== undefined) {
@@ -134,9 +127,7 @@ export class ShopCouponComponent implements OnInit {
       this._before = cloneDeep(prop);
       this.current = cloneDeep(prop);
 
-      const serviceFilter = this.current.serviceFilters.find(
-        f => f.value === this.current.coupon.serviceId
-      );
+      const serviceFilter = this.current.serviceFilters.find(f => f.value === this.current.coupon.serviceId);
       const service = this.current.services.find(s => s.id === this.current.coupon.serviceId);
 
       if (serviceFilter && service) {

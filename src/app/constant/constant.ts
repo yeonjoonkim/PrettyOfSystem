@@ -1,13 +1,5 @@
 import firebase from 'firebase/compat/app';
-import {
-  Default,
-  State,
-  Date,
-  Login,
-  Text,
-  BookingSearchIconType,
-  PackageDiscountType,
-} from './constant-value';
+import { Default, State, Date, Login, Text, BookingSearchIconType, PackageDiscountType } from './constant-value';
 export {
   Default,
   State,
@@ -39,15 +31,12 @@ export type DateTimeStatusType = (typeof Date.TimeStatus)[keyof typeof Date.Time
 export type PeriodType = (typeof Date.Period)[keyof typeof Date.Period];
 
 //Country
-export type CountryCodeType =
-  (typeof Default.CountryCodeType)[keyof typeof Default.CountryCodeType];
+export type CountryCodeType = (typeof Default.CountryCodeType)[keyof typeof Default.CountryCodeType];
 
 //Role
 export type GenderType = (typeof Default.Gender)[keyof typeof Default.Gender];
-export type RoleDescriptionType =
-  (typeof Default.RoleDescriptionType)[keyof typeof Default.RoleDescriptionType];
-export type RoleAccessRateType =
-  (typeof Default.RoleAccessRateType)[keyof typeof Default.RoleAccessRateType];
+export type RoleDescriptionType = (typeof Default.RoleDescriptionType)[keyof typeof Default.RoleDescriptionType];
+export type RoleAccessRateType = (typeof Default.RoleAccessRateType)[keyof typeof Default.RoleAccessRateType];
 
 //PostCode
 export type AustraliaStateType = (typeof State.AustraliaType)[keyof typeof State.AustraliaType];
@@ -72,5 +61,4 @@ export type APIActionType = (typeof API.Action)[keyof typeof API.Action];
 export type APITranslationStatus = (typeof API.TranslateStatus)[keyof typeof API.TranslateStatus];
 
 //Booking
-export type BookingSearchIconType =
-  (typeof BookingSearchIconType)[keyof typeof BookingSearchIconType];
+export type BookingSearchIconType = (typeof BookingSearchIconType)[keyof typeof BookingSearchIconType];

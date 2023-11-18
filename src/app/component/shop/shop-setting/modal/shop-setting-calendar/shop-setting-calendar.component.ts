@@ -1,12 +1,7 @@
-import { Component, ComponentRef, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
-import {
-  IShopSetting,
-  IFormHeaderModalProp,
-  NameValuePairType,
-  TimeItemType,
-} from 'src/app/interface';
+import { IShopSetting, IFormHeaderModalProp, NameValuePairType, TimeItemType } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 
@@ -80,9 +75,7 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
 
     const intervalMin = mins.includes(this.setting.calendar.intervalMin);
     const nextAvailableMin = mins.includes(this.setting.calendar.nextAvailableBookingMin);
-    const maxAvailableFutureDays = days.includes(
-      this.setting.calendar.maximumAvailableFutureBookingDays
-    );
+    const maxAvailableFutureDays = days.includes(this.setting.calendar.maximumAvailableFutureBookingDays);
     this.form.enabledSavebutton = intervalMin && nextAvailableMin && maxAvailableFutureDays;
   }
 
@@ -129,9 +122,7 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
   }
 
   private setIntervalMin(setting: IShopSetting) {
-    const selected = this.intervalMinSelection.find(
-      s => s.value === setting.calendar.intervalMin.toString()
-    );
+    const selected = this.intervalMinSelection.find(s => s.value === setting.calendar.intervalMin.toString());
     if (selected) {
       this.selectedIntervalMin = selected;
     }

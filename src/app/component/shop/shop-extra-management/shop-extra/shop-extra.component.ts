@@ -82,16 +82,13 @@ export class ShopExtraComponent implements OnInit, OnDestroy {
   }
 
   public onChangePrice() {
-    this.current.price =
-      this.current.price !== null && this.current.price !== undefined ? this.current.price : 0;
+    this.current.price = this.current.price !== null && this.current.price !== undefined ? this.current.price : 0;
     this.validator.price = this.current.price > 0;
     this.handleEnabledSaveBtn();
   }
 
   public onChangeTitle() {
-    this.current.titleProp = this._global.textTransform.preCleansingTranslateProp(
-      this.current.titleProp
-    );
+    this.current.titleProp = this._global.textTransform.preCleansingTranslateProp(this.current.titleProp);
     this.validator.title = this.current.title.length > 1;
     this.handleEnabledSaveBtn();
   }
@@ -101,9 +98,7 @@ export class ShopExtraComponent implements OnInit, OnDestroy {
   }
 
   private async loadingFormCtrl() {
-    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(
-      Constant.Default.ComponentMode.Form
-    );
+    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(Constant.Default.ComponentMode.Form);
     const prop: ShopExtraDocumentType | undefined = this._navParams.get('prop');
 
     if (formProp !== undefined && prop !== undefined) {

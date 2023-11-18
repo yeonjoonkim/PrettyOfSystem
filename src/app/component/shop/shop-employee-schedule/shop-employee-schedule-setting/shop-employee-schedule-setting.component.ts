@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
-import {
-  IFormHeaderModalProp,
-  ShopEmployeeScheduleSettingProp,
-  TimeItemType,
-} from 'src/app/interface';
+import { IFormHeaderModalProp, ShopEmployeeScheduleSettingProp, TimeItemType } from 'src/app/interface';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 
@@ -73,9 +69,7 @@ export class ShopEmployeeScheduleSettingComponent implements OnInit {
       close.hr === 0 &&
       close.min === 0 &&
       close.dayNightType === Constant.Date.DayNightType.DAY;
-    let workHours: number = is24Hours
-      ? 24.0
-      : this._global.date.differenceInTime(openTime, closeTime, 2);
+    let workHours: number = is24Hours ? 24.0 : this._global.date.differenceInTime(openTime, closeTime, 2);
     let validator: boolean = is24Hours ? true : openTime < closeTime;
 
     return { result: validator, workHours: workHours };

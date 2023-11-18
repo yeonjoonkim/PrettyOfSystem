@@ -9,8 +9,8 @@ describe('DictonaryComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DictonaryComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [DictonaryComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DictonaryComponent);

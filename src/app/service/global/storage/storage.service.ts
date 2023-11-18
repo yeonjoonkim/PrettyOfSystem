@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _storageKey from './storage.key';
-import { Storage, StorageConfig } from '@ionic/storage-angular';
+import { Storage } from '@ionic/storage-angular';
 import { CryptService } from '../crypt/crypt.service';
 import { DateTransformService } from '../date/date-transform/date-transform.service';
 import { DateService } from '../date/date.service';

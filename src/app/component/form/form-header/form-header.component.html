@@ -16,12 +16,8 @@
     </kendo-buttongroup>
 
     <!--Title-->
-    <ion-title *ngIf="status === 'creating'">{{
-      title | languageTransform: 'System' | async
-    }}</ion-title>
-    <ion-title *ngIf="status !== 'creating'">{{
-      title | languageTransform: 'System' | async
-    }}</ion-title>
+    <ion-title *ngIf="status === 'creating'">{{ title | languageTransform: 'System' | async }}</ion-title>
+    <ion-title *ngIf="status !== 'creating'">{{ title | languageTransform: 'System' | async }}</ion-title>
 
     <kendo-buttongroup slot="end">
       <!-- Edit -->
@@ -35,10 +31,7 @@
       <kendo-button
         id="end-btn"
         *ngIf="
-          (status === 'editing' ||
-            status === 'creating' ||
-            status === 'saving' ||
-            status === 'deleting') &&
+          (status === 'editing' || status === 'creating' || status === 'saving' || status === 'deleting') &&
           !readOnly &&
           isSaveRequired
         "
@@ -50,10 +43,6 @@
     </kendo-buttongroup>
 
     <!--Close-->
-    <ion-icon
-      class="toolbar-icon"
-      name="close-outline"
-      slot="end"
-      (click)="onClickDismissButton()"></ion-icon>
+    <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="onClickDismissButton()"></ion-icon>
   </ion-toolbar>
 </ion-header>

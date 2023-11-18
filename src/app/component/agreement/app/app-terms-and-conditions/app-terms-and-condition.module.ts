@@ -10,13 +10,7 @@ import { AppTermsAndConditionsComponent } from './app-terms-and-conditions.compo
 import { FormHeaderModule } from 'src/app/component/form/form-header/form-header.module';
 @NgModule({
   declarations: [AppTermsAndConditionsComponent],
-  imports: [
-    CommonModule,
-    LanguageTransformPipeModule,
-    KendoUiModule,
-    FormsModule,
-    FormHeaderModule,
-  ],
+  imports: [CommonModule, LanguageTransformPipeModule, KendoUiModule, FormsModule, FormHeaderModule],
   exports: [AppTermsAndConditionsComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

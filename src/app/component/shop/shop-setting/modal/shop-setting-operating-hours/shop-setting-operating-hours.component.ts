@@ -3,7 +3,6 @@ import { ModalController } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
 import { IFormHeaderModalProp, ShopConfigurationType } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
-import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 
 @Component({

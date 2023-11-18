@@ -49,9 +49,7 @@ export class ServicePriceListCardComponent implements OnInit, OnChanges {
   private async onExpandIndexChange(change: SimpleChange | undefined) {
     if (change && !change?.firstChange) {
       this.isExpanded =
-        change.currentValue === null || change.currentValue !== this.index
-          ? false
-          : !this.isExpanded;
+        change.currentValue === null || change.currentValue !== this.index ? false : !this.isExpanded;
     }
   }
 }

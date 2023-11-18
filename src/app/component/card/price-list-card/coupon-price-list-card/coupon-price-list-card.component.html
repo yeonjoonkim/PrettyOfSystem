@@ -26,17 +26,14 @@
             {{ coupon.numOfCoupon }}
           </p>
           <p class="package-limited-time">
-            {{ 'label.title.expirationperiod' | languageTransform: 'System' | async }}:
-            {{ coupon.expiryMonth
+            {{ 'label.title.expirationperiod' | languageTransform: 'System' | async }}: {{ coupon.expiryMonth
             }}{{ 'label.title.periodmonths' | languageTransform: 'System' | async }}
           </p>
         </div>
       </flex-row-item>
 
       <flex-row-item class="prices">
-        <p class="discount-price">
-          {{ coupon.option.min | minuteTransform | async }} x {{ coupon.numOfCoupon }}
-        </p>
+        <p class="discount-price">{{ coupon.option.min | minuteTransform | async }} x {{ coupon.numOfCoupon }}</p>
         <p class="discount-price">
           <span class="original-price"> {{ coupon.originalPrice | currencyTransform }}</span>
           {{ coupon.discountPrice | currencyTransform }}

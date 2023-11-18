@@ -10,13 +10,7 @@ import { ImageCropComponent } from './image-crop.component';
 
 @NgModule({
   declarations: [ImageCropComponent],
-  imports: [
-    CommonModule,
-    LanguageTransformPipeModule,
-    KendoUiModule,
-    FormsModule,
-    NgxPhotoEditorModule,
-  ],
+  imports: [CommonModule, LanguageTransformPipeModule, KendoUiModule, FormsModule, NgxPhotoEditorModule],
   exports: [ImageCropComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

@@ -108,9 +108,7 @@ export class UserAdminService {
           await this._userRepo.createUser(user);
           await this._global.modal.dismissRefreshAction();
         } else {
-          const errorMsg = await this._global.language.transform(
-            'messagefail.description.existedphoneuser'
-          );
+          const errorMsg = await this._global.language.transform('messagefail.description.existedphoneuser');
           await this._global.toast.presentError(errorMsg);
         }
       } else if (user.loginOption.email) {
@@ -119,9 +117,7 @@ export class UserAdminService {
           await this._userRepo.createUser(user);
           await this.modal.dismiss();
         } else {
-          const errorMsg = await this._global.language.transform(
-            'messagefail.description.useremailexisted'
-          );
+          const errorMsg = await this._global.language.transform('messagefail.description.useremailexisted');
           await this._global.toast.presentError(errorMsg);
         }
       }

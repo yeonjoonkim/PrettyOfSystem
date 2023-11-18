@@ -1,12 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { loginGuard } from './guard/login-gurad/login-guard.guard';
-import {
-  adminGuard,
-  managerGuard,
-  receptionGuard,
-  systemAdminGuard,
-} from './guard/role-guard/role.guard';
+import { receptionGuard, systemAdminGuard } from './guard/role-guard/role.guard';
 const routes: Routes = [
   {
     path: '',
@@ -21,8 +16,7 @@ const routes: Routes = [
 
   {
     path: 'no-internet',
-    loadChildren: () =>
-      import('./page/access/no-internet/no-internet.module').then(m => m.NoInternetPageModule),
+    loadChildren: () => import('./page/access/no-internet/no-internet.module').then(m => m.NoInternetPageModule),
   },
   {
     path: 'booking',
@@ -40,8 +34,7 @@ const routes: Routes = [
   },
   {
     path: 'reservation',
-    loadChildren: () =>
-      import('./page/reservation/reservation.module').then(m => m.ReservationPageModule),
+    loadChildren: () => import('./page/reservation/reservation.module').then(m => m.ReservationPageModule),
     canActivate: [receptionGuard],
   },
 ];

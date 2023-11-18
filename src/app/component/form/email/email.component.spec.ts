@@ -9,8 +9,8 @@ describe('EmailComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmailComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [EmailComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EmailComponent);

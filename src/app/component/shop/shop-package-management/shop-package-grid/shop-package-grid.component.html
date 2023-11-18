@@ -76,12 +76,7 @@
     field="isInsuranceCover"
     title="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
-      <input
-        id="check-box"
-        kendoCheckBox
-        type="checkbox"
-        [disabled]="true"
-        [ngModel]="package.isInsuranceCover" />
+      <input id="check-box" kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="package.isInsuranceCover" />
     </ng-template>
   </kendo-grid-column>
 
@@ -108,19 +103,12 @@
     field="isOil"
     title="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
-      <input
-        id="check-box"
-        kendoCheckBox
-        type="checkbox"
-        [disabled]="true"
-        [ngModel]="package.isOil" />
+      <input id="check-box" kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="package.isOil" />
     </ng-template>
   </kendo-grid-column>
 
   <!-- Title -->
-  <kendo-grid-column
-    [width]="70"
-    title="{{ 'label.title.title' | languageTransform: 'System' | async }}">
+  <kendo-grid-column [width]="70" title="{{ 'label.title.title' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
       <div *ngFor="let request of translatedRequests">
         <div

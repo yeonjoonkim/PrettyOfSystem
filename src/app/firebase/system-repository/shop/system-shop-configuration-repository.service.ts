@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { from, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
-import {
-  ShopCategoryType,
-  ShopConfigurationType,
-  ShopCountryType,
-} from 'src/app/interface/shop/shop.interface';
+import { ShopCategoryType, ShopConfigurationType, ShopCountryType } from 'src/app/interface/shop/shop.interface';
 import * as Db from 'src/app/constant/firebase-path';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { DateTransformService } from 'src/app/service/global/date/date-transform/date-transform.service';
@@ -52,9 +48,7 @@ export class SystemShopConfigurationRepositoryService {
         })
       );
   }
-  public async getSelectedSystemShopCountry(
-    selectedId: string
-  ): Promise<ShopCountryType | undefined> {
+  public async getSelectedSystemShopCountry(selectedId: string): Promise<ShopCountryType | undefined> {
     let categories = await lastValueFrom(this.countryListener());
     return categories.find(countries => countries.id === selectedId);
   }
@@ -84,9 +78,7 @@ export class SystemShopConfigurationRepositoryService {
     if (!selectedIds.length) return of([]);
 
     return this._afs
-      .collection<ShopConfigurationType>(Db.Context.ShopConfiguration, ref =>
-        ref.where('id', 'in', selectedIds)
-      )
+      .collection<ShopConfigurationType>(Db.Context.ShopConfiguration, ref => ref.where('id', 'in', selectedIds))
       .valueChanges()
       .pipe(
         map(snapShots =>

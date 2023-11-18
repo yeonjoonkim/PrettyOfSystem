@@ -58,10 +58,7 @@ export class ShopPackageComponent implements OnInit {
     this.validator.services = this.current.package.services.length > 0;
 
     this.form.enabledSavebutton =
-      this.validator.limitedTime &&
-      this.validator.title &&
-      this.validator.price &&
-      this.validator.services;
+      this.validator.limitedTime && this.validator.title && this.validator.price && this.validator.services;
   }
 
   public async dismiss() {
@@ -72,9 +69,7 @@ export class ShopPackageComponent implements OnInit {
     const titleRequest = this.current.translateRequests?.find(
       s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
     );
-    return titleRequest !== undefined
-      ? titleRequest.status === Constant.API.TranslateStatus.Completed
-      : false;
+    return titleRequest !== undefined ? titleRequest.status === Constant.API.TranslateStatus.Completed : false;
   }
 
   public async handleCreate() {
@@ -115,9 +110,7 @@ export class ShopPackageComponent implements OnInit {
     if (this.current.package.limitedTime != null) {
       this.current.package.limitedTime = null;
     } else {
-      this.current.package.limitedTime = this._shopPackage.limitedTime.get(
-        this.current.operatingHours
-      );
+      this.current.package.limitedTime = this._shopPackage.limitedTime.get(this.current.operatingHours);
     }
     this.handleEnabledSaveBtn();
   }
@@ -130,8 +123,7 @@ export class ShopPackageComponent implements OnInit {
   }
 
   public onChangeDiscount() {
-    this.current.package.discount.type = this.selectedDiscount
-      .value as Constant.PackageDiscountType;
+    this.current.package.discount.type = this.selectedDiscount.value as Constant.PackageDiscountType;
     this.current.package.discount.value = 0;
     this.onChangeDiscountRate();
   }
@@ -197,11 +189,7 @@ export class ShopPackageComponent implements OnInit {
     }
   }
 
-  public isSelectedService(
-    serviceId: string | undefined,
-    min: number | undefined,
-    price: number | undefined
-  ) {
+  public isSelectedService(serviceId: string | undefined, min: number | undefined, price: number | undefined) {
     const selected = this.current.package.services?.find(
       s => s.id === serviceId && s.option.min === min && s.option.price === price
     );
@@ -219,18 +207,14 @@ export class ShopPackageComponent implements OnInit {
   }
 
   private async loadingFormCtrl() {
-    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(
-      Constant.Default.ComponentMode.Form
-    );
+    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(Constant.Default.ComponentMode.Form);
     const prop: ShopPackageModalDocumentProp | undefined = this._navParams.get('prop');
 
     if (formProp !== undefined && prop !== undefined) {
       this.form = cloneDeep(formProp);
       this._before = cloneDeep(prop);
       this.current = cloneDeep(prop);
-      const discountType = this.discountTypes.find(
-        t => t.value === this.current.package.discount.type
-      );
+      const discountType = this.discountTypes.find(t => t.value === this.current.package.discount.type);
       this.selectedDiscount = discountType !== undefined ? discountType : this.selectedDiscount;
       this.setDaySelection(prop);
       this.handleEnabledSaveBtn();

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { IFormHeaderModalProp, IShopSetting } from 'src/app/interface';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';

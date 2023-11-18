@@ -24,9 +24,7 @@
     </flex-col>
 
     <div>
-      <ion-card-subtitle
-        class="card-description"
-        [ngClass]="{ 'card-description-expand': isExpanded }">
+      <ion-card-subtitle class="card-description" [ngClass]="{ 'card-description-expand': isExpanded }">
         {{ service.description | languageTransform: type | async }}
       </ion-card-subtitle>
     </div>
@@ -43,10 +41,7 @@
             <flex-row-item class="option-price" [ngClass]="{ 'option-start': i === 0 }">
               {{ option.price | currencyTransform }}
             </flex-row-item>
-            <flex-row-item
-              class="option-add"
-              [ngClass]="{ 'option-start': i === 0 }"
-              *ngIf="enabledAdd">
+            <flex-row-item class="option-add" [ngClass]="{ 'option-start': i === 0 }" *ngIf="enabledAdd">
               <button class="add-btn" kendoButton (click)="onClickAdd()">
                 {{ 'button.title.add' | languageTransform: 'System' | async }}
               </button>

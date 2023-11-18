@@ -3,7 +3,6 @@ import { cloneDeep } from 'lodash-es';
 import { Observable, Subject, of, pairwise, takeUntil } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
-  PlanConfigurationType,
   ShopConfigurationType,
   ShopCountryType,
   ShopExtraDocumentType,
@@ -23,18 +22,17 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
   public translatedRequest!: ChatGptTranslateDocumentType[];
   public country!: ShopCountryType;
   public isReachToMax: boolean = true;
-  public progressBar$: Observable<ShopLimitedProgpressBarType> =
-    this._extraService.progressBar$.pipe(takeUntil(this._onDestroy$));
+  public progressBar$: Observable<ShopLimitedProgpressBarType> = this._extraService.progressBar$.pipe(
+    takeUntil(this._onDestroy$)
+  );
 
   private _currentShopConfig!: ShopConfigurationType | null;
-  private _plan!: PlanConfigurationType | null;
   private _isModalOpen: boolean = false;
 
   constructor(private _extraService: ShopExtraManagementService) {}
 
   ngOnInit() {
     this.activateShopConfig();
-    this.activateShopPlan();
     this.activateShopExtra();
     this.activateTranslatedRequest();
     this.activateIsReachToMax();
@@ -51,12 +49,6 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
         this._currentShopConfig = config;
         this.country = config.country;
       }
-    });
-  }
-
-  private activateShopPlan() {
-    this._extraService.currentShopPlan$.pipe(takeUntil(this._onDestroy$)).subscribe(plan => {
-      this._plan = plan;
     });
   }
 
@@ -79,16 +71,13 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
     this._extraService.translatedRequest$
       .pipe(pairwise(), takeUntil(this._onDestroy$))
       .subscribe(([before, after]) => {
-        const updatedStatusArray = after.reduce(
-          (acc: ChatGptTranslateDocumentType[], afterItem) => {
-            const beforeItem = before.find(b => b.id === afterItem.id);
-            if (beforeItem && beforeItem.status !== afterItem.status) {
-              acc.push(afterItem);
-            }
-            return acc;
-          },
-          []
-        );
+        const updatedStatusArray = after.reduce((acc: ChatGptTranslateDocumentType[], afterItem) => {
+          const beforeItem = before.find(b => b.id === afterItem.id);
+          if (beforeItem && beforeItem.status !== afterItem.status) {
+            acc.push(afterItem);
+          }
+          return acc;
+        }, []);
 
         if (updatedStatusArray.length > 0) {
           console.log('Updated Status:', updatedStatusArray);
@@ -98,13 +87,7 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
 
   public async handleCreate() {
     const newDoc = await this._extraService.getNewExtra();
-    if (
-      this._currentShopConfig !== null &&
-      this._plan !== null &&
-      !this._isModalOpen &&
-      newDoc !== null &&
-      !this.isReachToMax
-    ) {
+    if (this._currentShopConfig !== null && !this._isModalOpen && newDoc !== null && !this.isReachToMax) {
       this._isModalOpen = true;
       const modal = await this._extraService.modal.presentNewExtra(newDoc);
       await modal.present();
@@ -113,7 +96,7 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
   }
 
   public async handleEdit(prop: ShopExtraDocumentType) {
-    if (this._currentShopConfig !== null && this._plan !== null && !this._isModalOpen) {
+    if (this._currentShopConfig !== null && !this._isModalOpen) {
       this._isModalOpen = true;
       const modal = await this._extraService.modal.presentEditExtra(prop);
       await modal.present();
@@ -122,7 +105,7 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
   }
 
   public async handleEditPackage(prop: ShopLanguagePackageModalProp) {
-    if (this._currentShopConfig !== null && this._plan !== null && !this._isModalOpen) {
+    if (this._currentShopConfig !== null && !this._isModalOpen) {
       this._isModalOpen = true;
       const copied = cloneDeep(prop);
       const modal = await this._extraService.modal.presentEditPackage(copied);

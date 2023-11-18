@@ -6,7 +6,6 @@ export interface ISystemMenuOptionAction {
   //Configuration
   isMenuManagement: boolean;
   isRoleManagement: boolean;
-  isPlanManagement: boolean;
   //Shop
   isShopManagement: boolean;
   //User
@@ -25,7 +24,6 @@ export class SystemMenuOptionControllerService {
     //Configuration
     menuManagement: this._labelTitle + 'menu',
     roleManagement: this._labelTitle + 'role',
-    planManagement: this._labelTitle + 'subscription',
     //Shop
     shopManagement: this._labelTitle + 'shop',
     //User
@@ -41,9 +39,8 @@ export class SystemMenuOptionControllerService {
   public async getSystemConfigurationButtons(): Promise<ISystemMenuOptionAction[]> {
     let menuManagement = await this.getMenuManagementOption();
     let roleManagement = await this.getRoleManagementOption();
-    let planManagement = await this.getPlanManagementOption();
 
-    return [menuManagement, roleManagement, planManagement];
+    return [menuManagement, roleManagement];
   }
 
   /**Used in page/system/shop */
@@ -105,14 +102,6 @@ export class SystemMenuOptionControllerService {
     return controller;
   }
 
-  private async getPlanManagementOption() {
-    let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this._menuOption.planManagement);
-    controller.isPlanManagement = true;
-
-    return controller;
-  }
-
   private async getShopManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this._menuOption.shopManagement);
@@ -135,7 +124,6 @@ export class SystemMenuOptionControllerService {
       //Configuration
       isMenuManagement: false,
       isRoleManagement: false,
-      isPlanManagement: false,
       //Shop
       isShopManagement: false,
       //User

@@ -21,8 +21,9 @@ export class ShopCouponManagementComponent implements OnInit, OnDestroy {
   private _serviceFilter!: NameValuePairType[];
   public coupons!: ShopCouponDocumentType[];
   public translatedRequest!: ChatGptTranslateDocumentType[];
-  public progressBar$: Observable<ShopLimitedProgpressBarType> =
-    this._couponService.progressBar$.pipe(takeUntil(this._onDestroy$));
+  public progressBar$: Observable<ShopLimitedProgpressBarType> = this._couponService.progressBar$.pipe(
+    takeUntil(this._onDestroy$)
+  );
   public isReachToMax: boolean = true;
   public isModalOpen: boolean = false;
   public isAuthorisedRole: boolean = false;

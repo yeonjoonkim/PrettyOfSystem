@@ -9,8 +9,8 @@ describe('AppTermsAndConditionsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppTermsAndConditionsComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [AppTermsAndConditionsComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppTermsAndConditionsComponent);

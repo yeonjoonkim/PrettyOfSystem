@@ -9,8 +9,8 @@ describe('IonicIconSelectionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ IonicIconSelectionComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [IonicIconSelectionComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(IonicIconSelectionComponent);

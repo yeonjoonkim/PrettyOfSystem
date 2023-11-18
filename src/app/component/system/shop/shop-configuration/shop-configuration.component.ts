@@ -34,9 +34,7 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
     this.onChangeForm();
   }
 
-  ngOnInit() {
-    this.autoPaymentDateCalculation();
-  }
+  ngOnInit() {}
 
   public onChangeForm() {
     this.form.enabledSavebutton = this._shopConfig.formInputValidator(this.validator);
@@ -55,15 +53,6 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
     this.config = this._selectedconfig ? this._selectedconfig : this._shopConfig.setDefaultConfig();
   }
 
-  public async onPlanPeriodChange() {
-    this.config.plan.paymentDate = this._shopConfig.global.date.addDay(
-      this.config.plan.lastPaymentDate,
-      this.config.plan.period.day
-    );
-    this.validator.planPeriod = true;
-    this.onChangeForm();
-  }
-
   public onClickInfo(): void {
     this.display = this._shopConfig.displayInfo();
   }
@@ -80,28 +69,12 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
     this.display = this._shopConfig.displaySubscription();
   }
 
-  public autoPaymentDateCalculation() {
-    if (this.form.action === Constant.Default.FormAction.Create) {
-      this.onPlanPeriodChange();
-    }
-  }
-
   public onActiveChange() {
     if (this.config.active) {
       this.config.activeTo = null;
     } else {
       this.config.activeTo = this._shopConfig.global.date.shopTimeStamp(null);
     }
-  }
-
-  public async onChangePlan() {
-    if (this.config.plan.configurationId) {
-      this.planPrice = await this._shopConfig.getSelectedTotalPrice(
-        this.config.plan.configurationId,
-        this.config.plan.period
-      );
-    }
-    this.onChangeForm();
   }
 
   public async dismiss() {

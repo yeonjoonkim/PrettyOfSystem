@@ -56,8 +56,7 @@ export class InputTextBoxComponent implements OnInit {
   constructor(private _global: GlobalService) {}
 
   async ngOnInit() {
-    this.value =
-      this.validatedValue === undefined || this.validatedValue === null ? '' : this.value;
+    this.value = this.validatedValue === undefined || this.validatedValue === null ? '' : this.value;
     this.validate = this.validateInput();
     this.valueLengthCount = this.value.length;
     await this.setDefaultPlaceHolder();

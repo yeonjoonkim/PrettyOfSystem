@@ -7,15 +7,10 @@
           [selection]="languageSelectionList"
           [(selected)]="selectedLang"
           [filterable]="true"
-          (selectedChange)="
-            onChangeLanguageSelection()
-          "></name-value-pair-single-dropdown-selection>
+          (selectedChange)="onChangeLanguageSelection()"></name-value-pair-single-dropdown-selection>
       </flex-row-item>
       <flex-row-item>
-        <text-box
-          title="label.title.search"
-          [(value)]="query"
-          (valueChange)="onChangeQuery()"></text-box>
+        <text-box title="label.title.search" [(value)]="query" (valueChange)="onChangeQuery()"></text-box>
       </flex-row-item>
     </flex-row>
   </section>

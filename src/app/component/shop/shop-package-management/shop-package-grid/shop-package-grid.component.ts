@@ -9,7 +9,6 @@ import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
 import { ShopPackageManagementService } from 'src/app/service/shop/shop-package-management/shop-package-management.service';
 import { cloneDeep } from 'lodash-es';
-import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
 
 @Component({
   selector: 'shop-package-grid',
@@ -30,8 +29,7 @@ export class ShopPackageGridComponent implements OnInit {
   isAuthorisedRole: boolean = false;
   constructor(
     private _global: GlobalService,
-    private _shopPackage: ShopPackageManagementService,
-    public device: DeviceWidthService
+    private _shopPackage: ShopPackageManagementService
   ) {}
 
   async ngOnInit() {
@@ -48,9 +46,7 @@ export class ShopPackageGridComponent implements OnInit {
     const titleRequest = this.translatedRequests?.find(
       s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
     );
-    return titleRequest !== undefined
-      ? titleRequest.status === Constant.API.TranslateStatus.Completed
-      : false;
+    return titleRequest !== undefined ? titleRequest.status === Constant.API.TranslateStatus.Completed : false;
   }
 
   public async onClickEdit(prop: ShopPackageDocumentType) {
@@ -95,10 +91,7 @@ export class ShopPackageGridComponent implements OnInit {
   private async handlePackageProp(s: ShopPackageDocumentType) {
     const c = await this._shopPackage.getShopConfig();
     if (c != null && !this.isModalOpen) {
-      const relatedKeys = this._shopPackage.languagePackage.getRelatedNamePairValueList(
-        c.package,
-        s.title
-      );
+      const relatedKeys = this._shopPackage.languagePackage.getRelatedNamePairValueList(c.package, s.title);
       const languages = await this._shopPackage.languagePackage.getLanguages(relatedKeys);
       const prop: ShopLanguagePackageModalProp = {
         languages: languages,

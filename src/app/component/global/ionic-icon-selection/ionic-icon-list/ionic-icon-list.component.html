@@ -3,9 +3,7 @@
 
 <!--Icon List -->
 <ion-content id="icon-selection-container">
-  <ion-item
-    *ngFor="let icon of ionicIconSelection | filter : query"
-    (click)="dismissIconPopOver(icon.name)">
+  <ion-item *ngFor="let icon of ionicIconSelection | filter: query" (click)="dismissIconPopOver(icon.name)">
     <!--Check Box-->
     <ion-checkbox slot="start" aria-label="" [(ngModel)]="icon.selected"></ion-checkbox>
     <!--Icon Label-->

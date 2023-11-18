@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import {
-  ShopPackageDocumentType,
-  ShopPackageExtraType,
-  ShopPackageServiceType,
-  ShopWorkHoursType,
-} from 'src/app/interface';
+import { ShopPackageDocumentType, ShopPackageExtraType, ShopPackageServiceType } from 'src/app/interface';
 import * as Constant from '../../../constant/constant';
 import { ShopPackage } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
@@ -54,10 +49,7 @@ export class ShopPackageRepositoryService {
   public async updatePackage(doc: ShopPackageDocumentType) {
     doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     try {
-      this._afs
-        .collection<ShopPackageDocumentType>(ShopPackage(doc.shopId))
-        .doc(doc.id)
-        .update(doc);
+      this._afs.collection<ShopPackageDocumentType>(ShopPackage(doc.shopId)).doc(doc.id).update(doc);
       await this._toaster.updateSuccess();
       return true;
     } catch (error) {

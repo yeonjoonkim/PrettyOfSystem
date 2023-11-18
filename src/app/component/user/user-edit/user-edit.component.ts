@@ -82,9 +82,7 @@ export class UserEditComponent implements OnInit, DoCheck {
 
   public async handleSave() {
     this.user.encryptedPassword =
-      this.user.loginOption.email && this.resetPassword
-        ? this._encryptedPassword
-        : this.user.encryptedPassword;
+      this.user.loginOption.email && this.resetPassword ? this._encryptedPassword : this.user.encryptedPassword;
 
     const result = await this._user.updateUser(this.user, this._paramUser);
     if (result) {
@@ -99,9 +97,7 @@ export class UserEditComponent implements OnInit, DoCheck {
   }
 
   private async loadingFromCtrl() {
-    const form: IFormHeaderModalProp | undefined = this._navParams.get(
-      Constant.Default.ComponentMode.Form
-    );
+    const form: IFormHeaderModalProp | undefined = this._navParams.get(Constant.Default.ComponentMode.Form);
     const shopSelection: NameValuePairType[] | undefined = this._navParams.get('shopSelection');
     const user: IUser | undefined = this._navParams.get('user');
     const role = await firstValueFrom(this._user.currentRole$);

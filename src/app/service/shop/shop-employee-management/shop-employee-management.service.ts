@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, combineLatestWith, firstValueFrom, map, of, switchMap } from 'rxjs';
 import {
   NameValuePairType,
-  PlanConfigurationType,
   RoleConfigurationType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
@@ -23,7 +22,6 @@ import { TextTransformService } from '../../global/text-transform/text-transform
 export class ShopEmployeeManagementService {
   public role$!: Observable<RoleConfigurationType | null>;
   public shopConfig$!: Observable<ShopConfigurationType | null>;
-  public shopPlan$!: Observable<PlanConfigurationType | null>;
   public shopEmployees$!: Observable<ShopEmployeeManagementUserType[]>;
   public availableRoles$!: Observable<RoleConfigurationType[]>;
   public availableRoleFilter$!: Observable<NameValuePairType[]>;
@@ -42,12 +40,11 @@ export class ShopEmployeeManagementService {
   ) {
     this.role$ = this._shop.role$;
     this.shopConfig$ = this._shop.config$;
-    this.shopPlan$ = this._shop.plan$;
     this.shopEmployees$ = this._shop.employees$;
     this.activateAvailableRoles();
     this.activateRoleFilter();
-    this.activateAddEmployee();
-    this.activeProgressBar();
+    // this.activateAddEmployee();
+    // this.activeProgressBar();
   }
 
   public async buildNewEmployee() {
@@ -194,40 +191,40 @@ export class ShopEmployeeManagementService {
     }
   }
 
-  private activateAddEmployee() {
-    this.addNewEmployee$ = this.shopEmployees$.pipe(
-      combineLatestWith(this.shopPlan$),
-      map(([emp, plan]: [ShopEmployeeManagementUserType[], PlanConfigurationType | null]) => {
-        const activeEmps = emp.filter(e => e.active);
-        const result = plan?.limitedUser ? plan.limitedUser > activeEmps.length : false;
+  // private activateAddEmployee() {
+  //   this.addNewEmployee$ = this.shopEmployees$.pipe(
+  //     combineLatestWith(this.shopPlan$),
+  //     map(([emp, plan]: [ShopEmployeeManagementUserType[], PlanConfigurationType | null]) => {
+  //       const activeEmps = emp.filter(e => e.active);
+  //       const result = plan?.limitedUser ? plan.limitedUser > activeEmps.length : false;
 
-        return result;
-      })
-    );
-  }
+  //       return result;
+  //     })
+  //   );
+  // }
 
-  private activeProgressBar() {
-    this.progressBar$ = this.shopEmployees$.pipe(
-      combineLatestWith(this.shopPlan$),
-      switchMap(([emp, plan]: [ShopEmployeeManagementUserType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
-          return of({
-            current: emp.filter(e => e.active).length,
-            max: plan.limitedUser,
-            title: 'label.title.maximumactiveemployees',
-            indeterminate: false,
-          });
-        } else {
-          return of({
-            current: 0,
-            max: 0,
-            title: 'label.title.maximumactiveemployees',
-            indeterminate: false,
-          });
-        }
-      })
-    );
-  }
+  // private activeProgressBar() {
+  //   this.progressBar$ = this.shopEmployees$.pipe(
+  //     combineLatestWith(this.shopPlan$),
+  //     switchMap(([emp, plan]: [ShopEmployeeManagementUserType[], PlanConfigurationType | null]) => {
+  //       if (plan !== null) {
+  //         return of({
+  //           current: emp.filter(e => e.active).length,
+  //           max: plan.limitedUser,
+  //           title: 'label.title.maximumactiveemployees',
+  //           indeterminate: false,
+  //         });
+  //       } else {
+  //         return of({
+  //           current: 0,
+  //           max: 0,
+  //           title: 'label.title.maximumactiveemployees',
+  //           indeterminate: false,
+  //         });
+  //       }
+  //     })
+  //   );
+  // }
 
   private activateAvailableRoles() {
     this.availableRoles$ = this.role$.pipe(
@@ -257,10 +254,7 @@ export class ShopEmployeeManagementService {
 
   public isReceptionAccessLevel(r: RoleConfigurationType) {
     return (
-      r.accessLevel.isSystemAdmin ||
-      r.accessLevel.isAdmin ||
-      r.accessLevel.isManager ||
-      r.accessLevel.isReception
+      r.accessLevel.isSystemAdmin || r.accessLevel.isAdmin || r.accessLevel.isManager || r.accessLevel.isReception
     );
   }
 
@@ -289,9 +283,7 @@ export class ShopEmployeeManagementService {
   }
 
   public async toastReachedToMaximumError() {
-    const msg = await this._global.language.transform(
-      'messageerror.description.maximumactiveemployees'
-    );
+    const msg = await this._global.language.transform('messageerror.description.maximumactiveemployees');
     await this._global.toast.presentError(msg);
   }
 

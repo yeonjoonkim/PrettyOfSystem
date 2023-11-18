@@ -9,8 +9,8 @@ describe('PriceListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PriceListComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PriceListComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PriceListComponent);

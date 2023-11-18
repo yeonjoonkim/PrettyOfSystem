@@ -10,7 +10,10 @@ import { cloneDeep } from 'lodash-es';
   providedIn: 'root',
 })
 export class LanguageModalService {
-  constructor(private _modal: ModalController, private _formCtrl: FormControllerService) {}
+  constructor(
+    private _modal: ModalController,
+    private _formCtrl: FormControllerService
+  ) {}
 
   public async create() {
     let form: IFormHeaderModalProp = this._formCtrl.setCreateFormHeaderModalProp();

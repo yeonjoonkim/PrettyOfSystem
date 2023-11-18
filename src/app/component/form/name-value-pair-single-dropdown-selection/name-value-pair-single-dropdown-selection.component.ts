@@ -24,9 +24,7 @@ import { NameValuePairSingleDropdownlistComponent } from './name-value-pair-sing
   templateUrl: './name-value-pair-single-dropdown-selection.component.html',
   styleUrls: ['./name-value-pair-single-dropdown-selection.component.scss'],
 })
-export class NameValuePairSingleDropdownSelectionComponent
-  implements OnInit, OnChanges, AfterViewInit
-{
+export class NameValuePairSingleDropdownSelectionComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('dropdownListBtn') dropdownListBtn!: ElementRef;
   @ViewChild('selectedName') selectedName!: ElementRef;
   @ViewChild('dropDownArrow') dropDownArrow!: ElementRef;
@@ -166,8 +164,7 @@ export class NameValuePairSingleDropdownSelectionComponent
   }
 
   private async setQueryList() {
-    let copiedSelection: NameValuePairType[] =
-      this.selection !== undefined ? cloneDeep(this.selection) : [];
+    let copiedSelection: NameValuePairType[] = this.selection !== undefined ? cloneDeep(this.selection) : [];
     let promises = copiedSelection.map(async s => {
       let translatedName = await this._global.language.transform(s.name);
       let promise: PairNameValueTypeFilterParamType = {

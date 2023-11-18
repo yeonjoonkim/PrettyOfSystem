@@ -3,7 +3,6 @@ import { Observable, combineLatest, firstValueFrom, map, of, switchMap } from 'r
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
-  PlanConfigurationType,
   RoleConfigurationType,
   ShopConfigurationType,
   ShopCouponDocumentType,
@@ -32,7 +31,6 @@ export class ShopService {
   public role$!: Observable<RoleConfigurationType | null>;
   public config$!: Observable<ShopConfigurationType | null>;
   public timezone$!: Observable<string | null>;
-  public plan$!: Observable<PlanConfigurationType | null>;
   public translatedRequests$!: Observable<ChatGptTranslateDocumentType[]>;
   public services$!: Observable<ShopServiceDocumentType[]>;
   public extras$!: Observable<ShopExtraDocumentType[]>;
@@ -70,7 +68,6 @@ export class ShopService {
     this.userName$ = this._user.employeName$;
     this.config$ = this._user.currentShopConfig$;
     this.role$ = this._user.currentRole$;
-    this.plan$ = this._user.currentShopPlan$;
     this.translatedRequests$ = this.translated.translatedRequest$;
     this.timezoneListener();
     this.associatedUserListener();
@@ -367,11 +364,6 @@ export class ShopService {
     return result;
   }
 
-  public async plan() {
-    const plan = await firstValueFrom(this.plan$);
-    return plan !== null ? plan : null;
-  }
-
   public async id() {
     const config = await this.config();
     return config !== null ? config.id : null;
@@ -391,18 +383,18 @@ export class ShopService {
     return this._date.shopTimeStamp(timezone);
   }
 
-  public async isReachToMaxPackage() {
-    const plan = await this.plan();
-    const packages = await firstValueFrom(this.packages$);
-    if (plan !== null) {
-      return plan.limitedPackage > packages.length;
-    } else {
-      return false;
-    }
-  }
+  // public async isReachToMaxPackage() {
+  //   const plan = await this.plan();
+  //   const packages = await firstValueFrom(this.packages$);
+  //   if (plan !== null) {
+  //     return plan.limitedPackage > packages.length;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
-  public async isPreimumPlan() {
-    const plan = await this.plan();
-    return plan !== null ? plan.isPremium : false;
-  }
+  // public async isPreimum() {
+  //   const plan = await this.plan();
+  //   return plan !== null ? plan.isPremium : false;
+  // }
 }

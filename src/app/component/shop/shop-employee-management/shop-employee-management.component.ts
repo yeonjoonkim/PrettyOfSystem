@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import {
   EmployeeManagementEditUserPropType,
   EmployeeManagementRolePropType,
@@ -43,7 +43,6 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.shopEmployees();
     this.shopConfig();
-    this.shopPlan();
     this.userRoles();
     this.addNewEmployee();
   }
@@ -81,13 +80,6 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  private shopPlan() {
-    this._shopEmp.shopPlan$.pipe(takeUntil(this._onDestroy$)).subscribe(plan => {
-      if (plan !== null) {
-        this.usage.maximumUsers = plan.limitedUser;
-      }
-    });
-  }
   private addNewEmployee() {
     this._shopEmp.addNewEmployee$.pipe(takeUntil(this._onDestroy$)).subscribe(add => {
       this._addNewEmployee = add;
@@ -115,11 +107,7 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
 
   public async handleClickEditUser(param: EmployeeManagementEditUserPropType) {
     const modal = param.isReadOnly
-      ? await this._shopEmp.modal.presentReadOnlyEmployee(
-          param.employee,
-          this._shopConfig,
-          !this._addNewEmployee
-        )
+      ? await this._shopEmp.modal.presentReadOnlyEmployee(param.employee, this._shopConfig, !this._addNewEmployee)
       : await this._shopEmp.modal.presentEditEmployee(
           param.employee,
           this._roleProp,

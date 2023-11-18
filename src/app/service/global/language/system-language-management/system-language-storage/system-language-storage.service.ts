@@ -154,9 +154,7 @@ export class SystemLanguageStorageService {
 
   public async getSelectedSelection(selectedCode: string): Promise<LanguageSelectionType> {
     let selections: LanguageSelectionType[] = await this.getLanguageSelections();
-    return selections.find(
-      selection => selection.code === selectedCode.toLowerCase()
-    ) as LanguageSelectionType;
+    return selections.find(selection => selection.code === selectedCode.toLowerCase()) as LanguageSelectionType;
   }
 
   public async getKey(): Promise<ILanguageKey> {

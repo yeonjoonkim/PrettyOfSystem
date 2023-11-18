@@ -19,9 +19,7 @@ export class SystemRoleRepositoryService {
   /** This will return as Observalble of all role configs  */
   public getRoleConfigurations(): Observable<RoleConfigurationType[]> {
     return this._afs
-      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
-        ref.orderBy('rate')
-      )
+      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref => ref.orderBy('rate'))
       .get()
       .pipe(
         map(snapshot => {
@@ -49,9 +47,7 @@ export class SystemRoleRepositoryService {
 
   public valueChangeListener(): Observable<RoleConfigurationType[]> {
     return this._afs
-      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
-        ref.orderBy('rate')
-      )
+      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref => ref.orderBy('rate'))
       .valueChanges()
       .pipe(
         map(roleConfigs =>

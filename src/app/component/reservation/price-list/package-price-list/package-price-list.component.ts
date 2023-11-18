@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
 import { ShopPackageDocumentType } from 'src/app/interface';
 import { PriceListService } from 'src/app/service/reservation/price-list/price-list.service';
-import { ShopPackageTimeService } from 'src/app/service/reservation/shop-package-time/shop-package-time.service';
 
 @Component({
   selector: 'package-price-list',

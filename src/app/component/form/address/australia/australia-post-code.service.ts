@@ -7,10 +7,7 @@ import { TasService } from './state/tas/tas.service';
 import { SaService } from './state/sa/sa.service';
 import { NtService } from './state/nt/nt.service';
 import * as Constant from 'src/app/constant/constant';
-import {
-  PostCodeFilterOptionType,
-  PostCodeItemType,
-} from 'src/app/interface/global/global.interface';
+import { PostCodeFilterOptionType, PostCodeItemType } from 'src/app/interface/global/global.interface';
 import { ActService } from './state/act/act.service';
 @Injectable({
   providedIn: 'root',

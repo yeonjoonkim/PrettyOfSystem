@@ -44,8 +44,7 @@ export class ShopPackageExtraPopoverComponent implements OnInit {
   }
 
   private async loadingParam() {
-    const packageExtrasParam: ShopPackageExtraType[] | undefined =
-      this._navParams.get('packageExtras');
+    const packageExtrasParam: ShopPackageExtraType[] | undefined = this._navParams.get('packageExtras');
     const extrasParam: ShopExtraDocumentType[] | undefined = this._navParams.get('extras');
     if (packageExtrasParam !== undefined && extrasParam !== undefined) {
       this.packageExtras = cloneDeep(packageExtrasParam);

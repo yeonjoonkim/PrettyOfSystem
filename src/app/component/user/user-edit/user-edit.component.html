@@ -124,17 +124,13 @@
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column
-          title="{{ 'label.title.role' | languageTransform: 'System' | async }}"
-          [width]="150">
+        <kendo-grid-column title="{{ 'label.title.role' | languageTransform: 'System' | async }}" [width]="150">
           <ng-template kendoGridCellTemplate let-user>
             <span>{{ user.role.name | languageTransform: 'System' | async }}</span>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column
-          title="{{ 'label.title.active' | languageTransform: 'System' | async }}"
-          [width]="50">
+        <kendo-grid-column title="{{ 'label.title.active' | languageTransform: 'System' | async }}" [width]="50">
           <ng-template kendoGridCellTemplate let-user>
             <input
               id="associated-shop-active"

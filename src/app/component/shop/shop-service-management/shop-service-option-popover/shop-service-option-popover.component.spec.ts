@@ -9,8 +9,8 @@ describe('ShopServiceOptionPopoverComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopServiceOptionPopoverComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ShopServiceOptionPopoverComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShopServiceOptionPopoverComponent);

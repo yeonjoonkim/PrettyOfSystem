@@ -10,13 +10,7 @@ import { FormHeaderModule } from 'src/app/component/form/form-header/form-header
 import { AppPrivacyPolicyComponent } from './app-privacy-policy.component';
 @NgModule({
   declarations: [AppPrivacyPolicyComponent],
-  imports: [
-    CommonModule,
-    LanguageTransformPipeModule,
-    KendoUiModule,
-    FormsModule,
-    FormHeaderModule,
-  ],
+  imports: [CommonModule, LanguageTransformPipeModule, KendoUiModule, FormsModule, FormHeaderModule],
   exports: [AppPrivacyPolicyComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

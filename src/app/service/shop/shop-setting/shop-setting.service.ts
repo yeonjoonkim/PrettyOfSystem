@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ShopService } from '../shop.service';
-import {
-  IShopSetting,
-  ShopConfigurationType,
-  ShopUpdateContactProp,
-  ShopWorkHoursType,
-} from 'src/app/interface';
+import { IShopSetting, ShopConfigurationType, ShopUpdateContactProp, ShopWorkHoursType } from 'src/app/interface';
 import { Observable, of, switchMap } from 'rxjs';
 import { ShopSettingOptionService } from './shop-setting-option/shop-setting-option.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
-import { PlanModalService } from '../../system/system-plan/plan-modal/plan-modal.service';
 import { LoadingService } from '../../global/loading/loading.service';
 import { ShopPictureRepositoryService } from 'src/app/firebase/shop-repository/shop-picture-repository/shop-picture-repository.service';
 import * as Constant from 'src/app/constant/constant';
@@ -30,7 +24,6 @@ export class ShopSettingService {
     private _shop: ShopService,
     public option: ShopSettingOptionService,
     private shopConfigRepo: SystemShopConfigurationRepositoryService,
-    private _planModal: PlanModalService,
     private _loading: LoadingService,
     private _pictureRepo: ShopPictureRepositoryService,
     private _textTransform: TextTransformService
@@ -81,15 +74,6 @@ export class ShopSettingService {
     }
   }
 
-  public async openPlan() {
-    const plan = await this._shop.plan();
-    if (plan !== null) {
-      return await this._planModal.presentViewPlan(plan);
-    } else {
-      return null;
-    }
-  }
-
   public async updateOperatingHours(operatingHours: ShopWorkHoursType) {
     let config = await this._shop.config();
     if (config !== null) {
@@ -131,27 +115,11 @@ export class ShopSettingService {
       await this._loading.start('label.title.confirmingimages');
 
       await this._loading.changeMessage('label.title.logo');
-      const logo = await this.handleUploadLogoImage(
-        logoFile,
-        config.id,
-        config.setting.picture.logo
-      );
+      const logo = await this.handleUploadLogoImage(logoFile, config.id, config.setting.picture.logo);
       await this._loading.changeMessage('label.title.picture');
-      const i1 = await this.handleUploadImage1(
-        image1,
-        config.id,
-        config.setting.picture.shopImage1
-      );
-      const i2 = await this.handleUploadImage2(
-        image2,
-        config.id,
-        config.setting.picture.shopImage2
-      );
-      const i3 = await this.handleUploadImage3(
-        image3,
-        config.id,
-        config.setting.picture.shopImage3
-      );
+      const i1 = await this.handleUploadImage1(image1, config.id, config.setting.picture.shopImage1);
+      const i2 = await this.handleUploadImage2(image2, config.id, config.setting.picture.shopImage2);
+      const i3 = await this.handleUploadImage3(image3, config.id, config.setting.picture.shopImage3);
 
       config.setting.picture.logo = logo !== null ? logo : config.setting.picture.logo;
       config.setting.picture.shopImage1 = i1 !== null ? i1 : config.setting.picture.shopImage1;

@@ -9,8 +9,8 @@ describe('ShopCouponManagementComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopCouponManagementComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ShopCouponManagementComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShopCouponManagementComponent);

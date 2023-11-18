@@ -14,14 +14,7 @@ import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui
 import { RoleComponent } from './role.component';
 @NgModule({
   declarations: [RoleComponent],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    SharedFormModule,
-    LanguageTransformPipeModule,
-    KendoUiModule,
-  ],
+  imports: [CommonModule, IonicModule, FormsModule, SharedFormModule, LanguageTransformPipeModule, KendoUiModule],
   exports: [RoleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

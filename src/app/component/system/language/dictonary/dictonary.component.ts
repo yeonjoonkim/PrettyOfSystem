@@ -33,8 +33,7 @@ export class DictonaryComponent implements OnInit {
 
   public async onChangeLanguageSelection() {
     const code = this.selectedLang.value.toString();
-    this.selectedKeyPairValueList =
-      await this.systemLanguage.getSelectedLanguageKeyPairValueList(code);
+    this.selectedKeyPairValueList = await this.systemLanguage.getSelectedLanguageKeyPairValueList(code);
     this.onChangeQuery();
   }
 
@@ -67,28 +66,22 @@ export class DictonaryComponent implements OnInit {
         ? this.selectedKeyPairValueList
         : this.selectedKeyPairValueList.filter(q => {
             return (
-              (typeof q.key === 'string' &&
-                q.key.toLowerCase().includes(this.query.toLowerCase())) ||
-              (typeof q.value === 'string' &&
-                q.value.toLowerCase().includes(this.query.toLowerCase()))
+              (typeof q.key === 'string' && q.key.toLowerCase().includes(this.query.toLowerCase())) ||
+              (typeof q.value === 'string' && q.value.toLowerCase().includes(this.query.toLowerCase()))
             );
           });
   }
 
   public async setLanguageSelection() {
-    let currentLanguage: string =
-      await this._global.language.management.storage.getCurrentLanguage();
+    let currentLanguage: string = await this._global.language.management.storage.getCurrentLanguage();
     await this._global.loading.show();
     await this._global.language.management.storage.refresh().then(async () => {
       let languageSelection = await this.systemLanguage.get();
-      const keyPairValueList =
-        await this.systemLanguage.getLanguageSelectionKeyPairValueList(languageSelection);
+      const keyPairValueList = await this.systemLanguage.getLanguageSelectionKeyPairValueList(languageSelection);
       this.languageSelectionList = keyPairValueList.map(s => {
         return { name: s.value, value: s.key };
       });
-      let currentsystemLanguage = this.languageSelectionList.filter(
-        s => s.value === currentLanguage
-      );
+      let currentsystemLanguage = this.languageSelectionList.filter(s => s.value === currentLanguage);
       this.selectedLang = this.selectedLang.value ? this.selectedLang : currentsystemLanguage[0];
       await this.onChangeLanguageSelection();
       this.onChangeQuery();

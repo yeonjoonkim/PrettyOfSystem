@@ -5,9 +5,7 @@
   <!--Error Message-->
   <flex-col *ngIf="login.errorMsg">
     <flex-col-item id="error-col-item">
-      <error-message-item>{{
-        login.errorMsg | languageTransform: 'System' | async
-      }}</error-message-item>
+      <error-message-item>{{ login.errorMsg | languageTransform: 'System' | async }}</error-message-item>
     </flex-col-item>
   </flex-col>
   <flex-col *ngIf="!sendOTP">
@@ -26,17 +24,10 @@
     </div>
 
     <flex-col-item *ngIf="!login.verifying">
-      <phone-number
-        *ngIf="!sendOTP"
-        [(phone)]="login.phoneNumber"
-        [(validate)]="validator.phone"></phone-number>
+      <phone-number *ngIf="!sendOTP" [(phone)]="login.phoneNumber" [(validate)]="validator.phone"></phone-number>
     </flex-col-item>
     <flex-col-item *ngIf="!sendOTP && loginOption.phoneNumber">
-      <button
-        id="otp-btn"
-        kendoButton
-        [disabled]="!validator.phone || login.verifying"
-        (click)="sendPhoneOTP()">
+      <button id="otp-btn" kendoButton [disabled]="!validator.phone || login.verifying" (click)="sendPhoneOTP()">
         {{ 'label.title.sendverification' | languageTransform: 'System' | async }}
       </button>
     </flex-col-item>
@@ -95,10 +86,7 @@
 
   <flex-col *ngIf="loginOption.email">
     <flex-col-item>
-      <e-mail
-        [(email)]="login.emailAddress"
-        [(validate)]="validator.email"
-        [isRequired]="true"></e-mail>
+      <e-mail [(email)]="login.emailAddress" [(validate)]="validator.email" [isRequired]="true"></e-mail>
     </flex-col-item>
     <flex-col-item>
       <kendo-label text="{{ 'label.title.password' | languageTransform: 'System' | async }}">
@@ -126,10 +114,7 @@
       </kendo-label>
     </flex-col-item>
     <flex-col-item>
-      <button
-        kendoButton
-        [disabled]="!validator.password || !validator.email"
-        (click)="onClickLoginWithEmail()">
+      <button kendoButton [disabled]="!validator.password || !validator.email" (click)="onClickLoginWithEmail()">
         {{ 'label.title.login' | languageTransform: 'System' | async }}
       </button>
     </flex-col-item>

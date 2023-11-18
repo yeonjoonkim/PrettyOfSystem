@@ -5,9 +5,7 @@
         <kendo-textbox
           [(ngModel)]="query"
           (ngModelChange)="onQueryChange()"
-          placeholder="{{
-            'placeholder.title.search' | languageTransform: 'System' | async
-          }}"></kendo-textbox>
+          placeholder="{{ 'placeholder.title.search' | languageTransform: 'System' | async }}"></kendo-textbox>
       </flex-row-item>
       <flex-row-item id="apply-container">
         <kendo-button id="apply-btn" (click)="apply()">{{
@@ -18,11 +16,7 @@
 
     <flex-col-item>
       <div id="container" [ngStyle]="{ 'max-height': maxHeight }">
-        <div
-          *ngIf="selection.length > 1"
-          id="btn"
-          (click)="all()"
-          [ngClass]="{ active: selected?.length === 0 }">
+        <div *ngIf="selection.length > 1" id="btn" (click)="all()" [ngClass]="{ active: selected?.length === 0 }">
           <span id="name"> {{ 'label.title.all' | languageTransform: 'System' | async }}</span>
         </div>
 

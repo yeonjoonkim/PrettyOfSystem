@@ -9,8 +9,8 @@ describe('AddLanguageTransformComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddLanguageTransformComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [AddLanguageTransformComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddLanguageTransformComponent);

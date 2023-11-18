@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
   ISystemMenuOptionAction,
   SystemMenuOptionControllerService,
 } from 'src/app/service/system/system-menu/system-menu-option/system-menu-option-controller.service';
-import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
   selector: 'app-system-language',

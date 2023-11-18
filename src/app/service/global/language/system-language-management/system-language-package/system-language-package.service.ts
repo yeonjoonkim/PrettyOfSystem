@@ -42,11 +42,7 @@ export class SystemLanguagePackageService {
     }
 
     // Ensure path[0] and path[1] exist before checking keys
-    if (
-      pack[path[0]] &&
-      pack[path[0]][path[1]] &&
-      Object.keys(pack[path[0]][path[1]]).length === 0
-    ) {
+    if (pack[path[0]] && pack[path[0]][path[1]] && Object.keys(pack[path[0]][path[1]]).length === 0) {
       delete pack[path[0]][path[1]];
     }
 
@@ -58,10 +54,7 @@ export class SystemLanguagePackageService {
     return pack;
   }
 
-  public getKeyPairValueList(
-    usedKeyList: string[],
-    pack: TextTransformObjectType
-  ): PairKeyValueType[] {
+  public getKeyPairValueList(usedKeyList: string[], pack: TextTransformObjectType): PairKeyValueType[] {
     let keyPairValueList: PairKeyValueType[] = usedKeyList.map(key => {
       let path = this._textTransform.setLanguageTransformCodeList(key);
       let value = this.getValue(path, pack);
@@ -89,20 +82,12 @@ export class SystemLanguagePackageService {
 
   //** Determine if Third Path exists */
   private hasThirdPath(pack: TextTransformObjectType, path: string[]): boolean {
-    return (
-      pack &&
-      pack[path[0]] &&
-      pack[path[0]][path[1]] &&
-      typeof pack[path[0]][path[1]][path[2]] === 'string'
-    );
+    return pack && pack[path[0]] && pack[path[0]][path[1]] && typeof pack[path[0]][path[1]][path[2]] === 'string';
   }
 
   //** Delete a property from the parent object if it's empty or doesn't exist */
   private deleteIfEmpty(parentObj: any, prop: string): void {
-    if (
-      parentObj &&
-      (Object.keys(parentObj[prop] || {}).length === 0 || parentObj[prop] === undefined)
-    ) {
+    if (parentObj && (Object.keys(parentObj[prop] || {}).length === 0 || parentObj[prop] === undefined)) {
       delete parentObj[prop];
     }
   }

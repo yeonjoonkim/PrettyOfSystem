@@ -9,8 +9,8 @@ describe('PasswordConfirmationComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PasswordConfirmationComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PasswordConfirmationComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PasswordConfirmationComponent);

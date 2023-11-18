@@ -59,8 +59,7 @@ export class ShopPackageServicePopoverComponent implements OnInit {
   }
 
   private async loadingParam() {
-    const packageServicesParam: ShopPackageServiceType[] | undefined =
-      this._navParams.get('packageServices');
+    const packageServicesParam: ShopPackageServiceType[] | undefined = this._navParams.get('packageServices');
     const servicesParam: ShopServiceDocumentType[] | undefined = this._navParams.get('services');
     if (packageServicesParam !== undefined && servicesParam !== undefined) {
       this.packageServices = cloneDeep(packageServicesParam);

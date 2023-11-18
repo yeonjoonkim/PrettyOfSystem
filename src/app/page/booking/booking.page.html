@@ -6,8 +6,6 @@
     <booking-search (onQueryChange)="onAddressQuery($event)"></booking-search>
   </div>
   <div id="booking-query-container">
-    <booking-query
-      [addressParam]="query.address"
-      [shopCategoryParam]="query.shopCategoryName"></booking-query>
+    <booking-query [addressParam]="query.address" [shopCategoryParam]="query.shopCategoryName"></booking-query>
   </div>
 </ion-content>

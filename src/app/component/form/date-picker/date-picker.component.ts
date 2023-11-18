@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
-import { ZonedDate } from '@progress/kendo-date-math';
 
 @Component({
   selector: 'date-picker',
@@ -26,8 +25,7 @@ export class DatePickerComponent implements OnInit, OnChanges {
     return this._global.date.transform.formatLocalDateTime(this.inputDate);
   }
   set date(input: string) {
-    const ofDay =
-      this.type === 'start' ? this._global.date.startDay(input) : this._global.date.endDay(input);
+    const ofDay = this.type === 'start' ? this._global.date.startDay(input) : this._global.date.endDay(input);
     this.inputDate = this._global.date.transform.toLocalDateTime(ofDay);
   }
 
@@ -41,9 +39,7 @@ export class DatePickerComponent implements OnInit, OnChanges {
 
   public transformDate(selectedDate: Date) {
     const ofDay =
-      this.type === 'start'
-        ? this._global.date.startDay(selectedDate)
-        : this._global.date.endDay(selectedDate);
+      this.type === 'start' ? this._global.date.startDay(selectedDate) : this._global.date.endDay(selectedDate);
     this.inputDate = this._global.date.transform.toLocalDateTime(ofDay);
     this.dateChange.emit(ofDay);
   }

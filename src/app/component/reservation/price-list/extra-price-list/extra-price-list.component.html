@@ -1,8 +1,7 @@
 <div id="container">
   <div *ngIf="extras$ | async as extras; else loading" class="vertical-price-list">
     <ng-container *ngFor="let extra of extras">
-      <extra-price-list-card type="User" [extra]="extra" [enabledAdd]="false">
-      </extra-price-list-card>
+      <extra-price-list-card type="User" [extra]="extra" [enabledAdd]="false"> </extra-price-list-card>
     </ng-container>
   </div>
 

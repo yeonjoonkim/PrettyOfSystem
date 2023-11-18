@@ -10,10 +10,7 @@ import { NameValuePairDropdownMultiSelectionComponent } from './name-value-pair-
 import { NameValuePairMultiDropdownlistComponent } from './name-pair-value-multi-dropdown-list/name-value-pair-multi-dropdown-list.component';
 
 @NgModule({
-  declarations: [
-    NameValuePairDropdownMultiSelectionComponent,
-    NameValuePairMultiDropdownlistComponent,
-  ],
+  declarations: [NameValuePairDropdownMultiSelectionComponent, NameValuePairMultiDropdownlistComponent],
   imports: [CommonModule, LanguageTransformPipeModule, KendoUiModule, FormsModule, TextBoxModule],
   exports: [NameValuePairDropdownMultiSelectionComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

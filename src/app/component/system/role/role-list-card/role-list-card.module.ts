@@ -14,14 +14,7 @@ import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui
 import { RoleListCardComponent } from './role-list-card.component';
 @NgModule({
   declarations: [RoleListCardComponent],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    SharedFormModule,
-    LanguageTransformPipeModule,
-    KendoUiModule,
-  ],
+  imports: [CommonModule, IonicModule, FormsModule, SharedFormModule, LanguageTransformPipeModule, KendoUiModule],
   exports: [RoleListCardComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

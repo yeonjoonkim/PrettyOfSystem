@@ -6,8 +6,8 @@ import { ShopSettingPage } from './shop-setting.page';
 const routes: Routes = [
   {
     path: '',
-    component: ShopSettingPage
-  }
+    component: ShopSettingPage,
+  },
 ];
 
 @NgModule({

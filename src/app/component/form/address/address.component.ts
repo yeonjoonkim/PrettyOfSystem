@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AddressType, PostCodeFilterOptionType } from 'src/app/interface/global/global.interface';
 import * as Constant from 'src/app/constant/constant';
 import { PostcodeService } from './service/postcode-service.service';
@@ -87,8 +79,7 @@ export class AddressComponent implements OnInit, OnChanges {
   private handleOnChangeDefaultState(changes: SimpleChanges) {
     let currentValue = changes[this._onChangeOption.defaultState]?.currentValue;
     let previousValue = changes[this._onChangeOption.defaultState]?.previousValue;
-    let valueChanged =
-      currentValue !== undefined && previousValue != undefined && previousValue != currentValue;
+    let valueChanged = currentValue !== undefined && previousValue != undefined && previousValue != currentValue;
     if (valueChanged) {
       this.resetAddress();
     }
@@ -127,9 +118,7 @@ export class AddressComponent implements OnInit, OnChanges {
 
   public onChangeStateInput(state: string) {
     state = state.toUpperCase();
-    this.autoCompleteFilter.state = this.filterOption.stateList.filter(
-      st => st.indexOf(state) !== -1
-    );
+    this.autoCompleteFilter.state = this.filterOption.stateList.filter(st => st.indexOf(state) !== -1);
   }
 
   public onChangeStreet() {
@@ -159,9 +148,8 @@ export class AddressComponent implements OnInit, OnChanges {
 
   public onChangeSuburb() {
     this.entered.suburb = true;
-    let selectedPostCode = this.filterOption.postCodeList.find(
-      option => option.suburb === this.address.suburb
-    )?.postCode;
+    let selectedPostCode = this.filterOption.postCodeList.find(option => option.suburb === this.address.suburb)
+      ?.postCode;
     this.address.postCode = selectedPostCode ? selectedPostCode : '';
     this.validate = this.setAddressValidator();
     this.addressChange.emit(this.inputAddress);

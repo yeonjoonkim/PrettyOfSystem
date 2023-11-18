@@ -9,8 +9,8 @@ describe('TimeFromToComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimeFromToComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [TimeFromToComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimeFromToComponent);

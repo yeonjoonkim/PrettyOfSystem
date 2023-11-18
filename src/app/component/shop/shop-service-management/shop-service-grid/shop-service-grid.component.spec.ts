@@ -9,8 +9,8 @@ describe('ShopServiceGridComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopServiceGridComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ShopServiceGridComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShopServiceGridComponent);

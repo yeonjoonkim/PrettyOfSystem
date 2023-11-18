@@ -1,12 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
 import { cloneDeep } from 'lodash-es';
-import {
-  IUser,
-  NameValuePairType,
-  UserAssociatedShopType,
-  UserManagementCriteria,
-} from 'src/app/interface';
+import { IUser, NameValuePairType, UserAssociatedShopType, UserManagementCriteria } from 'src/app/interface';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 
@@ -37,9 +32,7 @@ export class AddAssociatedShopComponent implements OnInit {
 
   private setShopFilterNonExistShops() {
     const currentShopIds: string[] = this._user.associatedShops.map(s => s.shopId);
-    const nonAssociatedShops = this._criteria.shopFilter.filter(
-      s => !currentShopIds.includes(s.value)
-    );
+    const nonAssociatedShops = this._criteria.shopFilter.filter(s => !currentShopIds.includes(s.value));
     this.shopFilters = nonAssociatedShops;
   }
 

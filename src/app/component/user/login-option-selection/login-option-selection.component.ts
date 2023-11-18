@@ -63,16 +63,14 @@ export class LoginOptionSelectionComponent implements OnInit, OnChanges {
   }
 
   private onRoleRateChange(rateChange: SimpleChange) {
-    let changes: boolean =
-      rateChange?.currentValue !== rateChange?.previousValue || rateChange?.firstChange;
+    let changes: boolean = rateChange?.currentValue !== rateChange?.previousValue || rateChange?.firstChange;
     if (changes) {
       this.setLoginOptionByRoleRate(this.roleRate);
     }
   }
 
   private onComponentModeChange(modeChange: SimpleChange) {
-    let changes: boolean =
-      modeChange?.currentValue !== modeChange?.previousValue || modeChange?.firstChange;
+    let changes: boolean = modeChange?.currentValue !== modeChange?.previousValue || modeChange?.firstChange;
 
     if (changes) {
       this.setTitle();

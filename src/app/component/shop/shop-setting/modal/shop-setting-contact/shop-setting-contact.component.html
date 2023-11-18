@@ -11,8 +11,7 @@
 <ion-content [scrollable]="true" *ngIf="config">
   <flex-col class="modal-container">
     <flex-col-item>
-      <shop-category #category [readOnly]="true" [(shopCategory)]="config.category">
-      </shop-category>
+      <shop-category #category [readOnly]="true" [(shopCategory)]="config.category"> </shop-category>
     </flex-col-item>
     <flex-row id="business-name">
       <flex-row-item>

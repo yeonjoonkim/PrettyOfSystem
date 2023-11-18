@@ -1,12 +1,8 @@
 <ion-card>
   <!--Header-->
   <ion-card-header>
-    <ion-card-title>{{
-      'label.title.content' | languageTransform: 'System' | async
-    }}</ion-card-title>
-    <ion-card-subtitle
-      >{{ selectedCategoryName | languageTransform: 'System' | async }}
-    </ion-card-subtitle>
+    <ion-card-title>{{ 'label.title.content' | languageTransform: 'System' | async }}</ion-card-title>
+    <ion-card-subtitle>{{ selectedCategoryName | languageTransform: 'System' | async }} </ion-card-subtitle>
     <p *ngIf="selectedCategoryName" (click)="onClickAddNewContent($event)">
       <ion-icon class="ion-card-title-icon" name="add-outline" slot="end"></ion-icon>
     </p>

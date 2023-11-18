@@ -9,8 +9,8 @@ describe('UserManagementComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserManagementComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [UserManagementComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserManagementComponent);

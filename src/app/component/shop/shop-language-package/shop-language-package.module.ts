@@ -14,14 +14,7 @@ import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.modu
 import { ShopLanguagePackageComponent } from './shop-language-package.component';
 @NgModule({
   declarations: [ShopLanguagePackageComponent],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    LanguageTransformPipeModule,
-    SharedFormModule,
-    KendoUiModule,
-  ],
+  imports: [CommonModule, IonicModule, FormsModule, LanguageTransformPipeModule, SharedFormModule, KendoUiModule],
   exports: [ShopLanguagePackageComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

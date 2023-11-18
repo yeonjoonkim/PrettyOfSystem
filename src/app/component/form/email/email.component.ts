@@ -7,8 +7,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
   styleUrls: ['./email.component.scss'],
 })
 export class EmailComponent implements OnInit {
-  private readonly _emailValidatorRules: RegExp =
-    /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  private readonly _emailValidatorRules: RegExp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   public validEmail: string = '';
   public validated!: boolean;
   @Output() emailChange = new EventEmitter<string>();

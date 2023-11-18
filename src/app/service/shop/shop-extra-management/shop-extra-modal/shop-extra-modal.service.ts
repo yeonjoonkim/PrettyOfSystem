@@ -3,11 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { cloneDeep } from 'lodash-es';
 import { ShopExtraComponent } from 'src/app/component/shop/shop-extra-management/shop-extra/shop-extra.component';
 import { ShopLanguagePackageComponent } from 'src/app/component/shop/shop-language-package/shop-language-package.component';
-import {
-  IFormHeaderModalProp,
-  ShopExtraDocumentType,
-  ShopLanguagePackageModalProp,
-} from 'src/app/interface';
+import { IFormHeaderModalProp, ShopExtraDocumentType, ShopLanguagePackageModalProp } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 
 @Injectable({

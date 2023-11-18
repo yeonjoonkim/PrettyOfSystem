@@ -16,7 +16,7 @@ import { ShopSettingPictureComponent } from './modal/shop-setting-picture/shop-s
 import { ShopSettingFinanceComponent } from './modal/shop-setting-finance/shop-setting-finance.component';
 import { ShopSettingContactComponent } from './modal/shop-setting-contact/shop-setting-contact.component';
 import { ShopSettingOperatingHoursComponent } from './modal/shop-setting-operating-hours/shop-setting-operating-hours.component';
-import { SystemPlanModule } from '../../system/plan/plan/plan.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +26,6 @@ import { SystemPlanModule } from '../../system/plan/plan/plan.module';
     SharedFormModule,
     LanguageTransformPipeModule,
     SystemShopFormModule,
-    SystemPlanModule,
     OpeningClosingHourPickerModule,
   ],
   declarations: [

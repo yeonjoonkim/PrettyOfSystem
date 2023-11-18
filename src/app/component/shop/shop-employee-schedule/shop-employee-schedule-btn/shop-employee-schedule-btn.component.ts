@@ -244,8 +244,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
               c => c !== Constant.Date.DayIndex.Sun
             ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Sun)
-              .length > 0
+          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Sun).length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Sun];
 
@@ -272,8 +271,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
               c => c !== Constant.Date.DayIndex.Mon
             ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Mon)
-              .length > 0
+          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Mon).length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Mon];
 
@@ -300,8 +298,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
               c => c !== Constant.Date.DayIndex.Tue
             ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Tue)
-              .length > 0
+          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Tue).length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Tue];
         await this._scheduler.update(this.employee);
@@ -327,8 +324,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
               c => c !== Constant.Date.DayIndex.Wed
             ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Wed)
-              .length > 0
+          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Wed).length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Wed];
 
@@ -355,8 +351,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
               c => c !== Constant.Date.DayIndex.Thu
             ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Thu)
-              .length > 0
+          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Thu).length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Thu];
 
@@ -383,8 +378,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
               c => c !== Constant.Date.DayIndex.Fri
             ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Fri)
-              .length > 0
+          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Fri).length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Fri];
 
@@ -411,8 +405,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
           ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
               c => c !== Constant.Date.DayIndex.Sat
             ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Sat)
-              .length > 0
+          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Sat).length > 0
           ? this.employee.nextWeekRoster.closeDay
           : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Sat];
 

@@ -13,14 +13,7 @@ import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.modu
 import { TimePickerModule } from '../time-picker/time-picker.module';
 @NgModule({
   declarations: [TimeFromToComponent],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    LanguageTransformPipeModule,
-    KendoUiModule,
-    TimePickerModule,
-  ],
+  imports: [CommonModule, IonicModule, FormsModule, LanguageTransformPipeModule, KendoUiModule, TimePickerModule],
   exports: [TimeFromToComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

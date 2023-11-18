@@ -3,7 +3,6 @@ import { Observable, combineLatestWith, map, of, switchMap } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
-  PlanConfigurationType,
   ShopConfigurationType,
   ShopCouponDocumentType,
   ShopLimitedProgpressBarType,
@@ -21,7 +20,6 @@ import { LoadingService } from '../../global/loading/loading.service';
 })
 export class ShopCouponManagementService {
   public config$!: Observable<ShopConfigurationType | null>;
-  public plan$!: Observable<PlanConfigurationType | null>;
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
   public services$!: Observable<ShopServiceDocumentType[]>;
   public serviceFilter$!: Observable<NameValuePairType[]>;
@@ -38,36 +36,12 @@ export class ShopCouponManagementService {
     public loading: LoadingService
   ) {
     this.config$ = this._shop.config$;
-    this.plan$ = this._shop.plan$;
     this.services$ = this._shop.services$;
     this.serviceFilter$ = this._shop.serviceFilter$;
     this.coupons$ = this._shop.coupons$;
     this.translateRequest();
-    this.progressBar();
-    this.isReachToMax();
-  }
-
-  private progressBar() {
-    this.progressBar$ = this.coupons$.pipe(
-      combineLatestWith(this.plan$),
-      switchMap(([service, plan]: [ShopCouponDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
-          return of({
-            current: service.length,
-            max: plan.limitedCoupon,
-            title: 'label.title.maximumactivecoupons',
-            indeterminate: false,
-          });
-        } else {
-          return of({
-            current: 0,
-            max: 0,
-            title: 'label.title.maximumactivecoupons',
-            indeterminate: false,
-          });
-        }
-      })
-    );
+    // this.progressBar();
+    // this.isReachToMax();
   }
 
   private translateRequest() {
@@ -86,18 +60,41 @@ export class ShopCouponManagementService {
     );
   }
 
-  private isReachToMax() {
-    this.isReachToMax$ = this.coupons$.pipe(
-      combineLatestWith(this.plan$),
-      map(([coupons, plan]: [ShopCouponDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
-          return coupons.length > plan.limitedCoupon;
-        } else {
-          return false;
-        }
-      })
-    );
-  }
+  // private progressBar() {
+  //   this.progressBar$ = this.coupons$.pipe(
+  //     combineLatestWith(this.plan$),
+  //     switchMap(([service, plan]: [ShopCouponDocumentType[], PlanConfigurationType | null]) => {
+  //       if (plan !== null) {
+  //         return of({
+  //           current: service.length,
+  //           max: plan.limitedCoupon,
+  //           title: 'label.title.maximumactivecoupons',
+  //           indeterminate: false,
+  //         });
+  //       } else {
+  //         return of({
+  //           current: 0,
+  //           max: 0,
+  //           title: 'label.title.maximumactivecoupons',
+  //           indeterminate: false,
+  //         });
+  //       }
+  //     })
+  //   );
+  // }
+
+  // private isReachToMax() {
+  //   this.isReachToMax$ = this.coupons$.pipe(
+  //     combineLatestWith(this.plan$),
+  //     map(([coupons, plan]: [ShopCouponDocumentType[], PlanConfigurationType | null]) => {
+  //       if (plan !== null) {
+  //         return coupons.length > plan.limitedCoupon;
+  //       } else {
+  //         return false;
+  //       }
+  //     })
+  //   );
+  // }
 
   public async isAuthorisedRole() {
     return await this._shop.role.isReceptionistAccess();

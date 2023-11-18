@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { ChatGptTranslateDocumentType, ShopServiceDocumentType } from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
-import { firstValueFrom, map, switchMap } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import * as Constant from 'src/app/constant/constant';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 @Injectable({
@@ -72,10 +72,7 @@ export class TranslateRequestRepositoryService {
   public selectedShopServiceValueChangeListener(shopId: string, serviceIds: string[]) {
     return this._afs
       .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
-        ref
-          .where('shopId', '==', shopId)
-          .where('isSystemAdmin', '==', false)
-          .where('serviceId', 'in', serviceIds)
+        ref.where('shopId', '==', shopId).where('isSystemAdmin', '==', false).where('serviceId', 'in', serviceIds)
       )
       .valueChanges()
       .pipe(

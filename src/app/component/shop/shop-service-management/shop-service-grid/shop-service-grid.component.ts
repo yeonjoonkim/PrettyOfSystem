@@ -89,9 +89,7 @@ export class ShopServiceGridComponent implements OnInit {
     const titleRequest = this.translatedRequests?.find(
       s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
     );
-    return titleRequest !== undefined
-      ? titleRequest.status === Constant.API.TranslateStatus.Completed
-      : false;
+    return titleRequest !== undefined ? titleRequest.status === Constant.API.TranslateStatus.Completed : false;
   }
 
   public isFailed(doc: ChatGptTranslateDocumentType) {
@@ -147,10 +145,7 @@ export class ShopServiceGridComponent implements OnInit {
     const k = isTitle ? s.title : s.description;
     const t = isTitle ? s.titleProp : s.descriptionProp;
     if (c != null) {
-      const relatedKeys = this._shopService.languagePackage.getRelatedNamePairValueList(
-        c.package,
-        k
-      );
+      const relatedKeys = this._shopService.languagePackage.getRelatedNamePairValueList(c.package, k);
       const languages = await this._shopService.languagePackage.getLanguages(relatedKeys);
       const translatedProp = isTitle ? s.titleProp : s.descriptionProp;
       const prop: ShopLanguagePackageModalProp = {

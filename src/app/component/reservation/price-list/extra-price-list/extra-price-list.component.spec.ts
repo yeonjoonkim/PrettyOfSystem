@@ -9,8 +9,8 @@ describe('ExtraPriceListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExtraPriceListComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ExtraPriceListComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExtraPriceListComponent);

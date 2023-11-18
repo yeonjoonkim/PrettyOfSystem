@@ -22,10 +22,7 @@ export class DatePipe implements PipeTransform {
     return this.transformFormat(format, type);
   }
 
-  private transformFormat(
-    formatted: string,
-    type: 'Time' | 'Day' | 'ShortDate' | 'LongDate' | 'DateTime'
-  ) {
+  private transformFormat(formatted: string, type: 'Time' | 'Day' | 'ShortDate' | 'LongDate' | 'DateTime') {
     const splited = split(formatted);
     const month = convertMonths(splited.month);
     const hours = convertHours(splited.hour);

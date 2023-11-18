@@ -7,6 +7,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/cor
 import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
 import { CurrencyPipeTransformModule } from 'src/app/pipe/currency/currency.pipe.module';
 import { MintueTransformPipeModule } from 'src/app/pipe/mintue/mintue.pipe.module';
+
 //Import Module
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { KendoUiModule } from '../../../global/kendo-ui-module/kendo-ui-module.module';
@@ -14,6 +15,7 @@ import { KendoUiModule } from '../../../global/kendo-ui-module/kendo-ui-module.m
 //Import Component
 import { PriceCardTooltipComponent } from './price-card-tooltip.component';
 import { PriceCardTooltipPopoverComponent } from './price-card-tooltip-popover/price-card-tooltip-popover.component';
+
 @NgModule({
   declarations: [PriceCardTooltipComponent, PriceCardTooltipPopoverComponent],
   imports: [

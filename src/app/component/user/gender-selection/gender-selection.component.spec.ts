@@ -9,8 +9,8 @@ describe('GenderSelectionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GenderSelectionComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [GenderSelectionComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GenderSelectionComponent);

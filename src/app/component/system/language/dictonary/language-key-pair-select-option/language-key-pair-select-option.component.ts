@@ -13,7 +13,10 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
   @Input() languageCode!: string;
   @Output() keyPairValueChange = new EventEmitter<boolean>();
 
-  constructor(private _global: GlobalService, private _alertCtrl: AlertController) {}
+  constructor(
+    private _global: GlobalService,
+    private _alertCtrl: AlertController
+  ) {}
 
   ngOnInit() {}
 
@@ -108,10 +111,7 @@ export class LanguageKeyPairSelectOptionComponent implements OnInit {
   /** This will fire the update value in the selected package */
   private async editKeyPairValue(): Promise<void> {
     await this._global.loading.show();
-    await this._global.language.management.editSelectedPackage(
-      this.languageCode,
-      this.keyPairValue
-    );
+    await this._global.language.management.editSelectedPackage(this.languageCode, this.keyPairValue);
     await this._global.loading.dismiss();
   }
 }

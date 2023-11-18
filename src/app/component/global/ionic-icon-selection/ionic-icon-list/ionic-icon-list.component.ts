@@ -30,12 +30,8 @@ export class IonicIconListComponent {
 
   private onChangeSelection(newSelectedIcon: string) {
     let selectedIcon = this.ionicIconSelection.find(icon => icon.name === newSelectedIcon);
-    this.ionicIconSelection
-      .filter(icon => icon !== selectedIcon)
-      .forEach(icon => (icon.selected = false));
-    this.ionicIconSelection
-      .filter(icon => icon === selectedIcon)
-      .forEach(icon => (icon.selected = true));
+    this.ionicIconSelection.filter(icon => icon !== selectedIcon).forEach(icon => (icon.selected = false));
+    this.ionicIconSelection.filter(icon => icon === selectedIcon).forEach(icon => (icon.selected = true));
     this.icon = newSelectedIcon;
   }
 }

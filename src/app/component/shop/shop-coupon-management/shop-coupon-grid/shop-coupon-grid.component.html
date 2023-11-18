@@ -76,10 +76,7 @@
     field="expiryMonth"
     title="{{ 'label.title.expirationperiod' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-coupon>
-      <p>
-        {{ coupon.expiryMonth
-        }}{{ 'label.title.periodmonths' | languageTransform: 'System' | async }}
-      </p>
+      <p>{{ coupon.expiryMonth }}{{ 'label.title.periodmonths' | languageTransform: 'System' | async }}</p>
     </ng-template>
   </kendo-grid-column>
 

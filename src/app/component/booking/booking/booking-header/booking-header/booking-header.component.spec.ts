@@ -9,8 +9,8 @@ describe('BookingHeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookingHeaderComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [BookingHeaderComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BookingHeaderComponent);
