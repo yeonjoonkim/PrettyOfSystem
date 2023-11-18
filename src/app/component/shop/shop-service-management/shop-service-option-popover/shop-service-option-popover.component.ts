@@ -15,7 +15,6 @@ export class ShopServiceOptionPopoverComponent implements OnInit {
     const param = this._navParam.get('options');
     if (Boolean(param)) {
       this.options = param;
-      console.log(this.options);
     }
   }
 }
