@@ -36,7 +36,7 @@ export type OnChangeShopType = {
   isPhoneChanged: boolean;
   isAddressChanged: boolean;
   isOperatingHourChanged: boolean;
-  isPreimumPlan: boolean;
+  isPreimum: boolean;
   isTranslatedRequestChange: boolean;
   isTranslatedRequestDelete: boolean;
 };

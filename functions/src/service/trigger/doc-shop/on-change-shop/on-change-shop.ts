@@ -6,15 +6,12 @@ export const getChangeDectection = async function (
   after: I.ShopConfigurationType
 ): Promise<I.OnChangeShopType> {
   let changeAction = getDefaultChangeType();
-  changeAction.isPreimumPlan = await isPreimumPlan(after);
+  changeAction.isPreimum = await isPreimum(after);
   changeAction.isActiveChanged = isActiveChange(before, after);
   changeAction.isAddressChanged = isAddressChange(before, after);
   changeAction.isEmailChanged = isEmailChange(before, after);
   changeAction.isPhoneChanged = isPhoneNumberChange(before, after);
-  changeAction.isOperatingHourChanged = isOperatingHoursChange(
-    before.operatingHours,
-    after.operatingHours
-  );
+  changeAction.isOperatingHourChanged = isOperatingHoursChange(before.operatingHours, after.operatingHours);
   changeAction.isTranslatedRequestChange = isTranslatedRequestChange(before, after);
   changeAction.isTranslatedRequestDelete = isTranslatedRequestDelete(before, after);
   return changeAction;
@@ -24,24 +21,17 @@ export const getChangeAction = function (c: I.OnChangeShopType) {
   let event = getDefaultActionType();
   event.isResetRoster = c.isOperatingHourChanged;
   event.isSendMsgClientShopInfoChange =
-    (c.isAddressChanged || c.isEmailChanged || c.isPhoneChanged || c.isOperatingHourChanged) &&
-    c.isPreimumPlan;
+    (c.isAddressChanged || c.isEmailChanged || c.isPhoneChanged || c.isOperatingHourChanged) && c.isPreimum;
   event.isActiveStatusChange = c.isActiveChanged;
   event.isTranslatedRequestDelete = c.isTranslatedRequestChange && c.isTranslatedRequestDelete;
   return event;
 };
 
-const isPreimumPlan = async function (after: I.ShopConfigurationType) {
-  const premiumPlans = await Repository.System.Plan.getOnlyPremium();
-  const premiumPlan = premiumPlans.find(p => p.id === after.plan.configurationId);
-
-  return premiumPlan !== undefined ? true : false;
+const isPreimum = async function (after: I.ShopConfigurationType) {
+  return true;
 };
 
-const isTranslatedRequestChange = function (
-  before: I.ShopConfigurationType,
-  after: I.ShopConfigurationType
-) {
+const isTranslatedRequestChange = function (before: I.ShopConfigurationType, after: I.ShopConfigurationType) {
   return before.translatedRequestIds.length !== after.translatedRequestIds.length;
 };
 
@@ -60,10 +50,7 @@ const isEmailChange = function (before: I.ShopConfigurationType, after: I.ShopCo
   return before.email !== after.email;
 };
 
-const isPhoneNumberChange = function (
-  before: I.ShopConfigurationType,
-  after: I.ShopConfigurationType
-) {
+const isPhoneNumberChange = function (before: I.ShopConfigurationType, after: I.ShopConfigurationType) {
   return before.phoneNumber !== after.phoneNumber;
 };
 
@@ -75,10 +62,7 @@ const isAddressChange = function (before: I.ShopConfigurationType, after: I.Shop
   );
 };
 
-export const isOperatingHoursChange = function (
-  before: I.ShopWorkHoursType,
-  after: I.ShopWorkHoursType
-) {
+export const isOperatingHoursChange = function (before: I.ShopWorkHoursType, after: I.ShopWorkHoursType) {
   const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
   return (
@@ -100,10 +84,7 @@ const isDayOffChanged = function (a: I.DayIndexType[], b: I.DayIndexType[]) {
   return a.every((val, index) => val === b[index]);
 };
 
-const isWorkHoursChange = function (
-  before: I.ShopOperatingDailyType,
-  after: I.ShopOperatingDailyType
-) {
+const isWorkHoursChange = function (before: I.ShopOperatingDailyType, after: I.ShopOperatingDailyType) {
   return (
     before.index !== after.index ||
     before.day !== after.day ||
@@ -132,7 +113,7 @@ const getDefaultChangeType = function (): I.OnChangeShopType {
     isPhoneChanged: false,
     isAddressChanged: false,
     isOperatingHourChanged: false,
-    isPreimumPlan: false,
+    isPreimum: false,
     isTranslatedRequestChange: false,
     isTranslatedRequestDelete: false,
   };

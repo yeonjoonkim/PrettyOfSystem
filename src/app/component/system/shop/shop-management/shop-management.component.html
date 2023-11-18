@@ -60,15 +60,5 @@
         <input type="checkbox" kendoCheckBox [checked]="config.active" disabled />
       </ng-template>
     </kendo-grid-column>
-
-    <!--Over Due-->
-    <kendo-grid-column
-      title="{{ 'label.title.overdue' | languageTransform: 'System' | async }}"
-      field="plan.isOverDue"
-      [filterable]="false">
-      <ng-template kendoGridCellTemplate let-config>
-        <input type="checkbox" kendoCheckBox [checked]="config.plan.isOverDue" disabled />
-      </ng-template>
-    </kendo-grid-column>
   </kendo-grid>
 </div>
