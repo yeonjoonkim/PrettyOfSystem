@@ -13,7 +13,7 @@ import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui
 import { SharedFormModule } from 'src/app/component/form/form.module';
 
 import { SystemShopManagementModule } from 'src/app/component/system/shop/shop-management/shop-management.module';
-
+import { ShopCapacityManagementModule } from 'src/app/component/system/shop-capacity/shop-capacity-management/shop-capacity-management.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,6 +24,7 @@ import { SystemShopManagementModule } from 'src/app/component/system/shop/shop-m
     SharedFormModule,
     SystemShopManagementModule,
     LanguageTransformPipeModule,
+    ShopCapacityManagementModule,
   ],
   declarations: [SystemShopPage],
 })

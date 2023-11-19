@@ -3,6 +3,7 @@ import { UserService } from '../../user/user.service';
 import {
   ChatGptTranslateDocumentType,
   RoleConfigurationType,
+  ShopCapacityType,
   ShopConfigurationType,
   ShopExtraDocumentType,
   ShopLimitedProgpressBarType,
@@ -39,8 +40,8 @@ export class ShopExtraManagementService {
     this.currentShopConfig$ = this._shop.config$;
     this.extra$ = this._shop.extras$;
     this.translateRequest();
-    // this.isReachToMaxListener();
-    // this.activeProgressBar();
+    this.isReachToMaxListener();
+    this.activeProgressBar();
   }
 
   private translateRequest() {
@@ -60,42 +61,41 @@ export class ShopExtraManagementService {
     );
   }
 
-  // private isReachToMaxListener() {
-  //   this.isReachToMax$ = this.extra$.pipe(
-  //     combineLatestWith(this.currentShopPlan$),
-  //     map(([packages, plan]: [ShopExtraDocumentType[], PlanConfigurationType | null]) => {
-  //       if (plan !== null) {
-  //         const isMaxReached = packages.length > plan.limitedExtra;
-  //         return isMaxReached;
-  //       } else {
-  //         return false;
-  //       }
-  //     })
-  //   );
-  // }
+  private isReachToMaxListener() {
+    this.isReachToMax$ = this.extra$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      map(([packages, capacity]: [ShopExtraDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          return packages.length > capacity.limitedExtra;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
 
-  // private activeProgressBar() {
-  //   this.progressBar$ = this.extra$.pipe(
-  //     combineLatestWith(this.currentShopPlan$),
-  //     switchMap(([extra, plan]: [ShopExtraDocumentType[], PlanConfigurationType | null]) => {
-  //       if (plan !== null) {
-  //         return of({
-  //           current: extra.length,
-  //           max: plan.limitedExtra,
-  //           title: 'label.title.maximumactiveextras',
-  //           indeterminate: false,
-  //         });
-  //       } else {
-  //         return of({
-  //           current: 0,
-  //           max: 0,
-  //           title: 'label.title.maximumactiveextras',
-  //           indeterminate: false,
-  //         });
-  //       }
-  //     })
-  //   );
-  // }
+  private activeProgressBar() {
+    this.progressBar$ = this.extra$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      switchMap(([extra, capacity]: [ShopExtraDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          return of({
+            current: extra.length,
+            max: capacity.limitedExtra,
+            title: 'label.title.maximumactiveextras',
+            indeterminate: false,
+          });
+        } else {
+          return of({
+            current: 0,
+            max: 0,
+            title: 'label.title.maximumactiveextras',
+            indeterminate: false,
+          });
+        }
+      })
+    );
+  }
 
   public async add(extra: ShopExtraDocumentType) {
     await this.loading.start('label.title.addnewextra');

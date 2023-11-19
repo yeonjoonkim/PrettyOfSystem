@@ -3,6 +3,7 @@ import { Observable, combineLatestWith, firstValueFrom, map, of, switchMap } fro
 import {
   NameValuePairType,
   RoleConfigurationType,
+  ShopCapacityType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
   ShopLimitedProgpressBarType,
@@ -43,8 +44,8 @@ export class ShopEmployeeManagementService {
     this.shopEmployees$ = this._shop.employees$;
     this.activateAvailableRoles();
     this.activateRoleFilter();
-    // this.activateAddEmployee();
-    // this.activeProgressBar();
+    this.activateAddEmployee();
+    this.activeProgressBar();
   }
 
   public async buildNewEmployee() {
@@ -191,40 +192,40 @@ export class ShopEmployeeManagementService {
     }
   }
 
-  // private activateAddEmployee() {
-  //   this.addNewEmployee$ = this.shopEmployees$.pipe(
-  //     combineLatestWith(this.shopPlan$),
-  //     map(([emp, plan]: [ShopEmployeeManagementUserType[], PlanConfigurationType | null]) => {
-  //       const activeEmps = emp.filter(e => e.active);
-  //       const result = plan?.limitedUser ? plan.limitedUser > activeEmps.length : false;
+  private activateAddEmployee() {
+    this.addNewEmployee$ = this.shopEmployees$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      map(([emp, capacity]: [ShopEmployeeManagementUserType[], ShopCapacityType | null]) => {
+        const activeEmps = emp.filter(e => e.active);
+        const result = capacity?.limitedUser ? capacity.limitedUser > activeEmps.length : false;
 
-  //       return result;
-  //     })
-  //   );
-  // }
+        return result;
+      })
+    );
+  }
 
-  // private activeProgressBar() {
-  //   this.progressBar$ = this.shopEmployees$.pipe(
-  //     combineLatestWith(this.shopPlan$),
-  //     switchMap(([emp, plan]: [ShopEmployeeManagementUserType[], PlanConfigurationType | null]) => {
-  //       if (plan !== null) {
-  //         return of({
-  //           current: emp.filter(e => e.active).length,
-  //           max: plan.limitedUser,
-  //           title: 'label.title.maximumactiveemployees',
-  //           indeterminate: false,
-  //         });
-  //       } else {
-  //         return of({
-  //           current: 0,
-  //           max: 0,
-  //           title: 'label.title.maximumactiveemployees',
-  //           indeterminate: false,
-  //         });
-  //       }
-  //     })
-  //   );
-  // }
+  private activeProgressBar() {
+    this.progressBar$ = this.shopEmployees$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      switchMap(([emp, capacity]: [ShopEmployeeManagementUserType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          return of({
+            current: emp.filter(e => e.active).length,
+            max: capacity.limitedUser,
+            title: 'label.title.maximumactiveemployees',
+            indeterminate: false,
+          });
+        } else {
+          return of({
+            current: 0,
+            max: 0,
+            title: 'label.title.maximumactiveemployees',
+            indeterminate: false,
+          });
+        }
+      })
+    );
+  }
 
   private activateAvailableRoles() {
     this.availableRoles$ = this.role$.pipe(

@@ -11,17 +11,11 @@ import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui
 import { SharedFormModule } from 'src/app/component/form/form.module';
 
 //Import Component
-import { ShopCategoryListComponent } from './shop-category/shop-category.component';
-import { ShopCountryComponent } from './shop-country/shop-country.component';
-import { ShopOpenHourComponent } from './shop-open-hour/shop-open-hour.component';
-import { ShopConfigurationComponent } from './shop-configuration/shop-configuration.component';
+import { ShopCapacityManagementComponent } from './shop-capacity-management.component';
+import { ShopCapacityComponent } from '../shop-capacity/shop-capacity.component';
+import { CurrencyPipeTransformModule } from 'src/app/pipe/currency/currency.pipe.module';
 @NgModule({
-  declarations: [
-    ShopCategoryListComponent,
-    ShopCountryComponent,
-    ShopOpenHourComponent,
-    ShopConfigurationComponent,
-  ],
+  declarations: [ShopCapacityManagementComponent, ShopCapacityComponent],
   imports: [
     CommonModule,
     CommonModule,
@@ -30,8 +24,9 @@ import { ShopConfigurationComponent } from './shop-configuration/shop-configurat
     LanguageTransformPipeModule,
     SharedFormModule,
     KendoUiModule,
+    CurrencyPipeTransformModule,
   ],
-  exports: [ShopCategoryListComponent, ShopCountryComponent, ShopOpenHourComponent, ShopConfigurationComponent],
+  exports: [ShopCapacityManagementComponent, ShopCapacityComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class SystemShopFormModule {}
+export class ShopCapacityManagementModule {}

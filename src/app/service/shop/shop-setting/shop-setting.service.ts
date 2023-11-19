@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ShopService } from '../shop.service';
-import { IShopSetting, ShopConfigurationType, ShopUpdateContactProp, ShopWorkHoursType } from 'src/app/interface';
+import {
+  IShopSetting,
+  ShopCapacityType,
+  ShopConfigurationType,
+  ShopUpdateContactProp,
+  ShopWorkHoursType,
+} from 'src/app/interface';
 import { Observable, of, switchMap } from 'rxjs';
 import { ShopSettingOptionService } from './shop-setting-option/shop-setting-option.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
@@ -19,6 +25,7 @@ export class ShopSettingService {
   public shopImage1$!: Observable<Blob | null>;
   public shopImage2$!: Observable<Blob | null>;
   public shopImage3$!: Observable<Blob | null>;
+  public capacity$!: Observable<ShopCapacityType | null>;
 
   constructor(
     private _shop: ShopService,
@@ -29,6 +36,7 @@ export class ShopSettingService {
     private _textTransform: TextTransformService
   ) {
     this.config$ = this._shop.config$;
+    this.capacity$ = this._shop.capacity$;
     this.logoImage$ = this._shop.logoImage$;
     this.shopImage1$ = this._shop.shopImage1$;
     this.shopImage2$ = this._shop.shopImage2$;

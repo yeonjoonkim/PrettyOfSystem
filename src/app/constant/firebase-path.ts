@@ -45,6 +45,7 @@ export const Context = {
     Shop: {
       Category: systemShop + 'category',
       Country: systemShop + 'country',
+      Capacity: systemShop + 'capacity',
     },
   } as const,
   Report: {

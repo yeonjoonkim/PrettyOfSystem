@@ -10,18 +10,17 @@
 </ion-header>
 
 <ion-content>
-  <!--
   <kendo-buttongroup selection="single" width="100%">
     <button
       kendoButton
       *ngFor="let button of systemMenu"
       [toggleable]="true"
       [selected]="button.name === selectedSystemMenu.name"
-      (selectedChange)="processSystemMenuOption(button)"
-    >
+      (selectedChange)="processSystemMenuOption(button)">
       {{button.name}}
     </button>
   </kendo-buttongroup>
-  -->
-  <system-shop-management></system-shop-management>
+
+  <system-shop-management *ngIf="selectedSystemMenu.isShopManagement"></system-shop-management>
+  <shop-capacity-management *ngIf="selectedSystemMenu.isShopCapacityManagement"></shop-capacity-management>
 </ion-content>

@@ -36,29 +36,6 @@
           </button>
         </ng-template>
 
-        <!-- First Name -->
-        <kendo-grid-column
-          title="{{ 'label.title.firstname' | languageTransform: 'System' | async }}"
-          field="firstName">
-          <ng-template kendoGridCellTemplate let-user>
-            <span
-              id="full-name"
-              [ngClass]="{ 'is-system-admin': user.isSystemAdmin !== '' }"
-              (click)="onClickEditUser(user)"
-              >{{ user.firstName }}</span
-            >
-          </ng-template>
-        </kendo-grid-column>
-
-        <!-- Last Name -->
-        <kendo-grid-column
-          title="{{ 'label.title.lastname' | languageTransform: 'System' | async }}"
-          field="lastName">
-          <ng-template kendoGridCellTemplate let-user>
-            <span>{{ user.lastName }}</span>
-          </ng-template>
-        </kendo-grid-column>
-
         <!--Full Name-->
         <kendo-grid-column
           title="{{ 'label.title.name' | languageTransform: 'System' | async }}"
@@ -75,6 +52,7 @@
 
         <!--Phone-->
         <kendo-grid-column
+          [width]="140"
           title="{{ 'label.title.phone' | languageTransform: 'System' | async }}"
           field="phoneNumber">
           <ng-template kendoGridCellTemplate let-user>
@@ -85,7 +63,10 @@
         </kendo-grid-column>
 
         <!--Email-->
-        <kendo-grid-column title="{{ 'label.title.email' | languageTransform: 'System' | async }}" field="email">
+        <kendo-grid-column
+          media="(min-width: 560px)"
+          title="{{ 'label.title.email' | languageTransform: 'System' | async }}"
+          field="email">
           <ng-template kendoGridCellTemplate let-user>
             <a id="email" href="mailto: {{ user.email }}"
               ><span [ngClass]="{ 'login-option': user.loginOption.email }">{{ user.email }}</span></a
@@ -95,7 +76,8 @@
 
         <!--Count-->
         <kendo-grid-column
-          id="shop-count"
+          [width]="60"
+          media="(min-width: 610px)"
           field="associatedShops.length"
           title="{{ 'label.title.shop' | languageTransform: 'System' | async }}">
           <ng-template kendoGridCellTemplate let-user>
@@ -104,7 +86,9 @@
         </kendo-grid-column>
 
         <!--Associated Shop Name-->
-        <kendo-grid-column title="{{ 'label.title.associatedShop' | languageTransform: 'System' | async }}">
+        <kendo-grid-column
+          media="(min-width: 1200px)"
+          title="{{ 'label.title.associatedShop' | languageTransform: 'System' | async }}">
           <ng-template kendoGridCellTemplate let-user>
             <div id="associated-shop-name">
               <ng-container *ngFor="let shop of criteria.shopFilter; let i = index">
@@ -140,6 +124,7 @@
 
         <!--System Admin-->
         <kendo-grid-column
+          [width]="80"
           id="admin"
           field="isSystemAdmin"
           title="{{ 'label.title.admin' | languageTransform: 'System' | async }}">
@@ -150,6 +135,7 @@
 
         <!--Active-->
         <kendo-grid-column
+          [width]="60"
           id="disabled"
           field="disabledAccount"
           title="{{ 'label.title.active' | languageTransform: 'System' | async }}">
@@ -157,6 +143,9 @@
             <input type="checkbox" kendoCheckBox [checked]="!data.disabledAccount" disabled />
           </ng-template>
         </kendo-grid-column>
+
+        <!-- NO Data-->
+        <ng-template kendoGridNoRecordsTemplate></ng-template>
       </kendo-grid>
     </flex-col-item>
   </flex-col>

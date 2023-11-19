@@ -3,6 +3,8 @@ import { Observable, combineLatest, combineLatestWith, map, of, switchMap } from
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
+  ShopCalendarType,
+  ShopCapacityType,
   ShopConfigurationType,
   ShopExtraDocumentType,
   ShopLimitedProgpressBarType,
@@ -66,8 +68,8 @@ export class ShopPackageManagementService {
     this.extraServiceRequest$ = this._shopExtra.translatedRequest$;
     this.translateRequest();
     this.filterPropListener();
-    // this.isReachToMaxListener();
-    // this.activeProgressBar();
+    this.isReachToMaxListener();
+    this.activeProgressBar();
   }
 
   private translateRequest() {
@@ -99,42 +101,41 @@ export class ShopPackageManagementService {
     );
   }
 
-  // private activeProgressBar() {
-  //   this.progressBar$ = this.packages$.pipe(
-  //     combineLatestWith(this.plan$),
-  //     switchMap(([service, plan]: [ShopPackageDocumentType[], PlanConfigurationType | null]) => {
-  //       if (plan !== null) {
-  //         return of({
-  //           current: service.length,
-  //           max: plan.limitedPackage,
-  //           title: 'label.title.maximumactivepackages',
-  //           indeterminate: false,
-  //         });
-  //       } else {
-  //         return of({
-  //           current: 0,
-  //           max: 0,
-  //           title: 'label.title.maximumactivepackages',
-  //           indeterminate: false,
-  //         });
-  //       }
-  //     })
-  //   );
-  // }
+  private activeProgressBar() {
+    this.progressBar$ = this.packages$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      switchMap(([service, capacity]: [ShopPackageDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          return of({
+            current: service.length,
+            max: capacity.limitedPackage,
+            title: 'label.title.maximumactivepackages',
+            indeterminate: false,
+          });
+        } else {
+          return of({
+            current: 0,
+            max: 0,
+            title: 'label.title.maximumactivepackages',
+            indeterminate: false,
+          });
+        }
+      })
+    );
+  }
 
-  // private isReachToMaxListener() {
-  //   this.isReachToMax$ = this.packages$.pipe(
-  //     combineLatestWith(this.plan$),
-  //     map(([packages, plan]: [ShopPackageDocumentType[], PlanConfigurationType | null]) => {
-  //       if (plan !== null) {
-  //         const isMaxReached = packages.length > plan.limitedPackage;
-  //         return isMaxReached;
-  //       } else {
-  //         return false;
-  //       }
-  //     })
-  //   );
-  // }
+  private isReachToMaxListener() {
+    this.isReachToMax$ = this.packages$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      map(([packages, capacity]: [ShopPackageDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          return packages.length > capacity.limitedPackage;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
 
   public async isAuthorisedRole() {
     return await this._shop.role.isReceptionistAccess();

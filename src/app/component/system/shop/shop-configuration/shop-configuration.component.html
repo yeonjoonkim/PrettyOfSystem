@@ -41,9 +41,9 @@
         id="subscription-btn"
         kendoButton
         [toggleable]="true"
-        (click)="onClickSubscription()"
-        [(selected)]="display.subscription">
-        {{ 'label.title.subscription' | languageTransform: 'System' | async }}
+        (click)="onClickCapacity()"
+        [(selected)]="display.capacity">
+        {{ 'label.title.capacity' | languageTransform: 'System' | async }}
       </button>
     </kendo-buttongroup>
 
@@ -167,6 +167,95 @@
           </time-zone>
         </flex-col-item>
       </flex-col>
+    </div>
+
+    <!--Capacity -->
+    <div *ngIf="display.capacity" id="capcity">
+      <flex-col>
+        <flex-col-item>
+          <name-value-pair-single-dropdown-selection
+            [(selected)]="selectedCapacityNamePairValue"
+            [selection]="capacitiesSelectionList"
+            [isRequired]="true"
+            [isRequiredTitle]="false"
+            (selectedChange)="onChangeCapacity()"></name-value-pair-single-dropdown-selection>
+        </flex-col-item>
+      </flex-col>
+
+      <flex-row *ngIf="selectedCapacity">
+        <flex-row-item>
+          <div id="premium-capcity">
+            <kendo-label text="{{ 'label.title.premium' | languageTransform: 'System' | async }}">
+              <input kendoCheckBox type="checkbox" [disabled]="true" [(ngModel)]="selectedCapacity.isPremium" />
+            </kendo-label>
+          </div>
+          <div id="test-capcity">
+            <kendo-label text="{{ 'label.title.test' | languageTransform: 'System' | async }}">
+              <input kendoCheckBox type="checkbox" [disabled]="true" [(ngModel)]="selectedCapacity.isTest" />
+            </kendo-label>
+          </div>
+        </flex-row-item>
+      </flex-row>
+
+      <flex-row *ngIf="selectedCapacity">
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.user' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedUser"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </flex-row-item>
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.coupon' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedCoupon"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </flex-row-item>
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.package' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedPackage"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="form.readOnly"></kendo-numerictextbox>
+        </flex-row-item>
+      </flex-row>
+
+      <flex-row *ngIf="selectedCapacity">
+        <flex-col-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.service' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedService"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </flex-col-item>
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.extra' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedExtra"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </flex-row-item>
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.product' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedProduct"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </flex-row-item>
+      </flex-row>
     </div>
   </form-container>
 </ion-content>

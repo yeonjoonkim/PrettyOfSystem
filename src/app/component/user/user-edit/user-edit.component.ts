@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { IFormHeaderModalProp, IUser, NameValuePairType } from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
@@ -68,7 +68,9 @@ export class UserEditComponent implements OnInit, DoCheck {
       (this.validator.email || !this.hasRole);
 
     if (this.user.loginOption.email) {
-      validation = this.resetPassword ? validation && this.validator.password : validation;
+      validation = this.resetPassword
+        ? validation && this.validator.password && this.validator.email
+        : validation && this.validator.email;
       if (!this.validator.password) {
         this._encryptedPassword = '';
       }
@@ -102,6 +104,10 @@ export class UserEditComponent implements OnInit, DoCheck {
     const user: IUser | undefined = this._navParams.get('user');
     const role = await firstValueFrom(this._user.currentRole$);
     if (form !== undefined && shopSelection !== undefined && user !== undefined) {
+      this.hasRole = role !== null;
+      if (this.hasRole) {
+        this.pages.push({ name: 'label.title.associatedshop', value: 'page2' });
+      }
       this.form = form
         ? form
         : {
@@ -115,11 +121,7 @@ export class UserEditComponent implements OnInit, DoCheck {
       this.shopSelection = shopSelection;
       this.loading = false;
       this._previousLanguage = this.user.setting.preferLanguage;
-      this.hasRole = role !== null;
-      if (this.hasRole) {
-        this.pages.push({ name: 'label.title.associatedshop', value: 'page2' });
-      }
-      this.pages.push({ name: 'label.title.preference', value: 'page3' });
+      console.log(this.hasRole);
       this.handleEnabledSaveBtn();
     }
   }

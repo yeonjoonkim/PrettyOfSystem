@@ -28,7 +28,12 @@ export const getChangeAction = function (c: I.OnChangeShopType) {
 };
 
 const isPreimum = async function (after: I.ShopConfigurationType) {
-  return true;
+  if (after?.capacityId !== undefined && after?.capacityId !== null) {
+    const capacity = await Repository.System.Capacity.getSelectedCapacity(after.capacityId);
+    return capacity !== null ? capacity.isPremium : false;
+  } else {
+    return true;
+  }
 };
 
 const isTranslatedRequestChange = function (before: I.ShopConfigurationType, after: I.ShopConfigurationType) {

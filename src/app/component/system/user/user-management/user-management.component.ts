@@ -27,7 +27,7 @@ export class UserManagementComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.refresh();
+    await this.loadingCriteria();
   }
 
   public async onClickCreateSystemAdmin() {

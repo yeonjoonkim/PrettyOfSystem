@@ -8,6 +8,7 @@ export interface ISystemMenuOptionAction {
   isRoleManagement: boolean;
   //Shop
   isShopManagement: boolean;
+  isShopCapacityManagement: boolean;
   //User
   isUserManagement: boolean;
   //Language
@@ -46,8 +47,9 @@ export class SystemMenuOptionControllerService {
   /**Used in page/system/shop */
   public async getSystemShopButtons(): Promise<ISystemMenuOptionAction[]> {
     let shopManagement = await this.getShopManagementOption();
+    let option = await this.getShopCapacity();
 
-    return [shopManagement];
+    return [shopManagement, option];
   }
 
   /**Used in page/system/user */
@@ -110,6 +112,14 @@ export class SystemMenuOptionControllerService {
     return controller;
   }
 
+  private async getShopCapacity() {
+    let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
+    controller.name = await this.language.transform('label.title.capacity');
+    controller.isShopCapacityManagement = true;
+
+    return controller;
+  }
+
   private async getUserManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this._menuOption.userManagement);
@@ -126,6 +136,7 @@ export class SystemMenuOptionControllerService {
       isRoleManagement: false,
       //Shop
       isShopManagement: false,
+      isShopCapacityManagement: false,
       //User
       isUserManagement: false,
       //Language

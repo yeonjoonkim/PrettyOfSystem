@@ -3,6 +3,7 @@ import { Observable, combineLatestWith, map, of, switchMap } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
+  ShopCapacityType,
   ShopConfigurationType,
   ShopCouponDocumentType,
   ShopLimitedProgpressBarType,
@@ -40,8 +41,8 @@ export class ShopCouponManagementService {
     this.serviceFilter$ = this._shop.serviceFilter$;
     this.coupons$ = this._shop.coupons$;
     this.translateRequest();
-    // this.progressBar();
-    // this.isReachToMax();
+    this.progressBar();
+    this.isReachToMax();
   }
 
   private translateRequest() {
@@ -60,41 +61,41 @@ export class ShopCouponManagementService {
     );
   }
 
-  // private progressBar() {
-  //   this.progressBar$ = this.coupons$.pipe(
-  //     combineLatestWith(this.plan$),
-  //     switchMap(([service, plan]: [ShopCouponDocumentType[], PlanConfigurationType | null]) => {
-  //       if (plan !== null) {
-  //         return of({
-  //           current: service.length,
-  //           max: plan.limitedCoupon,
-  //           title: 'label.title.maximumactivecoupons',
-  //           indeterminate: false,
-  //         });
-  //       } else {
-  //         return of({
-  //           current: 0,
-  //           max: 0,
-  //           title: 'label.title.maximumactivecoupons',
-  //           indeterminate: false,
-  //         });
-  //       }
-  //     })
-  //   );
-  // }
+  private progressBar() {
+    this.progressBar$ = this.coupons$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      switchMap(([service, capacity]: [ShopCouponDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          return of({
+            current: service.length,
+            max: capacity.limitedCoupon,
+            title: 'label.title.maximumactivecoupons',
+            indeterminate: false,
+          });
+        } else {
+          return of({
+            current: 0,
+            max: 0,
+            title: 'label.title.maximumactivecoupons',
+            indeterminate: false,
+          });
+        }
+      })
+    );
+  }
 
-  // private isReachToMax() {
-  //   this.isReachToMax$ = this.coupons$.pipe(
-  //     combineLatestWith(this.plan$),
-  //     map(([coupons, plan]: [ShopCouponDocumentType[], PlanConfigurationType | null]) => {
-  //       if (plan !== null) {
-  //         return coupons.length > plan.limitedCoupon;
-  //       } else {
-  //         return false;
-  //       }
-  //     })
-  //   );
-  // }
+  private isReachToMax() {
+    this.isReachToMax$ = this.coupons$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      map(([coupons, capacity]: [ShopCouponDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          return coupons.length > capacity.limitedCoupon;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
 
   public async isAuthorisedRole() {
     return await this._shop.role.isReceptionistAccess();

@@ -3,6 +3,7 @@ import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
   RoleConfigurationType,
+  ShopCapacityType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
   ShopExtraDocumentType,
@@ -54,8 +55,8 @@ export class ShopServiceManagementService {
     this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
     this.extraFilter$ = this._shop.extraFilter$;
     this.translateRequest();
-    // this.isReachToMaxListener();
-    // this.activeProgressBar();
+    this.isReachToMaxListener();
+    this.activeProgressBar();
   }
 
   private translateRequest() {
@@ -74,42 +75,42 @@ export class ShopServiceManagementService {
     );
   }
 
-  // private isReachToMaxListener() {
-  //   this.isReachToMax$ = this.service$.pipe(
-  //     combineLatestWith(this.shopPlan$),
-  //     map(([packages, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
-  //       if (plan !== null) {
-  //         const isMaxReached = packages.length > plan.limitedService;
-  //         return isMaxReached;
-  //       } else {
-  //         return false;
-  //       }
-  //     })
-  //   );
-  // }
+  private isReachToMaxListener() {
+    this.isReachToMax$ = this.service$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      map(([packages, capacity]: [ShopServiceDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          const isMaxReached = packages.length > capacity.limitedService;
+          return isMaxReached;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
 
-  // private activeProgressBar() {
-  //   this.progressBar$ = this.service$.pipe(
-  //     combineLatestWith(this.shopPlan$),
-  //     switchMap(([service, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
-  //       if (plan !== null) {
-  //         return of({
-  //           current: service.length,
-  //           max: plan.limitedService,
-  //           title: 'label.title.maximumactiveservices',
-  //           indeterminate: false,
-  //         });
-  //       } else {
-  //         return of({
-  //           current: 0,
-  //           max: 0,
-  //           title: 'label.title.maximumactiveservices',
-  //           indeterminate: false,
-  //         });
-  //       }
-  //     })
-  //   );
-  // }
+  private activeProgressBar() {
+    this.progressBar$ = this.service$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      switchMap(([service, capacity]: [ShopServiceDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          return of({
+            current: service.length,
+            max: capacity.limitedService,
+            title: 'label.title.maximumactiveservices',
+            indeterminate: false,
+          });
+        } else {
+          return of({
+            current: 0,
+            max: 0,
+            title: 'label.title.maximumactiveservices',
+            indeterminate: false,
+          });
+        }
+      })
+    );
+  }
 
   public async add(service: ShopServiceDocumentType) {
     await this.loading.start('label.title.addnewservice');

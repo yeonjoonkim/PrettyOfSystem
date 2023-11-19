@@ -13,15 +13,17 @@ export type ShopCategoryType = {
   name: string;
 };
 
-export type ShopOptionType = {
+export type ShopCapacityType = {
   id: string;
+  name: string;
+  isPremium: boolean;
+  isTest: boolean;
   limitedPackage: number;
   limitedService: number;
   limitedCoupon: number;
   limitedExtra: number;
   limitedProduct: number;
   limitedUser: number;
-  isPremium: boolean;
 };
 
 export type ShopCountryType = {
@@ -75,6 +77,7 @@ export interface ShopConfigurationType {
   activeTo: string | null;
   setting: IShopSetting;
   timezone: string;
+  capacityId: string;
 }
 
 export type ShopConfigurationLanguagePackageType = {

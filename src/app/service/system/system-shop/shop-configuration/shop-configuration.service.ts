@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DatePeriodType, IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
+import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import {
   ShopCategoryType,
   ShopConfigurationType,
@@ -14,6 +14,7 @@ import { SystemShopWorkHoursService } from '../system-shop-work-hours/system-sho
 import { ModalController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { IShopSetting } from 'src/app/interface';
+import { SystemShopCapacityRepositoryService } from 'src/app/firebase/system-repository/system-shop-capacity/system-shop-capacity-repository.service';
 export interface ShopConfigurationTypeValidator {
   name: boolean;
   email: boolean;
@@ -25,11 +26,12 @@ export interface ShopConfigurationTypeValidator {
   timeZone: boolean;
   workHours: boolean;
   planPeriod: boolean;
+  capacity: boolean;
 }
 export interface ShopConfigurationTypeDisplayOption {
   info: boolean;
   address: boolean;
-  subscription: boolean;
+  capacity: boolean;
   workHours: boolean;
 }
 @Injectable({
@@ -38,7 +40,7 @@ export interface ShopConfigurationTypeDisplayOption {
 export class ShopConfigurationService {
   constructor(
     public global: GlobalService,
-    private _systemShop: SystemShopService,
+    public capcacityReo: SystemShopCapacityRepositoryService,
     private _modalCtrl: ModalController,
     private _systemShopConfigRepo: SystemShopConfigurationRepositoryService,
     private _systemWorkHoursService: SystemShopWorkHoursService
@@ -118,6 +120,7 @@ export class ShopConfigurationService {
       activeFrom: this.global.date.shopTimeStamp(null),
       activeTo: null,
       translatedRequestIds: [],
+      capacityId: '',
     };
   }
 
@@ -161,7 +164,8 @@ export class ShopConfigurationService {
       validator.country &&
       validator.timeZone &&
       validator.workHours &&
-      validator.planPeriod
+      validator.planPeriod &&
+      validator.capacity
     );
   }
 
@@ -169,7 +173,7 @@ export class ShopConfigurationService {
     return {
       info: true,
       address: false,
-      subscription: false,
+      capacity: false,
       workHours: false,
     };
   }
@@ -186,6 +190,7 @@ export class ShopConfigurationService {
       timeZone: false,
       workHours: false,
       planPeriod: false,
+      capacity: false,
     };
   }
 
@@ -201,6 +206,7 @@ export class ShopConfigurationService {
       timeZone: true,
       workHours: true,
       planPeriod: true,
+      capacity: true,
     };
   }
 
@@ -208,7 +214,7 @@ export class ShopConfigurationService {
     return {
       info: true,
       address: false,
-      subscription: false,
+      capacity: false,
       workHours: false,
     };
   }
@@ -217,16 +223,16 @@ export class ShopConfigurationService {
     return {
       info: false,
       address: true,
-      subscription: false,
+      capacity: false,
       workHours: false,
     };
   }
 
-  public displaySubscription(): ShopConfigurationTypeDisplayOption {
+  public displayCapacity(): ShopConfigurationTypeDisplayOption {
     return {
       info: false,
       address: false,
-      subscription: true,
+      capacity: true,
       workHours: false,
     };
   }
@@ -235,7 +241,7 @@ export class ShopConfigurationService {
     return {
       info: false,
       address: false,
-      subscription: false,
+      capacity: false,
       workHours: true,
     };
   }

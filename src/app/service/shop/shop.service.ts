@@ -4,6 +4,7 @@ import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
   RoleConfigurationType,
+  ShopCapacityType,
   ShopConfigurationType,
   ShopCouponDocumentType,
   ShopEmployeeManagementUserType,
@@ -22,6 +23,7 @@ import { ShopPackageRepositoryService } from 'src/app/firebase/shop-repository/s
 import { ShopCouponRepositoryService } from 'src/app/firebase/shop-repository/shop-coupon-repository/shop-coupon-repository.service';
 import { ShopPictureRepositoryService } from 'src/app/firebase/shop-repository/shop-picture-repository/shop-picture-repository.service';
 import { SystemLanguageManagementService } from '../global/language/system-language-management/system-language-management.service';
+import { SystemShopCapacityRepositoryService } from 'src/app/firebase/system-repository/system-shop-capacity/system-shop-capacity-repository.service';
 import * as Constant from 'src/app/constant/constant';
 import { DateService } from '../global/date/date.service';
 @Injectable({
@@ -30,6 +32,7 @@ import { DateService } from '../global/date/date.service';
 export class ShopService {
   public role$!: Observable<RoleConfigurationType | null>;
   public config$!: Observable<ShopConfigurationType | null>;
+  public capacity$!: Observable<ShopCapacityType | null>;
   public timezone$!: Observable<string | null>;
   public translatedRequests$!: Observable<ChatGptTranslateDocumentType[]>;
   public services$!: Observable<ShopServiceDocumentType[]>;
@@ -63,12 +66,14 @@ export class ShopService {
     private _couponRepo: ShopCouponRepositoryService,
     private _pictureRepo: ShopPictureRepositoryService,
     private _systemLanguage: SystemLanguageManagementService,
+    private _capacity: SystemShopCapacityRepositoryService,
     private _date: DateService
   ) {
     this.userName$ = this._user.employeName$;
     this.config$ = this._user.currentShopConfig$;
     this.role$ = this._user.currentRole$;
     this.translatedRequests$ = this.translated.translatedRequest$;
+    this.capacityListener();
     this.timezoneListener();
     this.associatedUserListener();
     this.shopServiceListener();
@@ -312,6 +317,18 @@ export class ShopService {
     );
   }
 
+  private capacityListener() {
+    this.capacity$ = this.config$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return this._capacity.capacityListener(config.capacityId);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
   private servicePriceListListener() {
     this.servicePriceList$ = combineLatest([this.config$, this.services$]).pipe(
       map(([config, servcies]) => {
@@ -382,19 +399,4 @@ export class ShopService {
     const timezone = await this.timezone();
     return this._date.shopTimeStamp(timezone);
   }
-
-  // public async isReachToMaxPackage() {
-  //   const plan = await this.plan();
-  //   const packages = await firstValueFrom(this.packages$);
-  //   if (plan !== null) {
-  //     return plan.limitedPackage > packages.length;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // public async isPreimum() {
-  //   const plan = await this.plan();
-  //   return plan !== null ? plan.isPremium : false;
-  // }
 }

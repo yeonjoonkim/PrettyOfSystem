@@ -1,0 +1,109 @@
+<div *ngIf="capacities" id="shop-capacity-list">
+  <legend>
+    {{ 'label.title.capacity' | languageTransform: 'System' | async }}
+  </legend>
+
+  <kendo-grid
+    [kendoGridBinding]="capacities"
+    [height]="500"
+    [sortable]="true"
+    [autoSize]="true"
+    scrollable="virtual">
+    <!-- Add Button -->
+    <ng-template kendoGridToolbarTemplate>
+      <button kendoGridAddCommand (click)="onClickAdd()">
+        {{ 'button.title.add' | languageTransform: 'System' | async }}
+      </button>
+    </ng-template>
+
+    <!-- Name -->
+    <kendo-grid-column
+      title="{{ 'label.title.name' | languageTransform: 'System' | async }}"
+      [filterable]="true"
+      [width]="90"
+      media="(min-width: 200px)"
+      field="name">
+    </kendo-grid-column>
+
+    <!-- Premium -->
+    <kendo-grid-column
+      title="{{ 'label.title.premium' | languageTransform: 'System' | async }}"
+      [filterable]="true"
+      [width]="50"
+      media="(min-width: 300px)"
+      field="isPremium">
+      <ng-template kendoGridCellTemplate let-capacity>
+        <input kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="capacity.isPremium" />
+      </ng-template>
+    </kendo-grid-column>
+
+    <!-- Test -->
+    <kendo-grid-column
+      title="{{ 'label.title.test' | languageTransform: 'System' | async }}"
+      [filterable]="true"
+      [width]="50"
+      media="(min-width: 300px)"
+      field="isTest">
+      <ng-template kendoGridCellTemplate let-capacity>
+        <input kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="capacity.isTest" />
+      </ng-template>
+    </kendo-grid-column>
+
+    <!-- Coupon -->
+    <kendo-grid-column
+      title="{{ 'label.title.user' | languageTransform: 'System' | async }}"
+      [filterable]="true"
+      [width]="50"
+      media="(min-width: 300px)"
+      field="limitedUser">
+    </kendo-grid-column>
+
+    <!-- Coupon -->
+    <kendo-grid-column
+      title="{{ 'label.title.coupon' | languageTransform: 'System' | async }}"
+      [filterable]="true"
+      [width]="50"
+      media="(min-width: 450px)"
+      field="limitedCoupon">
+    </kendo-grid-column>
+
+    <!-- Pacakge -->
+    <kendo-grid-column
+      title="{{ 'label.title.package' | languageTransform: 'System' | async }}"
+      [filterable]="true"
+      [width]="50"
+      media="(min-width: 450px)"
+      field="limitedPackage">
+    </kendo-grid-column>
+
+    <!-- Service -->
+    <kendo-grid-column
+      title="{{ 'label.title.service' | languageTransform: 'System' | async }}"
+      [filterable]="true"
+      [width]="50"
+      media="(min-width: 500px)"
+      field="limitedService">
+    </kendo-grid-column>
+
+    <!-- Extra -->
+    <kendo-grid-column
+      title="{{ 'label.title.extra' | languageTransform: 'System' | async }}"
+      [filterable]="true"
+      [width]="50"
+      media="(min-width: 550px)"
+      field="limitedExtra">
+    </kendo-grid-column>
+
+    <!-- Extra -->
+    <kendo-grid-column
+      title="{{ 'label.title.product' | languageTransform: 'System' | async }}"
+      [filterable]="true"
+      [width]="50"
+      media="(min-width: 600px)"
+      field="limitedProduct">
+    </kendo-grid-column>
+
+    <!-- NO Data-->
+    <ng-template kendoGridNoRecordsTemplate></ng-template>
+  </kendo-grid>
+</div>

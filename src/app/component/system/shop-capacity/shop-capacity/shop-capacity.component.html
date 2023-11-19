@@ -1,0 +1,118 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  (onClickDismiss)="dismiss()"
+  (onClickCreate)="handleCreate()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()"
+  (onClickDelete)="handleDelete()">
+</form-header>
+
+<ion-content [scrollable]="true" *ngIf="type">
+  <flex-col class="modal-container">
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          title="label.title.name"
+          [isRequired]="true"
+          [min]="4"
+          [max]="100"
+          [(value)]="type.name"
+          [readOnly]="form.readOnly"
+          (valueChange)="handleEnabledSaveBtn()"></text-box>
+      </flex-row-item>
+      <flex-row-item>
+        <div id="premium">
+          <kendo-label text="{{ 'label.title.premium' | languageTransform: 'System' | async }}">
+            <input
+              kendoCheckBox
+              type="checkbox"
+              [disabled]="form.readOnly"
+              [(ngModel)]="type.isPremium"
+              (ngModelChange)="handleEnabledSaveBtn()" />
+          </kendo-label>
+        </div>
+        <div id="test" *ngIf="isSystemAdmin">
+          <kendo-label text="{{ 'label.title.test' | languageTransform: 'System' | async }}">
+            <input
+              kendoCheckBox
+              type="checkbox"
+              [disabled]="form.readOnly"
+              [(ngModel)]="type.isTest"
+              (ngModelChange)="handleEnabledSaveBtn()" />
+          </kendo-label>
+        </div>
+      </flex-row-item>
+    </flex-row>
+
+    <flex-row>
+      <flex-row-item>
+        <kendo-label text="{{ 'label.title.user' | languageTransform: 'System' | async }}"></kendo-label>
+        <kendo-numerictextbox
+          [(value)]="type.limitedUser"
+          (valueChange)="onUserChange()"
+          [decimals]="0"
+          [min]="0"
+          [spinners]="false"
+          [readonly]="form.readOnly"></kendo-numerictextbox>
+      </flex-row-item>
+      <flex-row-item>
+        <kendo-label text="{{ 'label.title.coupon' | languageTransform: 'System' | async }}"></kendo-label>
+        <kendo-numerictextbox
+          [(value)]="type.limitedCoupon"
+          (valueChange)="onCouponChange()"
+          [decimals]="0"
+          [min]="0"
+          [spinners]="false"
+          [readonly]="form.readOnly"></kendo-numerictextbox>
+      </flex-row-item>
+    </flex-row>
+
+    <flex-row>
+      <flex-row-item>
+        <kendo-label text="{{ 'label.title.package' | languageTransform: 'System' | async }}"></kendo-label>
+        <kendo-numerictextbox
+          [(value)]="type.limitedPackage"
+          (valueChange)="onPackageChange()"
+          [decimals]="0"
+          [min]="0"
+          [spinners]="false"
+          [readonly]="form.readOnly"></kendo-numerictextbox>
+      </flex-row-item>
+      <flex-col-item>
+        <kendo-label text="{{ 'label.title.service' | languageTransform: 'System' | async }}"></kendo-label>
+        <kendo-numerictextbox
+          [(value)]="type.limitedService"
+          (valueChange)="onServiceChange()"
+          [decimals]="0"
+          [min]="0"
+          [spinners]="false"
+          [readonly]="form.readOnly"></kendo-numerictextbox>
+      </flex-col-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <kendo-label text="{{ 'label.title.extra' | languageTransform: 'System' | async }}"></kendo-label>
+        <kendo-numerictextbox
+          [(value)]="type.limitedExtra"
+          (valueChange)="onExtraChange()"
+          [decimals]="0"
+          [min]="0"
+          [spinners]="false"
+          [readonly]="form.readOnly"></kendo-numerictextbox>
+      </flex-row-item>
+      <flex-row-item>
+        <kendo-label text="{{ 'label.title.product' | languageTransform: 'System' | async }}"></kendo-label>
+        <kendo-numerictextbox
+          [(value)]="type.limitedProduct"
+          (valueChange)="onProductChange()"
+          [decimals]="0"
+          [min]="0"
+          [spinners]="false"
+          [readonly]="form.readOnly"></kendo-numerictextbox>
+      </flex-row-item>
+    </flex-row>
+  </flex-col>
+</ion-content>

@@ -9,7 +9,7 @@
     (onClickEdit)="handleEdit()"
     (onClickSave)="handleSave()"></form-header>
 </ion-toolbar>
-<ion-content>
+<ion-content *ngIf="user">
   <!-- Page Button -->
   <flex-col>
     <kendo-buttongroup selection="single" width="100%" *ngIf="user.associatedShops.length > 0">

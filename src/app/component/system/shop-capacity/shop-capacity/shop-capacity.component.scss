@@ -1,0 +1,17 @@
+flex-col-item {
+  display: flex;
+  flex-direction: column;
+}
+
+kendo-numerictextbox {
+  height: 32px;
+  margin: 0;
+  margin-top: 16px;
+  margin-bottom: 15px;
+}
+
+#premium,
+#test {
+  display: flex;
+  justify-content: flex-end;
+}
