@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
-import { CellClickEvent } from '@progress/kendo-angular-grid';
-import {
-  PairKeyValueType,
-  NameValuePairType,
-  PairNameValueTypeFilterParamType,
-} from 'src/app/interface';
+import { PairKeyValueType, NameValuePairType, PairNameValueTypeFilterParamType } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
@@ -56,9 +51,7 @@ export class NameValuePairSingleDropdownlistComponent implements OnInit {
   public onQueryChange() {
     const queryParam: string = this.query.toLowerCase();
 
-    const english = this._defaultLanguageKeyPairValue.filter(eng =>
-      eng.value.toLowerCase().includes(queryParam)
-    );
+    const english = this._defaultLanguageKeyPairValue.filter(eng => eng.value.toLowerCase().includes(queryParam));
     const queryResult: NameValuePairType[] = this.queryParamList
       .map(param => {
         let eng = english.find(eng => eng.key === param.name);

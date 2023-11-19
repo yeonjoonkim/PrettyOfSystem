@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ILanguageKey,
-  LanguageSelectionType,
-} from 'src/app/interface/system/language/language.interface';
+import { ILanguageKey, LanguageSelectionType } from 'src/app/interface/system/language/language.interface';
 import { NameValuePairType, PairKeyValueType } from 'src/app/interface/global/global.interface';
 import { LanguagePackageService } from 'src/app/service/global/language-package/language-package.service';
 import { LanguageService } from 'src/app/service/global/language/language.service';
@@ -40,13 +37,9 @@ export class SystemLanguageService {
   }
 
   public async getSelectedLanguageKeyPairValueList(code: string): Promise<PairKeyValueType[]> {
-    let selectedLang: LanguageSelectionType =
-      await this._language.management.storage.getSelectedSelection(code);
+    let selectedLang: LanguageSelectionType = await this._language.management.storage.getSelectedSelection(code);
     let key: ILanguageKey = await this._language.management.storage.getKey();
-    let result: PairKeyValueType[] = this._languagePackage.getKeyPairValue(
-      key?.used,
-      selectedLang?.package
-    );
+    let result: PairKeyValueType[] = this._languagePackage.getKeyPairValue(key?.used, selectedLang?.package);
 
     return result;
   }

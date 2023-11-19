@@ -9,6 +9,7 @@
   <!-- Name -->
   <kendo-grid-column
     [sortable]="true"
+    class="name"
     field="titleProp"
     title="{{ 'label.title.name' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-coupon>
@@ -27,15 +28,24 @@
     </ng-template>
   </kendo-grid-column>
 
+  <!-- Number of Coupon -->
+  <kendo-grid-column
+    [sortable]="true"
+    field="numOfCoupon"
+    title="{{ 'label.title.numberofcoupon' | languageTransform: 'System' | async }}">
+    <ng-template kendoGridCellTemplate let-coupon>
+      <p>{{ coupon.numOfCoupon }}</p>
+    </ng-template>
+  </kendo-grid-column>
+
   <!-- Original Price -->
   <kendo-grid-column
-    id="original-price"
-    *ngIf="!device.deviceType.isMobile"
+    media="(min-width: 490px)"
     [sortable]="true"
     field="originalPrice"
     title="{{ 'label.title.originalprice' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-coupon>
-      <p>${{ coupon.originalPrice }}</p>
+      <p>{{ coupon.originalPrice | currencyTransform }}</p>
     </ng-template>
   </kendo-grid-column>
 
@@ -45,51 +55,37 @@
     field="discountPrice"
     title="{{ 'label.title.discountedprice' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-coupon>
-      <p>${{ coupon.discountPrice }}</p>
+      <p>{{ coupon.discountPrice | currencyTransform }}</p>
     </ng-template>
   </kendo-grid-column>
 
-  <!-- Number of Coupon -->
+  <!-- Discount Percent -->
   <kendo-grid-column
+    media="(min-width: 580px)"
     [sortable]="true"
-    field="numOfCoupon"
-    title="{{ 'label.title.coupon' | languageTransform: 'System' | async }}">
+    field="discount.value"
+    title="{{ 'label.title.discountpercent' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-coupon>
-      <p>{{ coupon.numOfCoupon }}</p>
+      <p>{{ coupon.discount.value | percentTransform }}</p>
     </ng-template>
   </kendo-grid-column>
 
   <!-- expired Month -->
   <kendo-grid-column
-    id="expiry-month"
-    *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="expiryMonth"
-    title="{{ 'label.title.expiryMonth' | languageTransform: 'System' | async }}">
+    title="{{ 'label.title.expirationperiod' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-coupon>
-      <p>{{ coupon.expiryMonth }}</p>
+      <p>{{ coupon.expiryMonth }}{{ 'label.title.periodmonths' | languageTransform: 'System' | async }}</p>
     </ng-template>
   </kendo-grid-column>
 
-  <!-- Service Price -->
+  <!-- Min -->
   <kendo-grid-column
-    id="service-price"
-    *ngIf="!device.deviceType.isMobile"
-    [sortable]="true"
-    field="option.price"
-    title="{{ 'label.title.serviceprice' | languageTransform: 'System' | async }}">
-    <ng-template kendoGridCellTemplate let-coupon>
-      <p>${{ coupon.option.price }}</p>
-    </ng-template>
-  </kendo-grid-column>
-
-  <!-- Service Min -->
-  <kendo-grid-column
-    id="service-min"
-    *ngIf="!device.deviceType.isMobile"
+    media="(min-width: 670px)"
     [sortable]="true"
     field="option.min"
-    title="{{ 'label.title.servicemin' | languageTransform: 'System' | async }}">
+    title="{{ 'label.title.minute' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-coupon>
       <p>{{ coupon.option.min }}</p>
     </ng-template>

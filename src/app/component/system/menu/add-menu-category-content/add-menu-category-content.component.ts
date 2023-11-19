@@ -84,16 +84,12 @@ export class AddMenuCategoryContentComponent implements OnInit {
     let isDescriptionError: boolean = this.categoryContent.description.length === 0;
 
     if (isIconError) {
-      let iconError: string = await this._global.language.transform(
-        'messageerror.description.invaildicon'
-      );
+      let iconError: string = await this._global.language.transform('messageerror.description.invaildicon');
       await this._global.toast.presentError(iconError);
     }
 
     if (isDescriptionError) {
-      let description: string = await this._global.language.transform(
-        'messageerror.description.descriptionfield'
-      );
+      let description: string = await this._global.language.transform('messageerror.description.descriptionfield');
       await this._global.toast.presentError(description);
     }
   }

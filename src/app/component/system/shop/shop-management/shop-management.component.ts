@@ -3,7 +3,6 @@ import { CellClickEvent } from '@progress/kendo-angular-grid';
 import { lastValueFrom } from 'rxjs';
 import { ShopConfigurationType } from 'src/app/interface/shop/shop.interface';
 import { SystemShopService } from 'src/app/service/system/system-shop/system-shop.service';
-import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
 
 @Component({
   selector: 'system-shop-management',
@@ -14,10 +13,7 @@ export class ShopManagementComponent implements OnInit, OnDestroy {
   public configs: ShopConfigurationType[] = [];
   private _selectedConfig!: ShopConfigurationType;
   private _isModalOpen: boolean = false;
-  constructor(
-    public device: DeviceWidthService,
-    private _systemShop: SystemShopService
-  ) {}
+  constructor(private _systemShop: SystemShopService) {}
 
   async ngOnInit() {
     await this.setConfigs();

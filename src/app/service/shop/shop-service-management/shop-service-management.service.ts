@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
-  PlanConfigurationType,
   RoleConfigurationType,
+  ShopCapacityType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
   ShopExtraDocumentType,
@@ -29,7 +29,6 @@ export class ShopServiceManagementService {
   public currentRole$!: Observable<RoleConfigurationType | null>;
   public service$!: Observable<ShopServiceDocumentType[]>;
   public extra$!: Observable<ShopExtraDocumentType[]>;
-  public shopPlan$!: Observable<PlanConfigurationType | null>;
   public employeName$!: Observable<string>;
   public specialisedEmployees$!: Observable<NameValuePairType[]>;
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
@@ -50,29 +49,14 @@ export class ShopServiceManagementService {
     this.currentShopConfig$ = this._shop.config$;
     this.shopEmp$ = this._shop.employees$;
     this.currentRole$ = this._shop.role$;
-    this.shopPlan$ = this._shop.plan$;
     this.employeName$ = this._shop.userName$;
     this.extra$ = this._shop.extras$;
     this.service$ = this._shop.services$;
     this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
     this.extraFilter$ = this._shop.extraFilter$;
+    this.translateRequest();
     this.isReachToMaxListener();
     this.activeProgressBar();
-    this.translateRequest();
-  }
-
-  private isReachToMaxListener() {
-    this.isReachToMax$ = this.service$.pipe(
-      combineLatestWith(this.shopPlan$),
-      map(([packages, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
-          const isMaxReached = packages.length > plan.limitedService;
-          return isMaxReached;
-        } else {
-          return false;
-        }
-      })
-    );
   }
 
   private translateRequest() {
@@ -91,14 +75,28 @@ export class ShopServiceManagementService {
     );
   }
 
+  private isReachToMaxListener() {
+    this.isReachToMax$ = this.service$.pipe(
+      combineLatestWith(this._shop.capacity$),
+      map(([packages, capacity]: [ShopServiceDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          const isMaxReached = packages.length > capacity.limitedService;
+          return isMaxReached;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+
   private activeProgressBar() {
     this.progressBar$ = this.service$.pipe(
-      combineLatestWith(this.shopPlan$),
-      switchMap(([service, plan]: [ShopServiceDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
+      combineLatestWith(this._shop.capacity$),
+      switchMap(([service, capacity]: [ShopServiceDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
           return of({
             current: service.length,
-            max: plan.limitedService,
+            max: capacity.limitedService,
             title: 'label.title.maximumactiveservices',
             indeterminate: false,
           });
@@ -151,18 +149,33 @@ export class ShopServiceManagementService {
   }
 
   public async delete(service: ShopServiceDocumentType) {
+    const sleep = async (duration: number) => {
+      return new Promise(resolve => setTimeout(resolve, duration));
+    };
+
+    await this.loading.start('label.title.deleting');
     const deleteService = await this._shopServiceRepo.deleteService(service);
+    await sleep(1000);
+    await this.loading.end();
     return deleteService;
   }
 
   public async update(after: ShopServiceDocumentType) {
     after.titleProp = this._textTransform.getTitleFormat(after.titleProp);
     const empName = await this._shop.userName();
+    await this.loading.start('label.title.updating');
+    const sleep = async (duration: number) => {
+      return new Promise(resolve => setTimeout(resolve, duration));
+    };
     if (empName !== null) {
       after.lastModifiedEmployee = empName;
       after.lastModifiedDate = await this._shop.timeStamp();
-      return await this._shopServiceRepo.updateService(after);
+      const result = await this._shopServiceRepo.updateService(after);
+      await sleep(1000);
+      await this.loading.end();
+      return result;
     } else {
+      await this.loading.end();
       return false;
     }
   }

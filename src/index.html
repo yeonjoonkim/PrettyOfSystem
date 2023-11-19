@@ -21,10 +21,9 @@
       function onClick(e) {
         e.preventDefault();
         grecaptcha.enterprise.ready(async () => {
-          const token = await grecaptcha.enterprise.execute(
-            '6LcxQTkoAAAAAJDSrZQT9sFfGQGq1EoDFoZxPpor',
-            { action: 'LOGIN' }
-          );
+          const token = await grecaptcha.enterprise.execute('6LcxQTkoAAAAAJDSrZQT9sFfGQGq1EoDFoZxPpor', {
+            action: 'LOGIN',
+          });
         });
       }
     </script>

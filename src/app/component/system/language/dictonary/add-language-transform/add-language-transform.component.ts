@@ -45,7 +45,10 @@ export class AddLanguageTransformComponent implements OnInit {
     value: '',
   };
 
-  constructor(private _global: GlobalService, private _popOverCtrl: PopoverController) {}
+  constructor(
+    private _global: GlobalService,
+    private _popOverCtrl: PopoverController
+  ) {}
 
   ngOnInit() {}
 
@@ -67,8 +70,7 @@ export class AddLanguageTransformComponent implements OnInit {
   private setTransformKey() {
     const selectedComponent: string =
       this.selectedComponent?.value !== undefined ? this.selectedComponent?.value : '';
-    const selectedFormat: string =
-      this.selectedFormat?.value !== undefined ? this.selectedFormat?.value : '';
+    const selectedFormat: string = this.selectedFormat?.value !== undefined ? this.selectedFormat?.value : '';
     this.languageTransform.key = selectedComponent + selectedFormat + this.keyValue.toLowerCase();
     this.validator.name =
       this.languageTransform.key.split('.').length > 2 &&
@@ -82,19 +84,15 @@ export class AddLanguageTransformComponent implements OnInit {
 
   /**This will start, when user click save button */
   public async onClickSaveButton(): Promise<void> {
-    let validated: IAddLanguageTransformSaveCommand =
-      await this._global.language.validateNewKeyPairValue(this.languageTransform);
+    let validated: IAddLanguageTransformSaveCommand = await this._global.language.validateNewKeyPairValue(
+      this.languageTransform
+    );
 
     if (validated.hasValue && validated.isKeyNotExisted && validated.isTransformKeyValueFormat) {
-      let translateCriteria =
-        await this._global.language.management.translateCriteria.allLanguageCriteria(
-          this.languageTransform.key
-        );
-      let result = await this._global.languageTranslate.get(
-        this.languageTransform.value,
-        translateCriteria,
-        true
+      let translateCriteria = await this._global.language.management.translateCriteria.allLanguageCriteria(
+        this.languageTransform.key
       );
+      let result = await this._global.languageTranslate.get(this.languageTransform.value, translateCriteria, true);
       await this.updateLanguagePackage(result);
     }
   }

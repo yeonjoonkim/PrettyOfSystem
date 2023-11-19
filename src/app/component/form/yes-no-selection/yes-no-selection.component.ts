@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
-
 @Component({
   selector: 'yes-no-selection',
   templateUrl: './yes-no-selection.component.html',

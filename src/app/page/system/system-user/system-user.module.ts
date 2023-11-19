@@ -13,7 +13,7 @@ import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pi
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { UserManagementModule } from 'src/app/component/system/user/user-management/user-management.module';
-import { LoginOptionSelectionModule } from 'src/app/component/user/login-option-selection/login-option-selection.module';
+
 @NgModule({
   imports: [
     CommonModule,

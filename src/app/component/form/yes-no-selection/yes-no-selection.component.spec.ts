@@ -9,8 +9,8 @@ describe('YesNoSelectionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ YesNoSelectionComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [YesNoSelectionComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(YesNoSelectionComponent);

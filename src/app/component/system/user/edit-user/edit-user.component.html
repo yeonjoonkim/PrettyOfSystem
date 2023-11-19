@@ -120,10 +120,7 @@
       <kendo-grid [kendoGridBinding]="user.associatedShops" [height]="400">
         <!--Add-->
         <ng-template kendoGridToolbarTemplate>
-          <button
-            kendoGridAddCommand
-            (click)="onClickAddAssociatedShopRole($event)"
-            *ngIf="!form.readOnly">
+          <button kendoGridAddCommand (click)="onClickAddAssociatedShopRole($event)" *ngIf="!form.readOnly">
             {{ 'button.title.add' | languageTransform: 'System' | async }}
           </button>
         </ng-template>
@@ -136,9 +133,7 @@
             </ng-container>
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column
-          title="{{ 'label.title.role' | languageTransform: 'System' | async }}"
-          [width]="125">
+        <kendo-grid-column title="{{ 'label.title.role' | languageTransform: 'System' | async }}" [width]="125">
           <ng-template kendoGridCellTemplate let-shop>
             <name-value-pair-single-dropdown-selection
               (selectedChange)="onChangeAssociatedShopRole($event, shop)"

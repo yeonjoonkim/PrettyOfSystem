@@ -58,9 +58,7 @@ export class EditUserComponent implements OnInit {
 
   public async handleSave() {
     this.user.encryptedPassword =
-      this.user.loginOption.email && this.resetPassword
-        ? this._encryptedPassword
-        : this.user.encryptedPassword;
+      this.user.loginOption.email && this.resetPassword ? this._encryptedPassword : this.user.encryptedPassword;
     this.form.enabledSavebutton = false;
     const result = await this._systemAdmin.updateUser(this.user, this._paramUser);
 
@@ -97,10 +95,7 @@ export class EditUserComponent implements OnInit {
     this.currentPage = page;
   }
 
-  public async onChangeAssociatedShopRole(
-    selected: NameValuePairType,
-    selectedShop: UserAssociatedShopType
-  ) {
+  public async onChangeAssociatedShopRole(selected: NameValuePairType, selectedShop: UserAssociatedShopType) {
     const role = this._roles.find(r => r.id === selected.value);
     const shop = this.user.associatedShops.find(s => s.shopId === selectedShop.shopId);
     const index = this.user.associatedShops.findIndex(s => s.shopId === selectedShop.shopId);
@@ -123,11 +118,7 @@ export class EditUserComponent implements OnInit {
   }
 
   public async onClickAddAssociatedShopRole(event: any) {
-    this.user = await this._systemAdmin.popover.handleAddAssociatedShop(
-      event,
-      this.user,
-      this._criteria
-    );
+    this.user = await this._systemAdmin.popover.handleAddAssociatedShop(event, this.user, this._criteria);
     this._cachedAssocatedShops = cloneDeep(this.user.associatedShops);
     await this.reloading();
   }
@@ -147,10 +138,7 @@ export class EditUserComponent implements OnInit {
 
   public async handleEnabledSaveBtn() {
     let validation =
-      this.validator.firstName &&
-      this.validator.lastName &&
-      this.validator.phone &&
-      this.validator.email;
+      this.validator.firstName && this.validator.lastName && this.validator.phone && this.validator.email;
 
     if (this.user.loginOption.email) {
       validation = this.resetPassword ? validation && this.validator.password : validation;
@@ -163,18 +151,14 @@ export class EditUserComponent implements OnInit {
 
   public onClickActiveAssociatedShop(selected: UserAssociatedShopType) {
     const selectedShop = this.user.associatedShops.find(s => s.shopId === selected.shopId);
-    const selectedShopIndex = this.user.associatedShops.findIndex(
-      s => s.shopId === selected.shopId
-    );
+    const selectedShopIndex = this.user.associatedShops.findIndex(s => s.shopId === selected.shopId);
     if (selectedShop !== undefined) {
       if (selectedShop.active && this.user.currentShopId.length === 0) {
         this.user.currentShopId = selectedShop.shopId;
       }
 
       if (!selectedShop.active && this.user.currentShopId === selectedShop.shopId) {
-        const activeShop = this.user.associatedShops.filter(
-          s => s.active && s.shopId !== selectedShop.shopId
-        );
+        const activeShop = this.user.associatedShops.filter(s => s.active && s.shopId !== selectedShop.shopId);
         this.user.currentShopId = activeShop.length > 0 ? activeShop[0].shopId : '';
       }
       if (!selectedShop.active) {
@@ -192,11 +176,7 @@ export class EditUserComponent implements OnInit {
     const shop = this.shopFilters.find(s => s.value === selected.shopId);
 
     if (shop !== undefined) {
-      this.user = await this._systemAdmin.deleteAssociatedShop(
-        this.user,
-        selected.shopId,
-        shop.name
-      );
+      this.user = await this._systemAdmin.deleteAssociatedShop(this.user, selected.shopId, shop.name);
     }
 
     this.user.disabledAccount = !(this.user.associatedShops.filter(s => s.active).length > 0);

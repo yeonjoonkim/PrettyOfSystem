@@ -60,6 +60,13 @@ button {
   }
 }
 
+#login-loading {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+}
+
 #login-policy-container {
   width: 230px;
   display: flex;

@@ -9,8 +9,8 @@ describe('AddAssociatedShopComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddAssociatedShopComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [AddAssociatedShopComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddAssociatedShopComponent);

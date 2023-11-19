@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ITimer, TimerDurationType, TimerPercentType } from 'src/app/interface';
 import { DateTransformService } from '../date/date-transform/date-transform.service';
 import { DateService } from '../date/date.service';

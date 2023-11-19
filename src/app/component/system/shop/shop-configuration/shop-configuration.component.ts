@@ -1,6 +1,6 @@
-import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
-import { Component, DoCheck, OnInit } from '@angular/core';
-import { ShopConfigurationType } from 'src/app/interface/shop/shop.interface';
+import { IFormHeaderModalProp, NameValuePairType } from 'src/app/interface/global/global.interface';
+import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { ShopCapacityType, ShopConfigurationType } from 'src/app/interface/shop/shop.interface';
 import * as Constant from 'src/app/constant/constant';
 import {
   ShopConfigurationTypeDisplayOption,
@@ -8,20 +8,28 @@ import {
   ShopConfigurationService,
 } from 'src/app/service/system/system-shop/shop-configuration/shop-configuration.service';
 import { ModalController, NavParams } from '@ionic/angular';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'shop-configuration',
   templateUrl: './shop-configuration.component.html',
   styleUrls: ['./shop-configuration.component.scss'],
 })
-export class ShopConfigurationComponent implements OnInit, DoCheck {
+export class ShopConfigurationComponent implements OnInit, DoCheck, OnDestroy {
+  private _destroy$ = new Subject<void>();
   public planPrice: number = 0;
   public form!: IFormHeaderModalProp;
   public timeZoneList: Constant.TimeZoneType[] = Object.values(Constant.TimeZone);
   public validator: ShopConfigurationTypeValidator = this._shopConfig.defaultValidator();
   public display: ShopConfigurationTypeDisplayOption = this._shopConfig.defaultShopDisplayOption();
   public config: ShopConfigurationType = this._shopConfig.setDefaultConfig();
+
   private _selectedconfig!: ShopConfigurationType | undefined;
+
+  private _capacities!: ShopCapacityType[];
+  public selectedCapacity!: ShopCapacityType;
+  public capacitiesSelectionList!: NameValuePairType[];
+  public selectedCapacityNamePairValue!: NameValuePairType;
 
   constructor(
     private _shopConfig: ShopConfigurationService,
@@ -30,12 +38,40 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
   ) {
     this.loadingFormCtrl();
   }
+
   ngDoCheck() {
     this.onChangeForm();
   }
 
   ngOnInit() {
-    this.autoPaymentDateCalculation();
+    this._shopConfig.capcacityReo
+      .capacitiesValueChangeListener()
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(capacities => {
+        this._capacities = capacities;
+        this.capacitiesSelectionList = capacities.map(c => {
+          return { name: c.name, value: c.id };
+        });
+        if (this.config?.capacityId !== undefined) {
+          const selected = this._capacities.find(c => c.id === this.config.capacityId);
+          if (selected) {
+            this.selectedCapacity = selected;
+            this.selectedCapacityNamePairValue = { name: selected.name, value: selected.id };
+          }
+        }
+        this.onChangeForm();
+      });
+  }
+
+  public onChangeCapacity() {
+    const cap = this._capacities.find(c => c.id === this.selectedCapacityNamePairValue.value);
+    if (cap) {
+      this.selectedCapacity = cap;
+      this.config.capacityId = cap.id;
+    }
+
+    this.validator.capacity = this.config?.capacityId.length > 0;
+    this.onChangeForm();
   }
 
   public onChangeForm() {
@@ -55,15 +91,6 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
     this.config = this._selectedconfig ? this._selectedconfig : this._shopConfig.setDefaultConfig();
   }
 
-  public async onPlanPeriodChange() {
-    this.config.plan.paymentDate = this._shopConfig.global.date.addDay(
-      this.config.plan.lastPaymentDate,
-      this.config.plan.period.day
-    );
-    this.validator.planPeriod = true;
-    this.onChangeForm();
-  }
-
   public onClickInfo(): void {
     this.display = this._shopConfig.displayInfo();
   }
@@ -76,14 +103,8 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
     this.display = this._shopConfig.displayAddress();
   }
 
-  public onClickSubscription(): void {
-    this.display = this._shopConfig.displaySubscription();
-  }
-
-  public autoPaymentDateCalculation() {
-    if (this.form.action === Constant.Default.FormAction.Create) {
-      this.onPlanPeriodChange();
-    }
+  public onClickCapacity(): void {
+    this.display = this._shopConfig.displayCapacity();
   }
 
   public onActiveChange() {
@@ -92,16 +113,6 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
     } else {
       this.config.activeTo = this._shopConfig.global.date.shopTimeStamp(null);
     }
-  }
-
-  public async onChangePlan() {
-    if (this.config.plan.configurationId) {
-      this.planPrice = await this._shopConfig.getSelectedTotalPrice(
-        this.config.plan.configurationId,
-        this.config.plan.period
-      );
-    }
-    this.onChangeForm();
   }
 
   public async dismiss() {
@@ -124,5 +135,10 @@ export class ShopConfigurationComponent implements OnInit, DoCheck {
 
   public async handleCreate() {
     this._shopConfig.handleCreate(this.config, this.form);
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }

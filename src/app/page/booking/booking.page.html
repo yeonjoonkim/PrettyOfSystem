@@ -4,11 +4,8 @@
 <ion-content [fullscreen]="true" *ngIf="isLoaded">
   <div id="booking-container">
     <booking-search (onQueryChange)="onAddressQuery($event)"></booking-search>
-    <booking-search-icon [(shopCategoryName)]="query.shopCategoryName"></booking-search-icon>
   </div>
   <div id="booking-query-container">
-    <booking-query
-      [addressParam]="query.address"
-      [shopCategoryParam]="query.shopCategoryName"></booking-query>
+    <booking-query [addressParam]="query.address" [shopCategoryParam]="query.shopCategoryName"></booking-query>
   </div>
 </ion-content>

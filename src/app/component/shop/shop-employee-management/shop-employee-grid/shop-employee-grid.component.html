@@ -1,11 +1,7 @@
 <kendo-grid [kendoGridBinding]="employees" [height]="600" [sortable]="true">
   <!-- Add -->
-
   <ng-template kendoGridToolbarTemplate>
-    <button
-      kendoGridAddCommand
-      (click)="onClickCreate()"
-      *ngIf="isAuthorisedRole() && !isReachToMax">
+    <button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole() && !isReachToMax">
       {{ 'button.title.adduser' | languageTransform: 'System' | async }}
     </button>
   </ng-template>
@@ -47,24 +43,17 @@
 
   <!-- Active -->
   <kendo-grid-column
-    *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     [width]="75"
     field="active"
     title="{{ 'label.title.active' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-emp>
-      <input
-        id="active-check-box"
-        kendoCheckBox
-        type="checkbox"
-        [disabled]="true"
-        [ngModel]="emp.active" />
+      <input id="active-check-box" kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="emp.active" />
     </ng-template>
   </kendo-grid-column>
 
   <!-- Active -->
   <kendo-grid-column
-    *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     [width]="75"
     field="displayInSystem"

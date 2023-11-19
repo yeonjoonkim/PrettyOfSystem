@@ -11,11 +11,7 @@ export class FilterPipe implements PipeTransform {
     return FilterPipe.filter(items, term, excludes);
   }
 
-  static filter(
-    items: Array<{ [key: string]: any }>,
-    term: string,
-    excludes: any
-  ): Array<{ [key: string]: any }> {
+  static filter(items: Array<{ [key: string]: any }>, term: string, excludes: any): Array<{ [key: string]: any }> {
     const toCompare = term.toLowerCase();
 
     function checkInside(item: any, term: string) {

@@ -86,6 +86,7 @@ export type ShopPackageDocumentType = {
   discountPrice: number;
   discountedAmount: number;
   totalMin: number;
+  isOil: boolean;
   discount: ShopPackageDiscountType;
   lastModifiedDate: string;
   lastModifiedEmployee: string;

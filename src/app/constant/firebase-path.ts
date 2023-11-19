@@ -1,7 +1,6 @@
 const system: string = 'system/';
 const systemLanguage: string = system + 'language/';
 const systemMenu: string = system + 'menu/';
-const systemPlan: string = system + 'plan/';
 const systemRole: string = system + 'role/';
 const systemShop: string = system + 'shop/';
 
@@ -40,15 +39,13 @@ export const Context = {
     Menu: {
       Category: systemMenu + 'category',
     } as const,
-    Plan: {
-      Option: systemPlan + 'option',
-    } as const,
     Role: {
       Configuration: systemRole + 'configuration',
     } as const,
     Shop: {
       Category: systemShop + 'category',
       Country: systemShop + 'country',
+      Capacity: systemShop + 'capacity',
     },
   } as const,
   Report: {

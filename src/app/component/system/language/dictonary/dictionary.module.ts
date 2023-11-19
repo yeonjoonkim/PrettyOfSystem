@@ -13,11 +13,7 @@ import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui
 import { SharedFormModule } from 'src/app/component/form/form.module';
 
 @NgModule({
-  declarations: [
-    DictonaryComponent,
-    AddLanguageTransformComponent,
-    LanguageKeyPairSelectOptionComponent,
-  ],
+  declarations: [DictonaryComponent, AddLanguageTransformComponent, LanguageKeyPairSelectOptionComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -27,11 +23,7 @@ import { SharedFormModule } from 'src/app/component/form/form.module';
     SharedFormModule,
     ReactiveFormsModule,
   ],
-  exports: [
-    DictonaryComponent,
-    AddLanguageTransformComponent,
-    LanguageKeyPairSelectOptionComponent,
-  ],
+  exports: [DictonaryComponent, AddLanguageTransformComponent, LanguageKeyPairSelectOptionComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
 export class DictionaryModule {}

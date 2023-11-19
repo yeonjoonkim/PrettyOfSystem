@@ -15,7 +15,7 @@ import { SystemShopFormModule } from '../system-shop-copoment.module';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 
 //Import Component
-import { ShopManagementComponent } from './shop-management.component';
+import { ShopManagementComponent } from '../shop-management/shop-management.component';
 
 @NgModule({
   declarations: [ShopManagementComponent],

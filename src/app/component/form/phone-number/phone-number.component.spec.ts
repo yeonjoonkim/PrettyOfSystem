@@ -9,8 +9,8 @@ describe('PhoneNumberComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PhoneNumberComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PhoneNumberComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PhoneNumberComponent);

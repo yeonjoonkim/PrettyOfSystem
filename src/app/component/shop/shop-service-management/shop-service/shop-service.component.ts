@@ -61,9 +61,7 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   }
 
   public onChangeOption(option: ShopServiceOptionType) {
-    const index = this.current.service.options.findIndex(
-      s => s.min === option.min && s.price === s.price
-    );
+    const index = this.current.service.options.findIndex(s => s.min === option.min && s.price === s.price);
     option.min = option.min !== null && option.min > 180 ? 0 : option.min;
     option.price = option.price !== null ? option.price : 0;
     this.current.service.options[index] = option;
@@ -72,8 +70,7 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
 
   public createOption() {
     const option: ShopServiceOptionType = { min: 0, price: 0 };
-    const isAlreadyCreated =
-      this.current.service.options.filter(o => o.min === 0 && o.price === 0).length > 0;
+    const isAlreadyCreated = this.current.service.options.filter(o => o.min === 0 && o.price === 0).length > 0;
     if (!isAlreadyCreated) {
       this.current.service.options.unshift(option);
     }
@@ -81,9 +78,7 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   }
 
   public deleteOption(option: ShopServiceOptionType) {
-    const index = this.current.service.options.findIndex(
-      s => s.min === option.min && s.price === option.price
-    );
+    const index = this.current.service.options.findIndex(s => s.min === option.min && s.price === option.price);
 
     if (index !== -1) {
       this.current.service.options.splice(index, 1);
@@ -160,18 +155,14 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   }
 
   private async loadingFormCtrl() {
-    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(
-      Constant.Default.ComponentMode.Form
-    );
+    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(Constant.Default.ComponentMode.Form);
     const prop: ShopServiceModalDocumentProp | undefined = this._navParams.get('prop');
     if (formProp !== undefined && prop !== undefined) {
       this._before = cloneDeep(prop);
       this.current = cloneDeep(prop);
       this.form = cloneDeep(formProp);
       this.extraSelection = this.current.extraFilter;
-      this.selectedExtras = this.extraSelection.filter(s =>
-        this.current.service.extraIds.includes(s.value)
-      );
+      this.selectedExtras = this.extraSelection.filter(s => this.current.service.extraIds.includes(s.value));
     } else {
       await this._modalCtrl.dismiss();
     }

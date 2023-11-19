@@ -1,0 +1,12 @@
+<div *ngIf="options" id="container">
+  <ng-container *ngFor="let option of options">
+    <flex-row>
+      <flex-row-item>
+        {{ option.min | minuteTransform | async }}
+      </flex-row-item>
+      <flex-row-item>
+        {{ option.price | currencyTransform }}
+      </flex-row-item>
+    </flex-row>
+  </ng-container>
+</div>

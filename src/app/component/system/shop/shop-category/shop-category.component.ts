@@ -68,9 +68,7 @@ export class ShopCategoryListComponent implements OnInit {
 
   public onClickCategory() {
     let id: string | undefined = this.selectedPairNameValue?.value;
-    let category: ShopCategoryType | undefined = this._defaultShopCategoryList.find(
-      c => c.id === id
-    );
+    let category: ShopCategoryType | undefined = this._defaultShopCategoryList.find(c => c.id === id);
     if (id !== undefined && category !== undefined) {
       this.validate = category !== undefined;
       this.shopCategory = category;

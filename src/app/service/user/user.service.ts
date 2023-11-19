@@ -4,7 +4,6 @@ import {
   IUser,
   MenuCategoryType,
   NameValuePairType,
-  PlanConfigurationType,
   RoleAccessLevelType,
   RoleConfigurationType,
   ShopConfigurationType,
@@ -18,7 +17,6 @@ import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/syste
 import { combineLatestWith, first, take } from 'rxjs/operators';
 import { GlobalService } from '../global/global.service';
 import { UserModalService } from './user-modal/user-modal.service';
-import { SystemPlanRepositoryService } from 'src/app/firebase/system-repository/plan/system-plan-repository.service';
 import { SystemLanguageStorageService } from '../global/language/system-language-management/system-language-storage/system-language-storage.service';
 import { IdTokenResult } from 'firebase/auth';
 import { LoadingService } from '../global/loading/loading.service';
@@ -36,7 +34,6 @@ export class UserService {
   public shopSelection$!: Observable<NameValuePairType[]>;
   public currentShop$!: Observable<NameValuePairType>;
   public currentRole$!: Observable<RoleConfigurationType | null>;
-  public currentShopPlan$!: Observable<PlanConfigurationType | null>;
   public employeName$!: Observable<string>;
   public claim$!: Observable<IdTokenResult | null>;
   public preferLanguage$!: Observable<string>;
@@ -48,7 +45,6 @@ export class UserService {
     private _systemShop: SystemShopConfigurationRepositoryService,
     private _userRepo: UserCredentialRepositoryService,
     private _menuRepo: SystemMenuRepositoryService,
-    private _planRepo: SystemPlanRepositoryService,
     private _global: GlobalService,
     private _languageStorage: SystemLanguageStorageService,
     private _loading: LoadingService
@@ -73,6 +69,8 @@ export class UserService {
       this._router.navigateByUrl('system/user');
     } else if (accessLevel?.isAdmin || accessLevel?.isManager) {
       this._router.navigateByUrl('shop/employee-management');
+    } else if (accessLevel?.isReception) {
+      this._router.navigateByUrl('reservation/price-list');
     } else {
       this._router.navigateByUrl('booking');
     }
@@ -163,7 +161,6 @@ export class UserService {
     this.activateUserMenuListener();
     this.activateAssociatedShopsListener();
     this.activateCurrentShopConfigurationListener();
-    this.activateCurrentShopPlanListener();
     this.activateUserShopSelectionListener();
     this.activeUserCurrentShopListener();
     this.activateCurrentRoleListener();
@@ -264,18 +261,6 @@ export class UserService {
             ? shops.find((s: ShopConfigurationType) => s.id === user.currentShopId) || null
             : null;
         return currentConfig;
-      })
-    );
-  }
-
-  private activateCurrentShopPlanListener() {
-    this.currentShopPlan$ = this.currentShopConfig$.pipe(
-      switchMap(config => {
-        if (config !== null) {
-          return this._planRepo.selectedPlanValuChangeListener(config.plan.configurationId);
-        } else {
-          return of(null);
-        }
       })
     );
   }

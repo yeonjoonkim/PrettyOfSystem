@@ -36,8 +36,9 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   public translatedRequests!: ChatGptTranslateDocumentType[];
   public services!: ShopServiceDocumentType[];
   public isReachToMax: boolean = true;
-  public progressBar$: Observable<ShopLimitedProgpressBarType> =
-    this._shopService.progressBar$.pipe(takeUntil(this._onDestroy$));
+  public progressBar$: Observable<ShopLimitedProgpressBarType> = this._shopService.progressBar$.pipe(
+    takeUntil(this._onDestroy$)
+  );
 
   constructor(
     private _shopService: ShopServiceManagementService,
@@ -174,16 +175,13 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
     this._shopService.translatedRequest$
       .pipe(pairwise(), takeUntil(this._onDestroy$))
       .subscribe(([before, after]) => {
-        const updatedStatusArray = after.reduce(
-          (acc: ChatGptTranslateDocumentType[], afterItem) => {
-            const beforeItem = before.find(b => b.id === afterItem.id);
-            if (beforeItem && beforeItem.status !== afterItem.status) {
-              acc.push(afterItem);
-            }
-            return acc;
-          },
-          []
-        );
+        const updatedStatusArray = after.reduce((acc: ChatGptTranslateDocumentType[], afterItem) => {
+          const beforeItem = before.find(b => b.id === afterItem.id);
+          if (beforeItem && beforeItem.status !== afterItem.status) {
+            acc.push(afterItem);
+          }
+          return acc;
+        }, []);
 
         if (updatedStatusArray.length > 0) {
           console.log('Updated Status:', updatedStatusArray);
@@ -192,11 +190,9 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   }
 
   private activateShopEmployeeListener() {
-    this._shopService.specialisedEmployees$
-      .pipe(takeUntil(this._onDestroy$))
-      .subscribe(employees => {
-        this.specializedEmployees = employees;
-      });
+    this._shopService.specialisedEmployees$.pipe(takeUntil(this._onDestroy$)).subscribe(employees => {
+      this.specializedEmployees = employees;
+    });
   }
 
   private async presentReachedToMaxError() {

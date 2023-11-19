@@ -5,9 +5,7 @@
         *ngIf="filterable"
         [(ngModel)]="query"
         (ngModelChange)="onQueryChange()"
-        placeholder="{{
-          'placeholder.title.search' | languageTransform: 'System' | async
-        }}"></kendo-textbox>
+        placeholder="{{ 'placeholder.title.search' | languageTransform: 'System' | async }}"></kendo-textbox>
     </flex-col-item>
     <flex-col-item>
       <div id="container" [ngStyle]="{ 'max-height': maxHeight }">

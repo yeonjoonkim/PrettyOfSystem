@@ -1,0 +1,13 @@
+<div id="container">
+  <div *ngIf="coupons$ | async as coupons; else loading" class="vertical-price-list">
+    <ng-container *ngFor="let coupon of coupons">
+      <coupon-price-list-card type="User" [coupon]="coupon" [enabledAdd]="false"> </coupon-price-list-card>
+    </ng-container>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-container">
+      <kendo-loader size="large"></kendo-loader>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,349 @@
+.vertical-price-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 100%;
+  overflow: auto;
+}
+
+.price-card {
+  --background: var(--card);
+  margin: 5px;
+  ion-card-content {
+    padding: 10px;
+  }
+  ion-card-subtitle {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .service-content {
+    min-height: 55px;
+  }
+
+  .card-description {
+    margin-top: 5px;
+    min-height: 0px;
+    max-height: 0px;
+    text-overflow: ellipsis;
+    overflow-y: scroll;
+    overflow: hidden;
+    display: none;
+    transition: max-height 0.1s ease;
+    &.card-description-expand {
+      display: block;
+      text-overflow: ellipsis;
+      overflow-y: scroll;
+      max-height: 80px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .tool-tip {
+    margin: 0;
+    color: var(--card-title);
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 18px;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+  }
+
+  .empty-tool-tip {
+    width: 100%;
+    margin: 0px;
+    height: 18px;
+  }
+
+  .package-service-tool-tip {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+    justify-items: end;
+  }
+
+  .tip {
+    margin: 0px 5px 0px 0px;
+  }
+
+  .card-title {
+    margin: 0;
+    ion-card-title {
+      font-size: 18px;
+    }
+  }
+
+  .package-price-container {
+    margin: 0px;
+  }
+
+  .package-list-option {
+    justify-content: flex-start;
+    margin-bottom: 2px;
+  }
+
+  .option-add,
+  .option-price,
+  .option-min,
+  .option-title {
+    margin: 10px 5px 5px 0px;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 14px;
+  }
+
+  .option-add {
+    display: flex;
+    justify-content: flex-end;
+    .add-btn {
+      height: 20px;
+      font-size: 14px;
+    }
+  }
+
+  .service-title {
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+    color: var(--card-title);
+  }
+
+  .option-start {
+    margin: 0px 5px 5px 0px;
+  }
+
+  .option-title {
+    flex: 2;
+  }
+
+  .option-min {
+    min-width: 85px;
+  }
+
+  .option-price {
+    min-width: 70px;
+  }
+
+  .expand-btn {
+    display: flex;
+    justify-content: center;
+    color: white;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .expand-description {
+    display: flex;
+    justify-content: center;
+    p {
+      color: white;
+      font-size: 8px;
+      margin: 0px;
+      margin-bottom: 5px;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .starting-price {
+    font-size: 10px;
+    color: var(--title);
+    margin: 0;
+    text-align: start;
+  }
+
+  .service-option {
+    margin: 0px;
+    max-height: 26px;
+    transition: max-height 0.1s ease;
+    overflow: hidden;
+    &.service-option-expand {
+      text-overflow: ellipsis;
+      min-height: 0px;
+      max-height: unset;
+      height: auto;
+    }
+  }
+
+  .coupon-option {
+    margin: 0;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    .coupon-option-price {
+      max-width: 55px;
+      min-width: 55px;
+      justify-content: flex-end;
+    }
+
+    .coupon-option-flex-start {
+      font-size: 12px;
+      margin: 2px;
+      justify-content: flex-start;
+    }
+
+    .coupon-option-flex-end {
+      font-size: 12px;
+      margin: 2px;
+      justify-content: flex-end;
+    }
+  }
+
+  .package-option {
+    margin: 0;
+    margin-top: 10px;
+
+    .package-option-price {
+      max-width: 55px;
+      min-width: 55px;
+      justify-content: flex-end;
+    }
+
+    .package-option-flex-start {
+      font-size: 12px;
+      margin: 2px;
+      justify-content: flex-start;
+    }
+
+    .package-option-flex-end {
+      font-size: 12px;
+      margin: 2px;
+      justify-content: flex-end;
+    }
+  }
+
+  .package-card-footer {
+    font-size: 10px;
+    margin: 0;
+    max-width: 140px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    .package-limited-time {
+      display: flex;
+      flex-direction: column;
+      .package-limited-time,
+      .package-limited-day {
+        font-size: 10px;
+        text-align: start;
+      }
+      .package-limited-day {
+        max-width: 170px;
+        text-align: start;
+      }
+    }
+  }
+
+  .prices {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    .discount-price {
+      text-align: end;
+      color: var(--card-title);
+      font-weight: 900;
+      font-size: 16px;
+      .original-price {
+        text-align: end;
+        font-size: 8px;
+        font-weight: 500;
+        text-decoration: line-through;
+        color: white;
+      }
+    }
+  }
+
+  .package-add {
+    margin: 0px;
+  }
+
+  ion-card-content {
+    color: white;
+    button {
+      background: var(--card-add);
+      &:hover {
+        background: var(--card-add-hover);
+      }
+    }
+  }
+
+  @media (max-width: 639px) {
+    .empty-tool-tip {
+      display: none;
+    }
+  }
+}
+
+.price-card-tooltip {
+  color: var(--title);
+  width: 15px;
+  height: 15px;
+
+  ion-icon {
+    font-weight: 900;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.service-card {
+  width: 300px;
+  min-height: 90px;
+  ion-card-content {
+    padding: 5px 10px 0px 10px;
+  }
+}
+
+.coupon-card {
+  min-width: 300px;
+  max-height: 200px;
+}
+
+.extra-card {
+  width: 300px;
+  max-height: 200px;
+}
+
+.package-card {
+  width: 300px;
+  min-height: 200px;
+}
+
+@media (min-width: 1020px) {
+  .vertical-price-list {
+    justify-content: flex-start;
+    max-width: 996px;
+    margin: auto;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1019.99px) {
+  .vertical-price-list {
+    justify-content: flex-start;
+    max-width: 996px;
+    margin: auto;
+  }
+}
+
+@media (min-width: 720px) and (max-width: 999px) {
+  .vertical-price-list {
+    justify-content: flex-start;
+    max-width: 680px;
+    margin: auto;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 720px) {
+  .vertical-price-list {
+    justify-content: center;
+    max-width: 400px;
+    margin: auto;
+  }
+}

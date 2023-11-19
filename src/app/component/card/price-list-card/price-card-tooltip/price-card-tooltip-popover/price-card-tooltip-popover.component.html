@@ -1,0 +1,4 @@
+<ion-card-title id="title" *ngIf="title">{{ title | languageTransform: type | async }}</ion-card-title>
+<ion-card-subtitle *ngIf="description" id="description">{{
+  description | languageTransform: type | async
+}}</ion-card-subtitle>

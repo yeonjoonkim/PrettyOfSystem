@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["jasmine"],
     "module": "commonjs",
     "noImplicitReturns": true,
     "noUnusedLocals": true,

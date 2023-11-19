@@ -9,8 +9,8 @@ describe('LanguageKeyPairSelectOptionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LanguageKeyPairSelectOptionComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [LanguageKeyPairSelectOptionComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LanguageKeyPairSelectOptionComponent);

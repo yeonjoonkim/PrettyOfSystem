@@ -9,9 +9,7 @@
         work: employee.roster.sun.isOpen && !employee.roster.closeDay.includes(0),
         dayoff: !employee.roster.sun.isOpen || employee.roster.closeDay.includes(0)
       }">
-      <div
-        id="schedule-date"
-        *ngIf="employee.roster.sun.isOpen && !employee.roster.closeDay.includes(0)">
+      <div id="schedule-date" *ngIf="employee.roster.sun.isOpen && !employee.roster.closeDay.includes(0)">
         <p id="text">
           {{ dateTime(employee.roster.sun.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
@@ -33,9 +31,7 @@
         work: employee.roster.mon.isOpen && !employee.roster.closeDay.includes(1),
         dayoff: !employee.roster.mon.isOpen || employee.roster.closeDay.includes(1)
       }">
-      <div
-        id="schedule-date"
-        *ngIf="employee.roster.mon.isOpen && !employee.roster.closeDay.includes(1)">
+      <div id="schedule-date" *ngIf="employee.roster.mon.isOpen && !employee.roster.closeDay.includes(1)">
         <p id="text">
           {{ dateTime(employee.roster.mon.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
@@ -57,9 +53,7 @@
         work: employee.roster.tue.isOpen && !employee.roster.closeDay.includes(2),
         dayoff: !employee.roster.tue.isOpen || employee.roster.closeDay.includes(2)
       }">
-      <div
-        id="schedule-date"
-        *ngIf="employee.roster.tue.isOpen && !employee.roster.closeDay.includes(2)">
+      <div id="schedule-date" *ngIf="employee.roster.tue.isOpen && !employee.roster.closeDay.includes(2)">
         <p id="text">
           {{ dateTime(employee.roster.tue.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
@@ -81,9 +75,7 @@
         work: employee.roster.wed.isOpen && !employee.roster.closeDay.includes(3),
         dayoff: !employee.roster.wed.isOpen || employee.roster.closeDay.includes(3)
       }">
-      <div
-        id="schedule-date"
-        *ngIf="employee.roster.wed.isOpen && !employee.roster.closeDay.includes(3)">
+      <div id="schedule-date" *ngIf="employee.roster.wed.isOpen && !employee.roster.closeDay.includes(3)">
         <p id="text">
           {{ dateTime(employee.roster.wed.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
@@ -105,9 +97,7 @@
         work: employee.roster.thu.isOpen && !employee.roster.closeDay.includes(4),
         dayoff: !employee.roster.thu.isOpen || employee.roster.closeDay.includes(4)
       }">
-      <div
-        id="schedule-date"
-        *ngIf="employee.roster.thu.isOpen && !employee.roster.closeDay.includes(4)">
+      <div id="schedule-date" *ngIf="employee.roster.thu.isOpen && !employee.roster.closeDay.includes(4)">
         <p id="text">
           {{ dateTime(employee.roster.thu.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
@@ -129,9 +119,7 @@
         work: employee.roster.fri.isOpen && !employee.roster.closeDay.includes(5),
         dayoff: !employee.roster.fri.isOpen || employee.roster.closeDay.includes(5)
       }">
-      <div
-        id="schedule-date"
-        *ngIf="employee.roster.fri.isOpen && !employee.roster.closeDay.includes(5)">
+      <div id="schedule-date" *ngIf="employee.roster.fri.isOpen && !employee.roster.closeDay.includes(5)">
         <p id="text">
           {{ dateTime(employee.roster.fri.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
@@ -153,9 +141,7 @@
         work: employee.roster.sat.isOpen && !employee.roster.closeDay.includes(6),
         dayoff: !employee.roster.sat.isOpen || employee.roster.closeDay.includes(6)
       }">
-      <div
-        id="schedule-date"
-        *ngIf="employee.roster.sat.isOpen && !employee.roster.closeDay.includes(6)">
+      <div id="schedule-date" *ngIf="employee.roster.sat.isOpen && !employee.roster.closeDay.includes(6)">
         <p id="text">
           {{ dateTime(employee.roster.sat.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
@@ -183,15 +169,11 @@
         id="schedule-date"
         *ngIf="employee.nextWeekRoster.sun.isOpen && !employee.nextWeekRoster.closeDay.includes(0)">
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.sun.operatingHours.openTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.sun.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
         <p id="text">-</p>
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.sun.operatingHours.closeTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.sun.operatingHours.closeTime) | dateTransform: 'Time' }}
         </p>
       </div>
     </button>
@@ -211,15 +193,11 @@
         id="schedule-date"
         *ngIf="employee.nextWeekRoster.mon.isOpen && !employee.nextWeekRoster.closeDay.includes(1)">
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.mon.operatingHours.openTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.mon.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
         <p id="text">-</p>
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.mon.operatingHours.closeTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.mon.operatingHours.closeTime) | dateTransform: 'Time' }}
         </p>
       </div>
     </button>
@@ -239,15 +217,11 @@
         id="schedule-date"
         *ngIf="employee.nextWeekRoster.tue.isOpen && !employee.nextWeekRoster.closeDay.includes(2)">
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.tue.operatingHours.openTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.tue.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
         <p id="text">-</p>
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.tue.operatingHours.closeTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.tue.operatingHours.closeTime) | dateTransform: 'Time' }}
         </p>
       </div>
     </button>
@@ -267,15 +241,11 @@
         id="schedule-date"
         *ngIf="employee.nextWeekRoster.wed.isOpen && !employee.nextWeekRoster.closeDay.includes(3)">
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.wed.operatingHours.openTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.wed.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
         <p id="text">-</p>
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.wed.operatingHours.closeTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.wed.operatingHours.closeTime) | dateTransform: 'Time' }}
         </p>
       </div>
     </button>
@@ -295,15 +265,11 @@
         id="schedule-date"
         *ngIf="employee.nextWeekRoster.thu.isOpen && !employee.nextWeekRoster.closeDay.includes(4)">
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.thu.operatingHours.openTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.thu.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
         <p id="text">-</p>
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.thu.operatingHours.closeTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.thu.operatingHours.closeTime) | dateTransform: 'Time' }}
         </p>
       </div>
     </button>
@@ -323,15 +289,11 @@
         id="schedule-date"
         *ngIf="employee.nextWeekRoster.fri.isOpen && !employee.nextWeekRoster.closeDay.includes(5)">
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.fri.operatingHours.openTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.fri.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
         <p id="text">-</p>
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.fri.operatingHours.closeTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.fri.operatingHours.closeTime) | dateTransform: 'Time' }}
         </p>
       </div>
     </button>
@@ -351,15 +313,11 @@
         id="schedule-date"
         *ngIf="employee.nextWeekRoster.sat.isOpen && !employee.nextWeekRoster.closeDay.includes(6)">
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.sat.operatingHours.openTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.sat.operatingHours.openTime) | dateTransform: 'Time' }}
         </p>
         <p id="text">-</p>
         <p id="text">
-          {{
-            dateTime(employee.nextWeekRoster.sat.operatingHours.closeTime) | dateTransform: 'Time'
-          }}
+          {{ dateTime(employee.nextWeekRoster.sat.operatingHours.closeTime) | dateTransform: 'Time' }}
         </p>
       </div>
     </button>

@@ -9,8 +9,8 @@ describe('LanguageManagementComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LanguageManagementComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [LanguageManagementComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LanguageManagementComponent);

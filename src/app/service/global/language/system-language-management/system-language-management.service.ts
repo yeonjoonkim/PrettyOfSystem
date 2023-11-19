@@ -39,8 +39,7 @@ export class SystemLanguageManagementService {
   ) {}
 
   public async editSelectedPackage(selectedLanguageCode: string, pair: PairKeyValueType) {
-    let selection: LanguageSelectionType =
-      await this.storage.getSelectedSelection(selectedLanguageCode);
+    let selection: LanguageSelectionType = await this.storage.getSelectedSelection(selectedLanguageCode);
     selection.package = this._systemLanguagePackage.update(selection.package, pair);
     await this._systemLanguageRepo.updateLanguageSelection(selection);
     await this.storage.refresh();
@@ -61,10 +60,7 @@ export class SystemLanguageManagementService {
             key: keyValue,
             value: result.translated[selectionCode],
           };
-          selection.package = this._systemLanguagePackage.update(
-            selection.package,
-            translatedKeyPairValue
-          );
+          selection.package = this._systemLanguagePackage.update(selection.package, translatedKeyPairValue);
           isSuccess = await this._systemLanguageRepo.updateLanguageSelection(selection);
         }
       }
@@ -99,10 +95,7 @@ export class SystemLanguageManagementService {
   public async getDefaultKeyPairValueList() {
     let defaultSelection = await this.storage.getDefaultSelection();
     let key = await this.storage.getKey();
-    let result = this._systemLanguagePackage.getKeyPairValueList(
-      key.used,
-      defaultSelection.package
-    );
+    let result = this._systemLanguagePackage.getKeyPairValueList(key.used, defaultSelection.package);
     return result.map(r => {
       return { key: r.key, value: r.value };
     });
@@ -188,9 +181,7 @@ export class SystemLanguageManagementService {
       : await this.storage.storeCurrentLanguage(result);
   }
 
-  public async validateKeyPairValue(
-    pair: PairKeyValueType
-  ): Promise<IAddLanguageTransformSaveCommand> {
+  public async validateKeyPairValue(pair: PairKeyValueType): Promise<IAddLanguageTransformSaveCommand> {
     let errorMsg: string = '';
     let key: ILanguageKey = await this.storage.getKey();
     let result = {

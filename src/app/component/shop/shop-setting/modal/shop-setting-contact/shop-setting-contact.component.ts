@@ -1,12 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
-import {
-  IFormHeaderModalProp,
-  IShopSetting,
-  ShopConfigurationType,
-  ShopUpdateContactProp,
-} from 'src/app/interface';
+import { IFormHeaderModalProp, ShopConfigurationType, ShopUpdateContactProp } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 

@@ -18,9 +18,7 @@ export class ShopCouponRepositoryService {
 
   public valueChangeListener(shopId: string) {
     return this._afs
-      .collection<ShopCouponDocumentType>(ShopCoupon(shopId), ref =>
-        ref.orderBy('discountPrice', 'desc')
-      )
+      .collection<ShopCouponDocumentType>(ShopCoupon(shopId), ref => ref.orderBy('discountPrice', 'desc'))
       .valueChanges()
       .pipe(
         map(coupons => {

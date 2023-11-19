@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { DatePeriodType, IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
+import { IFormHeaderModalProp } from 'src/app/interface/global/global.interface';
 import {
   ShopCategoryType,
   ShopConfigurationType,
   ShopCountryType,
-  ShopPlanType,
   ShopWorkHoursType,
 } from 'src/app/interface/shop/shop.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
@@ -15,6 +14,7 @@ import { SystemShopWorkHoursService } from '../system-shop-work-hours/system-sho
 import { ModalController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { IShopSetting } from 'src/app/interface';
+import { SystemShopCapacityRepositoryService } from 'src/app/firebase/system-repository/system-shop-capacity/system-shop-capacity-repository.service';
 export interface ShopConfigurationTypeValidator {
   name: boolean;
   email: boolean;
@@ -23,15 +23,15 @@ export interface ShopConfigurationTypeValidator {
   address: boolean;
   category: boolean;
   country: boolean;
-  plan: boolean;
   timeZone: boolean;
   workHours: boolean;
   planPeriod: boolean;
+  capacity: boolean;
 }
 export interface ShopConfigurationTypeDisplayOption {
   info: boolean;
   address: boolean;
-  subscription: boolean;
+  capacity: boolean;
   workHours: boolean;
 }
 @Injectable({
@@ -40,7 +40,7 @@ export interface ShopConfigurationTypeDisplayOption {
 export class ShopConfigurationService {
   constructor(
     public global: GlobalService,
-    private _systemShop: SystemShopService,
+    public capcacityReo: SystemShopCapacityRepositoryService,
     private _modalCtrl: ModalController,
     private _systemShopConfigRepo: SystemShopConfigurationRepositoryService,
     private _systemWorkHoursService: SystemShopWorkHoursService
@@ -63,9 +63,7 @@ export class ShopConfigurationService {
 
   private async isExistingBusinessName(config: ShopConfigurationType): Promise<boolean> {
     let existingConfig: ShopConfigurationType[] = await this.getAllSystemShopConfiguration();
-    let existingBusinessName: string[] = existingConfig
-      .filter(c => c.id !== config.id)
-      .map(c => c.name);
+    let existingBusinessName: string[] = existingConfig.filter(c => c.id !== config.id).map(c => c.name);
 
     return existingBusinessName.includes(config.name);
   }
@@ -77,9 +75,7 @@ export class ShopConfigurationService {
   public async handleSave(config: ShopConfigurationType, form: IFormHeaderModalProp) {
     let isExistingBusinessName: boolean = await this.isExistingBusinessName(config);
     await this.global.loading.show();
-    let saved = !isExistingBusinessName
-      ? await this._systemShopConfigRepo.updateShopConfiguration(config)
-      : false;
+    let saved = !isExistingBusinessName ? await this._systemShopConfigRepo.updateShopConfiguration(config) : false;
 
     if (saved) {
       await this.global.loading.dismiss();
@@ -120,11 +116,11 @@ export class ShopConfigurationService {
       operatingHours: this.setWorkHours(),
       category: this.getDefaultCategory(),
       country: this.getDefaultCountry(),
-      plan: this.getDefaultPlan(),
       setting: this.defaultShopSetting(),
       activeFrom: this.global.date.shopTimeStamp(null),
       activeTo: null,
       translatedRequestIds: [],
+      capacityId: '',
     };
   }
 
@@ -157,21 +153,6 @@ export class ShopConfigurationService {
     };
   }
 
-  private getDefaultPlan(): ShopPlanType {
-    return {
-      configurationId: '',
-      isOverDue: false,
-      lastPaymentDate: this.global.date.shopTimeStamp(null),
-      paymentDate: this.global.date.shopTimeStamp(null),
-      period: {
-        name: 'date.title.weekly',
-        type: 'Weekly',
-        week: 1,
-        day: 7,
-      },
-    };
-  }
-
   public formInputValidator(validator: ShopConfigurationTypeValidator) {
     return (
       validator.name &&
@@ -181,10 +162,10 @@ export class ShopConfigurationService {
       validator.address &&
       validator.category &&
       validator.country &&
-      validator.plan &&
       validator.timeZone &&
       validator.workHours &&
-      validator.planPeriod
+      validator.planPeriod &&
+      validator.capacity
     );
   }
 
@@ -192,7 +173,7 @@ export class ShopConfigurationService {
     return {
       info: true,
       address: false,
-      subscription: false,
+      capacity: false,
       workHours: false,
     };
   }
@@ -206,10 +187,10 @@ export class ShopConfigurationService {
       address: false,
       category: false,
       country: false,
-      plan: false,
       timeZone: false,
       workHours: false,
       planPeriod: false,
+      capacity: false,
     };
   }
 
@@ -222,10 +203,10 @@ export class ShopConfigurationService {
       address: true,
       category: true,
       country: true,
-      plan: true,
       timeZone: true,
       workHours: true,
       planPeriod: true,
+      capacity: true,
     };
   }
 
@@ -233,7 +214,7 @@ export class ShopConfigurationService {
     return {
       info: true,
       address: false,
-      subscription: false,
+      capacity: false,
       workHours: false,
     };
   }
@@ -242,16 +223,16 @@ export class ShopConfigurationService {
     return {
       info: false,
       address: true,
-      subscription: false,
+      capacity: false,
       workHours: false,
     };
   }
 
-  public displaySubscription(): ShopConfigurationTypeDisplayOption {
+  public displayCapacity(): ShopConfigurationTypeDisplayOption {
     return {
       info: false,
       address: false,
-      subscription: true,
+      capacity: true,
       workHours: false,
     };
   }
@@ -260,28 +241,9 @@ export class ShopConfigurationService {
     return {
       info: false,
       address: false,
-      subscription: false,
+      capacity: false,
       workHours: true,
     };
-  }
-
-  public async getSelectedTotalPrice(selectedId: string, period: DatePeriodType) {
-    let selectedPlan = (await this._systemShop.getSystemShopPlanConfigList()).find(
-      p => p.id === selectedId
-    );
-    let price: number = 0;
-    if (selectedPlan !== undefined) {
-      price =
-        period.type === Constant.Date.Period.Weekly
-          ? selectedPlan.weeklyPrice.total
-          : period.type === Constant.Date.Period.Monthly
-          ? selectedPlan.monthlyPrice.total
-          : period.type === Constant.Date.Period.Annually
-          ? selectedPlan.annuallyPrice.total
-          : 0;
-    }
-
-    return price;
   }
 
   private defaultShopSetting() {
@@ -289,8 +251,7 @@ export class ShopConfigurationService {
       calendar: {
         intervalMin: Constant.ShopSetting.Calender.IntervalMin,
         nextAvailableBookingMin: Constant.ShopSetting.Calender.NextAvailableBookingMin,
-        maximumAvailableFutureBookingDays:
-          Constant.ShopSetting.Calender.MaximumAvailableFutureBookingDays,
+        maximumAvailableFutureBookingDays: Constant.ShopSetting.Calender.MaximumAvailableFutureBookingDays,
       },
       financial: {
         taxRate: Constant.ShopSetting.Financial.TaxRate,

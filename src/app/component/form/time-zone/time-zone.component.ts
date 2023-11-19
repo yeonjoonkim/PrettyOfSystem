@@ -52,9 +52,7 @@ export class TimeZoneComponent implements OnInit {
 
   public onChangeTimeZone() {
     this.entered = true;
-    let selected: string | undefined = this.autoCompleteFilterList.find(
-      option => option === this.inputTimeZone
-    );
+    let selected: string | undefined = this.autoCompleteFilterList.find(option => option === this.inputTimeZone);
     this.inputTimeZone = selected ? selected : '';
     this.validate = this.setValidator();
     this.timeZoneChange.emit(this.inputTimeZone);
@@ -63,9 +61,7 @@ export class TimeZoneComponent implements OnInit {
 
   public onChangeTimezoneInput(timezone: string) {
     let inpuTimeZone = timezone.toUpperCase();
-    this.autoCompleteFilterList = this.timezoneList.filter(tz =>
-      tz.toUpperCase().includes(inpuTimeZone)
-    );
+    this.autoCompleteFilterList = this.timezoneList.filter(tz => tz.toUpperCase().includes(inpuTimeZone));
   }
 
   private setValidator(): boolean {

@@ -1,0 +1,19 @@
+<ion-card *ngIf="extra" class="price-card extra-card">
+  <ion-card-content>
+    <flex-col>
+      <flex-col-item class="card-title">
+        <ion-card-title>{{ extra.title | languageTransform: type | async }}</ion-card-title>
+      </flex-col-item>
+    </flex-col>
+    <flex-row>
+      <flex-row-item class="option-price">
+        {{ extra.price | currencyTransform }}
+      </flex-row-item>
+      <flex-row-item class="option-add" *ngIf="enabledAdd">
+        <button class="add-btn" kendoButton (click)="onClickAdd()">
+          {{ 'button.title.add' | languageTransform: 'System' | async }}
+        </button>
+      </flex-row-item>
+    </flex-row>
+  </ion-card-content>
+</ion-card>

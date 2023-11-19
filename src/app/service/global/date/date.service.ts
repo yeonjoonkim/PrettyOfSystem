@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DateTransformService, DateType } from './date-transform/date-transform.service';
 import * as Constant from '../../../constant/constant';
-import {
-  IDateIndexPairDay,
-  DatePeriodType,
-  TimeItemType,
-} from 'src/app/interface/global/global.interface';
+import { IDateIndexPairDay, DatePeriodType, TimeItemType } from 'src/app/interface/global/global.interface';
 import { utcToZonedTime } from 'date-fns-tz';
 import {
   addDays,
@@ -108,7 +104,6 @@ export class DateService {
       end: this.transform.toLocalDateTime(end),
     };
     const result = intervalToDuration(interval);
-    console.log(result);
     return result;
   }
 
@@ -185,9 +180,7 @@ export class DateService {
   }
 
   shopAllDaysNextWeek(timezone: Constant.TimeZoneType) {
-    const date = this.transform.toLocalDateTime(
-      this.startDay(this.addDay(this.shopNow(timezone), 7))
-    );
+    const date = this.transform.toLocalDateTime(this.startDay(this.addDay(this.shopNow(timezone), 7)));
     const start = startOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
     const end = endOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
     const interval = eachDayOfInterval({ start, end });

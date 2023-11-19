@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { GlobalService } from 'src/app/service/global/global.service';
-import { TimeItemType } from 'src/app/interface/global/global.interface';
 import { TimePickerIncrementalSteps } from '@progress/kendo-angular-dateinputs';
+
 @Component({
   selector: 'opening-closing-hour-picker',
   templateUrl: './opening-closing-hour-picker.component.html',
@@ -17,7 +16,7 @@ export class OpeningClosingHourPickerComponent implements OnInit {
   public date: Date = new Date();
   public steps: TimePickerIncrementalSteps = { minute: 0 };
 
-  constructor(private _global: GlobalService) {}
+  constructor() {}
 
   async ngOnInit() {
     this.handReceivingEvent();

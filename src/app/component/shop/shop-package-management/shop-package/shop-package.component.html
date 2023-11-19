@@ -28,8 +28,7 @@
         <flex-row-item>
           <flex-col id="check-box-container">
             <div id="pregnant">
-              <kendo-label
-                text="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
+              <kendo-label text="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
                   type="checkbox"
@@ -39,8 +38,17 @@
               </kendo-label>
             </div>
             <div id="pregnant">
-              <kendo-label
-                text="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
+              <kendo-label text="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
+                <input
+                  kendoCheckBox
+                  type="checkbox"
+                  [disabled]="form.readOnly"
+                  [(ngModel)]="current.package.isOil"
+                  (ngModelChange)="handleEnabledSaveBtn()" />
+              </kendo-label>
+            </div>
+            <div id="pregnant">
+              <kendo-label text="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
                   type="checkbox"
@@ -49,9 +57,9 @@
                   (ngModelChange)="handleEnabledSaveBtn()" />
               </kendo-label>
             </div>
+
             <div id="limited-time">
-              <kendo-label
-                text="{{ 'label.title.limitedtime' | languageTransform: 'System' | async }}">
+              <kendo-label text="{{ 'label.title.limitedoffer' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
                   type="checkbox"
@@ -70,9 +78,7 @@
             [readOnly]="form.readOnly"
             title="label.title.specializedemployees"
             [(selected)]="current.package.specializedEmployees"
-            [selection]="
-              current.filter.specializedEmployees
-            "></name-value-pair-multi-dropdown-selection>
+            [selection]="current.filter.specializedEmployees"></name-value-pair-multi-dropdown-selection>
         </flex-row-item>
         <flex-row-item *ngIf="current.package.limitedTime !== null" id="limited-day">
           <name-value-pair-multi-dropdown-selection
@@ -124,25 +130,12 @@
                 {{ service.title | languageTransform: 'User' | async }}
               </p>
             </flex-row-item>
-            <flex-row-item class="price-option">
-              <p>$</p>
-              <kendo-numerictextbox
-                [(value)]="option.price"
-                [decimals]="2"
-                [min]="0"
-                [spinners]="false"
-                [readonly]="true"></kendo-numerictextbox>
+            <flex-row-item class="option-title">
+              <p>{{ option.price | currencyTransform }}</p>
             </flex-row-item>
             <!--Min -->
-            <flex-row-item class="minute-option">
-              <kendo-numerictextbox
-                format="##"
-                [(value)]="option.min"
-                [decimals]="0"
-                [spinners]="false"
-                [min]="0"
-                [readonly]="true"></kendo-numerictextbox>
-              <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
+            <flex-row-item class="option-title">
+              <p>{{ option.min | minuteTransform | async }}</p>
             </flex-row-item>
           </flex-row>
         </ng-container>
@@ -176,14 +169,8 @@
               {{ extra.title | languageTransform: 'User' | async }}
             </p>
           </flex-row-item>
-          <flex-row-item class="price-option">
-            <p>$</p>
-            <kendo-numerictextbox
-              [(value)]="extra.price"
-              [decimals]="2"
-              [min]="0"
-              [spinners]="false"
-              [readonly]="true"></kendo-numerictextbox>
+          <flex-row-item class="option-title">
+            <p>{{ extra.price | currencyTransform }}</p>
           </flex-row-item>
         </flex-row>
       </ng-container>
@@ -215,10 +202,7 @@
           (valueChange)="onChangeDiscountRate()"></percentage>
       </flex-row-item>
       <flex-row-item *ngIf="current.package.discount.type === 'Dollar'">
-        <kendo-label
-          text="{{
-            'label.title.discountamount' | languageTransform: 'System' | async
-          }}"></kendo-label>
+        <kendo-label text="{{ 'label.title.discountamount' | languageTransform: 'System' | async }}"></kendo-label>
         <div class="discount-price">
           <p>$</p>
           <kendo-numerictextbox
@@ -235,10 +219,7 @@
     </flex-row>
     <flex-row id="discount-price-value-container">
       <flex-row-item>
-        <kendo-label
-          text="{{
-            'label.title.originalprice' | languageTransform: 'System' | async
-          }}"></kendo-label>
+        <kendo-label text="{{ 'label.title.originalprice' | languageTransform: 'System' | async }}"></kendo-label>
         <div class="total-price-original">
           <p>$</p>
           <kendo-numerictextbox
@@ -251,9 +232,7 @@
       </flex-row-item>
       <flex-row-item>
         <kendo-label
-          text="{{
-            'label.title.discountedprice' | languageTransform: 'System' | async
-          }}"></kendo-label>
+          text="{{ 'label.title.discountedprice' | languageTransform: 'System' | async }}"></kendo-label>
         <div class="total-price-discounted">
           <p>$</p>
           <kendo-numerictextbox
@@ -267,17 +246,7 @@
     </flex-row>
     <flex-row>
       <flex-row-item>
-        <div class="total-min">
-          <kendo-numerictextbox
-            id="total-min-value"
-            [value]="current.package.totalMin"
-            [decimals]="0"
-            format="##"
-            [min]="0"
-            [spinners]="false"
-            [readonly]="true"></kendo-numerictextbox>
-          <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
-        </div>
+        <p>{{ current.package.totalMin | minuteTransform | async }}</p>
       </flex-row-item>
     </flex-row>
   </flex-col>

@@ -49,10 +49,7 @@ export class ShopServiceRepositoryService {
     doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     doc.descriptionProp = this._textTransform.preCleansingTranslateProp(doc.descriptionProp);
     try {
-      this._afs
-        .collection<ShopServiceDocumentType>(ShopService(doc.shopId))
-        .doc(doc.id)
-        .update(doc);
+      this._afs.collection<ShopServiceDocumentType>(ShopService(doc.shopId)).doc(doc.id).update(doc);
       await this._toaster.updateSuccess();
       return true;
     } catch (error) {

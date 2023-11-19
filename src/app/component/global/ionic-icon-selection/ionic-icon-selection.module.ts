@@ -14,14 +14,7 @@ import { IonicIconListComponent } from './ionic-icon-list/ionic-icon-list.compon
 import { KendoUiModule } from '../kendo-ui-module/kendo-ui-module.module';
 @NgModule({
   declarations: [IonicIconSelectionComponent, IonicIconListComponent],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    LanguageTransformPipeModule,
-    FilterPipeModule,
-    KendoUiModule,
-  ],
+  imports: [CommonModule, IonicModule, FormsModule, LanguageTransformPipeModule, FilterPipeModule, KendoUiModule],
   exports: [IonicIconSelectionComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

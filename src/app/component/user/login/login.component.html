@@ -5,13 +5,11 @@
   <!--Error Message-->
   <flex-col *ngIf="login.errorMsg">
     <flex-col-item id="error-col-item">
-      <error-message-item>{{
-        login.errorMsg | languageTransform: 'System' | async
-      }}</error-message-item>
+      <error-message-item>{{ login.errorMsg | languageTransform: 'System' | async }}</error-message-item>
     </flex-col-item>
   </flex-col>
   <flex-col *ngIf="!sendOTP">
-    <flex-col-item>
+    <flex-col-item *ngIf="!login.verifying">
       <login-option-selection
         mode="login"
         [(loginOption)]="loginOption"
@@ -21,14 +19,15 @@
 
   <!--Phone Verification -->
   <flex-col *ngIf="!sendOTP && loginOption.phoneNumber">
-    <flex-col-item>
-      <phone-number
-        *ngIf="!sendOTP"
-        [(phone)]="login.phoneNumber"
-        [(validate)]="validator.phone"></phone-number>
+    <div id="login-loading">
+      <kendo-loader size="large" *ngIf="login.verifying"></kendo-loader>
+    </div>
+
+    <flex-col-item *ngIf="!login.verifying">
+      <phone-number *ngIf="!sendOTP" [(phone)]="login.phoneNumber" [(validate)]="validator.phone"></phone-number>
     </flex-col-item>
     <flex-col-item *ngIf="!sendOTP && loginOption.phoneNumber">
-      <button id="otp-btn" kendoButton [disabled]="!validator.phone" (click)="sendPhoneOTP()">
+      <button id="otp-btn" kendoButton [disabled]="!validator.phone || login.verifying" (click)="sendPhoneOTP()">
         {{ 'label.title.sendverification' | languageTransform: 'System' | async }}
       </button>
     </flex-col-item>
@@ -36,7 +35,10 @@
 
   <!-- OTP Verification (Phone) -->
   <flex-col *ngIf="sendOTP && loginOption.phoneNumber">
-    <flex-col-item id="otp-verification-title">
+    <div id="login-loading">
+      <kendo-loader size="large" *ngIf="login.verifying"></kendo-loader>
+    </div>
+    <flex-col-item id="otp-verification-title" *ngIf="!login.verifying">
       <legend>
         {{ 'label.title.securityconfirmation' | languageTransform: 'System' | async }}
       </legend>
@@ -52,6 +54,7 @@
         [min]="5"
         [max]="6"
         [spinner]="false"
+        [isRequireLabel]="false"
         [(validate)]="validator.otp"
         (valueChange)="onChangeOTP()"></text-box>
     </flex-col-item>
@@ -83,10 +86,7 @@
 
   <flex-col *ngIf="loginOption.email">
     <flex-col-item>
-      <e-mail
-        [(email)]="login.emailAddress"
-        [(validate)]="validator.email"
-        [isRequired]="true"></e-mail>
+      <e-mail [(email)]="login.emailAddress" [(validate)]="validator.email" [isRequired]="true"></e-mail>
     </flex-col-item>
     <flex-col-item>
       <kendo-label text="{{ 'label.title.password' | languageTransform: 'System' | async }}">
@@ -114,10 +114,7 @@
       </kendo-label>
     </flex-col-item>
     <flex-col-item>
-      <button
-        kendoButton
-        [disabled]="!validator.password || !validator.email"
-        (click)="onClickLoginWithEmail()">
+      <button kendoButton [disabled]="!validator.password || !validator.email" (click)="onClickLoginWithEmail()">
         {{ 'label.title.login' | languageTransform: 'System' | async }}
       </button>
     </flex-col-item>

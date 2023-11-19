@@ -9,8 +9,8 @@ describe('LangaugeSelectionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LangaugeSelectionComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [LangaugeSelectionComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LangaugeSelectionComponent);

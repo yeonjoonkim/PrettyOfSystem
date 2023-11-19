@@ -26,9 +26,11 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 
 //Import Language Package
 import { LanguageTransformPipeModule } from './pipe/language-transform-pipe/language-transform.pipe.module';
+import { MintueTransformPipeModule } from './pipe/mintue/mintue.pipe.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KendoUiModule } from './component/global/kendo-ui-module/kendo-ui-module.module';
 import { LanguageSelectionModule } from './component/global/langauge-selection/language-selection.module';
+import { DaysTransformPipeModule } from './pipe/days/days.pipe.module';
 import 'hammerjs';
 
 //Delcalration for Shared Component
@@ -56,6 +58,8 @@ import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
     UserEditModule,
     IonicModule.forRoot(),
     LanguageTransformPipeModule.forRoot(),
+    MintueTransformPipeModule.forRoot(),
+    DaysTransformPipeModule.forRoot(),
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

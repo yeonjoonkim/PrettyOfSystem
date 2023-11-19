@@ -9,8 +9,8 @@ describe('DatePickerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DatePickerComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [DatePickerComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DatePickerComponent);

@@ -14,7 +14,6 @@ import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pi
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
 
-import { SystemPlanManagementModule } from 'src/app/component/system/plan/plan-management/plan-management.module';
 import { SystemMenuManagementModule } from 'src/app/component/system/menu/menu-management/menu-management.module';
 import { SystemRoleManagementModule } from 'src/app/component/system/role/role-management/role-management.module';
 
@@ -24,7 +23,6 @@ import { SystemRoleManagementModule } from 'src/app/component/system/role/role-m
     FormsModule,
     IonicModule,
     SystemConfigurationPageRoutingModule,
-    SystemPlanManagementModule,
     SystemMenuManagementModule,
     SystemRoleManagementModule,
     SharedFormModule,

@@ -10,7 +10,10 @@ import { NewUserComponent } from 'src/app/component/system/user/new-user/new-use
   providedIn: 'root',
 })
 export class UserAdminModalService {
-  constructor(private _modal: ModalController, private _formCtrl: FormControllerService) {}
+  constructor(
+    private _modal: ModalController,
+    private _formCtrl: FormControllerService
+  ) {}
 
   public async presentCreateNewSystemAdmin() {
     let form: IFormHeaderModalProp = this._formCtrl.setCreateFormHeaderModalProp();

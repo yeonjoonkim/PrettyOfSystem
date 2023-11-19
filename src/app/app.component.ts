@@ -27,7 +27,6 @@ export class AppComponent implements OnInit, OnDestroy {
     await this._global.storage.create();
     this._user.activateAuthChangeListener();
     this.routerChangeListener();
-    this.deviceWidthListener();
     this.languageChangeListener();
     this.userLoginStatusListener();
     this.networkStatusListener();
@@ -62,12 +61,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private async languageChangeListener() {
-    this._global.language.changeLanguageAction
-      .pipe(takeUntil(this._onDestroy$))
-      .subscribe(async () => {
-        this.ngOnDestroy();
-        window.location.reload();
-      });
+    this._global.language.changeLanguageAction.pipe(takeUntil(this._onDestroy$)).subscribe(async () => {
+      this.ngOnDestroy();
+      window.location.reload();
+    });
   }
 
   private networkStatusListener() {
@@ -77,14 +74,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(async status => {
         this.internetStatus = status;
         await this._global.networkConnection.handleStatus(status);
-      });
-  }
-
-  private async deviceWidthListener() {
-    this._global.deviceWidth.deviceTypeObservable
-      .pipe(takeUntil(this._onDestroy$))
-      .subscribe(device => {
-        this._global.deviceWidth.deviceType = device;
       });
   }
 

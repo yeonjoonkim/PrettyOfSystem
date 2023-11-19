@@ -19,16 +19,16 @@
   <!--Role Configuration Tablet Version-->
   <!-- Employee -->
   <kendo-grid-column
-    *ngIf="!global.deviceWidth.deviceType.isMobile"
+    media="(min-width: 790px)"
     title="{{ 'label.title.employee' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isEmployee" disabled />
     </ng-template>
   </kendo-grid-column>
 
-  <!-- Manager -->
+  <!-- Reception -->
   <kendo-grid-column
-    *ngIf="!global.deviceWidth.deviceType.isMobile"
+    media="(min-width: 790px)"
     title="{{ 'label.title.reception' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isReception" disabled />
@@ -37,7 +37,7 @@
 
   <!-- Manager -->
   <kendo-grid-column
-    *ngIf="!global.deviceWidth.deviceType.isMobile"
+    media="(min-width: 790px)"
     title="{{ 'label.title.manager' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isManager" disabled />
@@ -46,7 +46,7 @@
 
   <!-- Admin -->
   <kendo-grid-column
-    *ngIf="!global.deviceWidth.deviceType.isMobile"
+    media="(min-width: 790px)"
     title="{{ 'label.title.admin' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isAdmin" disabled />
@@ -55,7 +55,7 @@
 
   <!--System Admin -->
   <kendo-grid-column
-    *ngIf="!global.deviceWidth.deviceType.isMobile"
+    media="(min-width: 790px)"
     title="{{ 'label.title.systemadmin' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <input type="checkbox" kendoCheckBox [checked]="role.accessLevel.isSystemAdmin" disabled />
@@ -63,9 +63,7 @@
   </kendo-grid-column>
 
   <!--Role Configuration Mobile Version -->
-  <kendo-grid-column
-    *ngIf="global.deviceWidth.deviceType.isMobile"
-    title="{{ 'label.title.role' | languageTransform: 'System' | async }}">
+  <kendo-grid-column title="{{ 'label.title.role' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-role>
       <p *ngIf="role.accessLevel.isSystemAdmin">
         {{ 'label.title.systemadmin' | languageTransform: 'System' | async }}
@@ -88,16 +86,11 @@
   <!--Edit-->
   <kendo-grid-command-column>
     <ng-template kendoGridCellTemplate let-role>
-      <button
-        kendoGridEditCommand
-        themeColor="tertiary"
-        icon="edit"
-        (click)="presentEditRole(role)"></button>
-      <button
-        kendoGridRemoveCommand
-        themeColor="error"
-        icon="trash"
-        (click)="onClickDeleteRole(role)"></button>
+      <button kendoGridEditCommand themeColor="tertiary" icon="edit" (click)="presentEditRole(role)"></button>
+      <button kendoGridRemoveCommand themeColor="error" icon="trash" (click)="onClickDeleteRole(role)"></button>
     </ng-template>
   </kendo-grid-command-column>
+
+  <!-- NO Data-->
+  <ng-template kendoGridNoRecordsTemplate></ng-template>
 </kendo-grid>

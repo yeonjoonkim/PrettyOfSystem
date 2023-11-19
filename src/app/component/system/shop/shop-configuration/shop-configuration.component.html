@@ -1,26 +1,21 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  (onClickDismiss)="dismiss()"
+  (onClickCreate)="handleCreate()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()"
+  (onClickDelete)="handleDelete()">
+</form-header>
 <ion-content [scrollable]="true">
-  <form-header
-    [title]="form.headerTitle"
-    [readOnly]="form.readOnly"
-    [enabledSavebutton]="form.enabledSavebutton"
-    [action]="form.action"
-    (onClickDismiss)="dismiss()"
-    (onClickCreate)="handleCreate()"
-    (onClickEdit)="handleEdit()"
-    (onClickSave)="handleSave()"
-    (onClickDelete)="handleDelete()">
-  </form-header>
   <form-container>
     <!-- Button -->
     <kendo-buttongroup selection="single" width="100%">
       <!--Information Button -->
 
-      <button
-        id="info-btn"
-        kendoButton
-        [toggleable]="true"
-        (click)="onClickInfo()"
-        [(selected)]="display.info">
+      <button id="info-btn" kendoButton [toggleable]="true" (click)="onClickInfo()" [(selected)]="display.info">
         {{ 'label.title.info' | languageTransform: 'System' | async }}
       </button>
       <!--Work hour Button-->
@@ -46,9 +41,9 @@
         id="subscription-btn"
         kendoButton
         [toggleable]="true"
-        (click)="onClickSubscription()"
-        [(selected)]="display.subscription">
-        {{ 'label.title.subscription' | languageTransform: 'System' | async }}
+        (click)="onClickCapacity()"
+        [(selected)]="display.capacity">
+        {{ 'label.title.capacity' | languageTransform: 'System' | async }}
       </button>
     </kendo-buttongroup>
 
@@ -174,65 +169,93 @@
       </flex-col>
     </div>
 
-    <!--Subscription-->
-    <flex-col *ngIf="display.subscription">
-      <flex-row id="subscription-title">
+    <!--Capacity -->
+    <div *ngIf="display.capacity" id="capcity">
+      <flex-col>
+        <flex-col-item>
+          <name-value-pair-single-dropdown-selection
+            [(selected)]="selectedCapacityNamePairValue"
+            [selection]="capacitiesSelectionList"
+            [isRequired]="true"
+            [isRequiredTitle]="false"
+            (selectedChange)="onChangeCapacity()"></name-value-pair-single-dropdown-selection>
+        </flex-col-item>
+      </flex-col>
+
+      <flex-row *ngIf="selectedCapacity">
         <flex-row-item>
-          <legend>
-            {{ 'label.title.subscription' | languageTransform: 'System' | async }}
-          </legend>
-        </flex-row-item>
-        <flex-row-item id="active-box">
-          <kendo-label text="{{ 'label.title.overdue' | languageTransform: 'System' | async }}">
-            <input
-              type="checkbox"
-              kendoCheckBox
-              [(ngModel)]="config.plan.isOverDue"
-              [disabled]="form.readOnly" />
-          </kendo-label>
+          <div id="premium-capcity">
+            <kendo-label text="{{ 'label.title.premium' | languageTransform: 'System' | async }}">
+              <input kendoCheckBox type="checkbox" [disabled]="true" [(ngModel)]="selectedCapacity.isPremium" />
+            </kendo-label>
+          </div>
+          <div id="test-capcity">
+            <kendo-label text="{{ 'label.title.test' | languageTransform: 'System' | async }}">
+              <input kendoCheckBox type="checkbox" [disabled]="true" [(ngModel)]="selectedCapacity.isTest" />
+            </kendo-label>
+          </div>
         </flex-row-item>
       </flex-row>
-      <flex-col-item>
-        <shop-plan
-          [(planId)]="config.plan.configurationId"
-          [(validate)]="validator.plan"
-          [readOnly]="form.readOnly"></shop-plan>
-      </flex-col-item>
-      <flex-row>
-        <flex-row-item>
-          <date-period-picker
-            [isPlanFormat]="true"
-            [(period)]="config.plan.period"
-            [readOnly]="form.readOnly"
-            (periodChange)="onPlanPeriodChange()"></date-period-picker>
+
+      <flex-row *ngIf="selectedCapacity">
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.user' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedUser"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
         </flex-row-item>
-        <flex-row-item>
-          <shop-plan-price
-            [planId]="config.plan.configurationId"
-            [period]="config.plan.period"></shop-plan-price>
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.coupon' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedCoupon"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
         </flex-row-item>
-      </flex-row>
-      <flex-row>
-        <flex-row-item>
-          <date-picker
-            title="label.title.lastpaymentdate"
-            [dateFormatter]="config.country.dateFormat"
-            [shopTimeZone]="config.timezone"
-            [(date)]="config.plan.lastPaymentDate"
-            (dateChange)="autoPaymentDateCalculation()"
-            [readOnly]="form.readOnly"
-            [restrictedFromToday]="false"></date-picker>
-        </flex-row-item>
-        <flex-row-item>
-          <date-picker
-            title="label.title.upcomingpaymentdate"
-            [dateFormatter]="config.country.dateFormat"
-            [shopTimeZone]="config.timezone"
-            [(date)]="config.plan.paymentDate"
-            [readOnly]="form.readOnly"
-            [restrictedFromToday]="true"></date-picker>
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.package' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedPackage"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="form.readOnly"></kendo-numerictextbox>
         </flex-row-item>
       </flex-row>
-    </flex-col>
+
+      <flex-row *ngIf="selectedCapacity">
+        <flex-col-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.service' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedService"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </flex-col-item>
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.extra' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedExtra"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </flex-row-item>
+        <flex-row-item id="capacity-items">
+          <kendo-label text="{{ 'label.title.product' | languageTransform: 'System' | async }}"></kendo-label>
+          <kendo-numerictextbox
+            [value]="selectedCapacity.limitedProduct"
+            [decimals]="0"
+            [min]="0"
+            [spinners]="false"
+            [readonly]="true"></kendo-numerictextbox>
+        </flex-row-item>
+      </flex-row>
+    </div>
   </form-container>
 </ion-content>

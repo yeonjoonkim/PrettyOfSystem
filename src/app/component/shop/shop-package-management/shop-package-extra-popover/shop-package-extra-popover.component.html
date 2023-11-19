@@ -21,13 +21,7 @@
 
         <!-- Dollar -->
         <flex-row-item class="price-option">
-          <p>$</p>
-          <kendo-numerictextbox
-            [(value)]="extra.price"
-            [decimals]="2"
-            [min]="0"
-            [spinners]="false"
-            [readonly]="true"></kendo-numerictextbox>
+          <p>{{ extra.price | currencyTransform }}</p>
         </flex-row-item>
       </flex-row>
     </ng-container>

@@ -80,8 +80,7 @@ export class LoadingService {
   private async getCurrentSelection() {
     let currentLanguage: string = await this._storage.getLanguage();
     let selections = await this.getSelections();
-    let selection =
-      selections !== null ? selections?.filter(s => s.code === currentLanguage) : null;
+    let selection = selections !== null ? selections?.filter(s => s.code === currentLanguage) : null;
 
     return selection !== null ? selection[0] : null;
   }

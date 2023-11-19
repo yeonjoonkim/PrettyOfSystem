@@ -46,8 +46,7 @@ export class NewSystemAdminComponent implements OnInit {
     this.user = this._paramUser ? this._paramUser : this._systemAdmin.defaultUser();
 
     if (!this.user.setting.preferLanguage) {
-      this.user.setting.preferLanguage =
-        await this._global.language.management.storage.getCurrentLanguage();
+      this.user.setting.preferLanguage = await this._global.language.management.storage.getCurrentLanguage();
     }
   }
 

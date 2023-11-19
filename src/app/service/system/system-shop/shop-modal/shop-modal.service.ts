@@ -10,7 +10,10 @@ import { cloneDeep } from 'lodash';
   providedIn: 'root',
 })
 export class ShopModalService {
-  constructor(private _modal: ModalController, private _formCtrl: FormControllerService) {}
+  constructor(
+    private _modal: ModalController,
+    private _formCtrl: FormControllerService
+  ) {}
 
   public async presentCreateSystemShopConfiguration() {
     let form: IFormHeaderModalProp = this._formCtrl.setCreateFormHeaderModalProp();

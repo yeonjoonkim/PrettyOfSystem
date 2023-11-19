@@ -48,9 +48,7 @@ export class SystemRoleService {
   }
 
   public async processDeleteRoleConfiguration(config: RoleConfigurationType) {
-    let deleteConfirmation = await this._global.confirmAlert.getDeleteConfirmationWithName(
-      config.name
-    );
+    let deleteConfirmation = await this._global.confirmAlert.getDeleteConfirmationWithName(config.name);
 
     if (deleteConfirmation) {
       let selectedRole = await this.selectedRole(config.id);
@@ -85,13 +83,11 @@ export class SystemRoleService {
             .toLowerCase()
             .replace(/\s+/g, '');
 
-        await this._global.language.management
-          .deletePackage(selectedPreviousRole.name)
-          .then(async () => {
-            await this._global.language.management.addPackage(translated.result, keyValue);
-            await this._systemRoleRepo.updateSystemRoleConfiguration(newConfig);
-            await this.modal.dissmissModalWithRefresh();
-          });
+        await this._global.language.management.deletePackage(selectedPreviousRole.name).then(async () => {
+          await this._global.language.management.addPackage(translated.result, keyValue);
+          await this._systemRoleRepo.updateSystemRoleConfiguration(newConfig);
+          await this.modal.dissmissModalWithRefresh();
+        });
       }
     } else {
       await this._systemRoleRepo.updateSystemRoleConfiguration(newConfig);

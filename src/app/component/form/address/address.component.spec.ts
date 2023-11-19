@@ -9,8 +9,8 @@ describe('AddressComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddressComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [AddressComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddressComponent);

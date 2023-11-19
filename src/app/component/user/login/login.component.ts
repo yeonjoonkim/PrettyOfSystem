@@ -88,11 +88,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public async sendPhoneOTP() {
     try {
+      this.login.verifying = true;
       await this.login.sendOtpVerification(this._recaptcha);
+      this.login.verifying = false;
       await this.subscribeTimer();
       this.sendOTP = this.login.errorMsg ? false : true;
     } catch (error) {
       console.error(error);
+      this.login.verifying = false;
       this.sendOTP = false;
     }
   }

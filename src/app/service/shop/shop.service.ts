@@ -3,8 +3,8 @@ import { Observable, combineLatest, firstValueFrom, map, of, switchMap } from 'r
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
-  PlanConfigurationType,
   RoleConfigurationType,
+  ShopCapacityType,
   ShopConfigurationType,
   ShopCouponDocumentType,
   ShopEmployeeManagementUserType,
@@ -23,6 +23,7 @@ import { ShopPackageRepositoryService } from 'src/app/firebase/shop-repository/s
 import { ShopCouponRepositoryService } from 'src/app/firebase/shop-repository/shop-coupon-repository/shop-coupon-repository.service';
 import { ShopPictureRepositoryService } from 'src/app/firebase/shop-repository/shop-picture-repository/shop-picture-repository.service';
 import { SystemLanguageManagementService } from '../global/language/system-language-management/system-language-management.service';
+import { SystemShopCapacityRepositoryService } from 'src/app/firebase/system-repository/system-shop-capacity/system-shop-capacity-repository.service';
 import * as Constant from 'src/app/constant/constant';
 import { DateService } from '../global/date/date.service';
 @Injectable({
@@ -31,8 +32,8 @@ import { DateService } from '../global/date/date.service';
 export class ShopService {
   public role$!: Observable<RoleConfigurationType | null>;
   public config$!: Observable<ShopConfigurationType | null>;
+  public capacity$!: Observable<ShopCapacityType | null>;
   public timezone$!: Observable<string | null>;
-  public plan$!: Observable<PlanConfigurationType | null>;
   public translatedRequests$!: Observable<ChatGptTranslateDocumentType[]>;
   public services$!: Observable<ShopServiceDocumentType[]>;
   public extras$!: Observable<ShopExtraDocumentType[]>;
@@ -48,6 +49,11 @@ export class ShopService {
   public shopImage1$!: Observable<Blob | null>;
   public shopImage2$!: Observable<Blob | null>;
   public shopImage3$!: Observable<Blob | null>;
+  //Price List
+  public couponPriceList$!: Observable<ShopCouponDocumentType[]>;
+  public packagePriceList$!: Observable<ShopPackageDocumentType[]>;
+  public servicePriceList$!: Observable<ShopServiceDocumentType[]>;
+  public extraPriceList$!: Observable<ShopExtraDocumentType[]>;
 
   constructor(
     public role: UserRoleService,
@@ -60,13 +66,14 @@ export class ShopService {
     private _couponRepo: ShopCouponRepositoryService,
     private _pictureRepo: ShopPictureRepositoryService,
     private _systemLanguage: SystemLanguageManagementService,
+    private _capacity: SystemShopCapacityRepositoryService,
     private _date: DateService
   ) {
     this.userName$ = this._user.employeName$;
     this.config$ = this._user.currentShopConfig$;
     this.role$ = this._user.currentRole$;
-    this.plan$ = this._user.currentShopPlan$;
     this.translatedRequests$ = this.translated.translatedRequest$;
+    this.capacityListener();
     this.timezoneListener();
     this.associatedUserListener();
     this.shopServiceListener();
@@ -81,6 +88,10 @@ export class ShopService {
     this.shopImage1Listener();
     this.shopImage2Listener();
     this.shopImage3Listener();
+    this.couponPriceListListener();
+    this.servicePriceListListener();
+    this.packagePriceListListener();
+    this.extraPriceListListener();
   }
 
   public translatedRequestFilterByServiceIds(shopId: string, serviceIds: string[]) {
@@ -288,6 +299,79 @@ export class ShopService {
       })
     );
   }
+
+  private couponPriceListListener() {
+    this.couponPriceList$ = combineLatest([this.config$, this.coupons$]).pipe(
+      map(([config, coupons]) => {
+        if (config !== null) {
+          const language = this._systemLanguage.storage.currentLanguage;
+          return coupons.filter(
+            coupon =>
+              config.package[`${coupon.title}.${language}`] !== undefined &&
+              config.package[`${coupon.description}.${language}`] !== undefined
+          );
+        } else {
+          return [] as ShopCouponDocumentType[];
+        }
+      })
+    );
+  }
+
+  private capacityListener() {
+    this.capacity$ = this.config$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return this._capacity.capacityListener(config.capacityId);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
+  private servicePriceListListener() {
+    this.servicePriceList$ = combineLatest([this.config$, this.services$]).pipe(
+      map(([config, servcies]) => {
+        if (config !== null) {
+          const language = this._systemLanguage.storage.currentLanguage;
+          return servcies.filter(
+            servcie =>
+              config.package[`${servcie.title}.${language}`] !== undefined &&
+              config.package[`${servcie.description}.${language}`] !== undefined
+          );
+        } else {
+          return [] as ShopServiceDocumentType[];
+        }
+      })
+    );
+  }
+
+  private packagePriceListListener() {
+    this.packagePriceList$ = combineLatest([this.config$, this.packages$]).pipe(
+      map(([config, packages]) => {
+        if (config !== null) {
+          const language = this._systemLanguage.storage.currentLanguage;
+          return packages.filter(pack => config.package[`${pack.title}.${language}`] !== undefined);
+        } else {
+          return [] as ShopPackageDocumentType[];
+        }
+      })
+    );
+  }
+
+  private extraPriceListListener() {
+    this.extraPriceList$ = combineLatest([this.config$, this.extras$]).pipe(
+      map(([config, extras]) => {
+        if (config !== null) {
+          const language = this._systemLanguage.storage.currentLanguage;
+          return extras.filter(extra => config.package[`${extra.title}.${language}`] !== undefined);
+        } else {
+          return [] as ShopExtraDocumentType[];
+        }
+      })
+    );
+  }
+
   public async requeueTranslatedRequest(doc: ChatGptTranslateDocumentType) {
     return await this.translated.requeueTranslatedRequest(doc);
   }
@@ -295,11 +379,6 @@ export class ShopService {
   public async config() {
     const result = await firstValueFrom(this.config$);
     return result;
-  }
-
-  public async plan() {
-    const plan = await firstValueFrom(this.plan$);
-    return plan !== null ? plan : null;
   }
 
   public async id() {
@@ -319,20 +398,5 @@ export class ShopService {
   public async timeStamp() {
     const timezone = await this.timezone();
     return this._date.shopTimeStamp(timezone);
-  }
-
-  public async isReachToMaxPackage() {
-    const plan = await this.plan();
-    const packages = await firstValueFrom(this.packages$);
-    if (plan !== null) {
-      return plan.limitedPackage > packages.length;
-    } else {
-      return false;
-    }
-  }
-
-  public async isPreimumPlan() {
-    const plan = await this.plan();
-    return plan !== null ? plan.isPremium : false;
   }
 }

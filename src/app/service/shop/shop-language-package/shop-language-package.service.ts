@@ -8,10 +8,7 @@ import { LanguageService } from 'src/app/service/global/language/language.servic
 export class ShopLanguagePackageService {
   constructor(private _language: LanguageService) {}
 
-  public updatePackage(
-    pack: ShopConfigurationLanguagePackageType,
-    relatedKeys: NameValuePairType[]
-  ) {
+  public updatePackage(pack: ShopConfigurationLanguagePackageType, relatedKeys: NameValuePairType[]) {
     relatedKeys.forEach(related => {
       if (pack.hasOwnProperty(related.name)) {
         pack[related.name] = related.value;

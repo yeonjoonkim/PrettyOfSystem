@@ -43,6 +43,12 @@ export const Default = {
     All: 'All',
   } as const,
 
+  LanguageTransformType: {
+    System: 'System',
+    User: 'User',
+    Client: 'Client',
+  } as const,
+
   ComponentMode: {
     Filter: 'filter',
     Form: 'form',

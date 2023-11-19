@@ -3,19 +3,11 @@
   <legend *ngIf="requiresTitle">
     {{ 'label.title.operatinghours' | languageTransform: 'System' | async }}
   </legend>
-  <flex-row-item
-    id="time-container"
-    *ngIf="!readOnly && (action === 'create' || action === 'edit')">
+  <flex-row-item id="time-container" *ngIf="!readOnly && (action === 'create' || action === 'edit')">
     <time-picker-group>
-      <time-picker
-        [(time)]="copyValue.openTime"
-        [intervalMin]="intervalMin"
-        [readOnly]="readOnly"></time-picker>
+      <time-picker [(time)]="copyValue.openTime" [intervalMin]="intervalMin" [readOnly]="readOnly"></time-picker>
       <p id="time-picker-seperator">-</p>
-      <time-picker
-        [(time)]="copyValue.closeTime"
-        [intervalMin]="intervalMin"
-        [readOnly]="readOnly"></time-picker>
+      <time-picker [(time)]="copyValue.closeTime" [intervalMin]="intervalMin" [readOnly]="readOnly"></time-picker>
       <button kendoButton id="copy-button" (click)="onClickCopy()">
         {{ 'button.title.copy' | languageTransform: 'System' | async }}
       </button>
@@ -23,9 +15,7 @@
   </flex-row-item>
   <!--Error-->
   <flex-col-item id="error-container">
-    <div
-      class="form-error-container"
-      *ngIf="!inputValidator && (action === 'create' || action === 'edit')">
+    <div class="form-error-container" *ngIf="!inputValidator && (action === 'create' || action === 'edit')">
       <kendo-formerror>{{
         'messageerror.description.workhours' | languageTransform: 'System' | async
       }}</kendo-formerror>

@@ -3,7 +3,6 @@ import { IUser, NameValuePairType, UserManagementCriteria } from 'src/app/interf
 import { UserAdminService } from 'src/app/service/user-admin/user-admin.service';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
-import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
 
 @Component({
   selector: 'user-management',
@@ -23,13 +22,12 @@ export class UserManagementComponent implements OnInit {
   public queryShopFilter: NameValuePairType[] = [];
   public query: string = '';
   constructor(
-    public device: DeviceWidthService,
     private _userAdmin: UserAdminService,
     private _global: GlobalService
   ) {}
 
   async ngOnInit() {
-    await this.refresh();
+    await this.loadingCriteria();
   }
 
   public async onClickCreateSystemAdmin() {
@@ -61,9 +59,7 @@ export class UserManagementComponent implements OnInit {
         const associatedShopIds: string[] = user.associatedShops.map(s => s.shopId);
         const queryedShopId: string[] = this.queryShopFilter.map(qs => qs.value);
         const shopCompared =
-          queryedShopId.length === 0
-            ? true
-            : queryedShopId.some(id => associatedShopIds.includes(id));
+          queryedShopId.length === 0 ? true : queryedShopId.some(id => associatedShopIds.includes(id));
         const nameCompared = [user.firstName, user.lastName]
           .join('')
           .toLowerCase()

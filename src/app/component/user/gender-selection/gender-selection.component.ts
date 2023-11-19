@@ -8,8 +8,7 @@ import { NameValuePairType } from 'src/app/interface/global/global.interface';
   styleUrls: ['./gender-selection.component.scss'],
 })
 export class GenderSelectionComponent implements OnInit {
-  @Output() genderChange: EventEmitter<Constant.GenderType> =
-    new EventEmitter<Constant.GenderType>();
+  @Output() genderChange: EventEmitter<Constant.GenderType> = new EventEmitter<Constant.GenderType>();
   @Input() readOnly: boolean = false;
   @Input() mode: Constant.ComponentModeType = 'form';
   @Input()
@@ -48,9 +47,7 @@ export class GenderSelectionComponent implements OnInit {
 
   public onChangeGender(selected: NameValuePairType) {
     this.selectedGender = selected;
-    let selectedGenderType: Constant.GenderType = this.convertToGenderType(
-      this.selectedGender.value
-    );
+    let selectedGenderType: Constant.GenderType = this.convertToGenderType(this.selectedGender.value);
     this.inputGender = selectedGenderType;
     this.gender = this.inputGender;
   }

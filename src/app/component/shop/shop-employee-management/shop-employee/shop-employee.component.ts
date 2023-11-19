@@ -159,9 +159,7 @@ export class ShopEmployeeComponent implements OnInit, OnDestroy {
   private handleEncryptedPassword() {
     const isNewAccount = this.form.action === Constant.Default.FormAction.Create;
     if (isNewAccount) {
-      this.employee.encryptedPassword = this.employee.loginOption.email
-        ? this._encryptedPassword
-        : '';
+      this.employee.encryptedPassword = this.employee.loginOption.email ? this._encryptedPassword : '';
     } else {
       const resetPassword = this.employee.loginOption.email && this.resetPassword;
       this.employee.encryptedPassword = resetPassword
@@ -183,10 +181,7 @@ export class ShopEmployeeComponent implements OnInit, OnDestroy {
     const isCreate = this.form.action === Constant.Default.FormAction.Create;
     const isEdit = this.form.action === Constant.Default.FormAction.Edit;
     let enabled =
-      this.validator.firstName &&
-      this.validator.lastName &&
-      this.validator.phone &&
-      this.validator.email;
+      this.validator.firstName && this.validator.lastName && this.validator.phone && this.validator.email;
 
     if (this.employee.loginOption.email && isCreate) {
       enabled = enabled && this.validator.password;
@@ -202,13 +197,9 @@ export class ShopEmployeeComponent implements OnInit, OnDestroy {
   }
 
   private async loadingFormCtrl() {
-    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(
-      Constant.Default.ComponentMode.Form
-    );
-    const employeeProp: ShopEmployeeManagementUserType | undefined =
-      this._navParams.get('employee');
-    const roleProp: EmployeeManagementRolePropType | undefined =
-      this._navParams.get('availableRole');
+    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(Constant.Default.ComponentMode.Form);
+    const employeeProp: ShopEmployeeManagementUserType | undefined = this._navParams.get('employee');
+    const roleProp: EmployeeManagementRolePropType | undefined = this._navParams.get('availableRole');
     const shopConfigProp: ShopConfigurationType | undefined = this._navParams.get('shopConfig');
     const isReachToMax: boolean | undefined = this._navParams.get('isReachToMax');
     if (formProp !== undefined && employeeProp !== undefined) {

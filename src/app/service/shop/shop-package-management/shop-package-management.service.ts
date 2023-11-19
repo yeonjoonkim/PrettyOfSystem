@@ -3,7 +3,8 @@ import { Observable, combineLatest, combineLatestWith, map, of, switchMap } from
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
-  PlanConfigurationType,
+  ShopCalendarType,
+  ShopCapacityType,
   ShopConfigurationType,
   ShopExtraDocumentType,
   ShopLimitedProgpressBarType,
@@ -29,7 +30,6 @@ import { ShopExtraManagementService } from '../shop-extra-management/shop-extra-
 })
 export class ShopPackageManagementService {
   public config$!: Observable<ShopConfigurationType | null>;
-  public plan$!: Observable<PlanConfigurationType | null>;
   public translatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
   public services$!: Observable<ShopServiceDocumentType[]>;
   public extras$!: Observable<ShopExtraDocumentType[]>;
@@ -57,7 +57,6 @@ export class ShopPackageManagementService {
     public loading: LoadingService
   ) {
     this.config$ = this._shop.config$;
-    this.plan$ = this._shop.plan$;
     this.services$ = this._shop.services$;
     this.extras$ = this._shop.extras$;
     this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
@@ -67,10 +66,10 @@ export class ShopPackageManagementService {
     this.operatingWorkHour$ = this._shop.operatingWorkHours$;
     this.serviceTranslatedRequest$ = this._shopService.translatedRequest$;
     this.extraServiceRequest$ = this._shopExtra.translatedRequest$;
-    this.isReachToMaxListener();
-    this.filterPropListener();
-    this.activeProgressBar();
     this.translateRequest();
+    this.filterPropListener();
+    this.isReachToMaxListener();
+    this.activeProgressBar();
   }
 
   private translateRequest() {
@@ -89,14 +88,27 @@ export class ShopPackageManagementService {
     );
   }
 
+  private filterPropListener() {
+    this.filterProp$ = combineLatest([this.serviceFilter$, this.extraFilter$, this.specialisedEmployees$]).pipe(
+      map(([servicesFilter, extrasFilter, specialisedEmployees]) => {
+        const shopPackageFilterDoc: ShopPackageFilterDocumentProp = {
+          services: servicesFilter,
+          extras: extrasFilter,
+          specializedEmployees: specialisedEmployees,
+        };
+        return shopPackageFilterDoc;
+      })
+    );
+  }
+
   private activeProgressBar() {
     this.progressBar$ = this.packages$.pipe(
-      combineLatestWith(this.plan$),
-      switchMap(([service, plan]: [ShopPackageDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
+      combineLatestWith(this._shop.capacity$),
+      switchMap(([service, capacity]: [ShopPackageDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
           return of({
             current: service.length,
-            max: plan.limitedPackage,
+            max: capacity.limitedPackage,
             title: 'label.title.maximumactivepackages',
             indeterminate: false,
           });
@@ -112,30 +124,12 @@ export class ShopPackageManagementService {
     );
   }
 
-  private filterPropListener() {
-    this.filterProp$ = combineLatest([
-      this.serviceFilter$,
-      this.extraFilter$,
-      this.specialisedEmployees$,
-    ]).pipe(
-      map(([servicesFilter, extrasFilter, specialisedEmployees]) => {
-        const shopPackageFilterDoc: ShopPackageFilterDocumentProp = {
-          services: servicesFilter,
-          extras: extrasFilter,
-          specializedEmployees: specialisedEmployees,
-        };
-        return shopPackageFilterDoc;
-      })
-    );
-  }
-
   private isReachToMaxListener() {
     this.isReachToMax$ = this.packages$.pipe(
-      combineLatestWith(this.plan$),
-      map(([packages, plan]: [ShopPackageDocumentType[], PlanConfigurationType | null]) => {
-        if (plan !== null) {
-          const isMaxReached = packages.length > plan.limitedPackage;
-          return isMaxReached;
+      combineLatestWith(this._shop.capacity$),
+      map(([packages, capacity]: [ShopPackageDocumentType[], ShopCapacityType | null]) => {
+        if (capacity !== null) {
+          return packages.length > capacity.limitedPackage;
         } else {
           return false;
         }
@@ -157,11 +151,7 @@ export class ShopPackageManagementService {
     const newPackage = await this._packageRepo.addPackage(pack);
 
     if (newPackage) {
-      const titleTranslatedRequest = await this._shop.translated.createTitle(
-        pack.shopId,
-        pack.id,
-        pack.titleProp
-      );
+      const titleTranslatedRequest = await this._shop.translated.createTitle(pack.shopId, pack.id, pack.titleProp);
 
       if (!titleTranslatedRequest.requested) {
         await this.delete(pack);

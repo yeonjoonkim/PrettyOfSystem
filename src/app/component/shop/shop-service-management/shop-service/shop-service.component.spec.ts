@@ -9,8 +9,8 @@ describe('ShopServiceComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopServiceComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ShopServiceComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShopServiceComponent);

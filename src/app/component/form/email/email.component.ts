@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 @Component({
@@ -6,9 +6,8 @@ import { GlobalService } from 'src/app/service/global/global.service';
   templateUrl: './email.component.html',
   styleUrls: ['./email.component.scss'],
 })
-export class EmailComponent implements OnInit {
-  private readonly _emailValidatorRules: RegExp =
-    /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+export class EmailComponent implements OnInit, OnChanges {
+  private readonly _emailValidatorRules: RegExp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   public validEmail: string = '';
   public validated!: boolean;
   @Output() emailChange = new EventEmitter<string>();
@@ -37,6 +36,10 @@ export class EmailComponent implements OnInit {
   public entered: boolean = false;
 
   constructor(private _global: GlobalService) {}
+  async ngOnChanges() {
+    this.validated = this._emailValidatorRules.test(this.validEmail);
+    await this.setPlaceHolder();
+  }
 
   async ngOnInit() {
     this.validated = this._emailValidatorRules.test(this.validEmail);
@@ -51,8 +54,6 @@ export class EmailComponent implements OnInit {
   }
 
   private async setPlaceHolder() {
-    this.placeHolder = this.isRequired
-      ? await this._global.language.transform('placeholder.title.required')
-      : this.placeHolder;
+    this.placeHolder = this.isRequired ? await this._global.language.transform('placeholder.title.required') : '';
   }
 }

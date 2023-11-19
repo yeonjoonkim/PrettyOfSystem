@@ -9,8 +9,8 @@ describe('TimeZoneComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimeZoneComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [TimeZoneComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimeZoneComponent);

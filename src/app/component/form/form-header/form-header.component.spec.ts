@@ -9,8 +9,8 @@ describe('FormHeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormHeaderComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [FormHeaderComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FormHeaderComponent);

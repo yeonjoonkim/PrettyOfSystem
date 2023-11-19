@@ -9,8 +9,8 @@ describe('ShopExtraGridComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopExtraGridComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ShopExtraGridComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShopExtraGridComponent);

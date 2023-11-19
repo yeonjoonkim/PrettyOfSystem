@@ -1,9 +1,5 @@
 import { RoleConfigurationType } from '../system/role/role.interface';
-import {
-  ShopOperatingDailyType,
-  ShopOperatingHoursType,
-  ShopWorkHoursType,
-} from './shop.interface';
+import { ShopOperatingDailyType, ShopOperatingHoursType, ShopWorkHoursType } from './shop.interface';
 import * as Constant from '../../constant/constant';
 import { IUserLoginOption, UserSettingType } from '../user/user.interface';
 import { NameValuePairType, StartEndStringDateType } from '../global/global.interface';

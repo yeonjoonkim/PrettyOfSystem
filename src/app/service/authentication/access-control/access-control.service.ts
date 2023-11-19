@@ -20,12 +20,7 @@ export class AccessControlService {
   }
 
   public reception(accessLevel: RoleAccessLevelType): boolean {
-    return (
-      accessLevel.isSystemAdmin ||
-      accessLevel.isAdmin ||
-      accessLevel.isManager ||
-      accessLevel.isReception
-    );
+    return accessLevel.isSystemAdmin || accessLevel.isAdmin || accessLevel.isManager || accessLevel.isReception;
   }
 
   public employee(accessLevel: RoleAccessLevelType): boolean {

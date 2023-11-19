@@ -23,17 +23,13 @@ export class UserRoleService {
 
   async isAdminAccess() {
     const current = await this.get();
-    return current !== null
-      ? current.accessLevel.isAdmin || current.accessLevel.isSystemAdmin
-      : false;
+    return current !== null ? current.accessLevel.isAdmin || current.accessLevel.isSystemAdmin : false;
   }
 
   async isManagerAccess() {
     const current = await this.get();
     return current !== null
-      ? current.accessLevel.isManager ||
-          current.accessLevel.isAdmin ||
-          current.accessLevel.isSystemAdmin
+      ? current.accessLevel.isManager || current.accessLevel.isAdmin || current.accessLevel.isSystemAdmin
       : false;
   }
 

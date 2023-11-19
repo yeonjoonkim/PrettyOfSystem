@@ -24,9 +24,7 @@ import { NameValuePairMultiDropdownlistComponent } from './name-pair-value-multi
   templateUrl: './name-value-pair-multi-dropdown-selection.component.html',
   styleUrls: ['./name-value-pair-multi-dropdown-selection.component.scss'],
 })
-export class NameValuePairDropdownMultiSelectionComponent
-  implements OnInit, OnChanges, AfterViewInit
-{
+export class NameValuePairDropdownMultiSelectionComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('dropdownListBtn') dropdownListBtn!: ElementRef;
   @ViewChild('selectedName') selectedName!: ElementRef;
   @ViewChild('dropDownArrow') dropDownArrow!: ElementRef;
@@ -165,8 +163,7 @@ export class NameValuePairDropdownMultiSelectionComponent
   }
 
   private async setQueryList() {
-    let copiedSelection: NameValuePairType[] =
-      this.selection !== undefined ? cloneDeep(this.selection) : [];
+    let copiedSelection: NameValuePairType[] = this.selection !== undefined ? cloneDeep(this.selection) : [];
     let promises = copiedSelection.map(async s => {
       let translatedName = await this._global.language.transform(s.name);
       let promise: PairNameValueTypeFilterParamType = {
@@ -192,11 +189,8 @@ export class NameValuePairDropdownMultiSelectionComponent
     const selectedFilter = this.queryList
       .filter(q => selectedValueList.includes(q.value))
       .sort((a, b) =>
-        this.sortByValueTitle
-          ? a.value.localeCompare(b.value)
-          : a.translatedName.localeCompare(b.translatedName)
+        this.sortByValueTitle ? a.value.localeCompare(b.value) : a.translatedName.localeCompare(b.translatedName)
       );
-    this.selectedText =
-      selectedFilter.length > 0 ? selectedFilter.map(s => s.translatedName).join(', ') : all;
+    this.selectedText = selectedFilter.length > 0 ? selectedFilter.map(s => s.translatedName).join(', ') : all;
   }
 }

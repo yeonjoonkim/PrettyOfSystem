@@ -9,8 +9,8 @@ describe('ShopCouponGridComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopCouponGridComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ShopCouponGridComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShopCouponGridComponent);

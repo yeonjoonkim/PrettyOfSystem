@@ -25,6 +25,25 @@
   margin-top: 10px;
 }
 
+#capcity {
+  margin-top: 15px;
+}
+
+#premium-capcity,
+#test-capcity {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#capacity-items {
+  kendo-numerictextbox {
+    height: 32px;
+    margin: 0;
+    margin-top: 16px;
+    margin-bottom: 15px;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   #info-btn,
   #subscription-btn,

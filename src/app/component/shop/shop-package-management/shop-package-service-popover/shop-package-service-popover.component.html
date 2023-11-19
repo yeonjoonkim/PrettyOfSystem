@@ -18,25 +18,12 @@
           </flex-row-item>
           <!-- Min -->
           <flex-row-item class="minute-option">
-            <kendo-numerictextbox
-              format="##"
-              [(value)]="option.min"
-              [decimals]="0"
-              [spinners]="false"
-              [min]="0"
-              [readonly]="true"></kendo-numerictextbox>
-            <p>{{ 'label.title.minute' | languageTransform: 'System' | async }}</p>
+            <p>{{ option.min | minuteTransform | async }}</p>
           </flex-row-item>
 
           <!-- Dollar -->
           <flex-row-item class="price-option">
-            <p>$</p>
-            <kendo-numerictextbox
-              [(value)]="option.price"
-              [decimals]="2"
-              [min]="0"
-              [spinners]="false"
-              [readonly]="true"></kendo-numerictextbox>
+            <p>{{ option.price | currencyTransform }}</p>
           </flex-row-item>
         </flex-row>
       </ng-container>

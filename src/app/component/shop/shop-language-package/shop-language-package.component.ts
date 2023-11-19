@@ -35,12 +35,8 @@ export class ShopLanguagePackageComponent implements OnInit {
   }
 
   public onChangeProp(change: NameValuePairType) {
-    const after: NameValuePairType | undefined = this.current.relatedKeys.find(
-      s => s.name === change.name
-    );
-    const before: NameValuePairType | undefined = this._before.relatedKeys.find(
-      s => s.name === change.name
-    );
+    const after: NameValuePairType | undefined = this.current.relatedKeys.find(s => s.name === change.name);
+    const before: NameValuePairType | undefined = this._before.relatedKeys.find(s => s.name === change.name);
     const index = this._before.relatedKeys.findIndex(r => r.name === change.name);
     const afterIndex = this.current.relatedKeys.findIndex(r => r.name === change.name);
 
@@ -82,9 +78,7 @@ export class ShopLanguagePackageComponent implements OnInit {
         const translatedResult = result.translated[code[2]];
         this.current.relatedKeys[index].value = translatedResult;
       } else {
-        const msg = await this._global.language.transform(
-          'messageerror.description.couldnottranslated'
-        );
+        const msg = await this._global.language.transform('messageerror.description.couldnottranslated');
         await this._global.toast.presentError(msg);
       }
     }
@@ -109,9 +103,7 @@ export class ShopLanguagePackageComponent implements OnInit {
   }
 
   private async loadingFormCtrl() {
-    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(
-      Constant.Default.ComponentMode.Form
-    );
+    const formProp: IFormHeaderModalProp | undefined = this._navParams.get(Constant.Default.ComponentMode.Form);
     const prop: ShopLanguagePackageModalProp | undefined = this._navParams.get('prop');
 
     if (formProp !== undefined && prop !== undefined) {

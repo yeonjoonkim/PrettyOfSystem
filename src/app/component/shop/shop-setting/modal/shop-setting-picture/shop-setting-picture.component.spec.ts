@@ -9,8 +9,8 @@ describe('ShopSettingPictureComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopSettingPictureComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ShopSettingPictureComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShopSettingPictureComponent);

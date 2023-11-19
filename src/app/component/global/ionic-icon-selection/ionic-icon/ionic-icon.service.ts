@@ -25,8 +25,6 @@ export class IonicIconService {
 
   /** This will return IIonicIcon[] by the icon filter Option */
   public setIcon(iconFilterOption: 'outline' | 'sharp' | 'filled' | 'full'): IIonicIcon[] {
-    return iconFilterOption === 'full'
-      ? this.getFullIcon()
-      : this.filterByIconShape(iconFilterOption);
+    return iconFilterOption === 'full' ? this.getFullIcon() : this.filterByIconShape(iconFilterOption);
   }
 }

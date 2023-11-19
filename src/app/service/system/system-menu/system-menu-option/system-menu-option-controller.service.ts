@@ -6,9 +6,9 @@ export interface ISystemMenuOptionAction {
   //Configuration
   isMenuManagement: boolean;
   isRoleManagement: boolean;
-  isPlanManagement: boolean;
   //Shop
   isShopManagement: boolean;
+  isShopCapacityManagement: boolean;
   //User
   isUserManagement: boolean;
   //Language
@@ -25,7 +25,6 @@ export class SystemMenuOptionControllerService {
     //Configuration
     menuManagement: this._labelTitle + 'menu',
     roleManagement: this._labelTitle + 'role',
-    planManagement: this._labelTitle + 'subscription',
     //Shop
     shopManagement: this._labelTitle + 'shop',
     //User
@@ -41,16 +40,16 @@ export class SystemMenuOptionControllerService {
   public async getSystemConfigurationButtons(): Promise<ISystemMenuOptionAction[]> {
     let menuManagement = await this.getMenuManagementOption();
     let roleManagement = await this.getRoleManagementOption();
-    let planManagement = await this.getPlanManagementOption();
 
-    return [menuManagement, roleManagement, planManagement];
+    return [menuManagement, roleManagement];
   }
 
   /**Used in page/system/shop */
   public async getSystemShopButtons(): Promise<ISystemMenuOptionAction[]> {
     let shopManagement = await this.getShopManagementOption();
+    let option = await this.getShopCapacity();
 
-    return [shopManagement];
+    return [shopManagement, option];
   }
 
   /**Used in page/system/user */
@@ -105,18 +104,18 @@ export class SystemMenuOptionControllerService {
     return controller;
   }
 
-  private async getPlanManagementOption() {
-    let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
-    controller.name = await this.language.transform(this._menuOption.planManagement);
-    controller.isPlanManagement = true;
-
-    return controller;
-  }
-
   private async getShopManagementOption() {
     let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
     controller.name = await this.language.transform(this._menuOption.shopManagement);
     controller.isShopManagement = true;
+
+    return controller;
+  }
+
+  private async getShopCapacity() {
+    let controller: ISystemMenuOptionAction = this.setDefaultSystemMenuOptionController();
+    controller.name = await this.language.transform('label.title.capacity');
+    controller.isShopCapacityManagement = true;
 
     return controller;
   }
@@ -135,9 +134,9 @@ export class SystemMenuOptionControllerService {
       //Configuration
       isMenuManagement: false,
       isRoleManagement: false,
-      isPlanManagement: false,
       //Shop
       isShopManagement: false,
+      isShopCapacityManagement: false,
       //User
       isUserManagement: false,
       //Language

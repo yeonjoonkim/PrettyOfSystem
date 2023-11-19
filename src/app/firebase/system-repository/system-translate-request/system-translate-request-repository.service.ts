@@ -7,7 +7,7 @@ import {
   SystemLanguageTranslateRequestType,
 } from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
-import { map, switchMap } from 'rxjs';
+import { map } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })

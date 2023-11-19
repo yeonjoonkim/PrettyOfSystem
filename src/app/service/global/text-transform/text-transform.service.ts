@@ -161,8 +161,7 @@ export class TextTransformService {
 
     let trimmedSentence = sentenceFormat.trimEnd();
     let sentenceSpecialEnd =
-      trimmedSentence.length > 0 &&
-      punctuationRegex.test(trimmedSentence[trimmedSentence.length - 1]);
+      trimmedSentence.length > 0 && punctuationRegex.test(trimmedSentence[trimmedSentence.length - 1]);
 
     if (!sentenceSpecialEnd) {
       sentenceFormat += '.';

@@ -9,8 +9,8 @@ describe('MenuCategoryContentCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MenuCategoryContentCardComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [MenuCategoryContentCardComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MenuCategoryContentCardComponent);

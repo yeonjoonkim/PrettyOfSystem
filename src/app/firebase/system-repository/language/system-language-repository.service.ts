@@ -1,7 +1,4 @@
-import {
-  LanguageSelectionType,
-  ILanguageKey,
-} from 'src/app/interface/system/language/language.interface';
+import { LanguageSelectionType, ILanguageKey } from 'src/app/interface/system/language/language.interface';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs';
@@ -14,7 +11,10 @@ import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.
 export class SystemLanguageRepositoryService {
   private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(private _afs: AngularFirestore, private _toaster: FirebaseToasterService) {}
+  constructor(
+    private _afs: AngularFirestore,
+    private _toaster: FirebaseToasterService
+  ) {}
 
   public getLanguageSelectionResult() {
     return this._afs
@@ -61,10 +61,7 @@ export class SystemLanguageRepositoryService {
   public async updateLanguageSelection(criteria: LanguageSelectionType) {
     let updateCommand = { ...criteria, ...this._timeStamp };
     try {
-      await this._afs
-        .collection(Db.Context.System.Language.Selection)
-        .doc(criteria.id)
-        .update(updateCommand);
+      await this._afs.collection(Db.Context.System.Language.Selection).doc(criteria.id).update(updateCommand);
       await this._toaster.updateSuccess();
       return true;
     } catch (error) {

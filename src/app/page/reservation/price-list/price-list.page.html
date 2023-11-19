@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Menu -->
+    <ion-buttons slot="start">
+      <ion-menu-button auto-hide="true"></ion-menu-button>
+    </ion-buttons>
+    <!-- Title -->
+    <ion-title>{{'menucontent.title.pricelist'| languageTransform:'System' | async }} </ion-title>
+    <ion-buttons slot="end" id="edit-btn">
+      <kendo-button icon="edit" themeColor="success" routerLink="/shop/service-management"></kendo-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="selection-btn-container">
+    <div id="selection-btn">
+      <ng-container *ngFor="let btn of selection">
+        <div id="btn">
+          <div
+            id="icon-btn"
+            [ngClass]="{
+          activeIconBtn: isActive(btn.name) ,
+          deActiveIconBtn: !isActive(btn.name)
+        }"
+            (click)="buttonChange(btn)">
+            <div id="btn-title">{{ btn.name | languageTransform:'System' | async }}</div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <price-list [selectedMenu]="selected"></price-list>
+</ion-content>

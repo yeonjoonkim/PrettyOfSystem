@@ -6,8 +6,8 @@ import { NoInternetPage } from './no-internet.page';
 const routes: Routes = [
   {
     path: '',
-    component: NoInternetPage
-  }
+    component: NoInternetPage,
+  },
 ];
 
 @NgModule({

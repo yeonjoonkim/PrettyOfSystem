@@ -34,6 +34,7 @@ export class InputTextBoxComponent implements OnInit {
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input() placeholder: string = '';
   @Input() type: 'number' | 'text' = 'text';
+  @Input() isRequireLabel: boolean = true;
   @Input()
   get value() {
     return this.validatedValue;
@@ -55,8 +56,7 @@ export class InputTextBoxComponent implements OnInit {
   constructor(private _global: GlobalService) {}
 
   async ngOnInit() {
-    this.value =
-      this.validatedValue === undefined || this.validatedValue === null ? '' : this.value;
+    this.value = this.validatedValue === undefined || this.validatedValue === null ? '' : this.value;
     this.validate = this.validateInput();
     this.valueLengthCount = this.value.length;
     await this.setDefaultPlaceHolder();

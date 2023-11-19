@@ -1,4 +1,4 @@
-<<form-header
+<form-header
   [title]="form.headerTitle"
   [readOnly]="form.readOnly"
   [enabledSavebutton]="form.enabledSavebutton"
@@ -24,8 +24,7 @@
       </kendo-label>
     </flex-col-item>
     <flex-col-item id="display-in-booking">
-      <kendo-label
-        text="{{ 'label.title.displayinBooking' | languageTransform: 'System' | async }}">
+      <kendo-label text="{{ 'label.title.displayinBooking' | languageTransform: 'System' | async }}">
         <input
           kendoCheckBox
           type="checkbox"

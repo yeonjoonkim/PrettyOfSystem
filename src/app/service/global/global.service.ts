@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DeleteConfirmationAlert } from './confirmation-alert/confirmation-alert.service';
-import { DeviceWidthService } from './device-width/device-width.service';
 import { ErrorReporterService } from './error-reporter/error-reporter.service';
 import { LanguageService } from './language/language.service';
 import { LoadingService } from './loading/loading.service';
@@ -27,7 +26,6 @@ export class GlobalService {
   constructor(
     public appAgreement: AgreementModalService,
     public confirmAlert: DeleteConfirmationAlert,
-    public deviceWidth: DeviceWidthService,
     public errorReport: ErrorReporterService,
     public language: LanguageService,
     public loading: LoadingService,

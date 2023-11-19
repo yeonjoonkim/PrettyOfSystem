@@ -9,8 +9,8 @@ describe('AppPrivacyPolicyComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppPrivacyPolicyComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [AppPrivacyPolicyComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppPrivacyPolicyComponent);

@@ -6,7 +6,6 @@ import {
   RoleConfigurationType,
   ShopEmployeeManagementUserType,
 } from 'src/app/interface';
-import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
 import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employee-management/shop-employee-management.service';
 
 @Component({
@@ -24,10 +23,7 @@ export class ShopEmployeeGridComponent implements OnInit, OnDestroy {
 
   public isReachToMax = false;
 
-  constructor(
-    private _shopEmp: ShopEmployeeManagementService,
-    public device: DeviceWidthService
-  ) {}
+  constructor(private _shopEmp: ShopEmployeeManagementService) {}
   ngOnDestroy() {
     this._onDestroy$.next();
     this._onDestroy$.complete();

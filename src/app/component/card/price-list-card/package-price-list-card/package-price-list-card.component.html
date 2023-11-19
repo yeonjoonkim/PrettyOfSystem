@@ -1,0 +1,90 @@
+<ion-card *ngIf="pack" class="price-card package-card">
+  <ion-card-content>
+    <flex-col>
+      <flex-col-item class="tool-tip">
+        <div *ngIf="pack.discount.type === 'Dollar'" class="tip">
+          {{ pack.discount.value | currencyTransform }}
+          {{ 'label.title.discount' | languageTransform: 'System' | async }}
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div *ngIf="pack.discount.type === 'Percent'" class="tip">
+          {{ pack.discount.value | percentTransform }}
+          {{ 'label.title.discount' | languageTransform: 'System' | async }}
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div *ngIf="pack.isInsuranceCover" class="tip">
+          {{ 'label.title.insurance' | languageTransform: 'System' | async }}
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div *ngIf="pack.isOil" class="tip">
+          {{ 'label.title.oil' | languageTransform: 'System' | async }}
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div *ngIf="pack.recommandForPregnant" class="tip">
+          {{ 'label.title.pregnant' | languageTransform: 'System' | async }}
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+      </flex-col-item>
+      <div class="empty-timelimit" *ngIf="pack.limitedTime === null"></div>
+      <flex-col-item class="card-title">
+        <ion-card-title>{{ pack.title | languageTransform: type | async }}</ion-card-title>
+      </flex-col-item>
+    </flex-col>
+
+    <flex-col>
+      <flex-col-item class="package-option">
+        <ng-container *ngFor="let service of pack.services">
+          <flex-row class="package-list-option">
+            <price-card-tooltip
+              [type]="type"
+              [enabledToolTip]="true"
+              [title]="service.title"
+              [description]="service.description"></price-card-tooltip>
+            <flex-row-item class="option-title package-option-flex-start">
+              {{ service.title | languageTransform: type | async }}
+            </flex-row-item>
+            <flex-row-item class="option-min package-option-flex-end">
+              {{ service.option.min | minuteTransform | async }}
+            </flex-row-item>
+          </flex-row>
+        </ng-container>
+        <ng-container *ngFor="let extra of pack.extras">
+          <flex-row class="package-list-option">
+            <price-card-tooltip></price-card-tooltip>
+            <flex-row-item class="option-title package-option-flex-start">
+              {{ extra.title | languageTransform: type | async }}
+            </flex-row-item>
+          </flex-row>
+        </ng-container>
+      </flex-col-item>
+    </flex-col>
+
+    <flex-row>
+      <flex-row-item class="package-card-footer">
+        <div class="package-limited-time" *ngIf="pack.limitedTime !== null">
+          <p class="package-limited-day">
+            {{ pack.limitedTime.offeredDateIndex | daysTransform | async }}
+          </p>
+          <p class="package-limited-time">
+            {{ pack.limitedTime.start | timeItemTransform }} -
+            {{ pack.limitedTime.end | timeItemTransform }}
+          </p>
+        </div>
+      </flex-row-item>
+
+      <flex-row-item class="prices">
+        <p class="discount-price">{{ pack.totalMin | minuteTransform | async }}</p>
+        <p class="discount-price">
+          <span class="original-price"> {{ pack.originalPrice | currencyTransform }}</span>
+          {{ pack.discountPrice | currencyTransform }}
+        </p>
+      </flex-row-item>
+    </flex-row>
+
+    <div class="option-add package-add" *ngIf="enabledAdd">
+      <button class="add-btn" kendoButton (click)="onClickAdd()">
+        {{ 'button.title.add' | languageTransform: 'System' | async }}
+      </button>
+    </div>
+  </ion-card-content>
+</ion-card>

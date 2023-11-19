@@ -6,8 +6,8 @@ import { ShopEmployeeSchedulePage } from './shop-employee-schedule.page';
 const routes: Routes = [
   {
     path: '',
-    component: ShopEmployeeSchedulePage
-  }
+    component: ShopEmployeeSchedulePage,
+  },
 ];
 
 @NgModule({

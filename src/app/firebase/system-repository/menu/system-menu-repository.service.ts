@@ -21,8 +21,7 @@ export class SystemMenuRepositoryService {
 
   public async hasSameCategoryName(selectedCategoryName: string) {
     let categories = await lastValueFrom(this.getSystemMenuCategories());
-    let hasSameCategoryName =
-      categories.filter(category => category.name === selectedCategoryName).length > 0;
+    let hasSameCategoryName = categories.filter(category => category.name === selectedCategoryName).length > 0;
     return hasSameCategoryName;
   }
 
@@ -59,9 +58,7 @@ export class SystemMenuRepositoryService {
     );
   }
 
-  public subscribeAccessGrantedMenu(
-    accessLevel: RoleAccessLevelType
-  ): Observable<MenuCategoryType[]> {
+  public subscribeAccessGrantedMenu(accessLevel: RoleAccessLevelType): Observable<MenuCategoryType[]> {
     return this.valueChangeListener().pipe(
       map(menu => {
         return menu.filter(category => {

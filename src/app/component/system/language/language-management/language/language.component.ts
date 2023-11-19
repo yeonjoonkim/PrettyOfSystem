@@ -8,7 +8,7 @@ import {
 } from 'src/app/interface/system/language/language.interface';
 import { PairKeyValueType } from 'src/app/interface/global/global.interface';
 import { SystemLanguageService } from 'src/app/service/system/system-language/system-language.service';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
@@ -79,28 +79,26 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.language.code,
       defaultKeyPairList
     );
-    this._global.language.management.add.status
-      .pipe(takeUntil(this._onDestroy$))
-      .subscribe(async command => {
-        if (command !== undefined) {
-          this._global.language.management.add.handleTranslateCommand(command);
-          this.createStatus = command;
-          this.keyPairValueList = command.defaultKeyPairList;
-          this.form.enabledSavebutton = false;
-          this.form.readOnly = true;
+    this._global.language.management.add.status.pipe(takeUntil(this._onDestroy$)).subscribe(async command => {
+      if (command !== undefined) {
+        this._global.language.management.add.handleTranslateCommand(command);
+        this.createStatus = command;
+        this.keyPairValueList = command.defaultKeyPairList;
+        this.form.enabledSavebutton = false;
+        this.form.readOnly = true;
 
-          if (command.endTransaction) {
-            this.language.package = command.newPackage;
-            this._global.language.management.add.save(this.language);
-            this._global.language.management.storage.refresh();
-            await this._systemLanguage.sendRequest({
-              name: this.language.name,
-              value: this.language.code,
-            });
-            this._modalCtrl.dismiss({ role: 'Saved' });
-          }
+        if (command.endTransaction) {
+          this.language.package = command.newPackage;
+          this._global.language.management.add.save(this.language);
+          this._global.language.management.storage.refresh();
+          await this._systemLanguage.sendRequest({
+            name: this.language.name,
+            value: this.language.code,
+          });
+          this._modalCtrl.dismiss({ role: 'Saved' });
         }
-      });
+      }
+    });
   }
 
   private async loadingFormCtrl() {
@@ -115,9 +113,7 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
           enabledSavebutton: false,
         };
     this.language = this._selectedlanguage !== undefined ? this._selectedlanguage : this.language;
-    this.keyPairValueList = await this._systemLanguage.getSelectedLanguageKeyPairValueList(
-      this.language.code
-    );
+    this.keyPairValueList = await this._systemLanguage.getSelectedLanguageKeyPairValueList(this.language.code);
     this.keyPairValueList = this.keyPairValueList.map(kv => {
       kv.value = kv.value === undefined ? '' : kv.value;
       return kv;
@@ -126,11 +122,7 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private validateInput() {
-    return (
-      this.language.code.length > 0 &&
-      this.language.description.length > 0 &&
-      this.language.name.length > 0
-    );
+    return this.language.code.length > 0 && this.language.description.length > 0 && this.language.name.length > 0;
   }
 
   private validateLanguage() {

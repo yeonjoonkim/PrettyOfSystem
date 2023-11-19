@@ -1,0 +1,20 @@
+<div id="container">
+  <div *ngIf="services$ | async as services; else loading" class="vertical-price-list">
+    <ng-container *ngFor="let service of services; let i = index">
+      <service-price-list-card
+        type="User"
+        [index]="i"
+        [service]="service"
+        [enabledAdd]="false"
+        [expandIndex]="expandedIndex"
+        (expandCard)="expandCard($event)">
+      </service-price-list-card>
+    </ng-container>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-container">
+      <kendo-loader size="large"></kendo-loader>
+    </div>
+  </ng-template>
+</div>

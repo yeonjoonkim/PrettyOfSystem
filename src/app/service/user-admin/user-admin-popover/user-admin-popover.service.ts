@@ -35,11 +35,7 @@ export class UserAdminPopoverService {
     }
   }
 
-  private async createAddAssociatedShop(
-    clickEvent: any,
-    user: IUser,
-    criteria: UserManagementCriteria
-  ) {
+  private async createAddAssociatedShop(clickEvent: any, user: IUser, criteria: UserManagementCriteria) {
     const paramUser = cloneDeep(user);
     const paramCriteria = cloneDeep(criteria);
     const popover = await this._popover.create({

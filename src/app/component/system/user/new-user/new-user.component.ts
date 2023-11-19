@@ -66,10 +66,7 @@ export class NewUserComponent implements OnInit {
     const fullNameValiator = this.validator.firstName && this.validator.lastName;
     this.validator.associatedShop = this.user.associatedShops.length > 0;
     let enabled =
-      this.validator.email &&
-      fullNameValiator &&
-      this.validator.phone &&
-      this.validator.associatedShop;
+      this.validator.email && fullNameValiator && this.validator.phone && this.validator.associatedShop;
     if (this.user.loginOption.email) {
       enabled = enabled && this.validator.password;
     }
@@ -101,10 +98,7 @@ export class NewUserComponent implements OnInit {
     this.handleEnabledSaveBtn();
   }
 
-  public async onChangeAssociatedShopRole(
-    selected: NameValuePairType,
-    selectedShop: UserAssociatedShopType
-  ) {
+  public async onChangeAssociatedShopRole(selected: NameValuePairType, selectedShop: UserAssociatedShopType) {
     const role = this._roles.find(r => r.id === selected.value);
     const shop = this.user.associatedShops.find(s => s.shopId === selectedShop.shopId);
     if (role !== undefined && shop !== undefined) {
@@ -113,9 +107,7 @@ export class NewUserComponent implements OnInit {
         ? false
         : selectedShop.displayInSystem;
       selectedShop.role = role;
-      selectedShop.displayInSystem = role.accessLevel.isReception
-        ? false
-        : selectedShop.displayInSystem;
+      selectedShop.displayInSystem = role.accessLevel.isReception ? false : selectedShop.displayInSystem;
       this.user.associatedShops[index] = selectedShop;
       this._cachedAssocatedShops = cloneDeep(this.user.associatedShops);
       await this.reloading();
@@ -153,22 +145,14 @@ export class NewUserComponent implements OnInit {
   }
 
   public async onClickAddAssociatedShopRole(event: any) {
-    this.user = await this._systemAdmin.popover.handleAddAssociatedShop(
-      event,
-      this.user,
-      this._criteria
-    );
+    this.user = await this._systemAdmin.popover.handleAddAssociatedShop(event, this.user, this._criteria);
     this.handleEnabledSaveBtn();
   }
 
   public async onClickDeleteAssociatedShop(selected: UserAssociatedShopType) {
     const shop = this.shopFilters.find(s => s.value === selected.shopId);
     if (shop !== undefined) {
-      this.user = await this._systemAdmin.deleteAssociatedShop(
-        this.user,
-        selected.shopId,
-        shop.name
-      );
+      this.user = await this._systemAdmin.deleteAssociatedShop(this.user, selected.shopId, shop.name);
     }
     this.handleEnabledSaveBtn();
   }

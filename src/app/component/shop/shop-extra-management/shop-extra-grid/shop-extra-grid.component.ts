@@ -53,9 +53,7 @@ export class ShopExtraGridComponent implements OnInit {
       s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
     );
 
-    return titleRequest !== undefined
-      ? titleRequest.status === Constant.API.TranslateStatus.Completed
-      : false;
+    return titleRequest !== undefined ? titleRequest.status === Constant.API.TranslateStatus.Completed : false;
   }
 
   public onClickCreate() {
@@ -78,10 +76,7 @@ export class ShopExtraGridComponent implements OnInit {
   private async handlePackageProp(s: ShopExtraDocumentType) {
     const c = await this._extraService.getShopConfig();
     if (c != null) {
-      const relatedKeys = this._extraService.languagePackage.getRelatedNamePairValueList(
-        c.package,
-        s.title
-      );
+      const relatedKeys = this._extraService.languagePackage.getRelatedNamePairValueList(c.package, s.title);
       const languages = await this._extraService.languagePackage.getLanguages(relatedKeys);
       const translatedProp = s.titleProp;
       const prop: ShopLanguagePackageModalProp = {

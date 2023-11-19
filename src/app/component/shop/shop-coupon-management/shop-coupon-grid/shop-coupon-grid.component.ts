@@ -4,7 +4,6 @@ import {
   ShopCouponDocumentType,
   ShopLanguagePackageModalProp,
 } from 'src/app/interface';
-import { DeviceWidthService } from 'src/app/service/global/device-width/device-width.service';
 import * as Constant from 'src/app/constant/constant';
 @Component({
   selector: 'shop-coupon-grid',
@@ -21,7 +20,7 @@ export class ShopCouponGridComponent implements OnInit {
   @Input() isReachToMax: boolean = true;
   @Input() isModalOpen: boolean = false;
   @Input() isAuthorisedRole: boolean = false;
-  constructor(public device: DeviceWidthService) {}
+  constructor() {}
 
   ngOnInit() {}
 
@@ -29,9 +28,7 @@ export class ShopCouponGridComponent implements OnInit {
     const titleRequest = this.translatedRequest?.find(
       s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title
     );
-    return titleRequest !== undefined
-      ? titleRequest.status === Constant.API.TranslateStatus.Completed
-      : false;
+    return titleRequest !== undefined ? titleRequest.status === Constant.API.TranslateStatus.Completed : false;
   }
   public onClickCreate() {
     this.onCreate.emit(true);

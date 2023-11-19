@@ -15,10 +15,10 @@ import { TranslateCriteriaService } from '../translate-criteria/translate-criter
   providedIn: 'root',
 })
 export class SystemLanguageAddService {
-  private _createCommandService: BehaviorSubject<CreateNewPackageCommandType | undefined> =
-    new BehaviorSubject<CreateNewPackageCommandType | undefined>(undefined);
-  public status: Observable<CreateNewPackageCommandType | undefined> =
-    this._createCommandService.asObservable();
+  private _createCommandService: BehaviorSubject<CreateNewPackageCommandType | undefined> = new BehaviorSubject<
+    CreateNewPackageCommandType | undefined
+  >(undefined);
+  public status: Observable<CreateNewPackageCommandType | undefined> = this._createCommandService.asObservable();
 
   constructor(
     private _languageRepo: SystemLanguageRepositoryService,
@@ -73,9 +73,7 @@ export class SystemLanguageAddService {
   }
 
   public validateCommand(command: CreateNewPackageCommandType) {
-    command.attemptError = command.endTransaction
-      ? command.errorKeyPairList.length > 0
-      : command.attemptError;
+    command.attemptError = command.endTransaction ? command.errorKeyPairList.length > 0 : command.attemptError;
 
     if (command.attemptError) {
       command.defaultKeyPairList = command.errorKeyPairList;
@@ -124,10 +122,7 @@ export class SystemLanguageAddService {
     }
   }
 
-  private async successTranslate(
-    command: CreateNewPackageCommandType,
-    translatedResult: ILanguageTranslateItem
-  ) {
+  private async successTranslate(command: CreateNewPackageCommandType, translatedResult: ILanguageTranslateItem) {
     console.log(command.currentKeyPair.value + ' - ' + translatedResult.translated[command.code]);
     let isUndefined: boolean = translatedResult.translated[command.code] === undefined;
     let isEmpty: boolean =

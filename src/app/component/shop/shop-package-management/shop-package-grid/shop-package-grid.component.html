@@ -20,7 +20,7 @@
       </p>
       <p
         (click)="onClickEdit(package)"
-        id="service-name"
+        id="package-name"
         *ngIf="isCompletedRequest(package.id) && translatedRequests">
         {{ package.title | languageTransform: 'User' | async }}
       </p>
@@ -29,11 +29,12 @@
 
   <!-- Original Price -->
   <kendo-grid-column
+    media="(min-width: 725px)"
     [sortable]="true"
     field="originalPrice"
     title="{{ 'label.title.originalprice' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
-      <p>${{ package.originalPrice }}</p>
+      <p>{{ package.originalPrice | currencyTransform }}</p>
     </ng-template>
   </kendo-grid-column>
 
@@ -43,14 +44,13 @@
     field="discountPrice"
     title="{{ 'label.title.discountedprice' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
-      <p>${{ package.discountPrice }}</p>
+      <p>{{ package.discountPrice | currencyTransform }}</p>
     </ng-template>
   </kendo-grid-column>
 
   <!-- Total Min -->
   <kendo-grid-column
-    id="total-min"
-    *ngIf="!device.deviceType.isMobile"
+    media="(min-width: 450px)"
     [sortable]="true"
     field="totalMin"
     title="{{ 'label.title.minute' | languageTransform: 'System' | async }}">
@@ -59,46 +59,56 @@
     </ng-template>
   </kendo-grid-column>
 
-  <!-- Services -->
-  <kendo-grid-column
-    id="services"
-    *ngIf="!device.deviceType.isMobile"
-    [sortable]="true"
-    field="services.length"
-    title="{{ 'label.title.service' | languageTransform: 'System' | async }}">
-    <ng-template kendoGridCellTemplate let-package>
-      <p>{{ package.services.length }}</p>
-    </ng-template>
-  </kendo-grid-column>
-
-  <!-- Extra -->
-  <kendo-grid-column
-    id="extras"
-    *ngIf="!device.deviceType.isMobile"
-    [sortable]="true"
-    field="extras.length"
-    title="{{ 'label.title.extra' | languageTransform: 'System' | async }}">
-    <ng-template kendoGridCellTemplate let-package>
-      <p>{{ package.extras.length }}</p>
-    </ng-template>
-  </kendo-grid-column>
-
   <!-- Limited time -->
   <kendo-grid-column
-    id="limited-day"
-    *ngIf="!device.deviceType.isMobile"
     [sortable]="true"
     field="package.limitedTime !== null"
-    title="{{ 'label.title.limitedday' | languageTransform: 'System' | async }}">
+    title="{{ 'label.title.limitedoffer' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-package>
       <input kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="isLimitedDate(package)" />
     </ng-template>
   </kendo-grid-column>
 
-  <!-- Title -->
+  <!-- Insurance -->
   <kendo-grid-column
-    [width]="70"
-    title="{{ 'label.title.title' | languageTransform: 'System' | async }}">
+    media="(min-width: 525px)"
+    [sortable]="true"
+    field="isInsuranceCover"
+    title="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <input id="check-box" kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="package.isInsuranceCover" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Pregnant -->
+  <kendo-grid-column
+    [sortable]="true"
+    media="(min-width: 600px)"
+    field="recommandForPregnant"
+    title="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <input
+        id="check-box"
+        kendoCheckBox
+        type="checkbox"
+        [disabled]="true"
+        [ngModel]="package.recommandForPregnant" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!--Oil-->
+  <kendo-grid-column
+    media="(min-width: 700px)"
+    [sortable]="true"
+    field="isOil"
+    title="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
+    <ng-template kendoGridCellTemplate let-package>
+      <input id="check-box" kendoCheckBox type="checkbox" [disabled]="true" [ngModel]="package.isOil" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Title -->
+  <kendo-grid-column [width]="70" title="{{ 'label.title.title' | languageTransform: 'System' | async }}">
     <ng-template kendoGridCellTemplate let-service>
       <div *ngFor="let request of translatedRequests">
         <div

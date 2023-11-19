@@ -38,8 +38,7 @@ export class PasswordConfirmationComponent implements OnInit {
     confirmation: false,
     same: false,
   };
-  private _passwordPattern: RegExp =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  private _passwordPattern: RegExp = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   private _validator: boolean = false;
   constructor(private _cryp: CryptService) {}
 
@@ -76,8 +75,7 @@ export class PasswordConfirmationComponent implements OnInit {
   public toggleVisibleConfirmationPassword() {
     const confirmPasswordElement = this.confirmation.input.nativeElement;
     if (confirmPasswordElement) {
-      confirmPasswordElement.type =
-        confirmPasswordElement.type === 'password' ? 'text' : 'password';
+      confirmPasswordElement.type = confirmPasswordElement.type === 'password' ? 'text' : 'password';
       this.visible.confirmation = !this.visible.confirmation;
     }
   }
@@ -87,9 +85,7 @@ export class PasswordConfirmationComponent implements OnInit {
     this.validator.new = this._passwordPattern.test(this.password.new);
     this.validator.confirmation = this._passwordPattern.test(this.password.confirmation);
     this.validator.same =
-      this.password.new === this.password.confirmation &&
-      this.validator.new &&
-      this.validator.confirmation;
+      this.password.new === this.password.confirmation && this.validator.new && this.validator.confirmation;
   }
 
   private handleOutput() {

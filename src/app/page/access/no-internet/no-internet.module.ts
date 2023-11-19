@@ -9,13 +9,7 @@ import { NoInternetPageRoutingModule } from './no-internet-routing.module';
 import { NoInternetPage } from './no-internet.page';
 import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    NoInternetPageRoutingModule,
-    LanguageTransformPipeModule,
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, NoInternetPageRoutingModule, LanguageTransformPipeModule],
   declarations: [NoInternetPage],
 })
 export class NoInternetPageModule {}
