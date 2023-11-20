@@ -34,11 +34,7 @@ const isTimestamp = function (value: any): value is Timestamp {
 };
 
 export const toLocalDateTime = function (value: FunctionDateType): Date {
-  return isTimestamp(value)
-    ? value.toDate()
-    : typeof value === 'string'
-    ? parseLocalDateTime(value)
-    : value;
+  return isTimestamp(value) ? value.toDate() : typeof value === 'string' ? parseLocalDateTime(value) : value;
 };
 
 export const toShopDateTime = function (date: FunctionDateType, timezone: Constant.TimeZoneType) {
@@ -119,11 +115,7 @@ export const interval = function (start: FunctionDateType, end: FunctionDateType
   return result;
 };
 
-export const differenceInTime = function (
-  start: FunctionDateType,
-  end: FunctionDateType,
-  decimal: number
-) {
+export const differenceInTime = function (start: FunctionDateType, end: FunctionDateType, decimal: number) {
   const startDate = toLocalDateTime(start);
   const endDate = toLocalDateTime(end);
   const diff = (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60;
@@ -228,6 +220,11 @@ export const isFriday = function (date: FunctionDateType) {
 export const isSaturday = function (date: FunctionDateType) {
   const localDate = toLocalDateTime(date);
   return localDate.getDay() === Constant.Date.DayIndex.Sat;
+};
+
+export const isMidNight = function (date: FunctionDateType) {
+  const localDate = toLocalDateTime(date);
+  return localDate.getHours() === 0 && localDate.getMinutes() === 0;
 };
 
 export const isStartTime = function (type: Constant.DateTimeStatusType) {

@@ -5,3 +5,4 @@ admin.initializeApp();
 setGlobalOptions({ maxInstances: 10 });
 export * from './api/index';
 export * from './trigger/index';
+export * from './scheduler/index';
