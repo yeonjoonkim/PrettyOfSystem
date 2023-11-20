@@ -63,7 +63,11 @@ export const deleteSelectedUser = async function (id: string) {
 
 export const getAssociatedShopUsers = async function (shopId: string) {
   const allUsers = await getAll();
-  return allUsers.filter(
-    user => user.associatedShops.filter(shop => shop.shopId === shopId).length > 0
-  );
+  return allUsers.filter(user => user.associatedShops.filter(shop => shop.shopId === shopId).length > 0);
+};
+
+export const getAssociatedShopUserByIds = async function (shopIds: string[]) {
+  const criteria = new Set(shopIds);
+  const allUsers = await getAll();
+  return allUsers.filter(user => user.associatedShopIds.some(ua => criteria.has(ua)));
 };
