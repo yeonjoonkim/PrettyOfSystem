@@ -16,3 +16,46 @@
     justify-content: center;
   }
 }
+
+.shop-card-list {
+  max-width: 1200px;
+  margin: auto;
+  height: 80vh;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.shop-cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+@media (min-width: 1020px) {
+  .shop-card-list {
+    justify-content: flex-start;
+    max-width: 996px;
+    margin: auto;
+    ::ng-deep shop-card {
+      .shop-card {
+        margin: 15px 10px;
+      }
+    }
+  }
+}
+
+@media (min-width: 720px) and (max-width: 1019.98px) {
+  .shop-card-list {
+    justify-content: flex-start;
+    max-width: 680px;
+    margin: auto;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 720px) {
+  .shop-card-list {
+    justify-content: center;
+    max-width: 330px;
+    margin: auto;
+  }
+}

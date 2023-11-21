@@ -6,6 +6,21 @@
   height: 100%;
   overflow: auto;
 }
+.tool-tip {
+  margin: 0;
+  color: var(--card-title);
+  font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 18px;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+
+.tip {
+  margin: 0px 5px 0px 0px;
+}
 
 .price-card {
   --background: var(--card);
@@ -40,18 +55,6 @@
     }
   }
 
-  .tool-tip {
-    margin: 0;
-    color: var(--card-title);
-    font-size: 12px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    height: 18px;
-    margin-bottom: 5px;
-    flex-wrap: wrap;
-  }
-
   .empty-tool-tip {
     width: 100%;
     margin: 0px;
@@ -64,10 +67,6 @@
     display: flex;
     justify-content: flex-start;
     justify-items: end;
-  }
-
-  .tip {
-    margin: 0px 5px 0px 0px;
   }
 
   .card-title {

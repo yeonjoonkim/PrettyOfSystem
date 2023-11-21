@@ -5,6 +5,7 @@ import { ShopCategoryType, ShopConfigurationType, ShopCountryType } from 'src/ap
 import * as Db from 'src/app/constant/firebase-path';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { override } from '../../../../../functions/src/service/shop/shop-config-override/shop-config-override';
+import { PostCodeItemType } from 'src/app/interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -66,6 +67,25 @@ export class SystemShopConfigurationRepositoryService {
               })
             )
           )
+        )
+      );
+  }
+
+  public postcodeAssociatedShopConfigurationValueChangeListener(
+    query: PostCodeItemType
+  ): Observable<ShopConfigurationType[] | []> {
+    return this._afs
+      .collection<ShopConfigurationType>(Db.Context.ShopConfiguration, ref =>
+        ref.where('address.suburb', '==', query.suburb).where('address.postCode', '==', query.postCode)
+      )
+      .valueChanges()
+      .pipe(
+        map(snapShots =>
+          snapShots.map(doc => {
+            let data = doc as ShopConfigurationType;
+            data = this.overrideConfig(data);
+            return data;
+          })
         )
       );
   }
