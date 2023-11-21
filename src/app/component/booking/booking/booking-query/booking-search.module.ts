@@ -9,6 +9,7 @@ import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pip
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { BookingQueryComponent } from './booking-query.component';
+import { ShopCardModule } from 'src/app/component/card/shop-card/shop-card.module';
 @NgModule({
   declarations: [BookingQueryComponent],
   imports: [
@@ -19,6 +20,7 @@ import { BookingQueryComponent } from './booking-query.component';
     KendoUiModule,
     SharedFormModule,
     ReactiveFormsModule,
+    ShopCardModule,
   ],
   exports: [BookingQueryComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

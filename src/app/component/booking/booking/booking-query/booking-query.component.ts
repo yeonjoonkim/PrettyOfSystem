@@ -1,16 +1,20 @@
-import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
-import { PostCodeItemType } from 'src/app/interface';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { Subject, take, takeUntil } from 'rxjs';
+import { PostCodeItemType, ShopConfigurationType } from 'src/app/interface';
+import { BookingService } from 'src/app/service/booking/booking.service';
 @Component({
   selector: 'booking-query',
   templateUrl: './booking-query.component.html',
   styleUrls: ['./booking-query.component.scss'],
 })
-export class BookingQueryComponent implements OnInit, OnChanges {
+export class BookingQueryComponent implements OnInit, OnChanges, OnDestroy {
+  private _destroy$ = new Subject<void>();
   @Input() addressParam!: PostCodeItemType;
   @Input() shopCategoryParam!: string;
 
   public loading: boolean = false;
-  constructor() {}
+  public shops: ShopConfigurationType[] = [];
+  constructor(private _booking: BookingService) {}
 
   ngOnInit() {}
 
@@ -22,15 +26,26 @@ export class BookingQueryComponent implements OnInit, OnChanges {
       (shopCategoryParam !== undefined ? this.isShopCategoryQueryAction(shopCategoryParam) : false);
 
     if (isQueryAction) {
-      await this.initQuery();
+      this.initQuery();
     }
   }
 
-  private async initQuery() {
+  private initQuery() {
     this.loading = true;
-    setTimeout(() => {
-      this.loading = false;
-    }, 3000);
+    this.shops = [];
+    this._booking
+      .get(this.addressParam)
+      .pipe(take(1), takeUntil(this._destroy$))
+      .subscribe(result => {
+        this.shops = result;
+        console.log(this.shops);
+      });
+    this.loading = false;
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   private isShopCategoryQueryAction(categoryChange: SimpleChange) {
@@ -53,8 +68,7 @@ export class BookingQueryComponent implements OnInit, OnChanges {
     if (!addressChange.firstChange) {
       const isSuburbChanged = before?.suburb !== after?.suburb;
       const isPostCodeChanged = before?.postCode !== after?.postCode;
-      const hasShopCategoryValue =
-        this.shopCategoryParam !== undefined && this.shopCategoryParam.length > 0;
+      const hasShopCategoryValue = this.shopCategoryParam !== undefined && this.shopCategoryParam.length > 0;
       return (isSuburbChanged || isPostCodeChanged) && hasShopCategoryValue;
     } else {
       return false;

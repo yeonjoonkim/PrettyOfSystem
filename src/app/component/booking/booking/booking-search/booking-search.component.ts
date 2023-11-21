@@ -41,6 +41,7 @@ export class BookingSearchComponent implements OnInit, OnDestroy {
     await this.setStartPlaceholder();
     setTimeout(() => {
       this.toggleActive();
+
       setTimeout(() => {
         this.startDisplayAction();
       }, 1000);
@@ -74,8 +75,7 @@ export class BookingSearchComponent implements OnInit, OnDestroy {
       const finalised = completed && this._index === 1;
 
       if (!completed && !finalised) {
-        this.placeholder =
-          this.placeholder + this._displayOption[this._index][this.placeholder.length];
+        this.placeholder = this.placeholder + this._displayOption[this._index][this.placeholder.length];
       }
       if (completed && !finalised) {
         this._index = 1;

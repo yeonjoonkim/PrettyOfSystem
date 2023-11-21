@@ -25,7 +25,6 @@ export interface ShopConfigurationTypeValidator {
   country: boolean;
   timeZone: boolean;
   workHours: boolean;
-  planPeriod: boolean;
   capacity: boolean;
 }
 export interface ShopConfigurationTypeDisplayOption {
@@ -164,7 +163,6 @@ export class ShopConfigurationService {
       validator.country &&
       validator.timeZone &&
       validator.workHours &&
-      validator.planPeriod &&
       validator.capacity
     );
   }
@@ -189,7 +187,6 @@ export class ShopConfigurationService {
       country: false,
       timeZone: false,
       workHours: false,
-      planPeriod: false,
       capacity: false,
     };
   }
@@ -205,7 +202,6 @@ export class ShopConfigurationService {
       country: true,
       timeZone: true,
       workHours: true,
-      planPeriod: true,
       capacity: true,
     };
   }

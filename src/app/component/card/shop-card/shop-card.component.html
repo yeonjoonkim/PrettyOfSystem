@@ -1,0 +1,52 @@
+<ion-card *ngIf="shop" class="shop-card">
+  <flex-row class="shop-card-header">
+    <flex-row-item class="logo">
+      <img [src]="shop.setting.picture.logo" (load)="logo = true" />
+      <kendo-skeleton *ngIf="!logo" shape="circle" animation="pulse" [width]="32" [height]="32"></kendo-skeleton>
+    </flex-row-item>
+    <flex-row-item class="shop-name">
+      <p>{{ shop.name }}</p>
+    </flex-row-item>
+  </flex-row>
+  <flex-col class="available-status">
+    <flex-col-item class="tool-tip">
+      <div class="tip" *ngIf="isAvailableNow">
+        {{ 'label.title.businessopen' | languageTransform: 'System' | async }}
+        <ion-icon name="checkmark-outline"></ion-icon>
+      </div>
+      <div class="tip" *ngIf="isAvailableNow && today">
+        {{ today.openTime | timeItemTransform }} - {{ today.closeTime | timeItemTransform }}
+      </div>
+      <div class="empty-tool-tip" *ngIf="!isAvailableNow"></div>
+    </flex-col-item>
+  </flex-col>
+  <kendo-scrollview
+    class="scroll-view"
+    [data]="images"
+    width="300px"
+    height="255px"
+    [arrows]="true"
+    [pageable]="true"
+    *ngIf="images">
+    <ng-template let-image="item">
+      <img
+        class="image"
+        [ngClass]="{ 'load-image': !imageloaded() }"
+        src="{{ image.url }}"
+        (load)="onImageLoad(image.url)" />
+      <kendo-skeleton class="skeleton" *ngIf="!imageloaded()" shape="text" animation="pulse"></kendo-skeleton>
+    </ng-template>
+  </kendo-scrollview>
+  <flex-row class="shop-card-footer">
+    <flex-row-item class="address">
+      <p class="street">{{ shop.address.street }}</p>
+      <p class="suburb">{{ shop.address.suburb }}</p>
+      <p class="state">{{ shop.address.state }} {{ shop.address.postCode }}</p>
+    </flex-row-item>
+    <flex-row-item class="book-now">
+      <button class="book-btn" kendoButton>
+        {{ 'label.title.booknow' | languageTransform: 'System' | async }}
+      </button>
+    </flex-row-item>
+  </flex-row>
+</ion-card>

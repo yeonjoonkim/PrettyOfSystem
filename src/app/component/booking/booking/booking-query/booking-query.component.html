@@ -6,6 +6,13 @@
   </flex-col>
 </section>
 
+<section *ngIf="shops" class="shop-card-list">
+  <div class="shop-cards">
+    <ng-container *ngFor="let shop of shops">
+      <shop-card [shop]="shop"></shop-card>
+    </ng-container>
+  </div>
+</section>
 <div class="loading-container" *ngIf="loading">
   <kendo-loader size="large"></kendo-loader>
 </div>
