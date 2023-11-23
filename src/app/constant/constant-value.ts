@@ -179,6 +179,9 @@ export const ShopSetting = {
     NextAvailableBookingMin: 30,
     MaximumAvailableFutureBookingDays: 14,
   } as const,
+  QRCode: {
+    OneTimeCheckInUrlExpiryMin: 15,
+  } as const,
   Picture: {
     LogoUrl:
       'https://firebasestorage.googleapis.com/v0/b/prettyofsystem.appspot.com/o/prettyofsystem-logo-white.svg?alt=media&token=70eedb82-988d-47ca-9b79-e52aeeaee6b1&_gl=1*lrncmg*_ga*MTM4MDAzMTEzNC4xNjk4MjQ3NjY4*_ga_CW55HF8NVT*MTY5OTEwNzE4My4xNC4xLjE2OTkxMDczOTUuMTQuMC4w',

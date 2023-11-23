@@ -14,6 +14,9 @@ export const getChangeDectection = async function (
   changeAction.isOperatingHourChanged = isOperatingHoursChange(before.operatingHours, after.operatingHours);
   changeAction.isTranslatedRequestChange = isTranslatedRequestChange(before, after);
   changeAction.isTranslatedRequestDelete = isTranslatedRequestDelete(before, after);
+  changeAction.isOTCheckInUpdate = isOneTimeExpiryMinChange(before, after);
+  changeAction.isOTCheckInURLRefresh = isOneTImeCheckInUrlRefresh(before, after);
+
   return changeAction;
 };
 
@@ -47,6 +50,19 @@ const isTranslatedRequestDelete = function (
   return before.translatedRequestIds.length > after.translatedRequestIds.length;
 };
 
+const isOneTimeExpiryMinChange = function (
+  before: I.ShopConfigurationType,
+  after: I.ShopConfigurationType
+): boolean {
+  return before.setting?.qrCode?.oneTimeCheckInUrlExpiryMin !== after.setting?.qrCode?.oneTimeCheckInUrlExpiryMin;
+};
+
+const isOneTImeCheckInUrlRefresh = function (
+  before: I.ShopConfigurationType,
+  after: I.ShopConfigurationType
+): boolean {
+  return before.oneTimeCheckInUrlId !== after.oneTimeCheckInUrlId;
+};
 const isActiveChange = function (before: I.ShopConfigurationType, after: I.ShopConfigurationType) {
   return before.active !== after.active;
 };
@@ -121,6 +137,8 @@ const getDefaultChangeType = function (): I.OnChangeShopType {
     isPreimum: false,
     isTranslatedRequestChange: false,
     isTranslatedRequestDelete: false,
+    isOTCheckInUpdate: false,
+    isOTCheckInURLRefresh: false,
   };
 };
 

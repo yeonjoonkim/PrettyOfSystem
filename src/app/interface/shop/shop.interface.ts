@@ -78,7 +78,21 @@ export interface ShopConfigurationType {
   setting: IShopSetting;
   timezone: string;
   capacityId: string;
+  oneTimeCheckInUrlId: string;
 }
+
+export type ShopOneTimeCheckInUrlCriteria = {
+  id: string;
+  shopId: string;
+  expiredTime: number;
+};
+
+export type ShopOneTimeCheckInUrl = {
+  id: string;
+  shopId: string;
+  expiredDate: string;
+  ipAddress: string | null;
+};
 
 export type ShopConfigurationLanguagePackageType = {
   [key: string]: string;

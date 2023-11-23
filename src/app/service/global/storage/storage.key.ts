@@ -4,5 +4,6 @@ const storageKey = {
   languageSelectionKey: 'langSelectionKey',
   languageSelectionExpiredDateTime: 'expiredDateTime',
   key: 'prettyOfSystem',
+  internalAPI: 'dslsssxsjsssjsf',
 };
 export default storageKey;

@@ -29,6 +29,7 @@ export class FirebaseToasterService {
       add: this._fail + 'add',
       request: this._fail + 'request',
       upload: this._fail + 'upload',
+      accessDeined: this._fail + 'accessdenied',
     },
   };
   private readonly _errorCodes: NameValuePairType[] = [
@@ -111,6 +112,11 @@ export class FirebaseToasterService {
   public async uploadFail(error: any) {
     const msg = await this.transform(this._msg.fail.upload);
     await this.presentError(msg, error);
+  }
+
+  public async accessDeined() {
+    const msg = await this.transform(this._msg.fail.accessDeined);
+    await this.presentError(msg, null);
   }
 
   //Toast Setting

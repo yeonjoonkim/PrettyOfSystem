@@ -37,6 +37,10 @@ const routes: Routes = [
     loadChildren: () => import('./page/reservation/reservation.module').then(m => m.ReservationPageModule),
     canActivate: [receptionGuard],
   },
+  {
+    path: 'check-in/:id',
+    loadChildren: () => import('./page/check-in/check-in.module').then(m => m.CheckInPageModule),
+  },
 ];
 
 @NgModule({

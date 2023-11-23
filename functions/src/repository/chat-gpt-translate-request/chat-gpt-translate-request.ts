@@ -15,9 +15,7 @@ export const getAll = async function (): Promise<I.ChatGptTranslateDocumentType[
   return requests;
 };
 
-export const getSelected = async function (
-  id: string
-): Promise<I.ChatGptTranslateDocumentType | null> {
+export const getSelected = async function (id: string): Promise<I.ChatGptTranslateDocumentType | null> {
   const docRef = firestore().collection(Db.Context.ChatGptTranslateRequest).doc(id);
   const docSnapshot = await docRef.get();
 
@@ -118,9 +116,7 @@ export const createDocument = async function (request: I.ChatGptTranslateDocumen
 };
 
 export const create = async function (request: I.ChatGptTranslateDocumentType) {
-  const documentationCollection = firestore()
-    .collection(Db.Context.ChatGptTranslateRequest)
-    .doc(request.id);
+  const documentationCollection = firestore().collection(Db.Context.ChatGptTranslateRequest).doc(request.id);
 
   try {
     await documentationCollection.set(request);
@@ -131,9 +127,7 @@ export const create = async function (request: I.ChatGptTranslateDocumentType) {
   }
 };
 
-export const deleteDocument = async function (
-  request: I.ChatGptTranslateDocumentType
-): Promise<boolean> {
+export const deleteDocument = async function (request: I.ChatGptTranslateDocumentType): Promise<boolean> {
   const documentation = firestore().collection(Db.Context.ChatGptTranslateRequest).doc(request.id);
   const data = await documentation.get();
 
@@ -149,6 +143,29 @@ export const deleteDocument = async function (
   } else {
     logger.warn(`Document with ID ${request.id} not found`);
     return false;
+  }
+};
+
+export const deleteDocumentsByShopId = async function (shopId: string): Promise<boolean> {
+  const documentations = await firestore()
+    .collection(Db.Context.ChatGptTranslateRequest)
+    .where('shopId', '==', shopId)
+    .get();
+
+  if (!documentations.empty) {
+    try {
+      for (const doc of documentations.docs) {
+        await doc.ref.delete();
+      }
+      logger.info(`Deleted documents for Shop ID: ${shopId}`);
+      return true;
+    } catch (error) {
+      logger.error('Delete operation failed', error);
+      return false;
+    }
+  } else {
+    logger.info(`No documents found for Shop ID ${shopId}`);
+    return true;
   }
 };
 

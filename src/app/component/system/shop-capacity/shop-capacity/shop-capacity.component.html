@@ -13,7 +13,7 @@
 <ion-content [scrollable]="true" *ngIf="type">
   <flex-col class="modal-container">
     <flex-row>
-      <flex-row-item>
+      <flex-row-item *ngIf="isSystemAdmin">
         <text-box
           title="label.title.name"
           [isRequired]="true"

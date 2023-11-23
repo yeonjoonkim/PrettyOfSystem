@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalService } from 'src/app/service/global/global.service';
 import {
   IShopServiceMenuOptionAction,
   ShopServiceMenuOptionControllerService,
@@ -13,10 +12,7 @@ import {
 export class ShopServiceManagementPage implements OnInit {
   public selected: IShopServiceMenuOptionAction = this._menuCtrl.setDefault();
   public selection: IShopServiceMenuOptionAction[] = this._menuCtrl.buttons();
-  constructor(
-    private _menuCtrl: ShopServiceMenuOptionControllerService,
-    private _global: GlobalService
-  ) {}
+  constructor(private _menuCtrl: ShopServiceMenuOptionControllerService) {}
 
   ngOnInit() {}
 

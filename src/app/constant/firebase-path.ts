@@ -5,6 +5,8 @@ const systemRole: string = system + 'role/';
 const systemShop: string = system + 'shop/';
 
 const shopConfiguration: string = 'shopConfiguration';
+const shopOneTimeCheckInUrlCriteria: string = 'shopOneTimeCheckInCriteria';
+const shopOneTimeCheckInUrl: string = 'shopOneTimeCheckInUrl';
 const user: string = 'user';
 const shop: string = 'shop/';
 const shopService: string = shop + '{shopId}/service';
@@ -24,6 +26,8 @@ export const Context = {
   SystemLangaugeTranslateRequest: SystemLanguageTranslateRequest,
   ChatGptTranslateRequest: ChatGptTranslateRequest,
   ShopConfiguration: shopConfiguration,
+  ShopOneTimeCheckInUrlCriteria: shopOneTimeCheckInUrlCriteria,
+  ShopOneTimeCheckInUrl: shopOneTimeCheckInUrl,
   User: user,
   Shop: {
     Service: shopService,

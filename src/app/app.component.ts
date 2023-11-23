@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { GlobalService } from './service/global/global.service';
 import { NetworkConnectionStatusService } from './service/global/network-connection-status/network-connection-status.service';
@@ -24,12 +24,11 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    await this._global.storage.create();
-    this._user.activateAuthChangeListener();
-    this.routerChangeListener();
     this.languageChangeListener();
-    this.userLoginStatusListener();
     this.networkStatusListener();
+    this.routerChangeListener();
+    this._user.activateAuthChangeListener();
+    this.userLoginStatusListener();
   }
 
   async ngOnDestroy() {
@@ -63,7 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private async languageChangeListener() {
     this._global.language.changeLanguageAction.pipe(takeUntil(this._onDestroy$)).subscribe(async () => {
       this.ngOnDestroy();
-      window.location.reload();
+      await this.ngOnInit();
     });
   }
 

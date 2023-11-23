@@ -120,6 +120,7 @@ export class ShopConfigurationService {
       activeTo: null,
       translatedRequestIds: [],
       capacityId: '',
+      oneTimeCheckInUrlId: this.global.newId(),
     };
   }
 
@@ -262,6 +263,9 @@ export class ShopConfigurationService {
         shopImage1: Constant.ShopSetting.Picture.Placeholder,
         shopImage2: Constant.ShopSetting.Picture.Placeholder,
         shopImage3: Constant.ShopSetting.Picture.Placeholder,
+      },
+      qrCode: {
+        oneTimeCheckInUrlExpiryMin: Constant.ShopSetting.QRCode.OneTimeCheckInUrlExpiryMin,
       },
     };
     return result;

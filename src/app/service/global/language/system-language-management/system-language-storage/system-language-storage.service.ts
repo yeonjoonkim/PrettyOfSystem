@@ -25,10 +25,6 @@ export class SystemLanguageStorageService {
     private _systemLanguageRepo: SystemLanguageRepositoryService
   ) {}
 
-  public async create() {
-    await this._stroage.create();
-  }
-
   public async setDefault(isConnected: boolean) {
     let now: Date = new Date();
     let expiredDate: Date | null = await this._stroage.getLanguageSelectionExpireDateTime();

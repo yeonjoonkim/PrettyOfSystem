@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 //Import Ionic Angular
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Inject, NgModule, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -38,6 +38,7 @@ import { MenuComponent } from './component/global/menu/menu.component';
 import { UserEditModule } from './component/user/user-edit/user-edit.module';
 import { SharedFormModule } from './component/form/form.module';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+import { InternalApiService } from './service/internal-api/internal-api.service';
 
 @NgModule({
   declarations: [AppComponent, MenuComponent],

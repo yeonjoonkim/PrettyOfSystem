@@ -2,7 +2,12 @@ export interface IShopSetting {
   calendar: ShopCalendarType;
   financial: ShopFinancialRateType;
   picture: ShopPictureType;
+  qrCode: ShopQRCodeType;
 }
+
+export type ShopQRCodeType = {
+  oneTimeCheckInUrlExpiryMin: number;
+};
 
 export type ShopFinancialRateType = {
   taxRate: number;
