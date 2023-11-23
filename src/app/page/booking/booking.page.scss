@@ -10,6 +10,13 @@
   margin: auto;
 }
 
+ion-header {
+  --background: var(--background);
+  --background-color: var(--background);
+  background: var(--background);
+  background-color: var(--background);
+}
+
 @media (max-width: 768px) {
   #booking-container {
     flex-direction: column;

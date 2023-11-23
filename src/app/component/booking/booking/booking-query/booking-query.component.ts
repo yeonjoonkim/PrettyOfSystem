@@ -38,7 +38,6 @@ export class BookingQueryComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(take(1), takeUntil(this._destroy$))
       .subscribe(result => {
         this.shops = result;
-        console.log(this.shops);
       });
     this.loading = false;
   }

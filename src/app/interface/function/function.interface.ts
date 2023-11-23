@@ -39,6 +39,8 @@ export type OnChangeShopType = {
   isPreimum: boolean;
   isTranslatedRequestChange: boolean;
   isTranslatedRequestDelete: boolean;
+  isOTCheckInUpdate: boolean;
+  isOTCheckInURLRefresh: boolean;
 };
 
 export type OnChangeShopActionType = {

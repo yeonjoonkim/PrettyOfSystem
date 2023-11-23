@@ -1,0 +1,21 @@
+side-menu {
+  --background: #191919;
+
+  height: 100%;
+}
+ion-menu {
+  --background: #191919;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+#main-content,
+#menu {
+  margin-top: 0; /* Reset margin */
+}

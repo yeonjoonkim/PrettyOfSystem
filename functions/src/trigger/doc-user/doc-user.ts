@@ -1,8 +1,4 @@
-import {
-  onDocumentCreated,
-  onDocumentDeleted,
-  onDocumentUpdated,
-} from 'firebase-functions/v2/firestore';
+import { onDocumentCreated, onDocumentDeleted, onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import * as Repository from '../../repository/index';
 import * as Db from '../../db';
 import * as Constant from '../../constant';
@@ -93,9 +89,7 @@ const handleDeleteSpecializedEmployeeInPackage = async function (before: I.IUser
 
   for (let shop of removedShops) {
     const promise = Repository.Shop.Package.getSelectShop(shop.shopId).then(packages => {
-      const adjustPackages = packages.filter(s =>
-        s.specializedEmployees.some(s => s.value === after.id)
-      );
+      const adjustPackages = packages.filter(s => s.specializedEmployees.some(s => s.value === after.id));
 
       return Promise.all(
         adjustPackages.map(pack => {
@@ -119,15 +113,11 @@ const handleDeleteSpecializedEmployeeInService = async function (before: I.IUser
 
   for (let shop of removedShops) {
     const promise = Repository.Shop.Service.getSelectShop(shop.shopId).then(services => {
-      const adjustServices = services.filter(s =>
-        s.specializedEmployees.some(s => s.value === after.id)
-      );
+      const adjustServices = services.filter(s => s.specializedEmployees.some(s => s.value === after.id));
 
       return Promise.all(
         adjustServices.map(service => {
-          service.specializedEmployees = service.specializedEmployees.filter(
-            s => s.value !== after.id
-          );
+          service.specializedEmployees = service.specializedEmployees.filter(s => s.value !== after.id);
           return Repository.Shop.Service.updateService(service);
         })
       );
@@ -193,18 +183,10 @@ const handleEmailLoginOption = async function (
   authenticationExisted: boolean
 ) {
   if (action === Constant.API.Action.Create && !authenticationExisted) {
-    return await Repository.Auth.eMail.createEmailLogin(
-      user.id,
-      user.email,
-      user.encryptedPassword
-    );
+    return await Repository.Auth.eMail.createEmailLogin(user.id, user.email, user.encryptedPassword);
   }
   if (action === Constant.API.Action.Update && authenticationExisted) {
-    return await Repository.Auth.eMail.updateEmailLogin(
-      user.id,
-      user.email,
-      user.encryptedPassword
-    );
+    return await Repository.Auth.eMail.updateEmailLogin(user.id, user.email, user.encryptedPassword);
   }
   if (action === Constant.API.Action.Delete && authenticationExisted) {
     return await Repository.Auth.eMail.deleteEmailLogin(user.id);
@@ -268,7 +250,7 @@ const getCurrentUserClaim = function (user: I.IUser) {
     },
     currentShopId: '',
     language: user.setting.preferLanguage,
-    disableAccount: user.disabledAccount,
+    disableAccount: false,
   };
 
   claim.role = currentShop !== undefined ? currentShop.role.accessLevel : claim.role;

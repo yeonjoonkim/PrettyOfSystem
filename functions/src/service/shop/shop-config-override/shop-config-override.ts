@@ -5,6 +5,7 @@ export const override = function (s: I.IShopSetting) {
   s.financial = financeSetting(s?.financial);
   s.calendar = calendarSetting(s?.calendar);
   s.picture = picture(s?.picture);
+  s.qrCode = QRcode(s?.qrCode);
   return s;
 };
 
@@ -64,9 +65,7 @@ const nextAvailableBookingMin = function (min: number | undefined | null) {
 };
 
 const maximumAvailableFutureBookingDays = function (min: number | undefined | null) {
-  return typeof min === 'number'
-    ? min
-    : Constant.ShopSetting.Calender.MaximumAvailableFutureBookingDays;
+  return typeof min === 'number' ? min : Constant.ShopSetting.Calender.MaximumAvailableFutureBookingDays;
 };
 
 // Picture
@@ -81,4 +80,15 @@ const picture = function (picture: I.ShopPictureType | undefined) {
 
 const placeholder = function (url: string | undefined | null) {
   return typeof url === 'string' ? url : Constant.ShopSetting.Picture.Placeholder;
+};
+
+// QRcode
+const QRcode = function (qrCode: I.ShopQRCodeType | undefined) {
+  return {
+    oneTimeCheckInUrlExpiryMin: oneTimeCheckInUrlExpiryMin(qrCode?.oneTimeCheckInUrlExpiryMin),
+  };
+};
+
+const oneTimeCheckInUrlExpiryMin = function (min: number | undefined | null) {
+  return typeof min === 'number' ? min : Constant.ShopSetting.QRCode.OneTimeCheckInUrlExpiryMin;
 };

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { DeleteConfirmationAlert } from './confirmation-alert/confirmation-alert.service';
 import { ErrorReporterService } from './error-reporter/error-reporter.service';
 import { LanguageService } from './language/language.service';
@@ -18,6 +18,8 @@ import { NetworkConnectionStatusService } from './network-connection-status/netw
 import { CryptService } from './crypt/crypt.service';
 import { AgreementModalService } from './agreement-modal/agreement-modal.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { DeviceService } from './device/device.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +44,7 @@ export class GlobalService {
     public timer: TimerService,
     public networkConnection: NetworkConnectionStatusService,
     public crypt: CryptService,
+    public device: DeviceService,
     private _afs: AngularFirestore
   ) {}
 
