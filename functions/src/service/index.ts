@@ -4,4 +4,5 @@ export * as Trigger from './trigger/service-trigger';
 export * as TextTransform from './text/service-text';
 export * as Translate from './translate/service-translate';
 export * as Shop from './shop/index';
+export * as User from './user/index';
 export * as Scheduler from './scheduler/index';

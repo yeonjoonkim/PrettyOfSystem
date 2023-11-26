@@ -62,7 +62,11 @@ export const onShopDelete = onDocumentDeleted(Db.Context.ShopConfiguration + '/{
   const shopData = !shopSnapshot ? null : shopSnapshot.data();
   const shop = shopData !== null ? (shopData as I.ShopConfigurationType) : null;
   if (shop !== null) {
-    await deleteFromUserAssociatedShops(shop);
+    await deleteFromUserAssociatedShops(shop).then(async () => {
+      await sleep(1000);
+      await deleteFromVisitShop(shop);
+    });
+
     await deleteCollection(Db.ShopService(shop.id));
     await deleteCollection(Db.ShopExtra(shop.id));
     await deleteCollection(Db.ShopPackage(shop.id));
@@ -182,6 +186,22 @@ const deleteFromUserAssociatedShops = async function (shop: I.ShopConfigurationT
         user.currentShopId =
           user.currentShopId === shop.id && user.associatedShops.length > 0 ? user.associatedShops[0].shopId : '';
 
+        await Repository.User.updateSelectedUser(user);
+      }
+    }
+  } catch (error) {
+    await Repository.Error.createErrorReport(shop, error, 'update', 'insertIntoSystemAdminAssociatedShops');
+  }
+};
+
+const deleteFromVisitShop = async function (shop: I.ShopConfigurationType) {
+  const users = await Repository.User.getVisitedShopUsers(shop.id);
+
+  try {
+    if (users.length > 0) {
+      for (const user of users) {
+        user.visitedShops = user.visitedShops.filter(s => s.shopId !== shop.id);
+        user.visitedShopIds = user.visitedShopIds.filter(s => s !== shop.id);
         await Repository.User.updateSelectedUser(user);
       }
     }

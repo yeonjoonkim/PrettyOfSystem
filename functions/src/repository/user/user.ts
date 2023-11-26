@@ -2,11 +2,12 @@ import { firestore } from 'firebase-admin';
 import * as Db from '../../db';
 import * as I from '../../interface';
 import { logger } from 'firebase-functions/v2';
-
+import * as Service from '../../service/index';
 export const getAll = async function (): Promise<I.IUser[]> {
   const allUserSnapshot = await firestore().collection(Db.Context.User).get();
   const allUser = allUserSnapshot.docs.map(doc => {
-    const data = doc.data() as I.IUser;
+    let data = doc.data() as I.IUser;
+    data.setting = Service.User.Setting.override(data.setting);
     return {
       ...data,
     };
@@ -21,7 +22,9 @@ export const getSelectedUser = async function (id: string) {
     if (!userSnapshot.exists) {
       return null;
     }
-    return userSnapshot.data() as I.IUser;
+    const data = userSnapshot.data() as I.IUser;
+    data.setting = Service.User.Setting.override(data.setting);
+    return data;
   } catch (err) {
     logger.error(err);
     return null;
@@ -64,6 +67,13 @@ export const deleteSelectedUser = async function (id: string) {
 export const getAssociatedShopUsers = async function (shopId: string) {
   const allUsers = await getAll();
   return allUsers.filter(user => user.associatedShops.filter(shop => shop.shopId === shopId).length > 0);
+};
+
+export const getVisitedShopUsers = async function (shopId: string) {
+  const allUsers = await getAll();
+  return allUsers.filter(
+    user => user.visitedShops.filter(visitedShop => visitedShop.shopId === shopId).length > 0
+  );
 };
 
 export const getAssociatedShopUserByIds = async function (shopIds: string[]) {

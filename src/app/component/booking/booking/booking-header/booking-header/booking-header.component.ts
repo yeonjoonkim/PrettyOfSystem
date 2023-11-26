@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { Observable, Subscription } from 'rxjs';
@@ -10,6 +10,7 @@ import { UserService } from 'src/app/service/user/user.service';
   styleUrls: ['./booking-header.component.scss'],
 })
 export class BookingHeaderComponent implements OnInit, OnDestroy {
+  @Input() isLoginRequired: boolean = true;
   private _loginStatusSubscription!: Subscription;
   private _isLogin: boolean = false;
   public isLogin$!: Observable<boolean>;

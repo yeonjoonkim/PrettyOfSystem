@@ -1,7 +1,7 @@
 <ion-header>
   <booking-header></booking-header>
 </ion-header>
-<ion-content [fullscreen]="true" *ngIf="isLoaded">
+<ion-content *ngIf="isLoaded">
   <div id="booking-container">
     <booking-search (onQueryChange)="onAddressQuery($event)"></booking-search>
   </div>

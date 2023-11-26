@@ -64,4 +64,8 @@ export class CheckInClientService {
   public async update(before: IUser, after: IUser) {
     return await this._user.updateUser(before, after);
   }
+
+  public async isAccountExisting(phone: string) {
+    return await this._user.verifyUserAccount(phone);
+  }
 }

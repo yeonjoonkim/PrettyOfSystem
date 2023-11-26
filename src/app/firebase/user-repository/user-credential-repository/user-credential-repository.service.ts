@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IUser, ShopEmployeeManagementUserType, UserAssociatedShopType } from 'src/app/interface';
+import { IUser, ShopEmployeeManagementUserType, UserAssociatedShopType, UserSettingType } from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
-import { Observable, catchError, from, map, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, firstValueFrom, from, map, of, switchMap, take } from 'rxjs';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { DateTransformService } from 'src/app/service/global/date/date-transform/date-transform.service';
+import { override } from 'functions/src/service/user/user-setting-override/user-setting-override';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +14,7 @@ export class UserCredentialRepositoryService {
   private readonly _emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService,
-    private _dateTransform: DateTransformService
+    private _toaster: FirebaseToasterService
   ) {}
 
   public async verifyUserAccount(input: string) {
@@ -44,7 +43,9 @@ export class UserCredentialRepositoryService {
     return userCollectionRef.get().pipe(
       map(userQuerySnapshot => {
         if (userQuerySnapshot.docs.length > 0) {
-          return userQuerySnapshot.docs[0].data();
+          const user = userQuerySnapshot.docs[0].data();
+          user.setting = this.overrideSetting(user.setting);
+          return user;
         } else {
           return null;
         }
@@ -60,7 +61,9 @@ export class UserCredentialRepositoryService {
     return userCollectionRef.get().pipe(
       map(userQuerySnapshot => {
         if (userQuerySnapshot.docs.length > 0) {
-          return userQuerySnapshot.docs[0].data();
+          const user = userQuerySnapshot.docs[0].data();
+          user.setting = this.overrideSetting(user.setting);
+          return user;
         } else {
           return null;
         }
@@ -72,8 +75,14 @@ export class UserCredentialRepositoryService {
     const userDocRef = this._afs.doc<IUser>(`${Db.Context.User}/${id}`);
 
     return userDocRef.valueChanges().pipe(
-      map(userData => (userData ? userData : null)),
-      catchError(error => throwError(error))
+      switchMap(userData => {
+        if (userData) {
+          userData.setting = this.overrideSetting(userData.setting);
+          return of(userData);
+        } else {
+          return of(null);
+        }
+      })
     );
   }
 
@@ -85,7 +94,9 @@ export class UserCredentialRepositoryService {
     return userCollectionRef.get().pipe(
       map(userQuerySnapshot => {
         if (userQuerySnapshot.docs.length > 0) {
-          return userQuerySnapshot.docs[0].data();
+          const user = userQuerySnapshot.docs[0].data();
+          user.setting = this.overrideSetting(user.setting);
+          return user;
         } else {
           return null;
         }
@@ -119,7 +130,8 @@ export class UserCredentialRepositoryService {
           from(
             Promise.all(
               userSnapshots.docs.map(snapshot => {
-                const user = snapshot.data();
+                let user = snapshot.data();
+                user.setting = this.overrideSetting(user.setting);
                 return user;
               })
             )
@@ -168,7 +180,8 @@ export class UserCredentialRepositoryService {
   private async verifyUserByEmail(email: string) {
     try {
       const result = this.subscribeUserByEmail(email).pipe(take(1));
-      return result !== null;
+      const user = await firstValueFrom(result);
+      return user !== null;
     } catch (error) {
       console.error('Error verifying user by email:', error);
       return false;
@@ -178,7 +191,8 @@ export class UserCredentialRepositoryService {
   private async verifyUserByPhone(phone: string): Promise<boolean> {
     try {
       const result = this.subscribeUserByPhoneNumber(phone).pipe(take(1));
-      return result !== null;
+      const user = await firstValueFrom(result);
+      return user !== null;
     } catch (error) {
       console.error('Error verifying user by phone:', error);
       return false;
@@ -208,12 +222,16 @@ export class UserCredentialRepositoryService {
         displayInSystem: as.displayInSystem,
         roster: as.roster,
         nextWeekRoster: as.nextWeekRoster,
-        setting: u.setting,
+        setting: this.overrideSetting(u.setting),
       };
 
       return result;
     }
 
     return null;
+  }
+
+  private overrideSetting(setting: UserSettingType) {
+    return override(setting);
   }
 }

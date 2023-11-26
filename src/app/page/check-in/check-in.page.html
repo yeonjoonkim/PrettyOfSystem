@@ -1,3 +1,8 @@
-<div class="loading-container">
-  <kendo-loader size="large"></kendo-loader>
-</div>
+<ion-header *ngIf="loaded$ | async">
+  <div id="language-selection">
+    <booking-language-selection></booking-language-selection>
+  </div>
+</ion-header>
+<ion-content [fullscreen]="true" *ngIf="loaded$ | async">
+  <check-in></check-in>
+</ion-content>

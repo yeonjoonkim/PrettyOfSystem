@@ -4,12 +4,14 @@
   </div>
 
   <div id="btn-container">
-    <button id="login-btn" kendoButton *ngIf="isLogout$ | async" (click)="logIn()">
-      {{ 'label.title.login' | languageTransform: 'System' | async }}
-    </button>
-    <button id="logout-btn" kendoButton *ngIf="isLogin$ | async" (click)="logout()">
-      {{ 'label.title.logout' | languageTransform: 'System' | async }}
-    </button>
+    <div *ngIf="isLoginRequired">
+      <button id="login-btn" kendoButton *ngIf="isLoginRequired && isLogout$ | async" (click)="logIn()">
+        {{ 'label.title.login' | languageTransform: 'System' | async }}
+      </button>
+      <button id="logout-btn" kendoButton *ngIf="isLoginRequired && isLogin$ | async" (click)="logout()">
+        {{ 'label.title.logout' | languageTransform: 'System' | async }}
+      </button>
+    </div>
     <booking-language-selection></booking-language-selection>
   </div>
 </flex-row>

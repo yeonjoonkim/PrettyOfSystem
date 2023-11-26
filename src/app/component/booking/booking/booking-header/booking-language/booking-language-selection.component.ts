@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NameValuePairType } from 'src/app/interface';
 import { PopoverController } from '@ionic/angular';
 import { BookingLanguageDropDownListComponent } from './booking-language-dropdown-list/booking-language-dropdown-list.component';

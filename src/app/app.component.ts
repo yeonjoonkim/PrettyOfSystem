@@ -24,11 +24,11 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    this.languageChangeListener();
     this.networkStatusListener();
-    this.routerChangeListener();
     this._user.activateAuthChangeListener();
     this.userLoginStatusListener();
+    this.routerChangeListener();
+    this.languageChangeListener();
   }
 
   async ngOnDestroy() {
@@ -44,8 +44,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this._user.isLoggedin$.pipe(takeUntil(this._onDestroy$)).subscribe(isLogin => {
       this.isLogin = isLogin;
     });
-    this._user.claim$.pipe(takeUntil(this._onDestroy$)).subscribe(s => {
-      console.log(s);
+    this._user.claim$.pipe(takeUntil(this._onDestroy$)).subscribe(claim => {
+      console.log(claim);
     });
   }
 
@@ -60,9 +60,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private async languageChangeListener() {
-    this._global.language.changeLanguageAction.pipe(takeUntil(this._onDestroy$)).subscribe(async () => {
+    this._global.language.changeLanguageAction.pipe(takeUntil(this._onDestroy$)).subscribe(() => {
       this.ngOnDestroy();
-      await this.ngOnInit();
+      window.location.reload();
+      this.ngOnInit();
     });
   }
 

@@ -1,0 +1,21 @@
+<!--Login Option -->
+<div id="recaptcha-container"></div>
+
+<flex-col *ngIf="!verifying">
+  <flex-col-item class="phone">
+    <phone-number
+      [isRequired]="true"
+      [isTitleRequired]="false"
+      [(phone)]="phone"
+      [(validate)]="validator"></phone-number>
+  </flex-col-item>
+  <flex-col-item class="login">
+    <button class="login-btn" kendoButton [disabled]="!validator || verifying" (click)="verifyingAccount()">
+      {{ 'label.title.login' | languageTransform: 'System' | async }}
+    </button>
+  </flex-col-item>
+</flex-col>
+
+<div class="loading-container" *ngIf="verifying">
+  <kendo-loader size="large"></kendo-loader>
+</div>

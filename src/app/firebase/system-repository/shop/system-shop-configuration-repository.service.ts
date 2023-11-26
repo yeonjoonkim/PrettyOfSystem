@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { from, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, from, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { ShopCategoryType, ShopConfigurationType, ShopCountryType } from 'src/app/interface/shop/shop.interface';
 import * as Db from 'src/app/constant/firebase-path';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
@@ -107,6 +107,24 @@ export class SystemShopConfigurationRepositoryService {
           })
         )
       );
+  }
+
+  public shopConfigurationValueChangeListener(id: string): Observable<ShopConfigurationType | null> {
+    const docRef = this._afs.collection<ShopConfigurationType>(Db.Context.ShopConfiguration).doc(id);
+    return docRef.valueChanges().pipe(
+      switchMap((data: ShopConfigurationType | undefined) => {
+        if (data) {
+          data = this.overrideConfig(data);
+          return of(data);
+        } else {
+          return of(null);
+        }
+      }),
+      catchError(error => {
+        console.error('Error getting shop configuration:', error);
+        return of(null); // Return null on error
+      })
+    );
   }
 
   public async createNewShopConfiguration(shopConfig: ShopConfigurationType): Promise<boolean> {

@@ -9,6 +9,7 @@ export type IShopSettingOptionType = {
   isContact: boolean;
   isOperatingHours: boolean;
   isCapacity: boolean;
+  isCheckInQrCode: boolean;
 };
 
 @Injectable({
@@ -23,11 +24,20 @@ export class ShopSettingOptionService {
     contact: this._title + 'information',
     operatingHours: this._title + 'operatinghours',
     capacity: this._title + 'capacity',
+    checkIn: this._title + 'checkin',
   };
   constructor() {}
 
   public get(): IShopSettingOptionType[] {
-    return [this.contact(), this.logo(), this.operatingHours(), this.finance(), this.calendar(), this.capacity()];
+    return [
+      this.contact(),
+      this.logo(),
+      this.operatingHours(),
+      this.finance(),
+      this.calendar(),
+      this.capacity(),
+      this.checkin(),
+    ];
   }
 
   private calendar() {
@@ -78,6 +88,14 @@ export class ShopSettingOptionService {
     return option;
   }
 
+  private checkin() {
+    const option = this.defaultOption();
+    option.name = this.name.checkIn;
+    option.img = 'assets/shop-setting/capacity.svg';
+    option.isCheckInQrCode = true;
+    return option;
+  }
+
   private defaultOption() {
     const result: IShopSettingOptionType = {
       name: '',
@@ -88,6 +106,7 @@ export class ShopSettingOptionService {
       isContact: false,
       isOperatingHours: false,
       isCapacity: false,
+      isCheckInQrCode: false,
     };
     return result;
   }
