@@ -19,8 +19,21 @@ export interface IUser {
   encryptedPassword: string;
   disabledAccount: boolean;
   visitedShopIds: string[];
+  visitedShops: UserConsentType[];
   address: AddressType | null;
+  dob: string;
+  signature: string | null;
 }
+
+export type UserConsentType = {
+  shopId: string;
+  shopName: string;
+  hasMarketingEmailConsent: boolean;
+  hasMarketingSMSConsent: boolean;
+  hasPrivacyPolicyConsent: boolean;
+  hasTermandConditionConsent: boolean;
+  agreedDate: string;
+};
 
 export type UserClaimType = {
   role: RoleAccessLevelType;
@@ -34,9 +47,50 @@ export interface IUserLoginOption {
   phoneNumber: boolean;
 }
 
-export interface UserSettingType {
+export type UserSettingType = {
   preferLanguage: string;
-}
+  privateInsurance: UserSettingPrivateInsuranceType | null;
+  massage: UserSettingMassageType;
+};
+
+export type UserSettingMassageType = {
+  currentMedicalTreatment: string | null;
+  symptomsAndDiseases: UserSettingMassageSymptomAndDiseaseType[];
+  otherCondition: string | null;
+  pressureLevel: number;
+  focusAreas: UserSettingMassageFocusAreaType[];
+  avoidAreas: string[];
+};
+
+export type UserSettingMassageFocusAreaType = {
+  name: string;
+  painType: string;
+  painLevel: number;
+};
+
+export type UserSettingMassageSymptomAndDiseaseType = {
+  type: 'Symtom' | 'Disease';
+  system:
+    | 'Integumentary'
+    | 'Skeletal'
+    | 'Muscular'
+    | 'Nervous'
+    | 'Endocrine'
+    | 'Cardiovascular'
+    | 'Lymphatic'
+    | 'Respiratory'
+    | 'Digestive'
+    | 'Urinary'
+    | 'Reproductive';
+  name: string;
+  cautionLevel: number; // 0 - 10
+};
+
+export type UserSettingPrivateInsuranceType = {
+  company: string;
+  memberNum: string;
+  reference: string;
+};
 
 export interface IUserLogin {
   phoneNumber: string;

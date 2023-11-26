@@ -9,6 +9,7 @@ import { ShopSettingPictureComponent } from './modal/shop-setting-picture/shop-s
 import { ShopSettingOperatingHoursComponent } from './modal/shop-setting-operating-hours/shop-setting-operating-hours.component';
 import { SystemShopCapacityModalService } from 'src/app/service/system/system-shop-capacity/system-shop-capacity-modal/system-shop-capacity-modal.service';
 import { firstValueFrom } from 'rxjs';
+import { ShopSettingCheckInComponent } from './modal/shop-setting-check-in/shop-setting-check-in.component';
 
 @Component({
   selector: 'shop-setting',
@@ -42,6 +43,8 @@ export class ShopSettingComponent implements OnInit {
       await this.openOperatingHours();
     } else if (option.isCapacity) {
       await this.openCapacity();
+    } else if (option.isCheckInQrCode) {
+      await this.openCheckin();
     }
   }
 
@@ -110,6 +113,19 @@ export class ShopSettingComponent implements OnInit {
     if (cap !== null && !this._isOpen) {
       this._isOpen = true;
       const modal = await this._capacityModal.presentReadCapacity(cap);
+      await modal.present();
+      await this.handleModalClose(modal);
+    }
+  }
+
+  private async openCheckin() {
+    const cap = await firstValueFrom(this._setting.capacity$);
+    if (cap !== null && !this._isOpen) {
+      this._isOpen = true;
+      const modal = await this._modal.create({
+        presentingElement: await this._modal.getTop(),
+        component: ShopSettingCheckInComponent,
+      });
       await modal.present();
       await this.handleModalClose(modal);
     }

@@ -70,13 +70,25 @@ export class UserAdminService {
       setting: this.setDefaultUserSetting(),
       disabledAccount: false,
       visitedShopIds: [],
+      visitedShops: [],
       address: null,
+      dob: `1990-01-01'T'00:00:00`,
+      signature: null,
     };
   }
 
   public setDefaultUserSetting(): UserSettingType {
     return {
       preferLanguage: '',
+      privateInsurance: null,
+      massage: {
+        currentMedicalTreatment: null,
+        symptomsAndDiseases: [],
+        otherCondition: null,
+        pressureLevel: 0,
+        focusAreas: [],
+        avoidAreas: [],
+      },
     };
   }
 

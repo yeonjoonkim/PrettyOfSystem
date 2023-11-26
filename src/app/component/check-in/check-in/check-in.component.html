@@ -1,0 +1,15 @@
+<flex-col *ngIf="logo$ && businessName$" class="business-detail">
+  <flex-col-item class="logo" [ngClass]="{ 'load-image': !imageLoaded }">
+    <img [src]="logo$ | async" (load)="imageLoaded = true" />
+  </flex-col-item>
+  <flex-col-item class="name" *ngIf="imageLoaded">
+    <legend>{{ businessName$ | async }}</legend>
+  </flex-col-item>
+  <flex-col-item class="login" *ngIf="imageLoaded">
+    <check-in-login></check-in-login>
+  </flex-col-item>
+</flex-col>
+
+<div class="loading-container" *ngIf="!imageLoaded">
+  <kendo-loader size="large"></kendo-loader>
+</div>

@@ -17,6 +17,7 @@ import * as Constant from 'src/app/constant/constant';
 import { SystemLanguageStorageService } from '../../global/language/system-language-management/system-language-storage/system-language-storage.service';
 import { ShopService } from '../shop.service';
 import { TextTransformService } from '../../global/text-transform/text-transform.service';
+import { UserAdminService } from '../../user-admin/user-admin.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -33,6 +34,7 @@ export class ShopEmployeeManagementService {
     public modal: ShopEmployeeAccountModalService,
     private _userRepo: UserCredentialRepositoryService,
     private _roleRepo: SystemRoleRepositoryService,
+    private _admin: UserAdminService,
     private _shopEmpAcc: ShopEmployeeAccountService,
     private _global: GlobalService,
     private _languageStorage: SystemLanguageStorageService,
@@ -55,6 +57,7 @@ export class ShopEmployeeManagementService {
     const currentLanguage = await this._languageStorage.getCurrentLanguage();
 
     if (shop !== null && employeeRole !== undefined) {
+      const setting = this._admin.setDefaultUserSetting();
       const result: ShopEmployeeManagementUserType = {
         shopId: shop.id,
         userId: this._global.newId(),
@@ -72,8 +75,9 @@ export class ShopEmployeeManagementService {
         displayInSystem: true,
         roster: shop.operatingHours,
         nextWeekRoster: shop.operatingHours,
-        setting: { preferLanguage: typeof currentLanguage === 'string' ? currentLanguage : 'en' },
+        setting: setting,
       };
+      result.setting.preferLanguage = typeof currentLanguage === 'string' ? currentLanguage : 'en';
       return result;
     } else {
       return null;

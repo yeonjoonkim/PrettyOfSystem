@@ -17,7 +17,7 @@ import { ShopSettingPictureComponent } from './modal/shop-setting-picture/shop-s
 import { ShopSettingFinanceComponent } from './modal/shop-setting-finance/shop-setting-finance.component';
 import { ShopSettingContactComponent } from './modal/shop-setting-contact/shop-setting-contact.component';
 import { ShopSettingOperatingHoursComponent } from './modal/shop-setting-operating-hours/shop-setting-operating-hours.component';
-
+import { ShopSettingCheckInComponent } from './modal/shop-setting-check-in/shop-setting-check-in.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -37,6 +37,7 @@ import { ShopSettingOperatingHoursComponent } from './modal/shop-setting-operati
     ShopSettingFinanceComponent,
     ShopSettingContactComponent,
     ShopSettingOperatingHoursComponent,
+    ShopSettingCheckInComponent,
   ],
   exports: [ShopSettingComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

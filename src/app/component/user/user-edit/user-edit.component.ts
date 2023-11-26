@@ -121,7 +121,6 @@ export class UserEditComponent implements OnInit, DoCheck {
       this.shopSelection = shopSelection;
       this.loading = false;
       this._previousLanguage = this.user.setting.preferLanguage;
-      console.log(this.hasRole);
       this.handleEnabledSaveBtn();
     }
   }
