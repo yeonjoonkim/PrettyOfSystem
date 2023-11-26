@@ -77,11 +77,18 @@
     </flex-row>
     <flex-row>
       <flex-row-item>
+        <date-picker
+          title="label.title.dateofbrith"
+          [displayNextDay]="0"
+          [isDateOfBrith]="true"
+          [readOnly]="form.readOnly"
+          [(date)]="user.dob"></date-picker>
+      </flex-row-item>
+      <flex-row-item>
         <langauge-selection
           [readOnly]="form.readOnly"
           [(selectedCode)]="user.setting.preferLanguage"></langauge-selection>
       </flex-row-item>
-      <flex-row-item></flex-row-item>
     </flex-row>
     <flex-row>
       <flex-row-item>

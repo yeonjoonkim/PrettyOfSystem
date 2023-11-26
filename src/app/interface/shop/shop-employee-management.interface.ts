@@ -28,6 +28,7 @@ export type ShopEmployeeManagementUserType = {
   loginOption: IUserLoginOption;
   gender: Constant.GenderType;
   role: RoleConfigurationType;
+  dob: string;
   phoneNumber: string;
   email: string;
   encryptedPassword: string;

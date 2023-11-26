@@ -1,7 +1,11 @@
 <flex-row id="booking-header">
-  <div id="logo-container" (click)="openMenu()">
+  <div id="logo-container" (click)="openMenu()" *ngIf="isLogout$ | async">
     <img src="assets/logo/prettyofsystem-logo-white.svg" alt="Prettyofsystem Logo" />
   </div>
+
+  <ion-buttons slot="start" *ngIf="isLogin$ | async">
+    <ion-menu-button auto-hide="true"></ion-menu-button>
+  </ion-buttons>
 
   <div id="btn-container">
     <div *ngIf="isLoginRequired">
