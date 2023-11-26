@@ -160,7 +160,7 @@ export class DateService {
       ? startDate
       : previousDay
       ? this.addDay(startDate, -previousDay)
-      : new Date(2000, 0, 1);
+      : new Date(1900, 0, 1);
   }
 
   maximumDate(timezone: Constant.TimeZoneType, displayNextDay: number) {

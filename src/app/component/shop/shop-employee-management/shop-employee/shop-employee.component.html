@@ -13,28 +13,6 @@
 <ion-content [scrollable]="true">
   <!--Page 1. Information-->
   <flex-col class="modal-container">
-    <flex-col-item id="active">
-      <kendo-label text="{{ 'label.title.active' | languageTransform: 'System' | async }}">
-        <input
-          kendoCheckBox
-          type="checkbox"
-          [disabled]="form.readOnly || isReachToMax"
-          [(ngModel)]="employee.active"
-          (ngModelChange)="onChangeActive()" />
-      </kendo-label>
-    </flex-col-item>
-    <flex-col-item id="display-in-booking">
-      <kendo-label text="{{ 'label.title.displayinBooking' | languageTransform: 'System' | async }}">
-        <input
-          kendoCheckBox
-          type="checkbox"
-          [disabled]="form.readOnly || employee.role.accessLevel.isReception"
-          [(ngModel)]="employee.displayInSystem"
-          (ngModelChange)="handleEnabledSaveBtn()" />
-      </kendo-label>
-    </flex-col-item>
-
-    <!-- Role -->
     <flex-row>
       <flex-row-item>
         <name-value-pair-single-dropdown-selection
@@ -43,6 +21,42 @@
           [selection]="availableRoleFilter"
           [(selected)]="selectedRole"
           (selectedChange)="onChangeRole()"></name-value-pair-single-dropdown-selection>
+      </flex-row-item>
+      <flex-row-item>
+        <flex-col>
+          <flex-col-item id="active">
+            <kendo-label text="{{ 'label.title.active' | languageTransform: 'System' | async }}">
+              <input
+                kendoCheckBox
+                type="checkbox"
+                [disabled]="form.readOnly || isReachToMax"
+                [(ngModel)]="employee.active"
+                (ngModelChange)="onChangeActive()" />
+            </kendo-label>
+          </flex-col-item>
+          <flex-col-item id="display-in-booking">
+            <kendo-label text="{{ 'label.title.displayinBooking' | languageTransform: 'System' | async }}">
+              <input
+                kendoCheckBox
+                type="checkbox"
+                [disabled]="form.readOnly || employee.role.accessLevel.isReception"
+                [(ngModel)]="employee.displayInSystem"
+                (ngModelChange)="handleEnabledSaveBtn()" />
+            </kendo-label>
+          </flex-col-item>
+        </flex-col>
+      </flex-row-item>
+    </flex-row>
+
+    <!-- Role -->
+    <flex-row>
+      <flex-row-item>
+        <date-picker
+          title="label.title.dateofbrith"
+          [displayNextDay]="0"
+          [isDateOfBrith]="true"
+          [readOnly]="form.readOnly"
+          [(date)]="employee.dob"></date-picker>
       </flex-row-item>
       <flex-row-item>
         <langauge-selection

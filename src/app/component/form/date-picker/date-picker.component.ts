@@ -16,7 +16,10 @@ export class DatePickerComponent implements OnInit, OnChanges {
   @Input() displayNextDay: number = 0;
   @Input() restrictedFromToday: boolean = false;
   @Input() readOnly: boolean = false;
+  @Input() isDateOfBrith: boolean = false;
   @Input() type: 'start' | 'end' = 'start';
+
+  public calendarType!: 'infinite' | 'classic';
   public inputDate: Date = new Date();
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
@@ -33,6 +36,7 @@ export class DatePickerComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.setMinMaxDate();
+    this.setCalendarType();
   }
 
   ngOnInit() {}
@@ -53,5 +57,10 @@ export class DatePickerComponent implements OnInit, OnChanges {
     const maxDate = this._global.date.maximumDate(this.shopTimeZone, this.displayNextDay);
     this.minDate = this._global.date.transform.toLocalDateTime(minDate);
     this.maxDate = this._global.date.transform.toLocalDateTime(maxDate);
+  }
+
+  private setCalendarType() {
+    this.calendarType = this.isDateOfBrith ? 'infinite' : 'classic';
+    console.log(this.calendarType);
   }
 }

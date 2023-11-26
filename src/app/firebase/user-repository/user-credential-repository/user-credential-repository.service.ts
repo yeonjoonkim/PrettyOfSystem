@@ -215,6 +215,7 @@ export class UserCredentialRepositoryService {
         role: as.role,
         phoneNumber: u.phoneNumber,
         email: u.email,
+        dob: u.dob,
         encryptedPassword: u.encryptedPassword,
         activeFrom: as.activeFrom,
         activeTo: as.activeTo,

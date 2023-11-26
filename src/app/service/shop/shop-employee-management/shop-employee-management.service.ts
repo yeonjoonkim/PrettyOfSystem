@@ -74,6 +74,7 @@ export class ShopEmployeeManagementService {
         activeTo: null,
         displayInSystem: true,
         roster: shop.operatingHours,
+        dob: `2000-01-01T00:00:00`,
         nextWeekRoster: shop.operatingHours,
         setting: setting,
       };
