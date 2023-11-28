@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { IFormHeaderModalProp } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
@@ -10,6 +10,7 @@ import { LanguageService } from 'src/app/service/global/language/language.servic
   styleUrls: ['./app-privacy-policy.component.scss'],
 })
 export class AppPrivacyPolicyComponent implements OnInit {
+  @Input() isRequiredHeader = true;
   public form: IFormHeaderModalProp = this._form.setReadFormHeaderModalProp();
 
   constructor(

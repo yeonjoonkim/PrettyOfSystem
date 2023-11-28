@@ -7,6 +7,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import { UserService } from 'src/app/service/user/user.service';
 import { GlobalService } from 'src/app/service/global/global.service';
+import { ClientModalService } from 'src/app/service/client/client-modal/client-modal.service';
 
 @Component({
   selector: 'login',
@@ -37,7 +38,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private _afa: AngularFireAuth,
     private _userService: UserService,
-    private _global: GlobalService
+    private _global: GlobalService,
+    private _clientModal: ClientModalService
   ) {
     this.login = new UserLogin(this._afa, this._userService);
   }
@@ -132,6 +134,19 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.login.timer.end();
       }
     });
+  }
+
+  public async createAccount() {
+    const modal = await this._clientModal.createAccount();
+    await modal.present();
+    const result = await this._clientModal.handleDismissCreateAccount(modal);
+    if (result !== null) {
+      this.loginOption = { phoneNumber: true, email: false };
+      await this._global.loading.init();
+      this.reset();
+      this.login.phoneNumber = result;
+      await this.sendPhoneOTP();
+    }
   }
 
   private startRecaptchaVerifier() {

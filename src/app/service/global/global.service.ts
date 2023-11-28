@@ -19,7 +19,7 @@ import { CryptService } from './crypt/crypt.service';
 import { AgreementModalService } from './agreement-modal/agreement-modal.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DeviceService } from './device/device.service';
-import { BehaviorSubject } from 'rxjs';
+import { PrivateHealthInsuranceService } from './private-health-insurance/private-health-insurance.service';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +45,7 @@ export class GlobalService {
     public networkConnection: NetworkConnectionStatusService,
     public crypt: CryptService,
     public device: DeviceService,
+    public privateHealth: PrivateHealthInsuranceService,
     private _afs: AngularFirestore
   ) {}
 

@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { IdTokenResult } from 'firebase/auth';
+import { IdTokenResult, RecaptchaVerifier } from 'firebase/auth';
 import { Observable, map, of, switchMap } from 'rxjs';
 import { UserCredentialRepositoryService } from 'src/app/firebase/user-repository/user-credential-repository/user-credential-repository.service';
 import { IUser } from 'src/app/interface';
 import { GlobalService } from '../../global/global.service';
 import { UserService } from '../../user/user.service';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -16,6 +15,7 @@ export class CheckInClientService {
   public info$!: Observable<IUser | null>;
   public claim$!: Observable<IdTokenResult | null>;
   public preferLanguage$!: Observable<string>;
+  public loginErrorMsg: string = '';
   constructor(
     private _afAuth: AngularFireAuth,
     private _userRepo: UserCredentialRepositoryService,

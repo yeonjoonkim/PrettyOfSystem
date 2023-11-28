@@ -1,11 +1,10 @@
-<kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="calendarType">
+<kendo-label text="{{ title | languageTransform: 'System' | async }}">
   <kendo-datepicker
     [popupSettings]="{
       animate: false,
       appendTo: 'component',
       popupClass: 'date-pick-popup-container'
     }"
-    calendarType="infinite"
     [(value)]="inputDate"
     [readOnlyInput]="true"
     [readonly]="readOnly"

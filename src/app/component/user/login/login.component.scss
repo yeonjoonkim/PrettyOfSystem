@@ -84,3 +84,21 @@ button {
     }
   }
 }
+
+#account-container {
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  #create-account-btn,
+  #change-phone-number-btn {
+    width: 100%;
+    background: transparent;
+    font-size: 10px;
+    margin: 5px;
+    color: white;
+    &:hover {
+      color: #787586;
+    }
+  }
+}

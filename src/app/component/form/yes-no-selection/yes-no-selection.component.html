@@ -1,4 +1,4 @@
-<kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="!simpleMode">
+<kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="!simpleMode && isTitleRequired">
   <kendo-switch
     [(ngModel)]="value"
     (ngModelChange)="onChangeSelection()"
@@ -8,7 +8,15 @@
     offLabel="{{ 'label.title.no' | languageTransform: 'System' | async }}">
   </kendo-switch>
 </kendo-label>
-
+<kendo-switch
+  *ngIf="!simpleMode && !isTitleRequired"
+  [(ngModel)]="value"
+  (ngModelChange)="onChangeSelection()"
+  [readonly]="readOnly"
+  [size]="size"
+  onLabel="{{ 'label.title.yes' | languageTransform: 'System' | async }}"
+  offLabel="{{ 'label.title.no' | languageTransform: 'System' | async }}">
+</kendo-switch>
 <kendo-switch
   *ngIf="simpleMode"
   [(ngModel)]="value"
