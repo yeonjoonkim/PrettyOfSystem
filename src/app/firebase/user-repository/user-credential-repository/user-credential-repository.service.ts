@@ -5,6 +5,7 @@ import * as Db from 'src/app/constant/firebase-path';
 import { Observable, catchError, firstValueFrom, from, map, of, switchMap, take } from 'rxjs';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { override } from 'functions/src/service/user/user-setting-override/user-setting-override';
+import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class UserCredentialRepositoryService {
   private readonly _emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
+    private _toaster: FirebaseToasterService,
+    private _systemLanguageStorage: SystemLanguageStorageService
   ) {}
 
   public async verifyUserAccount(input: string) {
@@ -230,6 +232,43 @@ export class UserCredentialRepositoryService {
     }
 
     return null;
+  }
+
+  public async buildNewUser() {
+    const newUser: IUser = {
+      id: this._afs.createId(),
+      firstName: '',
+      lastName: '',
+      gender: 'Male',
+      isSystemAdmin: false,
+      associatedShops: [],
+      associatedShopIds: [],
+      currentShopId: '',
+      setting: {
+        preferLanguage: await this._systemLanguageStorage.getCurrentLanguage(),
+        privateInsurance: null,
+        massage: {
+          currentMedicalTreatment: null,
+          symptomsAndDiseases: [],
+          otherCondition: null,
+          pressureLevel: 0,
+          focusAreas: [],
+          avoidAreas: [],
+        },
+      },
+      loginOption: { phoneNumber: true, email: false },
+      phoneNumber: '',
+      email: '',
+      encryptedPassword: '',
+      disabledAccount: false,
+      visitedShopIds: [],
+      visitedShops: [],
+      address: null,
+      dob: `1990-01-01T00:00:00`,
+      signature: null,
+    };
+    newUser.setting = this.overrideSetting(newUser.setting);
+    return newUser;
   }
 
   private overrideSetting(setting: UserSettingType) {

@@ -1,0 +1,23 @@
+.app-terms-and-condition {
+  height: 90px;
+  overflow: hidden;
+  overflow-y: auto;
+  border: 1px solid #404040;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 12px;
+
+  ::ng-deep legend {
+    margin-left: -3px;
+    font-size: 16px;
+    color: white;
+  }
+}
+
+.app-terms-and-condition-title,
+.private-insurance-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

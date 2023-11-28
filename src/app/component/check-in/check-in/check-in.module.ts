@@ -9,7 +9,7 @@ import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pip
 //Import Module
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
-
+import { ClientCreateAccountModule } from '../../client/client-create-account/client-create-account.module';
 //Import Component
 import { CheckInComponent } from './check-in.component';
 import { CheckInLoginComponent } from '../check-in-login/check-in-login.component';
@@ -23,6 +23,7 @@ import { CheckInLoginComponent } from '../check-in-login/check-in-login.componen
     LanguageTransformPipeModule,
     SharedFormModule,
     KendoUiModule,
+    ClientCreateAccountModule,
   ],
   exports: [CheckInComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

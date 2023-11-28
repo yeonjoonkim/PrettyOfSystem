@@ -33,7 +33,6 @@ export class InputTextBoxComponent implements OnInit {
   @Input() isRequired: boolean = false;
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
   @Input() placeholder: string = '';
-  @Input() type: 'number' | 'text' = 'text';
   @Input() isRequireLabel: boolean = true;
   @Input()
   get value() {
@@ -60,11 +59,6 @@ export class InputTextBoxComponent implements OnInit {
     this.validate = this.validateInput();
     this.valueLengthCount = this.value.length;
     await this.setDefaultPlaceHolder();
-
-    const element = this.textBox.input.nativeElement;
-    if (element) {
-      element.type = this.type;
-    }
   }
 
   public onChangeValue() {

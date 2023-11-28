@@ -10,6 +10,7 @@ export class YesNoSelectionComponent implements OnInit {
   @Input() simpleMode: boolean = false;
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
   @Input() readOnly: boolean = false;
+  @Input() isTitleRequired: boolean = true;
   @Output() valueChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {}

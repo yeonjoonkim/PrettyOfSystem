@@ -101,10 +101,7 @@ export class UserLogin implements IUserLogin {
     if (verification) {
       try {
         this.errorMsg = '';
-        const userCredential = await this._afa.signInWithEmailAndPassword(
-          this._emailAddress,
-          this.password
-        );
+        const userCredential = await this._afa.signInWithEmailAndPassword(this._emailAddress, this.password);
         if (userCredential) {
           await this.processLogin(userCredential);
         }
@@ -122,10 +119,7 @@ export class UserLogin implements IUserLogin {
     if (verification) {
       try {
         this.errorMsg = '';
-        this.confirmationResult = await this._afa.signInWithPhoneNumber(
-          this._phoneNumber,
-          recaptcha
-        );
+        this.confirmationResult = await this._afa.signInWithPhoneNumber(this._phoneNumber, recaptcha);
         this.timer.startTimerByMin(1);
       } catch (err) {
         const error: string = JSON.stringify(err);
@@ -180,7 +174,7 @@ export class UserLogin implements IUserLogin {
     }
   }
 
-  private async handleError(errorMsg: string) {
+  public async handleError(errorMsg: string) {
     const errorCode = this._errorCodes.find(e => errorMsg.includes(e.value));
     const error = errorCode !== undefined ? errorCode.name : errorMsg;
     if (error.includes('expire')) {

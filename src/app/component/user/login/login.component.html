@@ -121,6 +121,17 @@
   </flex-col>
 
   <flex-col>
+    <flex-col-item id="account-container">
+      <button id="create-account-btn" (click)="createAccount()">
+        {{ 'label.title.signup' | languageTransform: 'System' | async }}
+      </button>
+      <button id="change-phone-number-btn" (click)="createAccount()">
+        {{ 'label.description.changephonenumber' | languageTransform: 'System' | async }}
+      </button>
+    </flex-col-item>
+  </flex-col>
+
+  <flex-col>
     <flex-col-item id="login-policy-container">
       <button id="privacy-policy-btn" (click)="presentPrivacyPolicy()">
         {{ 'label.title.privacypolicy' | languageTransform: 'System' | async }}

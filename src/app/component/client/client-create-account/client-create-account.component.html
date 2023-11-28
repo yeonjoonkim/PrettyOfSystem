@@ -1,0 +1,141 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  (onClickCreate)="onCreate()"
+  (onClickDismiss)="dismiss()"></form-header>
+
+<ion-content *ngIf="!isLoading()">
+  <flex-col class="modal-container">
+    <flex-row>
+      <flex-row-item>
+        <gender-selection [(gender)]="user.gender"></gender-selection>
+      </flex-row-item>
+      <flex-row-item>
+        <langauge-selection
+          [(selectedCode)]="user.setting.preferLanguage"
+          (selectedCodeChange)="handleEnabledSaveBtn()"></langauge-selection>
+      </flex-row-item>
+    </flex-row>
+
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          title="label.title.firstname"
+          [(value)]="user.firstName"
+          [(validate)]="validator.firstName"
+          (valueChange)="handleEnabledSaveBtn()"
+          [min]="1"
+          [max]="100"
+          [isRequired]="true"></text-box>
+      </flex-row-item>
+      <flex-row-item>
+        <text-box
+          title="label.title.lastname"
+          [(value)]="user.lastName"
+          [(validate)]="validator.lastName"
+          (valueChange)="handleEnabledSaveBtn()"
+          [min]="1"
+          [max]="100"
+          [isRequired]="true"></text-box>
+      </flex-row-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <phone-number
+          [isRequired]="true"
+          [(phone)]="user.phoneNumber"
+          [(validate)]="validator.phone"
+          (phoneChange)="handleEnabledSaveBtn()"></phone-number>
+      </flex-row-item>
+      <flex-row-item>
+        <e-mail
+          [isRequired]="true"
+          [(email)]="user.email"
+          [(validate)]="validator.email"
+          (emailChange)="handleEnabledSaveBtn()"></e-mail>
+      </flex-row-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <date-picker
+          title="label.title.dateofbrith"
+          [displayNextDay]="0"
+          [isDateOfBrith]="true"
+          [readOnly]="form.readOnly"
+          [(date)]="user.dob"></date-picker>
+      </flex-row-item>
+      <flex-row-item></flex-row-item>
+    </flex-row>
+
+    <!-- Insurance -->
+    <flex-col>
+      <flex-col-item>
+        <div class="private-insurance-title">
+          <p>{{ 'label.title.privateinsurance' | languageTransform: 'System' | async }}</p>
+          <yes-no-selection
+            [(value)]="hasPrivateInsurance"
+            (valueChange)="onClickPrivateHealth()"
+            [isTitleRequired]="false"></yes-no-selection>
+        </div>
+      </flex-col-item>
+      <flex-row *ngIf="user.setting.privateInsurance !== null">
+        <flex-row-item
+          ><name-value-pair-single-dropdown-selection
+            title="label.title.company"
+            [(selected)]="selectedPrivateHealthCompany"
+            [selection]="privateHealthCareCompanies"
+            (selectedChange)="onChangePrivateHealth()"></name-value-pair-single-dropdown-selection
+        ></flex-row-item>
+        <flex-row-item>
+          <text-box
+            title="label.title.membershipnumber"
+            [isRequired]="true"
+            [min]="1"
+            [max]="100"
+            [(value)]="user.setting.privateInsurance.memberNum"
+            [(validate)]="validator.privateInsurance"
+            (valueChange)="handleEnabledSaveBtn()"></text-box>
+        </flex-row-item>
+      </flex-row>
+      <flex-row *ngIf="user.setting.privateInsurance !== null">
+        <flex-row-item>
+          <text-box
+            title="label.title.referencenumber"
+            [isRequired]="false"
+            [(value)]="user.setting.privateInsurance.reference"></text-box>
+        </flex-row-item>
+        <flex-row-item> </flex-row-item>
+      </flex-row>
+    </flex-col>
+
+    <!-- Privacy -->
+    <flex-col-item>
+      <div class="app-terms-and-condition-title">
+        <p>{{ 'label.title.privacypolicy' | languageTransform: 'System' | async }}</p>
+        <yes-no-selection
+          [(value)]="validator.privacy"
+          (valueChange)="handleEnabledSaveBtn()"
+          [isTitleRequired]="false"></yes-no-selection>
+      </div>
+      <div class="app-terms-and-condition">
+        <app-privacy-policy [isRequiredHeader]="false"></app-privacy-policy>
+      </div>
+    </flex-col-item>
+
+    <!-- Terms and Condition -->
+    <flex-col-item>
+      <div class="app-terms-and-condition-title">
+        <p>{{ 'label.title.termsandconditions' | languageTransform: 'System' | async }}</p>
+        <yes-no-selection
+          [(value)]="validator.termAndCondition"
+          (valueChange)="handleEnabledSaveBtn()"
+          [isTitleRequired]="false"></yes-no-selection>
+      </div>
+      <div class="app-terms-and-condition">
+        <app-terms-and-conditions [isRequiredHeader]="false"></app-terms-and-conditions>
+      </div>
+    </flex-col-item>
+  </flex-col>
+</ion-content>
