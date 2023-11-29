@@ -98,6 +98,9 @@ export class AddAssociatedShopComponent implements OnInit {
         displayInSystem: this.displayInBooking,
         roster: shop.operatingHours,
         nextWeekRoster: shop.operatingHours,
+        nextTwoWeekRoster: shop.operatingHours,
+        nextThreeWeekRoster: shop.operatingHours,
+        nextFourWeekRoster: shop.operatingHours,
       };
       return associatedShop;
     } else {

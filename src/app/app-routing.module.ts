@@ -38,8 +38,8 @@ const routes: Routes = [
     canActivate: [receptionGuard],
   },
   {
-    path: 'check-in/:id',
-    loadChildren: () => import('./page/check-in/check-in.module').then(m => m.CheckInPageModule),
+    path: 'waiting-list/:id',
+    loadChildren: () => import('./page/waiting-list/waiting-list.module').then(m => m.WaitingListPageModule),
   },
 ];
 

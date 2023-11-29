@@ -12,7 +12,7 @@ export const onShopCreate = onDocumentCreated(Db.Context.ShopConfiguration + '/{
   const shopData = !shopSnapshot ? null : shopSnapshot.data();
   const shop = shopData !== null ? (shopData as I.ShopConfigurationType) : null;
   if (shop !== null) {
-    await Repository.OneTimeCheckIn.createUrlCriteria(shop);
+    await Repository.Session.WaitingList.createCriteria(shop);
     await insertIntoSystemAdminAssociatedShops(shop);
   }
 });
@@ -29,13 +29,7 @@ export const onShopUpdate = onDocumentUpdated(Db.Context.ShopConfiguration + '/{
     const change = await Service.Trigger.Shop.OnChange.getChangeDectection(before, after);
     const event = Service.Trigger.Shop.OnChange.getChangeAction(change);
 
-    if (change.isOTCheckInUpdate) {
-      await Repository.OneTimeCheckIn.upadteUrlCriteria(after);
-    }
-
-    if (change.isOTCheckInURLRefresh) {
-      await refeshOTCheckIn(before, after);
-    }
+    await handleSessionChange(change, before, after);
 
     if (event.isActiveStatusChange) {
       logger.info('TODO - Active Status Changed', after);
@@ -44,9 +38,12 @@ export const onShopUpdate = onDocumentUpdated(Db.Context.ShopConfiguration + '/{
     if (event.isSendMsgClientShopInfoChange) {
       logger.info('TODO - Info Status Changed', after);
     }
+
     if (event.isResetRoster) {
+      logger.info('Resetting Roster');
       await resetShopUserRoster(after);
     }
+
     if (event.isTranslatedRequestDelete) {
       const requests: string[] = before.translatedRequestIds.filter(s => !after.translatedRequestIds.includes(s));
 
@@ -62,21 +59,18 @@ export const onShopDelete = onDocumentDeleted(Db.Context.ShopConfiguration + '/{
   const shopData = !shopSnapshot ? null : shopSnapshot.data();
   const shop = shopData !== null ? (shopData as I.ShopConfigurationType) : null;
   if (shop !== null) {
-    await deleteFromUserAssociatedShops(shop).then(async () => {
-      await sleep(1000);
-      await deleteFromVisitShop(shop);
-    });
-
     await deleteCollection(Db.ShopService(shop.id));
     await deleteCollection(Db.ShopExtra(shop.id));
     await deleteCollection(Db.ShopPackage(shop.id));
     await deleteCollection(Db.ShopCoupon(shop.id));
+    await Repository.TranslateRequest.deleteDocumentsByShopId(shop.id);
+    await Repository.Session.WaitingList.deleteCriteria(shop);
+    await deleteFromUserAssociatedShops(shop);
     await deleteStorage(Db.Storage.Shop.Logo(shop.id));
     await deleteStorage(Db.Storage.Shop.Image1(shop.id));
     await deleteStorage(Db.Storage.Shop.Image2(shop.id));
     await deleteStorage(Db.Storage.Shop.Image3(shop.id));
-    await Repository.TranslateRequest.deleteDocumentsByShopId(shop.id);
-    await Repository.OneTimeCheckIn.deleteUrlCriteria(shop);
+    await deleteFromVisitShop(shop);
   }
 });
 
@@ -97,6 +91,9 @@ const insertIntoSystemAdminAssociatedShops = async function (shop: I.ShopConfigu
           displayInSystem: false,
           role: systemAdminRole,
           nextWeekRoster: shop.operatingHours,
+          nextTwoWeekRoster: shop.operatingHours,
+          nextThreeWeekRoster: shop.operatingHours,
+          nextFourWeekRoster: shop.operatingHours,
         };
         admin.associatedShops.push(associated);
         admin.associatedShopIds.push(associated.shopId);
@@ -106,21 +103,6 @@ const insertIntoSystemAdminAssociatedShops = async function (shop: I.ShopConfigu
     }
   } catch (error) {
     await Repository.Error.createErrorReport(shop, error, 'update', 'insertIntoSystemAdminAssociatedShops');
-  }
-};
-const resetShopUserRoster = async function (shop: I.ShopConfigurationType) {
-  const associatedUsers = await Repository.User.getAssociatedShopUsers(shop.id);
-  if (associatedUsers.length > 0) {
-    associatedUsers.map(async user => {
-      let associated = user.associatedShops.find(s => s.shopId === shop.id);
-      if (associated !== undefined && associated !== null) {
-        user.associatedShops = user.associatedShops.filter(s => s.shopId !== shop.id);
-        associated.roster = shop.operatingHours;
-        associated.nextWeekRoster = shop.operatingHours;
-        user.associatedShops.push(associated);
-        await Repository.User.updateSelectedUser(user);
-      }
-    });
   }
 };
 
@@ -210,9 +192,37 @@ const deleteFromVisitShop = async function (shop: I.ShopConfigurationType) {
   }
 };
 
-const refeshOTCheckIn = async function (before: I.ShopConfigurationType, after: I.ShopConfigurationType) {
-  const deleted = await Repository.OneTimeCheckIn.deleteUrlCriteria(before);
+const handleSessionChange = async function (
+  change: I.OnChangeShopType,
+  before: I.ShopConfigurationType,
+  after: I.ShopConfigurationType
+) {
+  if (change.session.isWaitingListRefresh) {
+    await refeshWaitingList(before, after);
+  }
+  if (change.session.isWaitingListUpdate) {
+    await Repository.Session.WaitingList.upadteCriteria(after);
+  }
+};
+
+const refeshWaitingList = async function (before: I.ShopConfigurationType, after: I.ShopConfigurationType) {
+  const deleted = await Repository.Session.WaitingList.deleteCriteria(before);
   if (deleted) {
-    await Repository.OneTimeCheckIn.createUrlCriteria(after);
+    await Repository.Session.WaitingList.createCriteria(after);
+  }
+};
+
+const resetShopUserRoster = async function (shop: I.ShopConfigurationType) {
+  const associatedUsers = await Repository.User.getAssociatedShopUsers(shop.id);
+  if (associatedUsers.length > 0) {
+    associatedUsers.map(async user => {
+      let associated = user.associatedShops.find(s => s.shopId === shop.id);
+      if (associated !== undefined && associated !== null) {
+        user.associatedShops = user.associatedShops.filter(s => s.shopId !== shop.id);
+        associated = Service.User.Roster.reset(shop.operatingHours, associated);
+        user.associatedShops.push(associated);
+        await Repository.User.updateSelectedUser(user);
+      }
+    });
   }
 };

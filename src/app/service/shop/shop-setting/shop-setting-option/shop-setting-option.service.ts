@@ -9,7 +9,7 @@ export type IShopSettingOptionType = {
   isContact: boolean;
   isOperatingHours: boolean;
   isCapacity: boolean;
-  isCheckInQrCode: boolean;
+  isWaitingList: boolean;
 };
 
 @Injectable({
@@ -24,7 +24,7 @@ export class ShopSettingOptionService {
     contact: this._title + 'information',
     operatingHours: this._title + 'operatinghours',
     capacity: this._title + 'capacity',
-    checkIn: this._title + 'checkin',
+    waitingList: this._title + 'waitinglist',
   };
   constructor() {}
 
@@ -36,7 +36,7 @@ export class ShopSettingOptionService {
       this.finance(),
       this.calendar(),
       this.capacity(),
-      this.checkin(),
+      this.waitingList(),
     ];
   }
 
@@ -88,11 +88,11 @@ export class ShopSettingOptionService {
     return option;
   }
 
-  private checkin() {
+  private waitingList() {
     const option = this.defaultOption();
-    option.name = this.name.checkIn;
+    option.name = this.name.waitingList;
     option.img = 'assets/shop-setting/capacity.svg';
-    option.isCheckInQrCode = true;
+    option.isWaitingList = true;
     return option;
   }
 
@@ -106,7 +106,7 @@ export class ShopSettingOptionService {
       isContact: false,
       isOperatingHours: false,
       isCapacity: false,
-      isCheckInQrCode: false,
+      isWaitingList: false,
     };
     return result;
   }

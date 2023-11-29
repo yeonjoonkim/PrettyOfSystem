@@ -26,7 +26,7 @@ export class ShopSettingService {
   public shopImage2$!: Observable<Blob | null>;
   public shopImage3$!: Observable<Blob | null>;
   public capacity$!: Observable<ShopCapacityType | null>;
-  public otuId$!: Observable<string | null>;
+  public waitingListSessionId$!: Observable<string | null>;
 
   constructor(
     private _shop: ShopService,
@@ -44,7 +44,7 @@ export class ShopSettingService {
     this.shopImage3$ = this._shop.shopImage3$;
     this.setting();
     this.timezone();
-    this.otuId();
+    this.waitingListSessionId();
   }
 
   private setting() {
@@ -59,11 +59,11 @@ export class ShopSettingService {
     );
   }
 
-  private otuId() {
-    this.otuId$ = this.config$.pipe(
+  private waitingListSessionId() {
+    this.waitingListSessionId$ = this.config$.pipe(
       switchMap(config => {
         if (config !== null) {
-          return of(config.oneTimeCheckInUrlId);
+          return of(config.waitingListSessionId);
         } else {
           return of(null);
         }
@@ -96,11 +96,11 @@ export class ShopSettingService {
     }
   }
 
-  public async updateCheckIn(expiredMin: number, id: string) {
+  public async updateWaitingList(expiredMin: number, id: string) {
     let config = await this._shop.config();
     if (config !== null) {
-      config.oneTimeCheckInUrlId = id;
-      config.setting.qrCode.oneTimeCheckInUrlExpiryMin = expiredMin;
+      config.waitingListSessionId = id;
+      config.setting.qrCode.waitingListSessionExiryMin = expiredMin;
       await this._loading.show();
       const update = await this.shopConfigRepo.updateShopConfiguration(config);
       await this._loading.dismiss();

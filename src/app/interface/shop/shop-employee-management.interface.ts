@@ -38,14 +38,23 @@ export type ShopEmployeeManagementUserType = {
   displayInSystem: boolean;
   roster: ShopWorkHoursType;
   nextWeekRoster: ShopWorkHoursType;
+  nextTwoWeekRoster: ShopWorkHoursType;
+  nextThreeWeekRoster: ShopWorkHoursType;
+  nextFourWeekRoster: ShopWorkHoursType;
   setting: UserSettingType;
 };
 
 export type ShopEmployeeScheduleTimeType = {
   thisWeeks: string[];
   nextWeeks: string[];
+  twoWeeks: string[];
+  threeWeeks: string[];
+  fourWeeks: string[];
   thisWeek: StartEndStringDateType;
   nextWeek: StartEndStringDateType;
+  twoWeek: StartEndStringDateType;
+  threeWeek: StartEndStringDateType;
+  fourWeek: StartEndStringDateType;
   timezone: string;
   shopNow: string;
   operatingHours: ShopWorkHoursType;

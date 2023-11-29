@@ -8,7 +8,6 @@ import {
 } from 'src/app/interface/shop/shop.interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
-import { SystemShopService } from '../system-shop.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
 import { SystemShopWorkHoursService } from '../system-shop-work-hours/system-shop-work-hours.service';
 import { ModalController } from '@ionic/angular';
@@ -120,7 +119,7 @@ export class ShopConfigurationService {
       activeTo: null,
       translatedRequestIds: [],
       capacityId: '',
-      oneTimeCheckInUrlId: this.global.newId(),
+      waitingListSessionId: this.global.newId(),
     };
   }
 
@@ -265,7 +264,7 @@ export class ShopConfigurationService {
         shopImage3: Constant.ShopSetting.Picture.Placeholder,
       },
       qrCode: {
-        oneTimeCheckInUrlExpiryMin: Constant.ShopSetting.QRCode.OneTimeCheckInUrlExpiryMin,
+        waitingListSessionExiryMin: Constant.ShopSetting.QRCode.WaitingListSessionExiryMin,
       },
     };
     return result;

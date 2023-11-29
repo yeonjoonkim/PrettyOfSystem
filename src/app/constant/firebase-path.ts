@@ -4,15 +4,15 @@ const systemMenu: string = system + 'menu/';
 const systemRole: string = system + 'role/';
 const systemShop: string = system + 'shop/';
 
+//Shop
 const shopConfiguration: string = 'shopConfiguration';
-const shopOneTimeCheckInUrlCriteria: string = 'shopOneTimeCheckInCriteria';
-const shopOneTimeCheckInUrl: string = 'shopOneTimeCheckInUrl';
 const user: string = 'user';
 const shop: string = 'shop/';
 const shopService: string = shop + '{shopId}/service';
 const shopExtra: string = shop + '{shopId}/extra';
 const shopPackage: string = shop + '{shopId}/package';
 const shopCoupon: string = shop + '{shopId}/coupon';
+
 //Reporter
 const FunctionError: string = 'functionError';
 
@@ -21,19 +21,25 @@ const OpenApiInstance: string = 'openApiInstance';
 const ChatGptTranslateRequest: string = 'chatGptTranslateRequest';
 const SystemLanguageTranslateRequest: string = 'systemLanguageTranslateRequest';
 
+//Waiting List
+const waitingListCriteria: string = 'waitingListCriteria';
+const waitingListSession: string = 'waitingListSession';
+
 export const Context = {
   OpenApiInstance: OpenApiInstance,
   SystemLangaugeTranslateRequest: SystemLanguageTranslateRequest,
   ChatGptTranslateRequest: ChatGptTranslateRequest,
   ShopConfiguration: shopConfiguration,
-  ShopOneTimeCheckInUrlCriteria: shopOneTimeCheckInUrlCriteria,
-  ShopOneTimeCheckInUrl: shopOneTimeCheckInUrl,
   User: user,
   Shop: {
     Service: shopService,
     Extra: shopExtra,
     Package: shopPackage,
     Coupon: shopCoupon,
+  } as const,
+  WaitingList: {
+    Criteria: waitingListCriteria,
+    Session: waitingListSession,
   } as const,
   System: {
     Language: {

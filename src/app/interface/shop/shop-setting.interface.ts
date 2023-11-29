@@ -6,7 +6,7 @@ export interface IShopSetting {
 }
 
 export type ShopQRCodeType = {
-  oneTimeCheckInUrlExpiryMin: number;
+  waitingListSessionExiryMin: number;
 };
 
 export type ShopFinancialRateType = {

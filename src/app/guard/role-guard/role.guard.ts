@@ -12,7 +12,6 @@ export const systemAdminGuard: CanActivateFn = () => {
       if (s?.accessLevel?.isSystemAdmin) {
         return true;
       } else {
-        //getAvailableUrl();
         router.navigateByUrl(router.url);
         return false;
       }

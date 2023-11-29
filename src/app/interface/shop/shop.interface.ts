@@ -78,16 +78,16 @@ export interface ShopConfigurationType {
   setting: IShopSetting;
   timezone: string;
   capacityId: string;
-  oneTimeCheckInUrlId: string;
+  waitingListSessionId: string;
 }
 
-export type ShopOneTimeCheckInUrlCriteria = {
+export type WaitingListCriteriaType = {
   id: string;
   shopId: string;
   expiredTime: number;
 };
 
-export type ShopOneTimeCheckInUrl = {
+export type WaitingListSessionType = {
   id: string;
   shopId: string;
   expiredDate: string;
