@@ -7,9 +7,9 @@ import { ShopSettingContactComponent } from './modal/shop-setting-contact/shop-s
 import { ShopSettingCalendarComponent } from './modal/shop-setting-calendar/shop-setting-calendar.component';
 import { ShopSettingPictureComponent } from './modal/shop-setting-picture/shop-setting-picture.component';
 import { ShopSettingOperatingHoursComponent } from './modal/shop-setting-operating-hours/shop-setting-operating-hours.component';
+import { ShopSettingWaitingListComponent } from './modal/shop-setting-waiting-list/shop-setting-waiting-list.component';
 import { SystemShopCapacityModalService } from 'src/app/service/system/system-shop-capacity/system-shop-capacity-modal/system-shop-capacity-modal.service';
 import { firstValueFrom } from 'rxjs';
-import { ShopSettingCheckInComponent } from './modal/shop-setting-check-in/shop-setting-check-in.component';
 
 @Component({
   selector: 'shop-setting',
@@ -43,8 +43,8 @@ export class ShopSettingComponent implements OnInit {
       await this.openOperatingHours();
     } else if (option.isCapacity) {
       await this.openCapacity();
-    } else if (option.isCheckInQrCode) {
-      await this.openCheckin();
+    } else if (option.isWaitingList) {
+      await this.openWaitingList();
     }
   }
 
@@ -118,13 +118,13 @@ export class ShopSettingComponent implements OnInit {
     }
   }
 
-  private async openCheckin() {
+  private async openWaitingList() {
     const cap = await firstValueFrom(this._setting.capacity$);
     if (cap !== null && !this._isOpen) {
       this._isOpen = true;
       const modal = await this._modal.create({
         presentingElement: await this._modal.getTop(),
-        component: ShopSettingCheckInComponent,
+        component: ShopSettingWaitingListComponent,
       });
       await modal.present();
       await this.handleModalClose(modal);

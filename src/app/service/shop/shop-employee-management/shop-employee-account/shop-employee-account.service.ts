@@ -93,6 +93,9 @@ export class ShopEmployeeAccountService {
       displayInSystem: se.displayInSystem,
       roster: se.roster,
       nextWeekRoster: se.nextWeekRoster,
+      nextTwoWeekRoster: se.nextTwoWeekRoster,
+      nextThreeWeekRoster: se.nextThreeWeekRoster,
+      nextFourWeekRoster: se.nextFourWeekRoster,
     };
     return result;
   }

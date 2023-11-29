@@ -180,7 +180,7 @@ export const ShopSetting = {
     MaximumAvailableFutureBookingDays: 14,
   } as const,
   QRCode: {
-    OneTimeCheckInUrlExpiryMin: 15,
+    WaitingListSessionExiryMin: 15,
   } as const,
   Picture: {
     LogoUrl:

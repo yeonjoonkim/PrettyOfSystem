@@ -12,7 +12,7 @@ export class ShopEmployeeScheduleComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   public scheduledEmployees!: ShopEmployeeManagementUserType[];
   public schedulerTime!: ShopEmployeeScheduleTimeType;
-  public type: 'ThisWeek' | 'NextWeek' = 'ThisWeek';
+  public type: 'ThisWeek' | 'NextWeek' | 'TwoWeek' | 'ThreeWeek' | 'FourWeek' = 'ThisWeek';
   constructor(private _employeeScheduler: ShopEmployeeScheduleService) {}
 
   ngOnInit() {

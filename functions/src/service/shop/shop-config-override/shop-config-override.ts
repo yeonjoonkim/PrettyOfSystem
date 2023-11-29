@@ -85,10 +85,10 @@ const placeholder = function (url: string | undefined | null) {
 // QRcode
 const QRcode = function (qrCode: I.ShopQRCodeType | undefined) {
   return {
-    oneTimeCheckInUrlExpiryMin: oneTimeCheckInUrlExpiryMin(qrCode?.oneTimeCheckInUrlExpiryMin),
+    waitingListSessionExiryMin: waitingListSessionExiryMin(qrCode?.waitingListSessionExiryMin),
   };
 };
 
-const oneTimeCheckInUrlExpiryMin = function (min: number | undefined | null) {
-  return typeof min === 'number' ? min : Constant.ShopSetting.QRCode.OneTimeCheckInUrlExpiryMin;
+const waitingListSessionExiryMin = function (min: number | undefined | null) {
+  return typeof min === 'number' ? min : Constant.ShopSetting.QRCode.WaitingListSessionExiryMin;
 };

@@ -224,6 +224,9 @@ const transformToAssociatedShop = function (
       active: true,
       displayInSystem: false,
       nextWeekRoster: config.operatingHours,
+      nextTwoWeekRoster: config.operatingHours,
+      nextThreeWeekRoster: config.operatingHours,
+      nextFourWeekRoster: config.operatingHours,
     };
     return associatedShop;
   });
@@ -264,7 +267,7 @@ const getCurrentUserClaim = function (user: I.IUser) {
 const handleDeactiveLogin = async function (user: I.IUser) {
   try {
     const claim = getCurrentUserClaim(user);
-    claim.role.isSystemAdmin = false;
+    claim.role.isSystemAdmin = user.isSystemAdmin;
     claim.role.isAdmin = false;
     claim.role.isManager = false;
     claim.role.isReception = false;

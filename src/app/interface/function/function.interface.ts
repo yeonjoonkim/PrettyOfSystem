@@ -39,8 +39,12 @@ export type OnChangeShopType = {
   isPreimum: boolean;
   isTranslatedRequestChange: boolean;
   isTranslatedRequestDelete: boolean;
-  isOTCheckInUpdate: boolean;
-  isOTCheckInURLRefresh: boolean;
+  session: OnChangeShopSessionType;
+};
+
+export type OnChangeShopSessionType = {
+  isWaitingListRefresh: boolean;
+  isWaitingListUpdate: boolean;
 };
 
 export type OnChangeShopActionType = {

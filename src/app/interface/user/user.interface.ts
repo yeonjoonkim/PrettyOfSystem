@@ -1,5 +1,5 @@
 import { RoleAccessLevelType, RoleConfigurationType } from '../system/role/role.interface';
-import { ShopWorkHoursType } from '../shop/shop.interface';
+import { ShopOperatingDailyType, ShopWorkHoursType } from '../shop/shop.interface';
 import * as Constant from '../../constant/constant';
 import { AddressType, NameValuePairType } from '../global/global.interface';
 
@@ -24,6 +24,11 @@ export interface IUser {
   dob: string;
   signature: string | null;
 }
+
+export type ShopEmployeeScheduleChangeResult = {
+  applyAllWeek: boolean;
+  roster: ShopOperatingDailyType;
+};
 
 export type UserConsentType = {
   shopId: string;
@@ -115,6 +120,9 @@ export interface UserAssociatedShopType {
   displayInSystem: boolean;
   roster: ShopWorkHoursType;
   nextWeekRoster: ShopWorkHoursType;
+  nextTwoWeekRoster: ShopWorkHoursType;
+  nextThreeWeekRoster: ShopWorkHoursType;
+  nextFourWeekRoster: ShopWorkHoursType;
 }
 
 export type UserManagementCriteria = {

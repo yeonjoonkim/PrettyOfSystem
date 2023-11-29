@@ -8,6 +8,18 @@
       {{ schedulerTime.nextWeek.start | dateTransform: 'Day' }} -
       {{ schedulerTime.nextWeek.end | dateTransform: 'ShortDate' }}
     </p>
+    <p *ngIf="type === 'TwoWeek'" id="peirod-title">
+      {{ schedulerTime.twoWeek.start | dateTransform: 'Day' }} -
+      {{ schedulerTime.twoWeek.end | dateTransform: 'ShortDate' }}
+    </p>
+    <p *ngIf="type === 'ThreeWeek'" id="peirod-title">
+      {{ schedulerTime.threeWeek.start | dateTransform: 'Day' }} -
+      {{ schedulerTime.threeWeek.end | dateTransform: 'ShortDate' }}
+    </p>
+    <p *ngIf="type === 'FourWeek'" id="peirod-title">
+      {{ schedulerTime.fourWeek.start | dateTransform: 'Day' }} -
+      {{ schedulerTime.fourWeek.end | dateTransform: 'ShortDate' }}
+    </p>
   </flex-row-item>
   <flex-row-item id="week">
     <p *ngIf="type === 'ThisWeek'" id="peirod-title">
@@ -16,6 +28,15 @@
     <p *ngIf="type === 'NextWeek'" id="peirod-title">
       {{ 'date.title.nextweek' | languageTransform: 'System' | async }}
     </p>
+    <p *ngIf="type === 'TwoWeek'" id="peirod-title">
+      {{ 'date.title.twoweeklater' | languageTransform: 'System' | async }}
+    </p>
+    <p *ngIf="type === 'ThreeWeek'" id="peirod-title">
+      {{ 'date.title.threeweeklater' | languageTransform: 'System' | async }}
+    </p>
+    <p *ngIf="type === 'FourWeek'" id="peirod-title">
+      {{ 'date.title.fourweeklater' | languageTransform: 'System' | async }}
+    </p>
   </flex-row-item>
   <flex-row-item id="btn-container">
     <kendo-buttongroup id="btns">
@@ -23,14 +44,14 @@
         kendoButton
         [disabled]="type === 'ThisWeek'"
         [ngClass]="{ active: type !== 'ThisWeek' }"
-        (click)="thisWeek()">
+        (click)="moveDown()">
         <span class="k-icon k-font-icon k-i-arrow-60-left"></span>
       </button>
       <button
         kendoButton
-        [disabled]="type === 'NextWeek'"
-        (click)="nextWeek()"
-        [ngClass]="{ active: type !== 'NextWeek' }">
+        [disabled]="type === 'FourWeek'"
+        (click)="moveUp()"
+        [ngClass]="{ active: type !== 'FourWeek' }">
         <span class="k-icon k-font-icon k-i-arrow-60-right"></span>
       </button>
     </kendo-buttongroup>
@@ -41,67 +62,74 @@
   <flex-row-item class="employee-name">
     <p id="employee-name-title">{{ 'label.title.name' | languageTransform: 'System' | async }}</p>
   </flex-row-item>
+
+  <!-- Sunday -->
   <flex-row-item class="day">
     <p id="title">{{ 'date.title.sun' | languageTransform: 'System' | async }}</p>
-    <p id="date" *ngIf="type === 'ThisWeek'">
-      {{ schedulerTime.thisWeeks[0] | dateTransform: 'ShortDate' }}
-    </p>
-    <p id="date" *ngIf="type === 'NextWeek'">
-      {{ schedulerTime.nextWeeks[0] | dateTransform: 'ShortDate' }}
-    </p>
+    <p id="date" *ngIf="type === 'ThisWeek'">{{ schedulerTime.thisWeeks[0] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'NextWeek'">{{ schedulerTime.nextWeeks[0] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'TwoWeek'">{{ schedulerTime.twoWeeks[0] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'ThreeWeek'">{{ schedulerTime.threeWeeks[0] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'FourWeek'">{{ schedulerTime.fourWeeks[0] | dateTransform: 'ShortDate' }}</p>
   </flex-row-item>
+
+  <!-- Monday -->
   <flex-row-item class="day">
     <p id="title">{{ 'date.title.mon' | languageTransform: 'System' | async }}</p>
-    <p id="date" *ngIf="type === 'ThisWeek'">
-      {{ schedulerTime.thisWeeks[1] | dateTransform: 'ShortDate' }}
-    </p>
-    <p id="date" *ngIf="type === 'NextWeek'">
-      {{ schedulerTime.nextWeeks[1] | dateTransform: 'ShortDate' }}
-    </p>
+    <p id="date" *ngIf="type === 'ThisWeek'">{{ schedulerTime.thisWeeks[1] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'NextWeek'">{{ schedulerTime.nextWeeks[1] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'TwoWeek'">{{ schedulerTime.twoWeeks[1] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'ThreeWeek'">{{ schedulerTime.threeWeeks[1] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'FourWeek'">{{ schedulerTime.fourWeeks[1] | dateTransform: 'ShortDate' }}</p>
   </flex-row-item>
+
+  <!-- Tuesday -->
   <flex-row-item class="day">
     <p id="title">{{ 'date.title.tue' | languageTransform: 'System' | async }}</p>
-    <p id="date" *ngIf="type === 'ThisWeek'">
-      {{ schedulerTime.thisWeeks[2] | dateTransform: 'ShortDate' }}
-    </p>
-    <p id="date" *ngIf="type === 'NextWeek'">
-      {{ schedulerTime.nextWeeks[2] | dateTransform: 'ShortDate' }}
-    </p>
+    <p id="date" *ngIf="type === 'ThisWeek'">{{ schedulerTime.thisWeeks[2] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'NextWeek'">{{ schedulerTime.nextWeeks[2] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'TwoWeek'">{{ schedulerTime.twoWeeks[2] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'ThreeWeek'">{{ schedulerTime.threeWeeks[2] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'FourWeek'">{{ schedulerTime.fourWeeks[2] | dateTransform: 'ShortDate' }}</p>
   </flex-row-item>
+
+  <!-- Wednesday -->
   <flex-row-item class="day">
     <p id="title">{{ 'date.title.wed' | languageTransform: 'System' | async }}</p>
-    <p id="date" *ngIf="type === 'ThisWeek'">
-      {{ schedulerTime.thisWeeks[3] | dateTransform: 'ShortDate' }}
-    </p>
-    <p id="date" *ngIf="type === 'NextWeek'">
-      {{ schedulerTime.nextWeeks[3] | dateTransform: 'ShortDate' }}
-    </p>
+    <p id="date" *ngIf="type === 'ThisWeek'">{{ schedulerTime.thisWeeks[3] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'NextWeek'">{{ schedulerTime.nextWeeks[3] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'TwoWeek'">{{ schedulerTime.twoWeeks[3] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'ThreeWeek'">{{ schedulerTime.threeWeeks[3] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'FourWeek'">{{ schedulerTime.fourWeeks[3] | dateTransform: 'ShortDate' }}</p>
   </flex-row-item>
+
+  <!-- Thursday -->
   <flex-row-item class="day">
     <p id="title">{{ 'date.title.thu' | languageTransform: 'System' | async }}</p>
-    <p id="date" *ngIf="type === 'ThisWeek'">
-      {{ schedulerTime.thisWeeks[4] | dateTransform: 'ShortDate' }}
-    </p>
-    <p id="date" *ngIf="type === 'NextWeek'">
-      {{ schedulerTime.nextWeeks[4] | dateTransform: 'ShortDate' }}
-    </p>
+    <p id="date" *ngIf="type === 'ThisWeek'">{{ schedulerTime.thisWeeks[4] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'NextWeek'">{{ schedulerTime.nextWeeks[4] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'TwoWeek'">{{ schedulerTime.twoWeeks[4] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'ThreeWeek'">{{ schedulerTime.threeWeeks[4] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'FourWeek'">{{ schedulerTime.fourWeeks[4] | dateTransform: 'ShortDate' }}</p>
   </flex-row-item>
+
+  <!-- Friday -->
   <flex-row-item class="day">
     <p id="title">{{ 'date.title.fri' | languageTransform: 'System' | async }}</p>
-    <p id="date" *ngIf="type === 'ThisWeek'">
-      {{ schedulerTime.thisWeeks[5] | dateTransform: 'ShortDate' }}
-    </p>
-    <p id="date" *ngIf="type === 'NextWeek'">
-      {{ schedulerTime.nextWeeks[5] | dateTransform: 'ShortDate' }}
-    </p>
+    <p id="date" *ngIf="type === 'ThisWeek'">{{ schedulerTime.thisWeeks[5] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'NextWeek'">{{ schedulerTime.nextWeeks[5] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'TwoWeek'">{{ schedulerTime.twoWeeks[5] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'ThreeWeek'">{{ schedulerTime.threeWeeks[5] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'FourWeek'">{{ schedulerTime.fourWeeks[5] | dateTransform: 'ShortDate' }}</p>
   </flex-row-item>
+
+  <!-- Saturday -->
   <flex-row-item class="day">
     <p id="title">{{ 'date.title.sat' | languageTransform: 'System' | async }}</p>
-    <p id="date" *ngIf="type === 'ThisWeek'">
-      {{ schedulerTime.thisWeeks[6] | dateTransform: 'ShortDate' }}
-    </p>
-    <p id="date" *ngIf="type === 'NextWeek'">
-      {{ schedulerTime.nextWeeks[6] | dateTransform: 'ShortDate' }}
-    </p>
+    <p id="date" *ngIf="type === 'ThisWeek'">{{ schedulerTime.thisWeeks[6] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'NextWeek'">{{ schedulerTime.nextWeeks[6] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'TwoWeek'">{{ schedulerTime.twoWeeks[6] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'ThreeWeek'">{{ schedulerTime.threeWeeks[6] | dateTransform: 'ShortDate' }}</p>
+    <p id="date" *ngIf="type === 'FourWeek'">{{ schedulerTime.fourWeeks[6] | dateTransform: 'ShortDate' }}</p>
   </flex-row-item>
 </flex-row>

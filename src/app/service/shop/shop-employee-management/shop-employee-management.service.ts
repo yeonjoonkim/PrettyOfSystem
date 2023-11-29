@@ -76,6 +76,9 @@ export class ShopEmployeeManagementService {
         roster: shop.operatingHours,
         dob: `2000-01-01T00:00:00`,
         nextWeekRoster: shop.operatingHours,
+        nextTwoWeekRoster: shop.operatingHours,
+        nextThreeWeekRoster: shop.operatingHours,
+        nextFourWeekRoster: shop.operatingHours,
         setting: setting,
       };
       result.setting.preferLanguage = typeof currentLanguage === 'string' ? currentLanguage : 'en';

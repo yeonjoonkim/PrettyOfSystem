@@ -189,6 +189,36 @@ export class DateService {
     });
   }
 
+  shopAllDaysNextTwoWeek(timezone: Constant.TimeZoneType) {
+    const date = this.transform.toLocalDateTime(this.startDay(this.addDay(this.shopNow(timezone), 14)));
+    const start = startOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const end = endOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const interval = eachDayOfInterval({ start, end });
+    return interval.map(date => {
+      return this.transform.formatLocalDateTime(date);
+    });
+  }
+
+  shopAllDaysNextThreeWeek(timezone: Constant.TimeZoneType) {
+    const date = this.transform.toLocalDateTime(this.startDay(this.addDay(this.shopNow(timezone), 21)));
+    const start = startOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const end = endOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const interval = eachDayOfInterval({ start, end });
+    return interval.map(date => {
+      return this.transform.formatLocalDateTime(date);
+    });
+  }
+
+  shopAllDaysNextFourWeek(timezone: Constant.TimeZoneType) {
+    const date = this.transform.toLocalDateTime(this.startDay(this.addDay(this.shopNow(timezone), 28)));
+    const start = startOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const end = endOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const interval = eachDayOfInterval({ start, end });
+    return interval.map(date => {
+      return this.transform.formatLocalDateTime(date);
+    });
+  }
+
   shopStartOfThisWeek(timezone: string) {
     const thisWeek = this.shopAllDaysThisWeek(timezone);
     return thisWeek[0];
@@ -207,6 +237,36 @@ export class DateService {
   shopEndOfNextWeek(timezone: string) {
     const nextWeek = this.shopAllDaysNextWeek(timezone);
     return nextWeek[nextWeek.length - 1];
+  }
+
+  shopStartOfTwoWeek(timezone: string) {
+    const twoWeek = this.shopAllDaysNextTwoWeek(timezone);
+    return twoWeek[0];
+  }
+
+  shopEndOfTwoWeek(timezone: string) {
+    const twoWeek = this.shopAllDaysNextTwoWeek(timezone);
+    return twoWeek[twoWeek.length - 1];
+  }
+
+  shopStartOfThreeWeek(timezone: string) {
+    const threeWeek = this.shopAllDaysNextThreeWeek(timezone);
+    return threeWeek[0];
+  }
+
+  shopEndOfThreeWeek(timezone: string) {
+    const threeWeek = this.shopAllDaysNextThreeWeek(timezone);
+    return threeWeek[threeWeek.length - 1];
+  }
+
+  shopStartOfFourWeek(timezone: string) {
+    const fourWeek = this.shopAllDaysNextFourWeek(timezone);
+    return fourWeek[0];
+  }
+
+  shopEndOfFourWeek(timezone: string) {
+    const fourWeek = this.shopAllDaysNextFourWeek(timezone);
+    return fourWeek[fourWeek.length - 1];
   }
 }
 

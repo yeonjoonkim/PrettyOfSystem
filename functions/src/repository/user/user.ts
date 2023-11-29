@@ -70,10 +70,19 @@ export const getAssociatedShopUsers = async function (shopId: string) {
 };
 
 export const getVisitedShopUsers = async function (shopId: string) {
-  const allUsers = await getAll();
-  return allUsers.filter(
-    user => user.visitedShops.filter(visitedShop => visitedShop.shopId === shopId).length > 0
-  );
+  try {
+    const allUsers = await getAll();
+
+    if (!Array.isArray(allUsers)) {
+      return [];
+    }
+    return allUsers.filter(
+      user => user.visitedShops && user.visitedShops.some(visitedShop => visitedShop.shopId === shopId)
+    );
+  } catch (error) {
+    logger.error('Error in getVisitedShopUsers', error);
+    return [];
+  }
 };
 
 export const getAssociatedShopUserByIds = async function (shopIds: string[]) {

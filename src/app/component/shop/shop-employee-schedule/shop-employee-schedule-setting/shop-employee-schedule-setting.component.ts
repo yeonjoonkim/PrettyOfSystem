@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
-import { IFormHeaderModalProp, ShopEmployeeScheduleSettingProp, TimeItemType } from 'src/app/interface';
+import {
+  IFormHeaderModalProp,
+  ShopEmployeeScheduleChangeResult,
+  ShopEmployeeScheduleSettingProp,
+  TimeItemType,
+} from 'src/app/interface';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 
@@ -13,6 +18,7 @@ export class ShopEmployeeScheduleSettingComponent implements OnInit {
   public prop!: ShopEmployeeScheduleSettingProp;
   public form!: IFormHeaderModalProp;
   public changed: boolean = false;
+  public applyAllWeek: boolean = false;
 
   constructor(
     private _navParams: NavParams,
@@ -38,7 +44,8 @@ export class ShopEmployeeScheduleSettingComponent implements OnInit {
   }
 
   public async handleSave() {
-    await this._modalCtrl.dismiss(this.prop.roster);
+    const result: ShopEmployeeScheduleChangeResult = { roster: this.prop.roster, applyAllWeek: this.applyAllWeek };
+    await this._modalCtrl.dismiss(result);
   }
 
   public handleEdit() {

@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import {
   ShopEmployeeManagementUserType,
+  ShopEmployeeScheduleChangeResult,
   ShopEmployeeScheduleTimeType,
-  ShopOperatingDailyType,
   ShopWorkHoursType,
   TimeItemType,
 } from 'src/app/interface';
@@ -17,7 +17,7 @@ import { ShopEmployeeScheduleService } from 'src/app/service/shop/shop-employee-
 })
 export class ShopEmployeeScheduleBtnComponent implements OnInit {
   @Input() dayIndex!: Constant.DayIndexType;
-  @Input() type!: 'ThisWeek' | 'NextWeek';
+  @Input() type!: 'ThisWeek' | 'NextWeek' | 'TwoWeek' | 'ThreeWeek' | 'FourWeek';
   @Input() employee!: ShopEmployeeManagementUserType;
   @Input() operatingHours!: ShopWorkHoursType;
   @Input() scheduleTime!: ShopEmployeeScheduleTimeType;
@@ -35,379 +35,708 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
   dateTime(time: TimeItemType) {
     return this._dateSvc.transform.formatByTimeItem(this._date, time);
   }
-  //This Week
-  public async thisWeekSun() {
+
+  public async sun() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Sun);
+    const day = this.getDay()[0];
+    const roster = this.getRoster();
+
     if (isShopOpen) {
       const modal = await this._scheduler.modal.build(
         this.fullName(),
-        this.scheduleTime.thisWeeks[0],
+        day,
         'date.title.sun',
-        this.employee.roster.sun,
-        this.operatingHours.mon.operatingHours
+        roster.sun,
+        this.operatingHours.sun.operatingHours
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
+
       if (result !== null) {
-        this.employee.roster.sun = result;
-        this.employee.roster.closeDay = result.isOpen
-          ? (this.employee.roster.closeDay = this.employee.roster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Sun
-            ))
-          : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Sun).length > 0
-          ? this.employee.roster.closeDay
-          : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Sun];
+        if (!result.applyAllWeek) {
+          if (this.type === 'ThisWeek') {
+            this.employee.roster.sun = result.roster;
+            this.employee.roster.closeDay = result.roster.isOpen
+              ? this.employee.roster.closeDay.filter(c => c !== 0)
+              : this.employee.roster.closeDay.includes(0)
+              ? this.employee.roster.closeDay
+              : [...this.employee.roster.closeDay, 0];
+          }
+          if (this.type === 'NextWeek') {
+            this.employee.nextWeekRoster.sun = result.roster;
+            this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 0)
+              : this.employee.nextWeekRoster.closeDay.includes(0)
+              ? this.employee.nextWeekRoster.closeDay
+              : [...this.employee.nextWeekRoster.closeDay, 0];
+          }
+          if (this.type === 'TwoWeek') {
+            this.employee.nextTwoWeekRoster.sun = result.roster;
+            this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 0)
+              : this.employee.nextTwoWeekRoster.closeDay.includes(0)
+              ? this.employee.nextTwoWeekRoster.closeDay
+              : [...this.employee.nextTwoWeekRoster.closeDay, 0];
+          }
+          if (this.type === 'ThreeWeek') {
+            this.employee.nextThreeWeekRoster.sun = result.roster;
+            this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 0)
+              : this.employee.nextThreeWeekRoster.closeDay.includes(0)
+              ? this.employee.nextThreeWeekRoster.closeDay
+              : [...this.employee.nextThreeWeekRoster.closeDay, 0];
+          }
+          if (this.type === 'FourWeek') {
+            this.employee.nextFourWeekRoster.sun = result.roster;
+            this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 0)
+              : this.employee.nextFourWeekRoster.closeDay.includes(0)
+              ? this.employee.nextFourWeekRoster.closeDay
+              : [...this.employee.nextFourWeekRoster.closeDay, 0];
+          }
+        } else {
+          //ThisWeek
+          this.employee.roster.sun = result.roster;
+          this.employee.roster.closeDay = result.roster.isOpen
+            ? this.employee.roster.closeDay.filter(c => c !== 0)
+            : this.employee.roster.closeDay.includes(0)
+            ? this.employee.roster.closeDay
+            : [...this.employee.roster.closeDay, 0];
+          //NextWeek
+          this.employee.nextWeekRoster.sun = result.roster;
+          this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 0)
+            : this.employee.nextWeekRoster.closeDay.includes(0)
+            ? this.employee.nextWeekRoster.closeDay
+            : [...this.employee.nextWeekRoster.closeDay, 0];
+          //Two Week
+          this.employee.nextTwoWeekRoster.sun = result.roster;
+          this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 0)
+            : this.employee.nextTwoWeekRoster.closeDay.includes(0)
+            ? this.employee.nextTwoWeekRoster.closeDay
+            : [...this.employee.nextTwoWeekRoster.closeDay, 0];
+          //Three Week
+          this.employee.nextThreeWeekRoster.sun = result.roster;
+          this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 0)
+            : this.employee.nextThreeWeekRoster.closeDay.includes(0)
+            ? this.employee.nextThreeWeekRoster.closeDay
+            : [...this.employee.nextThreeWeekRoster.closeDay, 0];
+          //Four Week
+          this.employee.nextFourWeekRoster.sun = result.roster;
+          this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 0)
+            : this.employee.nextFourWeekRoster.closeDay.includes(0)
+            ? this.employee.nextFourWeekRoster.closeDay
+            : [...this.employee.nextFourWeekRoster.closeDay, 0];
+        }
 
         await this._scheduler.update(this.employee);
       }
     }
   }
 
-  public async thisWeekMon() {
+  public async mon() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Mon);
+    const day = this.getDay()[1];
+    const roster = this.getRoster();
+
     if (isShopOpen) {
       const modal = await this._scheduler.modal.build(
         this.fullName(),
-        this.scheduleTime.thisWeeks[1],
+        day,
         'date.title.mon',
-        this.employee.roster.mon,
-        this.operatingHours.mon.operatingHours
-      );
-      await modal.present();
-      const result = await this.handleDismiss(modal);
-      if (result !== null) {
-        this.employee.roster.mon = result;
-        this.employee.roster.closeDay = result.isOpen
-          ? (this.employee.roster.closeDay = this.employee.roster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Mon
-            ))
-          : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Mon).length > 0
-          ? this.employee.roster.closeDay
-          : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Mon];
-
-        await this._scheduler.update(this.employee);
-      }
-    }
-  }
-
-  public async thisWeekTue() {
-    const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Tue);
-    if (isShopOpen) {
-      const modal = await this._scheduler.modal.build(
-        this.fullName(),
-        this.scheduleTime.thisWeeks[2],
-        'date.title.tue',
-        this.employee.roster.tue,
+        roster.mon,
         this.operatingHours.tue.operatingHours
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
+
       if (result !== null) {
-        this.employee.roster.tue = result;
-        this.employee.roster.closeDay = result.isOpen
-          ? (this.employee.roster.closeDay = this.employee.roster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Tue
-            ))
-          : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Tue).length > 0
-          ? this.employee.roster.closeDay
-          : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Tue];
+        if (!result.applyAllWeek) {
+          if (this.type === 'ThisWeek') {
+            this.employee.roster.mon = result.roster;
+            this.employee.roster.closeDay = result.roster.isOpen
+              ? this.employee.roster.closeDay.filter(c => c !== 1)
+              : this.employee.roster.closeDay.includes(1)
+              ? this.employee.roster.closeDay
+              : [...this.employee.roster.closeDay, 1];
+          }
+          if (this.type === 'NextWeek') {
+            this.employee.nextWeekRoster.mon = result.roster;
+            this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 1)
+              : this.employee.nextWeekRoster.closeDay.includes(1)
+              ? this.employee.nextWeekRoster.closeDay
+              : [...this.employee.nextWeekRoster.closeDay, 1];
+          }
+          if (this.type === 'TwoWeek') {
+            this.employee.nextTwoWeekRoster.mon = result.roster;
+            this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 1)
+              : this.employee.nextTwoWeekRoster.closeDay.includes(1)
+              ? this.employee.nextTwoWeekRoster.closeDay
+              : [...this.employee.nextTwoWeekRoster.closeDay, 1];
+          }
+          if (this.type === 'ThreeWeek') {
+            this.employee.nextThreeWeekRoster.mon = result.roster;
+            this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 1)
+              : this.employee.nextThreeWeekRoster.closeDay.includes(1)
+              ? this.employee.nextThreeWeekRoster.closeDay
+              : [...this.employee.nextThreeWeekRoster.closeDay, 1];
+          }
+          if (this.type === 'FourWeek') {
+            this.employee.nextFourWeekRoster.mon = result.roster;
+            this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 1)
+              : this.employee.nextFourWeekRoster.closeDay.includes(1)
+              ? this.employee.nextFourWeekRoster.closeDay
+              : [...this.employee.nextFourWeekRoster.closeDay, 1];
+          }
+        } else {
+          //ThisWeek
+          this.employee.roster.mon = result.roster;
+          this.employee.roster.closeDay = result.roster.isOpen
+            ? this.employee.roster.closeDay.filter(c => c !== 1)
+            : this.employee.roster.closeDay.includes(1)
+            ? this.employee.roster.closeDay
+            : [...this.employee.roster.closeDay, 1];
+          //NextWeek
+          this.employee.nextWeekRoster.mon = result.roster;
+          this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 1)
+            : this.employee.nextWeekRoster.closeDay.includes(1)
+            ? this.employee.nextWeekRoster.closeDay
+            : [...this.employee.nextWeekRoster.closeDay, 1];
+          //Two Week
+          this.employee.nextTwoWeekRoster.mon = result.roster;
+          this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 1)
+            : this.employee.nextTwoWeekRoster.closeDay.includes(1)
+            ? this.employee.nextTwoWeekRoster.closeDay
+            : [...this.employee.nextTwoWeekRoster.closeDay, 1];
+          //Three Week
+          this.employee.nextThreeWeekRoster.mon = result.roster;
+          this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 1)
+            : this.employee.nextThreeWeekRoster.closeDay.includes(1)
+            ? this.employee.nextThreeWeekRoster.closeDay
+            : [...this.employee.nextThreeWeekRoster.closeDay, 1];
+          //Four Week
+          this.employee.nextFourWeekRoster.mon = result.roster;
+          this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 1)
+            : this.employee.nextFourWeekRoster.closeDay.includes(1)
+            ? this.employee.nextFourWeekRoster.closeDay
+            : [...this.employee.nextFourWeekRoster.closeDay, 1];
+        }
 
         await this._scheduler.update(this.employee);
       }
     }
   }
 
-  public async thisWeekWed() {
-    const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Wed);
-    if (isShopOpen) {
-      const modal = await this._scheduler.modal.build(
-        this.fullName(),
-        this.scheduleTime.thisWeeks[3],
-        'date.title.wed',
-        this.employee.roster.wed,
-        this.operatingHours.wed.operatingHours
-      );
-      await modal.present();
-      const result = await this.handleDismiss(modal);
-      if (result !== null) {
-        this.employee.roster.wed = result;
-        this.employee.roster.closeDay = result.isOpen
-          ? (this.employee.roster.closeDay = this.employee.roster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Wed
-            ))
-          : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Wed).length > 0
-          ? this.employee.roster.closeDay
-          : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Wed];
-
-        await this._scheduler.update(this.employee);
-      }
-    }
-  }
-
-  public async thisWeekThu() {
-    const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Thu);
-    if (isShopOpen) {
-      const modal = await this._scheduler.modal.build(
-        this.fullName(),
-        this.scheduleTime.thisWeeks[4],
-        'date.title.thu',
-        this.employee.roster.thu,
-        this.operatingHours.thu.operatingHours
-      );
-      await modal.present();
-      const result = await this.handleDismiss(modal);
-      if (result !== null) {
-        this.employee.roster.thu = result;
-        this.employee.roster.closeDay = result.isOpen
-          ? (this.employee.roster.closeDay = this.employee.roster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Thu
-            ))
-          : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Thu).length > 0
-          ? this.employee.roster.closeDay
-          : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Thu];
-
-        await this._scheduler.update(this.employee);
-      }
-    }
-  }
-
-  public async thisWeekFri() {
-    const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Fri);
-    if (isShopOpen) {
-      const modal = await this._scheduler.modal.build(
-        this.fullName(),
-        this.scheduleTime.thisWeeks[5],
-        'date.title.fri',
-        this.employee.roster.fri,
-        this.operatingHours.fri.operatingHours
-      );
-      await modal.present();
-      const result = await this.handleDismiss(modal);
-      if (result !== null) {
-        this.employee.roster.fri = result;
-        this.employee.roster.closeDay = result.isOpen
-          ? (this.employee.roster.closeDay = this.employee.roster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Fri
-            ))
-          : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Fri).length > 0
-          ? this.employee.roster.closeDay
-          : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Fri];
-
-        await this._scheduler.update(this.employee);
-      }
-    }
-  }
-
-  public async thisWeekSat() {
-    const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Sat);
-    if (isShopOpen) {
-      const modal = await this._scheduler.modal.build(
-        this.fullName(),
-        this.scheduleTime.thisWeeks[6],
-        'date.title.sat',
-        this.employee.roster.sat,
-        this.operatingHours.sat.operatingHours
-      );
-      await modal.present();
-      const result = await this.handleDismiss(modal);
-      if (result !== null) {
-        this.employee.roster.sat = result;
-        this.employee.roster.closeDay = result.isOpen
-          ? (this.employee.roster.closeDay = this.employee.roster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Sat
-            ))
-          : this.employee.roster.closeDay.filter(c => c === Constant.Date.DayIndex.Sat).length > 0
-          ? this.employee.roster.closeDay
-          : [...this.employee.roster.closeDay, Constant.Date.DayIndex.Sat];
-
-        await this._scheduler.update(this.employee);
-      }
-    }
-  }
-
-  //Next Week
-  public async nextWeekSun() {
-    const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Sun);
-    if (isShopOpen) {
-      const modal = await this._scheduler.modal.build(
-        this.fullName(),
-        this.scheduleTime.nextWeeks[0],
-        'date.title.sun',
-        this.employee.nextWeekRoster.sun,
-        this.operatingHours.mon.operatingHours
-      );
-      await modal.present();
-      const result = await this.handleDismiss(modal);
-      if (result !== null) {
-        this.employee.nextWeekRoster.sun = result;
-        this.employee.nextWeekRoster.closeDay = result.isOpen
-          ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Sun
-            ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Sun).length > 0
-          ? this.employee.nextWeekRoster.closeDay
-          : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Sun];
-
-        await this._scheduler.update(this.employee);
-      }
-    }
-  }
-
-  public async nextWeekMon() {
-    const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Mon);
-    if (isShopOpen) {
-      const modal = await this._scheduler.modal.build(
-        this.fullName(),
-        this.scheduleTime.nextWeeks[1],
-        'date.title.mon',
-        this.employee.nextWeekRoster.mon,
-        this.operatingHours.mon.operatingHours
-      );
-      await modal.present();
-      const result = await this.handleDismiss(modal);
-      if (result !== null) {
-        this.employee.nextWeekRoster.mon = result;
-        this.employee.nextWeekRoster.closeDay = result.isOpen
-          ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Mon
-            ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Mon).length > 0
-          ? this.employee.nextWeekRoster.closeDay
-          : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Mon];
-
-        await this._scheduler.update(this.employee);
-      }
-    }
-  }
-
-  public async nextWeekTue() {
+  public async tue() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Tue);
+    const day = this.getDay()[2];
+    const roster = this.getRoster();
+
     if (isShopOpen) {
       const modal = await this._scheduler.modal.build(
         this.fullName(),
-        this.scheduleTime.nextWeeks[2],
+        day,
         'date.title.tue',
-        this.employee.nextWeekRoster.tue,
+        roster.tue,
         this.operatingHours.tue.operatingHours
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
+
       if (result !== null) {
-        this.employee.nextWeekRoster.tue = result;
-        this.employee.nextWeekRoster.closeDay = result.isOpen
-          ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Tue
-            ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Tue).length > 0
-          ? this.employee.nextWeekRoster.closeDay
-          : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Tue];
+        if (!result.applyAllWeek) {
+          if (this.type === 'ThisWeek') {
+            this.employee.roster.tue = result.roster;
+            this.employee.roster.closeDay = result.roster.isOpen
+              ? this.employee.roster.closeDay.filter(c => c !== 2)
+              : this.employee.roster.closeDay.includes(2)
+              ? this.employee.roster.closeDay
+              : [...this.employee.roster.closeDay, 2];
+          }
+          if (this.type === 'NextWeek') {
+            this.employee.nextWeekRoster.tue = result.roster;
+            this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 2)
+              : this.employee.nextWeekRoster.closeDay.includes(2)
+              ? this.employee.nextWeekRoster.closeDay
+              : [...this.employee.nextWeekRoster.closeDay, 2];
+          }
+          if (this.type === 'TwoWeek') {
+            this.employee.nextTwoWeekRoster.tue = result.roster;
+            this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 2)
+              : this.employee.nextTwoWeekRoster.closeDay.includes(2)
+              ? this.employee.nextTwoWeekRoster.closeDay
+              : [...this.employee.nextTwoWeekRoster.closeDay, 2];
+          }
+          if (this.type === 'ThreeWeek') {
+            this.employee.nextThreeWeekRoster.tue = result.roster;
+            this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 2)
+              : this.employee.nextThreeWeekRoster.closeDay.includes(2)
+              ? this.employee.nextThreeWeekRoster.closeDay
+              : [...this.employee.nextThreeWeekRoster.closeDay, 2];
+          }
+          if (this.type === 'FourWeek') {
+            this.employee.nextFourWeekRoster.tue = result.roster;
+            this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 2)
+              : this.employee.nextFourWeekRoster.closeDay.includes(2)
+              ? this.employee.nextFourWeekRoster.closeDay
+              : [...this.employee.nextFourWeekRoster.closeDay, 2];
+          }
+        } else {
+          //ThisWeek
+          this.employee.roster.tue = result.roster;
+          this.employee.roster.closeDay = result.roster.isOpen
+            ? this.employee.roster.closeDay.filter(c => c !== 2)
+            : this.employee.roster.closeDay.includes(2)
+            ? this.employee.roster.closeDay
+            : [...this.employee.roster.closeDay, 2];
+          //NextWeek
+          this.employee.nextWeekRoster.tue = result.roster;
+          this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 2)
+            : this.employee.nextWeekRoster.closeDay.includes(2)
+            ? this.employee.nextWeekRoster.closeDay
+            : [...this.employee.nextWeekRoster.closeDay, 2];
+          //Two Week
+          this.employee.nextTwoWeekRoster.tue = result.roster;
+          this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 2)
+            : this.employee.nextTwoWeekRoster.closeDay.includes(2)
+            ? this.employee.nextTwoWeekRoster.closeDay
+            : [...this.employee.nextTwoWeekRoster.closeDay, 2];
+          //Three Week
+          this.employee.nextThreeWeekRoster.tue = result.roster;
+          this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 2)
+            : this.employee.nextThreeWeekRoster.closeDay.includes(2)
+            ? this.employee.nextThreeWeekRoster.closeDay
+            : [...this.employee.nextThreeWeekRoster.closeDay, 2];
+          //Four Week
+          this.employee.nextFourWeekRoster.tue = result.roster;
+          this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 2)
+            : this.employee.nextFourWeekRoster.closeDay.includes(2)
+            ? this.employee.nextFourWeekRoster.closeDay
+            : [...this.employee.nextFourWeekRoster.closeDay, 2];
+        }
+
         await this._scheduler.update(this.employee);
       }
     }
   }
 
-  public async nextWeekWed() {
+  public async wed() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Wed);
+    const day = this.getDay()[3];
+    const roster = this.getRoster();
+
     if (isShopOpen) {
       const modal = await this._scheduler.modal.build(
         this.fullName(),
-        this.scheduleTime.nextWeeks[3],
+        day,
         'date.title.wed',
-        this.employee.nextWeekRoster.wed,
+        roster.wed,
         this.operatingHours.wed.operatingHours
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
+
       if (result !== null) {
-        this.employee.nextWeekRoster.wed = result;
-        this.employee.nextWeekRoster.closeDay = result.isOpen
-          ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Wed
-            ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Wed).length > 0
-          ? this.employee.nextWeekRoster.closeDay
-          : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Wed];
+        if (!result.applyAllWeek) {
+          if (this.type === 'ThisWeek') {
+            this.employee.roster.wed = result.roster;
+            this.employee.roster.closeDay = result.roster.isOpen
+              ? this.employee.roster.closeDay.filter(c => c !== 3)
+              : this.employee.roster.closeDay.includes(3)
+              ? this.employee.roster.closeDay
+              : [...this.employee.roster.closeDay, 3];
+          }
+          if (this.type === 'NextWeek') {
+            this.employee.nextWeekRoster.wed = result.roster;
+            this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 3)
+              : this.employee.nextWeekRoster.closeDay.includes(3)
+              ? this.employee.nextWeekRoster.closeDay
+              : [...this.employee.nextWeekRoster.closeDay, 3];
+          }
+          if (this.type === 'TwoWeek') {
+            this.employee.nextTwoWeekRoster.wed = result.roster;
+            this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 3)
+              : this.employee.nextTwoWeekRoster.closeDay.includes(3)
+              ? this.employee.nextTwoWeekRoster.closeDay
+              : [...this.employee.nextTwoWeekRoster.closeDay, 3];
+          }
+          if (this.type === 'ThreeWeek') {
+            this.employee.nextThreeWeekRoster.wed = result.roster;
+            this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 3)
+              : this.employee.nextThreeWeekRoster.closeDay.includes(3)
+              ? this.employee.nextThreeWeekRoster.closeDay
+              : [...this.employee.nextThreeWeekRoster.closeDay, 3];
+          }
+          if (this.type === 'FourWeek') {
+            this.employee.nextFourWeekRoster.wed = result.roster;
+            this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 3)
+              : this.employee.nextFourWeekRoster.closeDay.includes(3)
+              ? this.employee.nextFourWeekRoster.closeDay
+              : [...this.employee.nextFourWeekRoster.closeDay, 3];
+          }
+        } else {
+          //ThisWeek
+          this.employee.roster.wed = result.roster;
+          this.employee.roster.closeDay = result.roster.isOpen
+            ? this.employee.roster.closeDay.filter(c => c !== 3)
+            : this.employee.roster.closeDay.includes(3)
+            ? this.employee.roster.closeDay
+            : [...this.employee.roster.closeDay, 3];
+          //NextWeek
+          this.employee.nextWeekRoster.wed = result.roster;
+          this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 3)
+            : this.employee.nextWeekRoster.closeDay.includes(3)
+            ? this.employee.nextWeekRoster.closeDay
+            : [...this.employee.nextWeekRoster.closeDay, 3];
+          //Two Week
+          this.employee.nextTwoWeekRoster.wed = result.roster;
+          this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 3)
+            : this.employee.nextTwoWeekRoster.closeDay.includes(3)
+            ? this.employee.nextTwoWeekRoster.closeDay
+            : [...this.employee.nextTwoWeekRoster.closeDay, 3];
+          //Three Week
+          this.employee.nextThreeWeekRoster.wed = result.roster;
+          this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 3)
+            : this.employee.nextThreeWeekRoster.closeDay.includes(3)
+            ? this.employee.nextThreeWeekRoster.closeDay
+            : [...this.employee.nextThreeWeekRoster.closeDay, 3];
+          //Four Week
+          this.employee.nextFourWeekRoster.wed = result.roster;
+          this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 3)
+            : this.employee.nextFourWeekRoster.closeDay.includes(3)
+            ? this.employee.nextFourWeekRoster.closeDay
+            : [...this.employee.nextFourWeekRoster.closeDay, 3];
+        }
 
         await this._scheduler.update(this.employee);
       }
     }
   }
 
-  public async nextWeekThu() {
+  public async thu() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Thu);
+    const day = this.getDay()[4];
+    const roster = this.getRoster();
+
     if (isShopOpen) {
       const modal = await this._scheduler.modal.build(
         this.fullName(),
-        this.scheduleTime.nextWeeks[4],
+        day,
         'date.title.thu',
-        this.employee.nextWeekRoster.thu,
+        roster.thu,
         this.operatingHours.thu.operatingHours
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
+
       if (result !== null) {
-        this.employee.nextWeekRoster.thu = result;
-        this.employee.nextWeekRoster.closeDay = result.isOpen
-          ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Thu
-            ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Thu).length > 0
-          ? this.employee.nextWeekRoster.closeDay
-          : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Thu];
+        if (!result.applyAllWeek) {
+          if (this.type === 'ThisWeek') {
+            this.employee.roster.thu = result.roster;
+            this.employee.roster.closeDay = result.roster.isOpen
+              ? this.employee.roster.closeDay.filter(c => c !== 4)
+              : this.employee.roster.closeDay.includes(4)
+              ? this.employee.roster.closeDay
+              : [...this.employee.roster.closeDay, 4];
+          }
+          if (this.type === 'NextWeek') {
+            this.employee.nextWeekRoster.thu = result.roster;
+            this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 4)
+              : this.employee.nextWeekRoster.closeDay.includes(4)
+              ? this.employee.nextWeekRoster.closeDay
+              : [...this.employee.nextWeekRoster.closeDay, 4];
+          }
+          if (this.type === 'TwoWeek') {
+            this.employee.nextTwoWeekRoster.thu = result.roster;
+            this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 4)
+              : this.employee.nextTwoWeekRoster.closeDay.includes(4)
+              ? this.employee.nextTwoWeekRoster.closeDay
+              : [...this.employee.nextTwoWeekRoster.closeDay, 4];
+          }
+          if (this.type === 'ThreeWeek') {
+            this.employee.nextThreeWeekRoster.thu = result.roster;
+            this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 4)
+              : this.employee.nextThreeWeekRoster.closeDay.includes(4)
+              ? this.employee.nextThreeWeekRoster.closeDay
+              : [...this.employee.nextThreeWeekRoster.closeDay, 4];
+          }
+          if (this.type === 'FourWeek') {
+            this.employee.nextFourWeekRoster.thu = result.roster;
+            this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 4)
+              : this.employee.nextFourWeekRoster.closeDay.includes(4)
+              ? this.employee.nextFourWeekRoster.closeDay
+              : [...this.employee.nextFourWeekRoster.closeDay, 4];
+          }
+        } else {
+          //ThisWeek
+          this.employee.roster.thu = result.roster;
+          this.employee.roster.closeDay = result.roster.isOpen
+            ? this.employee.roster.closeDay.filter(c => c !== 4)
+            : this.employee.roster.closeDay.includes(4)
+            ? this.employee.roster.closeDay
+            : [...this.employee.roster.closeDay, 4];
+          //NextWeek
+          this.employee.nextWeekRoster.thu = result.roster;
+          this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 4)
+            : this.employee.nextWeekRoster.closeDay.includes(4)
+            ? this.employee.nextWeekRoster.closeDay
+            : [...this.employee.nextWeekRoster.closeDay, 4];
+          //Two Week
+          this.employee.nextTwoWeekRoster.thu = result.roster;
+          this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 4)
+            : this.employee.nextTwoWeekRoster.closeDay.includes(4)
+            ? this.employee.nextTwoWeekRoster.closeDay
+            : [...this.employee.nextTwoWeekRoster.closeDay, 4];
+          //Three Week
+          this.employee.nextThreeWeekRoster.thu = result.roster;
+          this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 4)
+            : this.employee.nextThreeWeekRoster.closeDay.includes(4)
+            ? this.employee.nextThreeWeekRoster.closeDay
+            : [...this.employee.nextThreeWeekRoster.closeDay, 4];
+          //Four Week
+          this.employee.nextFourWeekRoster.thu = result.roster;
+          this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 4)
+            : this.employee.nextFourWeekRoster.closeDay.includes(4)
+            ? this.employee.nextFourWeekRoster.closeDay
+            : [...this.employee.nextFourWeekRoster.closeDay, 4];
+        }
 
         await this._scheduler.update(this.employee);
       }
     }
   }
 
-  public async nextWeekFri() {
+  public async fri() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Fri);
+    const day = this.getDay()[5];
+    const roster = this.getRoster();
+
     if (isShopOpen) {
       const modal = await this._scheduler.modal.build(
         this.fullName(),
-        this.scheduleTime.nextWeeks[5],
+        day,
         'date.title.fri',
-        this.employee.nextWeekRoster.fri,
+        roster.fri,
         this.operatingHours.fri.operatingHours
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
+
       if (result !== null) {
-        this.employee.nextWeekRoster.fri = result;
-        this.employee.nextWeekRoster.closeDay = result.isOpen
-          ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Fri
-            ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Fri).length > 0
-          ? this.employee.nextWeekRoster.closeDay
-          : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Fri];
+        if (!result.applyAllWeek) {
+          if (this.type === 'ThisWeek') {
+            this.employee.roster.fri = result.roster;
+            this.employee.roster.closeDay = result.roster.isOpen
+              ? this.employee.roster.closeDay.filter(c => c !== 5)
+              : this.employee.roster.closeDay.includes(5)
+              ? this.employee.roster.closeDay
+              : [...this.employee.roster.closeDay, 5];
+          }
+          if (this.type === 'NextWeek') {
+            this.employee.nextWeekRoster.fri = result.roster;
+            this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 5)
+              : this.employee.nextWeekRoster.closeDay.includes(5)
+              ? this.employee.nextWeekRoster.closeDay
+              : [...this.employee.nextWeekRoster.closeDay, 5];
+          }
+          if (this.type === 'TwoWeek') {
+            this.employee.nextTwoWeekRoster.fri = result.roster;
+            this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 5)
+              : this.employee.nextTwoWeekRoster.closeDay.includes(5)
+              ? this.employee.nextTwoWeekRoster.closeDay
+              : [...this.employee.nextTwoWeekRoster.closeDay, 5];
+          }
+          if (this.type === 'ThreeWeek') {
+            this.employee.nextThreeWeekRoster.fri = result.roster;
+            this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 5)
+              : this.employee.nextThreeWeekRoster.closeDay.includes(5)
+              ? this.employee.nextThreeWeekRoster.closeDay
+              : [...this.employee.nextThreeWeekRoster.closeDay, 5];
+          }
+          if (this.type === 'FourWeek') {
+            this.employee.nextFourWeekRoster.fri = result.roster;
+            this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 5)
+              : this.employee.nextFourWeekRoster.closeDay.includes(5)
+              ? this.employee.nextFourWeekRoster.closeDay
+              : [...this.employee.nextFourWeekRoster.closeDay, 5];
+          }
+        } else {
+          //ThisWeek
+          this.employee.roster.fri = result.roster;
+          this.employee.roster.closeDay = result.roster.isOpen
+            ? this.employee.roster.closeDay.filter(c => c !== 5)
+            : this.employee.roster.closeDay.includes(5)
+            ? this.employee.roster.closeDay
+            : [...this.employee.roster.closeDay, 5];
+          //NextWeek
+          this.employee.nextWeekRoster.fri = result.roster;
+          this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 5)
+            : this.employee.nextWeekRoster.closeDay.includes(5)
+            ? this.employee.nextWeekRoster.closeDay
+            : [...this.employee.nextWeekRoster.closeDay, 5];
+          //Two Week
+          this.employee.nextTwoWeekRoster.fri = result.roster;
+          this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 5)
+            : this.employee.nextTwoWeekRoster.closeDay.includes(5)
+            ? this.employee.nextTwoWeekRoster.closeDay
+            : [...this.employee.nextTwoWeekRoster.closeDay, 5];
+          //Three Week
+          this.employee.nextThreeWeekRoster.fri = result.roster;
+          this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 5)
+            : this.employee.nextThreeWeekRoster.closeDay.includes(5)
+            ? this.employee.nextThreeWeekRoster.closeDay
+            : [...this.employee.nextThreeWeekRoster.closeDay, 5];
+          //Four Week
+          this.employee.nextFourWeekRoster.fri = result.roster;
+          this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 5)
+            : this.employee.nextFourWeekRoster.closeDay.includes(5)
+            ? this.employee.nextFourWeekRoster.closeDay
+            : [...this.employee.nextFourWeekRoster.closeDay, 5];
+        }
 
         await this._scheduler.update(this.employee);
       }
     }
   }
 
-  public async nextWeekSat() {
+  public async sat() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Sat);
+    const day = this.getDay()[6];
+    const roster = this.getRoster();
+
     if (isShopOpen) {
       const modal = await this._scheduler.modal.build(
         this.fullName(),
-        this.scheduleTime.nextWeeks[6],
+        day,
         'date.title.sat',
-        this.employee.nextWeekRoster.sat,
+        roster.sat,
         this.operatingHours.sat.operatingHours
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
+
       if (result !== null) {
-        this.employee.nextWeekRoster.sat = result;
-        this.employee.nextWeekRoster.closeDay = result.isOpen
-          ? (this.employee.nextWeekRoster.closeDay = this.employee.nextWeekRoster.closeDay.filter(
-              c => c !== Constant.Date.DayIndex.Sat
-            ))
-          : this.employee.nextWeekRoster.closeDay.filter(c => c === Constant.Date.DayIndex.Sat).length > 0
-          ? this.employee.nextWeekRoster.closeDay
-          : [...this.employee.nextWeekRoster.closeDay, Constant.Date.DayIndex.Sat];
+        if (!result.applyAllWeek) {
+          if (this.type === 'ThisWeek') {
+            this.employee.roster.sat = result.roster;
+            this.employee.roster.closeDay = result.roster.isOpen
+              ? this.employee.roster.closeDay.filter(c => c !== 6)
+              : this.employee.roster.closeDay.includes(6)
+              ? this.employee.roster.closeDay
+              : [...this.employee.roster.closeDay, 6];
+          }
+          if (this.type === 'NextWeek') {
+            this.employee.nextWeekRoster.sat = result.roster;
+            this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 6)
+              : this.employee.nextWeekRoster.closeDay.includes(6)
+              ? this.employee.nextWeekRoster.closeDay
+              : [...this.employee.nextWeekRoster.closeDay, 6];
+          }
+          if (this.type === 'TwoWeek') {
+            this.employee.nextTwoWeekRoster.sat = result.roster;
+            this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 6)
+              : this.employee.nextTwoWeekRoster.closeDay.includes(6)
+              ? this.employee.nextTwoWeekRoster.closeDay
+              : [...this.employee.nextTwoWeekRoster.closeDay, 6];
+          }
+          if (this.type === 'ThreeWeek') {
+            this.employee.nextThreeWeekRoster.sat = result.roster;
+            this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 6)
+              : this.employee.nextThreeWeekRoster.closeDay.includes(6)
+              ? this.employee.nextThreeWeekRoster.closeDay
+              : [...this.employee.nextThreeWeekRoster.closeDay, 6];
+          }
+          if (this.type === 'FourWeek') {
+            this.employee.nextFourWeekRoster.sat = result.roster;
+            this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+              ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 6)
+              : this.employee.nextFourWeekRoster.closeDay.includes(6)
+              ? this.employee.nextFourWeekRoster.closeDay
+              : [...this.employee.nextFourWeekRoster.closeDay, 6];
+          }
+        } else {
+          //ThisWeek
+          this.employee.roster.sat = result.roster;
+          this.employee.roster.closeDay = result.roster.isOpen
+            ? this.employee.roster.closeDay.filter(c => c !== 6)
+            : this.employee.roster.closeDay.includes(6)
+            ? this.employee.roster.closeDay
+            : [...this.employee.roster.closeDay, 6];
+          //NextWeek
+          this.employee.nextWeekRoster.sat = result.roster;
+          this.employee.nextWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextWeekRoster.closeDay.filter(c => c !== 6)
+            : this.employee.nextWeekRoster.closeDay.includes(6)
+            ? this.employee.nextWeekRoster.closeDay
+            : [...this.employee.nextWeekRoster.closeDay, 6];
+          //Two Week
+          this.employee.nextTwoWeekRoster.sat = result.roster;
+          this.employee.nextTwoWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextTwoWeekRoster.closeDay.filter(c => c !== 6)
+            : this.employee.nextTwoWeekRoster.closeDay.includes(6)
+            ? this.employee.nextTwoWeekRoster.closeDay
+            : [...this.employee.nextTwoWeekRoster.closeDay, 6];
+          //Three Week
+          this.employee.nextThreeWeekRoster.sat = result.roster;
+          this.employee.nextThreeWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextThreeWeekRoster.closeDay.filter(c => c !== 6)
+            : this.employee.nextThreeWeekRoster.closeDay.includes(6)
+            ? this.employee.nextThreeWeekRoster.closeDay
+            : [...this.employee.nextThreeWeekRoster.closeDay, 6];
+          //Four Week
+          this.employee.nextFourWeekRoster.sat = result.roster;
+          this.employee.nextFourWeekRoster.closeDay = result.roster.isOpen
+            ? this.employee.nextFourWeekRoster.closeDay.filter(c => c !== 6)
+            : this.employee.nextFourWeekRoster.closeDay.includes(6)
+            ? this.employee.nextFourWeekRoster.closeDay
+            : [...this.employee.nextFourWeekRoster.closeDay, 6];
+        }
 
         await this._scheduler.update(this.employee);
       }
@@ -433,6 +762,36 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
     }
   }
 
+  private getDay() {
+    switch (this.type) {
+      case 'ThisWeek':
+        return this.scheduleTime.thisWeeks;
+      case 'NextWeek':
+        return this.scheduleTime.nextWeeks;
+      case 'TwoWeek':
+        return this.scheduleTime.twoWeeks;
+      case 'ThreeWeek':
+        return this.scheduleTime.threeWeeks;
+      case 'FourWeek':
+        return this.scheduleTime.fourWeeks;
+    }
+  }
+
+  private getRoster() {
+    switch (this.type) {
+      case 'ThisWeek':
+        return this.employee.roster;
+      case 'NextWeek':
+        return this.employee.nextWeekRoster;
+      case 'TwoWeek':
+        return this.employee.nextTwoWeekRoster;
+      case 'ThreeWeek':
+        return this.employee.nextThreeWeekRoster;
+      case 'FourWeek':
+        return this.employee.nextFourWeekRoster;
+    }
+  }
+
   private fullName() {
     return this.employee.firstName + ' ' + this.employee.lastName;
   }
@@ -440,8 +799,8 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
   private async handleDismiss(modal: HTMLIonModalElement) {
     const result = await modal.onDidDismiss();
     if (result?.data !== undefined) {
-      const roster = result?.data as ShopOperatingDailyType;
-      return roster;
+      const data = result?.data as ShopEmployeeScheduleChangeResult;
+      return data;
     } else {
       return null;
     }

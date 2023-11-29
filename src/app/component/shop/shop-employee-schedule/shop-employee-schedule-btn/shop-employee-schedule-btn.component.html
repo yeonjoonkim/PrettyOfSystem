@@ -2,7 +2,7 @@
   <!-- Sunday -->
   <div *ngIf="dayIndex === 0">
     <button
-      (click)="thisWeekSun()"
+      (click)="sun()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -24,7 +24,7 @@
   <!-- Monday -->
   <div *ngIf="dayIndex === 1">
     <button
-      (click)="thisWeekMon()"
+      (click)="mon()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -46,7 +46,7 @@
   <!-- Tue -->
   <div *ngIf="dayIndex === 2">
     <button
-      (click)="thisWeekTue()"
+      (click)="tue()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -68,7 +68,7 @@
   <!-- Wed -->
   <div *ngIf="dayIndex === 3">
     <button
-      (click)="thisWeekWed()"
+      (click)="wed()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -90,7 +90,7 @@
   <!-- Thu -->
   <div *ngIf="dayIndex === 4">
     <button
-      (click)="thisWeekThu()"
+      (click)="thu()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -112,7 +112,7 @@
   <!-- Fri -->
   <div *ngIf="dayIndex === 5">
     <button
-      (click)="thisWeekFri()"
+      (click)="fri()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -134,7 +134,7 @@
   <!-- Sat -->
   <div *ngIf="dayIndex === 6">
     <button
-      (click)="thisWeekSat()"
+      (click)="sat()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -158,7 +158,7 @@
   <!-- Sunday -->
   <div *ngIf="dayIndex === 0">
     <button
-      (click)="nextWeekSun()"
+      (click)="sun()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -183,7 +183,7 @@
   <div *ngIf="dayIndex === 1">
     <button
       class="schedule-btn"
-      (click)="nextWeekMon()"
+      (click)="mon()"
       kendoButton
       [ngClass]="{
         work: employee.nextWeekRoster.mon.isOpen && !employee.nextWeekRoster.closeDay.includes(1),
@@ -207,7 +207,7 @@
   <div *ngIf="dayIndex === 2">
     <button
       class="schedule-btn"
-      (click)="nextWeekTue()"
+      (click)="tue()"
       kendoButton
       [ngClass]="{
         work: employee.nextWeekRoster.tue.isOpen && !employee.nextWeekRoster.closeDay.includes(2),
@@ -230,7 +230,7 @@
   <!-- Wed -->
   <div *ngIf="dayIndex === 3">
     <button
-      (click)="nextWeekWed()"
+      (click)="wed()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -254,7 +254,7 @@
   <!-- Thu -->
   <div *ngIf="dayIndex === 4">
     <button
-      (click)="nextWeekThu()"
+      (click)="thu()"
       class="schedule-btn"
       kendoButton
       [ngClass]="{
@@ -279,7 +279,7 @@
   <div *ngIf="dayIndex === 5">
     <button
       class="schedule-btn"
-      (click)="nextWeekFri()"
+      (click)="fri()"
       kendoButton
       [ngClass]="{
         work: employee.nextWeekRoster.fri.isOpen && !employee.nextWeekRoster.closeDay.includes(5),
@@ -303,7 +303,7 @@
   <div *ngIf="dayIndex === 6">
     <button
       class="schedule-btn"
-      (click)="nextWeekSat()"
+      (click)="sat()"
       kendoButton
       [ngClass]="{
         work: employee.nextWeekRoster.sat.isOpen && !employee.nextWeekRoster.closeDay.includes(6),
@@ -318,6 +318,516 @@
         <p id="text">-</p>
         <p id="text">
           {{ dateTime(employee.nextWeekRoster.sat.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="type === 'TwoWeek'">
+  <!-- Sunday -->
+  <div *ngIf="dayIndex === 0">
+    <button
+      (click)="sun()"
+      class="schedule-btn"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextTwoWeekRoster.sun.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(0),
+        dayoff: !employee.nextTwoWeekRoster.sun.isOpen || employee.nextTwoWeekRoster.closeDay.includes(0)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextTwoWeekRoster.sun.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(0)">
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.sun.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.sun.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Monday -->
+  <div *ngIf="dayIndex === 1">
+    <button
+      class="schedule-btn"
+      (click)="mon()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextTwoWeekRoster.mon.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(1),
+        dayoff: !employee.nextTwoWeekRoster.mon.isOpen || employee.nextTwoWeekRoster.closeDay.includes(1)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextTwoWeekRoster.mon.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(1)">
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.mon.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.mon.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Tue -->
+  <div *ngIf="dayIndex === 2">
+    <button
+      class="schedule-btn"
+      (click)="tue()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextTwoWeekRoster.tue.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(2),
+        dayoff: !employee.nextTwoWeekRoster.tue.isOpen || employee.nextTwoWeekRoster.closeDay.includes(2)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextTwoWeekRoster.tue.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(2)">
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.tue.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.tue.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Wed -->
+  <div *ngIf="dayIndex === 3">
+    <button
+      (click)="wed()"
+      class="schedule-btn"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextTwoWeekRoster.wed.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(3),
+        dayoff: !employee.nextTwoWeekRoster.wed.isOpen || employee.nextTwoWeekRoster.closeDay.includes(3)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextTwoWeekRoster.wed.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(3)">
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.wed.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.wed.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Thu -->
+  <div *ngIf="dayIndex === 4">
+    <button
+      (click)="thu()"
+      class="schedule-btn"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextTwoWeekRoster.thu.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(4),
+        dayoff: !employee.nextTwoWeekRoster.thu.isOpen || employee.nextTwoWeekRoster.closeDay.includes(4)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextTwoWeekRoster.thu.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(4)">
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.thu.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.thu.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Fri -->
+  <div *ngIf="dayIndex === 5">
+    <button
+      class="schedule-btn"
+      (click)="fri()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextTwoWeekRoster.fri.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(5),
+        dayoff: !employee.nextTwoWeekRoster.fri.isOpen || employee.nextTwoWeekRoster.closeDay.includes(5)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextTwoWeekRoster.fri.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(5)">
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.fri.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.fri.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Sat -->
+  <div *ngIf="dayIndex === 6">
+    <button
+      class="schedule-btn"
+      (click)="sat()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextTwoWeekRoster.sat.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(6),
+        dayoff: !employee.nextTwoWeekRoster.sat.isOpen || employee.nextTwoWeekRoster.closeDay.includes(6)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextTwoWeekRoster.sat.isOpen && !employee.nextTwoWeekRoster.closeDay.includes(6)">
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.sat.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextTwoWeekRoster.sat.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="type === 'ThreeWeek'">
+  <!-- Sunday -->
+  <div *ngIf="dayIndex === 0">
+    <button
+      (click)="sun()"
+      class="schedule-btn"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextThreeWeekRoster.sun.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(0),
+        dayoff: !employee.nextThreeWeekRoster.sun.isOpen || employee.nextThreeWeekRoster.closeDay.includes(0)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextThreeWeekRoster.sun.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(0)">
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.sun.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.sun.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Monday -->
+  <div *ngIf="dayIndex === 1">
+    <button
+      class="schedule-btn"
+      (click)="mon()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextThreeWeekRoster.mon.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(1),
+        dayoff: !employee.nextThreeWeekRoster.mon.isOpen || employee.nextThreeWeekRoster.closeDay.includes(1)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextThreeWeekRoster.mon.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(1)">
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.mon.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.mon.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Tue -->
+  <div *ngIf="dayIndex === 2">
+    <button
+      class="schedule-btn"
+      (click)="tue()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextThreeWeekRoster.tue.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(2),
+        dayoff: !employee.nextThreeWeekRoster.tue.isOpen || employee.nextThreeWeekRoster.closeDay.includes(2)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextThreeWeekRoster.tue.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(2)">
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.tue.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.tue.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Wed -->
+  <div *ngIf="dayIndex === 3">
+    <button
+      (click)="wed()"
+      class="schedule-btn"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextThreeWeekRoster.wed.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(3),
+        dayoff: !employee.nextThreeWeekRoster.wed.isOpen || employee.nextThreeWeekRoster.closeDay.includes(3)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextThreeWeekRoster.wed.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(3)">
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.wed.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.wed.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Thu -->
+  <div *ngIf="dayIndex === 4">
+    <button
+      (click)="thu()"
+      class="schedule-btn"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextThreeWeekRoster.thu.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(4),
+        dayoff: !employee.nextThreeWeekRoster.thu.isOpen || employee.nextThreeWeekRoster.closeDay.includes(4)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextThreeWeekRoster.thu.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(4)">
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.thu.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.thu.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Fri -->
+  <div *ngIf="dayIndex === 5">
+    <button
+      class="schedule-btn"
+      (click)="fri()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextThreeWeekRoster.fri.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(5),
+        dayoff: !employee.nextThreeWeekRoster.fri.isOpen || employee.nextThreeWeekRoster.closeDay.includes(5)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextThreeWeekRoster.fri.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(5)">
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.fri.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.fri.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Sat -->
+  <div *ngIf="dayIndex === 6">
+    <button
+      class="schedule-btn"
+      (click)="sat()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextThreeWeekRoster.sat.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(6),
+        dayoff: !employee.nextThreeWeekRoster.sat.isOpen || employee.nextThreeWeekRoster.closeDay.includes(6)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextThreeWeekRoster.sat.isOpen && !employee.nextThreeWeekRoster.closeDay.includes(6)">
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.sat.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextThreeWeekRoster.sat.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="type === 'FourWeek'">
+  <!-- Sunday -->
+  <div *ngIf="dayIndex === 0">
+    <button
+      (click)="sun()"
+      class="schedule-btn"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextFourWeekRoster.sun.isOpen && !employee.nextFourWeekRoster.closeDay.includes(0),
+        dayoff: !employee.nextFourWeekRoster.sun.isOpen || employee.nextFourWeekRoster.closeDay.includes(0)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextFourWeekRoster.sun.isOpen && !employee.nextFourWeekRoster.closeDay.includes(0)">
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.sun.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.sun.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Monday -->
+  <div *ngIf="dayIndex === 1">
+    <button
+      class="schedule-btn"
+      (click)="mon()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextFourWeekRoster.mon.isOpen && !employee.nextFourWeekRoster.closeDay.includes(1),
+        dayoff: !employee.nextFourWeekRoster.mon.isOpen || employee.nextFourWeekRoster.closeDay.includes(1)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextFourWeekRoster.mon.isOpen && !employee.nextFourWeekRoster.closeDay.includes(1)">
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.mon.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.mon.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Tue -->
+  <div *ngIf="dayIndex === 2">
+    <button
+      class="schedule-btn"
+      (click)="tue()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextFourWeekRoster.tue.isOpen && !employee.nextFourWeekRoster.closeDay.includes(2),
+        dayoff: !employee.nextFourWeekRoster.tue.isOpen || employee.nextFourWeekRoster.closeDay.includes(2)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextFourWeekRoster.tue.isOpen && !employee.nextFourWeekRoster.closeDay.includes(2)">
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.tue.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.tue.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Wed -->
+  <div *ngIf="dayIndex === 3">
+    <button
+      (click)="wed()"
+      class="schedule-btn"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextFourWeekRoster.wed.isOpen && !employee.nextFourWeekRoster.closeDay.includes(3),
+        dayoff: !employee.nextFourWeekRoster.wed.isOpen || employee.nextFourWeekRoster.closeDay.includes(3)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextFourWeekRoster.wed.isOpen && !employee.nextFourWeekRoster.closeDay.includes(3)">
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.wed.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.wed.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Thu -->
+  <div *ngIf="dayIndex === 4">
+    <button
+      (click)="thu()"
+      class="schedule-btn"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextFourWeekRoster.thu.isOpen && !employee.nextFourWeekRoster.closeDay.includes(4),
+        dayoff: !employee.nextFourWeekRoster.thu.isOpen || employee.nextFourWeekRoster.closeDay.includes(4)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextFourWeekRoster.thu.isOpen && !employee.nextFourWeekRoster.closeDay.includes(4)">
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.thu.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.thu.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Fri -->
+  <div *ngIf="dayIndex === 5">
+    <button
+      class="schedule-btn"
+      (click)="fri()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextFourWeekRoster.fri.isOpen && !employee.nextFourWeekRoster.closeDay.includes(5),
+        dayoff: !employee.nextFourWeekRoster.fri.isOpen || employee.nextFourWeekRoster.closeDay.includes(5)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextFourWeekRoster.fri.isOpen && !employee.nextFourWeekRoster.closeDay.includes(5)">
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.fri.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.fri.operatingHours.closeTime) | dateTransform: 'Time' }}
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Sat -->
+  <div *ngIf="dayIndex === 6">
+    <button
+      class="schedule-btn"
+      (click)="sat()"
+      kendoButton
+      [ngClass]="{
+        work: employee.nextFourWeekRoster.sat.isOpen && !employee.nextFourWeekRoster.closeDay.includes(6),
+        dayoff: !employee.nextFourWeekRoster.sat.isOpen || employee.nextFourWeekRoster.closeDay.includes(6)
+      }">
+      <div
+        id="schedule-date"
+        *ngIf="employee.nextFourWeekRoster.sat.isOpen && !employee.nextFourWeekRoster.closeDay.includes(6)">
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.sat.operatingHours.openTime) | dateTransform: 'Time' }}
+        </p>
+        <p id="text">-</p>
+        <p id="text">
+          {{ dateTime(employee.nextFourWeekRoster.sat.operatingHours.closeTime) | dateTransform: 'Time' }}
         </p>
       </div>
     </button>

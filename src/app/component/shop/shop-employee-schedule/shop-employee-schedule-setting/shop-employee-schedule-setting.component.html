@@ -26,6 +26,10 @@
           [value]="!prop.roster.isOpen"
           [readOnly]="form.readOnly"
           (valueChange)="onChangeDayOff()"></yes-no-selection>
+        <yes-no-selection
+          title="label.title.applyall"
+          [(value)]="applyAllWeek"
+          [readOnly]="form.readOnly"></yes-no-selection>
       </flex-row-item>
     </flex-row>
 

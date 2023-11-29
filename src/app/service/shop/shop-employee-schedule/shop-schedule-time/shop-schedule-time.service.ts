@@ -12,10 +12,17 @@ export class ShopScheduleTimeService {
     const now = this._date.shopTimeStamp(config.timezone);
     const thisWeeks = this._date.shopAllDaysThisWeek(config.timezone);
     const nextWeeks = this._date.shopAllDaysNextWeek(config.timezone);
+    const twoWeeks = this._date.shopAllDaysNextTwoWeek(config.timezone);
+    const threeWeeks = this._date.shopAllDaysNextThreeWeek(config.timezone);
+    const fourWeeks = this._date.shopAllDaysNextFourWeek(config.timezone);
+
     return {
       shopNow: now,
       thisWeeks: thisWeeks,
       nextWeeks: nextWeeks,
+      twoWeeks: twoWeeks,
+      threeWeeks: threeWeeks,
+      fourWeeks: fourWeeks,
       timezone: config.timezone,
       operatingHours: config.operatingHours,
       thisWeek: {
@@ -25,6 +32,18 @@ export class ShopScheduleTimeService {
       nextWeek: {
         start: this._date.shopStartOfNextWeek(config.timezone),
         end: this._date.shopEndOfNextWeek(config.timezone),
+      },
+      twoWeek: {
+        start: this._date.shopStartOfTwoWeek(config.timezone),
+        end: this._date.shopEndOfTwoWeek(config.timezone),
+      },
+      threeWeek: {
+        start: this._date.shopStartOfThreeWeek(config.timezone),
+        end: this._date.shopEndOfThreeWeek(config.timezone),
+      },
+      fourWeek: {
+        start: this._date.shopStartOfFourWeek(config.timezone),
+        end: this._date.shopEndOfFourWeek(config.timezone),
       },
     };
   }
