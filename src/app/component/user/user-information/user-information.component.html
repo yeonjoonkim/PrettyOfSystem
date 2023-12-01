@@ -1,0 +1,13 @@
+<flex-row class="modal-container user-information-container" *ngIf="user">
+  <flex-col class="user-info">
+    <user-info [user]="user"></user-info>
+    <user-address [address]="user.address"></user-address>
+    <user-private-insurance [privateInsurance]="user.setting.privateInsurance"></user-private-insurance>
+  </flex-col>
+
+  <flex-col class="medical">
+    <user-medical-history [user]="user"></user-medical-history>
+    <user-medical-other-condition [otherStatus]="user.setting.medical.otherStatus"></user-medical-other-condition>
+    <user-signature [signature]="user.signature"></user-signature>
+  </flex-col>
+</flex-row>

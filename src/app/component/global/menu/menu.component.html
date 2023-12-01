@@ -41,6 +41,29 @@
       </ion-accordion>
     </ion-accordion-group>
     <ion-accordion-group *ngIf="user.isLoggedin$ | async">
+      <ion-accordion>
+        <!--Header-->
+        <ion-item
+          slot="header"
+          class="menu-selector"
+          [ngClass]="'label.title.information' === selectedTitleHeading ? 'menu-active' : ''">
+          <ion-icon slot="start" name="document-lock-outline"></ion-icon>
+          {{ 'label.title.profile' | languageTransform: 'System' | async }}
+        </ion-item>
+        <ion-list slot="content">
+          <ion-item
+            button
+            routerLink="/user/information"
+            routerLinkActive="menu-active"
+            (click)="onChangeMenu('/user/information')"
+            class="content-selector">
+            <ion-icon slot="start" name="body-outline"></ion-icon>
+            {{ 'label.title.information' | languageTransform: 'System' | async }}
+          </ion-item>
+        </ion-list>
+      </ion-accordion>
+    </ion-accordion-group>
+    <ion-accordion-group *ngIf="user.isLoggedin$ | async">
       <!--Route Link-->
       <ion-accordion *ngFor="let menu of menus">
         <!--Header-->

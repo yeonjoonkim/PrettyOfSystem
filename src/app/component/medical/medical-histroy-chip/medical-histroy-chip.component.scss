@@ -1,0 +1,25 @@
+.medical-history-chip {
+  width: fit-content;
+  height: fit-content;
+  background: #424656;
+  white-space: normal;
+  text-align: center;
+  color: #d8d5e7;
+  padding: 5px;
+  border-radius: 50px;
+  margin: 5px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.edit-mode {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.medical-history-chip.client-active {
+  color: white;
+  background: #0089b1;
+  font-weight: 700;
+}

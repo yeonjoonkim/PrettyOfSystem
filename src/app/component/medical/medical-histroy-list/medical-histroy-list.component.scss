@@ -1,0 +1,12 @@
+.medical-history-title {
+  margin-left: 10px;
+  color: var(--title);
+}
+.medical-history-chip-list {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  margin: 0px 15px 10px 15px;
+}

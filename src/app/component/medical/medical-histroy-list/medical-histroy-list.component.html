@@ -1,0 +1,17 @@
+<legend class="medical-history-title" *ngIf="system">
+  {{ title | languageTransform: 'System' | async }}
+</legend>
+<div class="medical-history-chip-list" *ngIf="system">
+  <ng-container *ngFor="let history of selection">
+    <medical-histroy-chip
+      *ngIf="(readOnly && isIncluded(history)) || !readOnly"
+      [history]="history"
+      [isClient]="isClient"
+      [active]="isIncluded(history)"
+      (click)="onClickHistory(history)"
+      [readOnly]="readOnly"></medical-histroy-chip>
+  </ng-container>
+  <p *ngIf="readOnly && !hasRecord()">
+    {{ 'label.description.thereisnorelatedmedicalhistory' | languageTransform: 'System' | async }}
+  </p>
+</div>

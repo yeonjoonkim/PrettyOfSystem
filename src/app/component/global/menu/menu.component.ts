@@ -5,7 +5,7 @@ import { StorageService } from 'src/app/service/global/storage/storage.service';
 import { UserService } from 'src/app/service/user/user.service';
 import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { NameValuePairType } from 'src/app/interface';
 import { AgreementModalService } from 'src/app/service/global/agreement-modal/agreement-modal.service';
 
@@ -42,12 +42,23 @@ export class MenuComponent implements OnInit, OnDestroy {
     this._onDestroy$.next();
     this._onDestroy$.complete();
   }
+
   public async onChangeMenu(url: string) {
     let selectedMenu = this.menus.find(s => {
       let menu = s.content.find(c => c.url === url);
       return menu;
     });
-    this.selectedTitleHeading = selectedMenu !== undefined ? selectedMenu.name : '';
+    if (url.includes('user/information')) {
+      this.selectedTitleHeading = 'label.title.information';
+    } else {
+      this.selectedTitleHeading = selectedMenu !== undefined ? selectedMenu.name : '';
+    }
+
+    this._menuCtrl.close();
+  }
+
+  public onClickUser(title: string) {
+    this.selectedTitleHeading = title;
     this._menuCtrl.close();
   }
 

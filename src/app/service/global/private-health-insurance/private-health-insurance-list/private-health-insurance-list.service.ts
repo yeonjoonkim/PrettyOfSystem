@@ -20,7 +20,7 @@ export class PrivateHealthInsuranceListService {
     'Latrobe Health Services',
     'Medibank',
     'Mildura Health Fund',
-    'NIB',
+    'Nib',
     'Onemedifund',
     'Peoplecare',
     'Phoenix Health Fund',

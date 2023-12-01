@@ -33,7 +33,6 @@ export class WaitingListRepositoryService {
     try {
       const url = this.createURL(criteria, ipAddress);
       await this._afs.collection<WaitingListSessionType>(Db.Context.WaitingList.Session).doc(url.id).set(url);
-      console.log(url);
       return url.id;
     } catch (error) {
       console.error(error);
