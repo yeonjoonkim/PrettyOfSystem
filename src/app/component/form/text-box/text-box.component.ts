@@ -76,7 +76,8 @@ export class InputTextBoxComponent implements OnInit {
   }
 
   private validateInput() {
-    return this.validatedValue.length >= this.min;
+    const result = this.validatedValue.length >= this.min;
+    return result;
   }
 
   private transformTextValue() {

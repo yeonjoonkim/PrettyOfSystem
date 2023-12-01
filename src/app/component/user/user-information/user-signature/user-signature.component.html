@@ -1,0 +1,56 @@
+<flex-row>
+  <flex-row-item class="edit-btn-group">
+    <kendo-button
+      *ngIf="readOnly"
+      class="edit-btn"
+      icon="edit"
+      themeColor="success"
+      (click)="provide()"
+      (click)="readOnly = false"></kendo-button>
+    <kendo-button
+      *ngIf="!readOnly"
+      class="edit-btn"
+      icon="save"
+      themeColor="success"
+      (click)="onSave()"
+      [disabled]="!enableSaveBtn || requesting">
+    </kendo-button>
+  </flex-row-item>
+  <flex-row-item>
+    <legend>{{ 'label.title.signature' | languageTransform: 'System' | async }}</legend>
+  </flex-row-item>
+</flex-row>
+
+<flex-row *ngIf="!requesting">
+  <flex-row-item class="description">
+    <p>
+      <span *ngIf="(signature === null || signature?.length === 0) && readOnly">
+        {{ 'label.description.nosignatureprovided' | languageTransform: 'System' | async }}
+      </span>
+      {{
+        'label.description.singaturewillonlyusedwhenyouarebookingwithourtheraphiststoconfirmthatyouagreewiththetermandcondition'
+          | languageTransform: 'System'
+          | async
+      }}
+    </p>
+    <p *ngIf="signature && signature !== null && signature.length > 0 && !enableSaveBtn && !readOnly">
+      {{ 'label.description.doyouwanttoreset' | languageTransform: 'System' | async }}
+      <input type="checkbox" kendoCheckBox [checked]="false" [disabled]="readOnly" (click)="reset()" />
+    </p>
+  </flex-row-item>
+</flex-row>
+
+<flex-col *ngIf="!requesting">
+  <flex-col-item *ngIf="signature !== null">
+    <signature-input
+      [(signature)]="signature"
+      [readOnly]="readOnly"
+      (signatureChange)="onChangeSingature()"></signature-input>
+  </flex-col-item>
+</flex-col>
+
+<flex-col>
+  <flex-col-item>
+    <kendo-loader *ngIf="requesting" size="large"></kendo-loader>
+  </flex-col-item>
+</flex-col>

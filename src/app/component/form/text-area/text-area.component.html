@@ -1,4 +1,4 @@
-<kendo-label text="{{ title | languageTransform: 'System' | async }}">
+<kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="isTitleRequired">
   <div class="form-error-container">
     <kendo-formerror *ngIf="!validate && mode === 'form' && entered && isRequired"
       >{{ 'messageerror.description.textbox' | languageTransform: 'System' | async }}
@@ -20,9 +20,30 @@
     [(ngModel)]="validatedValue"
     [clearButton]="true"
     [maxlength]="max"
-    (ngModelChange)="onChangeValue()">
-    <ng-template kendoTextBoxSuffixTemplate *ngIf="showCounter">
-      <span class="counter">{{ counter }}</span>
-    </ng-template></kendo-textarea
-  >
+    (ngModelChange)="onChangeValue()"></kendo-textarea>
 </kendo-label>
+
+<div *ngIf="!isTitleFormat">
+  <div class="form-error-container">
+    <kendo-formerror *ngIf="!validate && mode === 'form' && entered && isRequired"
+      >{{ 'messageerror.description.textbox' | languageTransform: 'System' | async }}
+      {{ 'label.title.minimum' | languageTransform: 'System' | async }}: {{ min
+      }}{{ 'label.title.characters' | languageTransform: 'System' | async }}
+      {{ 'label.title.maximum' | languageTransform: 'System' | async }}: {{ max
+      }}{{ 'label.title.characters' | languageTransform: 'System' | async }}
+    </kendo-formerror>
+    <p id="tooltip" *ngIf="!validate && mode === 'form' && tooltip && !entered">
+      {{ tooltip | languageTransform: 'System' | async }}
+    </p>
+  </div>
+  <kendo-textarea
+    [cols]="100"
+    [rows]="5"
+    [style.height.px]="110"
+    [readonly]="readOnly"
+    [placeholder]="placeholder"
+    [(ngModel)]="validatedValue"
+    [clearButton]="true"
+    [maxlength]="max"
+    (ngModelChange)="onChangeValue()"></kendo-textarea>
+</div>

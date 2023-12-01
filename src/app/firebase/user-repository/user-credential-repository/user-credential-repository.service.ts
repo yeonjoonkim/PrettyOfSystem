@@ -250,13 +250,13 @@ export class UserCredentialRepositoryService {
       setting: {
         preferLanguage: await this._systemLanguageStorage.getCurrentLanguage(),
         privateInsurance: null,
-        massage: {
-          currentMedicalTreatment: null,
+        medical: {
           symptomsAndDiseases: [],
-          otherCondition: null,
+          otherStatus: null,
+        },
+        massage: {
           pressureLevel: 0,
-          focusAreas: [],
-          avoidAreas: [],
+          areas: [],
         },
       },
       loginOption: { phoneNumber: true, email: false },

@@ -28,7 +28,6 @@ export class InternalApiService {
 
     if (param) {
       const result = await this._waitingList.getUrl(param);
-      console.log(result);
       if (result !== null) {
         document.location.replace(`waiting-list/${result}`);
       } else {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { loginGuard } from './guard/login-gurad/login-guard.guard';
+import { loginGuard, isLogin } from './guard/login-gurad/login-guard.guard';
 import { receptionGuard, systemAdminGuard } from './guard/role-guard/role.guard';
 const routes: Routes = [
   {
@@ -40,6 +40,11 @@ const routes: Routes = [
   {
     path: 'waiting-list/:id',
     loadChildren: () => import('./page/waiting-list/waiting-list.module').then(m => m.WaitingListPageModule),
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./page/user/user.module').then(m => m.UserPageModule),
+    canActivate: [isLogin],
   },
 ];
 

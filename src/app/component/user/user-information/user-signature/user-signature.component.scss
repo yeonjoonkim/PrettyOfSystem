@@ -1,0 +1,19 @@
+.edit-btn-group {
+  max-width: 0px;
+}
+kendo-button {
+  margin-top: 10px;
+  width: 23px;
+  height: 23px;
+}
+
+.description {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 0px;
+  p {
+    margin: 2px;
+    flex-wrap: wrap;
+  }
+}

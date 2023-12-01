@@ -1,0 +1,25 @@
+.edit-btn-group {
+  max-width: 0px;
+}
+kendo-button {
+  margin-top: 10px;
+  width: 23px;
+  height: 23px;
+}
+
+.medical-history-container {
+  height: 505px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  overflow-y: scroll;
+  border: 1px solid #404040;
+  .medical-history-title {
+    height: fit-content;
+  }
+}
+
+@media (max-width: 620px) {
+  .medical-history-container {
+    height: 250px;
+  }
+}

@@ -1,0 +1,35 @@
+.user-information-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-col {
+    flex: 1;
+  }
+}
+.medical {
+  border-left: 1px solid var(--active);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.user-info,
+.medical {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 50%;
+}
+
+@media (max-width: 620px) {
+  .user-information-container {
+    flex-direction: column;
+  }
+  .medical {
+    border-left: none;
+  }
+  .user-info,
+  .medical {
+    width: 100%;
+  }
+}

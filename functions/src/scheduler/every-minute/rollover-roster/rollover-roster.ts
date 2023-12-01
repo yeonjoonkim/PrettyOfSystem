@@ -19,6 +19,9 @@ export const rollOverRoster = async function (configs: I.SchedulerShopConfigurat
               } will updated`
             );
             shop.roster = shop.nextWeekRoster;
+            shop.nextWeekRoster = shop.nextTwoWeekRoster;
+            shop.nextTwoWeekRoster = shop.nextThreeWeekRoster;
+            shop.nextThreeWeekRoster = shop.nextFourWeekRoster;
           }
         });
       });

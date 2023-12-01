@@ -26,6 +26,7 @@ export class TextAreaComponent implements OnInit {
   @Input() min: number = 0;
   @Input() isRequired: boolean = false;
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
+  @Input() isTitleRequired: boolean = true;
   @Input() placeholder: string = '';
   @Input()
   get value() {

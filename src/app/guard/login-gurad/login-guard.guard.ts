@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { CanActivateFn, Router } from '@angular/router';
-import { map, take } from 'rxjs';
+import { map, of, switchMap, take } from 'rxjs';
 import { UserService } from 'src/app/service/user/user.service';
 
 export const loginGuard: CanActivateFn = () => {
@@ -14,6 +15,21 @@ export const loginGuard: CanActivateFn = () => {
         return false;
       } else {
         return true;
+      }
+    })
+  );
+};
+
+export const isLogin: CanActivateFn = () => {
+  const auth = inject(AngularFireAuth);
+  const router: Router = inject(Router);
+  return auth.authState.pipe(
+    switchMap(user => {
+      if (user) {
+        return of(true);
+      } else {
+        router.navigateByUrl('booking');
+        return of(false);
       }
     })
   );

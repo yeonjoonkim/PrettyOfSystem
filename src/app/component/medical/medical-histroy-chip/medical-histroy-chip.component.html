@@ -1,0 +1,3 @@
+<div class="medical-history-chip" *ngIf="history" [ngClass]="classes">
+  {{ history.name | languageTransform: 'System' | async }}
+</div>

@@ -81,13 +81,13 @@ export class UserAdminService {
     return {
       preferLanguage: '',
       privateInsurance: null,
-      massage: {
-        currentMedicalTreatment: null,
+      medical: {
         symptomsAndDiseases: [],
-        otherCondition: null,
+        otherStatus: null,
+      },
+      massage: {
         pressureLevel: 0,
-        focusAreas: [],
-        avoidAreas: [],
+        areas: [],
       },
     };
   }

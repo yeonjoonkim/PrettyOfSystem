@@ -18,6 +18,7 @@ import { AppTermsAndConditionModule } from '../agreement/app/app-terms-and-condi
 import { AppPrivacyPolicyModule } from '../agreement/app/app-privacy-policy/app-privacy-policy.module';
 import { TextAreaModule } from './text-area/text-area.module';
 import { ImageCropModule } from './image-crop/image-crop.module';
+import { SignatureInputModule } from './signature-input/signature-input.component.module';
 @NgModule({
   declarations: [],
   imports: [],
@@ -41,6 +42,7 @@ import { ImageCropModule } from './image-crop/image-crop.module';
     AppPrivacyPolicyModule,
     TextAreaModule,
     ImageCropModule,
+    SignatureInputModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

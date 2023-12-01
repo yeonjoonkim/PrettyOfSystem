@@ -1,5 +1,9 @@
 import { RoleAccessLevelType, RoleConfigurationType } from '../system/role/role.interface';
-import { ShopOperatingDailyType, ShopWorkHoursType } from '../shop/shop.interface';
+import {
+  ShopConfigurationLanguagePackageType,
+  ShopOperatingDailyType,
+  ShopWorkHoursType,
+} from '../shop/shop.interface';
 import * as Constant from '../../constant/constant';
 import { AddressType, NameValuePairType } from '../global/global.interface';
 
@@ -56,25 +60,27 @@ export type UserSettingType = {
   preferLanguage: string;
   privateInsurance: UserSettingPrivateInsuranceType | null;
   massage: UserSettingMassageType;
+  medical: UserSettingMedicalHistroyType;
+};
+
+export type UserSettingMedicalHistroyType = {
+  otherStatus: ShopConfigurationLanguagePackageType | null;
+  symptomsAndDiseases: UserMedicalHistoryType[];
 };
 
 export type UserSettingMassageType = {
-  currentMedicalTreatment: string | null;
-  symptomsAndDiseases: UserSettingMassageSymptomAndDiseaseType[];
-  otherCondition: string | null;
   pressureLevel: number;
-  focusAreas: UserSettingMassageFocusAreaType[];
-  avoidAreas: string[];
+  areas: UserSettingMassageAreaType[];
 };
 
-export type UserSettingMassageFocusAreaType = {
+export type UserSettingMassageAreaType = {
   name: string;
   painType: string;
   painLevel: number;
 };
 
-export type UserSettingMassageSymptomAndDiseaseType = {
-  type: 'Symtom' | 'Disease';
+export type UserMedicalHistoryType = {
+  type: 'Symptom' | 'Disease';
   system:
     | 'Integumentary'
     | 'Skeletal'
@@ -88,7 +94,8 @@ export type UserSettingMassageSymptomAndDiseaseType = {
     | 'Urinary'
     | 'Reproductive';
   name: string;
-  cautionLevel: number; // 0 - 10
+  description: string;
+  cautionLevel: number; // 0 - 10 digestive
 };
 
 export type UserSettingPrivateInsuranceType = {
