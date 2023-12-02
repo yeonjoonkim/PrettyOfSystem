@@ -26,6 +26,7 @@
 
   <!--Menu-->
   <div id="menu-content">
+    <!-- Home -->
     <ion-accordion-group>
       <ion-accordion>
         <ion-item
@@ -40,13 +41,14 @@
         </ion-item>
       </ion-accordion>
     </ion-accordion-group>
+
+    <!-- User -->
     <ion-accordion-group *ngIf="user.isLoggedin$ | async">
       <ion-accordion>
-        <!--Header-->
         <ion-item
           slot="header"
           class="menu-selector"
-          [ngClass]="'label.title.information' === selectedTitleHeading ? 'menu-active' : ''">
+          [ngClass]="'user' === selectedTitleHeading ? 'menu-active' : ''">
           <ion-icon slot="start" name="document-lock-outline"></ion-icon>
           {{ 'label.title.profile' | languageTransform: 'System' | async }}
         </ion-item>
@@ -55,10 +57,19 @@
             button
             routerLink="/user/information"
             routerLinkActive="menu-active"
-            (click)="onChangeMenu('/user/information')"
+            (click)="onChangeMenu('user/information')"
             class="content-selector">
             <ion-icon slot="start" name="body-outline"></ion-icon>
             {{ 'label.title.information' | languageTransform: 'System' | async }}
+          </ion-item>
+          <ion-item
+            button
+            routerLink="/user/user-setting"
+            routerLinkActive="menu-active"
+            (click)="onChangeMenu('user/user-setting')"
+            class="content-selector">
+            <ion-icon slot="start" name="settings-outline"></ion-icon>
+            {{ 'label.title.setting' | languageTransform: 'System' | async }}
           </ion-item>
         </ion-list>
       </ion-accordion>
