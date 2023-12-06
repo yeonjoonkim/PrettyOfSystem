@@ -1,0 +1,19 @@
+svg {
+  cursor: pointer;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+}
+
+path {
+  fill: #6e6b7a;
+  &:hover {
+    fill: var(--completed);
+  }
+}
+.avoid {
+  fill: var(--error);
+}
+.focus {
+  fill: var(--inprogress);
+}

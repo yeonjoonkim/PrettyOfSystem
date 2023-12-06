@@ -120,15 +120,6 @@
       </button>
     </flex-col-item>
   </flex-col>
-  <flex-row class="options">
-    <flex-row-item class="minute-option mintue-title">
-      {{ 'label.title.minute' | languageTransform: 'System' | async }}
-    </flex-row-item>
-    <flex-row-item class="price-option price-title">
-      {{ 'label.title.price' | languageTransform: 'System' | async }}
-    </flex-row-item>
-    <flex-row-item *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')"></flex-row-item>
-  </flex-row>
   <div *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
     <div *ngFor="let opt of current.service.options">
       <flex-row class="options" *ngIf="country !== undefined">
@@ -175,11 +166,11 @@
 
   <div *ngIf="form.readOnly">
     <div *ngFor="let opt of current.service.options">
-      <flex-row>
-        <flex-row-item id="readonly-option-min">
+      <flex-row class="options">
+        <flex-row-item class="price-option">
           {{ opt.min | minuteTransform | async }}
         </flex-row-item>
-        <flex-row-item> {{ opt.price | currencyTransform }} </flex-row-item>
+        <flex-row-item class="price-option"> {{ opt.price | currencyTransform }} </flex-row-item>
       </flex-row>
     </div>
   </div>

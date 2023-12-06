@@ -54,6 +54,7 @@ export class TextAreaComponent implements OnInit {
     this.validate = this.validateInput();
     this.valueLengthCount = this.value.length;
     await this.setDefaultPlaceHolder();
+    console.log(this.isTitleRequired);
   }
 
   public onChangeValue() {

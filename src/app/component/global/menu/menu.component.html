@@ -45,10 +45,7 @@
     <!-- User -->
     <ion-accordion-group *ngIf="user.isLoggedin$ | async">
       <ion-accordion>
-        <ion-item
-          slot="header"
-          class="menu-selector"
-          [ngClass]="'user' === selectedTitleHeading ? 'menu-active' : ''">
+        <ion-item slot="header" class="menu-selector" routerLink="/user" routerLinkActive="menu-active">
           <ion-icon slot="start" name="document-lock-outline"></ion-icon>
           {{ 'label.title.profile' | languageTransform: 'System' | async }}
         </ion-item>
@@ -64,12 +61,12 @@
           </ion-item>
           <ion-item
             button
-            routerLink="/user/user-setting"
+            routerLink="/user/user-massage-setting"
             routerLinkActive="menu-active"
-            (click)="onChangeMenu('user/user-setting')"
+            (click)="onChangeMenu('user/user-massage-setting')"
             class="content-selector">
             <ion-icon slot="start" name="settings-outline"></ion-icon>
-            {{ 'label.title.setting' | languageTransform: 'System' | async }}
+            {{ 'label.title.massagepreference' | languageTransform: 'System' | async }}
           </ion-item>
         </ion-list>
       </ion-accordion>

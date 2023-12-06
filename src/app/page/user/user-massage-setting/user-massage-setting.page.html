@@ -12,7 +12,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="user"> </ion-content>
+<ion-content *ngIf="user">
+  <user-massage-setting [massage]="user.setting.massage"></user-massage-setting>
+</ion-content>
 
 <div class="loading-container" *ngIf="!user">
   <kendo-loader size="large"></kendo-loader>

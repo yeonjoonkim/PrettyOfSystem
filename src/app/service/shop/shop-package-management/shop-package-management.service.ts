@@ -146,6 +146,7 @@ export class ShopPackageManagementService {
   }
 
   public async add(pack: ShopPackageDocumentType) {
+    pack.titleProp = this._textTransform.preCleansingTranslateProp(pack.titleProp);
     pack.titleProp = this._textTransform.getTitleFormat(pack.titleProp);
     await this.loading.start('label.title.addnewpacakge');
     const newPackage = await this._packageRepo.addPackage(pack);
@@ -174,6 +175,7 @@ export class ShopPackageManagementService {
   }
 
   public async update(after: ShopPackageDocumentType) {
+    after.titleProp = this._textTransform.preCleansingTranslateProp(after.titleProp);
     after.titleProp = this._textTransform.getTitleFormat(after.titleProp);
     const userName = await this._shop.userName();
     if (userName !== null) {

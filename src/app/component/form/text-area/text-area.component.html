@@ -23,7 +23,7 @@
     (ngModelChange)="onChangeValue()"></kendo-textarea>
 </kendo-label>
 
-<div *ngIf="!isTitleFormat">
+<div *ngIf="!isTitleRequired">
   <div class="form-error-container">
     <kendo-formerror *ngIf="!validate && mode === 'form' && entered && isRequired"
       >{{ 'messageerror.description.textbox' | languageTransform: 'System' | async }}

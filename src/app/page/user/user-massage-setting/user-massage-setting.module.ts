@@ -1,23 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { IonicModule } from '@ionic/angular';
-import { UserSettingPageRoutingModule } from './user-setting-routing.module';
+
+import { UserMassageSettingPageRoutingModule } from './user-massage-setting-routing.module';
 import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
-import { UserSettingPage } from './user-setting.page';
+import { UserMassageSettingModule } from 'src/app/component/user/user-massage-setting/user-massage-setting.module';
+
+import { UserMassageSettingPage } from './user-massage-setting.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UserSettingPageRoutingModule,
+    UserMassageSettingPageRoutingModule,
     LanguageTransformPipeModule,
-    SharedFormModule,
     KendoUiModule,
+    SharedFormModule,
+    UserMassageSettingModule,
   ],
-  declarations: [UserSettingPage],
+  declarations: [UserMassageSettingPage],
 })
-export class UserSettingPageModule {}
+export class UserMassageSettingPageModule {}

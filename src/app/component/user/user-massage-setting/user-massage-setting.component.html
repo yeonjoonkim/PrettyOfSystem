@@ -1,0 +1,24 @@
+<flex-col *ngIf="massage && !requesting" class="modal-container">
+  <massage-pressure-level-selector
+    [(level)]="massage.pressureLevel"
+    (levelChange)="onChangePressureLevel()"></massage-pressure-level-selector>
+</flex-col>
+
+<flex-row class="tablet-body-selector" *ngIf="massage && !requesting">
+  <flex-row-item class="tablet-front-body-selector">
+    <massage-body-front-selector></massage-body-front-selector>
+  </flex-row-item>
+  <flex-row-item></flex-row-item>
+</flex-row>
+
+<flex-col class="mobile-body-selector" *ngIf="massage && !requesting">
+  <flex-col-item class="mobile-front-body-selector">
+    <massage-body-front-selector></massage-body-front-selector>
+  </flex-col-item>
+</flex-col>
+
+<flex-col *ngIf="!massage || requesting">
+  <flex-col-item class="loading-container">
+    <kendo-loader size="large"></kendo-loader>
+  </flex-col-item>
+</flex-col>

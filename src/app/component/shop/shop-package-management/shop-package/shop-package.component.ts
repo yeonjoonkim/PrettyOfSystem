@@ -115,13 +115,6 @@ export class ShopPackageComponent implements OnInit {
     this.handleEnabledSaveBtn();
   }
 
-  public onChangeTitleProp() {
-    this.current.package.titleProp = this._global.textTransform.preCleansingTranslateProp(
-      this.current.package.titleProp
-    );
-    this.handleEnabledSaveBtn();
-  }
-
   public onChangeDiscount() {
     this.current.package.discount.type = this.selectedDiscount.value as Constant.PackageDiscountType;
     this.current.package.discount.value = 0;

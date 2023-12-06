@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { IUser } from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
-  selector: 'app-user-setting',
-  templateUrl: './user-setting.page.html',
-  styleUrls: ['./user-setting.page.scss'],
+  selector: 'app-user-massage-setting',
+  templateUrl: './user-massage-setting.page.html',
+  styleUrls: ['./user-massage-setting.page.scss'],
 })
-export class UserSettingPage implements OnInit, OnDestroy {
+export class UserMassageSettingPage implements OnInit {
   private _destroy$ = new Subject<void>();
   public user!: IUser;
   constructor(private _user: UserService) {}

@@ -1,27 +1,22 @@
 <flex-row>
-  <flex-row-item class="edit-btn-group">
-    <kendo-button
-      *ngIf="readOnly"
-      class="edit-btn"
-      icon="edit"
-      themeColor="success"
-      (click)="readOnly = false"></kendo-button>
-    <kendo-button
+  <flex-row-item class="setting-title">
+    <legend>{{ 'label.title.privateinsurance' | languageTransform: 'System' | async }}</legend>
+    <button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </button>
+    <button
       *ngIf="!readOnly"
-      class="edit-btn"
-      icon="save"
+      class="save-btn"
       themeColor="success"
       (click)="onSave()"
       [disabled]="!enableSaveBtn || requesting">
-    </kendo-button>
-  </flex-row-item>
-  <flex-row-item>
-    <legend>{{ 'label.title.privateinsurance' | languageTransform: 'System' | async }}</legend>
+      {{ 'button.title.save' | languageTransform: 'System' | async }}
+    </button>
   </flex-row-item>
 </flex-row>
 
 <flex-row *ngIf="(privateInsurance || privateInsurance === null) && !requesting">
-  <flex-row-item *ngIf="privateInsurance === null && readOnly"
+  <flex-row-item *ngIf="privateInsurance === null && readOnly" class="default-placeholder"
     >{{ 'label.description.noprivateinsuranceprovided' | languageTransform: 'System' | async }}
   </flex-row-item>
   <flex-row-item *ngIf="(privateInsurance || privateInsurance === null) && !readOnly"

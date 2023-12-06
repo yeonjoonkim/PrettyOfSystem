@@ -1,27 +1,22 @@
 <flex-row *ngIf="address || address === null">
-  <flex-row-item class="edit-btn-group">
-    <kendo-button
-      *ngIf="readOnly"
-      class="edit-btn"
-      icon="edit"
-      themeColor="success"
-      (click)="readOnly = false"></kendo-button>
-    <kendo-button
+  <flex-row-item class="setting-title">
+    <legend>{{ 'label.title.address' | languageTransform: 'System' | async }}</legend>
+    <button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </button>
+    <button
       *ngIf="!readOnly"
-      class="edit-btn"
-      icon="save"
+      class="save-btn"
       themeColor="success"
       (click)="onSave()"
       [disabled]="!enableSaveBtn || requesting">
-    </kendo-button>
-  </flex-row-item>
-  <flex-row-item>
-    <legend>{{ 'label.title.address' | languageTransform: 'System' | async }}</legend>
+      {{ 'button.title.save' | languageTransform: 'System' | async }}
+    </button>
   </flex-row-item>
 </flex-row>
 
 <flex-row *ngIf="(address || address === null) && !requesting">
-  <flex-row-item *ngIf="address === null && readOnly"
+  <flex-row-item *ngIf="address === null && readOnly" class="default-placeholder"
     >{{ 'label.description.noaddressprovided' | languageTransform: 'System' | async }}
     {{ 'label.description.addresswillonlyusedintaxinvoice' | languageTransform: 'System' | async }}
   </flex-row-item>

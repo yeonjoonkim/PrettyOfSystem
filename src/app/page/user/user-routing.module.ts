@@ -12,8 +12,9 @@ const routes: Routes = [
     loadChildren: () => import('./information/information.module').then(m => m.InformationPageModule),
   },
   {
-    path: 'user-setting',
-    loadChildren: () => import('./user-setting/user-setting.module').then( m => m.UserSettingPageModule)
+    path: 'user-massage-setting',
+    loadChildren: () =>
+      import('./user-massage-setting/user-massage-setting.module').then(m => m.UserMassageSettingPageModule),
   },
 ];
 

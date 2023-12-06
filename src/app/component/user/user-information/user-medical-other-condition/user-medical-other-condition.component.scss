@@ -1,12 +1,23 @@
-.edit-btn-group {
-  max-width: 0px;
-}
-kendo-button {
-  margin-top: 10px;
-  width: 23px;
-  height: 23px;
+.setting-title {
+  display: flex;
+  justify-content: space-between;
+  legend {
+    color: var(--title);
+  }
+  button {
+    background-color: transparent;
+    text-decoration: underline;
+    font-weight: 700;
+  }
+  .edit-btn {
+    color: var(--title);
+  }
 }
 
-.save-btn {
+.default-placeholder {
+  color: var(--active);
+}
+
+.save-status-btn {
   width: 100%;
 }

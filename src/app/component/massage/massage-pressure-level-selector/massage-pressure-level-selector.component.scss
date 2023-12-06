@@ -1,0 +1,26 @@
+.pressure-level {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  kendo-label {
+    font-weight: 700;
+    color: var(--title);
+  }
+  .pressure-slider {
+    max-width: 1000px;
+    kendo-slider {
+      width: 350px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    flex-direction: column;
+    justify-content: flex-start;
+    .pressure-slider {
+      margin-top: 15px;
+      kendo-slider {
+        width: 300px;
+      }
+    }
+  }
+}
