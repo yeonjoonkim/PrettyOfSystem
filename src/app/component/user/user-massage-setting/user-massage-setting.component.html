@@ -4,18 +4,22 @@
     (levelChange)="onChangePressureLevel()"></massage-pressure-level-selector>
 </flex-col>
 
-<flex-row class="tablet-body-selector" *ngIf="massage && !requesting">
-  <flex-row-item class="tablet-front-body-selector">
-    <massage-body-front-selector></massage-body-front-selector>
-  </flex-row-item>
-  <flex-row-item></flex-row-item>
-</flex-row>
+<desktop-version-body-selector
+  *ngIf="massage && !requesting"
+  [readOnly]="false"
+  [isReport]="false"
+  [(selectedAreas)]="massage.areas"
+  (selectedAreasChange)="onChangeAreas($event)"></desktop-version-body-selector>
+<mobile-version-body-selector
+  *ngIf="massage && !requesting"
+  [readOnly]="false"
+  [isReport]="false"
+  [(selectedAreas)]="massage.areas"
+  (selectedAreasChange)="onChangeAreas($event)"></mobile-version-body-selector>
 
-<flex-col class="mobile-body-selector" *ngIf="massage && !requesting">
-  <flex-col-item class="mobile-front-body-selector">
-    <massage-body-front-selector></massage-body-front-selector>
-  </flex-col-item>
-</flex-col>
+<client-massage-body-summary
+  *ngIf="massage && !requesting"
+  [selectedAreas]="massage.areas"></client-massage-body-summary>
 
 <flex-col *ngIf="!massage || requesting">
   <flex-col-item class="loading-container">

@@ -121,6 +121,66 @@ export const State = {
   } as const,
 };
 
+export const Massage = {
+  Body: {
+    PreferenceType: {
+      NoPreference: 'NoPreference',
+      Avoid: 'Avoid',
+      Focus: 'Focus',
+    } as const,
+    PreferenceName: {
+      NoPreference: 'label.title.nopreference',
+      Avoid: 'label.title.avoid',
+      Focus: 'label.title.focus',
+    } as const,
+  } as const,
+};
+
+export const Medical = {
+  Insurance: {
+    Ahm: 'Ahm',
+    AIA: 'AIA',
+    Apia: 'Apia',
+    AustralianUnity: 'Australian Unity',
+    BUPA: 'BUPA',
+    Frank: 'Frank',
+    GMHBA: 'GMHBA',
+    HBF: 'HBF',
+    HCF: 'HCF',
+    HealthInsuranceFundOfAustralia: 'Health Insurance Fund of Australia',
+    HunterHealthInsurance: 'Hunter Health Insurance',
+    LatrobeHealthServices: 'Latrobe Health Services',
+    Medibank: 'Medibank',
+    MilduraHealthFund: 'Mildura Health Fund',
+    Nib: 'Nib',
+    Onemedifund: 'Onemedifund',
+    Peoplecare: 'Peoplecare',
+    PhoenixHealthFund: 'Phoenix Health Fund',
+    QantasHealthInsurance: 'Qantas Health Insurance',
+    RTHealth: 'RT Health',
+    WestFundHealthInsurance: 'Westfund Health Insurance',
+  } as const,
+  History: {
+    Type: {
+      Symptom: 'Symptom',
+      Disease: 'Disease',
+    } as const,
+    SystemType: {
+      Integumentary: 'Integumentary',
+      Skeletal: 'Skeletal',
+      Muscular: 'Muscular',
+      Nervous: 'Nervous',
+      Endocrine: 'Endocrine',
+      Cardiovascular: 'Cardiovascular',
+      Lymphatic: 'Lymphatic',
+      Respiratory: 'Respiratory',
+      Digestive: 'Digestive',
+      Urinary: 'Urinary',
+      Reproductive: 'Reproductive',
+    } as const,
+  } as const,
+};
+
 export const Date = {
   DayNightType: {
     NIGHT: 'PM',

@@ -1,5 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 0 50 100">
+<svg viewBox="-8 0 50 100">
   <ng-container *ngFor="let selector of body.front.list">
-    <path [attr.d]="selector.data" [id]="selector.id"></path>
+    <path
+      [attr.d]="selector.data"
+      [id]="selector.id"
+      (click)="onClick(selector)"
+      [ngClass]="classes(selector)"></path>
   </ng-container>
 </svg>

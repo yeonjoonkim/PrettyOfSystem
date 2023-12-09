@@ -10,10 +10,18 @@ import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pip
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.module';
 import { MassageBodyFrontSelectorComponent } from './massage-body-front-selector.component';
-
+import { MassageBodySelectorPopoverModule } from '../massage-body-selector-popover/massage-body-selector-popover.module';
 @NgModule({
   declarations: [MassageBodyFrontSelectorComponent],
-  imports: [CommonModule, IonicModule, FormsModule, LanguageTransformPipeModule, SharedFormModule, KendoUiModule],
+  imports: [
+    CommonModule,
+    IonicModule,
+    FormsModule,
+    LanguageTransformPipeModule,
+    SharedFormModule,
+    KendoUiModule,
+    MassageBodySelectorPopoverModule,
+  ],
   exports: [MassageBodyFrontSelectorComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

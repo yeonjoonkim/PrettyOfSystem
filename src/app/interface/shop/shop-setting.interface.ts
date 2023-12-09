@@ -1,8 +1,11 @@
+import { MedicalInsuranceType } from '..';
+
 export interface IShopSetting {
   calendar: ShopCalendarType;
   financial: ShopFinancialRateType;
   picture: ShopPictureType;
   qrCode: ShopQRCodeType;
+  insurance: ShopInsuranceProvider | null;
 }
 
 export type ShopQRCodeType = {
@@ -16,6 +19,12 @@ export type ShopFinancialRateType = {
   openingBalance: number;
   openingHour: number;
   closingHour: number;
+};
+
+export type ShopInsuranceProvider = {
+  healthFund: MedicalInsuranceType;
+  provider: string;
+  providerNo: string;
 };
 
 export type ShopCalendarType = {

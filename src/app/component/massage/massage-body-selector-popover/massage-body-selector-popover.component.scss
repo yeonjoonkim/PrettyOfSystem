@@ -1,0 +1,67 @@
+.popover-title {
+  .popover-title-position-type-title {
+    font-size: 8px;
+  }
+}
+
+.title-container {
+  margin: 0px 0px 0px 10px;
+}
+
+.popover-title {
+  font-size: 16px;
+
+  .popover-title-position-type-title {
+    font-size: 12px;
+  }
+}
+
+.title-container {
+  margin: 0px 10px 0px 10px;
+}
+
+.lists {
+  padding-top: 12px;
+  background-color: var(--background);
+}
+
+.popover-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .btn {
+    font-size: 14px;
+    min-width: 50px;
+    padding: 3px;
+    font-weight: 600;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: underline;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .delete {
+    background: var(--error);
+  }
+  .edit {
+    background: var(--card-add-hover);
+  }
+  .save {
+    width: 100%;
+    background: var(--card-add);
+  }
+}
+.justify-end {
+  justify-content: flex-end;
+}
+
+ion-range {
+  padding: 0;
+  margin: 5px;
+  --bar-background: #3f3f3f;
+  --tick-background: #3f3f3f;
+  --bar-background-active: #ff6358;
+  --knob-background: var(--title);
+  --knob-size: 16px;
+}

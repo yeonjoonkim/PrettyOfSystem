@@ -90,7 +90,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
       component: AddMenuCategoryContentComponent,
       event: event,
       translucent: true,
-      cssClass: 'pop-over-container',
+      cssClass: 'dynamic-popover-container',
       componentProps: {
         selectedMenuCategoryId: this.selectedMenuCategoryId,
         editMode: this.editMode,
@@ -109,7 +109,7 @@ export class MenuCategoryContentCardComponent implements OnInit {
       componentProps: {
         selectedMenuContent: selectedContent,
         selectedMenuCategoryId: this.selectedMenuCategoryId,
-        cssClass: 'pop-over-container',
+        cssClass: 'dynamic-popover-container',
         editMode: this.editMode,
       },
     });

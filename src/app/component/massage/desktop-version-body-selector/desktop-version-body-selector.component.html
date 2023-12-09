@@ -1,0 +1,16 @@
+<flex-row class="desktop-body-selector">
+  <flex-row-item class="desktop-front-body-selector">
+    <massage-body-front-selector
+      [(selectedAreas)]="selectedAreas"
+      [readOnly]="readOnly"
+      [isReport]="isReport"
+      (selectedAreasChange)="onChangeAreas($event)"></massage-body-front-selector>
+  </flex-row-item>
+  <flex-row-item class="desktop-back-body-selector">
+    <massage-body-back-selector
+      [(selectedAreas)]="selectedAreas"
+      [readOnly]="readOnly"
+      [isReport]="isReport"
+      (selectedAreasChange)="onChangeAreas($event)"></massage-body-back-selector>
+  </flex-row-item>
+</flex-row>

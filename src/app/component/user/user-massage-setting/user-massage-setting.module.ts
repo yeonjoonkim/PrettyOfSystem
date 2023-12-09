@@ -9,10 +9,13 @@ import { MedicalHsitoryOtherStatusPipeModule } from 'src/app/pipe/medical-histor
 //Import Module
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
-
-//Import Component
 import { MassagePressureLevelSelectorModule } from '../../massage/massage-pressure-level-selector/massage-pressure-level-selector.module';
-import { MassageBodyFrontSelectorModule } from '../../massage/massage-body-front-selector/massage-pressure-level-selector.module';
+import { MassageBodyFrontSelectorModule } from '../../massage/massage-body-front-selector/massage-body-front-selector.module';
+import { MassageBodyBackSelectorModule } from '../../massage/massage-body-back-selector/massage-body-back-selector.module';
+import { DesktopVersionBodySelectorModule } from '../../massage/desktop-version-body-selector/desktop-version-body-selector.module';
+import { MobileVersionBodySelectorModule } from '../../massage/mobile-version-body-selector/mobile-version-body-selector.module';
+import { ClientMassageBodySummaryModule } from '../../massage/client-massage-body-summary/client-massage-body-summary.module';
+//Import Component
 import { UserMassageSettingComponent } from './user-massage-setting.component';
 @NgModule({
   declarations: [UserMassageSettingComponent],
@@ -27,6 +30,10 @@ import { UserMassageSettingComponent } from './user-massage-setting.component';
     MedicalHsitoryOtherStatusPipeModule,
     MassagePressureLevelSelectorModule,
     MassageBodyFrontSelectorModule,
+    MassageBodyBackSelectorModule,
+    DesktopVersionBodySelectorModule,
+    MobileVersionBodySelectorModule,
+    ClientMassageBodySummaryModule,
   ],
   exports: [UserMassageSettingComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

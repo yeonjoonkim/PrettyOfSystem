@@ -1,0 +1,59 @@
+.logo-loading {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  --background: #transparent !important;
+  position: relative;
+  width: 100%;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.loading-wrapper.sc-ion-loading-md {
+  flex-direction: column;
+}
+.loading-wrapper.sc-ion-loading-md .loading-content {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-margin-start: 0;
+  -margin-inline-start: 0;
+}
+.sc-ion-loading-ios {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-margin-start: 0;
+  -margin-inline-start: 0;
+}
+
+.loading-spinner.sc-ion-loading-md + .loading-content.sc-ion-loading-md,
+.loading-spinner.sc-ion-loading-ios + .loading-content.sc-ion-loading-ios {
+  -webkit-margin-start: 0;
+  -webkit-margin-left: 0;
+  margin-inline-start: 0;
+  margin-left: 0;
+}
+
+.logo-loading::before,
+.logo-loading::after,
+.logo-loading::backdrop {
+  content: '';
+  position: absolute;
+  top: 43%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: url('../../assets/logo/prettyofsystem-logo-white.svg') no-repeat center center;
+  background-size: contain;
+  width: 100px;
+  height: 100px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 50vh;
+}

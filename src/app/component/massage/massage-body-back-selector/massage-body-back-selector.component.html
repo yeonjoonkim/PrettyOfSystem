@@ -1,3 +1,9 @@
-<p>
-  massage-body-back-selector works!
-</p>
+<svg viewBox="30 0 50 100">
+  <ng-container *ngFor="let selector of body.back.list">
+    <path
+      [attr.d]="selector.data"
+      [id]="selector.id"
+      (click)="onClick(selector)"
+      [ngClass]="classes(selector)"></path>
+  </ng-container>
+</svg>

@@ -1,5 +1,4 @@
 svg {
-  cursor: pointer;
   width: auto;
   height: 100%;
   max-width: 100%;
@@ -7,13 +6,23 @@ svg {
 
 path {
   fill: #6e6b7a;
-  &:hover {
-    fill: var(--completed);
-  }
 }
+
 .avoid {
   fill: var(--error);
 }
+
+.no-preference {
+  fill: var(--completed);
+}
+
 .focus {
   fill: var(--inprogress);
+}
+
+.enable-hover {
+  &:hover {
+    cursor: pointer;
+    fill: var(--completed);
+  }
 }

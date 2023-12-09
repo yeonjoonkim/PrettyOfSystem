@@ -2,7 +2,7 @@
   <ion-card-content>
     <flex-col>
       <flex-col-item class="tool-tip">
-        <div class="tip">
+        <div class="tip" *ngIf="coupon.discount.value > 0">
           {{ coupon.discount.value | percentTransform }}
           {{ 'label.title.discount' | languageTransform: 'System' | async }}
           <ion-icon name="checkmark-outline"></ion-icon>
@@ -35,7 +35,9 @@
       <flex-row-item class="prices">
         <p class="discount-price">{{ coupon.option.min | minuteTransform | async }} x {{ coupon.numOfCoupon }}</p>
         <p class="discount-price">
-          <span class="original-price"> {{ coupon.originalPrice | currencyTransform }}</span>
+          <span class="original-price" *ngIf="coupon.discount.value > 0">
+            {{ coupon.originalPrice | currencyTransform }}</span
+          >
           {{ coupon.discountPrice | currencyTransform }}
         </p>
       </flex-row-item>

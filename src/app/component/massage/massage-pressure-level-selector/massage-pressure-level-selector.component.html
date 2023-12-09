@@ -1,11 +1,9 @@
 <flex-col-item class="pressure-level" *ngIf="level">
   <kendo-label text="{{ pressureLevel.getLabel(level) | languageTransform: 'System' | async }}"> </kendo-label>
-  <div class="pressure-slider">
-    <kendo-slider
-      [(ngModel)]="level"
-      [min]="1"
-      [max]="5"
-      [showButtons]="false"
-      (ngModelChange)="onChangePressureLevel()"></kendo-slider>
-  </div>
+  <ion-range
+    [(ngModel)]="level"
+    [ticks]="true"
+    [min]="1"
+    [max]="5"
+    (ngModelChange)="onChangePressureLevel()"></ion-range>
 </flex-col-item>

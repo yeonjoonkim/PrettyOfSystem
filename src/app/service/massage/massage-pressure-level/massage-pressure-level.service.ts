@@ -9,7 +9,7 @@ export class MassagePressureLevelService {
   getLabel(value: number) {
     switch (value) {
       case 1:
-        return 'label.title.gentle';
+        return 'label.title.extremesoft';
       case 2:
         return 'label.title.soft';
       case 3:
@@ -19,7 +19,7 @@ export class MassagePressureLevelService {
       case 5:
         return 'label.title.extremestrong';
       default:
-        return 'label.title.gentle';
+        return 'label.title.extremesoft';
     }
   }
 }

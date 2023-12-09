@@ -2,12 +2,12 @@
   <ion-card-content>
     <flex-col>
       <flex-col-item class="tool-tip">
-        <div *ngIf="pack.discount.type === 'Dollar'" class="tip">
+        <div *ngIf="pack.discount.type === 'Dollar' && pack.discount.value > 0" class="tip">
           {{ pack.discount.value | currencyTransform }}
           {{ 'label.title.discount' | languageTransform: 'System' | async }}
           <ion-icon name="checkmark-outline"></ion-icon>
         </div>
-        <div *ngIf="pack.discount.type === 'Percent'" class="tip">
+        <div *ngIf="pack.discount.type === 'Percent' && pack.discount.value > 0" class="tip">
           {{ pack.discount.value | percentTransform }}
           {{ 'label.title.discount' | languageTransform: 'System' | async }}
           <ion-icon name="checkmark-outline"></ion-icon>
@@ -75,7 +75,9 @@
       <flex-row-item class="prices">
         <p class="discount-price">{{ pack.totalMin | minuteTransform | async }}</p>
         <p class="discount-price">
-          <span class="original-price"> {{ pack.originalPrice | currencyTransform }}</span>
+          <span class="original-price" *ngIf="pack.discount.value > 0">
+            {{ pack.originalPrice | currencyTransform }}</span
+          >
           {{ pack.discountPrice | currencyTransform }}
         </p>
       </flex-row-item>

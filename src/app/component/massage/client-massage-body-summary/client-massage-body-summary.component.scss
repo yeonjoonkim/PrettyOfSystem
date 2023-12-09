@@ -1,0 +1,27 @@
+.default-placeholder {
+  color: var(--active);
+}
+
+.summary-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  .title {
+    margin: 0px;
+  }
+  .summary-detail {
+    margin: 10px;
+  }
+}
+
+.avoid {
+  color: #917249;
+}
+
+.no-preference {
+  color: var(--active);
+}
+
+.focus {
+  color: #a39cff;
+}

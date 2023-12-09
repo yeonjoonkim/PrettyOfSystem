@@ -55,6 +55,7 @@ export class ShopSettingContactComponent implements OnInit, OnDestroy {
       name: this.config.name,
       taxNumber: this.config.taxNumber,
       address: this.config.address,
+      companyName: this.config.companyName,
       phone: this.config.phoneNumber,
       email: this.config.email,
     };

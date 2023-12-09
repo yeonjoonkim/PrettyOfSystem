@@ -25,37 +25,19 @@
 }
 
 @media (min-width: 620px) {
-  .tablet-body-selector {
-    margin-top: 12px;
-    display: flex;
-    .tablet-front-body-selector {
-      margin: 0;
-    }
-    .tablet-front-body-selector {
-      border-right: 1px solid var(--active);
-    }
-  }
-  .mobile-body-selector {
+  mobile-version-body-selector {
     display: none;
+  }
+  desktop-version-body-selector {
+    display: block;
   }
 }
 
 @media (max-width: 620px) {
-  .tablet-body-selector {
+  desktop-version-body-selector {
     display: none;
   }
-  .mobile-body-selector {
-    .mobile-front-body-selector {
-      margin: 0;
-    }
-    display: flex;
+  mobile-version-body-selector {
+    display: block;
   }
-}
-
-::ng-deep massage-body-front-selector {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 70vh;
 }

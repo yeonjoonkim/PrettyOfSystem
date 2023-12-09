@@ -63,6 +63,7 @@ export type ShopOperatingHoursType = {
 export interface ShopConfigurationType {
   id: string;
   name: string;
+  companyName: string;
   phoneNumber: string;
   email: string;
   taxNumber: string;
@@ -108,6 +109,7 @@ export interface ShopConfigurationTypeFilterOption {
 export type ShopUpdateContactProp = {
   phone: string;
   name: string;
+  companyName: string;
   email: string;
   address: AddressType;
   taxNumber: string;

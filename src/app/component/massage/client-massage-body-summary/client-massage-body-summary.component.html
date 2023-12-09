@@ -1,0 +1,54 @@
+<flex-col *ngIf="summary && summary.hasValue">
+  <flex-col-item class="summary-container" *ngIf="summary.focus.length > 0">
+    <legend class="title focus">{{ 'label.title.focus' | languageTransform: 'System' | async }}</legend>
+    <ng-container *ngFor="let focus of summary.focus; let i = index">
+      <p class="summary-detail">
+        {{ i + 1 }}.
+        {{ focus.position.typeName | languageTransform: 'System' | async }}
+        {{ focus.position.name | languageTransform: 'System' | async }}
+        {{ focus.pain.level * 10 }}%
+        {{ focus.pain.name | languageTransform: 'System' | async }}
+      </p>
+    </ng-container>
+  </flex-col-item>
+
+  <flex-col-item class="summary-container" *ngIf="summary.avoid.length > 0">
+    <legend class="title avoid">{{ 'label.title.avoid' | languageTransform: 'System' | async }}</legend>
+    <ng-container *ngFor="let focus of summary.avoid; let i = index">
+      <p class="summary-detail">
+        {{ i + 1 }}.
+        <span *ngIf="focus.position.positionName.length > 0">
+          {{ focus.position.positionName | languageTransform: 'System' | async }}</span
+        >
+        {{ focus.position.typeName | languageTransform: 'System' | async }}
+        {{ focus.position.name | languageTransform: 'System' | async }}
+        {{ focus.pain.level * 10 }}%
+        {{ focus.pain.name | languageTransform: 'System' | async }}
+      </p>
+    </ng-container>
+  </flex-col-item>
+
+  <flex-col-item class="summary-container" *ngIf="summary.noPreference.length > 0">
+    <legend class="title no-preference">
+      {{ 'label.title.nopreference' | languageTransform: 'System' | async }}
+    </legend>
+    <ng-container *ngFor="let focus of summary.noPreference; let i = index">
+      <p class="summary-detail">
+        {{ i + 1 }}.
+        {{ focus.position.typeName | languageTransform: 'System' | async }}
+        {{ focus.position.name | languageTransform: 'System' | async }}
+        {{ focus.pain.level * 10 }}%
+        {{ focus.pain.name | languageTransform: 'System' | async }}
+      </p>
+    </ng-container>
+  </flex-col-item>
+</flex-col>
+
+<flex-col *ngIf="summary && !summary.hasValue">
+  <flex-col-item class="title">
+    <legend>{{ 'label.title.summary' | languageTransform: 'System' | async }}</legend>
+  </flex-col-item>
+  <flex-col-item class="default-placeholder">
+    {{ 'label.description.noinformationrelatedtomassagepreferenceprovided' | languageTransform: 'System' | async }}
+  </flex-col-item>
+</flex-col>

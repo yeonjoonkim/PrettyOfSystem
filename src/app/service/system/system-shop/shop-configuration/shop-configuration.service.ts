@@ -99,6 +99,7 @@ export class ShopConfigurationService {
     return {
       id: this.global.newId(),
       name: '',
+      companyName: '',
       phoneNumber: '',
       email: '',
       taxNumber: '',
@@ -266,6 +267,7 @@ export class ShopConfigurationService {
       qrCode: {
         waitingListSessionExiryMin: Constant.ShopSetting.QRCode.WaitingListSessionExiryMin,
       },
+      insurance: null,
     };
     return result;
   }

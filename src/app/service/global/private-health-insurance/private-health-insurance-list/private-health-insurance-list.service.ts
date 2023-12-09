@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { NameValuePairType } from 'src/app/interface';
+import { MedicalInsuranceType, NameValuePairType } from 'src/app/interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PrivateHealthInsuranceListService {
-  private _list: string[] = [
+  private _list: MedicalInsuranceType[] = [
     'Ahm',
     'AIA',
     'Apia',
@@ -25,7 +25,7 @@ export class PrivateHealthInsuranceListService {
     'Peoplecare',
     'Phoenix Health Fund',
     'Qantas Health Insurance',
-    'RT health',
+    'RT Health',
     'Westfund Health Insurance',
   ];
   constructor() {}

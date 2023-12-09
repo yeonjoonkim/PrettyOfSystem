@@ -31,7 +31,7 @@ const pressureLevel = function (level: number | null | undefined) {
   return typeof level === 'number' ? level : 0;
 };
 
-const areas = function (areas: I.UserSettingMassageAreaType[] | null | undefined) {
+const areas = function (areas: I.MassageBodySelectorAreaType[] | null | undefined) {
   return areas !== undefined && areas !== null ? areas : [];
 };
 

@@ -6,6 +6,7 @@ import {
 } from '../shop/shop.interface';
 import * as Constant from '../../constant/constant';
 import { AddressType, NameValuePairType } from '../global/global.interface';
+import { MassageBodySelectorAreaType } from '../massage/massage.interface';
 
 export interface IUser {
   id: string;
@@ -37,6 +38,7 @@ export type ShopEmployeeScheduleChangeResult = {
 export type UserConsentType = {
   shopId: string;
   shopName: string;
+  isVIP: boolean;
   hasMarketingEmailConsent: boolean;
   hasMarketingSMSConsent: boolean;
   hasPrivacyPolicyConsent: boolean;
@@ -70,29 +72,12 @@ export type UserSettingMedicalHistroyType = {
 
 export type UserSettingMassageType = {
   pressureLevel: number;
-  areas: UserSettingMassageAreaType[];
-};
-
-export type UserSettingMassageAreaType = {
-  name: string;
-  painType: string;
-  painLevel: number;
+  areas: MassageBodySelectorAreaType[];
 };
 
 export type UserMedicalHistoryType = {
-  type: 'Symptom' | 'Disease';
-  system:
-    | 'Integumentary'
-    | 'Skeletal'
-    | 'Muscular'
-    | 'Nervous'
-    | 'Endocrine'
-    | 'Cardiovascular'
-    | 'Lymphatic'
-    | 'Respiratory'
-    | 'Digestive'
-    | 'Urinary'
-    | 'Reproductive';
+  type: Constant.MedicalHistoryType;
+  system: Constant.MedicalHistorySystemType;
   name: string;
   description: string;
   cautionLevel: number; // 0 - 10 digestive
