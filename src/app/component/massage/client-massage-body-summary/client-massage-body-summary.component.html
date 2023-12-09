@@ -4,19 +4,6 @@
     <ng-container *ngFor="let focus of summary.focus; let i = index">
       <p class="summary-detail">
         {{ i + 1 }}.
-        {{ focus.position.typeName | languageTransform: 'System' | async }}
-        {{ focus.position.name | languageTransform: 'System' | async }}
-        {{ focus.pain.level * 10 }}%
-        {{ focus.pain.name | languageTransform: 'System' | async }}
-      </p>
-    </ng-container>
-  </flex-col-item>
-
-  <flex-col-item class="summary-container" *ngIf="summary.avoid.length > 0">
-    <legend class="title avoid">{{ 'label.title.avoid' | languageTransform: 'System' | async }}</legend>
-    <ng-container *ngFor="let focus of summary.avoid; let i = index">
-      <p class="summary-detail">
-        {{ i + 1 }}.
         <span *ngIf="focus.position.positionName.length > 0">
           {{ focus.position.positionName | languageTransform: 'System' | async }}</span
         >
@@ -28,17 +15,36 @@
     </ng-container>
   </flex-col-item>
 
+  <flex-col-item class="summary-container" *ngIf="summary.avoid.length > 0">
+    <legend class="title avoid">{{ 'label.title.avoid' | languageTransform: 'System' | async }}</legend>
+    <ng-container *ngFor="let avoid of summary.avoid; let i = index">
+      <p class="summary-detail">
+        {{ i + 1 }}.
+        <span *ngIf="avoid.position.positionName.length > 0">
+          {{ avoid.position.positionName | languageTransform: 'System' | async }}</span
+        >
+        {{ avoid.position.typeName | languageTransform: 'System' | async }}
+        {{ avoid.position.name | languageTransform: 'System' | async }}
+        {{ avoid.pain.level * 10 }}%
+        {{ avoid.pain.name | languageTransform: 'System' | async }}
+      </p>
+    </ng-container>
+  </flex-col-item>
+
   <flex-col-item class="summary-container" *ngIf="summary.noPreference.length > 0">
     <legend class="title no-preference">
       {{ 'label.title.nopreference' | languageTransform: 'System' | async }}
     </legend>
-    <ng-container *ngFor="let focus of summary.noPreference; let i = index">
+    <ng-container *ngFor="let noPreference of summary.noPreference; let i = index">
       <p class="summary-detail">
         {{ i + 1 }}.
-        {{ focus.position.typeName | languageTransform: 'System' | async }}
-        {{ focus.position.name | languageTransform: 'System' | async }}
-        {{ focus.pain.level * 10 }}%
-        {{ focus.pain.name | languageTransform: 'System' | async }}
+        <span *ngIf="noPreference.position.positionName.length > 0">
+          {{ noPreference.position.positionName | languageTransform: 'System' | async }}</span
+        >
+        {{ noPreference.position.typeName | languageTransform: 'System' | async }}
+        {{ noPreference.position.name | languageTransform: 'System' | async }}
+        {{ noPreference.pain.level * 10 }}%
+        {{ noPreference.pain.name | languageTransform: 'System' | async }}
       </p>
     </ng-container>
   </flex-col-item>
