@@ -6,6 +6,7 @@ export const override = function (s: I.IShopSetting) {
   s.calendar = calendarSetting(s?.calendar);
   s.picture = picture(s?.picture);
   s.qrCode = QRcode(s?.qrCode);
+  s.insurance = insurance(s?.insurance);
   return s;
 };
 
@@ -91,4 +92,9 @@ const QRcode = function (qrCode: I.ShopQRCodeType | undefined) {
 
 const waitingListSessionExiryMin = function (min: number | undefined | null) {
   return typeof min === 'number' ? min : Constant.ShopSetting.QRCode.WaitingListSessionExiryMin;
+};
+
+// Insurance Company
+const insurance = function (insurance: I.ShopInsuranceProvider | undefined | null) {
+  return insurance !== null && insurance !== undefined ? insurance : null;
 };

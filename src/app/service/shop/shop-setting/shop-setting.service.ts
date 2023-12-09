@@ -127,6 +127,7 @@ export class ShopSettingService {
     let config = await this._shop.config();
     if (config !== null) {
       config.name = this._textTransform.getTitleFormat(prop.name);
+      config.companyName = prop.companyName.length > 0 ? this._textTransform.getTitleFormat(prop.companyName) : '';
       config.taxNumber = prop.taxNumber;
       config.phoneNumber = prop.phone;
       config.email = prop.email;

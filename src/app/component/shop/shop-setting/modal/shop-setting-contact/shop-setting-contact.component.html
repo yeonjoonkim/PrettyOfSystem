@@ -13,6 +13,18 @@
     <flex-col-item>
       <shop-category #category [readOnly]="true" [(shopCategory)]="config.category"> </shop-category>
     </flex-col-item>
+    <flex-col-item>
+      <text-box
+        #companyName
+        title="label.title.companyname"
+        [readOnly]="form.readOnly"
+        [(value)]="config.companyName"
+        [isRequired]="false"
+        (valueChange)="handleEnabledSaveBtn()"
+        [min]="1"
+        [max]="100">
+      </text-box>
+    </flex-col-item>
     <flex-row id="business-name">
       <flex-row-item>
         <text-box

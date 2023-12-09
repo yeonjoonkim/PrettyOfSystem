@@ -20,6 +20,7 @@ import { UserModalService } from './user-modal/user-modal.service';
 import { SystemLanguageStorageService } from '../global/language/system-language-management/system-language-storage/system-language-storage.service';
 import { IdTokenResult } from 'firebase/auth';
 import { LoadingService } from '../global/loading/loading.service';
+import { UserSettingService } from './user-setting/user-setting.service';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,7 @@ export class UserService {
 
   constructor(
     public modal: UserModalService,
+    public setting: UserSettingService,
     private _afAuth: AngularFireAuth,
     private _router: Router,
     private _systemShop: SystemShopConfigurationRepositoryService,

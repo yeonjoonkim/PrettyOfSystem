@@ -1,0 +1,54 @@
+<ion-header *ngIf="prop && selectedPain">
+  <ion-toolbar id="header">
+    <!--Title-->
+    <flex-col>
+      <flex-col-item class="title-container">
+        <legend class="popover-title title">
+          <span *ngIf="prop.selector.position.positionName.length > 0">
+            {{ prop.selector.position.positionName | languageTransform: 'System' | async }}
+          </span>
+          {{ prop.selector.position.name | languageTransform: 'System' | async }}
+          <span class="popover-title-position-type-title"
+            >({{ prop.selector.position.typeName | languageTransform: 'System' | async }})</span
+          >
+        </legend>
+      </flex-col-item>
+    </flex-col>
+
+    <!--Close-->
+    <ion-icon class="toolbar-icon" name="close-outline" slot="end" (click)="onDismiss()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<flex-col *ngIf="prop && selectedPain" class="lists">
+  <flex-col-item>
+    <name-value-pair-single-dropdown-selection
+      [title]="body.preference.title"
+      [selection]="body.preference.list"
+      [(selected)]="selectedPreference"
+      [isRequired]="true"
+      [filterable]="false"></name-value-pair-single-dropdown-selection>
+  </flex-col-item>
+  <flex-col-item>
+    <name-value-pair-single-dropdown-selection
+      [title]="body.pain.title"
+      [selection]="body.pain.list"
+      [(selected)]="selectedPain"
+      [isRequired]="true"></name-value-pair-single-dropdown-selection>
+  </flex-col-item>
+  <flex-col-item>
+    <kendo-label text="{{ 'label.title.painlevel' | languageTransform: 'System' | async }}"> </kendo-label>
+    <ion-range [(ngModel)]="painLevel" [ticks]="true" [min]="1" [max]="10"></ion-range>
+  </flex-col-item>
+  <flex-col-item class="popover-buttons" [ngClass]="{ 'justify-end': !isExistedArea() }">
+    <div class="btn delete" *ngIf="isExistedArea()" (click)="onClickDelete()">
+      {{ 'button.title.delete' | languageTransform: 'System' | async }}
+    </div>
+    <div class="btn edit" *ngIf="isExistedArea()" (click)="onClickEdit()">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </div>
+    <div class="btn save" *ngIf="!isExistedArea()" (click)="onClickAdd()">
+      {{ 'button.title.add' | languageTransform: 'System' | async }}
+    </div>
+  </flex-col-item>
+</flex-col>

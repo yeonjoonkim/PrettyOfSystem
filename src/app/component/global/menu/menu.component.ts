@@ -48,12 +48,10 @@ export class MenuComponent implements OnInit, OnDestroy {
       let menu = s.content.find(c => c.url === url);
       return menu;
     });
-    if (url.includes('user/information')) {
-      this.selectedTitleHeading = 'label.title.information';
-    } else {
-      this.selectedTitleHeading = selectedMenu !== undefined ? selectedMenu.name : '';
-    }
+    const userPage = this.handleUserPage(url);
+    const name = selectedMenu !== undefined ? selectedMenu.name : userPage ? userPage : '';
 
+    this.selectedTitleHeading = name;
     this._menuCtrl.close();
   }
 
@@ -109,5 +107,12 @@ export class MenuComponent implements OnInit, OnDestroy {
   private async setDefaultTitleHeading() {
     let currentUrl = this._location.path();
     await this.onChangeMenu(currentUrl);
+  }
+
+  private handleUserPage(url: string) {
+    const userInformation = 'user/information';
+    const userSetting = 'user/setting';
+
+    return userInformation || userSetting ? 'user' : '';
   }
 }

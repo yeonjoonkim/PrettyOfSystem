@@ -13,3 +13,4 @@ export * from './function/function-system-translation/function-system-translatio
 export * from './shop/shop-service.interface';
 export * from './shop/shop-setting.interface';
 export * from './function/function-scheduler/function-scheduler.interface';
+export * from './massage/massage.interface';

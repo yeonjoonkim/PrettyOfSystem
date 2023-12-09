@@ -1,28 +1,24 @@
 <flex-row *ngIf="user">
-  <flex-row-item class="edit-btn-group">
-    <kendo-button
-      *ngIf="readOnly"
-      class="edit-btn"
-      icon="edit"
-      themeColor="success"
-      (click)="readOnly = false"></kendo-button>
-    <kendo-button
+  <flex-row-item class="setting-title">
+    <legend>{{ 'label.title.medicalhistory' | languageTransform: 'System' | async }}</legend>
+    <button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </button>
+    <button
       *ngIf="!readOnly"
-      class="edit-btn"
-      icon="save"
+      class="save-btn"
       themeColor="success"
       (click)="onSave()"
       [disabled]="!enableSaveBtn || requesting">
-    </kendo-button>
-  </flex-row-item>
-  <flex-row-item>
-    <legend>{{ 'label.title.medicalhistory' | languageTransform: 'System' | async }}</legend>
+      {{ 'button.title.save' | languageTransform: 'System' | async }}
+    </button>
   </flex-row-item>
 </flex-row>
 
-<flex-col class="medical-history-container" *ngIf="user && !requesting">
+<flex-col class="medical-history-container" *ngIf="user && !requesting && !readOnly">
   <!-- Cardiovasular -->
   <medical-histroy-list
+    system="Cardiovascular"
     [title]="medical.cardiovascular.title"
     [selection]="medical.cardiovascular.list"
     [(userList)]="user.setting.medical.symptomsAndDiseases"
@@ -118,6 +114,19 @@
     [(userList)]="user.setting.medical.symptomsAndDiseases"
     [readOnly]="readOnly"
     [isClient]="true"></medical-histroy-list>
+</flex-col>
+
+<flex-col *ngIf="user && !requesting && readOnly">
+  <flex-col-item class="user-active-medical-history" *ngIf="user.setting.medical.symptomsAndDiseases.length > 0">
+    <ng-container *ngFor="let history of user.setting.medical.symptomsAndDiseases">
+      <medical-histroy-chip [active]="false" [history]="history"></medical-histroy-chip>
+    </ng-container>
+  </flex-col-item>
+  <flex-col-item class="user-active-medical-history" *ngIf="!user.setting.medical.symptomsAndDiseases.length">
+    <p class="default-placeholder">
+      {{ 'label.description.thereisnorelatedmedicalhistory' | languageTransform: 'System' | async }}
+    </p>
+  </flex-col-item>
 </flex-col>
 
 <flex-col>

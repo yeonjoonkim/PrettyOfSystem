@@ -1,0 +1,19 @@
+.pressure-level {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  kendo-label {
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--title);
+  }
+  ion-range {
+    padding: 0;
+    margin: 5px;
+    --bar-background: #3f3f3f;
+    --tick-background: #3f3f3f;
+    --bar-background-active: #ff6358;
+    --knob-background: var(--title);
+    --knob-size: 16px;
+  }
+}

@@ -1,0 +1,28 @@
+<flex-col class="mobile-body-selector">
+  <flex-col-item>
+    <kendo-buttongroup selection="single" width="100%">
+      <button
+        kendoButton
+        *ngFor="let page of pages"
+        [toggleable]="true"
+        [selected]="selectedPage === page"
+        (selectedChange)="onPageChange(page)">
+        {{ page | languageTransform: 'System' | async }}
+      </button>
+    </kendo-buttongroup>
+  </flex-col-item>
+  <flex-col-item class="mobile-front-body-selector">
+    <massage-body-front-selector
+      *ngIf="selectedPage === 'label.title.front'"
+      [(selectedAreas)]="selectedAreas"
+      [readOnly]="readOnly"
+      (selectedAreasChange)="onChangeAreas($event)"></massage-body-front-selector>
+  </flex-col-item>
+  <flex-col-item class="mobile-back-body-selector">
+    <massage-body-back-selector
+      *ngIf="selectedPage === 'label.title.back'"
+      [(selectedAreas)]="selectedAreas"
+      [readOnly]="readOnly"
+      (selectedAreasChange)="onChangeAreas($event)"></massage-body-back-selector>
+  </flex-col-item>
+</flex-col>

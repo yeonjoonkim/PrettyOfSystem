@@ -33,6 +33,7 @@ export class UserSignatureComponent implements OnInit {
   }
 
   public provide() {
+    this.readOnly = false;
     this.signature = this.signature ? this.signature : '';
     this.enableSaveBtn = false;
   }

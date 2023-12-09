@@ -1,0 +1,12 @@
+.dynamic-popover-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 80px;
+  --width: fit-content;
+}
+
+.center-popover-container::part(content) {
+  top: 20% !important;
+  --min-width: 300px;
+}

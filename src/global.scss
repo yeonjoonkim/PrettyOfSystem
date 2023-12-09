@@ -51,8 +51,10 @@
 @import './theme/itl-phone/itl-phone.scss';
 @import './theme/variables.scss';
 @import './theme/price-card//price-card.scss';
+@import './theme/ion-popover/ion-popover.scss';
+@import './theme/loading/loading.scss';
 
-ion-app,
+s ion-app,
 ion-content {
   --ion-background-color: var(--background);
   background: var(--background);
@@ -84,8 +86,8 @@ ion-toolbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 28px;
-  height: 28px;
+  width: 38px;
+  height: 38px;
 }
 
 .svg-icon img {
@@ -142,10 +144,12 @@ ion-toolbar {
   margin: 5px;
   cursor: pointer;
 }
+
 .title {
   color: var(--title);
   font-weight: bold;
 }
+
 .active {
   --background: var(--active);
   background-color: var(--active);
@@ -163,66 +167,6 @@ ion-toolbar {
 .modal-container {
   margin-top: 12px;
   background: var(--background);
-}
-
-.logo-loading {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  --background: #transparent !important;
-  position: relative;
-  width: 100%;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.loading-wrapper.sc-ion-loading-md {
-  flex-direction: column;
-}
-.loading-wrapper.sc-ion-loading-md .loading-content {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  -webkit-margin-start: 0;
-  -margin-inline-start: 0;
-}
-.sc-ion-loading-ios {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  -webkit-margin-start: 0;
-  -margin-inline-start: 0;
-}
-
-.loading-spinner.sc-ion-loading-md + .loading-content.sc-ion-loading-md,
-.loading-spinner.sc-ion-loading-ios + .loading-content.sc-ion-loading-ios {
-  -webkit-margin-start: 0;
-  -webkit-margin-left: 0;
-  margin-inline-start: 0;
-  margin-left: 0;
-}
-
-.logo-loading::before,
-.logo-loading::after,
-.logo-loading::backdrop {
-  content: '';
-  position: absolute;
-  top: 43%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: url('./assets/logo/prettyofsystem-logo-white.svg') no-repeat center center;
-  background-size: contain;
-  width: 100px;
-  height: 100px;
-}
-
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 50vh;
 }
 
 .date-pick-popup-container {
@@ -244,14 +188,6 @@ ion-toolbar {
   height: 100%; /* Viewport height */
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
   z-index: -1; /* Behind the content of the container */
-}
-
-.pop-over-container {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  padding: 80px;
-  --width: fit-content;
 }
 
 .delete-ion-sliding-option {

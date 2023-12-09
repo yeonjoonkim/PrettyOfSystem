@@ -11,6 +11,11 @@ const routes: Routes = [
     path: 'information',
     loadChildren: () => import('./information/information.module').then(m => m.InformationPageModule),
   },
+  {
+    path: 'user-massage-setting',
+    loadChildren: () =>
+      import('./user-massage-setting/user-massage-setting.module').then(m => m.UserMassageSettingPageModule),
+  },
 ];
 
 @NgModule({

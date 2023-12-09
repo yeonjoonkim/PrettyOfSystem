@@ -21,6 +21,7 @@ import { UserAddressComponent } from './user-address/user-address.component';
 import { UserMedicalHistoryComponent } from './user-medical-history/user-medical-history.component';
 import { UserPrivateInsuranceComponent } from './user-private-insurance/user-private-insurance.component';
 import { MedicalHistoryListModule } from '../../medical/medical-histroy-list/medical-history-list.module';
+import { MedicalHistoryChipModule } from '../../medical/medical-histroy-chip/medical-history-chip.module';
 import { UserMedicalOtherConditionComponent } from './user-medical-other-condition/user-medical-other-condition.component';
 import { UserSignatureComponent } from './user-signature/user-signature.component';
 
@@ -47,6 +48,7 @@ import { UserSignatureComponent } from './user-signature/user-signature.componen
     LanguageSelectionModule,
     MedicalHistoryListModule,
     MedicalHsitoryOtherStatusPipeModule,
+    MedicalHistoryChipModule,
   ],
   exports: [UserInformationComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

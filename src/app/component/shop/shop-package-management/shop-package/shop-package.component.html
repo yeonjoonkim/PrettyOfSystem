@@ -19,7 +19,7 @@
             tooltip="label.description.translatedvalueguiance"
             [readOnly]="form.readOnly"
             [(value)]="current.package.titleProp"
-            (valueChange)="onChangeTitleProp()"
+            (valueChange)="handleEnabledSaveBtn()"
             [min]="2"
             [max]="100"
             [isRequired]="true"></text-box>

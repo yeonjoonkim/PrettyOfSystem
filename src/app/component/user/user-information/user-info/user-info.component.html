@@ -1,22 +1,17 @@
 <flex-row *ngIf="user">
-  <flex-row-item class="edit-btn-group">
-    <kendo-button
-      *ngIf="readOnly"
-      class="edit-btn"
-      icon="edit"
-      themeColor="success"
-      (click)="readOnly = false"></kendo-button>
-    <kendo-button
-      *ngIf="!readOnly"
-      class="edit-btn"
-      icon="save"
-      themeColor="success"
-      [disabled]="!enableSaveBtn || requesting"
-      (click)="onSave()">
-    </kendo-button>
-  </flex-row-item>
-  <flex-row-item>
+  <flex-row-item class="setting-title">
     <legend>{{ 'label.title.information' | languageTransform: 'System' | async }}</legend>
+    <button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </button>
+    <button
+      *ngIf="!readOnly"
+      class="save-btn"
+      themeColor="success"
+      (click)="onSave()"
+      [disabled]="!enableSaveBtn || requesting">
+      {{ 'button.title.save' | languageTransform: 'System' | async }}
+    </button>
   </flex-row-item>
 </flex-row>
 

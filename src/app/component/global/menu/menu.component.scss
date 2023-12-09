@@ -96,6 +96,8 @@ ion-list {
 @media (max-height: 712px) {
   #menu-content {
     max-height: 450px;
+    overflow: hidden;
+    overflow-y: scroll;
   }
 }
 

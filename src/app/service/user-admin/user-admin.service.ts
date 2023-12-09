@@ -86,7 +86,7 @@ export class UserAdminService {
         otherStatus: null,
       },
       massage: {
-        pressureLevel: 0,
+        pressureLevel: 1,
         areas: [],
       },
     };

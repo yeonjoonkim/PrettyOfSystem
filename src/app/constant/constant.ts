@@ -1,5 +1,15 @@
 import firebase from 'firebase/compat/app';
-import { Default, State, Date, Login, Text, BookingSearchIconType, PackageDiscountType } from './constant-value';
+import {
+  Default,
+  State,
+  Date,
+  Login,
+  Text,
+  BookingSearchIconType,
+  PackageDiscountType,
+  Massage,
+  Medical,
+} from './constant-value';
 export {
   Default,
   State,
@@ -9,6 +19,8 @@ export {
   SystemSetting,
   Login,
   Text,
+  Massage,
+  Medical,
   PackageDiscountType,
 } from './constant-value';
 export { MassageDescriptionType } from './constant-massage';
@@ -62,3 +74,16 @@ export type APITranslationStatus = (typeof API.TranslateStatus)[keyof typeof API
 
 //Booking
 export type BookingSearchIconType = (typeof BookingSearchIconType)[keyof typeof BookingSearchIconType];
+
+//Massage
+export type MassageBodyPreferenceType =
+  (typeof Massage.Body.PreferenceType)[keyof typeof Massage.Body.PreferenceType];
+export type MassageBodyPreferenceNameType =
+  (typeof Massage.Body.PreferenceName)[keyof typeof Massage.Body.PreferenceName];
+
+//Medical Insurance Company
+export type MedicalInsuranceType = (typeof Medical.Insurance)[keyof typeof Medical.Insurance];
+//Medical History
+export type MedicalHistorySystemType =
+  (typeof Medical.History.SystemType)[keyof typeof Medical.History.SystemType];
+export type MedicalHistoryType = (typeof Medical.History.Type)[keyof typeof Medical.History.Type];

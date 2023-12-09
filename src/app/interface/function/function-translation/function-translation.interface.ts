@@ -46,7 +46,7 @@ export type OpenApiInstanceType = {
   expiredDate: Date;
   shopId: string;
   serviceId: string;
-  format: 'upper' | 'lower' | 'title' | 'description' | '';
+  format: TextFormatType;
 };
 
 export type OpenApiHeaderType = {
