@@ -89,8 +89,6 @@ export class ShopSettingFinanceComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onChangeClosingTime() {}
-
   private handleEnabledSaveBtn() {
     this._validator.cardSurcharge = this.setting.financial.cardSurchargeRate > 0;
     this._validator.cashDiscount = this.setting.financial.cashDiscountRate > 0;

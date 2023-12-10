@@ -35,7 +35,8 @@ export class ShopServiceManagementService {
   public isReachToMax$!: Observable<boolean>;
   public progressBar$!: Observable<ShopLimitedProgpressBarType>;
   public extraFilter$!: Observable<NameValuePairType[]>;
-
+  public hasInsuranceProvider$!: Observable<boolean>;
+  public hasNotInsuranceProvider$!: Observable<boolean>;
   constructor(
     public relateShopService: ShopRelatedServiceService,
     public modal: ShopServiceModalService,
@@ -54,6 +55,8 @@ export class ShopServiceManagementService {
     this.service$ = this._shop.services$;
     this.specialisedEmployees$ = this._shop.specializedEmployeeFilter$;
     this.extraFilter$ = this._shop.extraFilter$;
+    this.hasInsuranceProvider$ = this._shop.hasInsuranceProvider$;
+    this.hasNotInsuranceProvider$ = this._shop.hasNotInsuranceProvider$;
     this.translateRequest();
     this.isReachToMaxListener();
     this.activeProgressBar();

@@ -1,0 +1,58 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  [isDeleteRequired]="false"
+  (onClickDismiss)="dismiss()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()">
+</form-header>
+<ion-content [scrollable]="true">
+  <flex-col class="modal-container">
+    <flex-col-item>
+      <p>
+        {{ 'label.description.wouldyouliketoprovideinsuranceprovider' | languageTransform: 'System' | async }}
+        <input
+          type="checkbox"
+          kendoCheckBox
+          [checked]="insurance !== null"
+          (click)="onChangeProviderOption()"
+          [disabled]="form.readOnly" />
+      </p>
+    </flex-col-item>
+
+    <flex-col-item *ngIf="insurance">
+      <name-value-pair-single-dropdown-selection
+        title="label.title.provider"
+        [readOnly]="form.readOnly"
+        [(selected)]="selectedHealthFund"
+        [selection]="healthFundSelection"
+        (selectedChange)="onChangeSelectedProvider()"></name-value-pair-single-dropdown-selection>
+    </flex-col-item>
+    <flex-col-item *ngIf="insurance">
+      <text-box
+        title="label.title.provider"
+        [readOnly]="form.readOnly"
+        [(value)]="insurance.provider"
+        [(validate)]="validator.provider"
+        [isRequired]="true"
+        [isUpperFormat]="true"
+        [min]="1"
+        [max]="20"
+        (valueChange)="handleEnabledSaveBtn()"></text-box>
+    </flex-col-item>
+    <flex-col-item *ngIf="insurance">
+      <text-box
+        title="label.title.providernumber"
+        [readOnly]="form.readOnly"
+        [(value)]="insurance.providerNo"
+        [(validate)]="validator.providerNo"
+        [isRequired]="true"
+        [isUpperFormat]="true"
+        [min]="1"
+        [max]="20"
+        (valueChange)="handleEnabledSaveBtn()"></text-box>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

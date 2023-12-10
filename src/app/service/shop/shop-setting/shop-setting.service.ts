@@ -4,6 +4,7 @@ import {
   IShopSetting,
   ShopCapacityType,
   ShopConfigurationType,
+  ShopInsuranceProvider,
   ShopUpdateContactProp,
   ShopWorkHoursType,
 } from 'src/app/interface';
@@ -87,6 +88,19 @@ export class ShopSettingService {
     let config = await this._shop.config();
     if (config !== null) {
       config.setting = setting;
+      await this._loading.show();
+      const update = await this.shopConfigRepo.updateShopConfiguration(config);
+      await this._loading.dismiss();
+      return update;
+    } else {
+      return false;
+    }
+  }
+
+  public async updateInsuranceProvider(provider: ShopInsuranceProvider | null) {
+    let config = await this._shop.config();
+    if (config !== null) {
+      config.setting.insurance = provider;
       await this._loading.show();
       const update = await this.shopConfigRepo.updateShopConfiguration(config);
       await this._loading.dismiss();

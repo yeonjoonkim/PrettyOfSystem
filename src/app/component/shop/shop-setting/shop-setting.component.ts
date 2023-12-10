@@ -10,6 +10,7 @@ import { ShopSettingOperatingHoursComponent } from './modal/shop-setting-operati
 import { ShopSettingWaitingListComponent } from './modal/shop-setting-waiting-list/shop-setting-waiting-list.component';
 import { SystemShopCapacityModalService } from 'src/app/service/system/system-shop-capacity/system-shop-capacity-modal/system-shop-capacity-modal.service';
 import { firstValueFrom } from 'rxjs';
+import { ShopSettingInsuranceProviderComponent } from './modal/shop-setting-insurance-provider/shop-setting-insurance-provider.component';
 
 @Component({
   selector: 'shop-setting',
@@ -45,6 +46,8 @@ export class ShopSettingComponent implements OnInit {
       await this.openCapacity();
     } else if (option.isWaitingList) {
       await this.openWaitingList();
+    } else if (option.isInsuranceProvider) {
+      await this.openInsuranceProvider();
     }
   }
 
@@ -119,12 +122,23 @@ export class ShopSettingComponent implements OnInit {
   }
 
   private async openWaitingList() {
-    const cap = await firstValueFrom(this._setting.capacity$);
-    if (cap !== null && !this._isOpen) {
+    if (!this._isOpen) {
       this._isOpen = true;
       const modal = await this._modal.create({
         presentingElement: await this._modal.getTop(),
         component: ShopSettingWaitingListComponent,
+      });
+      await modal.present();
+      await this.handleModalClose(modal);
+    }
+  }
+
+  private async openInsuranceProvider() {
+    if (!this._isOpen) {
+      this._isOpen = true;
+      const modal = await this._modal.create({
+        presentingElement: await this._modal.getTop(),
+        component: ShopSettingInsuranceProviderComponent,
       });
       await modal.present();
       await this.handleModalClose(modal);
