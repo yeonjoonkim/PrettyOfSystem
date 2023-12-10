@@ -18,6 +18,7 @@ import { ShopSettingFinanceComponent } from './modal/shop-setting-finance/shop-s
 import { ShopSettingContactComponent } from './modal/shop-setting-contact/shop-setting-contact.component';
 import { ShopSettingOperatingHoursComponent } from './modal/shop-setting-operating-hours/shop-setting-operating-hours.component';
 import { ShopSettingWaitingListComponent } from './modal/shop-setting-waiting-list/shop-setting-waiting-list.component';
+import { ShopSettingInsuranceProviderComponent } from './modal/shop-setting-insurance-provider/shop-setting-insurance-provider.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -38,6 +39,7 @@ import { ShopSettingWaitingListComponent } from './modal/shop-setting-waiting-li
     ShopSettingContactComponent,
     ShopSettingOperatingHoursComponent,
     ShopSettingWaitingListComponent,
+    ShopSettingInsuranceProviderComponent,
   ],
   exports: [ShopSettingComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

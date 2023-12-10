@@ -55,6 +55,10 @@ export class ShopService {
   public servicePriceList$!: Observable<ShopServiceDocumentType[]>;
   public extraPriceList$!: Observable<ShopExtraDocumentType[]>;
 
+  //Has
+  public hasInsuranceProvider$!: Observable<boolean>;
+  public hasNotInsuranceProvider$!: Observable<boolean>;
+
   constructor(
     public role: UserRoleService,
     private _user: UserService,
@@ -92,6 +96,7 @@ export class ShopService {
     this.servicePriceListListener();
     this.packagePriceListListener();
     this.extraPriceListListener();
+    this.insuranceProviderListener();
   }
 
   public translatedRequestFilterByServiceIds(shopId: string, serviceIds: string[]) {
@@ -327,6 +332,19 @@ export class ShopService {
         }
       })
     );
+  }
+
+  private insuranceProviderListener() {
+    this.hasInsuranceProvider$ = this.config$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return of(config.setting.insurance !== null);
+        } else {
+          return of(false);
+        }
+      })
+    );
+    this.hasNotInsuranceProvider$ = this.hasInsuranceProvider$.pipe(map(hasInsurance => !hasInsurance));
   }
 
   private servicePriceListListener() {

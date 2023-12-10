@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   IFormHeaderModalProp,
-  IShopSetting,
   NameValuePairType,
-  ShopConfigurationType,
   ShopCountryType,
   ShopServiceModalDocumentProp,
   ShopServiceOptionType,
@@ -12,9 +10,8 @@ import { NavParams } from '@ionic/angular';
 import * as Constant from 'src/app/constant/constant';
 import { cloneDeep } from 'lodash-es';
 import { ModalController } from '@ionic/angular';
-import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-management/shop-service-management.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'shop-service',
@@ -28,6 +25,8 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   public current!: ShopServiceModalDocumentProp;
   public extraSelection: NameValuePairType[] = [];
   public selectedExtras: NameValuePairType[] = [];
+  public hasInsuranceProvider$!: Observable<boolean>;
+  public hasNotInsuranceProvider$!: Observable<boolean>;
   private _before!: ShopServiceModalDocumentProp;
 
   public validator = {
@@ -37,9 +36,11 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   constructor(
     private _modalCtrl: ModalController,
     private _navParams: NavParams,
-    private _global: GlobalService,
     private _shopService: ShopServiceManagementService
-  ) {}
+  ) {
+    this.hasInsuranceProvider$ = this._shopService.hasInsuranceProvider$;
+    this.hasNotInsuranceProvider$ = this._shopService.hasNotInsuranceProvider$;
+  }
 
   ngOnDestroy() {
     this._configSubscription?.unsubscribe();

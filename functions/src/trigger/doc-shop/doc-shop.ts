@@ -44,6 +44,10 @@ export const onShopUpdate = onDocumentUpdated(Db.Context.ShopConfiguration + '/{
       await resetShopUserRoster(after);
     }
 
+    if (event.isDeactivateInsurance) {
+      await deactivateInsuranceServices(after.id);
+    }
+
     if (event.isTranslatedRequestDelete) {
       const requests: string[] = before.translatedRequestIds.filter(s => !after.translatedRequestIds.includes(s));
 
@@ -224,5 +228,26 @@ const resetShopUserRoster = async function (shop: I.ShopConfigurationType) {
         await Repository.User.updateSelectedUser(user);
       }
     });
+  }
+};
+
+const deactivateInsuranceServices = async function (shopId: string) {
+  const service = await Repository.Shop.Service.getSelectShop(shopId);
+  const pack = await Repository.Shop.Package.getSelectShop(shopId);
+  const insurancedService = service.filter(s => s.isInsuranceCover);
+  const insurancedPackage = pack.filter(s => s.isInsuranceCover);
+
+  if (insurancedService.length > 0) {
+    for (let service of insurancedService) {
+      service.isInsuranceCover = false;
+      await Repository.Shop.Service.updateService(service);
+    }
+  }
+
+  if (insurancedPackage.length > 0) {
+    for (let p of insurancedPackage) {
+      p.isInsuranceCover = false;
+      await Repository.Shop.Package.updatePackage(p);
+    }
   }
 };

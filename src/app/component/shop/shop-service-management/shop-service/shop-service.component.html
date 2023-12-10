@@ -11,6 +11,13 @@
 </form-header>
 <ion-content [scrollable]="true" *ngIf="current">
   <flex-col class="modal-container">
+    <flex-col-item *ngIf="hasNotInsuranceProvider$ | async" class="default-placeholder">
+      {{
+        'label.description.toactivateinsurancebuttonpleasegotoshopsettingandopentheinsuranceprovider'
+          | languageTransform: 'System'
+          | async
+      }}
+    </flex-col-item>
     <flex-row id="info">
       <flex-row-item>
         <text-box
@@ -27,7 +34,7 @@
       <flex-row-item>
         <flex-col id="check-boxes">
           <flex-col-item id="check-box-container">
-            <div id="insurance-cover">
+            <div id="insurance-cover" *ngIf="hasInsuranceProvider$ | async">
               <kendo-label text="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox

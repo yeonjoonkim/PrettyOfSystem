@@ -40,6 +40,7 @@ export type OnChangeShopType = {
   isTranslatedRequestChange: boolean;
   isTranslatedRequestDelete: boolean;
   session: OnChangeShopSessionType;
+  isDeactivateInsuranceProvider: boolean;
 };
 
 export type OnChangeShopSessionType = {
@@ -50,6 +51,7 @@ export type OnChangeShopSessionType = {
 export type OnChangeShopActionType = {
   isSendMsgClientShopInfoChange: boolean;
   isResetRoster: boolean;
+  isDeactivateInsurance: boolean;
   isActiveStatusChange: boolean;
   isTranslatedRequestDelete: boolean;
 };

@@ -12,6 +12,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
 import { cloneDeep } from 'lodash-es';
 import { ShopPackageManagementService } from 'src/app/service/shop/shop-package-management/shop-package-management.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'shop-package',
   templateUrl: './shop-package.component.html',
@@ -33,13 +34,18 @@ export class ShopPackageComponent implements OnInit {
     title: false,
     price: false,
   };
+  public hasInsuranceProvider$!: Observable<boolean>;
+  public hasNotInsuranceProvider$!: Observable<boolean>;
   private _before!: ShopPackageModalDocumentProp;
   constructor(
     private _modalCtrl: ModalController,
     private _navParams: NavParams,
     private _global: GlobalService,
     private _shopPackage: ShopPackageManagementService
-  ) {}
+  ) {
+    this.hasInsuranceProvider$ = this._shopPackage.hasInsuranceProvider$;
+    this.hasNotInsuranceProvider$ = this._shopPackage.hasNotInsuranceProvider$;
+  }
 
   async ngOnInit() {
     this.loadingFormCtrl();

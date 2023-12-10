@@ -15,6 +15,7 @@ export const getChangeDectection = async function (
   changeAction.isTranslatedRequestChange = isTranslatedRequestChange(before, after);
   changeAction.isTranslatedRequestDelete = isTranslatedRequestDelete(before, after);
   changeAction.session = isSessionChange(before, after);
+  changeAction.isDeactivateInsuranceProvider = deactivateInsurance(before, after);
 
   return changeAction;
 };
@@ -26,6 +27,7 @@ export const getChangeAction = function (c: I.OnChangeShopType) {
     (c.isAddressChanged || c.isEmailChanged || c.isPhoneChanged || c.isOperatingHourChanged) && c.isPreimum;
   event.isActiveStatusChange = c.isActiveChanged;
   event.isTranslatedRequestDelete = c.isTranslatedRequestChange && c.isTranslatedRequestDelete;
+  event.isDeactivateInsurance = c.isDeactivateInsuranceProvider;
   return event;
 };
 
@@ -124,6 +126,10 @@ const isSessionChange = function (
   };
 };
 
+const deactivateInsurance = function (before: I.ShopConfigurationType, after: I.ShopConfigurationType) {
+  return before.setting.insurance !== null && after.setting.insurance === null;
+};
+
 const getDefaultChangeType = function (): I.OnChangeShopType {
   return {
     isActiveChanged: false,
@@ -134,6 +140,7 @@ const getDefaultChangeType = function (): I.OnChangeShopType {
     isPreimum: false,
     isTranslatedRequestChange: false,
     isTranslatedRequestDelete: false,
+    isDeactivateInsuranceProvider: false,
     session: {
       isWaitingListRefresh: false,
       isWaitingListUpdate: false,
@@ -145,6 +152,7 @@ const getDefaultActionType = function (): I.OnChangeShopActionType {
   return {
     isSendMsgClientShopInfoChange: false,
     isResetRoster: false,
+    isDeactivateInsurance: false,
     isActiveStatusChange: false,
     isTranslatedRequestDelete: false,
   };

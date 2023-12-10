@@ -43,6 +43,9 @@ export class ShopPackageManagementService {
   public progressBar$!: Observable<ShopLimitedProgpressBarType>;
   public serviceTranslatedRequest$!: Observable<ChatGptTranslateDocumentType[]>;
   public extraServiceRequest$!: Observable<ChatGptTranslateDocumentType[]>;
+  public hasInsuranceProvider$!: Observable<boolean>;
+  public hasNotInsuranceProvider$!: Observable<boolean>;
+
   constructor(
     private _shop: ShopService,
     private _packageRepo: ShopPackageRepositoryService,
@@ -66,6 +69,8 @@ export class ShopPackageManagementService {
     this.operatingWorkHour$ = this._shop.operatingWorkHours$;
     this.serviceTranslatedRequest$ = this._shopService.translatedRequest$;
     this.extraServiceRequest$ = this._shopExtra.translatedRequest$;
+    this.hasInsuranceProvider$ = this._shop.hasInsuranceProvider$;
+    this.hasNotInsuranceProvider$ = this._shop.hasNotInsuranceProvider$;
     this.translateRequest();
     this.filterPropListener();
     this.isReachToMaxListener();

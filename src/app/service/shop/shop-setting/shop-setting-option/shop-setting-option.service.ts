@@ -10,6 +10,7 @@ export type IShopSettingOptionType = {
   isOperatingHours: boolean;
   isCapacity: boolean;
   isWaitingList: boolean;
+  isInsuranceProvider: boolean;
 };
 
 @Injectable({
@@ -25,6 +26,7 @@ export class ShopSettingOptionService {
     operatingHours: this._title + 'operatinghours',
     capacity: this._title + 'capacity',
     waitingList: this._title + 'waitinglist',
+    insuranceprovider: this._title + 'insuranceprovider',
   };
   constructor() {}
 
@@ -37,6 +39,7 @@ export class ShopSettingOptionService {
       this.calendar(),
       this.capacity(),
       this.waitingList(),
+      this.insuranceProvider(),
     ];
   }
 
@@ -96,6 +99,14 @@ export class ShopSettingOptionService {
     return option;
   }
 
+  private insuranceProvider() {
+    const option = this.defaultOption();
+    option.name = this.name.insuranceprovider;
+    option.img = 'assets/shop-setting/capacity.svg';
+    option.isInsuranceProvider = true;
+    return option;
+  }
+
   private defaultOption() {
     const result: IShopSettingOptionType = {
       name: '',
@@ -107,6 +118,7 @@ export class ShopSettingOptionService {
       isOperatingHours: false,
       isCapacity: false,
       isWaitingList: false,
+      isInsuranceProvider: false,
     };
     return result;
   }
