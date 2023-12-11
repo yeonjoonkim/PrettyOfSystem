@@ -30,6 +30,28 @@ export interface IUser {
   signature: string | null;
 }
 
+export type ChangeNumberUserCriteriaType = {
+  firstName: string;
+  lastName: string;
+  gender: Constant.GenderType;
+  email: string;
+  previousPhoneNumber: string;
+  dob: string;
+};
+
+export type ChangePhoneNumberRequestDocumentType = {
+  id: string;
+  userId: string;
+  expiredDate: string;
+  newPhoneNumber: string;
+  emailAddress: string;
+  status: Constant.ChangeNumberRequestStatusType;
+  url: string;
+  attempt: number; //limited 3
+};
+
+//2023-12-11T01:00:00
+
 export type ShopEmployeeScheduleChangeResult = {
   applyAllWeek: boolean;
   roster: ShopOperatingDailyType;

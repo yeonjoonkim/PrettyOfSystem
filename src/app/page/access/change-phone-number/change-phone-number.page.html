@@ -1,0 +1,27 @@
+<ion-header [translucent]="true" *ngIf="start">
+  <ion-toolbar>
+    <ion-title
+      >{{'label.title.emailverification' | languageTransform: 'System' | async}} {{'label.title.success' |
+      languageTransform: 'System' | async}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="modal-container margin-auto" *ngIf="!verified && start">
+    <div class="phone-number">
+      <phone-number [(phone)]="phoneNumber" [isNewPhoneNumber]="true" [(validate)]="validator"></phone-number>
+    </div>
+    <div class="btn">
+      <button kendoButton [disabled]="!validator" themeColor="success" (click)="onSubmit()">
+        <p>{{'label.title.request' | languageTransform: 'System' | async}}</p>
+      </button>
+    </div>
+  </div>
+  <div class="modal-container margin-auto success" *ngIf="verified && start">
+    <div class="success-message">
+      <legend>{{'messagesuccess.title.request' | languageTransform: 'System' | async}}</legend>
+      <p>{{'label.description.phonenumberchangesuccess' | languageTransform: 'System' | async}}</p>
+    </div>
+  </div>
+</ion-content>

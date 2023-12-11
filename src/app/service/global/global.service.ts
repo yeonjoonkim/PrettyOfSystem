@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { DeleteConfirmationAlert } from './confirmation-alert/confirmation-alert.service';
 import { ErrorReporterService } from './error-reporter/error-reporter.service';
 import { LanguageService } from './language/language.service';
@@ -20,12 +20,14 @@ import { AgreementModalService } from './agreement-modal/agreement-modal.service
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DeviceService } from './device/device.service';
 import { PrivateHealthInsuranceService } from './private-health-insurance/private-health-insurance.service';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalService {
   constructor(
+    @Inject(DOCUMENT) private _document: Document,
     public appAgreement: AgreementModalService,
     public confirmAlert: DeleteConfirmationAlert,
     public errorReport: ErrorReporterService,
@@ -51,6 +53,16 @@ export class GlobalService {
 
   public isUndefinedOrNull(data: any): boolean {
     return data === undefined || data === null;
+  }
+
+  public currentDomain() {
+    const availableURLs = ['localhost', 'pos.clinic'];
+    const hostname = window.location.hostname;
+    const domain = availableURLs.some(u => u.includes(hostname)) ? hostname : 'pos.clinic';
+    const result = domain.includes('localhost')
+      ? `${window.location.hostname}:${window.location.port}`
+      : `https://${domain}`;
+    return result;
   }
 
   public newId() {

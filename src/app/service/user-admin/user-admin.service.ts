@@ -212,7 +212,7 @@ export class UserAdminService {
     return existedUser !== null;
   }
 
-  private async toastExsitingAccountError() {
+  public async toastExsitingAccountError() {
     const msg = await this._global.language.transform('messageerror.description.existingacc');
     await this._global.toast.presentError(msg);
   }

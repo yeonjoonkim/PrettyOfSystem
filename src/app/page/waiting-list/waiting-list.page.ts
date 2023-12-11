@@ -9,8 +9,6 @@ import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.se
   templateUrl: './waiting-list.page.html',
   styleUrls: ['./waiting-list.page.scss'],
 })
-
-//http://localhost:8100/internal-api/waiting-list/84eYc8ZDSvEKwPxv1By9
 export class WaitingListPage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   private _sessionId: string | null = this._route.snapshot.paramMap.get('id');

@@ -1,0 +1,83 @@
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  (onClickCreate)="onRequest()"
+  (onClickDismiss)="dismiss()"></form-header>
+
+<ion-content>
+  <flex-col class="modal-container" *ngIf="!verifying && !verified">
+    <flex-col-item id="error-col-item" *ngIf="error">
+      <error-message-item>{{
+        'messageerror.description.usernotexisted' | languageTransform: 'System' | async
+      }}</error-message-item>
+    </flex-col-item>
+    <flex-row>
+      <flex-row-item>
+        <text-box
+          title="label.title.firstname"
+          [(value)]="criteria.firstName"
+          [(validate)]="validator.firstName"
+          (valueChange)="handleEnabledSaveBtn()"
+          [min]="1"
+          [max]="100"
+          [isRequired]="true"></text-box>
+      </flex-row-item>
+      <flex-row-item>
+        <text-box
+          title="label.title.lastname"
+          [(value)]="criteria.lastName"
+          [(validate)]="validator.lastName"
+          (valueChange)="handleEnabledSaveBtn()"
+          [min]="1"
+          [max]="100"
+          [isRequired]="true"></text-box>
+      </flex-row-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <phone-number
+          [isRequired]="true"
+          [isPreviousPhoneNumber]="true"
+          [(phone)]="criteria.previousPhoneNumber"
+          [(validate)]="validator.phoneNumber"
+          (phoneChange)="handleEnabledSaveBtn()"></phone-number>
+      </flex-row-item>
+      <flex-row-item>
+        <e-mail
+          [isRequired]="true"
+          [(email)]="criteria.email"
+          [(validate)]="validator.email"
+          (emailChange)="handleEnabledSaveBtn()"></e-mail>
+      </flex-row-item>
+    </flex-row>
+    <flex-row>
+      <flex-row-item>
+        <gender-selection [(gender)]="criteria.gender"></gender-selection>
+      </flex-row-item>
+      <flex-row-item>
+        <date-picker
+          title="label.title.dateofbrith"
+          [displayNextDay]="0"
+          [isDateOfBrith]="true"
+          [readOnly]="form.readOnly"
+          [(date)]="criteria.dob"></date-picker>
+      </flex-row-item>
+    </flex-row>
+  </flex-col>
+  <flex-col *ngIf="!verifying && verified" class="modal-container">
+    <flex-col-item class="email-verification-title">
+      <legend>{{ 'label.title.emailverification' | languageTransform: 'System' | async }}</legend>
+    </flex-col-item>
+    <flex-col-item class="email-verification-description">
+      {{ 'label.description.emailverificationdescription' | languageTransform: 'System' | async }}
+      {{ 'label.description.youwillreceivedanemailfromus' | languageTransform: 'System' | async }}
+    </flex-col-item>
+  </flex-col>
+  <flex-col>
+    <div class="loading-container" *ngIf="verifying && !verified">
+      <kendo-loader size="large"></kendo-loader>
+    </div>
+  </flex-col>
+</ion-content>

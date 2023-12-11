@@ -21,6 +21,8 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
   @Input() isRequired: boolean = false;
   @Input() isOptional: boolean = false;
   @Input() isTitleRequired: boolean = true;
+  @Input() isPreviousPhoneNumber: boolean = false;
+  @Input() isNewPhoneNumber: boolean = false;
   @Input() readOnly: boolean = false;
   @Input() defaultCountry: Constant.CountryCodeType = Constant.Default.CountryCodeType.Australia;
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
@@ -89,13 +91,20 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
     let readOnlyChange = changes['readOnly'];
     if (readOnlyChange) {
       this.onChangeReadOnly();
-      this.title = this.isTitleRequired ? 'label.title.phone' : '';
     }
   }
 
   ngOnInit() {
     this.setPlaceholder();
     this.setDefaultCountry();
+    this.title =
+      this.isTitleRequired && !this.isPreviousPhoneNumber && !this.isNewPhoneNumber
+        ? 'label.title.phone'
+        : this.isTitleRequired && this.isPreviousPhoneNumber
+        ? 'label.title.previousphonenumber'
+        : this.isTitleRequired && this.isNewPhoneNumber
+        ? 'label.title.newphonenumber'
+        : '';
   }
 
   private onChangeReadOnly() {

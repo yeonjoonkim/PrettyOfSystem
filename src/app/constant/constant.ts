@@ -8,6 +8,7 @@ import {
   BookingSearchIconType,
   PackageDiscountType,
   Massage,
+  ChangeNumberRequestStatus,
   Medical,
 } from './constant-value';
 export {
@@ -22,15 +23,20 @@ export {
   Massage,
   Medical,
   PackageDiscountType,
+  ChangeNumberRequestStatus,
 } from './constant-value';
 export { MassageDescriptionType } from './constant-massage';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
 import { API } from './constant-api';
-export { API } from './constant-api';
+export { API, Email } from './constant-api';
 
 //Login
 export type LoginStatusType = (typeof Login.Status)[keyof typeof Login.Status];
+
+//Change Phone Number
+export type ChangeNumberRequestStatusType =
+  (typeof ChangeNumberRequestStatus)[keyof typeof ChangeNumberRequestStatus];
 
 //Date
 export type TimeStamp = firebase.firestore.Timestamp;

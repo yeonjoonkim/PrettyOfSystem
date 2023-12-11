@@ -10,7 +10,7 @@ import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pip
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { ClientCreateAccountModule } from '../client/client-create-account/client-create-account.module';
-
+import { ClientChangePhoneNumberModule } from '../client/client-change-phone-number/client-change-phone-number.module';
 //Import Component
 import { WaitingListComponent } from './waiting-list.component';
 import { WaitingListLoginComponent } from './waiting-list-login/waiting-list-login.component';
@@ -25,6 +25,7 @@ import { WaitingListLoginComponent } from './waiting-list-login/waiting-list-log
     SharedFormModule,
     KendoUiModule,
     ClientCreateAccountModule,
+    ClientChangePhoneNumberModule,
   ],
   exports: [WaitingListComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

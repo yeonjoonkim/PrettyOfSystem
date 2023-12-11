@@ -64,7 +64,7 @@
       </kendo-progressbar>
     </flex-col-item>
     <flex-col-item>
-      <section id="otp-tool">
+      <section id="otp-tool" *ngIf="!login.verifying">
         <button id="otp-tool-btn" kendoButton (click)="reset()">
           {{ 'label.title.goback' | languageTransform: 'System' | async }}
         </button>
@@ -120,18 +120,18 @@
     </flex-col-item>
   </flex-col>
 
-  <flex-col>
+  <flex-col *ngIf="!login.verifying">
     <flex-col-item id="account-container">
       <button id="create-account-btn" (click)="createAccount()">
         {{ 'label.title.signup' | languageTransform: 'System' | async }}
       </button>
-      <button id="change-phone-number-btn" (click)="createAccount()">
+      <button id="change-phone-number-btn" (click)="changePhoneNumber()">
         {{ 'label.description.changephonenumber' | languageTransform: 'System' | async }}
       </button>
     </flex-col-item>
   </flex-col>
 
-  <flex-col>
+  <flex-col *ngIf="!login.verifying">
     <flex-col-item id="login-policy-container">
       <button id="privacy-policy-btn" (click)="presentPrivacyPolicy()">
         {{ 'label.title.privacypolicy' | languageTransform: 'System' | async }}

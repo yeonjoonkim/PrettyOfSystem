@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IUser, ShopEmployeeManagementUserType, UserAssociatedShopType, UserSettingType } from 'src/app/interface';
+import {
+  ChangeNumberUserCriteriaType,
+  IUser,
+  ShopEmployeeManagementUserType,
+  UserAssociatedShopType,
+  UserSettingType,
+} from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
 import { Observable, catchError, firstValueFrom, from, map, of, switchMap, take } from 'rxjs';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { override } from 'functions/src/service/user/user-setting-override/user-setting-override';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
+import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +23,7 @@ export class UserCredentialRepositoryService {
   constructor(
     private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
+    private _textTransform: TextTransformService,
     private _systemLanguageStorage: SystemLanguageStorageService
   ) {}
 
@@ -66,6 +74,34 @@ export class UserCredentialRepositoryService {
           const user = userQuerySnapshot.docs[0].data();
           user.setting = this.overrideSetting(user.setting);
           return user;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  public findIdAndEmailByChangeNumberUserCriteria(criteria: ChangeNumberUserCriteriaType) {
+    const formattedFirstName = this._textTransform.getTitleFormat(criteria.firstName);
+    const formattedLastName = this._textTransform.getTitleFormat(criteria.lastName);
+    const userCollectionRef = this._afs.collection<IUser>(Db.Context.User, ref =>
+      ref
+        .where('firstName', '==', formattedFirstName)
+        .where('lastName', '==', formattedLastName)
+        .where('phoneNumber', '==', criteria.previousPhoneNumber)
+        .where('gender', '==', criteria.gender)
+        .where('email', '==', criteria.email)
+        .where('dob', '==', criteria.dob)
+        .where('loginOption.phoneNumber', '==', true)
+        .limit(1)
+    );
+
+    return userCollectionRef.get().pipe(
+      map(userQuerySnapshot => {
+        if (userQuerySnapshot.docs.length > 0) {
+          const user = userQuerySnapshot.docs[0].data();
+          user.setting = this.overrideSetting(user.setting);
+          return { email: user.email, id: user.id };
         } else {
           return null;
         }
