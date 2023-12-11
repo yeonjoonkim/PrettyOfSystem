@@ -16,7 +16,7 @@ import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setti
 export class ShopSettingWaitingListComponent implements OnInit {
   @ViewChild('qrcode')
   private _qrcode!: QRCodeComponent;
-  private readonly _prefix: string = `https://${window.location.hostname}/internal-api/waiting-list`;
+  private _prefix!: string;
   private _destroy$ = new Subject<void>();
   private _waitingListSessionId!: string;
 
@@ -38,6 +38,7 @@ export class ShopSettingWaitingListComponent implements OnInit {
     private _formCtrl: FormControllerService,
     private _global: GlobalService
   ) {
+    this._prefix = `${this._global.currentDomain()}/internal-api/waiting-list`;
     this.form = this._formCtrl.setEditFormHeaderModalProp();
     this.form.headerTitle = 'label.title.waitinglist';
   }

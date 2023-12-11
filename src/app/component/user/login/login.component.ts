@@ -149,6 +149,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
+  public async changePhoneNumber() {
+    const modal = await this._clientModal.ChangePhoneNumber();
+    await modal.present();
+  }
+
   private startRecaptchaVerifier() {
     const auth = getAuth();
     this._recaptcha = new RecaptchaVerifier('recaptcha-container', { size: 'invisible' }, auth);

@@ -46,6 +46,13 @@ const routes: Routes = [
     loadChildren: () => import('./page/user/user.module').then(m => m.UserPageModule),
     canActivate: [isLogin],
   },
+  {
+    path: 'change-phone-number/:id',
+    loadChildren: () =>
+      import('./page/access/change-phone-number/change-phone-number.module').then(
+        m => m.ChangePhoneNumberPageModule
+      ),
+  },
 ];
 
 @NgModule({

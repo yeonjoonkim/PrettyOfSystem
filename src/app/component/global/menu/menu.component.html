@@ -32,9 +32,8 @@
         <ion-item
           button
           slot="header"
-          routerLink="/booking"
-          routerLinkActive="menu-active"
           class="menu-selector"
+          [class.menu-active]="selectedTitleHeading === 'booking'"
           (click)="onChangeMenu('/booking')">
           <ion-icon slot="start" name="home-outline"></ion-icon>
           {{ 'label.title.homepage' | languageTransform: 'System' | async }}
@@ -45,7 +44,7 @@
     <!-- User -->
     <ion-accordion-group *ngIf="user.isLoggedin$ | async">
       <ion-accordion>
-        <ion-item slot="header" class="menu-selector" routerLink="/user" routerLinkActive="menu-active">
+        <ion-item slot="header" class="menu-selector" [class.menu-active]="selectedTitleHeading === 'user'">
           <ion-icon slot="start" name="document-lock-outline"></ion-icon>
           {{ 'label.title.profile' | languageTransform: 'System' | async }}
         </ion-item>

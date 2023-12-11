@@ -21,7 +21,10 @@
     "resolveJsonModule": true,
     "lib": ["ES2022.Intl", "dom"],
     "useDefineForClassFields": false,
-    "types": ["chrome", "jest", "mocha"]
+    "types": ["chrome", "jest", "mocha"],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    
   },
   "include": [
     "src/**/*",
@@ -34,5 +37,7 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
+    
   }
+  
 }

@@ -34,6 +34,13 @@ export const Text = {
   } as const,
 } as const;
 
+export const ChangeNumberRequestStatus = {
+  Create: 'Create',
+  EmailSent: 'SentEmail',
+  EmailFail: 'SendFail',
+  Submit: 'Submit',
+} as const;
+
 export const Default = {
   Refresh: 'Refresh',
   Gender: {

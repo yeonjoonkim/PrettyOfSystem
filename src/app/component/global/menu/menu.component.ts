@@ -48,9 +48,9 @@ export class MenuComponent implements OnInit, OnDestroy {
       let menu = s.content.find(c => c.url === url);
       return menu;
     });
-    const userPage = this.handleUserPage(url);
-    const name = selectedMenu !== undefined ? selectedMenu.name : userPage ? userPage : '';
-
+    const userPage = this.handleCustomPage(url);
+    const name =
+      selectedMenu !== undefined ? selectedMenu.name : url === '/booking' ? 'booking' : userPage ? userPage : '';
     this.selectedTitleHeading = name;
     this._menuCtrl.close();
   }
@@ -109,7 +109,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     await this.onChangeMenu(currentUrl);
   }
 
-  private handleUserPage(url: string) {
+  private handleCustomPage(url: string) {
     const userInformation = 'user/information';
     const userSetting = 'user/setting';
 

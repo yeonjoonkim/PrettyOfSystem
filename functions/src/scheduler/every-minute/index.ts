@@ -14,6 +14,7 @@ export const EveryMinute = onSchedule('* * * * *', async event => {
 
     //Every Minute
     await Session.WaitingList.manage(event.scheduleTime);
+    await Session.ChangePhoneNumber.manage(event.scheduleTime);
   } catch (error) {
     const time = Service.Scheduler.ShopTime.getOfficeStamp(event.scheduleTime);
     logger.error(`task Run at: ${time}`, error);

@@ -25,12 +25,16 @@ const SystemLanguageTranslateRequest: string = 'systemLanguageTranslateRequest';
 const waitingListCriteria: string = 'waitingListCriteria';
 const waitingListSession: string = 'waitingListSession';
 
+//Change Phone Number Request
+const changePhoneNumberRequest: string = 'changePhoneNumberRequest';
+
 export const Context = {
   OpenApiInstance: OpenApiInstance,
   SystemLangaugeTranslateRequest: SystemLanguageTranslateRequest,
   ChatGptTranslateRequest: ChatGptTranslateRequest,
   ShopConfiguration: shopConfiguration,
   User: user,
+  ChangePhoneNumberRequest: changePhoneNumberRequest,
   Shop: {
     Service: shopService,
     Extra: shopExtra,
