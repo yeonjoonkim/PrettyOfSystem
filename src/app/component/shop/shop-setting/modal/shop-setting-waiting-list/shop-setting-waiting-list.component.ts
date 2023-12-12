@@ -7,6 +7,7 @@ import { IFormHeaderModalProp, NameValuePairType } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
+import { UserRoleService } from 'src/app/service/user/user-role/user-role.service';
 
 @Component({
   selector: 'shop-setting-waiting-list',
@@ -36,7 +37,8 @@ export class ShopSettingWaitingListComponent implements OnInit {
     private _modalCtrl: ModalController,
     private _shopSetting: ShopSettingService,
     private _formCtrl: FormControllerService,
-    private _global: GlobalService
+    private _global: GlobalService,
+    public role: UserRoleService
   ) {
     this._prefix = `${this._global.currentDomain()}/internal-api/waiting-list`;
     this.form = this._formCtrl.setEditFormHeaderModalProp();

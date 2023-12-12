@@ -11,6 +11,9 @@
 </form-header>
 <ion-content [scrollable]="true" *ngIf="!isLoading()">
   <flex-col class="modal-container">
+    <flex-col-item *ngIf="role.isSystemAdminAccess()">
+      <p>{{ url }}</p>
+    </flex-col-item>
     <flex-col-item>
       <name-value-pair-single-dropdown-selection
         title="label.title.timeout"
