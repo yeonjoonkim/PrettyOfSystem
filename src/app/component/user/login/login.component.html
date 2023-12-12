@@ -58,7 +58,7 @@
         [(validate)]="validator.otp"
         (valueChange)="onChangeOTP()"></text-box>
     </flex-col-item>
-    <flex-col-item>
+    <flex-col-item *ngIf="!login.verifying">
       <p id="otp-verification-timer">{{ timer.label }}</p>
       <kendo-progressbar [value]="timer.percent.used" [label]="{ visible: false }" [max]="100">
       </kendo-progressbar>
