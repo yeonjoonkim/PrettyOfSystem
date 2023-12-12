@@ -128,6 +128,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "native-run": "^1.7.2",
+    "ng-otp-input": "^1.9.3",
     "ng-packagr": "^16.2.3",
     "ng2-search-filter": "^0.5.1",
     "ngx-bootstrap": "^11.0.2",

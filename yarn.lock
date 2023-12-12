@@ -8754,6 +8754,13 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+ng-otp-input@^1.9.3:
+  version "1.9.3"
+  resolved "https://registry.npmjs.org/ng-otp-input/-/ng-otp-input-1.9.3.tgz"
+  integrity sha512-QiAvOeTVPk8DiY2dnVstyCikWnsY70TXgsVl2iBgz7nFnNM5sdrgbVj8tP0usGznJowVRygCQZJ+hzvYLEhIOQ==
+  dependencies:
+    tslib "^2.3.0"
+
 ng-packagr@^16.2.3:
   version "16.2.3"
   resolved "https://registry.npmjs.org/ng-packagr/-/ng-packagr-16.2.3.tgz"
