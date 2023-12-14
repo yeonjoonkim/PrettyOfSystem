@@ -1,43 +1,23 @@
 import * as I from '../../../../interface';
-
+import * as T from '../../../type-checker/type-checker';
 export const override = function (doc: I.ShopServiceDocumentType): I.ShopServiceDocumentType {
   return {
-    id: string(doc?.id),
-    shopId: string(doc?.shopId),
-    titleProp: string(doc?.titleProp),
-    descriptionProp: string(doc?.descriptionProp),
-    title: string(doc?.title),
-    description: string(doc?.description),
-    lastModifiedDate: string(doc?.lastModifiedDate),
-    lastModifiedEmployee: string(doc?.lastModifiedEmployee),
-    isInsuranceCover: boolean(doc?.isInsuranceCover),
-    isOil: boolean(doc?.isOil),
-    recommandForPregnant: boolean(doc?.recommandForPregnant),
-    extraIds: stringArray(doc?.extraIds),
-    relatedService: nameValuePair(doc?.relatedService),
-    specializedEmployees: nameValuePairArray(doc?.specializedEmployees),
+    id: T.string(doc?.id),
+    shopId: T.string(doc?.shopId),
+    titleProp: T.string(doc?.titleProp),
+    descriptionProp: T.string(doc?.descriptionProp),
+    title: T.string(doc?.title),
+    description: T.string(doc?.description),
+    lastModifiedDate: T.string(doc?.lastModifiedDate),
+    lastModifiedEmployee: T.string(doc?.lastModifiedEmployee),
+    isInsuranceCover: T.boolean(doc?.isInsuranceCover),
+    isOil: T.boolean(doc?.isOil),
+    recommandForPregnant: T.boolean(doc?.recommandForPregnant),
+    extraIds: T.stringArray(doc?.extraIds),
+    relatedService: T.nameValuePair(doc?.relatedService),
+    specializedEmployees: T.nameValuePairArray(doc?.specializedEmployees),
     options: serviceOptionArray(doc?.options),
   };
-};
-
-const string = function (str: string | null | undefined) {
-  return typeof str === 'string' ? str : '';
-};
-
-const stringArray = function (arr: string[] | null | undefined) {
-  return arr !== undefined && arr !== null ? arr : [];
-};
-
-const nameValuePair = function (pair: I.NameValuePairType | null | undefined) {
-  return pair !== undefined && pair !== null ? pair : { name: '', value: '' };
-};
-
-const nameValuePairArray = function (pairs: I.NameValuePairType[] | null | undefined) {
-  return pairs !== undefined && pairs !== null ? pairs : [];
-};
-
-const boolean = function (bool: boolean | null | undefined) {
-  return typeof bool === 'boolean' ? bool : false;
 };
 
 const serviceOptionArray = function (ops: I.ShopServiceOptionType[] | null | undefined) {
