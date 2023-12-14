@@ -5,123 +5,117 @@ import * as I from '../../interface';
 import * as Service from '../../service/index';
 import * as Constant from '../../constant';
 
-export const onShopServiceUpdated = onDocumentUpdated(
-  Db.Context.Shop.Service + '/{serviceId}',
-  async event => {
-    const serviceSnapshot = event.data;
-    const afterData = !serviceSnapshot?.after ? null : serviceSnapshot.after.data();
-    const beforeData = !serviceSnapshot?.before ? null : serviceSnapshot.before.data();
+export const onShopServiceUpdated = onDocumentUpdated(Db.Context.Shop.Service + '/{serviceId}', async event => {
+  const serviceSnapshot = event.data;
+  const afterData = !serviceSnapshot?.after ? null : serviceSnapshot.after.data();
+  const beforeData = !serviceSnapshot?.before ? null : serviceSnapshot.before.data();
 
-    const after = afterData !== null ? (afterData as I.ShopServiceDocumentType) : null;
-    const before = beforeData !== null ? (beforeData as I.ShopServiceDocumentType) : null;
+  const after =
+    afterData !== null && afterData !== undefined
+      ? Service.Shop.Document.Service.override(afterData as I.ShopServiceDocumentType)
+      : null;
+  const before =
+    beforeData !== null && beforeData !== undefined
+      ? Service.Shop.Document.Service.override(beforeData as I.ShopServiceDocumentType)
+      : null;
 
-    if (after !== null && before !== null) {
-      const isTitleChange = before.titleProp !== after.titleProp;
-      const isDescriptionChange = before.descriptionProp !== after.descriptionProp;
-      const isOptionChanged = Service.Trigger.ShopService.onChangeOption(before, after);
+  if (after !== null && before !== null) {
+    const isTitleChange = before.titleProp !== after.titleProp;
+    const isDescriptionChange = before.descriptionProp !== after.descriptionProp;
+    const isOptionChanged = Service.Trigger.ShopService.onChangeOption(before, after);
 
-      await handleOptionChangePacakge(isOptionChanged, after.shopId, after.id);
-      await handleUpdateCoupon(isOptionChanged, after.shopId, after.id);
-      if (isTitleChange) {
-        const coupons = await Repository.Shop.Coupon.getSelectShop(after.shopId);
-        const selectedCoupons = coupons.filter(s => s.serviceId === after.id);
+    await handleOptionChangePacakge(isOptionChanged, after.shopId, after.id);
+    await handleUpdateCoupon(isOptionChanged, after.shopId, after.id);
+    if (isTitleChange) {
+      const coupons = await Repository.Shop.Coupon.getSelectShop(after.shopId);
+      const selectedCoupons = coupons.filter(s => s.serviceId === after.id);
 
-        for (let coupon of selectedCoupons) {
-          coupon.titleProp = Service.TextTransform.preCleansingTranslateProp(after.titleProp);
-          await Repository.Shop.Coupon.updateCoupon(coupon);
-        }
-
-        const titleRequestDocument = await Repository.TranslateRequest.getDocument(
-          after.id,
-          after.shopId,
-          Constant.Text.Format.Title
-        );
-        if (titleRequestDocument !== null) {
-          titleRequestDocument.attempt = 0;
-          titleRequestDocument.error = [];
-          titleRequestDocument.result = [];
-          titleRequestDocument.status = Constant.API.TranslateStatus.Pending;
-          titleRequestDocument.prop = Service.TextTransform.preCleansingTranslateProp(
-            after.titleProp
-          );
-          await Repository.TranslateRequest.updateDocument(titleRequestDocument);
-        } else {
-          await Repository.Error.createErrorReport(
-            after,
-            'Title Could not found',
-            'update',
-            'onShopServiceUpdated'
-          );
-        }
+      for (let coupon of selectedCoupons) {
+        coupon.titleProp = Service.TextTransform.preCleansingTranslateProp(after.titleProp);
+        await Repository.Shop.Coupon.updateCoupon(coupon);
       }
 
-      if (isDescriptionChange) {
-        const descriptionRequestDocument = await Repository.TranslateRequest.getDocument(
-          after.id,
-          after.shopId,
-          Constant.Text.Format.Description
+      const titleRequestDocument = await Repository.TranslateRequest.getDocument(
+        after.id,
+        after.shopId,
+        Constant.Text.Format.Title
+      );
+      if (titleRequestDocument !== null) {
+        titleRequestDocument.attempt = 0;
+        titleRequestDocument.error = [];
+        titleRequestDocument.result = [];
+        titleRequestDocument.status = Constant.API.TranslateStatus.Pending;
+        titleRequestDocument.prop = Service.TextTransform.preCleansingTranslateProp(after.titleProp);
+        await Repository.TranslateRequest.updateDocument(titleRequestDocument);
+      } else {
+        await Repository.Error.createErrorReport(after, 'Title Could not found', 'update', 'onShopServiceUpdated');
+      }
+    }
+
+    if (isDescriptionChange) {
+      const descriptionRequestDocument = await Repository.TranslateRequest.getDocument(
+        after.id,
+        after.shopId,
+        Constant.Text.Format.Description
+      );
+      if (descriptionRequestDocument !== null) {
+        descriptionRequestDocument.attempt = 0;
+        descriptionRequestDocument.error = [];
+        descriptionRequestDocument.result = [];
+        descriptionRequestDocument.status = Constant.API.TranslateStatus.Pending;
+        descriptionRequestDocument.prop = Service.TextTransform.preCleansingTranslateProp(after.descriptionProp);
+        await Repository.TranslateRequest.updateDocument(descriptionRequestDocument);
+      } else {
+        await Repository.Error.createErrorReport(
+          after,
+          'Description Could not found',
+          'update',
+          'onShopServiceUpdated'
         );
-        if (descriptionRequestDocument !== null) {
-          descriptionRequestDocument.attempt = 0;
-          descriptionRequestDocument.error = [];
-          descriptionRequestDocument.result = [];
-          descriptionRequestDocument.status = Constant.API.TranslateStatus.Pending;
-          descriptionRequestDocument.prop = Service.TextTransform.preCleansingTranslateProp(
-            after.descriptionProp
-          );
-          await Repository.TranslateRequest.updateDocument(descriptionRequestDocument);
-        } else {
-          await Repository.Error.createErrorReport(
-            after,
-            'Description Could not found',
-            'update',
-            'onShopServiceUpdated'
-          );
-        }
       }
     }
   }
-);
+});
 
-export const onShopServiceDelete = onDocumentDeleted(
-  Db.Context.Shop.Service + '/{serviceId}',
-  async event => {
-    const serviceSnapshot = event.data;
-    const serviceData = !serviceSnapshot ? null : serviceSnapshot.data();
-    const service = serviceData !== null ? (serviceData as I.ShopServiceDocumentType) : null;
+export const onShopServiceDelete = onDocumentDeleted(Db.Context.Shop.Service + '/{serviceId}', async event => {
+  const serviceSnapshot = event.data;
+  const serviceData = !serviceSnapshot ? null : serviceSnapshot.data();
+  const service =
+    serviceData !== null && serviceData !== undefined
+      ? Service.Shop.Document.Service.override(serviceData as I.ShopServiceDocumentType)
+      : null;
 
-    if (service !== null) {
-      let packages = await Repository.Shop.Package.getSelectShop(service.shopId);
-      let coupons = await Repository.Shop.Coupon.getSelectShop(service.shopId);
+  if (service !== null) {
+    let packages = await Repository.Shop.Package.getSelectShop(service.shopId);
+    let coupons = await Repository.Shop.Coupon.getSelectShop(service.shopId);
 
-      //Delete Package;
-      packages = packages.filter(s => s.services.filter(s => s.id === service.id).length > 0);
-      packages = handleDeleteServiceInPackage(service.options, packages, service.id);
+    //Delete Package;
+    packages = packages.filter(s => s.services.filter(s => s.id === service.id).length > 0);
+    packages = handleDeleteServiceInPackage(service.options, packages, service.id);
 
-      const deletePackage = packages.filter(s => s.services.length === 0);
-      const updatePackage = packages.filter(s => s.services.length > 0);
+    const deletePackage = packages.filter(s => s.services.length === 0);
+    const updatePackage = packages.filter(s => s.services.length > 0);
 
-      for (let d of deletePackage) {
-        await Repository.Shop.Package.deletePackage(d);
-      }
+    for (let d of deletePackage) {
+      await Repository.Shop.Package.deletePackage(d);
+    }
 
-      for (let u of updatePackage) {
-        u = Service.Trigger.ShopPackage.updatePrice(u);
-        if (u.discountPrice === 0) {
-          await Repository.Shop.Package.deletePackage(u);
-        } else {
-          await Repository.Shop.Package.updatePackage(u);
-        }
-      }
-
-      //Delete Coupons
-      coupons = coupons.filter(s => s.serviceId === service.id);
-      for (let c of coupons) {
-        await Repository.Shop.Coupon.deleteCoupon(c);
+    for (let u of updatePackage) {
+      u = Service.Trigger.ShopPackage.updatePrice(u);
+      if (u.discountPrice === 0) {
+        await Repository.Shop.Package.deletePackage(u);
+      } else {
+        await Repository.Shop.Package.updatePackage(u);
       }
     }
+
+    //Delete Coupons
+    coupons = coupons.filter(s => s.serviceId === service.id);
+    for (let c of coupons) {
+      await Repository.Shop.Coupon.deleteCoupon(c);
+    }
   }
-);
+});
 
 const handleOptionChangePacakge = async function (
   change: I.OnChangeShopServiceOptionType,
@@ -153,9 +147,7 @@ const handleUpdateCoupon = async function (
 ) {
   let coupons = await Repository.Shop.Coupon.getSelectShop(shopId);
   const updateCoupons = coupons.filter(
-    s =>
-      s.serviceId === serviceId &&
-      change.update.filter(u => u.previous.min === s.option.min).length > 0
+    s => s.serviceId === serviceId && change.update.filter(u => u.previous.min === s.option.min).length > 0
   );
   const deleteCoupons = coupons.filter(
     c => change.delete.filter(s => c.option.min === s.min && c.option.price === s.price).length > 0
@@ -200,9 +192,7 @@ const handleUpdateServiceInPackage = function (
   for (let c of changes) {
     for (let pack of packages) {
       let service = pack.services.find(s => s.id === serviceId && c.previous.min === s.option.min);
-      const index = pack.services.findIndex(
-        s => s.id === serviceId && c.previous.min === s.option.min
-      );
+      const index = pack.services.findIndex(s => s.id === serviceId && c.previous.min === s.option.min);
 
       if (service !== null && service !== undefined) {
         service.option.price = c.current.price;

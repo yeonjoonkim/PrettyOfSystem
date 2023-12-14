@@ -50,17 +50,17 @@ export type ShopServiceDocumentType = {
   shopId: string;
   titleProp: string;
   descriptionProp: string;
-  isInsuranceCover: boolean;
-  isOil: boolean;
-  recommandForPregnant: boolean;
-  relatedService: NameValuePairType;
-  specializedEmployees: NameValuePairType[];
-  options: ShopServiceOptionType[];
-  extraIds: string[];
   title: string;
   description: string;
   lastModifiedDate: string;
   lastModifiedEmployee: string;
+  isInsuranceCover: boolean;
+  isOil: boolean;
+  recommandForPregnant: boolean;
+  extraIds: string[];
+  relatedService: NameValuePairType;
+  specializedEmployees: NameValuePairType[];
+  options: ShopServiceOptionType[];
 };
 
 export type ShopExtraDocumentType = {
