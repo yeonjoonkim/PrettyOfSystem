@@ -10,6 +10,7 @@ import {
   Massage,
   ChangeNumberRequestStatus,
   Medical,
+  ShopCategoryTitle,
 } from './constant-value';
 export {
   Default,
@@ -23,6 +24,7 @@ export {
   Massage,
   Medical,
   PackageDiscountType,
+  ShopCategoryTitle,
   ChangeNumberRequestStatus,
 } from './constant-value';
 export { MassageDescriptionType } from './constant-massage';
@@ -30,6 +32,9 @@ import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
 import { API } from './constant-api';
 export { API, Email } from './constant-api';
+
+//Shop Category
+export type ShopCategoryTitleType = (typeof ShopCategoryTitle)[keyof typeof ShopCategoryTitle];
 
 //Login
 export type LoginStatusType = (typeof Login.Status)[keyof typeof Login.Status];

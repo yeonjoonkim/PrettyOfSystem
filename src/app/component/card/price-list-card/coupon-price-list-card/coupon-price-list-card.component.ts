@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ShopCouponDocumentType } from 'src/app/interface';
-
 import * as Constant from 'src/app/constant/constant';
 
 @Component({

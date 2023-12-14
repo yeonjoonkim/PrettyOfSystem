@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
 import { IFormHeaderModalProp, ShopConfigurationType } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
@@ -10,9 +10,7 @@ import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setti
   templateUrl: './shop-setting-operating-hours.component.html',
   styleUrls: ['./shop-setting-operating-hours.component.scss'],
 })
-export class ShopSettingOperatingHoursComponent implements OnInit, OnDestroy {
-  private _destroy$ = new Subject<void>();
-
+export class ShopSettingOperatingHoursComponent implements OnInit {
   public config!: ShopConfigurationType;
   public form!: IFormHeaderModalProp;
   public validator = {
@@ -21,19 +19,15 @@ export class ShopSettingOperatingHoursComponent implements OnInit, OnDestroy {
   constructor(
     private _modalCtrl: ModalController,
     private _shopSetting: ShopSettingService,
-    private _formCtrl: FormControllerService
+    private _formCtrl: FormControllerService,
+    private _navParam: NavParams
   ) {
     this.form = this._formCtrl.setEditFormHeaderModalProp();
     this.form.headerTitle = 'label.title.operatinghours';
   }
 
-  ngOnInit() {
-    this._shopSetting.config$.pipe(takeUntil(this._destroy$)).subscribe(s => {
-      if (s !== null) {
-        this.config = s;
-        this.handleEnabledSaveBtn();
-      }
-    });
+  async ngOnInit() {
+    await this.loadParam();
   }
 
   handleEnabledSaveBtn() {
@@ -58,8 +52,13 @@ export class ShopSettingOperatingHoursComponent implements OnInit, OnDestroy {
     this.form.readOnly = false;
   }
 
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
+  private async loadParam() {
+    const config: ShopConfigurationType | undefined = await this._navParam.get('config');
+    if (config !== undefined) {
+      this.config = config;
+      this.handleEnabledSaveBtn();
+    } else {
+      await this.dismiss();
+    }
   }
 }

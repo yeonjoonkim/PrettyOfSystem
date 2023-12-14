@@ -3,7 +3,6 @@
     [(level)]="massage.pressureLevel"
     (levelChange)="onChangePressureLevel()"></massage-pressure-level-selector>
 </flex-col>
-
 <desktop-version-body-selector
   *ngIf="massage && !requesting"
   [readOnly]="false"

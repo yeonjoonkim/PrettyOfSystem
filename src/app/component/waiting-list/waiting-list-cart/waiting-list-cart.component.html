@@ -1,0 +1,54 @@
+<flex-col *ngIf="criteria | async as criteria">
+  <flex-col-item>
+    <div id="selection-btn-container">
+      <div id="selection-btn">
+        <ng-container *ngFor="let btn of criteria.buttons">
+          <div id="btn">
+            <div
+              id="icon-btn"
+              [ngClass]="{
+                activeIconBtn: isActive(btn.name),
+                deActiveIconBtn: !isActive(btn.name)
+              }"
+              (click)="buttonChange(btn)">
+              <div id="btn-title">{{ btn.name | languageTransform: 'System' | async }}</div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </flex-col-item>
+</flex-col>
+<flex-col *ngIf="criteria | async as criteria">
+  <div *ngIf="criteria.packages.length > 0 && selected?.isPackageManagement" class="price-card-list">
+    <ng-container *ngFor="let package of criteria.packages">
+      <package-price-list-card type="Waiting-List" [pack]="package" [enabledAdd]="true"> </package-price-list-card>
+    </ng-container>
+  </div>
+  <div *ngIf="criteria.services.length > 0 && selected?.isServiceManagement" class="price-card-list">
+    <ng-container *ngFor="let service of criteria.services; let i = index">
+      <service-price-list-card
+        type="Waiting-List"
+        [service]="service"
+        [index]="i"
+        [expandIndex]="expandedServiceIndex"
+        (expandCard)="expandServiceCard($event)"
+        [enabledAdd]="true">
+      </service-price-list-card>
+    </ng-container>
+  </div>
+  <div *ngIf="criteria.coupons.length > 0 && selected?.isCouponManagement" class="price-card-list">
+    <ng-container *ngFor="let coupon of criteria.coupons">
+      <coupon-price-list-card type="Waiting-List" [coupon]="coupon" [enabledAdd]="true"> </coupon-price-list-card>
+    </ng-container>
+  </div>
+  <div *ngIf="criteria.extras.length > 0 && selected?.isExtraManagement" class="price-card-list">
+    <ng-container *ngFor="let extra of criteria.extras">
+      <extra-price-list-card type="Waiting-List" [extra]="extra" [enabledAdd]="true"> </extra-price-list-card>
+    </ng-container>
+  </div>
+</flex-col>
+
+<div class="loading-container" *ngIf="!(criteria | async)">
+  <kendo-loader size="large"></kendo-loader>
+</div>

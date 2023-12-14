@@ -11,6 +11,7 @@ import { UserService } from 'src/app/service/user/user.service';
 })
 export class UserInfoComponent implements OnInit {
   @Input() user!: IUser | null;
+  @Input() isRequiredLoginOption: boolean = true;
   public readOnly: boolean = true;
   public validator = {
     firstName: false,

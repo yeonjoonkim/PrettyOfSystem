@@ -1,7 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { Subject, takeUntil } from 'rxjs';
-import { IShopSetting, IFormHeaderModalProp, NameValuePairType, TimeItemType } from 'src/app/interface';
+import { Component, OnInit } from '@angular/core';
+import { ModalController, NavParams } from '@ionic/angular';
+import { takeUntil } from 'rxjs';
+import {
+  IShopSetting,
+  IFormHeaderModalProp,
+  NameValuePairType,
+  TimeItemType,
+  ShopConfigurationType,
+} from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 
@@ -10,8 +16,7 @@ import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setti
   templateUrl: './shop-setting-calendar.component.html',
   styleUrls: ['./shop-setting-calendar.component.scss'],
 })
-export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
-  private _destroy$ = new Subject<void>();
+export class ShopSettingCalendarComponent implements OnInit {
   public form!: IFormHeaderModalProp;
   public setting!: IShopSetting;
   public timezone!: string;
@@ -47,26 +52,15 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
   constructor(
     private _modalCtrl: ModalController,
     private _shopSetting: ShopSettingService,
-    private _formCtrl: FormControllerService
+    private _formCtrl: FormControllerService,
+    private _navParam: NavParams
   ) {
     this.form = this._formCtrl.setEditFormHeaderModalProp();
     this.form.headerTitle = 'label.title.calendar';
   }
 
-  ngOnInit() {
-    this._shopSetting.setting$.pipe(takeUntil(this._destroy$)).subscribe(s => {
-      if (s !== null) {
-        this.setIntervalMin(s);
-        this.setNextAvailableMin(s);
-        this.setMaximumAvailableFutureBookingDays(s);
-        this.setting = s;
-      }
-    });
-    this._shopSetting.timezone$.pipe(takeUntil(this._destroy$)).subscribe(t => {
-      if (t !== null) {
-        this.timezone = t;
-      }
-    });
+  async ngOnInit() {
+    await this.loadParam();
   }
 
   handleEnabledSaveBtn() {
@@ -116,11 +110,6 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
     this.handleEnabledSaveBtn();
   }
 
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
   private setIntervalMin(setting: IShopSetting) {
     const selected = this.intervalMinSelection.find(s => s.value === setting.calendar.intervalMin.toString());
     if (selected) {
@@ -143,6 +132,20 @@ export class ShopSettingCalendarComponent implements OnInit, OnDestroy {
     );
     if (selected) {
       this.selectedMaximumAvailableFutureBookingDays = selected;
+    }
+  }
+
+  private async loadParam() {
+    const config: ShopConfigurationType | undefined = await this._navParam.get('config');
+    if (config !== undefined) {
+      this.setIntervalMin(config.setting);
+      this.setNextAvailableMin(config.setting);
+      this.setMaximumAvailableFutureBookingDays(config.setting);
+      this.setting = config.setting;
+      this.timezone = config.timezone;
+      this.handleEnabledSaveBtn();
+    } else {
+      await this.dismiss();
     }
   }
 }

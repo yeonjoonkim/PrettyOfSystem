@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { IUser } from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
@@ -11,6 +11,10 @@ import { UserService } from 'src/app/service/user/user.service';
 export class UserInformationComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   public user!: IUser;
+  @Input() isRequiredSignature: boolean = true;
+  @Input() isRequiredLoginOption: boolean = true;
+  @Input() onlyUserInfo: boolean = false;
+  @Input() onlyMedical: boolean = false;
   constructor(private _user: UserService) {}
 
   ngOnInit() {

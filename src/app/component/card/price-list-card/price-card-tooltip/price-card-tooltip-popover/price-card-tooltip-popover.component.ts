@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavParams } from '@ionic/angular';
-
+import * as Constant from 'src/app/constant/constant';
 @Component({
   selector: 'price-card-tooltip-popover',
   templateUrl: './price-card-tooltip-popover.component.html',
@@ -9,7 +9,7 @@ import { NavParams } from '@ionic/angular';
 export class PriceCardTooltipPopoverComponent implements OnInit {
   @Input() title!: string;
   @Input() description!: string;
-  @Input() type!: 'System' | 'User' | 'Client';
+  @Input() type!: Constant.LanguageTransformType;
 
   constructor(private _navParam: NavParams) {}
 

@@ -1,0 +1,22 @@
+<ion-header *ngIf="loaded$ | async">
+  <ion-toolbar>
+    <!-- Title -->
+    <ion-title>{{'label.title.personalinformation'| languageTransform:'System' | async }}</ion-title>
+    <button slot="end" kendoButton (click)="onClickNext()">
+      {{'label.title.next' | languageTransform:'System' | async}}
+    </button>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" *ngIf="(loaded$ | async)">
+  <div class="client-info-container">
+    <user-information
+      *ngIf="client$ | async as client"
+      [isRequiredSignature]="false"
+      [isRequiredLoginOption]="false"
+      [onlyUserInfo]="true"></user-information>
+  </div>
+</ion-content>
+
+<div class="loading-container" *ngIf="isLoading$ | async">
+  <kendo-loader size="large"></kendo-loader>
+</div>

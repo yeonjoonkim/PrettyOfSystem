@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecaptchaVerifier, getAuth } from 'firebase/auth';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, timeout } from 'rxjs';
 import { ClientLogin } from 'src/app/class/client/client-login.class';
 import { ITimer } from 'src/app/interface';
 import { ClientService } from 'src/app/service/client/client.service';
@@ -24,7 +24,6 @@ export class WaitingListLoginComponent implements OnInit {
   public timer!: ITimer;
   public sendingVerification: boolean = false;
   public sendOTP: boolean = false;
-  public enableOTPVerificationBtn: boolean = false;
   public validator = {
     phone: false,
     otp: false,
@@ -34,7 +33,8 @@ export class WaitingListLoginComponent implements OnInit {
     private _routerParam: ActivatedRoute,
     private _client: ClientService,
     private _afa: AngularFireAuth,
-    private _global: GlobalService
+    private _global: GlobalService,
+    private _router: Router
   ) {
     this.login = new ClientLogin(this._afa, this._client);
   }
@@ -45,7 +45,6 @@ export class WaitingListLoginComponent implements OnInit {
     this.sendOTP = false;
     this.validator.phone = false;
     this.validator.otp = false;
-    this.enableOTPVerificationBtn = false;
   }
 
   public async verifyingAccount() {
@@ -57,10 +56,6 @@ export class WaitingListLoginComponent implements OnInit {
     } else {
       await this.sendPhoneOTP();
     }
-  }
-
-  public onChangeOTP() {
-    this.enableOTPVerificationBtn = this.validator.otp && !this.timer?.end;
   }
 
   public async sendPhoneOTP() {
@@ -87,23 +82,14 @@ export class WaitingListLoginComponent implements OnInit {
 
   public async verifyPhoneOTP() {
     await this.login.verifyOTP();
-  }
-
-  private async createAccount() {
-    const modal = await this._client.modal.createAccount();
-    await modal.present();
-    const result = await this._client.modal.handleDismissCreateAccount(modal);
-
-    if (result !== null) {
-      this.login.phoneNumber = result !== null ? result : '';
-      await this.verifyingAccount();
+    if (this.login.logined) {
+      await this._router.navigateByUrl(`waiting-list/${this._sessionId}/update-client-info`);
     }
   }
 
   private async activateTimer() {
     this.login.timer.value$.pipe(takeUntil(this._endTimer$)).subscribe(timer => {
       this.timer = timer;
-      this.enableOTPVerificationBtn = this.validator.otp && !this.timer?.end;
       if (timer.end) {
         this.login.timer.end();
         this._endTimer$.next();
@@ -115,6 +101,32 @@ export class WaitingListLoginComponent implements OnInit {
     const auth = getAuth();
     this._recaptcha = new RecaptchaVerifier('recaptcha-container', { size: 'invisible' }, auth);
     this._recaptcha.verify();
+  }
+
+  private async createAccount() {
+    const modal = await this._client.modal.createAccount();
+    await modal.present();
+    const result = await this._client.modal.handleDismissCreateAccount(modal);
+
+    if (result !== null) {
+      this.login.phoneNumber = result !== null ? result : '';
+      setTimeout(async () => {
+        await this.verifyingAccount();
+      }, 1000);
+    }
+  }
+
+  public async changePhoneNumber() {
+    const modal = await this._client.modal.ChangePhoneNumber();
+    await modal.present();
+  }
+
+  public async presentPrivacyPolicy() {
+    await this._global.appAgreement.presentPrivacyPolicy();
+  }
+
+  public async presentTermandCondition() {
+    await this._global.appAgreement.presentTermsandCondition();
   }
 
   ngOnDestroy() {

@@ -9,7 +9,7 @@ export class UserLogin implements IUserLogin {
   private _otp: string = '';
   private _emailAddress: string = '';
   private _password: string = '';
-  private _errorMsg: string = '';
+  private _errorMsg: string = 'sss';
   private _verifying: boolean = false;
   private _cypo: CryptService;
   public confirmationResult: any;
@@ -181,5 +181,7 @@ export class UserLogin implements IUserLogin {
       this.timer.end();
     }
     this.errorMsg = error;
+    const msg = await this._userService.global.language.transform(this.errorMsg);
+    await this._userService.global.toast.presentError(msg);
   }
 }

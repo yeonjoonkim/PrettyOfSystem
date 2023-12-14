@@ -2,12 +2,6 @@
 <div id="recaptcha-container"></div>
 
 <div id="login">
-  <!--Error Message-->
-  <flex-col *ngIf="login.errorMsg">
-    <flex-col-item id="error-col-item">
-      <error-message-item>{{ login.errorMsg | languageTransform: 'System' | async }}</error-message-item>
-    </flex-col-item>
-  </flex-col>
   <flex-col *ngIf="!sendOTP">
     <flex-col-item *ngIf="!login.verifying">
       <login-option-selection
@@ -48,17 +42,9 @@
       <p id="otp-verification-phone-number">{{ login.phoneNumber }}</p>
     </flex-col-item>
     <flex-col-item>
-      <text-box
-        #otp
-        [(value)]="login.otp"
-        [min]="5"
-        [max]="6"
-        [spinner]="false"
-        [isRequireLabel]="false"
-        [(validate)]="validator.otp"
-        (valueChange)="onChangeOTP()"></text-box>
+      <otp-input [(otp)]="login.otp" [(validator)]="validator.otp" (otpChange)="onChangeOTP()"></otp-input>
     </flex-col-item>
-    <flex-col-item>
+    <flex-col-item *ngIf="!login.verifying">
       <p id="otp-verification-timer">{{ timer.label }}</p>
       <kendo-progressbar [value]="timer.percent.used" [label]="{ visible: false }" [max]="100">
       </kendo-progressbar>

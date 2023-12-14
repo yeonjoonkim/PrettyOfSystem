@@ -10,6 +10,7 @@ export class MobileVersionBodySelectorComponent implements OnInit {
   @Output() selectedAreasChange = new EventEmitter<MassageBodySelectorAreaType[]>();
   @Input() selectedAreas: MassageBodySelectorAreaType[] = [];
   @Input() readOnly: boolean = true;
+  @Input() isReport: boolean = false;
 
   public pages: string[] = ['label.title.front', 'label.title.back'];
   public selectedPage: string = 'label.title.front';

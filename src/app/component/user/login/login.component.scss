@@ -3,8 +3,8 @@ button {
 }
 
 #login {
-  width: 260px;
-  height: 200px;
+  min-width: 260px;
+  min-height: 200px;
 }
 
 .g-recaptcha {
@@ -68,7 +68,6 @@ button {
 }
 
 #login-policy-container {
-  width: 230px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -86,7 +85,6 @@ button {
 }
 
 #account-container {
-  width: 230px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

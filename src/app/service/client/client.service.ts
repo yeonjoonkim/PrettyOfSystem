@@ -7,6 +7,7 @@ import { GlobalService } from '../global/global.service';
 import { ClientModalService } from './client-modal/client-modal.service';
 import { IdTokenResult } from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +21,9 @@ export class ClientService {
 
   constructor(
     public modal: ClientModalService,
+    public global: GlobalService,
     private _userRepo: UserCredentialRepositoryService,
     private _user: UserService,
-    private _global: GlobalService,
     private _afAuth: AngularFireAuth
   ) {
     this.isLoggedin$ = this._afAuth.authState.pipe(map(user => !!user));
@@ -32,19 +33,9 @@ export class ClientService {
     this.activatePreferLanguageListener();
   }
 
-  public async processLogin() {
-    const currentLanguage = await this._global.language.management.storage.getCurrentLanguage();
-    const data = await firstValueFrom(this._user.data$);
-    if (data !== null) {
-      if (data.setting.preferLanguage !== currentLanguage) {
-        await this._global.language.onLanguageChange(data.setting.preferLanguage);
-      }
-    }
-  }
-
   public async createAccount(u: IUser) {
-    u.firstName = this._global.textTransform.getTitleFormat(u.firstName);
-    u.lastName = this._global.textTransform.getTitleFormat(u.lastName);
+    u.firstName = this.global.textTransform.getTitleFormat(u.firstName);
+    u.lastName = this.global.textTransform.getTitleFormat(u.lastName);
     const loginInput: string = u.loginOption.phoneNumber ? u.phoneNumber : u.email;
     const userAccount = this._userRepo.subscribeUserAccount(loginInput);
     let acc = await firstValueFrom(userAccount);
@@ -66,8 +57,8 @@ export class ClientService {
   }
 
   private async toastExsitingAccountError() {
-    const msg = await this._global.language.transform('messageerror.description.existingacc');
-    await this._global.toast.presentError(msg);
+    const msg = await this.global.language.transform('messageerror.description.existingacc');
+    await this.global.toast.presentError(msg);
   }
 
   private activateUserListener() {

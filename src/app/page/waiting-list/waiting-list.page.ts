@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject, combineLatestWith, takeUntil } from 'rxjs';
 import { ShopConfigurationType } from 'src/app/interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 
@@ -20,7 +20,8 @@ export class WaitingListPage implements OnInit, OnDestroy {
   public loaded$!: Observable<boolean>;
   constructor(
     private _waitngList: WaitingListService,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _router: Router
   ) {
     this.loading$ = this._waitngList.isLoading$;
     this.loaded$ = this._waitngList.isLoaded$;
@@ -30,6 +31,13 @@ export class WaitingListPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this._waitngList.validateSession(this._sessionId);
+    this._waitngList.start$
+      .pipe(combineLatestWith(this._waitngList.client.isLoggedin$), takeUntil(this._destroy$))
+      .subscribe(([start, isLogin]) => {
+        if (start && isLogin) {
+          this._router.navigateByUrl(`waiting-list/${this._sessionId}/update-client-info`);
+        }
+      });
   }
 
   ngOnDestroy() {

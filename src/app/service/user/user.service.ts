@@ -42,12 +42,12 @@ export class UserService {
   constructor(
     public modal: UserModalService,
     public setting: UserSettingService,
+    public global: GlobalService,
     private _afAuth: AngularFireAuth,
     private _router: Router,
     private _systemShop: SystemShopConfigurationRepositoryService,
     private _userRepo: UserCredentialRepositoryService,
     private _menuRepo: SystemMenuRepositoryService,
-    private _global: GlobalService,
     private _languageStorage: SystemLanguageStorageService,
     private _loading: LoadingService
   ) {}
@@ -61,7 +61,7 @@ export class UserService {
       this.navigateByRole(currentShop?.role?.accessLevel);
       userLanguage = data.setting.preferLanguage;
       if (language !== userLanguage && userLanguage.length > 0) {
-        await this._global.language.onLanguageChange(userLanguage);
+        await this.global.language.onLanguageChange(userLanguage);
       }
     }
   }
@@ -129,15 +129,15 @@ export class UserService {
         }
 
         if (currentLanguage !== user.setting.preferLanguage) {
-          await this._global.language.onLanguageChange(user.setting.preferLanguage);
+          await this.global.language.onLanguageChange(user.setting.preferLanguage);
         }
       }
     });
   }
 
   public async updateUser(after: IUser, before: IUser) {
-    after.lastName = this._global.textTransform.getTitleFormat(after.lastName);
-    after.firstName = this._global.textTransform.getTitleFormat(after.firstName);
+    after.lastName = this.global.textTransform.getTitleFormat(after.lastName);
+    after.firstName = this.global.textTransform.getTitleFormat(after.firstName);
     const beforeLoginInput = before.loginOption.email ? before.email : before.phoneNumber;
     const afterLoginInput = after.loginOption.email ? after.email : after.phoneNumber;
     const onChangeLoginOption = beforeLoginInput !== afterLoginInput;
@@ -321,7 +321,7 @@ export class UserService {
   }
 
   private async toastExsitingAccountError() {
-    const msg = await this._global.language.transform('messageerror.description.existingacc');
-    await this._global.toast.presentError(msg);
+    const msg = await this.global.language.transform('messageerror.description.existingacc');
+    await this.global.toast.presentError(msg);
   }
 }

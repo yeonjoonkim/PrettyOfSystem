@@ -15,7 +15,7 @@
   </flex-row-item>
 </flex-row>
 
-<flex-row *ngIf="user && !requesting">
+<flex-row *ngIf="user && !requesting && isRequiredLoginOption">
   <flex-row-item>
     <login-option-selection [readOnly]="true" [loginOption]="user.loginOption"></login-option-selection>
   </flex-row-item>
