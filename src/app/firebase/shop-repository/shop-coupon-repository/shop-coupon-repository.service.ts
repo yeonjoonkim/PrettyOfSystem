@@ -7,6 +7,7 @@ import { ShopConfigurationType, ShopCouponDocumentType } from 'src/app/interface
 import { map, of } from 'rxjs';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
+import * as Document from 'functions/src/service/shop/document-override/index';
 @Injectable({
   providedIn: 'root',
 })
@@ -24,13 +25,16 @@ export class ShopCouponRepositoryService {
       .valueChanges()
       .pipe(
         map(coupons => {
-          return coupons;
+          return coupons.map(coupon => {
+            return Document.Coupon.override(coupon);
+          });
         })
       );
   }
 
   public async addCoupon(doc: ShopCouponDocumentType) {
     try {
+      doc = Document.Coupon.override(doc);
       this._afs.collection<ShopCouponDocumentType>(ShopCoupon(doc.shopId)).doc(doc.id).set(doc);
       await this._toaster.addSuccess();
       return true;
@@ -43,6 +47,7 @@ export class ShopCouponRepositoryService {
 
   public async updateCoupon(doc: ShopCouponDocumentType) {
     try {
+      doc = Document.Coupon.override(doc);
       this._afs.collection<ShopCouponDocumentType>(ShopCoupon(doc.shopId)).doc(doc.id).update(doc);
       await this._toaster.updateSuccess();
       return true;
