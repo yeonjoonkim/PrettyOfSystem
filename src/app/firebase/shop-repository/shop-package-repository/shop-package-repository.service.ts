@@ -13,6 +13,8 @@ import { map } from 'rxjs';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
+import * as Document from 'functions/src/service/shop/document-override/index';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -32,6 +34,7 @@ export class ShopPackageRepositoryService {
       .pipe(
         map(packages =>
           packages.map(pack => {
+            pack = Document.Package.override(pack);
             pack.services = this.orderServiceByMinASC(pack.services);
             pack.extras = this.orderExtraByPriceASC(pack.extras);
             return pack;
@@ -42,6 +45,7 @@ export class ShopPackageRepositoryService {
 
   public async addPackage(doc: ShopPackageDocumentType) {
     doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
+    doc = Document.Package.override(doc);
     try {
       this._afs.collection<ShopPackageDocumentType>(ShopPackage(doc.shopId)).doc(doc.id).set(doc);
       await this._toaster.addSuccess();
@@ -55,6 +59,7 @@ export class ShopPackageRepositoryService {
 
   public async updatePackage(doc: ShopPackageDocumentType) {
     doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
+    doc = Document.Package.override(doc);
     try {
       this._afs.collection<ShopPackageDocumentType>(ShopPackage(doc.shopId)).doc(doc.id).update(doc);
       await this._toaster.updateSuccess();
