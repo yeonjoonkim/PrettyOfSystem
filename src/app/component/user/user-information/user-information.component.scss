@@ -7,10 +7,13 @@
   }
 }
 .medical {
-  border-left: 1px solid var(--active);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.border-left {
+  border-left: 1px solid var(--active);
 }
 
 .user-info,

@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
 import {
   IFormHeaderModalProp,
   IShopSetting,
   MedicalInsuranceType,
   NameValuePairType,
+  ShopConfigurationType,
   ShopInsuranceProvider,
 } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
-import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 import * as Constant from 'src/app/constant/constant';
 import { PrivateHealthInsuranceListService } from 'src/app/service/global/private-health-insurance/private-health-insurance-list/private-health-insurance-list.service';
@@ -19,9 +19,7 @@ import { PrivateHealthInsuranceListService } from 'src/app/service/global/privat
   templateUrl: './shop-setting-insurance-provider.component.html',
   styleUrls: ['./shop-setting-insurance-provider.component.scss'],
 })
-export class ShopSettingInsuranceProviderComponent implements OnInit, OnDestroy {
-  private _destroy$ = new Subject<void>();
-
+export class ShopSettingInsuranceProviderComponent implements OnInit {
   public insurance!: ShopInsuranceProvider | null;
   public form!: IFormHeaderModalProp;
   public validator = {
@@ -34,10 +32,10 @@ export class ShopSettingInsuranceProviderComponent implements OnInit, OnDestroy 
 
   constructor(
     private _modalCtrl: ModalController,
-    private _global: GlobalService,
     private _shopSetting: ShopSettingService,
     private _formCtrl: FormControllerService,
-    private _insurance: PrivateHealthInsuranceListService
+    private _insurance: PrivateHealthInsuranceListService,
+    private _navParam: NavParams
   ) {
     this.healthFundSelection = this._insurance.get();
     this.form = this._formCtrl.setEditFormHeaderModalProp();
@@ -45,13 +43,8 @@ export class ShopSettingInsuranceProviderComponent implements OnInit, OnDestroy 
     this.form.readOnly = false;
   }
 
-  ngOnInit() {
-    this._shopSetting.setting$.pipe(takeUntil(this._destroy$)).subscribe(s => {
-      if (s !== null) {
-        this.insurance = s.insurance;
-        this.setInsuranceFund();
-      }
-    });
+  async ngOnInit() {
+    await this.loadParam();
   }
 
   onChangeProviderOption() {
@@ -100,15 +93,20 @@ export class ShopSettingInsuranceProviderComponent implements OnInit, OnDestroy 
     this.form.enabledSavebutton = this.validator.provider && this.validator.providerNo;
   }
 
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
   private setInsuranceFund() {
     if (this.insurance) {
       const selectedFund = this.insurance.healthFund;
       this.selectedHealthFund = { name: selectedFund, value: selectedFund };
+    }
+  }
+
+  private async loadParam() {
+    const config: ShopConfigurationType | undefined = await this._navParam.get('config');
+    if (config !== undefined) {
+      this.insurance = config.setting.insurance;
+      this.setInsuranceFund();
+    } else {
+      await this.dismiss();
     }
   }
 }

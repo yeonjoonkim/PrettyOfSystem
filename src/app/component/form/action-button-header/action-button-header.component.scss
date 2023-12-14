@@ -1,0 +1,34 @@
+.action-header-container {
+  height: 50px;
+  margin: auto;
+  justify-content: center;
+  display: flex;
+}
+.action-header {
+  background-color: transparent;
+}
+.secondary-action-button {
+  margin: 0;
+  margin: 0px 15px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  button {
+    background-color: transparent;
+    font-weight: 700;
+    height: 32px;
+  }
+}
+
+.primary-action-button {
+  margin: 0;
+  margin: 0px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  button {
+    background-color: var(--success);
+    font-weight: 700;
+    height: 32px;
+  }
+}

@@ -4,11 +4,13 @@ import { NameValuePairType } from 'src/app/interface';
 import { ClientService } from 'src/app/service/client/client.service';
 import { CryptService } from 'src/app/service/global/crypt/crypt.service';
 import { TimerService } from 'src/app/service/global/timer/timer.service';
+
 export class ClientLogin {
   private _phoneNumber: string = '';
   private _otp: string = '';
   private _errorMsg: string = '';
   private _verifying: boolean = false;
+  private _logined: boolean = false;
   public timer: TimerService;
   public confirmationResult: any;
 
@@ -66,6 +68,14 @@ export class ClientLogin {
     this._verifying = value;
   }
 
+  get logined(): boolean {
+    return this._logined;
+  }
+
+  set logined(l: boolean) {
+    this._logined = l;
+  }
+
   public async sendOtpVerification(recaptcha: RecaptchaVerifier) {
     try {
       this.errorMsg = '';
@@ -91,10 +101,12 @@ export class ClientLogin {
       if (userCredential) {
         this.verifying = false;
         await this.processLogin(userCredential);
+        this.logined = true;
       }
     } catch (err) {
       this.verifying = false;
       const error: string = JSON.stringify(err);
+      this.logined = false;
       this.handleError(error);
     }
   }
@@ -105,6 +117,27 @@ export class ClientLogin {
     this.confirmationResult = confirm;
   }
 
+  private async processLogin(credential: any) {
+    const client = credential?.user;
+    if (client !== undefined) {
+      await this.timer.end();
+      await this.reset();
+    }
+  }
+
+  public test() {
+    this.timer.startTimerByMin(1);
+  }
+
+  public async reset() {
+    this.logined = false;
+    this.verifying = false;
+    this.phoneNumber = '';
+    this.otp = '';
+    this.errorMsg = '';
+    await this.timer.end();
+  }
+
   public async handleError(errorMsg: string) {
     const errorCode = this._errorCodes.find(e => errorMsg.includes(e.value));
     const error = errorCode !== undefined ? errorCode.name : errorMsg;
@@ -112,22 +145,7 @@ export class ClientLogin {
       this.timer.end();
     }
     this.errorMsg = error;
-  }
-
-  private async processLogin(credential: any) {
-    const user = credential?.user;
-    if (user !== undefined) {
-      await this.timer.end();
-      await this.reset();
-      await this._client.processLogin();
-    }
-  }
-
-  public async reset() {
-    this.verifying = false;
-    this.phoneNumber = '';
-    this.otp = '';
-    this.errorMsg = '';
-    await this.timer.end();
+    const msg = await this._client.global.language.transform(this.errorMsg);
+    await this._client.global.toast.presentError(msg);
   }
 }

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PriceCardTooltipPopoverComponent } from './price-card-tooltip-popover/price-card-tooltip-popover.component';
 import { PopoverController } from '@ionic/angular';
-
+import * as Constant from 'src/app/constant/constant';
 @Component({
   selector: 'price-card-tooltip',
   templateUrl: './price-card-tooltip.component.html',
@@ -11,7 +11,7 @@ export class PriceCardTooltipComponent implements OnInit {
   @Input() enabledToolTip: boolean = false;
   @Input() description!: string;
   @Input() title!: string;
-  @Input() type: 'System' | 'Client' | 'User' = 'User';
+  @Input() type!: Constant.LanguageTransformType;
 
   public isOpen: boolean = false;
 

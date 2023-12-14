@@ -1,0 +1,48 @@
+#edit-btn {
+  margin-right: 12px;
+  kendo-button {
+    width: 23px;
+    height: 23px;
+  }
+}
+
+#selection-btn-container {
+  display: flex;
+  justify-content: center;
+  position: sticky;
+}
+
+#selection-btn {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 10px;
+  justify-content: center;
+}
+
+#btn {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+#btn-img {
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+#btn-title {
+  display: flex;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.price-card-list {
+  width: 300px;
+  margin: auto;
+}

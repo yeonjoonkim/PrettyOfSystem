@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { Subject, takeUntil } from 'rxjs';
-import { IFormHeaderModalProp, IShopSetting } from 'src/app/interface';
+import { Component, OnInit } from '@angular/core';
+import { ModalController, NavParams } from '@ionic/angular';
+import { IFormHeaderModalProp, IShopSetting, ShopConfigurationType } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
@@ -11,11 +10,9 @@ import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setti
   templateUrl: './shop-setting-finance.component.html',
   styleUrls: ['./shop-setting-finance.component.scss'],
 })
-export class ShopSettingFinanceComponent implements OnInit, OnDestroy {
+export class ShopSettingFinanceComponent implements OnInit {
   public setting!: IShopSetting;
   public form!: IFormHeaderModalProp;
-
-  private _destroy$ = new Subject<void>();
   private _validator = {
     tax: false,
     cardSurcharge: false,
@@ -29,19 +26,15 @@ export class ShopSettingFinanceComponent implements OnInit, OnDestroy {
     private _modalCtrl: ModalController,
     private _global: GlobalService,
     private _shopSetting: ShopSettingService,
-    private _formCtrl: FormControllerService
+    private _formCtrl: FormControllerService,
+    private _navParam: NavParams
   ) {
     this.form = this._formCtrl.setEditFormHeaderModalProp();
     this.form.headerTitle = 'label.title.finance';
   }
 
-  ngOnInit() {
-    this._shopSetting.setting$.pipe(takeUntil(this._destroy$)).subscribe(s => {
-      if (s !== null) {
-        this.setting = s;
-        this.handleEnabledSaveBtn();
-      }
-    });
+  async ngOnInit() {
+    await this.loadParam();
   }
 
   public async handleSave() {
@@ -97,8 +90,13 @@ export class ShopSettingFinanceComponent implements OnInit, OnDestroy {
       this._validator.cardSurcharge && this._validator.cashDiscount && this._validator.tax;
   }
 
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
+  private async loadParam() {
+    const config: ShopConfigurationType | undefined = await this._navParam.get('config');
+    if (config !== undefined) {
+      this.setting = config.setting;
+      this.handleEnabledSaveBtn();
+    } else {
+      await this.dismiss();
+    }
   }
 }

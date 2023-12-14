@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { QRCodeComponent } from '@progress/kendo-angular-barcodes';
 import { saveAs } from '@progress/kendo-file-saver';
-import { Subject, takeUntil } from 'rxjs';
-import { IFormHeaderModalProp, NameValuePairType } from 'src/app/interface';
+import { Subject, firstValueFrom, takeUntil } from 'rxjs';
+import { IFormHeaderModalProp, NameValuePairType, ShopConfigurationType } from 'src/app/interface';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
@@ -29,8 +29,7 @@ export class ShopSettingWaitingListComponent implements OnInit {
     { name: 'label.title.15min', value: '15' },
     { name: 'label.title.30min', value: '30' },
   ];
-
-  public url!: string;
+  public url: string = '';
   public _expiredMin!: number;
 
   constructor(
@@ -38,6 +37,7 @@ export class ShopSettingWaitingListComponent implements OnInit {
     private _shopSetting: ShopSettingService,
     private _formCtrl: FormControllerService,
     private _global: GlobalService,
+    private _navParam: NavParams,
     public role: UserRoleService
   ) {
     this._prefix = `${this._global.currentDomain()}/internal-api/waiting-list`;
@@ -45,16 +45,8 @@ export class ShopSettingWaitingListComponent implements OnInit {
     this.form.headerTitle = 'label.title.waitinglist';
   }
 
-  ngOnInit() {
-    this._shopSetting.config$.pipe(takeUntil(this._destroy$)).subscribe(config => {
-      if (config !== null) {
-        this._expiredMin = config.setting.qrCode.waitingListSessionExiryMin;
-        this.setTimeoutSession(this._expiredMin);
-        this._waitingListSessionId = config.waitingListSessionId;
-        this.setQRCodeUrl(this._waitingListSessionId);
-        this.handleEnabledSaveBtn();
-      }
-    });
+  async ngOnInit() {
+    await this.loadParam();
   }
 
   public onChangeTimeoutSession() {
@@ -118,6 +110,24 @@ export class ShopSettingWaitingListComponent implements OnInit {
   }
 
   public isLoading() {
-    return this._waitingListSessionId === undefined && this._expiredMin === undefined && this.form === undefined;
+    return (
+      this._waitingListSessionId === undefined &&
+      this._expiredMin === undefined &&
+      this.form === undefined &&
+      this.url === undefined
+    );
+  }
+
+  private async loadParam() {
+    const config: ShopConfigurationType | undefined = await this._navParam.get('config');
+    if (config !== undefined) {
+      this._expiredMin = config.setting.qrCode.waitingListSessionExiryMin;
+      this.setTimeoutSession(this._expiredMin);
+      this._waitingListSessionId = config.waitingListSessionId;
+      this.setQRCodeUrl(this._waitingListSessionId);
+      this.handleEnabledSaveBtn();
+    } else {
+      await this.dismiss();
+    }
   }
 }

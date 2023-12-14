@@ -40,11 +40,11 @@
   --created: #008b6a;
   --success: #8a84ee;
   --work: #2a2836;
-  --card: #35373b;
-  --card-add: #56585d;
-  --card-add-hover: #636e75;
+  --card-add: var(--title);
   --card-book: var(--work);
-  --card-title: #cd7867;
+  --card: #303841;
+  --card-description: white;
+  --card-title: white;
 }
 
 @import './theme/pretty-of-system-dark-theme/dist/scss';

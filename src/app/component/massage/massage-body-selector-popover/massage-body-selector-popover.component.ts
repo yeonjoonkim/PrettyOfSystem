@@ -29,7 +29,7 @@ export class MassageBodySelectorPopoverComponent implements OnInit {
       this.painLevel =
         this.body.findAreaFromSelector(this.prop.selector, this.prop.selectedAreas) !== undefined
           ? (this.body.findAreaFromSelector(this.prop.selector, this.prop.selectedAreas)?.pain.level as number)
-          : 0;
+          : 1;
       this.selectedPain = this.body.pain.findFromArea(this.prop.selector, this.prop.selectedAreas);
     }
   }

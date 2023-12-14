@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ShopServiceDocumentType } from 'src/app/interface';
+import { ShopConfigurationType, ShopServiceDocumentType } from 'src/app/interface';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ShopService } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
@@ -7,6 +7,7 @@ import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.
 import * as Constant from 'src/app/constant/constant';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
+import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,6 +16,7 @@ export class ShopServiceRepositoryService {
     private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
     private _textTransform: TextTransformService,
+    private _languageStorage: SystemLanguageStorageService,
     private _date: DateService
   ) {}
 
@@ -98,5 +100,22 @@ export class ShopServiceRepositoryService {
   private orderOptionsByMinASC(doc: ShopServiceDocumentType) {
     doc.options.sort((a, b) => a.min - b.min);
     return doc;
+  }
+
+  public getCompletedTranslateLanguage(coupons: ShopServiceDocumentType[], config: ShopConfigurationType) {
+    if (!coupons) return [] as ShopServiceDocumentType[];
+    const language = this._languageStorage.currentLanguage;
+    return coupons.filter(coupon => this.isCouponValidForLanguage(coupon, config, language));
+  }
+
+  private isCouponValidForLanguage(
+    coupon: ShopServiceDocumentType,
+    config: ShopConfigurationType,
+    language: string
+  ) {
+    return (
+      config.package[`${coupon.title}.${language}`] !== undefined &&
+      config.package[`${coupon.description}.${language}`] !== undefined
+    );
   }
 }

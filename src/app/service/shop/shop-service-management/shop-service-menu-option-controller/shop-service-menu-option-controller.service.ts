@@ -1,4 +1,10 @@
 import { Injectable } from '@angular/core';
+import {
+  ShopCouponDocumentType,
+  ShopPackageDocumentType,
+  ShopServiceDocumentType,
+  ShopExtraDocumentType,
+} from 'src/app/interface';
 
 export interface IShopServiceMenuOptionAction {
   name: string;
@@ -22,6 +28,19 @@ export class ShopServiceMenuOptionControllerService {
   };
   constructor() {}
 
+  public get(
+    coupons: ShopCouponDocumentType[],
+    packages: ShopPackageDocumentType[],
+    services: ShopServiceDocumentType[],
+    extras: ShopExtraDocumentType[]
+  ): IShopServiceMenuOptionAction[] {
+    return [
+      ...(packages.length > 0 ? [this.getPackage()] : []),
+      ...(services.length > 0 ? [this.getService()] : []),
+      ...(coupons.length > 0 ? [this.getCoupon()] : []),
+      ...(extras.length > 0 ? [this.getExtra()] : []),
+    ];
+  }
   public buttons(): IShopServiceMenuOptionAction[] {
     const service = this.getService();
     const extra = this.getExtra();
@@ -63,7 +82,7 @@ export class ShopServiceMenuOptionControllerService {
     };
   }
 
-  private getExtra(): IShopServiceMenuOptionAction {
+  public getExtra(): IShopServiceMenuOptionAction {
     return {
       name: this._labelTitle + this._menuOption.extraManagement,
       img: 'assets/shop-service/extra.svg',
@@ -74,7 +93,7 @@ export class ShopServiceMenuOptionControllerService {
     };
   }
 
-  private getCoupon(): IShopServiceMenuOptionAction {
+  public getCoupon(): IShopServiceMenuOptionAction {
     return {
       name: this._labelTitle + this._menuOption.couponManagement,
       img: 'assets/shop-service/coupon.svg',

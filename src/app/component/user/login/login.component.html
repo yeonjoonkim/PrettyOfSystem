@@ -2,12 +2,6 @@
 <div id="recaptcha-container"></div>
 
 <div id="login">
-  <!--Error Message-->
-  <flex-col *ngIf="login.errorMsg">
-    <flex-col-item id="error-col-item">
-      <error-message-item>{{ login.errorMsg | languageTransform: 'System' | async }}</error-message-item>
-    </flex-col-item>
-  </flex-col>
   <flex-col *ngIf="!sendOTP">
     <flex-col-item *ngIf="!login.verifying">
       <login-option-selection

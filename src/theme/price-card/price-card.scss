@@ -8,7 +8,7 @@
 }
 .tool-tip {
   margin: 0;
-  color: var(--card-title);
+  color: var(--title);
   font-size: 12px;
   display: flex;
   flex-direction: row;
@@ -71,7 +71,11 @@
 
   .card-title {
     margin: 0;
+    display: flex;
+    justify-content: space-between;
     ion-card-title {
+      color: var(--card-description);
+      font-family: 700;
       font-size: 18px;
     }
   }
@@ -100,7 +104,6 @@
     justify-content: flex-end;
     .add-btn {
       height: 20px;
-      font-size: 14px;
     }
   }
 
@@ -246,7 +249,7 @@
     .discount-price {
       text-align: end;
       color: var(--card-title);
-      font-weight: 900;
+      font-weight: 700;
       font-size: 16px;
       .original-price {
         text-align: end;
@@ -263,11 +266,12 @@
   }
 
   ion-card-content {
-    color: white;
     button {
       background: var(--card-add);
+      font-size: 14px;
+      font-weight: 900;
       &:hover {
-        background: var(--card-add-hover);
+        background: var(--card-add);
       }
     }
   }
@@ -280,12 +284,12 @@
 }
 
 .price-card-tooltip {
-  color: var(--title);
+  color: var(--card-description);
   width: 15px;
   height: 15px;
 
   ion-icon {
-    font-weight: 900;
+    font-weight: 700;
     &:hover {
       cursor: pointer;
     }
@@ -301,7 +305,7 @@
 }
 
 .coupon-card {
-  min-width: 300px;
+  width: 300px;
   max-height: 200px;
 }
 
@@ -312,7 +316,7 @@
 
 .package-card {
   width: 300px;
-  min-height: 165px;
+  min-height: 100px;
 }
 
 @media (min-width: 1020px) {

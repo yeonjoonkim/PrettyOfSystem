@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { ShopPackageDocumentType, ShopPackageExtraType, ShopPackageServiceType } from 'src/app/interface';
+import {
+  ShopConfigurationType,
+  ShopPackageDocumentType,
+  ShopPackageExtraType,
+  ShopPackageServiceType,
+} from 'src/app/interface';
 import * as Constant from '../../../constant/constant';
 import { ShopPackage } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
+import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,7 +21,8 @@ export class ShopPackageRepositoryService {
     private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
     private _textTransform: TextTransformService,
-    private _date: DateService
+    private _date: DateService,
+    private _languageStorage: SystemLanguageStorageService
   ) {}
 
   public packageValueChangeListener(shopId: string) {
@@ -108,5 +115,19 @@ export class ShopPackageRepositoryService {
   private orderExtraByPriceASC(doc: ShopPackageExtraType[]) {
     doc.sort((a, b) => a.price - b.price);
     return doc;
+  }
+
+  public getCompletedTranslateLanguage(coupons: ShopPackageDocumentType[], config: ShopConfigurationType) {
+    if (!coupons) return [] as ShopPackageDocumentType[];
+    const language = this._languageStorage.currentLanguage;
+    return coupons.filter(coupon => this.isCouponValidForLanguage(coupon, config, language));
+  }
+
+  private isCouponValidForLanguage(
+    coupon: ShopPackageDocumentType,
+    config: ShopConfigurationType,
+    language: string
+  ) {
+    return config.package[`${coupon.title}.${language}`] !== undefined;
   }
 }

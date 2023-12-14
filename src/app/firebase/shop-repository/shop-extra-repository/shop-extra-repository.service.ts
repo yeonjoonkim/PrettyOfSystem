@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { ShopExtraDocumentType } from 'src/app/interface';
+import { ShopConfigurationType, ShopExtraDocumentType } from 'src/app/interface';
 import { ShopExtra } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
 import * as Constant from 'src/app/constant/constant';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
+import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class ShopExtraRepositoryService {
     private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
     private _textTransform: TextTransformService,
+    private _languageStorage: SystemLanguageStorageService,
     private _date: DateService
   ) {}
 
@@ -77,5 +79,19 @@ export class ShopExtraRepositoryService {
 
     result.title = result.id + '.' + Constant.Text.Format.Title;
     return result;
+  }
+
+  public getCompletedTranslateLanguage(coupons: ShopExtraDocumentType[], config: ShopConfigurationType) {
+    if (!coupons) return [] as ShopExtraDocumentType[];
+    const language = this._languageStorage.currentLanguage;
+    return coupons.filter(coupon => this.isCouponValidForLanguage(coupon, config, language));
+  }
+
+  private isCouponValidForLanguage(
+    coupon: ShopExtraDocumentType,
+    config: ShopConfigurationType,
+    language: string
+  ) {
+    return config.package[`${coupon.title}.${language}`] !== undefined;
   }
 }

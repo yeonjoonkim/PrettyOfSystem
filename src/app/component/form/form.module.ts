@@ -20,6 +20,8 @@ import { TextAreaModule } from './text-area/text-area.module';
 import { ImageCropModule } from './image-crop/image-crop.module';
 import { SignatureInputModule } from './signature-input/signature-input.component.module';
 import { OtpInputModule } from './otp-input/otp-input.module';
+import { ActionButtonFooterModule } from './action-button-footer/action-button-footer.module';
+import { ActionButtonHeaderModule } from './action-button-header/action-button-header.module';
 @NgModule({
   declarations: [],
   imports: [],
@@ -45,6 +47,8 @@ import { OtpInputModule } from './otp-input/otp-input.module';
     ImageCropModule,
     SignatureInputModule,
     OtpInputModule,
+    ActionButtonFooterModule,
+    ActionButtonHeaderModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

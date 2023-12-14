@@ -1,4 +1,4 @@
-<div id="container">
+<div id="container" *ngIf="loaded">
   <div id="options">
     <ng-container *ngFor="let option of options">
       <div id="option" (click)="handleClickOption(option)">
@@ -11,4 +11,8 @@
       </div>
     </ng-container>
   </div>
+</div>
+
+<div class="loading-container" *ngIf="!loaded">
+  <kendo-loader size="large"></kendo-loader>
 </div>

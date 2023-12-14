@@ -1,8 +1,64 @@
 .phone,
 .login {
-  max-width: 300px;
+  min-width: 300px;
   margin: 0;
   .login-btn {
     width: 100%;
+  }
+}
+.login-btn {
+  margin-bottom: 15px;
+}
+.otp-container {
+  margin: 15px;
+  margin-bottom: 2rem;
+}
+.verify-btn {
+  button {
+    width: 100%;
+  }
+}
+
+#otp-verification-timer {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  margin-left: 10px;
+  margin-top: 2px;
+  font-weight: 900;
+  font-size: small;
+}
+
+#login-policy-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+  #privacy-policy-btn,
+  #terms-and-condition-btn {
+    background: transparent;
+    font-size: 10px;
+    width: fit-content;
+    color: white;
+    &:hover {
+      color: #787586;
+    }
+  }
+}
+
+#account-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  #resend,
+  #change-phone-number-btn {
+    width: 100%;
+    background: transparent;
+    font-size: 10px;
+    margin: 5px;
+    color: white;
+    &:hover {
+      color: #787586;
+    }
   }
 }

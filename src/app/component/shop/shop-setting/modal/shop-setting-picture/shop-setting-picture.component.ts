@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { IFormHeaderModalProp, IShopSetting } from 'src/app/interface';
+import { ModalController, NavParams } from '@ionic/angular';
+import { IFormHeaderModalProp, IShopSetting, ShopConfigurationType } from 'src/app/interface';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -10,16 +10,15 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './shop-setting-picture.component.html',
   styleUrls: ['./shop-setting-picture.component.scss'],
 })
-export class ShopSettingPictureComponent implements OnInit, OnDestroy {
-  private _destroy$ = new Subject<void>();
-
-  setting!: IShopSetting;
-  form!: IFormHeaderModalProp;
-  before!: IShopSetting;
+export class ShopSettingPictureComponent implements OnInit {
   private _logoFile!: File | undefined;
   private _image1File!: File | undefined;
   private _image2File!: File | undefined;
   private _image3File!: File | undefined;
+
+  public setting!: IShopSetting;
+  public form!: IFormHeaderModalProp;
+  public before!: IShopSetting;
   public logo: boolean = false;
   public image1: boolean = false;
   public image2: boolean = false;
@@ -28,19 +27,15 @@ export class ShopSettingPictureComponent implements OnInit, OnDestroy {
   constructor(
     private _modalCtrl: ModalController,
     private _shopSetting: ShopSettingService,
-    private _formCtrl: FormControllerService
+    private _formCtrl: FormControllerService,
+    private _navParam: NavParams
   ) {
     this.form = this._formCtrl.setEditFormHeaderModalProp();
     this.form.headerTitle = 'label.title.album';
   }
 
-  ngOnInit() {
-    this._shopSetting.setting$.pipe(takeUntil(this._destroy$)).subscribe(s => {
-      if (s !== null) {
-        this.setting = s;
-        this.before = s;
-      }
-    });
+  async ngOnInit() {
+    await this.loadParam();
   }
 
   public async onChangeLogoImage(file: File) {
@@ -86,8 +81,13 @@ export class ShopSettingPictureComponent implements OnInit, OnDestroy {
     this.form.readOnly = false;
   }
 
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
+  private async loadParam() {
+    const config: ShopConfigurationType | undefined = await this._navParam.get('config');
+    if (config !== undefined) {
+      this.setting = config.setting;
+      this.before = config.setting;
+    } else {
+      await this.dismiss();
+    }
   }
 }

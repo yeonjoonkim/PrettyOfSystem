@@ -4,6 +4,15 @@ export const SystemSetting = {
   TimeZone: TimeZone.AustraliaBrisbane,
 };
 
+export const ShopCategoryTitle = {
+  MobileShop: 'label.title.mobileshop',
+  PersonalTraining: 'label.title.personaltraining',
+  Hairsalon: 'label.title.hairsalon',
+  SkinCare: 'label.title.skincare',
+  NailArt: 'label.titile.nailart',
+  MassageTheraphy: 'label.title.massagetheraphy',
+} as const;
+
 export const BookingSearchIconType = {
   NailArt: 'label.title.nailart',
   MassageTheraphy: 'label.title.massagetheraphy',
@@ -53,7 +62,7 @@ export const Default = {
   LanguageTransformType: {
     System: 'System',
     User: 'User',
-    Client: 'Client',
+    WaitingList: 'Waiting-List',
   } as const,
 
   ComponentMode: {
