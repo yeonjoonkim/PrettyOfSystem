@@ -12,11 +12,11 @@ export const onShopPackageUpdated = onDocumentUpdated(Db.Context.Shop.Package + 
 
   const after =
     afterData !== null && afterData !== undefined
-      ? Service.Shop.Document.Package.override(afterData as I.ShopPackageDocumentType)
+      ? Service.Override.Shop.Document.Package.override(afterData as I.ShopPackageDocumentType)
       : null;
   const before =
     beforeData !== null && beforeData !== undefined
-      ? Service.Shop.Document.Package.override(beforeData as I.ShopPackageDocumentType)
+      ? Service.Override.Shop.Document.Package.override(beforeData as I.ShopPackageDocumentType)
       : null;
 
   if (after !== null && before !== null) {

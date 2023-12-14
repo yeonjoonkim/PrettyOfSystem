@@ -7,7 +7,7 @@ import * as Service from '../../../service/index';
 export const getAll = async function (): Promise<I.ShopCouponDocumentType[]> {
   const allSnapshot = await firestore().collection(Db.Context.Shop.Coupon).get();
   const allCoupons = allSnapshot.docs.map(doc => {
-    const config = Service.Shop.Document.Coupon.override(doc.data() as I.ShopCouponDocumentType);
+    const config = Service.Override.Shop.Document.Coupon.override(doc.data() as I.ShopCouponDocumentType);
     return {
       ...config,
     };
@@ -19,7 +19,7 @@ export const getAll = async function (): Promise<I.ShopCouponDocumentType[]> {
 export const getSelectShop = async function (shopId: string): Promise<I.ShopCouponDocumentType[]> {
   const allSnapshot = await firestore().collection(Db.ShopCoupon(shopId)).get();
   const selectedCoupons = allSnapshot.docs.map(doc => {
-    const config = Service.Shop.Document.Coupon.override(doc.data() as I.ShopCouponDocumentType);
+    const config = Service.Override.Shop.Document.Coupon.override(doc.data() as I.ShopCouponDocumentType);
     return {
       ...config,
     };

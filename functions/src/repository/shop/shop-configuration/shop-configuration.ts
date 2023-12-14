@@ -9,7 +9,7 @@ export const getAll = async function (): Promise<I.ShopConfigurationType[]> {
   const allSnapshot = await firestore().collection(Db.Context.ShopConfiguration).get();
   const allShopConfigs = allSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopConfigurationType;
-    config.setting = Service.Shop.Config.override(config.setting);
+    config.setting = Service.Override.Shop.Config.override(config.setting);
     return {
       ...config,
     };
@@ -27,7 +27,7 @@ export const getActiveConfigs = async function (): Promise<I.ShopConfigurationTy
 
   const activeShopConfigs = activeSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopConfigurationType;
-    config.setting = Service.Shop.Config.override(config.setting);
+    config.setting = Service.Override.Shop.Config.override(config.setting);
     return {
       ...config,
     };
@@ -45,7 +45,7 @@ export const getDeactiveConfigs = async function (): Promise<I.ShopConfiguration
 
   const activeShopConfigs = activeSnapshot.docs.map(doc => {
     let config = doc.data() as I.ShopConfigurationType;
-    config.setting = Service.Shop.Config.override(config.setting);
+    config.setting = Service.Override.Shop.Config.override(config.setting);
     return {
       ...config,
     };
@@ -65,12 +65,7 @@ export const deactivate = async function (configId: string, timezone: string): P
     await configRef.update(updatedConfig);
     return true;
   } catch (error) {
-    await Repository.Error.createErrorReport(
-      configRef,
-      error,
-      'update',
-      'deactivateShopConfiguration'
-    );
+    await Repository.Error.createErrorReport(configRef, error, 'update', 'deactivateShopConfiguration');
     return false;
   }
 };
@@ -86,12 +81,7 @@ export const activate = async function (configId: string): Promise<boolean> {
     await configRef.update(updatedConfig);
     return true;
   } catch (error) {
-    await Repository.Error.createErrorReport(
-      configRef,
-      error,
-      'update',
-      'deactivateShopConfiguration'
-    );
+    await Repository.Error.createErrorReport(configRef, error, 'update', 'deactivateShopConfiguration');
     return false;
   }
 };
@@ -119,7 +109,7 @@ export const getSelectedConfig = async function (id: string) {
       return null;
     }
     let config = configSnapShot.data() as I.ShopConfigurationType;
-    config.setting = Service.Shop.Config.override(config.setting);
+    config.setting = Service.Override.Shop.Config.override(config.setting);
     return config;
   } catch (error) {
     logger.error(' Cannot retreive', error);

@@ -66,7 +66,7 @@ export class StorageService {
 
   public async storeExpiredDateTime() {
     let now: Date = new Date();
-    let formatted = this._date.addMin(now, 30);
+    let formatted = this._date.addMin(now, 600);
     await this.store(_storageKey.default.languageSelectionExpiredDateTime, formatted);
   }
 

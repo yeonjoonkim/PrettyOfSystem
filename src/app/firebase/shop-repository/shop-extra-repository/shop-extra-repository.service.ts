@@ -8,7 +8,7 @@ import * as Constant from 'src/app/constant/constant';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
-import * as Document from 'functions/src/service/shop/document-override/index';
+import * as Document from 'functions/src/service/override/shop/document-override/index';
 
 @Injectable({
   providedIn: 'root',

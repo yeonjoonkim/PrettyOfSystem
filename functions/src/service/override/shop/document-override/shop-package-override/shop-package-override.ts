@@ -1,6 +1,6 @@
-import * as I from '../../../../interface';
-import * as T from '../../../type-checker/type-checker';
-import * as Constant from '../../../../constant';
+import * as I from '../../../../../interface';
+import * as T from '../../../../type-checker/type-checker';
+import * as Constant from '../../../../../constant';
 
 export const override = function (doc: I.ShopPackageDocumentType): I.ShopPackageDocumentType {
   return {

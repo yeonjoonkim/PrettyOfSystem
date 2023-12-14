@@ -12,11 +12,11 @@ export const onShopServiceUpdated = onDocumentUpdated(Db.Context.Shop.Service + 
 
   const after =
     afterData !== null && afterData !== undefined
-      ? Service.Shop.Document.Service.override(afterData as I.ShopServiceDocumentType)
+      ? Service.Override.Shop.Document.Service.override(afterData as I.ShopServiceDocumentType)
       : null;
   const before =
     beforeData !== null && beforeData !== undefined
-      ? Service.Shop.Document.Service.override(beforeData as I.ShopServiceDocumentType)
+      ? Service.Override.Shop.Document.Service.override(beforeData as I.ShopServiceDocumentType)
       : null;
 
   if (after !== null && before !== null) {
@@ -82,7 +82,7 @@ export const onShopServiceDelete = onDocumentDeleted(Db.Context.Shop.Service + '
   const serviceData = !serviceSnapshot ? null : serviceSnapshot.data();
   const service =
     serviceData !== null && serviceData !== undefined
-      ? Service.Shop.Document.Service.override(serviceData as I.ShopServiceDocumentType)
+      ? Service.Override.Shop.Document.Service.override(serviceData as I.ShopServiceDocumentType)
       : null;
 
   if (service !== null) {

@@ -1,5 +1,5 @@
-import * as I from '../../../../interface';
-import * as T from '../../../type-checker/type-checker';
+import * as I from '../../../../../interface';
+import * as T from '../../../../type-checker/type-checker';
 export const override = function (doc: I.ShopServiceDocumentType): I.ShopServiceDocumentType {
   return {
     id: T.string(doc?.id),

@@ -12,11 +12,11 @@ export const onShopExtraUpdated = onDocumentUpdated(Db.Context.Shop.Extra + '/{e
 
   const after =
     afterData !== null && afterData !== undefined
-      ? Service.Shop.Document.Extra.override(afterData as I.ShopExtraDocumentType)
+      ? Service.Override.Shop.Document.Extra.override(afterData as I.ShopExtraDocumentType)
       : null;
   const before =
     beforeData !== null && beforeData !== undefined
-      ? Service.Shop.Document.Extra.override(beforeData as I.ShopExtraDocumentType)
+      ? Service.Override.Shop.Document.Extra.override(beforeData as I.ShopExtraDocumentType)
       : null;
 
   if (after !== null && before !== null) {
@@ -63,7 +63,7 @@ export const onShopExtraDelete = onDocumentDeleted(Db.Context.Shop.Extra + '/{ex
   const extraData = !serviceSnapshot ? null : serviceSnapshot.data();
   const extra =
     extraData !== null && extraData !== undefined
-      ? Service.Shop.Document.Extra.override(extraData as I.ShopExtraDocumentType)
+      ? Service.Override.Shop.Document.Extra.override(extraData as I.ShopExtraDocumentType)
       : null;
   if (extra !== null) {
     let services = await Repository.Shop.Service.getSelectShop(extra.shopId);
