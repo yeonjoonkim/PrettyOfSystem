@@ -9,9 +9,13 @@ ion-header {
     color: var(--title);
   }
 }
+
 button {
   margin: 0px 15px;
   background: transparent;
+  &:hover {
+    background: transparent;
+  }
 }
 
 .client-info-container {

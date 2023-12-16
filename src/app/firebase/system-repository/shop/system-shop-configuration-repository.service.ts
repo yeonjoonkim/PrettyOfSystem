@@ -4,7 +4,7 @@ import { catchError, from, lastValueFrom, map, Observable, of, switchMap } from 
 import { ShopCategoryType, ShopConfigurationType, ShopCountryType } from 'src/app/interface/shop/shop.interface';
 import * as Db from 'src/app/constant/firebase-path';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { override } from '../../../../../functions/src/service/shop/shop-config-override/shop-config-override';
+import { override } from '../../../../../functions/src/service/override/shop/shop-config-override/shop-config-override';
 import { PostCodeItemType } from 'src/app/interface';
 @Injectable({
   providedIn: 'root',

@@ -8,6 +8,7 @@ import * as Constant from 'src/app/constant/constant';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
+import * as Document from 'functions/src/service/override/shop/document-override/index';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class ShopExtraRepositoryService {
     return this._afs
       .collection<ShopExtraDocumentType>(ShopExtra(shopId))
       .valueChanges()
-      .pipe(map(extras => extras));
+      .pipe(map(extras => extras.map(extra => Document.Extra.override(extra))));
   }
 
   public async addExtra(doc: ShopExtraDocumentType) {
@@ -43,6 +44,7 @@ export class ShopExtraRepositoryService {
 
   public async updateExtra(doc: ShopExtraDocumentType) {
     doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
+    doc = Document.Extra.override(doc);
     try {
       this._afs.collection<ShopExtraDocumentType>(ShopExtra(doc.shopId)).doc(doc.id).update(doc);
       await this._toaster.updateSuccess();

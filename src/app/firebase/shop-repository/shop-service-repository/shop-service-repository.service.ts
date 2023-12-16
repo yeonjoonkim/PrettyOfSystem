@@ -8,6 +8,7 @@ import * as Constant from 'src/app/constant/constant';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
+import * as Document from 'functions/src/service/override/shop/document-override/index';
 @Injectable({
   providedIn: 'root',
 })
@@ -27,6 +28,7 @@ export class ShopServiceRepositoryService {
       .pipe(
         map(services =>
           services.map(service => {
+            service = Document.Service.override(service);
             return this.orderOptionsByMinASC(service);
           })
         )
@@ -36,6 +38,7 @@ export class ShopServiceRepositoryService {
   public async addService(doc: ShopServiceDocumentType) {
     doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     doc.descriptionProp = this._textTransform.preCleansingTranslateProp(doc.descriptionProp);
+    doc = Document.Service.override(doc);
     try {
       this._afs.collection<ShopServiceDocumentType>(ShopService(doc.shopId)).doc(doc.id).set(doc);
       await this._toaster.addSuccess();
@@ -50,6 +53,7 @@ export class ShopServiceRepositoryService {
   public async updateService(doc: ShopServiceDocumentType) {
     doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     doc.descriptionProp = this._textTransform.preCleansingTranslateProp(doc.descriptionProp);
+    doc = Document.Service.override(doc);
     try {
       this._afs.collection<ShopServiceDocumentType>(ShopService(doc.shopId)).doc(doc.id).update(doc);
       await this._toaster.updateSuccess();

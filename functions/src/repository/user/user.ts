@@ -7,7 +7,7 @@ export const getAll = async function (): Promise<I.IUser[]> {
   const allUserSnapshot = await firestore().collection(Db.Context.User).get();
   const allUser = allUserSnapshot.docs.map(doc => {
     let data = doc.data() as I.IUser;
-    data.setting = Service.User.Setting.override(data.setting);
+    data.setting = Service.Override.User.Setting.override(data.setting);
     return {
       ...data,
     };
@@ -22,8 +22,8 @@ export const getSelectedUser = async function (id: string) {
     if (!userSnapshot.exists) {
       return null;
     }
-    const data = userSnapshot.data() as I.IUser;
-    data.setting = Service.User.Setting.override(data.setting);
+    let data = userSnapshot.data() as I.IUser;
+    data.setting = Service.Override.User.Setting.override(data.setting);
     return data;
   } catch (err) {
     logger.error(err);

@@ -265,3 +265,10 @@ export const ShopSetting = {
       'https://firebasestorage.googleapis.com/v0/b/prettyofsystem.appspot.com/o/place-holder-image.jpeg?alt=media&token=96954b11-d870-424f-bb15-0e8ab04607dc&_gl=1*pq6nct*_ga*MTM4MDAzMTEzNC4xNjk4MjQ3NjY4*_ga_CW55HF8NVT*MTY5OTEwNzE4My4xNC4xLjE2OTkxMDg4MjcuNDMuMC4w',
   },
 } as const;
+
+export const CartItem = {
+  Service: 'label.title.service',
+  Coupon: 'label.title.coupon',
+  Package: 'label.title.package',
+  Extra: 'label.title.extra',
+} as const;

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { cloneDeep } from 'lodash-es';
 import { firstValueFrom } from 'rxjs';
 import { IUser } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
@@ -30,10 +31,10 @@ export class UserInfoComponent implements OnInit {
   public async onSave() {
     if (!this.requesting) {
       this.requesting = true;
+      const after = cloneDeep(this.user);
       const before = await firstValueFrom(this._user.data$);
-      if (before && this.user) {
-        const updated = await this._user.updateUser(this.user, before);
-        await this.handleLanguageChange(before);
+      if (before && after) {
+        const updated = await this._user.updateUser(after, before);
         this.readOnly = updated ? true : false;
       }
       this.requesting = false;
@@ -45,14 +46,5 @@ export class UserInfoComponent implements OnInit {
   public handleEnableSaveBtn() {
     this.enableSaveBtn =
       this.validator.firstName && this.validator.lastName && this.validator.phone && this.validator.email;
-  }
-
-  private async handleLanguageChange(before: IUser) {
-    if (this.user) {
-      const isLanguageChanged = this.user.setting.preferLanguage !== before.setting.preferLanguage;
-      if (isLanguageChanged) {
-        await this._global.language.onLanguageChange(this.user.setting.preferLanguage);
-      }
-    }
   }
 }

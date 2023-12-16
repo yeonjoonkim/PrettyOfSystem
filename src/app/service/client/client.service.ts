@@ -16,6 +16,7 @@ export class ClientService {
   public isLoggedin$!: Observable<boolean>;
   public isLoggedout$!: Observable<boolean>;
   public info$!: Observable<IUser | null>;
+  public id$!: Observable<string | null>;
   public claim$!: Observable<IdTokenResult | null>;
   public preferLanguage$!: Observable<string>;
 
@@ -30,6 +31,7 @@ export class ClientService {
     this.isLoggedout$ = this.isLoggedin$.pipe(map(loggedIn => !loggedIn));
     this.activateUserListener();
     this.claim();
+    this.id();
     this.activatePreferLanguageListener();
   }
 
@@ -88,6 +90,18 @@ export class ClientService {
           return user.setting.preferLanguage;
         } else {
           return 'en';
+        }
+      })
+    );
+  }
+
+  private id() {
+    this.id$ = this.info$.pipe(
+      switchMap(client => {
+        if (client !== null) {
+          return of(client.id);
+        } else {
+          return of(null);
         }
       })
     );

@@ -24,11 +24,33 @@ export class ToastService {
     await toast.present();
   }
 
+  public async presentBottom(msg: string) {
+    let toast = await this._toastCtrl.create({
+      message: msg,
+      duration: this._duration,
+      position: 'bottom',
+      cssClass: 'success-toast',
+    });
+
+    await toast.present();
+  }
+
   public async presentError(msg: string) {
     let toast = await this._toastCtrl.create({
       message: msg,
       duration: this._duration,
       position: this._position,
+      cssClass: 'error-toast',
+    });
+
+    await toast.present();
+  }
+
+  public async presentErrorButtom(msg: string) {
+    let toast = await this._toastCtrl.create({
+      message: msg,
+      duration: this._duration,
+      position: 'bottom',
       cssClass: 'error-toast',
     });
 

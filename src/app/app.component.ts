@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, of, switchMap, takeUntil } from 'rxjs';
 import { GlobalService } from './service/global/global.service';
 import { NetworkConnectionStatusService } from './service/global/network-connection-status/network-connection-status.service';
 import { ConnectionStatus } from '@capacitor/network';

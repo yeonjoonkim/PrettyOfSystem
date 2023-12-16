@@ -4,9 +4,11 @@
       {{'label.title.goback' | languageTransform:'System' | async}}
     </button>
     <!-- Title -->
-    <ion-title>{{'label.title.consultationoption'| languageTransform:'System' | async }}</ion-title>
-    <button class="next-btn" slot="end" kendoButton (click)="onClickNext()">
-      {{'label.title.next' | languageTransform:'System' | async}}
+    <ion-title>{{'label.title.consultationoption'| languageTransform:'System' | async }} </ion-title>
+
+    <button class="next-btn" *ngIf="cart$ | async as cart" slot="end" kendoButton (click)="onClickNext()">
+      <ion-icon name="cart-outline"></ion-icon>
+      <div class="qty">{{qty(cart)}}</div>
     </button>
   </ion-toolbar>
 </ion-header>

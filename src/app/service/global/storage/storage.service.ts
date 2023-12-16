@@ -3,6 +3,8 @@ import * as _storageKey from './storage.key';
 import { CryptService } from '../crypt/crypt.service';
 import { DateTransformService } from '../date/date-transform/date-transform.service';
 import { DateService } from '../date/date.service';
+import { Cart } from 'src/app/interface/booking/cart/cart.interface';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -66,7 +68,7 @@ export class StorageService {
 
   public async storeExpiredDateTime() {
     let now: Date = new Date();
-    let formatted = this._date.addMin(now, 30);
+    let formatted = this._date.addMin(now, 600);
     await this.store(_storageKey.default.languageSelectionExpiredDateTime, formatted);
   }
 
@@ -75,21 +77,29 @@ export class StorageService {
     return result;
   }
 
-  public async getInternalAPIURL() {
-    const internalURL = await this.get(_storageKey.default.internalAPI);
-    return internalURL;
+  public async getCart() {
+    return await this.get(_storageKey.default.cart);
   }
 
-  public async storeInternalAPIURL(url: string | null) {
-    await this.store(_storageKey.default.internalAPI, url);
+  public async storeCart(cart: Cart) {
+    await this.store(_storageKey.default.cart, cart);
   }
 
-  public async clearInternalAPIURL() {
-    await this.removeItem(_storageKey.default.internalAPI);
+  public async clearCart() {
+    await this.removeItem(_storageKey.default.cart);
   }
 
   public async clearLanguage() {
     await this.removeItem(_storageKey.default.languageSelection);
     await this.removeItem(_storageKey.default.languageSelectionKey);
+  }
+
+  public currentLanguageObservable() {
+    let en_cryptedValue = localStorage.getItem(_storageKey.default.language);
+    if (en_cryptedValue !== null) {
+      let de_crypted = this._crypt.decrypt(en_cryptedValue);
+      return of(de_crypted as string);
+    }
+    return of('');
   }
 }

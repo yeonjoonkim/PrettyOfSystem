@@ -169,7 +169,7 @@ export class WaitngListShopService {
     );
   }
 
-  public getCartCriteriaValueChangeListener() {
+  public getCartCriteriaValueChangeListener(clientId: string) {
     return combineLatest([this.coupons(), this.services(), this.extras(), this.packages(), this.config$]).pipe(
       map(([coupons, services, extras, packages, config]) => {
         const result: WaitingListShopCartCriteriaType = {
@@ -183,5 +183,9 @@ export class WaitngListShopService {
         return result;
       })
     );
+  }
+
+  public getExtra() {
+    return this.extras();
   }
 }

@@ -7,6 +7,8 @@ import { ToastService } from '../global/toast/toast.service';
 import { ClientService } from '../client/client.service';
 import { WaitingListUrlService } from '../internal-api/waiting-list-url/waiting-list-url.service';
 import { WaitngListShopService } from './waiting-list-shop/waitng-list-shop.service';
+import { WaitingListCartService } from './waiting-list-cart/waiting-list-cart.service';
+import { Cart } from 'src/app/interface/booking/cart/cart.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +23,12 @@ export class WaitingListService {
   public start$!: Observable<boolean | null>;
   public isLoading$!: Observable<boolean>;
   public isLoaded$!: Observable<boolean>;
+  public cart$!: Observable<Cart | null>;
 
   constructor(
     public shop: WaitngListShopService,
     public client: ClientService,
+    public cart: WaitingListCartService,
     private _url: WaitingListUrlService,
     private _router: Router,
     private _toaster: ToastService,
@@ -34,6 +38,7 @@ export class WaitingListService {
     this.startWaitingList();
     this.loadingWaitingList();
     this.loadWaitingList();
+    this.cart$ = this.cart.cart$;
   }
 
   public completeSession() {
@@ -57,6 +62,7 @@ export class WaitingListService {
   private async invalidSessionId() {
     const errorMsg = await this._language.transform('messagefail.title.accessdenied');
     await this._toaster.presentError(errorMsg);
+    await this.cart.complete();
     this._router.navigateByUrl('booking');
   }
 

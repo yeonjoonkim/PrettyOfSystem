@@ -1,5 +1,5 @@
-import * as I from '../../../interface';
-import * as Constant from '../../../constant';
+import * as I from '../../../../interface';
+import * as Constant from '../../../../constant';
 
 export const override = function (s: I.IShopSetting) {
   s.financial = financeSetting(s?.financial);

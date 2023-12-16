@@ -22,3 +22,26 @@ button {
   max-width: 800px;
   margin: auto;
 }
+
+.next-btn {
+  background: transparent;
+  &:hover {
+    cursor: pointer;
+    background: transparent;
+  }
+}
+ion-icon {
+  font-size: 20px;
+  color: var(--title);
+}
+.qty {
+  position: absolute;
+  top: -1px;
+  right: 2px;
+  background: var(--title);
+  padding: 0px;
+  width: 16px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+}

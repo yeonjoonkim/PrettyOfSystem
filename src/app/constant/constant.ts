@@ -11,6 +11,7 @@ import {
   ChangeNumberRequestStatus,
   Medical,
   ShopCategoryTitle,
+  CartItem,
 } from './constant-value';
 export {
   Default,
@@ -26,6 +27,7 @@ export {
   PackageDiscountType,
   ShopCategoryTitle,
   ChangeNumberRequestStatus,
+  CartItem,
 } from './constant-value';
 export { MassageDescriptionType } from './constant-massage';
 import { TimeZone } from './timezone';
@@ -98,3 +100,6 @@ export type MedicalInsuranceType = (typeof Medical.Insurance)[keyof typeof Medic
 export type MedicalHistorySystemType =
   (typeof Medical.History.SystemType)[keyof typeof Medical.History.SystemType];
 export type MedicalHistoryType = (typeof Medical.History.Type)[keyof typeof Medical.History.Type];
+
+//Cart
+export type CartItemType = (typeof CartItem)[keyof typeof CartItem];

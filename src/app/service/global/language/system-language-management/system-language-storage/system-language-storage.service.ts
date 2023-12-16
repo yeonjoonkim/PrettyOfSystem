@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { SystemLanguageRepositoryService } from 'src/app/firebase/system-repository/language/system-language-repository.service';
 import { ILanguageKey, LanguageSelectionType } from 'src/app/interface';
 import * as StorageKey from 'src/app/service/global/storage/storage.key';

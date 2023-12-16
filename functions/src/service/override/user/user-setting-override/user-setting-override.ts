@@ -1,4 +1,4 @@
-import * as I from '../../../interface';
+import * as I from '../../../../interface';
 
 export const override = function (s: I.UserSettingType) {
   s.preferLanguage = preferLanguage(s?.preferLanguage);

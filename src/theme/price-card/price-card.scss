@@ -24,7 +24,7 @@
 
 .price-card {
   --background: var(--card);
-  margin: 5px;
+  margin: 15px 5px;
   ion-card-content {
     padding: 10px;
   }
@@ -77,6 +77,11 @@
       color: var(--card-description);
       font-family: 700;
       font-size: 18px;
+      width: 240px;
+      text-wrap: nowrap;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
@@ -120,6 +125,11 @@
 
   .option-title {
     flex: 2;
+    width: 171px;
+    text-wrap: nowrap;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .option-min {
@@ -249,14 +259,14 @@
     .discount-price {
       text-align: end;
       color: var(--card-title);
-      font-weight: 700;
+      font-weight: 600;
       font-size: 16px;
       .original-price {
+        color: var(--title);
         text-align: end;
         font-size: 8px;
         font-weight: 500;
         text-decoration: line-through;
-        color: white;
       }
     }
   }
