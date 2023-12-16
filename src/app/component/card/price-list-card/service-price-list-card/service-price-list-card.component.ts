@@ -9,7 +9,8 @@ import {
   SimpleChange,
 } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
-import { ShopServiceDocumentType } from 'src/app/interface';
+import { ShopServiceDocumentType, ShopServiceOptionType } from 'src/app/interface';
+import { CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
 
 @Component({
   selector: 'service-price-list-card',
@@ -18,7 +19,7 @@ import { ShopServiceDocumentType } from 'src/app/interface';
 })
 export class ServicePriceListCardComponent implements OnInit, OnChanges {
   @Output() expandCard = new EventEmitter<number | null>();
-  @Output() add = new EventEmitter<ShopServiceDocumentType>();
+  @Output() add = new EventEmitter<CheckOutItem>();
   @Input() type: Constant.LanguageTransformType = Constant.Default.LanguageTransformType.User;
   @Input() enabledAdd: boolean = true;
   @Input() index!: number;
@@ -37,8 +38,21 @@ export class ServicePriceListCardComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
 
-  public onClickAdd() {
-    this.add.emit(this.service);
+  public onClickAdd(option: ShopServiceOptionType) {
+    const checkout: CheckOutItem = {
+      shopId: this.service.shopId,
+      type: Constant.CartItem.Service,
+      itemId: this.service.id,
+      title: this.service.title,
+      isInsuranceCover: this.service.isInsuranceCover,
+      specializedEmployees: this.service.specializedEmployees,
+      limitedTime: null,
+      price: option.price,
+      qty: 1,
+      min: option.min,
+      couponCriteria: null,
+    };
+    this.add.emit(checkout);
   }
 
   public onClickExpand() {

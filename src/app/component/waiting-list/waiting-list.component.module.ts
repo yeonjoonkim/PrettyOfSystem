@@ -16,6 +16,7 @@ import { WaitingListComponent } from './waiting-list.component';
 import { WaitingListLoginComponent } from './waiting-list-login/waiting-list-login.component';
 @NgModule({
   declarations: [WaitingListComponent, WaitingListLoginComponent],
+  providers: [LanguageTransformPipeModule],
   imports: [
     CommonModule,
     CommonModule,

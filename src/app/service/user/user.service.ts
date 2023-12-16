@@ -14,7 +14,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
-import { combineLatestWith, first, take } from 'rxjs/operators';
+import { combineLatestWith, delay, distinctUntilChanged, first, take } from 'rxjs/operators';
 import { GlobalService } from '../global/global.service';
 import { UserModalService } from './user-modal/user-modal.service';
 import { SystemLanguageStorageService } from '../global/language/system-language-management/system-language-storage/system-language-storage.service';
@@ -154,6 +154,21 @@ export class UserService {
     } else {
       return await this._userRepo.updateUser(after);
     }
+  }
+
+  public userLanguageChangeListener() {
+    return this.data$.pipe(
+      combineLatestWith(this.global.storage.currentLanguageObservable()),
+      switchMap(([user, systemLanguage]) => {
+        if (user !== null && systemLanguage && user.setting.preferLanguage !== systemLanguage) {
+          return of(user.setting.preferLanguage);
+        } else {
+          return of(null);
+        }
+      }),
+      delay(1000),
+      distinctUntilChanged()
+    );
   }
 
   public activateAuthChangeListener() {

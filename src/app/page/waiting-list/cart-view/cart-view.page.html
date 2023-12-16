@@ -1,0 +1,21 @@
+<ion-header *ngIf="loaded$ | async">
+  <ion-toolbar>
+    <button class="goback-btn" slot="start" kendoButton (click)="onClickGoback()">
+      {{'label.title.goback' | languageTransform:'System' | async}}
+    </button>
+    <!-- Title -->
+    <ion-title>{{'label.title.viewcart'| languageTransform:'System' | async }}</ion-title>
+    <button
+      class="next-btn"
+      slot="end"
+      kendoButton
+      (click)="onClickNext()"
+      [disabled]="!(hasRelatedService$ | async)">
+      {{'label.title.next' | languageTransform:'System' | async}}
+    </button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="client-info-container"></div>
+</ion-content>

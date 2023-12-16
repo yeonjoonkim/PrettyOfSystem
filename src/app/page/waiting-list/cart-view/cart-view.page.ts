@@ -1,20 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, combineLatestWith, firstValueFrom, takeUntil } from 'rxjs';
-import { IUser } from 'src/app/interface';
+import { Observable, Subject, combineLatestWith, takeUntil } from 'rxjs';
+import { ShopExtraDocumentType } from 'src/app/interface';
+import { Cart, CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
-import * as Constant from 'src/app/constant/constant';
 @Component({
-  selector: 'app-update-client-info',
-  templateUrl: './update-client-info.page.html',
-  styleUrls: ['./update-client-info.page.scss'],
+  selector: 'app-cart-view',
+  templateUrl: './cart-view.page.html',
+  styleUrls: ['./cart-view.page.scss'],
 })
-export class UpdateClientInfoPage implements OnInit, OnDestroy {
+export class CartViewPage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   private _sessionId: string | null = this._route.snapshot.paramMap.get('id');
   public loaded$!: Observable<boolean>;
   public isLoading$!: Observable<boolean>;
-  public client$!: Observable<IUser | null>;
+  public cart$!: Observable<Cart | null>;
+  public extras$!: Observable<ShopExtraDocumentType[]>;
+  public hasRelatedService$!: Observable<boolean>;
+
   constructor(
     private _waitingList: WaitingListService,
     private _route: ActivatedRoute,
@@ -22,10 +25,12 @@ export class UpdateClientInfoPage implements OnInit, OnDestroy {
   ) {
     this.loaded$ = this._waitingList.isLoaded$;
     this.isLoading$ = this._waitingList.isLoading$;
-    this.client$ = this._waitingList.client.info$;
+    this.cart$ = this._waitingList.cart$;
+    this.extras$ = this._waitingList.shop.getExtra();
+    this.hasRelatedService$ = this._waitingList.cart.hasRelatedService();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this._waitingList.start$
       .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(async ([start, login]) => {
@@ -41,26 +46,24 @@ export class UpdateClientInfoPage implements OnInit, OnDestroy {
         if (validateSession) {
           await this._waitingList.validateSession(this._sessionId);
         }
+        await this._waitingList.cart.start();
       });
   }
 
-  async onClickNext() {
-    const observable = this._waitingList.shop.category();
-    const category = await firstValueFrom(observable);
+  async onClickGoback() {
+    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart`);
+  }
 
-    if (category !== null) {
-      switch (category.name as Constant.ShopCategoryTitleType) {
-        case Constant.ShopCategoryTitle.MassageTheraphy ||
-          Constant.ShopCategoryTitle.PersonalTraining ||
-          Constant.ShopCategoryTitle.SkinCare:
-          await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-medical-info`);
-          break;
-        default:
-          await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart`);
-      }
-    } else {
-      await this._router.navigateByUrl('booking');
-    }
+  public qty(cart: Cart | null) {
+    return cart !== null ? cart.checkout.reduce((sum, item) => sum + item.qty, 0) : 0;
+  }
+
+  async onClickNext() {
+    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart-view`);
+  }
+
+  public async deleteFromCart(checkout: CheckOutItem) {
+    await this._waitingList.cart.delete(checkout);
   }
 
   ngOnDestroy() {

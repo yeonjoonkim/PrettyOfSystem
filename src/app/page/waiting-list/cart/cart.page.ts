@@ -4,6 +4,7 @@ import { Subject, Observable, combineLatestWith, takeUntil, firstValueFrom } fro
 import { IUser } from 'src/app/interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 import * as Constant from 'src/app/constant/constant';
+import { Cart } from 'src/app/interface/booking/cart/cart.interface';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -15,6 +16,7 @@ export class CartPage implements OnInit, OnDestroy {
   public loaded$!: Observable<boolean>;
   public isLoading$!: Observable<boolean>;
   public client$!: Observable<IUser | null>;
+  public cart$!: Observable<Cart | null>;
 
   constructor(
     private _waitingList: WaitingListService,
@@ -24,9 +26,10 @@ export class CartPage implements OnInit, OnDestroy {
     this.loaded$ = this._waitingList.isLoaded$;
     this.isLoading$ = this._waitingList.isLoading$;
     this.client$ = this._waitingList.client.info$;
+    this.cart$ = this._waitingList.cart$;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this._waitingList.start$
       .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(async ([start, login]) => {
@@ -65,8 +68,12 @@ export class CartPage implements OnInit, OnDestroy {
     }
   }
 
+  public qty(cart: Cart | null) {
+    return cart !== null ? cart.checkout.reduce((sum, item) => sum + item.qty, 0) : 0;
+  }
+
   async onClickNext() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/consent-form`);
+    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart-view`);
   }
 
   ngOnDestroy() {

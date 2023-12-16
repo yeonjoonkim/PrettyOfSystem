@@ -268,6 +268,16 @@ export class DateService {
     const fourWeek = this.shopAllDaysNextFourWeek(timezone);
     return fourWeek[fourWeek.length - 1];
   }
+
+  getTimeoutByMin(timezone: string | null, min: number) {
+    const date = this.shopNow(timezone);
+    return this.addMin(date, min);
+  }
+
+  isTimeout(timezone: string | null, date: string) {
+    const current = this.transform.formatLocalDateTime(this.shopNow(timezone));
+    return current > date;
+  }
 }
 
 //Function
