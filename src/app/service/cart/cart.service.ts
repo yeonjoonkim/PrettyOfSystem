@@ -27,7 +27,6 @@ export class CartService {
 
   public async start(shopId: string, timezone: string, sessionMin: number) {
     const cart: Cart | undefined | null = await this._storage.getCart();
-    console.log(cart);
     if (cart !== undefined && cart !== null && typeof cart !== 'string') {
       const sameShopId = cart.shopId === shopId;
       const timeout = this._date.isTimeout(cart.timezone, cart.expiredDateTime);

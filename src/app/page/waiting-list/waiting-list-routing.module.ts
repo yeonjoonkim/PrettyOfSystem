@@ -27,6 +27,10 @@ const routes: Routes = [
   {
     path: 'cart-view',
     loadChildren: () => import('./cart-view/cart-view.module').then( m => m.CartViewPageModule)
+  },
+  {
+    path: 'select-employee',
+    loadChildren: () => import('./select-employee/select-employee.module').then( m => m.SelectEmployeePageModule)
   }
 ];
 

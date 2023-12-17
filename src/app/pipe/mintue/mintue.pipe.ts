@@ -12,7 +12,7 @@ export class MinuteTransformPipe implements PipeTransform {
     if (typeof value === 'string') {
       return `${value} ${min}`;
     } else {
-      return `${value.toString()} ${min}`;
+      return `${value.toString()}${min}`;
     }
   }
 }

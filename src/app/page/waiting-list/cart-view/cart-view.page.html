@@ -17,5 +17,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="client-info-container"></div>
+  <div class="client-info-container">
+    <cart-check-out-list
+      *ngIf="cart$ | async as cart"
+      [cart]="cart"
+      [transformType]="'Waiting-List'"
+      (decrement)="decrementCheckout($event)"
+      (increment)="incrementCheckout($event)"
+      (delete)="deleteCheckout($event)"></cart-check-out-list>
+    <cart-check-out-extras
+      *ngIf="{cart: cart$ | async, extras: extras$ | async} as view"
+      [cart]="view.cart"
+      [extras]="view.extras"
+      [type]="'Waiting-List'"
+      (increment)="incrementCheckout($event)"></cart-check-out-extras>
+  </div>
 </ion-content>

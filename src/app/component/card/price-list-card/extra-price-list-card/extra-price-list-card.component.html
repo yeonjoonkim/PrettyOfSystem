@@ -10,9 +10,7 @@
         {{ extra.price | currencyTransform }}
       </flex-row-item>
       <flex-row-item class="option-add" *ngIf="enabledAdd">
-        <button class="add-btn" kendoButton (click)="onClickAdd()">
-          {{ 'button.title.add' | languageTransform: 'System' | async }}
-        </button>
+        <button class="add-btn" kendoButton (click)="onClickAdd()" icon="plus"></button>
       </flex-row-item>
     </flex-row>
   </ion-card-content>

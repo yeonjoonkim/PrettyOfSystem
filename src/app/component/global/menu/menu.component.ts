@@ -5,7 +5,7 @@ import { StorageService } from 'src/app/service/global/storage/storage.service';
 import { UserService } from 'src/app/service/user/user.service';
 import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { NameValuePairType } from 'src/app/interface';
 import { AgreementModalService } from 'src/app/service/global/agreement-modal/agreement-modal.service';
 
@@ -107,6 +107,11 @@ export class MenuComponent implements OnInit, OnDestroy {
   private async setDefaultTitleHeading() {
     let currentUrl = this._location.path();
     await this.onChangeMenu(currentUrl);
+  }
+
+  public async clickHome() {
+    this.onChangeMenu('/booking');
+    await this._router.navigateByUrl('/booking');
   }
 
   private handleCustomPage(url: string) {
