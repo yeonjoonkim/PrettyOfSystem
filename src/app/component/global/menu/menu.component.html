@@ -34,7 +34,7 @@
           slot="header"
           class="menu-selector"
           [class.menu-active]="selectedTitleHeading === 'booking'"
-          (click)="onChangeMenu('/booking')">
+          (click)="clickHome()">
           <ion-icon slot="start" name="home-outline"></ion-icon>
           {{ 'label.title.homepage' | languageTransform: 'System' | async }}
         </ion-item>

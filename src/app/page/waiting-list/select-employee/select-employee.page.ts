@@ -1,22 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, combineLatestWith, takeUntil } from 'rxjs';
+import { Subject, Observable, combineLatestWith, takeUntil } from 'rxjs';
 import { ShopExtraDocumentType } from 'src/app/interface';
 import { Cart, CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
+
 @Component({
-  selector: 'app-cart-view',
-  templateUrl: './cart-view.page.html',
-  styleUrls: ['./cart-view.page.scss'],
+  selector: 'app-select-employee',
+  templateUrl: './select-employee.page.html',
+  styleUrls: ['./select-employee.page.scss'],
 })
-export class CartViewPage implements OnInit, OnDestroy {
+export class SelectEmployeePage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   private _sessionId: string | null = this._route.snapshot.paramMap.get('id');
   public loaded$!: Observable<boolean>;
   public isLoading$!: Observable<boolean>;
   public cart$!: Observable<Cart | null>;
   public extras$!: Observable<ShopExtraDocumentType[]>;
-  public hasRelatedService$!: Observable<boolean>;
 
   constructor(
     private _waitingList: WaitingListService,
@@ -26,8 +26,6 @@ export class CartViewPage implements OnInit, OnDestroy {
     this.loaded$ = this._waitingList.isLoaded$;
     this.isLoading$ = this._waitingList.isLoading$;
     this.cart$ = this._waitingList.cart$;
-    this.extras$ = this._waitingList.shop.getExtra();
-    this.hasRelatedService$ = this._waitingList.cart.hasRelatedService();
   }
 
   async ngOnInit() {
@@ -51,27 +49,11 @@ export class CartViewPage implements OnInit, OnDestroy {
   }
 
   async onClickGoback() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart`);
-  }
-
-  public qty(cart: Cart | null) {
-    return cart !== null ? cart.checkout.reduce((sum, item) => sum + item.qty, 0) : 0;
+    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart-view`);
   }
 
   async onClickNext() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/select-employee`);
-  }
-
-  public async incrementCheckout(checkout: CheckOutItem) {
-    await this._waitingList.cart.increment(checkout);
-  }
-
-  public async decrementCheckout(checkout: CheckOutItem) {
-    await this._waitingList.cart.decrement(checkout);
-  }
-
-  public async deleteCheckout(checkout: CheckOutItem) {
-    await this._waitingList.cart.delete(checkout);
+    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/select-employee-time`);
   }
 
   ngOnDestroy() {

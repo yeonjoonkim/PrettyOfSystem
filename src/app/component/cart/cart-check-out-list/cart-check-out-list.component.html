@@ -1,0 +1,61 @@
+<flex-col class="check-out-list" *ngIf="cart && cart.checkout.length > 0 && hasRelatedService(cart.checkout)">
+  <ng-container *ngFor="let checkout of cart.checkout; let first = first">
+    <flex-col-item class="check-out" *ngIf="first">
+      <flex-row>
+        <flex-row-item class="check-out-item-title">
+          <div class="item-title title">
+            {{ 'label.title.name' | languageTransform: 'System' | async }}
+          </div>
+          <div class="item-qty title">
+            {{ 'label.title.qty' | languageTransform: 'System' | async }}
+          </div>
+          <div class="item-price title">
+            {{ 'label.title.price' | languageTransform: 'System' | async }}
+          </div>
+          <div class="delete"></div>
+        </flex-row-item>
+      </flex-row>
+    </flex-col-item>
+    <flex-col-item class="check-out">
+      <flex-row>
+        <flex-row-item class="check-out-item">
+          <div class="item-title">
+            <span *ngIf="checkout.min > 0">{{ checkout.min | minuteTransform | async }}</span>
+            {{ checkout.title | languageTransform: transformType | async }}
+            <p class="title-tooltip">({{ checkout.type | languageTransform: 'System' | async }})</p>
+          </div>
+          <div class="item-qty">
+            <button
+              class="item-minus"
+              kendoButton
+              icon="minus"
+              [disabled]="!checkout.qty"
+              (click)="onDecrement(checkout)"></button>
+            <p>{{ checkout.qty }}</p>
+            <button class="item-plus" kendoButton icon="plus" (click)="onIncrement(checkout)"></button>
+          </div>
+          <div class="item-price">
+            {{ checkout.price * checkout.qty | currencyTransform }}
+          </div>
+          <div class="delete">
+            <button class="item-delete" kendoButton icon="delete" (click)="onDelete(checkout)"></button>
+          </div>
+        </flex-row-item>
+      </flex-row>
+    </flex-col-item>
+  </ng-container>
+  <flex-col-item class="sub-total" *ngIf="cart.totalPrice > 0">
+    <div class="total-price">
+      <legend>{{ cart.totalPrice | currencyTransform }}</legend>
+    </div>
+    <div class="total-min" *ngIf="cart.totalMin > 0">
+      <legend>{{ cart.totalMin | minuteTransform | async }}</legend>
+    </div>
+  </flex-col-item>
+</flex-col>
+
+<flex-col *ngIf="!cart || !cart.checkout.length || !(cart && hasRelatedService(cart.checkout))">
+  <flex-col-item class="no-cart">
+    {{ 'label.description.pleaseaddconsultoption' | languageTransform: 'System' | async }}
+  </flex-col-item>
+</flex-col>
