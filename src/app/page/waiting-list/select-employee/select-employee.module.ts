@@ -8,13 +8,18 @@ import { SelectEmployeePageRoutingModule } from './select-employee-routing.modul
 
 import { SelectEmployeePage } from './select-employee.page';
 
+import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
+import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SelectEmployeePageRoutingModule
+    SelectEmployeePageRoutingModule,
+    LanguageTransformPipeModule,
+    KendoUiModule,
   ],
-  declarations: [SelectEmployeePage]
+  declarations: [SelectEmployeePage],
 })
 export class SelectEmployeePageModule {}

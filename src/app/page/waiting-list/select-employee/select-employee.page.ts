@@ -1,8 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Observable, combineLatestWith, takeUntil } from 'rxjs';
-import { ShopExtraDocumentType } from 'src/app/interface';
-import { Cart, CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
+import {
+  Subject,
+  Observable,
+  combineLatestWith,
+  takeUntil,
+  filter,
+  distinctUntilChanged,
+  first,
+  switchMap,
+  of,
+} from 'rxjs';
+
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 
 @Component({
@@ -15,8 +24,6 @@ export class SelectEmployeePage implements OnInit, OnDestroy {
   private _sessionId: string | null = this._route.snapshot.paramMap.get('id');
   public loaded$!: Observable<boolean>;
   public isLoading$!: Observable<boolean>;
-  public cart$!: Observable<Cart | null>;
-  public extras$!: Observable<ShopExtraDocumentType[]>;
 
   constructor(
     private _waitingList: WaitingListService,
@@ -25,7 +32,6 @@ export class SelectEmployeePage implements OnInit, OnDestroy {
   ) {
     this.loaded$ = this._waitingList.isLoaded$;
     this.isLoading$ = this._waitingList.isLoading$;
-    this.cart$ = this._waitingList.cart$;
   }
 
   async ngOnInit() {

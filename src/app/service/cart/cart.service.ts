@@ -57,6 +57,23 @@ export class CartService {
     );
   }
 
+  public relatedCartSpecialistIds() {
+    return this.cart$.pipe(
+      switchMap(cart => {
+        if (cart) {
+          const specialisedEmpId = cart.checkout
+            .map(c => c.specializedEmployees)
+            .reduce((acc, val) => acc.concat(val), [])
+            .filter((v, i, arr) => arr.findIndex(t => t.value === v.value) === i)
+            .map(emp => emp.value);
+          return of(specialisedEmpId);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
   public async addCheckOutItem(checkout: CheckOutItem, transformType: Constant.LanguageTransformType) {
     let cart = this._cart.getValue();
     if (cart !== null) {

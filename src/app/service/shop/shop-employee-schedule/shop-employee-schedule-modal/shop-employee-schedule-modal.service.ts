@@ -23,7 +23,8 @@ export class ShopEmployeeScheduleModalService {
     date: string,
     day: string,
     roster: ShopOperatingDailyType,
-    operating: ShopOperatingHoursType
+    operating: ShopOperatingHoursType,
+    employeeId: string
   ) {
     const prop: ShopEmployeeScheduleSettingProp = {
       name: name,
@@ -31,6 +32,7 @@ export class ShopEmployeeScheduleModalService {
       day: day,
       roster: roster,
       operating: operating,
+      employeeId: employeeId,
     };
     return cloneDeep(prop);
   }
@@ -40,9 +42,10 @@ export class ShopEmployeeScheduleModalService {
     date: string,
     day: string,
     roster: ShopOperatingDailyType,
-    operating: ShopOperatingHoursType
+    operating: ShopOperatingHoursType,
+    employeeId: string
   ) {
-    const prop = this.buildProp(name, date, day, roster, operating);
+    const prop = this.buildProp(name, date, day, roster, operating, employeeId);
     const modal = await this.setting(prop);
     return modal;
   }

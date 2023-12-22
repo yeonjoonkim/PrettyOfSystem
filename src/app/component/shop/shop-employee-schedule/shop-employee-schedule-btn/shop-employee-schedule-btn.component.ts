@@ -47,7 +47,8 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         day,
         'date.title.sun',
         roster.sun,
-        this.operatingHours.sun.operatingHours
+        this.operatingHours.sun.operatingHours,
+        this.employeeId()
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
@@ -148,7 +149,8 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         day,
         'date.title.mon',
         roster.mon,
-        this.operatingHours.tue.operatingHours
+        this.operatingHours.tue.operatingHours,
+        this.employeeId()
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
@@ -249,7 +251,8 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         day,
         'date.title.tue',
         roster.tue,
-        this.operatingHours.tue.operatingHours
+        this.operatingHours.tue.operatingHours,
+        this.employeeId()
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
@@ -350,7 +353,8 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         day,
         'date.title.wed',
         roster.wed,
-        this.operatingHours.wed.operatingHours
+        this.operatingHours.wed.operatingHours,
+        this.employeeId()
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
@@ -451,7 +455,8 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         day,
         'date.title.thu',
         roster.thu,
-        this.operatingHours.thu.operatingHours
+        this.operatingHours.thu.operatingHours,
+        this.employeeId()
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
@@ -552,7 +557,8 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         day,
         'date.title.fri',
         roster.fri,
-        this.operatingHours.fri.operatingHours
+        this.operatingHours.fri.operatingHours,
+        this.employeeId()
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
@@ -653,7 +659,8 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         day,
         'date.title.sat',
         roster.sat,
-        this.operatingHours.sat.operatingHours
+        this.operatingHours.sat.operatingHours,
+        this.employeeId()
       );
       await modal.present();
       const result = await this.handleDismiss(modal);
@@ -794,6 +801,10 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
 
   private fullName() {
     return this.employee.firstName + ' ' + this.employee.lastName;
+  }
+
+  private employeeId() {
+    return this.employee.userId;
   }
 
   private async handleDismiss(modal: HTMLIonModalElement) {

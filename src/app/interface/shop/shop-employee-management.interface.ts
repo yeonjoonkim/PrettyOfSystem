@@ -66,4 +66,5 @@ export type ShopEmployeeScheduleSettingProp = {
   day: string;
   roster: ShopOperatingDailyType;
   operating: ShopOperatingHoursType;
+  employeeId: string;
 };

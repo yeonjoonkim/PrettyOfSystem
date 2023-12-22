@@ -59,17 +59,19 @@ export class ShopSettingPictureComponent implements OnInit {
   }
 
   public async handleSave() {
-    this.form.enabledSavebutton = false;
-    const updated = await this._shopSetting.uploadPicture(
-      this._logoFile,
-      this._image1File,
-      this._image2File,
-      this._image3File
-    );
-    if (updated) {
-      await this.dismiss();
-    } else {
-      this.form.enabledSavebutton = true;
+    if (this.form.enabledSavebutton) {
+      this.form.enabledSavebutton = false;
+      const updated = await this._shopSetting.uploadPicture(
+        this._logoFile,
+        this._image1File,
+        this._image2File,
+        this._image3File
+      );
+      if (updated) {
+        await this.dismiss();
+      } else {
+        this.form.enabledSavebutton = true;
+      }
     }
   }
 

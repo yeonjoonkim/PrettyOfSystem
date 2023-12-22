@@ -171,24 +171,20 @@ ion-toolbar {
 }
 
 .date-pick-popup-container {
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  animation: none !important;
-  transition: none !important;
-}
-
-.date-pick-popup-container::after {
-  content: '';
-  display: block;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%; /* Viewport width */
-  height: 100%; /* Viewport height */
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-  z-index: -1; /* Behind the content of the container */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  .k-timeselector {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 .delete-ion-sliding-option {

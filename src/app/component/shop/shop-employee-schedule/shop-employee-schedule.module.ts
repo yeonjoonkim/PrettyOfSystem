@@ -6,6 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/cor
 //Import Pipe
 import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
 import { DatePipeModule } from 'src/app/pipe/date/date.pipe.module';
+import { TimeItemTransformPipeModule } from 'src/app/pipe/time-item/time-item.pipe.module';
 //Import Module
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.module';
@@ -29,6 +30,7 @@ import { ShopEmployeeScheduleSettingComponent } from './shop-employee-schedule-s
     SharedFormModule,
     KendoUiModule,
     DatePipeModule,
+    TimeItemTransformPipeModule,
   ],
   exports: [ShopEmployeeScheduleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

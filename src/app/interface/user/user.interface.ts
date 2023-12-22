@@ -50,8 +50,6 @@ export type ChangePhoneNumberRequestDocumentType = {
   attempt: number; //limited 3
 };
 
-//2023-12-11T01:00:00
-
 export type ShopEmployeeScheduleChangeResult = {
   applyAllWeek: boolean;
   roster: ShopOperatingDailyType;

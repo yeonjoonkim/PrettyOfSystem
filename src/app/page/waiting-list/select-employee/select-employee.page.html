@@ -1,13 +1,14 @@
-<ion-header [translucent]="true">
+<ion-header *ngIf="loaded$ | async">
   <ion-toolbar>
-    <ion-title>select-employee</ion-title>
+    <button class="goback-btn" slot="start" kendoButton (click)="onClickGoback()">
+      {{'label.title.goback' | languageTransform:'System' | async}}
+    </button>
+    <!-- Title -->
+    <ion-title>{{'label.title.selectspecialist'| languageTransform:'System' | async }}</ion-title>
+    <button class="next-btn" slot="end" kendoButton (click)="onClickNext()">
+      {{'label.title.next' | languageTransform:'System' | async}}
+    </button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">select-employee</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+<ion-content [fullscreen]="true"> </ion-content>

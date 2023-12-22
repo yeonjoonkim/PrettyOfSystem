@@ -104,4 +104,23 @@ export class MassageBodyService {
       return undefined;
     }
   }
+
+  public getPainSummary(painLevel: number) {
+    switch (painLevel) {
+      case 1:
+      case 2:
+      case 3:
+        return 'label.title.mild';
+      case 4:
+      case 5:
+      case 6:
+        return 'label.title.midium';
+      case 7:
+      case 8:
+      case 9:
+        return 'label.title.extreme';
+      default:
+        return 'label.title.mild';
+    }
+  }
 }

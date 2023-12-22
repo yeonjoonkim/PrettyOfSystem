@@ -159,6 +159,20 @@ export class UserCredentialRepositoryService {
       );
   }
 
+  public activeShopSpecialist(shopId: string) {
+    return this._afs
+      .collection<IUser>(Db.Context.User, ref =>
+        ref.where('associatedShopIds', 'array-contains', shopId).where('isSystemAdmin', '!=', true)
+      )
+      .valueChanges()
+      .pipe(
+        map(users => users.map(user => this.transformIntoShopEmployeeManagementUserType(user, shopId))),
+        map(users => users.filter(user => user !== null) as ShopEmployeeManagementUserType[]),
+        map(users => users.filter(user => user.active)),
+        map(users => users.filter(user => user.displayInSystem))
+      );
+  }
+
   public subscribeAllUser() {
     return this._afs
       .collection<IUser>(Db.Context.User, ref => ref.orderBy('isSystemAdmin'))

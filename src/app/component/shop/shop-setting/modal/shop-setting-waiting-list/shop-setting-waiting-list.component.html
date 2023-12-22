@@ -1,5 +1,4 @@
 <form-header
-  *ngIf="!isLoading()"
   [title]="form.headerTitle"
   [readOnly]="form.readOnly"
   [enabledSavebutton]="form.enabledSavebutton"
@@ -10,8 +9,8 @@
   (onClickSave)="handleSave()">
 </form-header>
 <ion-content [scrollable]="true">
-  <flex-col class="modal-container">
-    <flex-col-item *ngIf="role.isSystemAdminAccess()">
+  <flex-col class="modal-container" *ngIf="role.currentRole$ | async as role">
+    <flex-col-item *ngIf="role.accessLevel.isSystemAdmin">
       <p>{{ url }}</p>
     </flex-col-item>
     <flex-col-item>
@@ -20,19 +19,21 @@
         [selection]="timeoutSessionSelection"
         [(selected)]="selectedTimeoutSession"
         [readOnly]="form.readOnly"
+        [orderByName]="false"
+        [filterable]="false"
         (selectedChange)="onChangeTimeoutSession()">
       </name-value-pair-single-dropdown-selection>
     </flex-col-item>
-    <flex-col-item class="qr-code-header">
+    <flex-col-item class="qr-code-header" *ngIf="!form.readOnly">
       <button kendoButton icon="download" id="download-btn" (click)="exportPNG()"></button>
       <button
         kendoButton
         icon="refresh"
         id="refresh-btn"
         (click)="onRefreshQRCode()"
-        *ngIf="!form.readOnly"></button>
+        *ngIf="!form.readOnly && url"></button>
     </flex-col-item>
-    <flex-col-item>
+    <flex-col-item *ngIf="url">
       <kendo-qrcode [value]="url" #qrcode errorCorrection="Q" size="200px"> </kendo-qrcode>
     </flex-col-item>
   </flex-col>

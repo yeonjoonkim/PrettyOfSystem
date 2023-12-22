@@ -16,7 +16,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" *ngIf="loaded$ | async">
   <div class="client-info-container">
     <cart-check-out-list
       *ngIf="cart$ | async as cart"
@@ -33,3 +33,7 @@
       (increment)="incrementCheckout($event)"></cart-check-out-extras>
   </div>
 </ion-content>
+
+<div class="loading-container" *ngIf="isLoading$ | async">
+  <kendo-loader size="large"></kendo-loader>
+</div>

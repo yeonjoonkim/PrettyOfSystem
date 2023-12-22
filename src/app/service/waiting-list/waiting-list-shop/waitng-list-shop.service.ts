@@ -19,6 +19,7 @@ import {
 } from '../../shop/shop-service-management/shop-service-menu-option-controller/shop-service-menu-option-controller.service';
 
 import * as Constant from 'src/app/constant/constant';
+import { UserCredentialRepositoryService } from 'src/app/firebase/user-repository/user-credential-repository/user-credential-repository.service';
 
 export type WaitingListShopCartCriteriaType = {
   buttons: IShopServiceMenuOptionAction[];
@@ -37,6 +38,7 @@ export class WaitngListShopService {
 
   constructor(
     private _shopRepo: SystemShopConfigurationRepositoryService,
+    private _userRepo: UserCredentialRepositoryService,
     private _couponRepo: ShopCouponRepositoryService,
     private _serviceRepo: ShopServiceRepositoryService,
     private _extraRepo: ShopExtraRepositoryService,
@@ -55,6 +57,10 @@ export class WaitngListShopService {
         }
       })
     );
+  }
+
+  public activeSpecialist(shopId: string) {
+    return this._userRepo.activeShopSpecialist(shopId);
   }
 
   public name() {

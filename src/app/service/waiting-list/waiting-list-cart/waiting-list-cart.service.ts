@@ -41,6 +41,10 @@ export class WaitingListCartService {
     return this._cart.hasRelatedService();
   }
 
+  public relatedSpecialistIds() {
+    return this._cart.relatedCartSpecialistIds();
+  }
+
   public async complete() {
     await this._cart.destroy();
   }
