@@ -96,3 +96,19 @@
   margin: 0;
   font-size: 7px;
 }
+
+.k-adaptive-actionsheet {
+  .k-actionsheet-titlebar {
+    display: none;
+  }
+  .k-actionsheet-content {
+    kendo-timeselector,
+    kendo-calendar {
+      top: 100px;
+    }
+  }
+}
+
+.k-adaptive-actionsheet .k-timeselector {
+  height: 60%;
+}

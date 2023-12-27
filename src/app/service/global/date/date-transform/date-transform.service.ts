@@ -7,7 +7,7 @@ import * as Constant from 'src/app/constant/constant';
 import * as deafultTimezone from 'moment-timezone';
 
 const dateFormatter = `yyyy-MM-dd'T'HH:mm:ss`;
-const localTimezone = deafultTimezone.tz.guess();
+export const localTimezone = deafultTimezone.tz.guess();
 
 export type DateType = firebase.firestore.Timestamp | string | Date;
 @Injectable({

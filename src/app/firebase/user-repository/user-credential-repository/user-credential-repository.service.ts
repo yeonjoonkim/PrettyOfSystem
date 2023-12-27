@@ -298,7 +298,7 @@ export class UserCredentialRepositoryService {
       associatedShopIds: [],
       currentShopId: '',
       setting: {
-        pregrencyDueDate: null,
+        pregnancyDueDate: null,
         preferLanguage: await this._systemLanguageStorage.getCurrentLanguage(),
         privateInsurance: null,
         medical: {
@@ -309,6 +309,10 @@ export class UserCredentialRepositoryService {
           pressure: {
             rating: Constant.Massage.Pressure.Raiting.One,
             description: Constant.Massage.Pressure.Description.ExtremeSoft,
+          },
+          difficultChangePosition: {
+            type: Constant.Massage.DifficultChangePosition.Type.NoProblem,
+            description: Constant.Massage.DifficultChangePosition.Description.NoProblem,
           },
           areas: [],
         },

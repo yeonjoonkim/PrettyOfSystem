@@ -10,6 +10,9 @@
   <flex-col class="medical" *ngIf="!onlyUserInfo" [class.border-left]="!onlyMedical">
     <user-medical-history [user]="user"></user-medical-history>
     <user-medical-other-condition [otherStatus]="user.setting.medical.otherStatus"></user-medical-other-condition>
+    <user-pregrancy-due-date
+      *ngIf="user.gender !== 'Male'"
+      [pregnancyDueDate]="user.setting.pregnancyDueDate"></user-pregrancy-due-date>
     <user-signature [signature]="user.signature" *ngIf="isRequiredSignature"></user-signature>
   </flex-col>
 </flex-row>

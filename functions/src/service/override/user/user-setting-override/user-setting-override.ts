@@ -1,7 +1,7 @@
 import * as I from '../../../../interface';
 import * as Constant from '../../../../constant';
 export const override = function (s: I.UserSettingType) {
-  s.pregrencyDueDate = pregrencyDueDate(s?.pregrencyDueDate);
+  s.pregnancyDueDate = pregnancyDueDate(s?.pregnancyDueDate);
   s.preferLanguage = preferLanguage(s?.preferLanguage);
   s.privateInsurance = prviateInsurance(s?.privateInsurance);
   s.massage = massage(s?.massage);
@@ -9,8 +9,8 @@ export const override = function (s: I.UserSettingType) {
   return s;
 };
 
-const pregrencyDueDate = function (pregrencyDueDate: string | undefined | null) {
-  return typeof pregrencyDueDate === 'string' ? pregrencyDueDate : null;
+const pregnancyDueDate = function (pregnancyDueDate: string | undefined | null) {
+  return pregnancyDueDate !== null && pregnancyDueDate !== undefined ? pregnancyDueDate : null;
 };
 
 //Prefer Language
@@ -28,8 +28,18 @@ const massage = function (massage: I.UserSettingMassageType | undefined) {
   const result = {
     pressure: massagePressure(massage?.pressure),
     areas: areas(massage?.areas),
+    difficultChangePosition: difficultChangePosition(massage?.difficultChangePosition),
   };
   return result;
+};
+
+const difficultChangePosition = function (positionType: I.MassageDifficultChangePosition | undefined | null) {
+  return positionType !== undefined && positionType !== null
+    ? positionType
+    : {
+        type: Constant.Massage.DifficultChangePosition.Type.NoProblem,
+        description: Constant.Massage.DifficultChangePosition.Description.NoProblem,
+      };
 };
 
 const massagePressure = function (pressureType: I.MassagePressureType | undefined | null) {

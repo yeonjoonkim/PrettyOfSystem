@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DateTransformService, DateType } from './date-transform/date-transform.service';
+import { DateTransformService, DateType, localTimezone } from './date-transform/date-transform.service';
 import * as Constant from '../../../constant/constant';
 import { IDateIndexPairDay, DatePeriodType, TimeItemType } from 'src/app/interface/global/global.interface';
 import { utcToZonedTime } from 'date-fns-tz';
@@ -25,6 +25,7 @@ import {
   providedIn: 'root',
 })
 export class DateService {
+  public localTimezone = localTimezone;
   public day: IDateIndexPairDay[] = [
     { index: Constant.Date.DayIndex.Sun, day: Constant.Date.Day.Sun },
     { index: Constant.Date.DayIndex.Mon, day: Constant.Date.Day.Mon },

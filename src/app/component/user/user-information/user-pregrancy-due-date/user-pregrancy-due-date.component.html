@@ -1,0 +1,49 @@
+<flex-row>
+  <flex-row-item class="setting-title">
+    <legend>{{ 'label.title.expecteddateofbirth' | languageTransform: 'System' | async }}</legend>
+    <button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </button>
+    <button
+      *ngIf="!readOnly"
+      class="save-btn"
+      themeColor="success"
+      (click)="onSave()"
+      [disabled]="!enableSaveBtn || requesting">
+      {{ 'button.title.save' | languageTransform: 'System' | async }}
+    </button>
+  </flex-row-item>
+</flex-row>
+
+<flex-row *ngIf="!requesting">
+  <flex-row-item class="description" *ngIf="pregnancyDueDate === null && readOnly">
+    <p class="default-placeholder">
+      {{ 'label.description.noexpecteddateofbirthprovided' | languageTransform: 'System' | async }}
+    </p>
+  </flex-row-item>
+  <flex-row-item class="description" *ngIf="(pregnancyDueDate || pregnancyDueDate === null) && !readOnly">
+    {{ 'label.description.doyouwanttoprovideexpecteddateofbirth' | languageTransform: 'System' | async }}
+    <input
+      type="checkbox"
+      kendoCheckBox
+      [checked]="pregnancyDueDate !== null"
+      [disabled]="readOnly"
+      (click)="onChangeDueDateFormat()" />
+  </flex-row-item>
+</flex-row>
+
+<flex-row *ngIf="!requesting && pregnancyDueDate !== null">
+  <flex-row-item class="pregrency-due-date-picker-container">
+    <date-picker
+      [(date)]="pregnancyDueDate"
+      [shopTimeZone]="localTimezone"
+      (dateChange)="onChangeDate()"
+      [restrictedFromToday]="true"></date-picker>
+  </flex-row-item>
+</flex-row>
+
+<flex-col>
+  <flex-col-item>
+    <kendo-loader *ngIf="requesting" size="large"></kendo-loader>
+  </flex-col-item>
+</flex-col>

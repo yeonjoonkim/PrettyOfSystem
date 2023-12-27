@@ -79,7 +79,7 @@ export class UserAdminService {
 
   public setDefaultUserSetting(): UserSettingType {
     return {
-      pregrencyDueDate: null,
+      pregnancyDueDate: null,
       preferLanguage: '',
       privateInsurance: null,
       medical: {
@@ -92,6 +92,10 @@ export class UserAdminService {
           description: Constant.Massage.Pressure.Description.ExtremeSoft,
         },
         areas: [],
+        difficultChangePosition: {
+          type: Constant.Massage.DifficultChangePosition.Type.NoProblem,
+          description: Constant.Massage.DifficultChangePosition.Description.NoProblem,
+        },
       },
     };
   }
