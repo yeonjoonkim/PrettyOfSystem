@@ -9,10 +9,13 @@ import { ClientCreateAccountComponent } from 'src/app/component/client/client-cr
 export class ClientModalService {
   constructor(private _modal: ModalController) {}
 
-  public async createAccount() {
+  public async createAccount(phoneNumber: string) {
     const modal = await this._modal.create({
       component: ClientCreateAccountComponent,
       presentingElement: await this._modal.getTop(),
+      componentProps: {
+        phoneNumber: phoneNumber,
+      },
     });
     return modal;
   }

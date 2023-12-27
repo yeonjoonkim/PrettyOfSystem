@@ -1,0 +1,21 @@
+<div class="specialist-container">
+  <legend class="title">{{ 'label.title.selectspecialist' | languageTransform: 'System' | async }}</legend>
+  <div class="speicalist-list" *ngIf="specialists.length > 0">
+    <ng-container *ngFor="let specialist of specialists">
+      <employee-selection-button
+        (click)="updateSpecialistCart(specialist)"
+        [active]="false"
+        [id]="specialist.employeeId"
+        [gender]="specialist.gender"
+        [fullName]="specialist.fullName"
+        [active]="
+          selectedSpecialist.id === specialist.employeeId && selectedSpecialist.name === specialist.fullName
+        "></employee-selection-button>
+    </ng-container>
+  </div>
+  <div class="specialist-list" *ngIf="specialists.length === 0">
+    <p class="no-available">
+      {{ 'label.description.thereisnospecialistavailable' | languageTransform: 'System' | async }}
+    </p>
+  </div>
+</div>

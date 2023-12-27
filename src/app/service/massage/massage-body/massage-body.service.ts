@@ -13,6 +13,7 @@ import {
 } from 'src/app/interface';
 import { MassageBodyPreferenceService } from './massage-body-preference/massage-body-preference.service';
 import { cloneDeep } from 'lodash-es';
+import * as Constant from 'src/app/constant/constant';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,13 +29,16 @@ export class MassageBodyService {
   public addNewArea(
     prop: MassageBodySelectorPopoverProp,
     painName: string,
-    painLevel: number,
+    painRating: Constant.MassagePainScaleRatingType,
     preference: NameValuePairType
   ) {
     const newArea: MassageBodySelectorAreaType = {
       position: prop.selector.position,
       pain: {
-        level: painLevel,
+        scale: {
+          rating: painRating,
+          description: this.getPainScaleDescription(painRating),
+        },
         name: painName,
       },
       preference: {
@@ -50,7 +54,7 @@ export class MassageBodyService {
   public editArea(
     prop: MassageBodySelectorPopoverProp,
     painName: string,
-    painLevel: number,
+    painLevel: Constant.MassagePainScaleRatingType,
     preference: NameValuePairType
   ) {
     const area = this.findAreaFromSelector(prop.selector, prop.selectedAreas);
@@ -105,22 +109,17 @@ export class MassageBodyService {
     }
   }
 
-  public getPainSummary(painLevel: number) {
-    switch (painLevel) {
-      case 1:
-      case 2:
-      case 3:
-        return 'label.title.mild';
-      case 4:
-      case 5:
-      case 6:
-        return 'label.title.midium';
-      case 7:
-      case 8:
-      case 9:
-        return 'label.title.extreme';
-      default:
-        return 'label.title.mild';
+  public getPainScaleDescription(
+    rating: Constant.MassagePainScaleRatingType
+  ): Constant.MassagePainScaleDescriptionType {
+    if (!rating) {
+      return Constant.Massage.PainScale.Description.NoPain;
+    } else if ([1, 2, 3, 4].includes(rating)) {
+      return Constant.Massage.PainScale.Description.Mild;
+    } else if ([5, 6].includes(rating)) {
+      return Constant.Massage.PainScale.Description.Moderate;
+    } else {
+      return Constant.Massage.PainScale.Description.Severe;
     }
   }
 }

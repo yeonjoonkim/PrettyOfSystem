@@ -6,12 +6,11 @@ import {
   combineLatestWith,
   distinctUntilChanged,
   filter,
-  first,
   map,
   of,
   switchMap,
 } from 'rxjs';
-import { WaitingListSessionType } from 'src/app/interface';
+import { ShopEmployeeTimeSheet, WaitingListSessionType } from 'src/app/interface';
 import { LanguageService } from '../global/language/language.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../global/toast/toast.service';
@@ -20,6 +19,8 @@ import { WaitingListUrlService } from '../internal-api/waiting-list-url/waiting-
 import { WaitngListShopService } from './waiting-list-shop/waitng-list-shop.service';
 import { WaitingListCartService } from './waiting-list-cart/waiting-list-cart.service';
 import { Cart } from 'src/app/interface/booking/cart/cart.interface';
+import { EmployeeService } from '../employee/employee.service';
+import { DateService } from '../global/date/date.service';
 import * as Constant from 'src/app/constant/constant';
 
 @Injectable({
@@ -44,7 +45,9 @@ export class WaitingListService {
     private _url: WaitingListUrlService,
     private _router: Router,
     private _toaster: ToastService,
-    private _language: LanguageService
+    private _language: LanguageService,
+    private _employee: EmployeeService,
+    private _date: DateService
   ) {
     this.shop.config$ = this.shop.shopConfigurationValueListener(this.startSessionShopId$);
     this.startWaitingList();
@@ -100,61 +103,85 @@ export class WaitingListService {
       filter(([start, specialistIds, config]) => start === true && specialistIds !== null && config !== null),
       switchMap(([start, specialistIds, shopConfig]) => {
         if (start && specialistIds && shopConfig) {
-          return this.shop
-            .activeSpecialist(shopConfig.id)
-            .pipe(
-              map(specialists =>
+          return this.shop.activeSpecialist(shopConfig.id).pipe(
+            map(specialists => {
+              const specialistList =
                 specialistIds.length === 0
                   ? specialists
-                  : specialists.filter(specialist => specialistIds.includes(specialist.userId))
-              )
-            );
+                  : specialists.filter(specialist => specialistIds.includes(specialist.userId));
+              return specialistList.map(specialist =>
+                this._employee.timeSheet.set(
+                  specialist,
+                  shopConfig.timezone,
+                  shopConfig.setting.waitingList.intervalMin
+                )
+              );
+            })
+          );
         } else {
           return of(null);
         }
       }),
-      first(),
       distinctUntilChanged()
     );
   }
 
-  public selectSpecialist() {
+  public todaySpecialists() {
     return this.specialists().pipe(
-      switchMap(specialists => {
-        if (specialists && specialists.length > 0) {
-          let selection = specialists.map(s => {
-            return { name: `${s.firstName} ${s.lastName}`, value: `${s.userId}`, gender: s.gender };
+      combineLatestWith(this.shop.config$),
+      filter(([specialists, config]) => specialists !== null && config !== null),
+      switchMap(([specialists, shopConfig]) => {
+        if (shopConfig && specialists) {
+          const startOfDay = this._date.startDay(this._date.shopNow(shopConfig.timezone));
+          const todaySpecialists = specialists.filter(specialist => {
+            const today = specialist.avaliable.find(s => s.date === startOfDay);
+            return today !== undefined ? today.isWorking : false;
           });
+          return of(
+            todaySpecialists.length > 2
+              ? [this._employee.timeSheet.defaultAnyone(todaySpecialists[0]), ...todaySpecialists]
+              : todaySpecialists
+          );
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
 
-          if (specialists.length > 2) {
-            selection.unshift({
-              name: 'label.title.anyspecialist',
-              value: 'anyspecialist',
-              gender: Constant.Default.Gender.Other,
-            });
+  public selectTodaySpecialistTime() {
+    return this.todaySpecialists().pipe(
+      combineLatestWith(this.cart$, this.shop.config$),
+      filter(([specialists, cart, config]) => specialists !== null && cart !== null && config !== null),
+      switchMap(([specialists, cart, config]) => {
+        if (specialists && cart && config) {
+          const today = this._date.startDay(this._date.shopNow(config.timezone));
+          const specialist = specialists.find(s => s.employeeId === cart.specialist.id);
+          if (specialist !== undefined && specialist.employeeId.length > 0) {
+            const availableTimeSheet = specialist.avaliable.find(a => a.date === today);
+            const timeSheet = this._employee.timeSheet.availableTodayTimeSheet(
+              availableTimeSheet,
+              config.timezone,
+              today
+            );
+            //TODO - Simulate the Available Time;
+            return of(this._employee.timeSheet.simulateTimeSheet(timeSheet, cart));
+          } else {
+            const anyoneTimeSheet = this._employee.timeSheet.anyoneTimeSheet(
+              config.id,
+              config.timezone,
+              config.setting.waitingList.intervalMin,
+              config.operatingHours
+            );
+            const availableTimeSheet = anyoneTimeSheet.avaliable.find(a => a.date === today);
+            const timeSheet = this._employee.timeSheet.availableTodayTimeSheet(
+              availableTimeSheet,
+              config.timezone,
+              today
+            );
+
+            return of(this._employee.timeSheet.simulateTimeSheet(timeSheet, cart));
           }
-
-          const hasMaleSpecialist = specialists.some(s => s.gender === Constant.Default.Gender.Male);
-          const hasFemaleSpecialist = specialists.some(s => s.gender === Constant.Default.Gender.Female);
-
-          if (specialists.length > 1 && hasMaleSpecialist) {
-            selection.splice(1, 0, {
-              name: 'label.title.malespecialist',
-              value: 'malespecialist',
-              gender: Constant.Default.Gender.Male,
-            });
-          }
-
-          if (specialists.length > 2 && hasFemaleSpecialist) {
-            const insertPosition = hasMaleSpecialist ? 2 : 1;
-            selection.splice(insertPosition, 0, {
-              name: 'label.title.femalespecialist',
-              value: 'femalespecialist',
-              gender: Constant.Default.Gender.Female,
-            });
-          }
-
-          return of(selection);
         } else {
           return of(null);
         }

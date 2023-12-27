@@ -45,11 +45,11 @@
     background: var(--error);
   }
   .edit {
-    background: var(--card-add-hover);
+    background: var(--card);
   }
   .save {
     width: 100%;
-    background: var(--card-add);
+    background: var(--card);
   }
 }
 .justify-end {
@@ -64,4 +64,32 @@ ion-range {
   --bar-background-active: #ff6358;
   --knob-background: var(--title);
   --knob-size: 16px;
+}
+
+ion-range::part(tick) {
+  background: var(--title);
+}
+
+ion-range::part(tick-active) {
+  background: var(--title);
+}
+
+ion-range::part(pin) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--title);
+  color: #fff;
+
+  border-radius: 50%;
+  min-width: 28px;
+  height: 28px;
+  transition:
+    transform 120ms ease,
+    background 120ms ease;
+}
+
+ion-range::part(pin)::before {
+  content: none;
 }

@@ -80,6 +80,7 @@ export interface IUserLoginOption {
 
 export type UserSettingType = {
   preferLanguage: string;
+  pregrencyDueDate: string | null;
   privateInsurance: UserSettingPrivateInsuranceType | null;
   massage: UserSettingMassageType;
   medical: UserSettingMedicalHistroyType;
@@ -91,8 +92,13 @@ export type UserSettingMedicalHistroyType = {
 };
 
 export type UserSettingMassageType = {
-  pressureLevel: number;
+  pressure: MassagePressureType;
   areas: MassageBodySelectorAreaType[];
+};
+
+export type MassagePressureType = {
+  rating: Constant.MassagePressureRatingType;
+  description: Constant.MassagePressureDescriptionType;
 };
 
 export type UserMedicalHistoryType = {

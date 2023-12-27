@@ -16,7 +16,7 @@
     <flex-col-item>
       <name-value-pair-single-dropdown-selection
         title="label.title.timeout"
-        [selection]="timeoutSessionSelection"
+        [selection]="timeSelection"
         [(selected)]="selectedTimeoutSession"
         [readOnly]="form.readOnly"
         [orderByName]="false"
@@ -24,7 +24,17 @@
         (selectedChange)="onChangeTimeoutSession()">
       </name-value-pair-single-dropdown-selection>
     </flex-col-item>
-    <flex-col-item class="qr-code-header" *ngIf="!form.readOnly">
+    <flex-col-item>
+      <name-value-pair-single-dropdown-selection
+        title="label.title.intervalmin"
+        [selection]="timeSelection"
+        [(selected)]="selectedIntervalMin"
+        [readOnly]="form.readOnly"
+        [orderByName]="false"
+        [filterable]="false"
+        (selectedChange)="onChangeIntervalMin()"></name-value-pair-single-dropdown-selection>
+    </flex-col-item>
+    <flex-col-item class="qr-code-header">
       <button kendoButton icon="download" id="download-btn" (click)="exportPNG()"></button>
       <button
         kendoButton

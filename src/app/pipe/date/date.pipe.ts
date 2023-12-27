@@ -25,8 +25,8 @@ export class DatePipe implements PipeTransform {
   private transformFormat(formatted: string, type: 'Time' | 'Day' | 'ShortDate' | 'LongDate' | 'DateTime') {
     const splited = split(formatted);
     const month = convertMonths(splited.month);
-    const hours = convertHours(splited.hour);
     const dayNight = convertDayNight(splited.hour);
+    const hours = convertHours(splited.hour, dayNight);
     const time = `${hours}:${splited.min} ${dayNight}`;
     const longDate = `${splited.day}/${month}/${splited.year}`;
     const shortDate = `${splited.day}/${month}`;
@@ -97,11 +97,15 @@ const convertMonths = function (month: string): string {
   }
 };
 
-const convertHours = function (hoursStr: string): string {
+const convertHours = function (hoursStr: string, dayNight: 'PM' | 'AM'): string {
   let hours = Number(hoursStr) % 24;
 
-  if (hours <= 11) {
-    return hours === 0 ? '12' : hours.toString();
+  if (hours % 12 === 0 && dayNight === 'AM') {
+    return '0';
+  }
+
+  if (hours % 12 === 0 && dayNight === 'PM') {
+    return '12';
   }
 
   return (hours % 12).toString();

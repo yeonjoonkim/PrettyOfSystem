@@ -1,7 +1,7 @@
 <flex-col *ngIf="massage && !requesting" class="modal-container">
   <massage-pressure-level-selector
-    [(level)]="massage.pressureLevel"
-    (levelChange)="onChangePressureLevel()"></massage-pressure-level-selector>
+    [(pressure)]="massage.pressure"
+    (pressureChange)="onChangePressureLevel()"></massage-pressure-level-selector>
 </flex-col>
 <desktop-version-body-selector
   *ngIf="massage && !requesting"

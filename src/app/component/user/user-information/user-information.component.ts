@@ -14,8 +14,10 @@ export class UserInformationComponent implements OnInit, OnDestroy {
   public user!: IUser;
   @Input() isRequiredSignature: boolean = true;
   @Input() isRequiredLoginOption: boolean = true;
+  @Input() isRequiredInsurance: boolean = true;
   @Input() onlyUserInfo: boolean = false;
   @Input() onlyMedical: boolean = false;
+
   constructor(
     private _user: UserService,
     private _language: LanguageService

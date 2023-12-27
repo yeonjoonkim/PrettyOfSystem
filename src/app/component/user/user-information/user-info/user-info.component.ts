@@ -41,6 +41,12 @@ export class UserInfoComponent implements OnInit {
     }
   }
 
+  onGenderChange() {
+    if (this.user) {
+      this.user.setting.pregrencyDueDate = null;
+    }
+  }
+
   ngOnInit() {}
 
   public handleEnableSaveBtn() {

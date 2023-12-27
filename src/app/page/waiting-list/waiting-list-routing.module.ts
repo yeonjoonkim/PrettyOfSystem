@@ -6,32 +6,33 @@ import { WaitingListPage } from './waiting-list.page';
 const routes: Routes = [
   {
     path: '',
-    component: WaitingListPage
+    component: WaitingListPage,
   },
   {
     path: 'update-client-info',
-    loadChildren: () => import('./update-client-info/update-client-info.module').then( m => m.UpdateClientInfoPageModule)
-  },
-  {
-    path: 'update-medical-info',
-    loadChildren: () => import('./update-medical-info/update-medical-info.module').then( m => m.UpdateMedicalInfoPageModule)
+    loadChildren: () =>
+      import('./update-client-info/update-client-info.module').then(m => m.UpdateClientInfoPageModule),
   },
   {
     path: 'update-massage-preference',
-    loadChildren: () => import('./update-massage-preference/update-massage-preference.module').then( m => m.UpdateMassagePreferencePageModule)
+    loadChildren: () =>
+      import('./update-massage-preference/update-massage-preference.module').then(
+        m => m.UpdateMassagePreferencePageModule
+      ),
   },
   {
     path: 'cart',
-    loadChildren: () => import('./cart/cart.module').then( m => m.CartPageModule)
+    loadChildren: () => import('./cart/cart.module').then(m => m.CartPageModule),
   },
   {
     path: 'cart-view',
-    loadChildren: () => import('./cart-view/cart-view.module').then( m => m.CartViewPageModule)
+    loadChildren: () => import('./cart-view/cart-view.module').then(m => m.CartViewPageModule),
   },
   {
-    path: 'select-employee',
-    loadChildren: () => import('./select-employee/select-employee.module').then( m => m.SelectEmployeePageModule)
-  }
+    path: 'select-specialist-time',
+    loadChildren: () =>
+      import('./select-specialist-time/select-specialist-time.module').then(m => m.SelectSpecialistTimePageModule),
+  },
 ];
 
 @NgModule({

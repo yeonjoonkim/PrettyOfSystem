@@ -1,4 +1,4 @@
-<flex-col *ngIf="criteria$ | async as criteria">
+<flex-col>
   <flex-col-item>
     <div id="selection-btn-container">
       <div id="selection-btn">
@@ -19,7 +19,7 @@
     </div>
   </flex-col-item>
 </flex-col>
-<flex-col *ngIf="criteria$ | async as criteria">
+<flex-col>
   <div *ngIf="criteria.packages.length > 0 && selected?.isPackageManagement" class="price-card-list">
     <ng-container *ngFor="let package of criteria.packages">
       <package-price-list-card
@@ -64,7 +64,3 @@
     </ng-container>
   </div>
 </flex-col>
-
-<div class="loading-container" *ngIf="!(criteria$ | async)">
-  <kendo-loader size="large"></kendo-loader>
-</div>

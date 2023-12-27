@@ -10,6 +10,20 @@ export type Cart = {
   expiredDateTime: string;
   timezone: string;
   timeoutMin: number;
+  specialist: CheckOutSpecialistType;
+  selectedTime: CheckOutSessionTime | null;
+  dateTime: string;
+  dayIndex: Day;
+};
+
+export type CheckOutSessionTime = {
+  start: string;
+  end: string;
+};
+
+export type CheckOutSpecialistType = {
+  id: string;
+  name: string;
 };
 
 export type CheckOutItem = {

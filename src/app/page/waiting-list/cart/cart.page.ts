@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Observable, combineLatestWith, takeUntil, firstValueFrom } from 'rxjs';
-import { IUser } from 'src/app/interface';
+import { Subject, Observable, combineLatestWith, takeUntil, firstValueFrom, of, switchMap, filter } from 'rxjs';
+import { IUser, ShopCategoryType } from 'src/app/interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 import * as Constant from 'src/app/constant/constant';
 import { Cart } from 'src/app/interface/booking/cart/cart.interface';
+import { WaitingListShopCartCriteriaType } from 'src/app/service/waiting-list/waiting-list-shop/waitng-list-shop.service';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -16,7 +17,19 @@ export class CartPage implements OnInit, OnDestroy {
   public loaded$!: Observable<boolean>;
   public isLoading$!: Observable<boolean>;
   public client$!: Observable<IUser | null>;
-  public cart$!: Observable<Cart | null>;
+  public cart$: Observable<Cart | null> = this._waitingList.cart$;
+  public category$: Observable<ShopCategoryType | null> = this._waitingList.shop.category();
+  public criteria$: Observable<WaitingListShopCartCriteriaType | null> = this._waitingList.client.id$.pipe(
+    combineLatestWith(this._waitingList.start$),
+    filter(([id, start]) => typeof id === 'string' && start !== null && start),
+    switchMap(([id, _]) => {
+      if (typeof id === 'string') {
+        return this._waitingList.shop.getCartCriteriaValueChangeListener(id);
+      } else {
+        return of(null);
+      }
+    })
+  );
 
   constructor(
     private _waitingList: WaitingListService,
@@ -26,7 +39,6 @@ export class CartPage implements OnInit, OnDestroy {
     this.loaded$ = this._waitingList.isLoaded$;
     this.isLoading$ = this._waitingList.isLoading$;
     this.client$ = this._waitingList.client.info$;
-    this.cart$ = this._waitingList.cart$;
   }
 
   async ngOnInit() {
@@ -45,20 +57,15 @@ export class CartPage implements OnInit, OnDestroy {
         if (validateSession) {
           await this._waitingList.validateSession(this._sessionId);
         }
+        await this._waitingList.cart.start();
       });
   }
 
-  async onClickGoback() {
-    const observable = this._waitingList.shop.category();
-    const category = await firstValueFrom(observable);
-
+  async onClickGoback(category: ShopCategoryType) {
     if (category !== null) {
       switch (category.name as Constant.ShopCategoryTitleType) {
         case Constant.ShopCategoryTitle.MassageTheraphy:
           await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-massage-preference`);
-          break;
-        case Constant.ShopCategoryTitle.PersonalTraining || Constant.ShopCategoryTitle.SkinCare:
-          await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-medical-info`);
           break;
         default:
           await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-client-info`);

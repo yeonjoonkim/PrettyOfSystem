@@ -2,18 +2,29 @@
   <ion-toolbar>
     <!-- Title -->
     <ion-title>{{'label.title.personalinformation'| languageTransform:'System' | async }}</ion-title>
-    <button slot="end" kendoButton (click)="onClickNext()">
+    <button slot="end" kendoButton *ngIf="category$ | async as category" (click)="onClickNext(category)">
       {{'label.title.next' | languageTransform:'System' | async}}
     </button>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" *ngIf="(loaded$ | async)">
-  <div class="client-info-container">
-    <user-information
-      *ngIf="client$ | async as client"
-      [isRequiredSignature]="false"
-      [isRequiredLoginOption]="false"
-      [onlyUserInfo]="true"></user-information>
+  <div *ngIf="{isRelatedToMedicalService: isRelatedToMedicalService$ | async, client: client$ | async} as view">
+    <div
+      class="client-info-container"
+      *ngIf="view.client && (view.isRelatedToMedicalService !== true || view.isRelatedToMedicalService === true)">
+      <user-information
+        [isRequiredSignature]="false"
+        [isRequiredLoginOption]="false"
+        [isRequiredInsurance]="view.isRelatedToMedicalService !== null ? view.isRelatedToMedicalService :  false"
+        [onlyUserInfo]="true"></user-information>
+    </div>
+    <div class="client-info-container">
+      <user-information
+        *ngIf="view.isRelatedToMedicalService && view.client"
+        [isRequiredSignature]="false"
+        [isRequiredLoginOption]="false"
+        [onlyMedical]="true"></user-information>
+    </div>
   </div>
 </ion-content>
 

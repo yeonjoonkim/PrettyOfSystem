@@ -21,14 +21,16 @@ export class ShopSettingWaitingListComponent implements OnInit {
 
   public form!: IFormHeaderModalProp;
   public selectedTimeoutSession: NameValuePairType = { name: 'label.title.5min', value: '5' };
-  public timeoutSessionSelection: NameValuePairType[] = [
+  public selectedIntervalMin: NameValuePairType = { name: 'label.title.5min', value: '5' };
+  public timeSelection: NameValuePairType[] = [
     { name: 'label.title.5min', value: '5' },
     { name: 'label.title.10min', value: '10' },
     { name: 'label.title.15min', value: '15' },
     { name: 'label.title.30min', value: '30' },
   ];
   public url: string = '';
-  public _expiredMin: number = 5;
+  private _expiredMin: number = 5;
+  private _intervalMin: number = 5;
 
   constructor(
     private _modalCtrl: ModalController,
@@ -52,6 +54,11 @@ export class ShopSettingWaitingListComponent implements OnInit {
     this._expiredMin = selectedMin;
   }
 
+  public onChangeIntervalMin() {
+    const selectedMin = Number(this.selectedIntervalMin.value);
+    this._intervalMin = selectedMin;
+  }
+
   public onRefreshQRCode() {
     const newId = this._global.newId();
     this._waitingListSessionId = newId;
@@ -69,14 +76,18 @@ export class ShopSettingWaitingListComponent implements OnInit {
   }
 
   private handleEnabledSaveBtn() {
-    const expiredMins = [5, 10, 15, 30];
+    const mins = [5, 10, 15, 30];
     const id = this._waitingListSessionId !== undefined && this._waitingListSessionId.length > 0;
-    this.form.enabledSavebutton = expiredMins.includes(this._expiredMin) && id;
+    this.form.enabledSavebutton = mins.includes(this._expiredMin) && id && mins.includes(this._intervalMin);
   }
 
   public async handleSave() {
     this.form.enabledSavebutton = false;
-    const updated = await this._shopSetting.updateWaitingList(this._expiredMin, this._waitingListSessionId);
+    const updated = await this._shopSetting.updateWaitingList(
+      this._intervalMin,
+      this._expiredMin,
+      this._waitingListSessionId
+    );
     if (updated) {
       await this.dismiss();
     } else {
@@ -93,8 +104,16 @@ export class ShopSettingWaitingListComponent implements OnInit {
     const config: ShopConfigurationType | undefined = await this._navParam.get('config');
     if (config !== undefined) {
       this._expiredMin = config.setting.qrCode.waitingListSessionExiryMin;
+      this._intervalMin = config.setting.waitingList.intervalMin;
+
+      //Timeout
       this.setTimeoutSession(this._expiredMin);
       this._waitingListSessionId = config.waitingListSessionId;
+
+      //Interval Min
+      this.setIntervalMin(this._intervalMin);
+
+      //QR code
       this.setQRCodeUrl(this._waitingListSessionId);
       this.handleEnabledSaveBtn();
     } else {
@@ -107,9 +126,17 @@ export class ShopSettingWaitingListComponent implements OnInit {
   }
 
   private setTimeoutSession(expiredMin: number) {
-    const selected = this.timeoutSessionSelection.find(s => s.value === expiredMin.toString());
+    const selected = this.timeSelection.find(s => s.value === expiredMin.toString());
     if (selected) {
       this.selectedTimeoutSession = selected;
+    }
+    this.handleEnabledSaveBtn();
+  }
+
+  private setIntervalMin(intervalMin: number) {
+    const selected = this.timeSelection.find(s => s.value === intervalMin.toString());
+    if (selected) {
+      this.selectedIntervalMin = selected;
     }
     this.handleEnabledSaveBtn();
   }

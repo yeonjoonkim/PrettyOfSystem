@@ -1,0 +1,23 @@
+<flex-col *ngIf="cart">
+  <flex-col-item>
+    <legend class="title">
+      {{ cart.dateTime | dateTransform: 'LongDate' }} {{ [cart.dayIndex] | daysTransform | async }}
+    </legend>
+  </flex-col-item>
+  <flex-col-item *ngIf="cart.selectedTime !== null">
+    <span> {{ 'label.title.start' | languageTransform: 'System' | async }}:</span>
+    {{ cart.selectedTime.start | dateTransform: 'Time' }}
+  </flex-col-item>
+  <flex-col-item *ngIf="cart.selectedTime !== null">
+    <span> {{ 'label.title.end' | languageTransform: 'System' | async }}:</span>
+    {{ cart.selectedTime.end | dateTransform: 'Time' }}
+  </flex-col-item>
+  <flex-col-item *ngIf="cart.selectedTime !== null">
+    <span> {{ 'label.title.duration' | languageTransform: 'System' | async }}:</span>
+    {{ cart.totalMin | minuteTransform | async }}
+  </flex-col-item>
+  <flex-col-item *ngIf="cart.selectedTime !== null">
+    <span> {{ 'label.title.timezone' | languageTransform: 'System' | async }}:</span>
+    {{ cart.timezone }}
+  </flex-col-item>
+</flex-col>

@@ -1,0 +1,8 @@
+<div (click)="onClick()" class="employee" [class.selected-employee]="active">
+  <div class="gender-icon">
+    <ion-icon name="female-outline" *ngIf="gender === 'Female'"></ion-icon>
+    <ion-icon name="male-outline" *ngIf="gender === 'Male'"></ion-icon>
+    <ion-icon name="male-female-outline" *ngIf="gender === 'Other'"></ion-icon>
+  </div>
+  <div class="name">{{ fullName | languageTransform: 'System' | async }}</div>
+</div>

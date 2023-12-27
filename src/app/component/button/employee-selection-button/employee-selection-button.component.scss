@@ -1,0 +1,31 @@
+.employee {
+  cursor: pointer;
+  display: flex;
+  justify-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: 12px;
+  background: var(--card);
+  .name {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .gender-icon {
+    display: flex;
+    align-items: center;
+    ion-icon {
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+}
+
+.selected-employee {
+  background: var(--active);
+  font-weight: 800;
+}

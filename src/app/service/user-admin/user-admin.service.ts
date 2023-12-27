@@ -79,6 +79,7 @@ export class UserAdminService {
 
   public setDefaultUserSetting(): UserSettingType {
     return {
+      pregrencyDueDate: null,
       preferLanguage: '',
       privateInsurance: null,
       medical: {
@@ -86,7 +87,10 @@ export class UserAdminService {
         otherStatus: null,
       },
       massage: {
-        pressureLevel: 1,
+        pressure: {
+          rating: Constant.Massage.Pressure.Raiting.One,
+          description: Constant.Massage.Pressure.Description.ExtremeSoft,
+        },
         areas: [],
       },
     };

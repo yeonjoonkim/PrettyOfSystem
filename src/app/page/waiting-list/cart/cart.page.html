@@ -1,6 +1,11 @@
 <ion-header *ngIf="loaded$ | async">
   <ion-toolbar>
-    <button class="goback-btn" slot="start" kendoButton (click)="onClickGoback()">
+    <button
+      class="goback-btn"
+      slot="start"
+      *ngIf="category$ | async as cateogry"
+      kendoButton
+      (click)="onClickGoback(cateogry)">
       {{'label.title.goback' | languageTransform:'System' | async}}
     </button>
     <!-- Title -->
@@ -13,8 +18,15 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" *ngIf="(loaded$ | async)">
-  <div class="cart-container">
-    <waiting-list-cart></waiting-list-cart>
+  <div class="cart-container" *ngIf="{criteria: criteria$ | async, cart: cart$ | async} as view">
+    <waiting-list-cart
+      *ngIf="view.cart !== null && view.criteria !== null"
+      [cart]="view.cart"
+      [criteria]="view.criteria"></waiting-list-cart>
+
+    <div class="loading-container" *ngIf="view.cart === null || view.criteria === null">
+      <kendo-loader size="large"></kendo-loader>
+    </div>
   </div>
 </ion-content>
 

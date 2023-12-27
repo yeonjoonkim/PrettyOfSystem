@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject, combineLatestWith, firstValueFrom, takeUntil } from 'rxjs';
-import { IUser } from 'src/app/interface';
+import { IUser, ShopCategoryType } from 'src/app/interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 import * as Constant from 'src/app/constant/constant';
 @Component({
@@ -12,18 +12,17 @@ import * as Constant from 'src/app/constant/constant';
 export class UpdateClientInfoPage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   private _sessionId: string | null = this._route.snapshot.paramMap.get('id');
-  public loaded$!: Observable<boolean>;
-  public isLoading$!: Observable<boolean>;
-  public client$!: Observable<IUser | null>;
+  public loaded$: Observable<boolean> = this._waitingList.isLoaded$;
+  public isLoading$: Observable<boolean> = this._waitingList.isLoading$;
+  public client$: Observable<IUser | null> = this._waitingList.client.info$;
+  public category$: Observable<ShopCategoryType | null> = this._waitingList.shop.category();
+  public isRelatedToMedicalService$: Observable<boolean> = this._waitingList.shop.isRelatedToMedical();
+
   constructor(
     private _waitingList: WaitingListService,
     private _route: ActivatedRoute,
     private _router: Router
-  ) {
-    this.loaded$ = this._waitingList.isLoaded$;
-    this.isLoading$ = this._waitingList.isLoading$;
-    this.client$ = this._waitingList.client.info$;
-  }
+  ) {}
 
   ngOnInit() {
     this._waitingList.start$
@@ -44,16 +43,11 @@ export class UpdateClientInfoPage implements OnInit, OnDestroy {
       });
   }
 
-  async onClickNext() {
-    const observable = this._waitingList.shop.category();
-    const category = await firstValueFrom(observable);
-
+  async onClickNext(category: ShopCategoryType) {
     if (category !== null) {
       switch (category.name as Constant.ShopCategoryTitleType) {
-        case Constant.ShopCategoryTitle.MassageTheraphy ||
-          Constant.ShopCategoryTitle.PersonalTraining ||
-          Constant.ShopCategoryTitle.SkinCare:
-          await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-medical-info`);
+        case Constant.ShopCategoryTitle.MassageTheraphy:
+          await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-massage-preference`);
           break;
         default:
           await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart`);

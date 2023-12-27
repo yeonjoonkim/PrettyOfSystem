@@ -60,6 +60,7 @@ export class EmployeeSchedulerService {
       const criteria = this.breakTime.getValidationCriteria(update, date, employeeId);
       const confirmation = criteria ? true : false;
 
+      //TODO -- ADD Validatior for existing booking
       if (confirmation) {
         return updated;
       } else {

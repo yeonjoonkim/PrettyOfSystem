@@ -87,8 +87,8 @@ ion-toolbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
 }
 
 .svg-icon img {
@@ -171,20 +171,12 @@ ion-toolbar {
 }
 
 .date-pick-popup-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  .k-timeselector {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    animation: none !important;
-    transition: none !important;
-  }
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  animation: none !important;
+  transition: none !important;
 }
 
 .delete-ion-sliding-option {

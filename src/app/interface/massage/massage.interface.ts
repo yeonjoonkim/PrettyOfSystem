@@ -1,4 +1,9 @@
-import { MassageBodyPreferenceNameType, MassageBodyPreferenceType } from '..';
+import {
+  MassageBodyPreferenceNameType,
+  MassageBodyPreferenceType,
+  MassagePainScaleDescriptionType,
+  MassagePainScaleRatingType,
+} from '..';
 
 export type MassageBodySelectorType = {
   position: MassageBodyPositionType;
@@ -24,8 +29,13 @@ export type MassageBodyPreferenceAreaType = {
 };
 
 export type MassageBodySelectorRecordPainType = {
-  level: number; //0 - 10;
+  scale: MassageBodySelectorPainSacleType;
   name: string;
+};
+
+export type MassageBodySelectorPainSacleType = {
+  rating: MassagePainScaleRatingType; //0 - 10;
+  description: MassagePainScaleDescriptionType;
 };
 
 export type MassageBodyPositionType =

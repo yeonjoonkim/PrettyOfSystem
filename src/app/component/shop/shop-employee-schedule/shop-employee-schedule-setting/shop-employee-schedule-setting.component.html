@@ -1,15 +1,13 @@
-<ion-header>
-  <form-header
-    [title]="form.headerTitle"
-    [readOnly]="form.readOnly"
-    [enabledSavebutton]="form.enabledSavebutton"
-    [action]="form.action"
-    [isDeleteRequired]="false"
-    [isSkipEdit]="true"
-    (onClickDismiss)="dismiss()"
-    (onClickEdit)="handleEdit()"
-    (onClickSave)="handleSave()"></form-header>
-</ion-header>
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  [isDeleteRequired]="false"
+  [isSkipEdit]="true"
+  (onClickDismiss)="dismiss()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()"></form-header>
 
 <ion-content>
   <flex-col class="modal-container">
@@ -21,11 +19,11 @@
         </legend>
         <p *ngIf="prop.roster.isOpen">
           {{ 'label.title.workhours' | languageTransform: 'System' | async }}: {{ prop.roster.workHours
-          }}{{ 'label.title.hours' | languageTransform: 'System' | async }}
+          }}{{ 'date.title.hour' | languageTransform: 'System' | async }}
         </p>
         <p *ngIf="prop.roster.isOpen">
-          {{ 'label.title.breaktime' | languageTransform: 'System' | async }}: {{ breakHours()
-          }}{{ 'label.title.hours' | languageTransform: 'System' | async }}
+          {{ 'label.title.breaktime' | languageTransform: 'System' | async }}: {{ breakHours() }}
+          {{ 'date.title.hour' | languageTransform: 'System' | async }}
         </p>
       </flex-row-item>
       <flex-row-item id="is-day-off">
@@ -112,9 +110,9 @@
   <flex-row *ngFor="let breakTime of prop.roster.breakTimes" ß>
     <flex-row-item *ngIf="prop.roster.isOpen" class="break-time">
       <p class="time">{{ breakTime.start | timeItemTransform }} - {{ breakTime.end | timeItemTransform }}</p>
-      <span class="duration"
-        >({{ breakTime.durationHour }}{{ 'label.title.hours' | languageTransform: 'System' | async }})</span
-      >
+      <span class="duration">
+        ({{ breakTime.durationHour }} {{ 'date.title.hour' | languageTransform: 'System' | async }})
+      </span>
       <button kendoButton icon="trash" (click)="deleteBreak(breakTime)"></button>
     </flex-row-item>
   </flex-row>

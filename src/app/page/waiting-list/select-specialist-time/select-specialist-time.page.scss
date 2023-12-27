@@ -14,14 +14,16 @@ button {
   }
 }
 
-.client-info-container {
+.select-speicalist-time-container {
   display: flex;
   flex-direction: column;
   max-width: 800px;
   margin: auto;
   padding-top: 15px;
-  cart-check-out-extras {
-    padding-top: 30px;
-    margin: 0px 10px;
-  }
+}
+
+waiting-list-select-time-summary,
+waiting-list-select-employee {
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--active);
 }

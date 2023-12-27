@@ -137,7 +137,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public async createAccount() {
-    const modal = await this._clientModal.createAccount();
+    const modal = await this._clientModal.createAccount(this.login.phoneNumber);
     await modal.present();
     const result = await this._clientModal.handleDismissCreateAccount(modal);
     if (result !== null) {

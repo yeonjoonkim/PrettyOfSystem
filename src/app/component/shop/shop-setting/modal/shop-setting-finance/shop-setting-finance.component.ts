@@ -4,7 +4,7 @@ import { IFormHeaderModalProp, IShopSetting, ShopConfigurationType } from 'src/a
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopSettingService } from 'src/app/service/shop/shop-setting/shop-setting.service';
-
+import * as Constant from 'src/app/constant/constant';
 @Component({
   selector: 'shop-setting-finance',
   templateUrl: './shop-setting-finance.component.html',
@@ -70,10 +70,26 @@ export class ShopSettingFinanceComponent implements OnInit {
   }
 
   public onChangeCashDiscount() {
-    this.setting.financial.cashDiscountRate = this._global.numberTransform.nullReplaceToZero(
-      this.setting.financial.cashDiscountRate
-    );
+    if (this.setting.financial.cashDiscount) {
+      this.setting.financial.cashDiscount.rate = this._global.numberTransform.nullReplaceToZero(
+        this.setting.financial.cashDiscount.rate
+      );
+    }
     this.handleEnabledSaveBtn();
+  }
+
+  public onClickCashDiscount() {
+    this.setting.financial.cashDiscount =
+      this.setting.financial.cashDiscount !== null
+        ? null
+        : {
+            enableCoupon: false,
+            enableExtra: true,
+            enablePackage: true,
+            enableService: true,
+            rate: Constant.ShopSetting.Financial.CashDiscountRate,
+          };
+    this.onChangeCashDiscount();
   }
 
   public onChangeOpeningBalance() {
@@ -84,7 +100,8 @@ export class ShopSettingFinanceComponent implements OnInit {
 
   private handleEnabledSaveBtn() {
     this._validator.cardSurcharge = this.setting.financial.cardSurchargeRate > 0;
-    this._validator.cashDiscount = this.setting.financial.cashDiscountRate > 0;
+    this._validator.cashDiscount =
+      this.setting.financial.cashDiscount !== null ? this.setting.financial.cashDiscount.rate > 0 : true;
     this._validator.tax = this.setting.financial.taxRate > 0;
     this.form.enabledSavebutton =
       this._validator.cardSurcharge && this._validator.cashDiscount && this._validator.tax;

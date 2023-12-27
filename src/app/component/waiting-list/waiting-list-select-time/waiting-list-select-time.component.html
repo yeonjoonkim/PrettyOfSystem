@@ -1,0 +1,16 @@
+<div class="available-container">
+  <legend class="title">{{ 'label.title.selecttime' | languageTransform: 'System' | async }}</legend>
+  <div *ngIf="available !== null && cart !== null && available.times.length > 0" class="available-list">
+    <ng-container *ngFor="let dateTime of available.times">
+      <time-selection-button
+        [active]="dateTime === cart.selectedTime?.start"
+        (click)="updateSelectTime(cart.shopId, dateTime)"
+        [dateTime]="dateTime"></time-selection-button>
+    </ng-container>
+  </div>
+  <div *ngIf="available !== null && cart !== null && !available.times.length" class="available-list">
+    <p class="no-available">
+      {{ 'label.description.thereisnotimeavailable' | languageTransform: 'System' | async }}
+    </p>
+  </div>
+</div>

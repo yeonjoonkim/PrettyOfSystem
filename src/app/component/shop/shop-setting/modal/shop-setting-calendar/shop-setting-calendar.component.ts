@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
-import { takeUntil } from 'rxjs';
+
 import {
   IShopSetting,
   IFormHeaderModalProp,

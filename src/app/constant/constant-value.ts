@@ -138,6 +138,29 @@ export const State = {
 };
 
 export const Massage = {
+  Description: {
+    DeepTissueMassage: 'Deep Tissue Massage',
+    HotStoneMassage: 'Hot Stone Massage',
+    SportsMassage: 'Sports Massage',
+    CouplesMassage: 'Couples Massage',
+    Acupuncture: 'Acupuncture',
+    AromatherapyMassage: 'Aromatherapy Massage',
+    ThaiMassage: 'Thai Massage',
+    SwedishMassage: 'Swedish Massage',
+    Shiatsu: 'Shiatsu',
+    Reflexology: 'Reflexology',
+    LymphaticMassage: 'Lymphatic Massage',
+    TriggerPointTherapy: 'Trigger Point Therapy',
+    Acupressure: 'Acupressure',
+    CuppingTherapy: 'Cupping Therapy',
+    HerbalCompressMassage: 'Herbal Compress Massage',
+    ScalpMassage: 'Scalp Massage',
+    BarefootBarTherapy: 'Barefoot Bar Therapy',
+    NeuromuscularTherapy: 'Neuromuscular Therapy',
+    RemedialMassage: 'Remedial Massage',
+    FootMassage: 'Foot Massage',
+    SpaMassage: 'Spa Massage',
+  } as const,
   Body: {
     PreferenceType: {
       NoPreference: 'NoPreference',
@@ -148,6 +171,57 @@ export const Massage = {
       NoPreference: 'label.title.nopreference',
       Avoid: 'label.title.avoid',
       Focus: 'label.title.focus',
+    } as const,
+  } as const,
+  PainScale: {
+    Rating: {
+      Zero: 0,
+      One: 1,
+      Two: 2,
+      Three: 3,
+      Four: 4,
+      Five: 5,
+      Six: 6,
+      Seven: 7,
+      Eight: 8,
+      Nine: 9,
+      Ten: 10,
+    } as const,
+    Description: {
+      NoPain: 'label.title.nopain', //이상없음 0
+      Mild: 'label.title.mild', //경증 1-4
+      Moderate: 'label.title.moderate', // 5-6
+      Severe: 'label.title.severe', //중증 7-10
+    } as const,
+  } as const,
+  Pressure: {
+    Raiting: {
+      One: 1,
+      Two: 2,
+      Three: 3,
+      Four: 4,
+      Five: 5,
+    } as const,
+    Description: {
+      ExtremeSoft: 'label.title.extremesoft',
+      Soft: 'label.title.soft',
+      Medium: 'label.title.medium',
+      Strong: 'label.title.strong',
+      ExtremeStrong: 'label.title.extremestrong',
+    } as const,
+  } as const,
+  DifficultChangePosition: {
+    Type: {
+      NoProblem: 'NoProblem',
+      FrontToBack: 'FrontToBack',
+      BackToFront: 'BackToFront',
+      Both: 'Both',
+    } as const,
+    Description: {
+      NoProblem: 'label.title.noproblem',
+      FrontToBack: 'label.title.fronttoback',
+      BackToFront: 'label.title.backtofront',
+      Both: 'label.title.both',
     } as const,
   } as const,
 };
@@ -263,6 +337,9 @@ export const ShopSetting = {
       'https://firebasestorage.googleapis.com/v0/b/prettyofsystem.appspot.com/o/prettyofsystem-logo-white.svg?alt=media&token=70eedb82-988d-47ca-9b79-e52aeeaee6b1&_gl=1*lrncmg*_ga*MTM4MDAzMTEzNC4xNjk4MjQ3NjY4*_ga_CW55HF8NVT*MTY5OTEwNzE4My4xNC4xLjE2OTkxMDczOTUuMTQuMC4w',
     Placeholder:
       'https://firebasestorage.googleapis.com/v0/b/prettyofsystem.appspot.com/o/place-holder-image.jpeg?alt=media&token=96954b11-d870-424f-bb15-0e8ab04607dc&_gl=1*pq6nct*_ga*MTM4MDAzMTEzNC4xNjk4MjQ3NjY4*_ga_CW55HF8NVT*MTY5OTEwNzE4My4xNC4xLjE2OTkxMDg4MjcuNDMuMC4w',
+  },
+  WaitingList: {
+    intervalMin: 5,
   },
 } as const;
 

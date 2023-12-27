@@ -2,7 +2,9 @@
   <flex-col class="user-info" *ngIf="!onlyMedical">
     <user-info [user]="user" [isRequiredLoginOption]="isRequiredLoginOption"></user-info>
     <user-address [address]="user.address"></user-address>
-    <user-private-insurance [privateInsurance]="user.setting.privateInsurance"></user-private-insurance>
+    <user-private-insurance
+      [privateInsurance]="user.setting.privateInsurance"
+      *ngIf="isRequiredInsurance"></user-private-insurance>
   </flex-col>
 
   <flex-col class="medical" *ngIf="!onlyUserInfo" [class.border-left]="!onlyMedical">

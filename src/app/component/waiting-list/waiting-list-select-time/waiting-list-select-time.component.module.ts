@@ -5,18 +5,16 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/cor
 
 //Import Pipe
 import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
+import { DatePipeModule } from 'src/app/pipe/date/date.pipe.module';
 
 //Import Module
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
-import { ClientCreateAccountModule } from '../client/client-create-account/client-create-account.module';
-import { ClientChangePhoneNumberModule } from '../client/client-change-phone-number/client-change-phone-number.module';
-//Import Component
-import { WaitingListComponent } from './waiting-list.component';
-import { WaitingListLoginComponent } from './waiting-list-login/waiting-list-login.component';
+import { EmployeeSelectionButtonModule } from '../../button/employee-selection-button/employee-selection-button.component.module';
+import { WaitingListSelectTimeComponent } from './waiting-list-select-time.component';
+import { TimeSelectionButtonModule } from '../../button/time-selection-button/time-selection-button.component.module';
 @NgModule({
-  declarations: [WaitingListComponent, WaitingListLoginComponent],
-  providers: [LanguageTransformPipeModule],
+  declarations: [WaitingListSelectTimeComponent],
   imports: [
     CommonModule,
     CommonModule,
@@ -25,10 +23,11 @@ import { WaitingListLoginComponent } from './waiting-list-login/waiting-list-log
     LanguageTransformPipeModule,
     SharedFormModule,
     KendoUiModule,
-    ClientCreateAccountModule,
-    ClientChangePhoneNumberModule,
+    EmployeeSelectionButtonModule,
+    TimeSelectionButtonModule,
+    DatePipeModule,
   ],
-  exports: [WaitingListComponent],
+  exports: [WaitingListSelectTimeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class WaitingListModule {}
+export class WaitingListSelectTimeModule {}

@@ -9,8 +9,10 @@
         >
         {{ focus.position.typeName | languageTransform: 'System' | async }}
         {{ focus.position.name | languageTransform: 'System' | async }}
-        {{ focus.pain.level * 10 }}%
-        {{ focus.pain.name | languageTransform: 'System' | async }}
+        <span *ngIf="focus.pain.scale.rating > 0" class="pain-scale">
+          {{ focus.pain.scale.description | languageTransform: 'System' | async }}
+          {{ focus.pain.name | languageTransform: 'System' | async }}
+        </span>
       </p>
     </ng-container>
   </flex-col-item>
@@ -25,8 +27,11 @@
         >
         {{ avoid.position.typeName | languageTransform: 'System' | async }}
         {{ avoid.position.name | languageTransform: 'System' | async }}
-        {{ avoid.pain.level * 10 }}%
-        {{ avoid.pain.name | languageTransform: 'System' | async }}
+
+        <span *ngIf="avoid.pain.scale.rating > 0" class="pain-scale">
+          {{ avoid.pain.scale.description | languageTransform: 'System' | async }}
+          {{ avoid.pain.name | languageTransform: 'System' | async }}
+        </span>
       </p>
     </ng-container>
   </flex-col-item>
@@ -43,7 +48,10 @@
         >
         {{ noPreference.position.typeName | languageTransform: 'System' | async }}
         {{ noPreference.position.name | languageTransform: 'System' | async }}
-        {{ noPreference.pain.level * 10 }}%
+        <span *ngIf="noPreference.pain.scale.rating > 0" class="pain-scale">
+          {{ noPreference.pain.scale.description | languageTransform: 'System' | async }}
+          {{ noPreference.pain.name | languageTransform: 'System' | async }}
+        </span>
         {{ noPreference.pain.name | languageTransform: 'System' | async }}
       </p>
     </ng-container>
