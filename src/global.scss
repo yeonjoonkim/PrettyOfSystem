@@ -87,8 +87,8 @@ ion-toolbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
 }
 
 .svg-icon img {
@@ -177,18 +177,6 @@ ion-toolbar {
   transform: translate(-50%, -50%) !important;
   animation: none !important;
   transition: none !important;
-}
-
-.date-pick-popup-container::after {
-  content: '';
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%; /* Viewport width */
-  height: 100%; /* Viewport height */
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-  z-index: -1; /* Behind the content of the container */
 }
 
 .delete-ion-sliding-option {

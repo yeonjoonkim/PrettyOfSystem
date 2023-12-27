@@ -37,8 +37,19 @@
       [isRequired]="true"></name-value-pair-single-dropdown-selection>
   </flex-col-item>
   <flex-col-item>
-    <kendo-label text="{{ 'label.title.painlevel' | languageTransform: 'System' | async }}"> </kendo-label>
-    <ion-range [(ngModel)]="painLevel" [ticks]="true" [min]="1" [max]="10"></ion-range>
+    <kendo-label
+      text="{{ 'label.title.painlevel' | languageTransform: 'System' | async }}: {{
+        scale.description | languageTransform: 'System' | async
+      }}">
+    </kendo-label>
+    <ion-range
+      [(ngModel)]="scale.rating"
+      [ticks]="true"
+      [pin]="true"
+      [snaps]="true"
+      [min]="0"
+      [max]="10"
+      (ngModelChange)="onChangePainScaleRating()"></ion-range>
   </flex-col-item>
   <flex-col-item class="popover-buttons" [ngClass]="{ 'justify-end': !isExistedArea() }">
     <div class="btn delete" *ngIf="isExistedArea()" (click)="onClickDelete()">

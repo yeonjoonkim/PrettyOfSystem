@@ -8,87 +8,87 @@ export class ShopRelatedServiceService {
   public massage: NameValuePairType[] = [
     {
       name: 'label.title.deeptissuemassage',
-      value: Constant.MassageDescriptionType.DeepTissueMassage,
+      value: Constant.Massage.Description.DeepTissueMassage,
     },
     {
       name: 'label.title.remedialmassage',
-      value: Constant.MassageDescriptionType.RemedialMassage,
+      value: Constant.Massage.Description.RemedialMassage,
     },
     {
       name: 'label.title.footmassage',
-      value: Constant.MassageDescriptionType.FootMassage,
+      value: Constant.Massage.Description.FootMassage,
     },
     {
       name: 'label.title.spamassage',
-      value: Constant.MassageDescriptionType.SpaMassage,
+      value: Constant.Massage.Description.SpaMassage,
     },
     {
       name: 'label.title.hotstonemassage',
-      value: Constant.MassageDescriptionType.HotStoneMassage,
+      value: Constant.Massage.Description.HotStoneMassage,
     },
     {
       name: 'label.title.sportsmassage',
-      value: Constant.MassageDescriptionType.SportsMassage,
+      value: Constant.Massage.Description.SportsMassage,
     },
     {
       name: 'label.title.acupuncture',
-      value: Constant.MassageDescriptionType.Acupuncture,
+      value: Constant.Massage.Description.Acupuncture,
     },
     {
       name: 'label.title.couplesmassage',
-      value: Constant.MassageDescriptionType.CouplesMassage,
+      value: Constant.Massage.Description.CouplesMassage,
     },
     {
       name: 'label.title.aromatheraphymassage',
-      value: Constant.MassageDescriptionType.AromatherapyMassage,
+      value: Constant.Massage.Description.AromatherapyMassage,
     },
     {
       name: 'label.title.thaimassage',
-      value: Constant.MassageDescriptionType.ThaiMassage,
+      value: Constant.Massage.Description.ThaiMassage,
     },
     {
       name: 'label.title.swedishmassage',
-      value: Constant.MassageDescriptionType.SwedishMassage,
+      value: Constant.Massage.Description.SwedishMassage,
     },
     {
       name: 'label.title.shiatsu',
-      value: Constant.MassageDescriptionType.Shiatsu,
+      value: Constant.Massage.Description.Shiatsu,
     },
     {
       name: 'label.title.reflexology',
-      value: Constant.MassageDescriptionType.Reflexology,
+      value: Constant.Massage.Description.Reflexology,
     },
     {
       name: 'label.title.lymphaticmassage',
-      value: Constant.MassageDescriptionType.LymphaticMassage,
+      value: Constant.Massage.Description.LymphaticMassage,
     },
     {
       name: 'label.title.triggerpointtheraphy',
-      value: Constant.MassageDescriptionType.TriggerPointTherapy,
+      value: Constant.Massage.Description.TriggerPointTherapy,
     },
     {
       name: 'label.title.acupressure',
-      value: Constant.MassageDescriptionType.Acupressure,
+      value: Constant.Massage.Description.Acupressure,
     },
     {
       name: 'label.title.cuppingtherapy',
-      value: Constant.MassageDescriptionType.CuppingTherapy,
+      value: Constant.Massage.Description.CuppingTherapy,
     },
     {
       name: 'label.title.herbalcompressmassage',
-      value: Constant.MassageDescriptionType.HerbalCompressMassage,
+      value: Constant.Massage.Description.HerbalCompressMassage,
     },
     {
       name: 'label.title.scalpmassage',
-      value: Constant.MassageDescriptionType.ScalpMassage,
+      value: Constant.Massage.Description.ScalpMassage,
     },
     {
       name: 'label.title.barefootbartherapy',
-      value: Constant.MassageDescriptionType.BarefootBarTherapy,
+      value: Constant.Massage.Description.BarefootBarTherapy,
     },
     {
       name: 'label.title.neuromusculartherapy',
-      value: Constant.MassageDescriptionType.NeuromuscularTherapy,
+      value: Constant.Massage.Description.NeuromuscularTherapy,
     },
   ];
 

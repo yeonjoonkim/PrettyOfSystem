@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, filter, of, skip, switchMap, take, takeUntil } from 'rxjs';
+import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { filter, take } from 'rxjs';
 import { Cart, CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
 import { IShopServiceMenuOptionAction } from 'src/app/service/shop/shop-service-management/shop-service-menu-option-controller/shop-service-menu-option-controller.service';
 import { WaitingListShopCartCriteriaType } from 'src/app/service/waiting-list/waiting-list-shop/waitng-list-shop.service';
@@ -10,43 +10,21 @@ import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.se
   templateUrl: './waiting-list-cart.component.html',
   styleUrls: ['./waiting-list-cart.component.scss'],
 })
-export class WaitingListCartComponent implements OnInit, OnDestroy {
-  private _destroy$ = new Subject<void>();
+export class WaitingListCartComponent implements OnInit, OnChanges {
   public expandedServiceIndex: number | null = null;
-  public criteria$: Observable<WaitingListShopCartCriteriaType | null> = this._waitingList.client.id$.pipe(
-    switchMap(id => {
-      if (typeof id === 'string') {
-        return this._waitingList.shop.getCartCriteriaValueChangeListener(id);
-      } else {
-        return of(null);
-      }
-    }),
-    takeUntil(this._destroy$)
-  );
-
-  public cart$: Observable<Cart | null> = this._waitingList.cart$;
-
+  @Input() criteria!: WaitingListShopCartCriteriaType;
+  @Input() cart!: Cart;
   public selected!: IShopServiceMenuOptionAction | undefined;
 
   constructor(private _waitingList: WaitingListService) {}
+  ngOnInit() {}
 
-  async ngOnInit() {
-    this.criteria$
-      .pipe(
-        filter(criteria => criteria !== null),
-        take(1)
-      )
-      .subscribe(criteria => {
-        if (criteria) {
-          this.selected = criteria.buttons.length > 0 ? criteria.buttons[0] : undefined;
-        }
-      });
-    await this._waitingList.cart.start();
-  }
-
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
+  ngOnChanges(changes: SimpleChanges): void {
+    const criteriaChange: SimpleChange | undefined = changes['criteria'];
+    if (criteriaChange?.firstChange) {
+      const current = criteriaChange.currentValue as WaitingListShopCartCriteriaType;
+      this.selected = current.buttons.length > 0 ? current.buttons[0] : undefined;
+    }
   }
 
   public buttonChange(selected: IShopServiceMenuOptionAction) {

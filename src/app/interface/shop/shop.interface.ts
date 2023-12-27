@@ -53,6 +53,20 @@ export type ShopOperatingDailyType = {
   isOpen: boolean;
   workHours: number;
   operatingHours: ShopOperatingHoursType;
+  breakTimes: ShopOperatingBreakType[];
+};
+
+export type ShopOperatingBreakType = {
+  id: string;
+  start: TimeItemType;
+  end: TimeItemType;
+  durationHour: number;
+};
+
+export type ShopBreakTimeValidatorCriteriaType = {
+  employeeId: string;
+  startDateTime: string;
+  endDateTime: string;
 };
 
 export type ShopOperatingHoursType = {

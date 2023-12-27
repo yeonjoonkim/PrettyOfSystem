@@ -59,7 +59,7 @@ export class CartViewPage implements OnInit, OnDestroy {
   }
 
   async onClickNext() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/select-employee`);
+    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/select-specialist-time`);
   }
 
   public async incrementCheckout(checkout: CheckOutItem) {

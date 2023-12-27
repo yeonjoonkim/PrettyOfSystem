@@ -36,20 +36,20 @@ export class ShopSettingOptionService {
       this.logo(),
       this.operatingHours(),
       this.finance(),
-      this.calendar(),
+      //this.calendar(),
       this.capacity(),
       this.waitingList(),
       this.insuranceProvider(),
     ];
   }
 
-  private calendar() {
-    const option = this.defaultOption();
-    option.name = this.name.calendar;
-    option.img = 'assets/shop-setting/calendar.svg';
-    option.isCalendar = true;
-    return option;
-  }
+  // private calendar() {
+  //   const option = this.defaultOption();
+  //   option.name = this.name.calendar;
+  //   option.img = 'assets/shop-setting/calendar.svg';
+  //   option.isCalendar = true;
+  //   return option;
+  // }
 
   private logo() {
     const option = this.defaultOption();
@@ -94,7 +94,7 @@ export class ShopSettingOptionService {
   private waitingList() {
     const option = this.defaultOption();
     option.name = this.name.waitingList;
-    option.img = 'assets/shop-setting/capacity.svg';
+    option.img = 'assets/shop-setting/waiting-list.svg';
     option.isWaitingList = true;
     return option;
   }
@@ -102,7 +102,7 @@ export class ShopSettingOptionService {
   private insuranceProvider() {
     const option = this.defaultOption();
     option.name = this.name.insuranceprovider;
-    option.img = 'assets/shop-setting/capacity.svg';
+    option.img = 'assets/shop-setting/insurance-provider.svg';
     option.isInsuranceProvider = true;
     return option;
   }

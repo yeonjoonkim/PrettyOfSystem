@@ -110,11 +110,12 @@ export class ShopSettingService {
     }
   }
 
-  public async updateWaitingList(expiredMin: number, id: string) {
+  public async updateWaitingList(intervalMin: number, expiredMin: number, id: string) {
     let config = await this._shop.config();
     if (config !== null) {
       config.waitingListSessionId = id;
       config.setting.qrCode.waitingListSessionExiryMin = expiredMin;
+      config.setting.waitingList.intervalMin = intervalMin;
       await this._loading.show();
       const update = await this.shopConfigRepo.updateShopConfiguration(config);
       await this._loading.dismiss();

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CartService } from '../../cart/cart.service';
-import { Observable, filter, firstValueFrom, take } from 'rxjs';
+import { Observable, catchError, filter, firstValueFrom, of, take } from 'rxjs';
 import { Cart, CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
 import { ShopPackageTimeService } from '../../reservation/shop-package-time/shop-package-time.service';
 import { GlobalService } from '../../global/global.service';
@@ -27,8 +27,8 @@ export class WaitingListCartService {
   public async start() {
     this._shop.config$
       .pipe(
-        take(1),
-        filter(config => config !== null)
+        filter(config => config !== null),
+        take(1)
       )
       .subscribe(async config => {
         if (config) {
@@ -37,8 +37,20 @@ export class WaitingListCartService {
       });
   }
 
+  public hasSpecialist() {
+    return this._cart.hasSpecialist();
+  }
+
+  public hasSelectDateTime() {
+    return this._cart.hasSelectTime();
+  }
+
   public hasRelatedService() {
     return this._cart.hasRelatedService();
+  }
+
+  public relatedSpecialistIds() {
+    return this._cart.relatedCartSpecialistIds();
   }
 
   public async complete() {
@@ -55,6 +67,18 @@ export class WaitingListCartService {
       );
       await this._global.toast.presentErrorButtom(msg);
     }
+  }
+
+  public async updateSpecialist(shopId: string, specialistId: string, name: string) {
+    await this._cart.updateSpecialist(shopId, specialistId, name);
+  }
+
+  public selectedSpecialist() {
+    return this._cart.selectedSpecialist();
+  }
+
+  public async updateTime(shopId: string, startTime: string) {
+    await this._cart.updateSelectTime(shopId, startTime);
   }
 
   public async decrement(checkout: CheckOutItem) {

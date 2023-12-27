@@ -50,8 +50,6 @@ export type ChangePhoneNumberRequestDocumentType = {
   attempt: number; //limited 3
 };
 
-//2023-12-11T01:00:00
-
 export type ShopEmployeeScheduleChangeResult = {
   applyAllWeek: boolean;
   roster: ShopOperatingDailyType;
@@ -82,6 +80,7 @@ export interface IUserLoginOption {
 
 export type UserSettingType = {
   preferLanguage: string;
+  pregrencyDueDate: string | null;
   privateInsurance: UserSettingPrivateInsuranceType | null;
   massage: UserSettingMassageType;
   medical: UserSettingMedicalHistroyType;
@@ -93,8 +92,13 @@ export type UserSettingMedicalHistroyType = {
 };
 
 export type UserSettingMassageType = {
-  pressureLevel: number;
+  pressure: MassagePressureType;
   areas: MassageBodySelectorAreaType[];
+};
+
+export type MassagePressureType = {
+  rating: Constant.MassagePressureRatingType;
+  description: Constant.MassagePressureDescriptionType;
 };
 
 export type UserMedicalHistoryType = {

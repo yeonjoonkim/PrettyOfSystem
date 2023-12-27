@@ -1,9 +1,8 @@
 <kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="title">
   <kendo-timepicker
-    adaptiveMode="auto"
     class="time-picker"
     [popupSettings]="{
-      animate: false,
+      animate: true,
       appendTo: 'component',
       popupClass: 'date-pick-popup-container'
     }"
@@ -14,14 +13,14 @@
     [readOnly]="readOnly"
     [readOnlyInput]="true"
     [(value)]="date"
+    adaptiveMode="auto"
     (valueChange)="onChangeDate()"></kendo-timepicker>
 </kendo-label>
 <kendo-timepicker
   *ngIf="!title"
-  adaptiveMode="auto"
   class="time-picker"
   [popupSettings]="{
-    animate: false,
+    animate: true,
     appendTo: 'component',
     popupClass: 'date-pick-popup-container'
   }"
@@ -29,6 +28,7 @@
   [steps]="steps"
   [min]="minTime"
   [max]="maxTime"
+  adaptiveMode="auto"
   [readOnly]="readOnly"
   [readOnlyInput]="true"
   [(value)]="date"

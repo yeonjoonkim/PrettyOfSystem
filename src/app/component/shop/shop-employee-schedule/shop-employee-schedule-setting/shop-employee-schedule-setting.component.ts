@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController, NavParams, PopoverController } from '@ionic/angular';
 import {
   IFormHeaderModalProp,
   ShopEmployeeScheduleChangeResult,
   ShopEmployeeScheduleSettingProp,
-  TimeItemType,
+  ShopOperatingBreakType,
 } from 'src/app/interface';
-import * as Constant from 'src/app/constant/constant';
-import { GlobalService } from 'src/app/service/global/global.service';
+import { EmployeeService } from 'src/app/service/employee/employee.service';
 
+type ShopEmployeeScheduleBreakTimeEditType = {
+  index: number;
+  breakTime: ShopOperatingBreakType;
+};
 @Component({
   selector: 'shop-employee-schedule-setting',
   templateUrl: './shop-employee-schedule-setting.component.html',
@@ -19,11 +22,13 @@ export class ShopEmployeeScheduleSettingComponent implements OnInit {
   public form!: IFormHeaderModalProp;
   public changed: boolean = false;
   public applyAllWeek: boolean = false;
+  public tempBreakTime!: ShopOperatingBreakType | undefined;
+  public editBreakTime!: ShopEmployeeScheduleBreakTimeEditType | undefined;
 
   constructor(
     private _navParams: NavParams,
     private _modalCtrl: ModalController,
-    private _global: GlobalService
+    private _empSvc: EmployeeService
   ) {
     this.prop = this._navParams.get('prop') as ShopEmployeeScheduleSettingProp;
     this.form = this._navParams.get('form') as IFormHeaderModalProp;
@@ -31,12 +36,13 @@ export class ShopEmployeeScheduleSettingComponent implements OnInit {
 
   ngOnInit() {}
 
-  onChangeDayOff() {
-    this.prop.roster.isOpen = !this.prop.roster.isOpen;
-    if (!this.prop.roster.isOpen) {
-      this.prop.roster.operatingHours.openTime = this.prop.operating.openTime;
-      this.prop.roster.operatingHours.closeTime = this.prop.operating.closeTime;
-    }
+  public handleEdit() {
+    this.form.readOnly = false;
+  }
+
+  public onChangeDayOff() {
+    this.prop.roster = this._empSvc.scheduler.changeWorkStatus(this.prop.roster, this.prop.operating);
+    this.handleEnabledSaveBtn();
   }
 
   public async dismiss() {
@@ -48,37 +54,56 @@ export class ShopEmployeeScheduleSettingComponent implements OnInit {
     await this._modalCtrl.dismiss(result);
   }
 
-  public handleEdit() {
-    this.form.readOnly = false;
+  public handleBreak() {
+    const isOverlap = this.tempBreakTime
+      ? this._empSvc.scheduler.breakTime.isOverlap(this.prop.roster, this.tempBreakTime)
+      : true;
+    const isExceedTime = this.tempBreakTime
+      ? this._empSvc.scheduler.breakTime.isExceedTime(this.tempBreakTime)
+      : true;
+    this.handleEnabledSaveBtn();
+    return isOverlap || isExceedTime;
   }
 
   public handleEnabledSaveBtn() {
-    const validator = this.validateOpenAndCloseTimes(
-      this.prop.roster.operatingHours.openTime,
-      this.prop.roster.operatingHours.closeTime
-    );
-    if (validator.result) {
-      this.prop.roster.workHours = validator.workHours;
-      this.form.enabledSavebutton = true;
-    } else {
-      this.form.enabledSavebutton = false;
-    }
+    this.prop.roster.workHours = this._empSvc.scheduler.updateWorkHours(this.prop.roster);
+    this.form.enabledSavebutton = this._empSvc.scheduler.shiftValidator(this.prop.roster);
     this.changed = true;
   }
 
-  private validateOpenAndCloseTimes(open: TimeItemType, close: TimeItemType) {
-    const openTime = this._global.date.transform.formatByTimeItem(new Date(), open);
-    const closeTime = this._global.date.transform.formatByTimeItem(new Date(), close);
-    let is24Hours: boolean =
-      open.hr === 0 &&
-      open.min === 0 &&
-      open.dayNightType === Constant.Date.DayNightType.DAY &&
-      close.hr === 0 &&
-      close.min === 0 &&
-      close.dayNightType === Constant.Date.DayNightType.DAY;
-    let workHours: number = is24Hours ? 24.0 : this._global.date.differenceInTime(openTime, closeTime, 2);
-    let validator: boolean = is24Hours ? true : openTime < closeTime;
+  public onDeleteBreak(breakTime: ShopOperatingBreakType) {
+    this.prop.roster = this._empSvc.scheduler.deleteBreak(this.prop.roster, breakTime);
+    this.handleEnabledSaveBtn();
+  }
 
-    return { result: validator, workHours: workHours };
+  public onEditBreak(breakTime: ShopOperatingBreakType, index: number) {
+    this.editBreakTime = { breakTime: breakTime, index: index };
+  }
+
+  public breakHours() {
+    return this._empSvc.scheduler.breakTime.sum(this.prop.roster);
+  }
+
+  public addBreak() {
+    this.tempBreakTime = this._empSvc.scheduler.breakTime.getDefault(this.prop.roster);
+  }
+
+  public async updateBreak() {
+    const updated = this.tempBreakTime
+      ? await this._empSvc.scheduler.updateBreak(
+          this.prop.roster,
+          this.tempBreakTime,
+          this.prop.date,
+          this.prop.employeeId
+        )
+      : null;
+    if (updated !== null) {
+      this.prop.roster = updated;
+      this.tempBreakTime = undefined;
+    }
+  }
+
+  public async deleteBreak(breakTime: ShopOperatingBreakType) {
+    this.prop.roster = this._empSvc.scheduler.deleteBreak(this.prop.roster, breakTime);
   }
 }

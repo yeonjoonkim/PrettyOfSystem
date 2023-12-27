@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../global/storage/storage.service';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
-import { Cart, CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
+import { Cart, CheckOutItem, CheckOutSpecialistType } from 'src/app/interface/booking/cart/cart.interface';
 import { DateService } from '../global/date/date.service';
 import * as Constant from 'src/app/constant/constant';
 import { ToastService } from '../global/toast/toast.service';
@@ -57,6 +57,72 @@ export class CartService {
     );
   }
 
+  public hasSpecialist() {
+    return this.cart$.pipe(
+      switchMap(cart => {
+        if (cart) {
+          return of(cart.specialist.name.length > 0);
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
+  public hasSelectTime() {
+    return this.cart$.pipe(
+      switchMap(cart => {
+        if (cart) {
+          return of(cart.selectedTime !== null);
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
+  public relatedCartSpecialistIds() {
+    return this.cart$.pipe(
+      switchMap(cart => {
+        if (cart) {
+          const specialisedEmpId = cart.checkout
+            .map(c => c.specializedEmployees)
+            .reduce((acc, val) => acc.concat(val), [])
+            .filter((v, i, arr) => arr.findIndex(t => t.value === v.value) === i)
+            .map(emp => emp.value);
+          return of(specialisedEmpId);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
+  public selectedSpecialist() {
+    return this.cart$.pipe(
+      switchMap(cart => {
+        if (cart) {
+          return of(cart.specialist);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
+  public hasOnlyCoupon() {
+    return this.cart$.pipe(
+      switchMap(cart => {
+        if (cart) {
+          const coupon = cart.checkout.filter(c => c.type === Constant.CartItem.Coupon);
+          return of(cart.checkout.length === coupon.length);
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
   public async addCheckOutItem(checkout: CheckOutItem, transformType: Constant.LanguageTransformType) {
     let cart = this._cart.getValue();
     if (cart !== null) {
@@ -81,9 +147,32 @@ export class CartService {
         cart.checkout.push(checkout);
       }
       cart = this.updateCartSum(cart);
+      cart = this.resetSpecialistDateTime(cart);
       await this._storage.storeCart(cart);
       this._cart.next(cart);
       await this.present(checkout.title, checkout.min, transformType);
+    }
+  }
+
+  public async updateSelectTime(shopId: string, startTime: string) {
+    let cart = this._cart.getValue();
+    if (cart !== null) {
+      const endTime = this._date.addMin(startTime, cart.totalMin);
+      cart = await this.validate(cart, shopId);
+      cart.selectedTime = { start: startTime, end: endTime };
+      await this._storage.storeCart(cart);
+      this._cart.next(cart);
+    }
+  }
+
+  public async updateSpecialist(shopId: string, spcialistId: string, name: string) {
+    let cart = this._cart.getValue();
+    if (cart !== null) {
+      cart = await this.validate(cart, shopId);
+      cart.specialist = { id: spcialistId, name: name };
+      cart.selectedTime = null;
+      await this._storage.storeCart(cart);
+      this._cart.next(cart);
     }
   }
 
@@ -101,9 +190,19 @@ export class CartService {
           )
       );
       cart = this.updateCartSum(cart);
+      cart = this.resetSpecialistDateTime(cart);
       await this._storage.storeCart(cart);
       this._cart.next(cart);
     }
+  }
+
+  private resetSpecialistDateTime(cart: Cart) {
+    cart.selectedTime = null;
+    cart.specialist = {
+      id: '',
+      name: '',
+    };
+    return cart;
   }
 
   public async incrementCheckOutItem(checkout: CheckOutItem) {
@@ -130,6 +229,7 @@ export class CartService {
         cart.checkout.push(checkout);
       }
       cart = this.updateCartSum(cart);
+      cart = this.resetSpecialistDateTime(cart);
       await this._storage.storeCart(cart);
       this._cart.next(cart);
     }
@@ -157,6 +257,7 @@ export class CartService {
       }, []);
 
       cart = this.updateCartSum(cart);
+      cart = this.resetSpecialistDateTime(cart);
       await this._storage.storeCart(cart);
       this._cart.next(cart);
     }
@@ -171,7 +272,14 @@ export class CartService {
       timeoutMin: min,
       totalMin: 0,
       expiredDateTime: this._date.getTimeoutByMin(timezone, min),
+      specialist: {
+        id: '',
+        name: '',
+      },
       timezone: timezone,
+      selectedTime: null,
+      dateTime: this._date.startDay(this._date.shopNow(timezone)),
+      dayIndex: this._date.getDay(this._date.startDay(this._date.shopNow(timezone))),
     };
     return result;
   }
@@ -207,5 +315,17 @@ export class CartService {
     const translatedMin = min > 0 ? await this._languageTransform.transform('label.title.minute', 'System') : '';
     const msg = min > 0 ? `${min}${translatedMin} ${translatedTitle} ${added}` : `${translatedTitle} ${added}`;
     await this._toastCtrl.presentBottom(msg);
+  }
+
+  private async validate(cart: Cart, shopId: string) {
+    const sameShopId = shopId === cart.shopId;
+    const timeout = this._date.isTimeout(cart.timezone, cart.expiredDateTime);
+    const allowed = sameShopId && !timeout;
+    if (!allowed) {
+      await this.reset(shopId, cart.timezone, cart.timeoutMin);
+      return this.getDefaultCart(shopId, cart.timezone, cart.timeoutMin);
+    } else {
+      return cart;
+    }
   }
 }

@@ -253,7 +253,13 @@ export class ShopConfigurationService {
       financial: {
         taxRate: Constant.ShopSetting.Financial.TaxRate,
         cardSurchargeRate: Constant.ShopSetting.Financial.CardSurchargeRate,
-        cashDiscountRate: Constant.ShopSetting.Financial.CashDiscountRate,
+        cashDiscount: {
+          rate: Constant.ShopSetting.Financial.CashDiscountRate,
+          enableCoupon: false,
+          enableExtra: true,
+          enablePackage: true,
+          enableService: true,
+        },
         openingBalance: Constant.ShopSetting.Financial.OpeningBalance,
         openingHour: Constant.ShopSetting.Financial.OpeningHour,
         closingHour: Constant.ShopSetting.Financial.ClosingHour,
@@ -266,6 +272,9 @@ export class ShopConfigurationService {
       },
       qrCode: {
         waitingListSessionExiryMin: Constant.ShopSetting.QRCode.WaitingListSessionExiryMin,
+      },
+      waitingList: {
+        intervalMin: Constant.ShopSetting.WaitingList.intervalMin,
       },
       insurance: null,
     };

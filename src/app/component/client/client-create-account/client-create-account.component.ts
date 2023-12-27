@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { IFormHeaderModalProp, IUser, NameValuePairType } from 'src/app/interface';
 import { ClientService } from 'src/app/service/client/client.service';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
@@ -32,16 +32,19 @@ export class ClientCreateAccountComponent implements OnInit {
     private _modal: ModalController,
     private _formCtrl: FormControllerService,
     private _client: ClientService,
-    private _global: GlobalService
+    private _global: GlobalService,
+    private _navParam: NavParams
   ) {
     this.privateHealthCareCompanies = this._global.privateHealth.list;
     this.selectedPrivateHealthCompany = this.privateHealthCareCompanies[0];
-    this.form = this._formCtrl.setCreateFormHeaderModalProp();
+    this.form = this._formCtrl.setReadFormHeaderModalProp();
     this.form.headerTitle = 'label.title.signup';
   }
 
   async ngOnInit() {
+    const phonNumber: string | undefined = this._navParam.get('phoneNumber');
     this.user = await this._client.build();
+    this.user.phoneNumber = phonNumber !== undefined && typeof phonNumber === 'string' ? phonNumber : '';
   }
 
   async onCreate() {

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MassagePressureLevelService } from 'src/app/service/massage/massage-pressure-level/massage-pressure-level.service';
+import { MassagePressureType } from 'src/app/interface';
+import { MassageService } from 'src/app/service/massage/massage.service';
 
 @Component({
   selector: 'massage-pressure-level-selector',
@@ -7,13 +8,14 @@ import { MassagePressureLevelService } from 'src/app/service/massage/massage-pre
   styleUrls: ['./massage-pressure-level-selector.component.scss'],
 })
 export class MassagePressureLevelSelectorComponent implements OnInit {
-  @Output() levelChange = new EventEmitter<number>();
-  @Input() level!: number;
-  constructor(public pressureLevel: MassagePressureLevelService) {}
+  @Output() pressureChange = new EventEmitter<MassagePressureType>();
+  @Input() pressure!: MassagePressureType;
+  constructor(public massage: MassageService) {}
 
   ngOnInit() {}
 
   onChangePressureLevel() {
-    this.levelChange.emit(this.level);
+    const description = this.massage.getPressureRatingDescription(this.pressure.rating);
+    this.pressureChange.emit({ description: description, rating: this.pressure.rating });
   }
 }

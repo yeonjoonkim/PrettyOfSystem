@@ -66,4 +66,21 @@ export type ShopEmployeeScheduleSettingProp = {
   day: string;
   roster: ShopOperatingDailyType;
   operating: ShopOperatingHoursType;
+  employeeId: string;
+};
+
+export type ShopEmployeeTimeSheet = {
+  shopId: string;
+  employeeId: string;
+  fullName: string;
+  gender: Constant.GenderType;
+  avaliable: ShopEmployeeTimeSheetAvailableType[];
+};
+
+export type ShopEmployeeTimeSheetAvailableType = {
+  date: string;
+  times: string[];
+  start: string | null;
+  end: string | null;
+  isWorking: boolean;
 };

@@ -13,7 +13,7 @@ export class MobileVersionBodySelectorComponent implements OnInit {
   @Input() isReport: boolean = false;
 
   public pages: string[] = ['label.title.front', 'label.title.back'];
-  public selectedPage: string = 'label.title.front';
+  public selectedPage: string = 'label.title.back';
   constructor() {}
   ngOnInit() {}
 

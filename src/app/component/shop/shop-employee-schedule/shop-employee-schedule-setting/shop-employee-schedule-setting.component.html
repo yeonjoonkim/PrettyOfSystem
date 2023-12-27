@@ -1,35 +1,43 @@
-<ion-header>
-  <form-header
-    [title]="form.headerTitle"
-    [readOnly]="form.readOnly"
-    [enabledSavebutton]="form.enabledSavebutton"
-    [action]="form.action"
-    [isDeleteRequired]="false"
-    [isSkipEdit]="true"
-    (onClickDismiss)="dismiss()"
-    (onClickEdit)="handleEdit()"
-    (onClickSave)="handleSave()"></form-header>
-</ion-header>
+<form-header
+  [title]="form.headerTitle"
+  [readOnly]="form.readOnly"
+  [enabledSavebutton]="form.enabledSavebutton"
+  [action]="form.action"
+  [isDeleteRequired]="false"
+  [isSkipEdit]="true"
+  (onClickDismiss)="dismiss()"
+  (onClickEdit)="handleEdit()"
+  (onClickSave)="handleSave()"></form-header>
 
 <ion-content>
   <flex-col class="modal-container">
     <flex-row>
-      <flex-row-item>
+      <flex-row-item id="current-status">
         <legend>
           {{ prop.date | dateTransform: 'LongDate' }}
           {{ prop.day | languageTransform: 'System' | async }}
         </legend>
+        <p *ngIf="prop.roster.isOpen">
+          {{ 'label.title.workhours' | languageTransform: 'System' | async }}: {{ prop.roster.workHours
+          }}{{ 'date.title.hour' | languageTransform: 'System' | async }}
+        </p>
+        <p *ngIf="prop.roster.isOpen">
+          {{ 'label.title.breaktime' | languageTransform: 'System' | async }}: {{ breakHours() }}
+          {{ 'date.title.hour' | languageTransform: 'System' | async }}
+        </p>
       </flex-row-item>
       <flex-row-item id="is-day-off">
-        <yes-no-selection
-          title="label.title.dayoff"
-          [value]="!prop.roster.isOpen"
-          [readOnly]="form.readOnly"
-          (valueChange)="onChangeDayOff()"></yes-no-selection>
-        <yes-no-selection
-          title="label.title.applyall"
-          [(value)]="applyAllWeek"
-          [readOnly]="form.readOnly"></yes-no-selection>
+        <kendo-label text="{{ 'label.title.dayoff' | languageTransform: 'System' | async }}">
+          <input
+            type="checkbox"
+            kendoCheckBox
+            [(ngModel)]="!prop.roster.isOpen"
+            [disabled]="form.readOnly"
+            (ngModelChange)="onChangeDayOff()" />
+        </kendo-label>
+        <kendo-label text="{{ 'label.title.applyall' | languageTransform: 'System' | async }}">
+          <input type="checkbox" kendoCheckBox [(ngModel)]="applyAllWeek" [disabled]="form.readOnly" />
+        </kendo-label>
       </flex-row-item>
     </flex-row>
 
@@ -40,7 +48,6 @@
         }}</kendo-formerror>
       </div>
     </flex-col-item>
-
     <flex-row>
       <flex-row-item *ngIf="prop.roster.isOpen">
         <time-picker
@@ -61,5 +68,52 @@
           (timeChange)="handleEnabledSaveBtn()"></time-picker>
       </flex-row-item>
     </flex-row>
+
+    <flex-col id="break-container" *ngIf="prop.roster.isOpen">
+      <flex-col-item class="title-container">
+        <legend>{{ 'label.title.breaktime' | languageTransform: 'System' | async }}</legend>
+        <button
+          kendoButton
+          icon="plus"
+          id="break-add"
+          *ngIf="!form.readOnly && !tempBreakTime"
+          (click)="addBreak()"
+          [disabled]="tempBreakTime !== undefined"></button>
+      </flex-col-item>
+
+      <flex-row class="new-break" *ngIf="tempBreakTime !== undefined && prop.roster.isOpen">
+        <time-picker
+          [(time)]="tempBreakTime.start"
+          [readOnly]="form.readOnly"
+          [openTime]="prop.operating.openTime"
+          [closeTime]="prop.operating.closeTime"
+          (timeChange)="handleEnabledSaveBtn()"></time-picker>
+        <span>-</span>
+        <time-picker
+          [(time)]="tempBreakTime.end"
+          [readOnly]="form.readOnly"
+          [openTime]="prop.operating.openTime"
+          [closeTime]="prop.operating.closeTime"
+          (timeChange)="handleEnabledSaveBtn()"></time-picker>
+        <button
+          kendoButton
+          id="break-add"
+          *ngIf="!form.readOnly"
+          (click)="updateBreak()"
+          [disabled]="handleBreak()">
+          <span>{{ 'button.title.add' | languageTransform: 'System' | async }}</span>
+        </button>
+      </flex-row>
+    </flex-col>
   </flex-col>
+
+  <flex-row *ngFor="let breakTime of prop.roster.breakTimes" ß>
+    <flex-row-item *ngIf="prop.roster.isOpen" class="break-time">
+      <p class="time">{{ breakTime.start | timeItemTransform }} - {{ breakTime.end | timeItemTransform }}</p>
+      <span class="duration">
+        ({{ breakTime.durationHour }} {{ 'date.title.hour' | languageTransform: 'System' | async }})
+      </span>
+      <button kendoButton icon="trash" (click)="deleteBreak(breakTime)"></button>
+    </flex-row-item>
+  </flex-row>
 </ion-content>

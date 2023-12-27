@@ -13,7 +13,7 @@ import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.
 import { override } from 'functions/src/service/override/user/user-setting-override/user-setting-override';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
-
+import * as Constant from 'src/app/constant/constant';
 @Injectable({
   providedIn: 'root',
 })
@@ -159,6 +159,20 @@ export class UserCredentialRepositoryService {
       );
   }
 
+  public activeShopSpecialist(shopId: string) {
+    return this._afs
+      .collection<IUser>(Db.Context.User, ref =>
+        ref.where('associatedShopIds', 'array-contains', shopId).where('isSystemAdmin', '!=', true)
+      )
+      .valueChanges()
+      .pipe(
+        map(users => users.map(user => this.transformIntoShopEmployeeManagementUserType(user, shopId))),
+        map(users => users.filter(user => user !== null) as ShopEmployeeManagementUserType[]),
+        map(users => users.filter(user => user.active)),
+        map(users => users.filter(user => user.displayInSystem))
+      );
+  }
+
   public subscribeAllUser() {
     return this._afs
       .collection<IUser>(Db.Context.User, ref => ref.orderBy('isSystemAdmin'))
@@ -284,6 +298,7 @@ export class UserCredentialRepositoryService {
       associatedShopIds: [],
       currentShopId: '',
       setting: {
+        pregrencyDueDate: null,
         preferLanguage: await this._systemLanguageStorage.getCurrentLanguage(),
         privateInsurance: null,
         medical: {
@@ -291,7 +306,10 @@ export class UserCredentialRepositoryService {
           otherStatus: null,
         },
         massage: {
-          pressureLevel: 1,
+          pressure: {
+            rating: Constant.Massage.Pressure.Raiting.One,
+            description: Constant.Massage.Pressure.Description.ExtremeSoft,
+          },
           areas: [],
         },
       },

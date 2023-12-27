@@ -28,7 +28,7 @@ export class UserMassageSettingComponent implements OnInit {
       const before = await firstValueFrom(this._user.data$);
       if (before) {
         const current = cloneDeep(before);
-        current.setting.massage.pressureLevel = this.massage.pressureLevel;
+        current.setting.massage.pressure = this.massage.pressure;
         await this._user.updateUser(current, before);
         this.requesting = false;
       }

@@ -91,6 +91,16 @@ export class DateService {
     return format;
   }
 
+  getDate(date: DateType) {
+    const dateTime = this.transform.toLocalDateTime(date);
+    return dateTime.getDate();
+  }
+
+  getDay(date: DateType) {
+    const dateTime = this.transform.toLocalDateTime(date);
+    return dateTime.getDay() as Constant.DayIndexType;
+  }
+
   addYear(date: DateType, year: number) {
     const localDate = this.transform.toLocalDateTime(date);
     const added = addYears(localDate, year);

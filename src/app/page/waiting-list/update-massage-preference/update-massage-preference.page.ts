@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { cloneDeep } from 'lodash-es';
 import { Observable, Subject, combineLatestWith, firstValueFrom, takeUntil } from 'rxjs';
-import { IUser, MassageBodySelectorAreaType, ShopCategoryType } from 'src/app/interface';
+import { IUser, MassageBodySelectorAreaType, MassagePressureType, ShopCategoryType } from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 
@@ -18,7 +18,7 @@ export class UpdateMassagePreferencePage implements OnInit {
   public isLoading$!: Observable<boolean>;
   public client$!: Observable<IUser | null>;
   public massageArea!: MassageBodySelectorAreaType[];
-  public pressureLevel!: number;
+  public pressure!: MassagePressureType;
   public request: boolean = false;
   constructor(
     private _waitingList: WaitingListService,
@@ -52,13 +52,13 @@ export class UpdateMassagePreferencePage implements OnInit {
         }
         if (hasInfo) {
           this.massageArea = info.setting.massage.areas;
-          this.pressureLevel = info.setting.massage.pressureLevel;
+          this.pressure = info.setting.massage.pressure;
         }
       });
   }
 
   async onClickGoback() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-medical-info`);
+    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-client-info`);
   }
 
   async onClickNext() {
@@ -68,7 +68,7 @@ export class UpdateMassagePreferencePage implements OnInit {
       const after = cloneDeep(before);
       this.request = true;
       after.setting.massage.areas = this.massageArea;
-      after.setting.massage.pressureLevel = this.pressureLevel;
+      after.setting.massage.pressure = this.pressure;
       const result = await this._user.updateUser(after, before);
       if (result) {
         this.request = false;
@@ -80,7 +80,7 @@ export class UpdateMassagePreferencePage implements OnInit {
   }
 
   public isLoading() {
-    return this.massageArea === undefined && this.pressureLevel === undefined;
+    return this.massageArea === undefined && this.pressure === undefined;
   }
 
   public onChangeAreas(areas: MassageBodySelectorAreaType[]) {

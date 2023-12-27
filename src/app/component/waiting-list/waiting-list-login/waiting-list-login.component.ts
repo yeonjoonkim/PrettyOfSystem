@@ -104,7 +104,7 @@ export class WaitingListLoginComponent implements OnInit {
   }
 
   private async createAccount() {
-    const modal = await this._client.modal.createAccount();
+    const modal = await this._client.modal.createAccount(this.login.phoneNumber);
     await modal.present();
     const result = await this._client.modal.handleDismissCreateAccount(modal);
 

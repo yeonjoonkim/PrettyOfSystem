@@ -1,0 +1,29 @@
+ion-header {
+  max-width: 800px;
+  margin: auto;
+  ion-title {
+    color: var(--title);
+  }
+}
+
+button {
+  margin: 0px 15px;
+  background: transparent;
+  &:hover {
+    background: transparent;
+  }
+}
+
+.select-speicalist-time-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: auto;
+  padding-top: 15px;
+}
+
+waiting-list-select-time-summary,
+waiting-list-select-employee {
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--active);
+}

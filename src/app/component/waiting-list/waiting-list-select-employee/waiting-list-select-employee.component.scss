@@ -1,0 +1,17 @@
+.speicalist-list {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: auto;
+}
+
+.specialist-container {
+  margin: auto;
+  margin: 0px 15px 10px;
+}
+
+.no-available {
+  color: var(--active);
+}

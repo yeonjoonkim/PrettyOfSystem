@@ -1,11 +1,16 @@
 import * as I from '../../../../interface';
-
+import * as Constant from '../../../../constant';
 export const override = function (s: I.UserSettingType) {
+  s.pregrencyDueDate = pregrencyDueDate(s?.pregrencyDueDate);
   s.preferLanguage = preferLanguage(s?.preferLanguage);
   s.privateInsurance = prviateInsurance(s?.privateInsurance);
   s.massage = massage(s?.massage);
   s.medical = medical(s?.medical);
   return s;
+};
+
+const pregrencyDueDate = function (pregrencyDueDate: string | undefined | null) {
+  return typeof pregrencyDueDate === 'string' ? pregrencyDueDate : null;
 };
 
 //Prefer Language
@@ -21,14 +26,19 @@ const prviateInsurance = function (insurance: I.UserSettingPrivateInsuranceType 
 //Massage
 const massage = function (massage: I.UserSettingMassageType | undefined) {
   const result = {
-    pressureLevel: pressureLevel(massage?.pressureLevel),
+    pressure: massagePressure(massage?.pressure),
     areas: areas(massage?.areas),
   };
   return result;
 };
 
-const pressureLevel = function (level: number | null | undefined) {
-  return typeof level === 'number' ? level : 0;
+const massagePressure = function (pressureType: I.MassagePressureType | undefined | null) {
+  return pressureType !== undefined && pressureType !== null
+    ? pressureType
+    : {
+        rating: Constant.Massage.Pressure.Raiting.One,
+        description: Constant.Massage.Pressure.Description.ExtremeSoft,
+      };
 };
 
 const areas = function (areas: I.MassageBodySelectorAreaType[] | null | undefined) {

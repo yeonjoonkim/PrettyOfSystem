@@ -12,7 +12,7 @@
 </ion-header>
 <ion-content [fullscreen]="true" *ngIf="(loaded$ | async) && !request">
   <div class="client-info-container">
-    <massage-pressure-level-selector [(level)]="pressureLevel"></massage-pressure-level-selector>
+    <massage-pressure-level-selector [(pressure)]="pressure"></massage-pressure-level-selector>
     <desktop-version-body-selector
       *ngIf="massageArea"
       [readOnly]="false"
@@ -25,7 +25,6 @@
       [isReport]="false"
       [(selectedAreas)]="massageArea"
       (selectedAreasChange)="onChangeAreas($event)"></mobile-version-body-selector>
-    <client-massage-body-summary *ngIf="massageArea" [selectedAreas]="massageArea"></client-massage-body-summary>
   </div>
 </ion-content>
 

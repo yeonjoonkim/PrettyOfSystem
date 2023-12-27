@@ -29,7 +29,6 @@ export {
   ChangeNumberRequestStatus,
   CartItem,
 } from './constant-value';
-export { MassageDescriptionType } from './constant-massage';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
 import { API } from './constant-api';
@@ -93,6 +92,17 @@ export type MassageBodyPreferenceType =
   (typeof Massage.Body.PreferenceType)[keyof typeof Massage.Body.PreferenceType];
 export type MassageBodyPreferenceNameType =
   (typeof Massage.Body.PreferenceName)[keyof typeof Massage.Body.PreferenceName];
+export type MassageDescriptionType = (typeof Massage.Description)[keyof typeof Massage.Description];
+export type MassagePainScaleRatingType = (typeof Massage.PainScale.Rating)[keyof typeof Massage.PainScale.Rating];
+export type MassagePainScaleDescriptionType =
+  (typeof Massage.PainScale.Description)[keyof typeof Massage.PainScale.Description];
+export type MassagePressureRatingType = (typeof Massage.Pressure.Raiting)[keyof typeof Massage.Pressure.Raiting];
+export type MassagePressureDescriptionType =
+  (typeof Massage.Pressure.Description)[keyof typeof Massage.Pressure.Description];
+export type MassageDiffcultChangePositionType =
+  (typeof Massage.DifficultChangePosition.Type)[keyof typeof Massage.DifficultChangePosition.Type];
+export type MassageDiffcultChangePositionDescriptionType =
+  (typeof Massage.DifficultChangePosition.Description)[keyof typeof Massage.DifficultChangePosition.Description];
 
 //Medical Insurance Company
 export type MedicalInsuranceType = (typeof Medical.Insurance)[keyof typeof Medical.Insurance];

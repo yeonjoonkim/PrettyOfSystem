@@ -1,12 +1,13 @@
 import * as I from '../../../../interface';
 import * as Constant from '../../../../constant';
 
-export const override = function (s: I.IShopSetting) {
+export const override = function (s: I.IShopSetting): I.IShopSetting {
   s.financial = financeSetting(s?.financial);
   s.calendar = calendarSetting(s?.calendar);
   s.picture = picture(s?.picture);
   s.qrCode = QRcode(s?.qrCode);
   s.insurance = insurance(s?.insurance);
+  s.waitingList = waitingList(s?.waitingList);
   return s;
 };
 
@@ -15,7 +16,7 @@ const financeSetting = function (financial: I.ShopFinancialRateType | undefined)
   return {
     taxRate: taxRate(financial?.taxRate),
     cardSurchargeRate: cardSurchargeRate(financial?.cardSurchargeRate),
-    cashDiscountRate: cashDiscounteRate(financial?.cashDiscountRate),
+    cashDiscount: cashDiscount(financial?.cashDiscount),
     openingBalance: openingBalance(financial?.openingBalance),
     openingHour: openingHour(financial?.openingHour),
     closingHour: closingHour(financial?.closingHour),
@@ -30,8 +31,8 @@ const cardSurchargeRate = function (rate: number | undefined | null) {
   return typeof rate === 'number' ? rate : Constant.ShopSetting.Financial.CardSurchargeRate;
 };
 
-const cashDiscounteRate = function (rate: number | undefined | null) {
-  return typeof rate === 'number' ? rate : Constant.ShopSetting.Financial.CashDiscountRate;
+const cashDiscount = function (discount: I.CashDiscountType | undefined | null) {
+  return typeof discount !== null && discount !== undefined ? discount : null;
 };
 
 const openingBalance = function (balance: number | undefined | null) {
@@ -97,4 +98,17 @@ const waitingListSessionExiryMin = function (min: number | undefined | null) {
 // Insurance Company
 const insurance = function (insurance: I.ShopInsuranceProvider | undefined | null) {
   return insurance !== null && insurance !== undefined ? insurance : null;
+};
+
+//Waiting List
+const waitingList = function (waitingList: I.ShopWaitingListType | null | undefined): I.ShopWaitingListType {
+  return {
+    intervalMin: waitingListIntervalMin(waitingList?.intervalMin),
+  };
+};
+
+const waitingListIntervalMin = function (waitingListIntervalMin: number | undefined | null) {
+  return typeof waitingListIntervalMin === 'number'
+    ? waitingListIntervalMin
+    : Constant.ShopSetting.WaitingList.intervalMin;
 };

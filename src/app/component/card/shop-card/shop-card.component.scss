@@ -98,11 +98,11 @@
       justify-content: flex-end;
       flex-direction: column;
       .book-btn {
-        background: var(--card-add-hover);
+        background: var(--card-add);
         font-size: 14px;
         font-weight: 900;
         &:hover {
-          background: var(--card-add);
+          background: var(--card-add-hover);
         }
       }
     }

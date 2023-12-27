@@ -56,6 +56,7 @@ export class ShopOpenHourComponent implements OnInit {
     closeDay: [],
     mon: {
       isOpen: true,
+      breakTimes: [],
       operatingHours: {
         openTime: {
           hr: 0,
@@ -76,6 +77,7 @@ export class ShopOpenHourComponent implements OnInit {
     },
     tue: {
       isOpen: true,
+      breakTimes: [],
       operatingHours: {
         openTime: {
           hr: 0,
@@ -96,6 +98,7 @@ export class ShopOpenHourComponent implements OnInit {
     },
     wed: {
       isOpen: true,
+      breakTimes: [],
       operatingHours: {
         openTime: {
           hr: 0,
@@ -116,6 +119,7 @@ export class ShopOpenHourComponent implements OnInit {
     },
     thu: {
       isOpen: true,
+      breakTimes: [],
       operatingHours: {
         openTime: {
           hr: 0,
@@ -136,6 +140,7 @@ export class ShopOpenHourComponent implements OnInit {
     },
     fri: {
       isOpen: true,
+      breakTimes: [],
       operatingHours: {
         openTime: {
           hr: 0,
@@ -156,6 +161,7 @@ export class ShopOpenHourComponent implements OnInit {
     },
     sat: {
       isOpen: true,
+      breakTimes: [],
       operatingHours: {
         openTime: {
           hr: 0,
@@ -176,6 +182,7 @@ export class ShopOpenHourComponent implements OnInit {
     },
     sun: {
       isOpen: true,
+      breakTimes: [],
       operatingHours: {
         openTime: {
           hr: 0,

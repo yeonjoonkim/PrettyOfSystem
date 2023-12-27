@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, switchMap, of, map, firstValueFrom, combineLatest } from 'rxjs';
+import { Observable, switchMap, of, map, firstValueFrom, combineLatest, filter } from 'rxjs';
 import { ShopCouponRepositoryService } from 'src/app/firebase/shop-repository/shop-coupon-repository/shop-coupon-repository.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
 import {
@@ -19,6 +19,7 @@ import {
 } from '../../shop/shop-service-management/shop-service-menu-option-controller/shop-service-menu-option-controller.service';
 
 import * as Constant from 'src/app/constant/constant';
+import { UserCredentialRepositoryService } from 'src/app/firebase/user-repository/user-credential-repository/user-credential-repository.service';
 
 export type WaitingListShopCartCriteriaType = {
   buttons: IShopServiceMenuOptionAction[];
@@ -37,6 +38,7 @@ export class WaitngListShopService {
 
   constructor(
     private _shopRepo: SystemShopConfigurationRepositoryService,
+    private _userRepo: UserCredentialRepositoryService,
     private _couponRepo: ShopCouponRepositoryService,
     private _serviceRepo: ShopServiceRepositoryService,
     private _extraRepo: ShopExtraRepositoryService,
@@ -64,6 +66,23 @@ export class WaitngListShopService {
           return of(config.name);
         } else {
           return of(null);
+        }
+      })
+    );
+  }
+
+  public isRelatedToMedical() {
+    return this.category().pipe(
+      switchMap(category => {
+        if (category !== null) {
+          const name = category.name as Constant.ShopCategoryTitleType;
+          const relatedName =
+            name === Constant.ShopCategoryTitle.MassageTheraphy ||
+            name === Constant.ShopCategoryTitle.PersonalTraining ||
+            name === Constant.ShopCategoryTitle.SkinCare;
+          return of(relatedName);
+        } else {
+          return of(false);
         }
       })
     );
@@ -187,5 +206,9 @@ export class WaitngListShopService {
 
   public getExtra() {
     return this.extras();
+  }
+
+  public activeSpecialist(shopId: string) {
+    return this._userRepo.activeShopSpecialist(shopId);
   }
 }

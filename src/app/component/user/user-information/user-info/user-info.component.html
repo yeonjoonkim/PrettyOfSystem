@@ -23,7 +23,10 @@
 
 <flex-row *ngIf="user && !requesting">
   <flex-row-item>
-    <gender-selection [readOnly]="readOnly" [(gender)]="user.gender"></gender-selection>
+    <gender-selection
+      [readOnly]="readOnly"
+      [(gender)]="user.gender"
+      (genderChange)="onGenderChange()"></gender-selection>
   </flex-row-item>
   <flex-row-item>
     <langauge-selection [readOnly]="readOnly" [(selectedCode)]="user.setting.preferLanguage"></langauge-selection>

@@ -1,9 +1,38 @@
 #opening-balance-section {
   display: flex;
+  margin-top: 7px;
+  p {
+    margin: 0;
+    margin-top: 20px;
+  }
 }
 
 @media (max-width: 450px) {
   #auto-detection {
     flex-direction: column;
+  }
+}
+
+::ng-deep .cash-discount-rate {
+  percentage {
+    kendo-label {
+      display: flex;
+    }
+    kendo-numerictextbox {
+      margin: 0;
+    }
+  }
+}
+
+::ng-deep .cash-discount-type {
+  kendo-label {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    font-size: 12px;
+    gap: 10px;
+    input {
+      margin: 0px;
+    }
   }
 }

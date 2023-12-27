@@ -1,0 +1,40 @@
+<ion-header *ngIf="loaded$ | async">
+  <ion-toolbar>
+    <button class="goback-btn" slot="start" kendoButton (click)="onClickGoback()">
+      {{'label.title.goback' | languageTransform:'System' | async}}
+    </button>
+    <!-- Title -->
+    <ion-title>{{'label.title.selectspecialistandtime'| languageTransform:'System' | async }}</ion-title>
+    <button class="next-btn" slot="end" kendoButton (click)="onClickNext()" [disabled]="!(enableNext$ | async)">
+      {{'label.title.next' | languageTransform:'System' | async}}
+    </button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="loaded$ | async">
+  <div
+    class="select-speicalist-time-container"
+    *ngIf="{cart: cart$ | async, availableTime: availableTime$ | async, selectedSpecialist: selectedSpecialist$ | async, specialists: specialists$ | async } as view">
+    <waiting-list-select-time-summary
+      *ngIf="view.cart !== null"
+      [cart]="view.cart"></waiting-list-select-time-summary>
+    <waiting-list-select-employee
+      *ngIf="view.selectedSpecialist !== null && view.specialists !== null"
+      [selectedSpecialist]="view.selectedSpecialist"
+      [specialists]="view.specialists"></waiting-list-select-employee>
+    <waiting-list-select-time
+      *ngIf="view.cart !== null && view.availableTime !== null && view.cart.specialist.name"
+      [available]="view.availableTime"
+      [cart]="view.cart"></waiting-list-select-time>
+
+    <div
+      class="loading-container"
+      *ngIf="view.cart === null || view.selectedSpecialist === null || view.specialists === null">
+      <kendo-loader size="large"></kendo-loader>
+    </div>
+  </div>
+</ion-content>
+
+<div class="loading-container" *ngIf="isLoading$ | async">
+  <kendo-loader size="large"></kendo-loader>
+</div>
