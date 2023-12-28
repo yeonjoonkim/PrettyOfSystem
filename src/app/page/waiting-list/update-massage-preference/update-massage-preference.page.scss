@@ -60,6 +60,14 @@ button {
   desktop-version-body-selector {
     display: block;
   }
+  .info-container {
+    display: flex;
+    flex-direction: row;
+    massage-pressure-level-selector,
+    massage-difficult-change-position {
+      flex: 1;
+    }
+  }
 }
 
 @media (max-width: 620px) {
@@ -68,5 +76,10 @@ button {
   }
   mobile-version-body-selector {
     display: block;
+  }
+  .info-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
   }
 }

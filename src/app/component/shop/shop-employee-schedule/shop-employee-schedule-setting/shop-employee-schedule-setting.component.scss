@@ -78,14 +78,18 @@ button {
   .time {
     margin: 0;
     font-size: 14px;
-    width: 130px;
+    width: 150px;
   }
   .duration {
-    width: 60px;
+    width: 70px;
     font-size: 12px;
     text-wrap: nowrap;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+}
+
+#break-add {
+  margin-top: 5px;
 }

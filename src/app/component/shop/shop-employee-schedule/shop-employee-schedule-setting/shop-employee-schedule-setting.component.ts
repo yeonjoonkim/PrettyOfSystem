@@ -101,9 +101,11 @@ export class ShopEmployeeScheduleSettingComponent implements OnInit {
       this.prop.roster = updated;
       this.tempBreakTime = undefined;
     }
+    this.handleEnabledSaveBtn();
   }
 
   public async deleteBreak(breakTime: ShopOperatingBreakType) {
     this.prop.roster = this._empSvc.scheduler.deleteBreak(this.prop.roster, breakTime);
+    this.handleEnabledSaveBtn();
   }
 }

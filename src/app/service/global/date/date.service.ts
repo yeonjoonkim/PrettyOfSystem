@@ -190,6 +190,16 @@ export class DateService {
     });
   }
 
+  getWeek(date: DateType) {
+    const selectedDate = this.transform.toLocalDateTime(this.startDay(date));
+    const start = startOfWeek(selectedDate, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const end = endOfWeek(selectedDate, { weekStartsOn: Constant.Date.DayIndex.Sun });
+    const interval = eachDayOfInterval({ start, end });
+    return interval.map(date => {
+      return this.transform.formatLocalDateTime(date);
+    });
+  }
+
   shopAllDaysNextWeek(timezone: Constant.TimeZoneType) {
     const date = this.transform.toLocalDateTime(this.startDay(this.addDay(this.shopNow(timezone), 7)));
     const start = startOfWeek(date, { weekStartsOn: Constant.Date.DayIndex.Sun });
@@ -288,6 +298,16 @@ export class DateService {
   isTimeout(timezone: string | null, date: string) {
     const current = this.transform.formatLocalDateTime(this.shopNow(timezone));
     return current > date;
+  }
+  is24HoursByTimeItem(start: TimeItemType, end: TimeItemType) {
+    return (
+      start.hr === 0 &&
+      start.min === 0 &&
+      start.dayNightType === Constant.Date.DayNightType.DAY &&
+      end.hr === 0 &&
+      end.min === 0 &&
+      end.dayNightType === Constant.Date.DayNightType.DAY
+    );
   }
 }
 

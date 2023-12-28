@@ -1,0 +1,10 @@
+<flex-col
+  ><flex-col-item *ngIf="position">
+    <name-value-pair-single-dropdown-selection
+      title="label.description.doyouhaveanyproblemrotatingthebody"
+      [selection]="selection"
+      [(selected)]="selected"
+      [filterable]="false"
+      (selectedChange)="onChangeSelect($event)"></name-value-pair-single-dropdown-selection>
+  </flex-col-item>
+</flex-col>

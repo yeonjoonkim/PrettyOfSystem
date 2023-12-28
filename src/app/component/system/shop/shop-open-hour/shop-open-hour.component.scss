@@ -7,8 +7,8 @@
   height: 14px;
 }
 #copy-button {
-  margin: 10px;
-  height: 33px;
+  margin: 17px;
+  height: 31px;
   max-width: 60px;
 }
 #time-container {
@@ -16,6 +16,10 @@
   margin: 0;
   #time-picker-seperator {
     margin: 15px 5px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   time-picker {
     min-width: 0px;

@@ -12,7 +12,10 @@
 </ion-header>
 <ion-content [fullscreen]="true" *ngIf="(loaded$ | async) && !request">
   <div class="client-info-container">
-    <massage-pressure-level-selector [(pressure)]="pressure"></massage-pressure-level-selector>
+    <div class="info-container">
+      <massage-pressure-level-selector [(pressure)]="pressure"></massage-pressure-level-selector>
+      <massage-difficult-change-position [(position)]="position"></massage-difficult-change-position>
+    </div>
     <desktop-version-body-selector
       *ngIf="massageArea"
       [readOnly]="false"

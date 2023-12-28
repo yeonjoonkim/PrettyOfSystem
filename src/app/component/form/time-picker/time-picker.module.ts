@@ -9,10 +9,19 @@ import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pip
 //Import Component
 import { TimePickerComponent } from './time-picker.component';
 import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.module';
+import { TimeItemTransformPipeModule } from 'src/app/pipe/time-item/time-item.pipe.module';
+import { TimeSelectionPopoverComponent } from './time-selection-popover/time-selection-popover.component';
 
 @NgModule({
-  declarations: [TimePickerComponent],
-  imports: [CommonModule, IonicModule, FormsModule, LanguageTransformPipeModule, KendoUiModule],
+  declarations: [TimePickerComponent, TimeSelectionPopoverComponent],
+  imports: [
+    CommonModule,
+    IonicModule,
+    FormsModule,
+    LanguageTransformPipeModule,
+    KendoUiModule,
+    TimeItemTransformPipeModule,
+  ],
   exports: [TimePickerComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

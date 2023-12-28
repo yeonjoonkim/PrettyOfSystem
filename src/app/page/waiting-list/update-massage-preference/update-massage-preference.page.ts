@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { cloneDeep } from 'lodash-es';
 import { Observable, Subject, combineLatestWith, firstValueFrom, takeUntil } from 'rxjs';
-import { IUser, MassageBodySelectorAreaType, MassagePressureType, ShopCategoryType } from 'src/app/interface';
+import {
+  IUser,
+  MassageBodySelectorAreaType,
+  MassageDifficultChangePosition,
+  MassagePressureType,
+  ShopCategoryType,
+} from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 
@@ -19,6 +25,7 @@ export class UpdateMassagePreferencePage implements OnInit {
   public client$!: Observable<IUser | null>;
   public massageArea!: MassageBodySelectorAreaType[];
   public pressure!: MassagePressureType;
+  public position!: MassageDifficultChangePosition;
   public request: boolean = false;
   constructor(
     private _waitingList: WaitingListService,
@@ -53,6 +60,7 @@ export class UpdateMassagePreferencePage implements OnInit {
         if (hasInfo) {
           this.massageArea = info.setting.massage.areas;
           this.pressure = info.setting.massage.pressure;
+          this.position = info.setting.massage.difficultChangePosition;
         }
       });
   }
@@ -69,6 +77,7 @@ export class UpdateMassagePreferencePage implements OnInit {
       this.request = true;
       after.setting.massage.areas = this.massageArea;
       after.setting.massage.pressure = this.pressure;
+      after.setting.massage.difficultChangePosition = this.position;
       const result = await this._user.updateUser(after, before);
       if (result) {
         this.request = false;

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
 import { firstValueFrom } from 'rxjs';
 import { DateService } from 'src/app/service/global/date/date.service';
@@ -15,7 +15,6 @@ export class UserPregrancyDueDateComponent implements OnInit {
   public enableSaveBtn: boolean = false;
   public requesting: boolean = false;
   public localTimezone: string = this._date.localTimezone;
-
   constructor(
     private _user: UserService,
     private _date: DateService

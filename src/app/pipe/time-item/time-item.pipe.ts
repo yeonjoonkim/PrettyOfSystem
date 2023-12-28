@@ -44,10 +44,5 @@ const convertDayNight = function (hour: string) {
 
 const convertHours = function (hoursStr: string): string {
   let hours = Number(hoursStr) % 24;
-
-  if (hours <= 11) {
-    return hours === 0 ? '12' : hours.toString();
-  }
-
-  return (hours % 12).toString();
+  return hours === 0 ? '0' : (hours % 12).toString();
 };
