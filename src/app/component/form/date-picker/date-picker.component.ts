@@ -1,6 +1,19 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
+import { DateSelectionPopoverComponent } from './date-selection-popover/date-selection-popover.component';
+import { ShopWorkHoursType } from 'src/app/interface';
 
 @Component({
   selector: 'date-picker',
@@ -8,6 +21,9 @@ import { GlobalService } from 'src/app/service/global/global.service';
   styleUrls: ['./date-picker.component.scss'],
 })
 export class DatePickerComponent implements OnInit, OnChanges {
+  @ViewChild('dropdownListBtn') dropdownListBtn!: ElementRef;
+  @ViewChild('selectedName') selectedName!: ElementRef;
+  @ViewChild('dropDownArrow') dropDownArrow!: ElementRef;
   @Output() dateChange = new EventEmitter<string>();
   @Input() title: string = '';
   @Input() dateFormatter: Constant.DateFormatType = Constant.Date.Format.Australia;
@@ -18,10 +34,12 @@ export class DatePickerComponent implements OnInit, OnChanges {
   @Input() readOnly: boolean = false;
   @Input() isDateOfBrith: boolean = false;
   @Input() type: 'start' | 'end' = 'start';
+  @Input() operatingHours!: ShopWorkHoursType | undefined;
 
   public inputDate: Date = new Date();
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
+  private _isOpenStatus: boolean = false;
   @Input()
   get date(): string {
     return this._global.date.transform.formatLocalDateTime(this.inputDate);
@@ -31,10 +49,39 @@ export class DatePickerComponent implements OnInit, OnChanges {
     this.inputDate = this._global.date.transform.toLocalDateTime(ofDay);
   }
 
-  constructor(private _global: GlobalService) {}
+  constructor(
+    private _global: GlobalService,
+    private _popoverCtrl: PopoverController,
+    private _renderer: Renderer2
+  ) {}
 
   ngOnChanges() {
     this.setMinMaxDate();
+  }
+
+  ngAfterViewInit() {
+    this.setupEventListeners();
+  }
+
+  private setupEventListeners() {
+    if (this.dropdownListBtn && this.selectedName) {
+      // Handle button click event separately
+      this._renderer.listen(this.dropdownListBtn.nativeElement, 'click', (event: Event) => {
+        this.handleButtonClick(event);
+      });
+
+      this._renderer.listen(this.dropDownArrow.nativeElement, 'click', (event: Event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.dropdownListBtn.nativeElement.click();
+      });
+
+      this._renderer.listen(this.selectedName.nativeElement, 'click', (event: Event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.dropdownListBtn.nativeElement.click();
+      });
+    }
   }
 
   ngOnInit() {}
@@ -55,5 +102,42 @@ export class DatePickerComponent implements OnInit, OnChanges {
     const maxDate = this._global.date.maximumDate(this.shopTimeZone, this.displayNextDay);
     this.minDate = this._global.date.transform.toLocalDateTime(minDate);
     this.maxDate = this._global.date.transform.toLocalDateTime(maxDate);
+  }
+
+  private async handleButtonClick(event: Event) {
+    await this.presentDropdownList(event);
+  }
+
+  private async presentDropdownList(event: any) {
+    if (!this._isOpenStatus && !this.readOnly) {
+      this._isOpenStatus = true;
+      let dropdownList = await this.getPopoverSettings(event);
+      await dropdownList.present();
+      await this.dismissListener(dropdownList);
+    }
+  }
+
+  private async dismissListener(dropdownList: HTMLIonPopoverElement) {
+    let event = await dropdownList.onWillDismiss();
+    if (event?.data !== undefined) {
+      this.transformDate(event.data.date as Date);
+    }
+    this._isOpenStatus = false;
+  }
+
+  private async getPopoverSettings(event: any) {
+    return await this._popoverCtrl.create({
+      component: DateSelectionPopoverComponent,
+      event: event,
+      translucent: true,
+      size: 'auto',
+      componentProps: {
+        date: this.inputDate,
+        minDate: this.minDate,
+        maxDate: this.maxDate,
+        operatingHours: this.operatingHours,
+        dateFormatter: this.dateFormatter,
+      },
+    });
   }
 }

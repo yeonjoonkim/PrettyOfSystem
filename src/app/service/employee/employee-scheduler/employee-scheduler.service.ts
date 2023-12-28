@@ -39,7 +39,12 @@ export class EmployeeSchedulerService {
     const hasExceedTime = roster.breakTimes.map(bt => this.breakTime.isExceedTime(bt)).some(overlap => overlap);
     return is24Hours
       ? true
-      : openTime < closeTime && workHours > 0 && workHours - breakTime > 0 && !hasExceedTime && !hasOverlap;
+      : openTime < closeTime &&
+          workHours > 0 &&
+          workHours - breakTime > 0 &&
+          !hasExceedTime &&
+          !hasOverlap &&
+          roster.workHours > 0;
   }
 
   public deleteBreak(roster: ShopOperatingDailyType, breakTime: ShopOperatingBreakType) {

@@ -219,8 +219,8 @@ export const Massage = {
     } as const,
     Description: {
       NoProblem: 'label.title.noproblem',
-      FrontToBack: 'label.title.fronttoback',
-      BackToFront: 'label.title.backtofront',
+      FrontToBack: 'label.title.fromfronttoback',
+      BackToFront: 'label.title.frombacktofront',
       Both: 'label.title.both',
     } as const,
   } as const,

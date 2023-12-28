@@ -4,7 +4,7 @@
   justify-content: space-between;
   kendo-label {
     font-weight: 700;
-    font-size: 20px;
+    font-size: 16px;
     color: var(--title);
   }
   ion-range {
@@ -15,5 +15,6 @@
     --bar-background-active: #ff6358;
     --knob-background: var(--title);
     --knob-size: 16px;
+    margin-top: 13px;
   }
 }

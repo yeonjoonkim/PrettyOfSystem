@@ -7,6 +7,10 @@ import {
 import * as Constant from '../../constant/constant';
 import { AddressType, NameValuePairType } from '../global/global.interface';
 import { MassageBodySelectorAreaType } from '../massage/massage.interface';
+import {
+  MassageDiffcultChangePositionDescriptionType,
+  MassageDiffcultChangePositionType,
+} from '../../constant/constant';
 
 export interface IUser {
   id: string;
@@ -80,7 +84,7 @@ export interface IUserLoginOption {
 
 export type UserSettingType = {
   preferLanguage: string;
-  pregrencyDueDate: string | null;
+  pregnancyDueDate: string | null;
   privateInsurance: UserSettingPrivateInsuranceType | null;
   massage: UserSettingMassageType;
   medical: UserSettingMedicalHistroyType;
@@ -94,6 +98,12 @@ export type UserSettingMedicalHistroyType = {
 export type UserSettingMassageType = {
   pressure: MassagePressureType;
   areas: MassageBodySelectorAreaType[];
+  difficultChangePosition: MassageDifficultChangePosition;
+};
+
+export type MassageDifficultChangePosition = {
+  type: MassageDiffcultChangePositionType;
+  description: MassageDiffcultChangePositionDescriptionType;
 };
 
 export type MassagePressureType = {

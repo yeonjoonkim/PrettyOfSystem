@@ -24,7 +24,7 @@ import { MedicalHistoryListModule } from '../../medical/medical-histroy-list/med
 import { MedicalHistoryChipModule } from '../../medical/medical-histroy-chip/medical-history-chip.module';
 import { UserMedicalOtherConditionComponent } from './user-medical-other-condition/user-medical-other-condition.component';
 import { UserSignatureComponent } from './user-signature/user-signature.component';
-
+import { UserPregrancyDueDateComponent } from './user-pregrancy-due-date/user-pregrancy-due-date.component';
 @NgModule({
   declarations: [
     UserInformationComponent,
@@ -34,6 +34,7 @@ import { UserSignatureComponent } from './user-signature/user-signature.componen
     UserPrivateInsuranceComponent,
     UserMedicalOtherConditionComponent,
     UserSignatureComponent,
+    UserPregrancyDueDateComponent,
   ],
   imports: [
     CommonModule,

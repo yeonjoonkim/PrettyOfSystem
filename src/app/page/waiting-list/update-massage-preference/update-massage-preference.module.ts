@@ -15,6 +15,7 @@ import { MobileVersionBodySelectorModule } from 'src/app/component/massage/mobil
 import { DesktopVersionBodySelectorModule } from 'src/app/component/massage/desktop-version-body-selector/desktop-version-body-selector.module';
 import { ClientMassageBodySummaryModule } from 'src/app/component/massage/client-massage-body-summary/client-massage-body-summary.module';
 import { MassagePressureLevelSelectorModule } from 'src/app/component/massage/massage-pressure-level-selector/massage-pressure-level-selector.module';
+import { MassageDifficultChangePositionModule } from 'src/app/component/massage/massage-difficult-change-position/massage-difficult-change-position.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -29,6 +30,7 @@ import { MassagePressureLevelSelectorModule } from 'src/app/component/massage/ma
     MobileVersionBodySelectorModule,
     ClientMassageBodySummaryModule,
     MassagePressureLevelSelectorModule,
+    MassageDifficultChangePositionModule,
   ],
   declarations: [UpdateMassagePreferencePage],
 })

@@ -1,20 +1,10 @@
-<kendo-label text="{{ title | languageTransform: 'System' | async }}">
-  <kendo-datepicker
-    [popupSettings]="{
-      animate: false,
-      appendTo: 'component',
-      popupClass: 'date-pick-popup-container'
-    }"
-    [(value)]="inputDate"
-    [readOnlyInput]="true"
-    [readonly]="readOnly"
-    [format]="dateFormatter"
-    [readonly]="readOnly"
-    [min]="minDate"
-    [max]="maxDate"
-    adaptiveMode="auto"
-    calendarType="classic"
-    [focusedDate]="inputDate"
-    [navigation]="true"
-    (valueChange)="transformDate($event)"></kendo-datepicker>
+<kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="title">
+  <kendo-button id="dropdown-list-btn" #dropdownListBtn>
+    <span id="selected-name" #selectedName>{{ date | dateTransform: 'LongDate' }} </span>
+    <span #dropDownArrow id="dropdown-list-down" class="k-icon k-i-arrow-60-down"></span>
+  </kendo-button>
 </kendo-label>
+<kendo-button id="dropdown-list-btn" #dropdownListBtn *ngIf="!title">
+  <span id="selected-name" #selectedName>{{ date | dateTransform: 'LongDate' }} </span>
+  <span #dropDownArrow id="dropdown-list-down" class="k-icon k-i-arrow-60-down"></span>
+</kendo-button>

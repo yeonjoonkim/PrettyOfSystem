@@ -1,0 +1,23 @@
+<flex-col>
+  <kendo-calendar
+    type="classic"
+    [(value)]="prop.date"
+    [min]="prop.minDate"
+    [max]="prop.maxDate"
+    [focusedDate]="prop.date"
+    [format]="prop.formatter"
+    [disabledDates]="prop.disableDays"
+    [disable]></kendo-calendar>
+</flex-col>
+<flex-row>
+  <flex-row-item>
+    <button kendoButton (click)="onClickApply()">
+      {{ 'label.title.apply' | languageTransform: 'System' | async }}
+    </button>
+  </flex-row-item>
+  <flex-row-item>
+    <button kendoButton class="cancel" (click)="onClickCancel()">
+      {{ 'button.title.cancel' | languageTransform: 'System' | async }}
+    </button>
+  </flex-row-item>
+</flex-row>

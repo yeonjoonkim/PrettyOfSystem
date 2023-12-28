@@ -32,8 +32,42 @@ export const getSelectedUser = async function (id: string) {
 };
 
 export const getSystemAdmins = async function () {
-  const all = await getAll();
-  return all.filter(user => user.isSystemAdmin);
+  const snapshots = await firestore().collection(Db.Context.User).where('isSystemAdmin', '==', true).get();
+  try {
+    if (!snapshots.empty) {
+      return snapshots.docs.map(doc => {
+        let data = doc.data() as I.IUser;
+        data.setting = Service.Override.User.Setting.override(data.setting);
+        return data;
+      });
+    } else {
+      return [] as I.IUser[];
+    }
+  } catch (error) {
+    logger.error(error);
+    return [] as I.IUser[];
+  }
+};
+
+export const getPregrancyUsers = async function () {
+  const snapshots = await firestore()
+    .collection(Db.Context.User)
+    .where('setting.pregnancyDueDate', '!=', null)
+    .get();
+  try {
+    if (!snapshots.empty) {
+      return snapshots.docs.map(doc => {
+        let data = doc.data() as I.IUser;
+        data.setting = Service.Override.User.Setting.override(data.setting);
+        return data;
+      });
+    } else {
+      return [] as I.IUser[];
+    }
+  } catch (error) {
+    logger.error(error);
+    return [] as I.IUser[];
+  }
 };
 
 export const updateSelectedUser = async function (user: I.IUser) {

@@ -43,7 +43,7 @@ export class UserInfoComponent implements OnInit {
 
   onGenderChange() {
     if (this.user) {
-      this.user.setting.pregrencyDueDate = null;
+      this.user.setting.pregnancyDueDate = this.user.gender !== 'Male' ? this.user.setting.pregnancyDueDate : null;
     }
   }
 

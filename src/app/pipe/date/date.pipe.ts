@@ -100,13 +100,5 @@ const convertMonths = function (month: string): string {
 const convertHours = function (hoursStr: string, dayNight: 'PM' | 'AM'): string {
   let hours = Number(hoursStr) % 24;
 
-  if (hours % 12 === 0 && dayNight === 'AM') {
-    return '0';
-  }
-
-  if (hours % 12 === 0 && dayNight === 'PM') {
-    return '12';
-  }
-
-  return (hours % 12).toString();
+  return hours === 0 ? '0' : (hours % 12).toString();
 };

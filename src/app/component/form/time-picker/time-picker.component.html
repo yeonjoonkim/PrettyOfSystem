@@ -1,35 +1,10 @@
 <kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="title">
-  <kendo-timepicker
-    class="time-picker"
-    [popupSettings]="{
-      animate: true,
-      appendTo: 'component',
-      popupClass: 'date-pick-popup-container'
-    }"
-    [readonly]="readOnly"
-    [steps]="steps"
-    [min]="minTime"
-    [max]="maxTime"
-    [readOnly]="readOnly"
-    [readOnlyInput]="true"
-    [(value)]="date"
-    adaptiveMode="auto"
-    (valueChange)="onChangeDate()"></kendo-timepicker>
+  <kendo-button id="dropdown-list-btn" #dropdownListBtn>
+    <span id="selected-name" #selectedName>{{ time | timeItemTransform }} </span>
+    <span #dropDownArrow id="dropdown-list-down" class="k-icon k-i-arrow-60-down"></span>
+  </kendo-button>
 </kendo-label>
-<kendo-timepicker
-  *ngIf="!title"
-  class="time-picker"
-  [popupSettings]="{
-    animate: true,
-    appendTo: 'component',
-    popupClass: 'date-pick-popup-container'
-  }"
-  [readonly]="readOnly"
-  [steps]="steps"
-  [min]="minTime"
-  [max]="maxTime"
-  adaptiveMode="auto"
-  [readOnly]="readOnly"
-  [readOnlyInput]="true"
-  [(value)]="date"
-  (valueChange)="onChangeDate()"></kendo-timepicker>
+<kendo-button id="dropdown-list-btn" #dropdownListBtn *ngIf="!title">
+  <span id="selected-name" #selectedName>{{ time | timeItemTransform }} </span>
+  <span #dropDownArrow id="dropdown-list-down" class="k-icon k-i-arrow-60-down"></span>
+</kendo-button>

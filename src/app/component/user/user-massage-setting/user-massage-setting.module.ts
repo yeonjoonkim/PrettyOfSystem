@@ -15,6 +15,7 @@ import { MassageBodyBackSelectorModule } from '../../massage/massage-body-back-s
 import { DesktopVersionBodySelectorModule } from '../../massage/desktop-version-body-selector/desktop-version-body-selector.module';
 import { MobileVersionBodySelectorModule } from '../../massage/mobile-version-body-selector/mobile-version-body-selector.module';
 import { ClientMassageBodySummaryModule } from '../../massage/client-massage-body-summary/client-massage-body-summary.module';
+import { MassageDifficultChangePositionModule } from '../../massage/massage-difficult-change-position/massage-difficult-change-position.module';
 //Import Component
 import { UserMassageSettingComponent } from './user-massage-setting.component';
 @NgModule({
@@ -34,6 +35,7 @@ import { UserMassageSettingComponent } from './user-massage-setting.component';
     DesktopVersionBodySelectorModule,
     MobileVersionBodySelectorModule,
     ClientMassageBodySummaryModule,
+    MassageDifficultChangePositionModule,
   ],
   exports: [UserMassageSettingComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
