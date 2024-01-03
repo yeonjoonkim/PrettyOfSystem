@@ -2,6 +2,7 @@
   <flex-col class="user-info" *ngIf="!onlyMedical">
     <user-info [user]="user" [isRequiredLoginOption]="isRequiredLoginOption"></user-info>
     <user-address [address]="user.address"></user-address>
+    <user-emergancy-contact [emergencyContact]="user.setting.emergencyContact"></user-emergancy-contact>
     <user-private-insurance
       [privateInsurance]="user.setting.privateInsurance"
       *ngIf="isRequiredInsurance"></user-private-insurance>
@@ -14,5 +15,8 @@
       *ngIf="user.gender !== 'Male'"
       [pregnancyDueDate]="user.setting.pregnancyDueDate"></user-pregrancy-due-date>
     <user-signature [signature]="user.signature" *ngIf="isRequiredSignature"></user-signature>
+    <user-parent-signature
+      [signature]="user.setting.parentSignature"
+      *ngIf="isRequiredSignature && !(isOver18$ | async)"></user-parent-signature>
   </flex-col>
 </flex-row>

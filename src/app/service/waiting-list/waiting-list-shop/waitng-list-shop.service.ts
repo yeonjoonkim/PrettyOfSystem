@@ -26,7 +26,6 @@ export type WaitingListShopCartCriteriaType = {
   coupons: ShopCouponDocumentType[];
   packages: ShopPackageDocumentType[];
   services: ShopServiceDocumentType[];
-  extras: ShopExtraDocumentType[];
   timezone: Constant.TimeZoneType;
 };
 
@@ -112,6 +111,30 @@ export class WaitngListShopService {
     );
   }
 
+  public hasPrivateInsuranceProvider() {
+    return this.config$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return of(config.setting.insurance !== null);
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
+  public isDepositRequired() {
+    return this.config$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return of(config.setting.waitingList.depositRate !== null);
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
   public async transform(value: string) {
     const pack = await firstValueFrom(this.package());
     const preferLanguage = await this._languageStorage.getCurrentLanguage();
@@ -189,14 +212,13 @@ export class WaitngListShopService {
   }
 
   public getCartCriteriaValueChangeListener(clientId: string) {
-    return combineLatest([this.coupons(), this.services(), this.extras(), this.packages(), this.config$]).pipe(
-      map(([coupons, services, extras, packages, config]) => {
+    return combineLatest([this.coupons(), this.services(), this.packages(), this.config$]).pipe(
+      map(([coupons, services, packages, config]) => {
         const result: WaitingListShopCartCriteriaType = {
-          buttons: this._button.get(coupons, packages, services, extras),
+          buttons: this._button.get(coupons, packages, services),
           coupons: coupons,
           packages: packages,
           services: services,
-          extras: extras,
           timezone: config ? config.timezone : 'Australia/Brisbane',
         };
         return result;

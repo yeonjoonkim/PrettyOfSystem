@@ -37,6 +37,7 @@ export class ShopServiceManagementService {
   public extraFilter$!: Observable<NameValuePairType[]>;
   public hasInsuranceProvider$!: Observable<boolean>;
   public hasNotInsuranceProvider$!: Observable<boolean>;
+  public isRelatedToMedical$!: Observable<boolean>;
   constructor(
     public relateShopService: ShopRelatedServiceService,
     public modal: ShopServiceModalService,
@@ -57,6 +58,7 @@ export class ShopServiceManagementService {
     this.extraFilter$ = this._shop.extraFilter$;
     this.hasInsuranceProvider$ = this._shop.hasInsuranceProvider$;
     this.hasNotInsuranceProvider$ = this._shop.hasNotInsuranceProvider$;
+    this.isRelatedToMedical$ = this._shop.isRelatedToMedical$;
     this.translateRequest();
     this.isReachToMaxListener();
     this.activeProgressBar();

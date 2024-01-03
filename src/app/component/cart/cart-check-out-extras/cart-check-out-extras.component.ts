@@ -12,6 +12,7 @@ export class CartCheckOutExtrasComponent implements OnInit {
   @Output() increment = new EventEmitter<CheckOutItem>();
   @Input() cart!: Cart | null;
   @Input() extras!: ShopExtraDocumentType[] | null;
+  @Input() hasOnlyCoupon: boolean = false;
   @Input() type: Constant.LanguageTransformType = Constant.Default.LanguageTransformType.User;
   constructor() {}
 

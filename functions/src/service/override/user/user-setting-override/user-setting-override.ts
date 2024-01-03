@@ -1,11 +1,14 @@
 import * as I from '../../../../interface';
 import * as Constant from '../../../../constant';
+
 export const override = function (s: I.UserSettingType) {
   s.pregnancyDueDate = pregnancyDueDate(s?.pregnancyDueDate);
   s.preferLanguage = preferLanguage(s?.preferLanguage);
   s.privateInsurance = prviateInsurance(s?.privateInsurance);
   s.massage = massage(s?.massage);
   s.medical = medical(s?.medical);
+  s.emergencyContact = emergencyContact(s?.emergencyContact);
+  s.parentSignature = parentSignature(s?.parentSignature);
   return s;
 };
 
@@ -56,7 +59,6 @@ const areas = function (areas: I.MassageBodySelectorAreaType[] | null | undefine
 };
 
 // Medical
-
 const medical = function (medical: I.UserSettingMedicalHistroyType | undefined | null) {
   const result = {
     symptomsAndDiseases: symptomsAndDiseases(medical?.symptomsAndDiseases),
@@ -71,4 +73,13 @@ const symptomsAndDiseases = function (symptomsAndDiseases: I.UserMedicalHistoryT
 
 const otherStatus = function (condition: I.ShopConfigurationLanguagePackageType | null | undefined) {
   return condition && condition !== null ? condition : null;
+};
+
+//EmergencyContact
+const emergencyContact = function (emergencyContact: I.UserSettingEmergencyContactType | undefined | null) {
+  return emergencyContact !== null && emergencyContact !== undefined ? emergencyContact : null;
+};
+
+const parentSignature = function (signature: string | undefined | null) {
+  return typeof signature === 'string' ? signature : null;
 };

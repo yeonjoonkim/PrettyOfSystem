@@ -1,0 +1,78 @@
+<flex-row>
+  <flex-row-item class="setting-title">
+    <legend>
+      {{ 'label.title.emergencycontact' | languageTransform: 'System' | async }}
+    </legend>
+    <button *ngIf="readOnly" (click)="provide()" class="edit-btn">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </button>
+    <button
+      *ngIf="!readOnly"
+      class="save-btn"
+      themeColor="success"
+      (click)="onSave()"
+      [disabled]="!enableSaveBtn || requesting">
+      {{ 'button.title.save' | languageTransform: 'System' | async }}
+    </button>
+  </flex-row-item>
+</flex-row>
+
+<flex-row *ngIf="(emergencyContact || emergencyContact === null) && !requesting">
+  <flex-row-item *ngIf="emergencyContact === null && readOnly" class="default-placeholder"
+    >{{ 'label.description.noemergencycontactprovided' | languageTransform: 'System' | async }}
+  </flex-row-item>
+  <flex-row-item *ngIf="(emergencyContact || emergencyContact === null) && !readOnly"
+    >{{ 'label.description.doyouwanttoprovideemergencycontact' | languageTransform: 'System' | async }}
+    <input
+      type="checkbox"
+      kendoCheckBox
+      [checked]="emergencyContact !== null"
+      [disabled]="readOnly"
+      (click)="onChangeEmergencyContact()" />
+  </flex-row-item>
+</flex-row>
+
+<flex-row *ngIf="emergencyContact !== null && !requesting">
+  <flex-row-item>
+    <text-box
+      title="label.title.firstname"
+      [readOnly]="readOnly"
+      [isRequired]="true"
+      [min]="1"
+      [max]="100"
+      [(value)]="emergencyContact.firstName"
+      [(validate)]="validator.firstName"
+      (validateChange)="handle()">
+    </text-box>
+  </flex-row-item>
+  <flex-row-item>
+    <text-box
+      title="label.title.lastname"
+      [readOnly]="readOnly"
+      [isRequired]="true"
+      [min]="1"
+      [max]="100"
+      [(value)]="emergencyContact.lastName"
+      [(validate)]="validator.lastName"
+      (validateChange)="handle()">
+    </text-box>
+  </flex-row-item>
+</flex-row>
+<flex-row *ngIf="emergencyContact !== null && !requesting">
+  <flex-row-item>
+    <phone-number
+      [isRequired]="true"
+      [isTitleRequired]="true"
+      [readOnly]="readOnly"
+      [(phone)]="emergencyContact.phoneNumber"
+      [(validate)]="validator.phoneNumber"
+      (validateChange)="handle()">
+    </phone-number>
+  </flex-row-item>
+</flex-row>
+
+<flex-col>
+  <flex-col-item>
+    <kendo-loader *ngIf="requesting" size="large"></kendo-loader>
+  </flex-col-item>
+</flex-col>

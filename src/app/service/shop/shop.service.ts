@@ -59,6 +59,9 @@ export class ShopService {
   public hasInsuranceProvider$!: Observable<boolean>;
   public hasNotInsuranceProvider$!: Observable<boolean>;
 
+  //Related
+  public isRelatedToMedical$!: Observable<boolean>;
+
   constructor(
     public role: UserRoleService,
     private _user: UserService,
@@ -97,6 +100,7 @@ export class ShopService {
     this.packagePriceListListener();
     this.extraPriceListListener();
     this.insuranceProviderListener();
+    this.isRelatedToMedical();
   }
 
   public translatedRequestFilterByServiceIds(shopId: string, serviceIds: string[]) {
@@ -114,6 +118,23 @@ export class ShopService {
           return of(config.timezone);
         } else {
           return of(Constant.TimeZone.AustraliaBrisbane);
+        }
+      })
+    );
+  }
+
+  private isRelatedToMedical() {
+    this.isRelatedToMedical$ = this.config$.pipe(
+      switchMap(category => {
+        if (category !== null) {
+          const name = category.category.name as Constant.ShopCategoryTitleType;
+          const relatedName =
+            name === Constant.ShopCategoryTitle.MassageTheraphy ||
+            name === Constant.ShopCategoryTitle.PersonalTraining ||
+            name === Constant.ShopCategoryTitle.SkinCare;
+          return of(relatedName);
+        } else {
+          return of(false);
         }
       })
     );

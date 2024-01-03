@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, distinctUntilChanged, filter, pairwise, takeUntil } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, filter, pairwise, takeUntil } from 'rxjs';
 import { IUser } from 'src/app/interface';
 import { LanguageService } from 'src/app/service/global/language/language.service';
 import { UserService } from 'src/app/service/user/user.service';
@@ -18,10 +18,14 @@ export class UserInformationComponent implements OnInit, OnDestroy {
   @Input() onlyUserInfo: boolean = false;
   @Input() onlyMedical: boolean = false;
 
+  public isOver18$!: Observable<boolean>;
+
   constructor(
     private _user: UserService,
     private _language: LanguageService
-  ) {}
+  ) {
+    this.isOver18$ = this._user.isOver18$;
+  }
 
   ngOnInit() {
     this._user.data$.pipe(takeUntil(this._destroy$)).subscribe(async user => {

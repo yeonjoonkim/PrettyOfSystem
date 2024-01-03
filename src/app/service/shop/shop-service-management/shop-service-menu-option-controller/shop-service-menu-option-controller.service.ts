@@ -31,14 +31,12 @@ export class ShopServiceMenuOptionControllerService {
   public get(
     coupons: ShopCouponDocumentType[],
     packages: ShopPackageDocumentType[],
-    services: ShopServiceDocumentType[],
-    extras: ShopExtraDocumentType[]
+    services: ShopServiceDocumentType[]
   ): IShopServiceMenuOptionAction[] {
     return [
       ...(packages.length > 0 ? [this.getPackage()] : []),
       ...(services.length > 0 ? [this.getService()] : []),
       ...(coupons.length > 0 ? [this.getCoupon()] : []),
-      ...(extras.length > 0 ? [this.getExtra()] : []),
     ];
   }
   public buttons(): IShopServiceMenuOptionAction[] {

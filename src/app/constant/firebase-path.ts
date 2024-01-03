@@ -12,6 +12,9 @@ const shopService: string = shop + '{shopId}/service';
 const shopExtra: string = shop + '{shopId}/extra';
 const shopPackage: string = shop + '{shopId}/package';
 const shopCoupon: string = shop + '{shopId}/coupon';
+const shopConsult: string = shop + '{shopId}/consult';
+const shopConsultSyncStatus: string = shop + '{shopId}/consultSyncStatus';
+const shopTransaction: string = shop + '{shopId}/transaction';
 
 //Reporter
 const FunctionError: string = 'functionError';
@@ -40,6 +43,9 @@ export const Context = {
     Extra: shopExtra,
     Package: shopPackage,
     Coupon: shopCoupon,
+    Consult: shopConsult,
+    ConsultSyncStatus: shopConsultSyncStatus,
+    Transaction: shopTransaction,
   } as const,
   WaitingList: {
     Criteria: waitingListCriteria,
@@ -71,6 +77,9 @@ export const ShopService = (shopId: string): string => `shop/${shopId}/service/`
 export const ShopExtra = (shopId: string): string => `shop/${shopId}/extra/`;
 export const ShopPackage = (shopId: string): string => `shop/${shopId}/package/`;
 export const ShopCoupon = (shopId: string): string => `shop/${shopId}/coupon/`;
+export const ShopConsult = (shopId: string): string => `shop/${shopId}/consult/`;
+export const ShopTransaction = (shopId: string): string => `shop/${shopId}/transaction/`;
+
 export const ShopLogo = (shopId: string, file: File): string =>
   `logo/${shopId}/${new Date().getTime()}/${file.name}`;
 

@@ -1,8 +1,8 @@
 <flex-row>
   <flex-row-item>
-    <time-picker title="date.title.start" [(time)]="timeFrom"></time-picker>
+    <time-picker title="date.title.start" [(time)]="timeFrom" [readOnly]="readOnly"></time-picker>
   </flex-row-item>
   <flex-row-item>
-    <time-picker title="date.title.end" [(time)]="timeTo"></time-picker>
+    <time-picker title="date.title.end" [(time)]="timeTo" [readOnly]="readOnly"></time-picker>
   </flex-row-item>
 </flex-row>

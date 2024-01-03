@@ -18,7 +18,7 @@ export class TimeItemPipe implements PipeTransform {
     const formatted = this._date.transform.formatByTimeItem(new Date(), time);
     const splited = split(formatted);
     const dayNight = convertDayNight(splited.hour);
-    const hours = convertHours(splited.hour);
+    const hours = convertHours(splited.hour, dayNight);
 
     return `${hours}:${splited.min} ${dayNight}`;
   }
@@ -42,7 +42,7 @@ const convertDayNight = function (hour: string) {
   return num > 11 ? 'PM' : 'AM';
 };
 
-const convertHours = function (hoursStr: string): string {
+const convertHours = function (hoursStr: string, dayNight: 'PM' | 'AM'): string {
   let hours = Number(hoursStr) % 24;
-  return hours === 0 ? '0' : (hours % 12).toString();
+  return hours === 0 ? '0' : hours === 12 && dayNight === 'PM' ? '12' : (hours % 12).toString();
 };

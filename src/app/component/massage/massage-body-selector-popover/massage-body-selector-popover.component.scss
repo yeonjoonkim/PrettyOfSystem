@@ -23,33 +23,18 @@
 .lists {
   padding-top: 12px;
   background-color: var(--background);
+  background: var(--background);
 }
 
 .popover-buttons {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  .btn {
-    font-size: 14px;
-    min-width: 50px;
-    padding: 3px;
-    font-weight: 600;
-    border-radius: 5px;
-    text-align: center;
-    text-decoration: underline;
-    &:hover {
-      cursor: pointer;
-    }
-  }
   .delete {
     background: var(--error);
   }
-  .edit {
-    background: var(--card);
-  }
   .save {
     width: 100%;
-    background: var(--card);
   }
 }
 .justify-end {

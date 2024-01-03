@@ -28,7 +28,7 @@ export interface IUser {
   encryptedPassword: string;
   disabledAccount: boolean;
   visitedShopIds: string[];
-  visitedShops: UserConsentType[];
+  visitedShops: UserVisitShopConsentType[];
   address: AddressType | null;
   dob: string;
   signature: string | null;
@@ -59,14 +59,14 @@ export type ShopEmployeeScheduleChangeResult = {
   roster: ShopOperatingDailyType;
 };
 
-export type UserConsentType = {
+export type UserVisitShopConsentType = {
   shopId: string;
   shopName: string;
   isVIP: boolean;
   hasMarketingEmailConsent: boolean;
   hasMarketingSMSConsent: boolean;
-  hasPrivacyPolicyConsent: boolean;
   hasTermandConditionConsent: boolean;
+  hasReuseForm: boolean;
   agreedDate: string;
 };
 
@@ -88,6 +88,14 @@ export type UserSettingType = {
   privateInsurance: UserSettingPrivateInsuranceType | null;
   massage: UserSettingMassageType;
   medical: UserSettingMedicalHistroyType;
+  emergencyContact: UserSettingEmergencyContactType | null;
+  parentSignature: string | null;
+};
+
+export type UserSettingEmergencyContactType = {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
 };
 
 export type UserSettingMedicalHistroyType = {

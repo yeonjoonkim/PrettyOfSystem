@@ -1,4 +1,6 @@
-<flex-row *ngIf="extras && cart && cart.checkout.length > 0 && extras.length > 0" class="extra-cart-view-list">
+<flex-row
+  *ngIf="extras && cart && cart.checkout.length > 0 && extras.length > 0 && !hasOnlyCoupon"
+  class="extra-cart-view-list">
   <flex-row-item class="extra-cart-view-card" *ngFor="let extra of extras">
     <extra-price-list-card
       [extra]="extra"

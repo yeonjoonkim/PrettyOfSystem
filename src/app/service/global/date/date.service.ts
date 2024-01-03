@@ -146,6 +146,12 @@ export class DateService {
     return this.transform.formatLocalDateTime(start);
   }
 
+  isOver18(dob: string) {
+    const today = this.startDay(this.shopNow(null));
+    const duration = this.duration(dob, today);
+    return duration.years !== undefined ? duration.years >= 18 : false;
+  }
+
   endDay(date: DateType) {
     const local = this.transform.toLocalDateTime(date);
     const end = endOfDay(local);

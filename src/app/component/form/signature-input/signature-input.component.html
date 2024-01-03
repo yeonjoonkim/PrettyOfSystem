@@ -1,8 +1,9 @@
 <kendo-signature
   #signature
+  *ngIf="input !== undefined"
   [readonly]="readOnly"
-  [(value)]="inputSignature"
-  (valueChange)="onChangeInputSignature($event)"
+  [(ngModel)]="input"
+  (ngModelChange)="onChangeInputSignature($event)"
   color="black"
   backgroundColor="white"
   [strokeWidth]="1"

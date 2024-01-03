@@ -10,3 +10,9 @@
   top: 20% !important;
   --min-width: 300px;
 }
+
+.date-popover-container::part(content) {
+  top: 50% !important;
+  --min-width: 300px;
+  --max-width: 300px;
+}

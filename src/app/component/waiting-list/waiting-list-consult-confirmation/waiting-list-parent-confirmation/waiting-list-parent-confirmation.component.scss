@@ -1,0 +1,33 @@
+button {
+  width: 100%;
+  background: var(--title);
+}
+
+.parent-consent {
+  font-size: 12px;
+}
+
+.signature {
+  display: flex;
+  justify-content: flex-start;
+
+  span {
+    text-decoration: underline;
+    font-size: 10px;
+    height: 20px;
+    margin-top: 81px;
+    margin-left: 10px;
+    cursor: pointer;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+::ng-deep .signature {
+  signature-input {
+    .k-signature {
+      width: 220px;
+    }
+  }
+}

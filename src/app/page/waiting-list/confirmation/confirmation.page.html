@@ -1,0 +1,20 @@
+<ion-header *ngIf="loaded$ | async">
+  <ion-toolbar>
+    <button class="goback-btn" slot="start" kendoButton (click)="onClickGoback()">
+      {{'label.title.goback' | languageTransform:'System' | async}}
+    </button>
+    <!-- Title -->
+    <ion-title>{{'label.title.confirmation'| languageTransform:'System' | async }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" *ngIf="(loaded$ | async)">
+  <div class="confirmation-info-container" *ngIf="!(hasOnlyCoupon$ | async)">
+    <div>
+      <waiting-list-consult-confirmation></waiting-list-consult-confirmation>
+    </div>
+  </div>
+</ion-content>
+
+<div class="loading-container" *ngIf="isLoading$ | async">
+  <kendo-loader size="large"></kendo-loader>
+</div>

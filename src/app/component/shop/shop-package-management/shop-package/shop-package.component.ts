@@ -36,6 +36,7 @@ export class ShopPackageComponent implements OnInit {
   };
   public hasInsuranceProvider$!: Observable<boolean>;
   public hasNotInsuranceProvider$!: Observable<boolean>;
+  public isRelatedToMedical$!: Observable<boolean>;
   private _before!: ShopPackageModalDocumentProp;
   constructor(
     private _modalCtrl: ModalController,
@@ -45,6 +46,7 @@ export class ShopPackageComponent implements OnInit {
   ) {
     this.hasInsuranceProvider$ = this._shopPackage.hasInsuranceProvider$;
     this.hasNotInsuranceProvider$ = this._shopPackage.hasNotInsuranceProvider$;
+    this.isRelatedToMedical$ = this._shopPackage.isRelatedToMedical$;
   }
 
   async ngOnInit() {

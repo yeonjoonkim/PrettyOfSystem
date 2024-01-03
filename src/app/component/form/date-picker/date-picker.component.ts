@@ -131,12 +131,14 @@ export class DatePickerComponent implements OnInit, OnChanges {
       event: event,
       translucent: true,
       size: 'auto',
+      cssClass: 'dynamic-popover-container date-popover-container',
       componentProps: {
         date: this.inputDate,
         minDate: this.minDate,
         maxDate: this.maxDate,
         operatingHours: this.operatingHours,
         dateFormatter: this.dateFormatter,
+        isBrithDay: this.isDateOfBrith,
       },
     });
   }

@@ -97,18 +97,17 @@
   font-size: 7px;
 }
 
-.k-adaptive-actionsheet {
-  .k-actionsheet-titlebar {
-    display: none;
-  }
-  .k-actionsheet-content {
-    kendo-timeselector,
-    kendo-calendar {
-      top: 100px;
-    }
-  }
+.k-calendar .k-calendar-td.k-selected .k-calendar-cell-inner,
+.k-calendar .k-calendar-td.k-selected .k-link {
+  background-color: #cd7867;
+  border-radius: 50%;
+}
+.k-calendar .k-calendar-td.k-selected:hover .k-link {
+  background-color: #cd7867;
+  border-radius: 50%;
 }
 
-.k-adaptive-actionsheet .k-timeselector {
-  height: 60%;
+.k-calender {
+  background: #191919;
+  background-color: #191919;
 }

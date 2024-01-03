@@ -1,9 +1,15 @@
 kendo-calendar {
-  width: 100%;
+  width: 300px;
+  background: var(--background) !important;
+  background-color: var(--background) !important;
+  padding-bottom: 15px;
 }
-
-flex-row {
-  gap: 10px;
+::ng-deep kendo-calendar {
+  .k-calendar,
+  .k-calendar-table {
+    background: var(--background) !important;
+    background-color: var(--background) !important;
+  }
 }
 
 flex-row-item {
@@ -14,6 +20,6 @@ button {
   width: 100%;
 }
 
-.cancel {
+.apply {
   background: var(--title);
 }

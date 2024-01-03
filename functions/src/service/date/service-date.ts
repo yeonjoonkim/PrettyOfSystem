@@ -56,6 +56,15 @@ export const formatLocalDateTime = function (date: Date) {
   return format(date, dateFormatter);
 };
 
+export const duration = function (start: string, end: string) {
+  const interval: Interval = {
+    start: toLocalDateTime(start),
+    end: toLocalDateTime(end),
+  };
+
+  return intervalToDuration(interval);
+};
+
 export const formatByTimeItem = function (strDate: FunctionDateType, time: I.TimeItemType) {
   const date = toLocalDateTime(strDate);
   date.setHours(time.hr);

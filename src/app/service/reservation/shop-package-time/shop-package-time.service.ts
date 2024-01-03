@@ -22,7 +22,7 @@ export class ShopPackageTimeService {
     const now = this._date.transform.formatLocalDateTime(shopDateTime);
     const start = this._date.transform.formatByTimeItem(now, time.start);
     const end = this._date.transform.formatByTimeItem(now, time.end);
-    return (start <= now && now < end) || (start.includes('00:00:00') && end.includes('00:00:00'));
+    return now < end || (start.includes('00:00:00') && end.includes('00:00:00'));
   }
 
   private isAvailableDay(timezone: Constant.TimeZoneType, time: ShopPackageLimitedTime) {

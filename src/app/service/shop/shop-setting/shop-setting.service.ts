@@ -28,6 +28,7 @@ export class ShopSettingService {
   public shopImage3$!: Observable<Blob | null>;
   public capacity$!: Observable<ShopCapacityType | null>;
   public waitingListSessionId$!: Observable<string | null>;
+  public isRelateToMedical$!: Observable<boolean>;
 
   constructor(
     private _shop: ShopService,
@@ -43,6 +44,7 @@ export class ShopSettingService {
     this.shopImage1$ = this._shop.shopImage1$;
     this.shopImage2$ = this._shop.shopImage2$;
     this.shopImage3$ = this._shop.shopImage3$;
+    this.isRelateToMedical$ = this._shop.isRelatedToMedical$;
     this.setting();
     this.timezone();
     this.waitingListSessionId();

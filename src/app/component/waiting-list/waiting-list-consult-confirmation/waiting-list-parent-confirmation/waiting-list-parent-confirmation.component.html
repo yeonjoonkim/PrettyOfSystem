@@ -1,0 +1,58 @@
+<form-header
+  [action]="form.action"
+  [readOnly]="form.readOnly"
+  [title]="form.headerTitle"
+  (onClickDismiss)="dismiss()"></form-header>
+
+<flex-col class="modal-container" *ngIf="signature !== undefined && emergancyContact !== undefined">
+  <flex-row>
+    <flex-row-item>
+      <text-box
+        title="label.title.firstname"
+        [isRequired]="true"
+        [min]="1"
+        [max]="100"
+        [(value)]="emergancyContact.firstName"
+        [(validate)]="validator.firstName"
+        (validateChange)="handle()">
+      </text-box>
+    </flex-row-item>
+    <flex-row-item>
+      <text-box
+        title="label.title.lastname"
+        [isRequired]="true"
+        [min]="1"
+        [max]="100"
+        [(value)]="emergancyContact.lastName"
+        [(validate)]="validator.lastName"
+        (validateChange)="handle()">
+      </text-box>
+    </flex-row-item>
+  </flex-row>
+  <flex-row>
+    <flex-row-item>
+      <phone-number
+        [isRequired]="true"
+        [isTitleRequired]="true"
+        [(phone)]="emergancyContact.phoneNumber"
+        [(validate)]="validator.phoneNumber"
+        (validateChange)="handle()">
+      </phone-number>
+    </flex-row-item>
+  </flex-row>
+  <flex-col-item class="parent-consent">
+    {{ 'label.description.parentconsent' | languageTransform: 'System' | async }}
+  </flex-col-item>
+  <flex-col-item class="signature">
+    <signature-input [(signature)]="signature" (signatureChange)="handle()"></signature-input>
+    <span (click)="onClickClearSignature()">{{
+      'button.title.delete' | languageTransform: 'System' | async
+    }}</span>
+  </flex-col-item>
+
+  <flex-col-item>
+    <button kendoButton [disabled]="!enableUpdateRequestButton" (click)="OnClickSave()">
+      {{ 'label.title.update' | languageTransform: 'System' | async }}
+    </button>
+  </flex-col-item>
+</flex-col>

@@ -1,1 +1,4 @@
-<p>shop-agreement works!</p>
+<flex-col *ngIf="category">
+  <shop-massage-shop-agreement
+    *ngIf="category.name === 'label.title.massagetheraphy'"></shop-massage-shop-agreement>
+</flex-col>

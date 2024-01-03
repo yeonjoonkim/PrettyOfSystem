@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, combineLatestWith, firstValueFrom, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatestWith, filter, firstValueFrom, takeUntil } from 'rxjs';
 import { IUser, ShopCategoryType } from 'src/app/interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 import * as Constant from 'src/app/constant/constant';

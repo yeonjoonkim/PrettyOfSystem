@@ -28,6 +28,7 @@
   </kendo-grid-column>
 
   <kendo-grid-column
+    *ngIf="isRelatedToMedical$ | async"
     [sortable]="true"
     field="isInsuranceCover"
     title="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">

@@ -99,6 +99,5 @@ const convertMonths = function (month: string): string {
 
 const convertHours = function (hoursStr: string, dayNight: 'PM' | 'AM'): string {
   let hours = Number(hoursStr) % 24;
-
-  return hours === 0 ? '0' : (hours % 12).toString();
+  return hours === 0 ? '0' : hours === 12 && dayNight === 'PM' ? '12' : (hours % 12).toString();
 };

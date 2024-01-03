@@ -27,6 +27,7 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   public selectedExtras: NameValuePairType[] = [];
   public hasInsuranceProvider$!: Observable<boolean>;
   public hasNotInsuranceProvider$!: Observable<boolean>;
+  public isRelatedToMedical$!: Observable<boolean>;
   private _before!: ShopServiceModalDocumentProp;
 
   public validator = {
@@ -40,6 +41,7 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   ) {
     this.hasInsuranceProvider$ = this._shopService.hasInsuranceProvider$;
     this.hasNotInsuranceProvider$ = this._shopService.hasNotInsuranceProvider$;
+    this.isRelatedToMedical$ = this._shopService.isRelatedToMedical$;
   }
 
   ngOnDestroy() {

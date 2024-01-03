@@ -226,6 +226,47 @@ export const Massage = {
   } as const,
 };
 
+export const Consult = {
+  StatusType: {
+    Pending: 'Pending',
+    Scheduled: 'Scheduled',
+    Start: 'Start',
+    Completed: 'Completed',
+    Cancel: 'Cancel',
+  } as const,
+  StatusDescription: {
+    Pending: 'label.title.pending',
+    Scheduled: 'label.title.scheduled',
+    Start: 'label.title.start',
+    Completed: 'label.title.completed',
+    Cancel: 'label.title.cancel',
+  } as const,
+  PaymentType: {
+    Unpaid: 'Unpaid',
+    PartPaid: 'PartPaid',
+    FullPaid: 'FullPaid',
+    Refunded: 'Refunded',
+  } as const,
+  PaymentDescription: {
+    Unpaid: 'label.title.unpaid',
+    PartPaid: 'label.title.partpaid',
+    FullPaid: 'label.title.fullpaid',
+    Refunded: 'label.title.refunded',
+  } as const,
+  OriginType: {
+    Phone: 'Phone',
+    WaitingList: 'WaitingList',
+    Online: 'Online',
+    WalkIn: 'WalkIn',
+  } as const,
+  OriginDescription: {
+    Phone: 'label.title.phone',
+    WaitingList: 'label.title.waitinglist',
+    Online: 'label.title.online',
+    WalkIn: 'Walk In',
+  } as const,
+};
+
 export const Medical = {
   Insurance: {
     Ahm: 'Ahm',

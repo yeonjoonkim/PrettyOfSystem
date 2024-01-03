@@ -1,0 +1,37 @@
+<form-header
+  [action]="form.action"
+  [readOnly]="form.readOnly"
+  [title]="form.headerTitle"
+  (onClickDismiss)="dismiss()"></form-header>
+
+<flex-col *ngIf="privateInsurance && selected" class="modal-container">
+  <flex-col-item>
+    <name-value-pair-single-dropdown-selection
+      title="label.title.company"
+      [(selected)]="selected"
+      [selection]="selection"
+      (selectedChange)="onChangeCompany($event)"></name-value-pair-single-dropdown-selection>
+  </flex-col-item>
+  <flex-col-item>
+    <text-box
+      title="label.title.membershipnumber"
+      [isRequired]="true"
+      [min]="1"
+      [max]="100"
+      [(value)]="privateInsurance.memberNum"
+      [(validate)]="validator.num"
+      (validateChange)="handleEnabledSaveBtn()"></text-box>
+  </flex-col-item>
+  <flex-col-item>
+    <text-box
+      title="label.title.referencenumber"
+      [isRequired]="false"
+      [(value)]="privateInsurance.reference"></text-box>
+  </flex-col-item>
+
+  <flex-col-item>
+    <button kendoButton [disabled]="!enahbleSaveBtn" (click)="OnClickSave()">
+      {{ 'label.title.update' | languageTransform: 'System' | async }}
+    </button>
+  </flex-col-item>
+</flex-col>

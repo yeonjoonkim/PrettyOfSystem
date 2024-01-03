@@ -1,0 +1,50 @@
+.summary-container {
+  p {
+    margin: 0;
+  }
+}
+.checkout-list {
+  margin-top: 15px;
+}
+
+.checkout-list,
+.private-insurance-container,
+.parent-consent {
+  border-bottom: 1px solid var(--active);
+  margin-bottom: 25px;
+  padding-bottom: 25px;
+}
+
+.insurance-tool-tip {
+  color: var(--error);
+  font-size: 12px;
+  font-weight: 700;
+  span {
+    color: white;
+    text-decoration: underline;
+    font-size: 12px;
+    cursor: pointer;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.insurance-title,
+.parent-consent-title {
+  margin-bottom: 0;
+}
+
+.provide-btn {
+  background: var(--title);
+  width: 100%;
+}
+.update-btn {
+  width: 100%;
+}
+
+.insurance-btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

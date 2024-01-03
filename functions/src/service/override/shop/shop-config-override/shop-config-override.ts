@@ -1,6 +1,6 @@
 import * as I from '../../../../interface';
 import * as Constant from '../../../../constant';
-
+import * as T from '../../../type-checker/type-checker';
 export const override = function (s: I.IShopSetting): I.IShopSetting {
   s.financial = financeSetting(s?.financial);
   s.calendar = calendarSetting(s?.calendar);
@@ -104,6 +104,7 @@ const insurance = function (insurance: I.ShopInsuranceProvider | undefined | nul
 const waitingList = function (waitingList: I.ShopWaitingListType | null | undefined): I.ShopWaitingListType {
   return {
     intervalMin: waitingListIntervalMin(waitingList?.intervalMin),
+    depositRate: T.nullabelNumber(waitingList?.depositRate),
   };
 };
 

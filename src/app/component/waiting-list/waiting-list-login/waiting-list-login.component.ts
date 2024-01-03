@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecaptchaVerifier, getAuth } from 'firebase/auth';
-import { Subject, takeUntil, timeout } from 'rxjs';
+import { Subject, filter, takeUntil, timeout } from 'rxjs';
 import { ClientLogin } from 'src/app/class/client/client-login.class';
 import { ITimer } from 'src/app/interface';
 import { ClientService } from 'src/app/service/client/client.service';
@@ -45,6 +45,16 @@ export class WaitingListLoginComponent implements OnInit {
     this.sendOTP = false;
     this.validator.phone = false;
     this.validator.otp = false;
+    this._client.isLoggedin$
+      .pipe(
+        filter(login => login !== null && login),
+        takeUntil(this._destroy$)
+      )
+      .subscribe(async login => {
+        if (login && this._sessionId !== null) {
+          await this._router.navigateByUrl(`waiting-list/${this._sessionId}/update-client-info`);
+        }
+      });
   }
 
   public async verifyingAccount() {

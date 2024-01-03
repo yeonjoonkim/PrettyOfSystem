@@ -22,7 +22,7 @@ export class TextAreaComponent implements OnInit {
   @Input() isLowCaseFormat: boolean = false;
   @Input() readOnly: boolean = false;
   @Input() showCounter: boolean = false;
-  @Input() max: number = 2000;
+  @Input() max: number = 1000;
   @Input() min: number = 0;
   @Input() isRequired: boolean = false;
   @Input() mode: Constant.ComponentModeType = Constant.Default.ComponentMode.Form;
