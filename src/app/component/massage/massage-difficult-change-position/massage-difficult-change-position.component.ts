@@ -31,7 +31,7 @@ export class MassageDifficultChangePositionComponent implements OnInit, OnChange
   constructor(private _massage: MassageService) {}
   ngOnChanges(changes: SimpleChanges): void {
     const positionChange = changes['position'];
-    if (positionChange) {
+    if (positionChange && positionChange.currentValue !== undefined) {
       const currentValue: MassageDifficultChangePosition = positionChange.currentValue;
       const select = this.selection.find(
         s => s.name === currentValue.description && s.value === currentValue.type

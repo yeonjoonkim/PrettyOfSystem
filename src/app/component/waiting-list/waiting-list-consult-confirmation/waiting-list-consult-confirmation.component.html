@@ -1,0 +1,114 @@
+<div class="modal-container" *ngIf="prop$ | async as prop">
+  <flex-row *ngIf="prop">
+    <flex-row-item class="summary-container">
+      <legend class="title confirmation-title">
+        {{ prop.cart.dateTime | dateTransform: 'LongDate' }} {{ [prop.cart.dayIndex] | daysTransform | async }}
+      </legend>
+    </flex-row-item>
+  </flex-row>
+  <flex-col>
+    <flex-col-item *ngIf="prop.cart.selectedTime" class="summary-container">
+      <p>
+        {{ 'label.title.time' | languageTransform: 'System' | async }}:
+        {{ prop.cart.selectedTime.start | dateTransform: 'Time' }} -
+        {{ prop.cart.selectedTime.end | dateTransform: 'Time' }}
+      </p>
+    </flex-col-item>
+    <flex-col-item *ngIf="prop.cart.selectedTime" class="summary-container">
+      <p>
+        {{ 'label.title.specialist' | languageTransform: 'System' | async }}:
+        {{ prop.cart.specialist.name | languageTransform: 'System' | async }}
+      </p>
+    </flex-col-item>
+    <flex-col-item *ngIf="prop.cart.totalPrice" class="summary-container">
+      <p>
+        {{ 'label.title.price' | languageTransform: 'System' | async }}:
+        {{ prop.cart.totalPrice | currencyTransform }}
+      </p>
+    </flex-col-item>
+  </flex-col>
+  <flex-col class="checkout-list">
+    <cart-check-out-list
+      [cart]="prop.cart"
+      [transformType]="'Waiting-List'"
+      [isConfirmation]="true"></cart-check-out-list>
+  </flex-col>
+
+  <!-- Parent Consent -->
+  <flex-col class="parent-consent" *ngIf="!prop.isClientOver18">
+    <flex-col-item>
+      <legend class="title parent-consent-title">
+        {{ 'label.title.parentconsent' | languageTransform: 'System' | async }}
+      </legend>
+    </flex-col-item>
+    <flex-row-item class="insurance-btns">
+      <button
+        kendoButton
+        class="provide-btn"
+        *ngIf="!(hasParentConsent$ | async)"
+        (click)="displayParentConfirmation()">
+        {{ 'label.title.provide' | languageTransform: 'System' | async }}
+      </button>
+      <button
+        kendoButton
+        class="update-btn"
+        *ngIf="hasParentConsent$ | async"
+        (click)="displayParentConfirmation()">
+        {{ 'label.title.edit' | languageTransform: 'System' | async }}
+      </button>
+    </flex-row-item>
+  </flex-col>
+
+  <!--Private Insurance Mandatory Field-->
+  <flex-col
+    class="private-insurance-container"
+    *ngIf="prop.isShopInsuranceProvider && prop.hasInsuranceCartCheckout">
+    <flex-col-item>
+      <legend class="title insurance-title">
+        {{ 'label.title.insuranceclaimmandatoryfield' | languageTransform: 'System' | async }}
+      </legend>
+    </flex-col-item>
+    <flex-row-item class="insurance-btns">
+      <button
+        kendoButton
+        class="provide-btn"
+        *ngIf="!(hasPrivateInsurance$ | async)"
+        (click)="displayPrivateInsurance()">
+        {{ 'label.title.provide' | languageTransform: 'System' | async }}
+      </button>
+      <button
+        kendoButton
+        class="update-btn"
+        *ngIf="hasPrivateInsurance$ | async"
+        (click)="displayPrivateInsurance()">
+        {{ 'label.title.edit' | languageTransform: 'System' | async }}
+      </button>
+    </flex-row-item>
+    <flex-col-item>
+      <div class="insurance-tool-tip" *ngIf="prop.hasInsuranceCartCheckout && !(hasPrivateInsurance$ | async)">
+        {{ 'label.description.insuranceclaimmandatoryfield' | languageTransform: 'System' | async }}
+        <span class="delete-insurance" (click)="deleteInsuranceFromCart()">{{
+          'button.title.delete' | languageTransform: 'System' | async
+        }}</span>
+      </div>
+    </flex-col-item>
+  </flex-col>
+
+  <div class="agreement" *ngIf="prop.shopConfig.category">
+    <shop-agreement [category]="prop.shopConfig.category"></shop-agreement>
+    <flex-col>
+      <flex-col-item *ngIf="prop.isAnyone">
+        <p class="error-text">
+          {{
+            'label.description.thereceptionistmayneedtodeclineyourrequestasitappearsyouhaventspecifiedapreferredspecialist'
+              | languageTransform: 'System'
+              | async
+          }}
+        </p>
+      </flex-col-item>
+    </flex-col>
+    <waiting-list-consult-agreement
+      [clientConsent]="prop.consent"
+      [clientSignature]="prop.client.signature"></waiting-list-consult-agreement>
+  </div>
+</div>

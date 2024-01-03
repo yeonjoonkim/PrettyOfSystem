@@ -6,11 +6,18 @@ import {
   combineLatestWith,
   distinctUntilChanged,
   filter,
+  firstValueFrom,
   map,
   of,
   switchMap,
+  take,
 } from 'rxjs';
-import { ShopEmployeeTimeSheet, WaitingListSessionType } from 'src/app/interface';
+import {
+  UserSettingEmergencyContactType,
+  UserSettingPrivateInsuranceType,
+  UserVisitShopConsentType,
+  WaitingListSessionType,
+} from 'src/app/interface';
 import { LanguageService } from '../global/language/language.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../global/toast/toast.service';
@@ -21,7 +28,8 @@ import { WaitingListCartService } from './waiting-list-cart/waiting-list-cart.se
 import { Cart } from 'src/app/interface/booking/cart/cart.interface';
 import { EmployeeService } from '../employee/employee.service';
 import { DateService } from '../global/date/date.service';
-import * as Constant from 'src/app/constant/constant';
+import { cloneDeep } from 'lodash-es';
+import { TextTransformService } from '../global/text-transform/text-transform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +45,8 @@ export class WaitingListService {
   public isLoading$!: Observable<boolean>;
   public isLoaded$!: Observable<boolean>;
   public cart$!: Observable<Cart | null>;
+  public consent$: Observable<UserVisitShopConsentType | null> = of(null);
+  public isFirstVisit$: Observable<boolean> = of(true);
 
   constructor(
     public shop: WaitngListShopService,
@@ -47,12 +57,14 @@ export class WaitingListService {
     private _toaster: ToastService,
     private _language: LanguageService,
     private _employee: EmployeeService,
-    private _date: DateService
+    private _date: DateService,
+    private _textTransform: TextTransformService
   ) {
     this.shop.config$ = this.shop.shopConfigurationValueListener(this.startSessionShopId$);
     this.startWaitingList();
     this.loadingWaitingList();
     this.loadWaitingList();
+    this.consent();
     this.cart$ = this.cart.cart$;
   }
 
@@ -74,7 +86,21 @@ export class WaitingListService {
     }
   }
 
-  private async invalidSessionId() {
+  public isTimeOut() {
+    return this.waitingListSession$.pipe(
+      switchMap(session => {
+        if (session !== null) {
+          const currentTime = this._date.transform.formatLocalDateTime(this._date.shopNow(null));
+
+          return of(currentTime >= session.expiredDate);
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
+  public async invalidSessionId() {
     const errorMsg = await this._language.transform('messagefail.title.accessdenied');
     await this._toaster.presentError(errorMsg);
     await this.cart.complete();
@@ -182,6 +208,33 @@ export class WaitingListService {
 
             return of(this._employee.timeSheet.simulateTimeSheet(timeSheet, cart));
           }
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
+  private consent() {
+    this.consent$ = this.shop.config$.pipe(
+      combineLatestWith(this.client.info$),
+      switchMap(([config, client]) => {
+        if (config !== null && client !== null) {
+          const consent = client.visitedShops.find(consent => consent.shopId === config.id);
+          return of(
+            consent !== undefined
+              ? consent
+              : {
+                  shopId: config.id,
+                  shopName: config.name,
+                  isVIP: false,
+                  hasMarketingEmailConsent: true,
+                  hasMarketingSMSConsent: true,
+                  hasTermandConditionConsent: true,
+                  hasReuseForm: true,
+                  agreedDate: this._date.transform.formatLocalDateTime(this._date.shopNow(config.timezone)),
+                }
+          );
         } else {
           return of(null);
         }

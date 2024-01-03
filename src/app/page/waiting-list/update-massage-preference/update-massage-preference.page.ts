@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { cloneDeep } from 'lodash-es';
-import { Observable, Subject, combineLatestWith, firstValueFrom, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatestWith, filter, firstValueFrom, takeUntil } from 'rxjs';
 import {
   IUser,
   MassageBodySelectorAreaType,
@@ -57,6 +57,7 @@ export class UpdateMassagePreferencePage implements OnInit {
         if (validateSession) {
           await this._waitingList.validateSession(this._sessionId);
         }
+
         if (hasInfo) {
           this.massageArea = info.setting.massage.areas;
           this.pressure = info.setting.massage.pressure;

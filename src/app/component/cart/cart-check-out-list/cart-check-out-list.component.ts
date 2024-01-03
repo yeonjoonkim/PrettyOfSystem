@@ -13,6 +13,7 @@ export class CartCheckOutListComponent implements OnInit {
 
   @Input() cart!: Cart | null;
   @Input() transformType!: Constant.LanguageTransformType;
+  @Input() isConfirmation: boolean = false;
   constructor() {}
 
   ngOnInit() {}

@@ -15,6 +15,7 @@ export type ShopQRCodeType = {
 
 export type ShopWaitingListType = {
   intervalMin: number;
+  depositRate: null | number;
 };
 
 export type ShopFinancialRateType = {

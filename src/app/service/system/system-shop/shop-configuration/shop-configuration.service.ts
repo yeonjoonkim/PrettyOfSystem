@@ -275,6 +275,7 @@ export class ShopConfigurationService {
       },
       waitingList: {
         intervalMin: Constant.ShopSetting.WaitingList.intervalMin,
+        depositRate: null,
       },
       insurance: null,
     };

@@ -97,6 +97,8 @@ export class UserAdminService {
           description: Constant.Massage.DifficultChangePosition.Description.NoProblem,
         },
       },
+      emergencyContact: null,
+      parentSignature: null,
     };
   }
 

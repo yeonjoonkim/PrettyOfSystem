@@ -15,6 +15,7 @@ import * as Constant from 'src/app/constant/constant';
 import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-management/shop-service-management.service';
 import { PopoverController } from '@ionic/angular';
 import { ShopServiceOptionPopoverComponent } from '../shop-service-option-popover/shop-service-option-popover.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'shop-service-grid',
@@ -34,12 +35,16 @@ export class ShopServiceGridComponent implements OnInit {
   @Input() isReachToMax: boolean = true;
   @Input() extraFilter: NameValuePairType[] = [];
 
+  public isRelatedToMedical$!: Observable<boolean>;
+
   constructor(
     private _shopEmp: ShopEmployeeManagementService,
     private _global: GlobalService,
     private _shopService: ShopServiceManagementService,
     private _popover: PopoverController
-  ) {}
+  ) {
+    this.isRelatedToMedical$ = this._shopService.isRelatedToMedical$;
+  }
 
   ngOnInit() {}
 

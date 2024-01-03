@@ -31,6 +31,8 @@ export class TimeFromToComponent implements OnInit {
     this.timeToChange.emit(this._timeTo);
   }
 
+  @Input() readOnly: boolean = false;
+
   constructor() {}
 
   ngOnInit() {}

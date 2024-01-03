@@ -9,7 +9,7 @@ import { ShopSettingPictureComponent } from './modal/shop-setting-picture/shop-s
 import { ShopSettingOperatingHoursComponent } from './modal/shop-setting-operating-hours/shop-setting-operating-hours.component';
 import { ShopSettingWaitingListComponent } from './modal/shop-setting-waiting-list/shop-setting-waiting-list.component';
 import { SystemShopCapacityModalService } from 'src/app/service/system/system-shop-capacity/system-shop-capacity-modal/system-shop-capacity-modal.service';
-import { Subject, firstValueFrom, takeUntil } from 'rxjs';
+import { Subject, combineLatestWith, filter, firstValueFrom, takeUntil } from 'rxjs';
 import { ShopSettingInsuranceProviderComponent } from './modal/shop-setting-insurance-provider/shop-setting-insurance-provider.component';
 import { ShopConfigurationType } from 'src/app/interface';
 import { cloneDeep } from 'lodash-es';
@@ -21,7 +21,7 @@ import { cloneDeep } from 'lodash-es';
 })
 export class ShopSettingComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
-  public options!: IShopSettingOptionType[];
+  public options: IShopSettingOptionType[] = [];
   public loaded: boolean = false;
   private _isOpen: boolean = false;
   private _config!: ShopConfigurationType;
@@ -29,9 +29,7 @@ export class ShopSettingComponent implements OnInit, OnDestroy {
     private _setting: ShopSettingService,
     private _modal: ModalController,
     private _capacityModal: SystemShopCapacityModalService
-  ) {
-    this.options = this._setting.option.get();
-  }
+  ) {}
 
   ngOnInit() {
     this._setting.config$.pipe(takeUntil(this._destroy$)).subscribe(config => {
@@ -39,6 +37,10 @@ export class ShopSettingComponent implements OnInit, OnDestroy {
       if (config !== null) {
         this._config = config;
       }
+    });
+    this._setting.isRelateToMedical$.pipe(takeUntil(this._destroy$)).subscribe(isRelatedToMedical => {
+      const options = this._setting.option.get();
+      this.options = isRelatedToMedical ? options : options.filter(op => !op.isInsuranceProvider);
     });
   }
 

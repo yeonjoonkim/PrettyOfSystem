@@ -45,6 +45,7 @@ export class ShopPackageManagementService {
   public extraServiceRequest$!: Observable<ChatGptTranslateDocumentType[]>;
   public hasInsuranceProvider$!: Observable<boolean>;
   public hasNotInsuranceProvider$!: Observable<boolean>;
+  public isRelatedToMedical$!: Observable<boolean>;
 
   constructor(
     private _shop: ShopService,
@@ -71,6 +72,7 @@ export class ShopPackageManagementService {
     this.extraServiceRequest$ = this._shopExtra.translatedRequest$;
     this.hasInsuranceProvider$ = this._shop.hasInsuranceProvider$;
     this.hasNotInsuranceProvider$ = this._shop.hasNotInsuranceProvider$;
+    this.isRelatedToMedical$ = this._shop.isRelatedToMedical$;
     this.translateRequest();
     this.filterPropListener();
     this.isReachToMaxListener();

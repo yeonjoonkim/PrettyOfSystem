@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, combineLatestWith, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatestWith, filter, takeUntil } from 'rxjs';
 import { ShopConfigurationType } from 'src/app/interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 
@@ -37,6 +37,14 @@ export class WaitingListPage implements OnInit, OnDestroy {
         if (start && isLogin) {
           this._router.navigateByUrl(`waiting-list/${this._sessionId}/update-client-info`);
         }
+      });
+    this._waitngList.start$
+      .pipe(
+        takeUntil(this._destroy$),
+        filter(start => start !== null && start)
+      )
+      .subscribe(async () => {
+        await this._waitngList.cart.start();
       });
   }
 

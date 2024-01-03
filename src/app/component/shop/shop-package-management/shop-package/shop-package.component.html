@@ -11,7 +11,9 @@
 </form-header>
 <ion-content [scrollable]="true" *ngIf="current">
   <flex-col class="modal-container">
-    <flex-col-item *ngIf="hasNotInsuranceProvider$ | async" class="default-placeholder">
+    <flex-col-item
+      *ngIf="(hasNotInsuranceProvider$ | async) && (isRelatedToMedical$ | async)"
+      class="default-placeholder">
       {{
         'label.description.toactivateinsurancebuttonpleasegotoshopsettingandopentheinsuranceprovider'
           | languageTransform: 'System'
@@ -34,7 +36,7 @@
         <!-- Check Box -->
         <flex-row-item>
           <flex-col id="check-box-container">
-            <div id="pregnant" *ngIf="hasInsuranceProvider$ | async">
+            <div id="pregnant" *ngIf="(hasInsuranceProvider$ | async) && (isRelatedToMedical$ | async)">
               <kendo-label text="{{ 'label.title.insurance' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox
@@ -110,6 +112,7 @@
         *ngIf="current.package.limitedTime !== null"
         [(timeFrom)]="current.package.limitedTime.start"
         [(timeTo)]="current.package.limitedTime.end"
+        [readOnly]="form.readOnly"
         (timeFromChange)="onChangeLimitedStartTime($event)"
         (timeToChange)="onChangeLimitedEndTime($event)"></time-from-to>
     </flex-col>

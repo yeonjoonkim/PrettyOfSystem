@@ -25,12 +25,14 @@
       (decrement)="decrementCheckout($event)"
       (increment)="incrementCheckout($event)"
       (delete)="deleteCheckout($event)"></cart-check-out-list>
-    <cart-check-out-extras
-      *ngIf="{cart: cart$ | async, extras: extras$ | async} as view"
-      [cart]="view.cart"
-      [extras]="view.extras"
-      [type]="'Waiting-List'"
-      (increment)="incrementCheckout($event)"></cart-check-out-extras>
+    <div *ngIf="{cart: cart$ | async, extras: extras$ | async, hasOnlyCoupon: hasOnlyCoupon$ | async} as view">
+      <cart-check-out-extras
+        *ngIf="!view.hasOnlyCoupon"
+        [cart]="view.cart"
+        [extras]="view.extras"
+        [type]="'Waiting-List'"
+        (increment)="incrementCheckout($event)"></cart-check-out-extras>
+    </div>
   </div>
 </ion-content>
 

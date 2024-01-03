@@ -3,6 +3,7 @@ import { NavParams, PopoverController } from '@ionic/angular';
 import { ShopWorkHoursType } from 'src/app/interface';
 import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
+import { CalendarView } from '@progress/kendo-angular-dateinputs';
 type DateSelectionPropType = {
   date: Date;
   minDate: Date;
@@ -10,6 +11,8 @@ type DateSelectionPropType = {
   disableDays: Date[];
   operatingHours: ShopWorkHoursType | undefined;
   formatter: Constant.DateFormatType;
+  isBrithDay: boolean;
+  view: CalendarView;
 };
 @Component({
   selector: 'date-selection-popover',
@@ -29,6 +32,7 @@ export class DateSelectionPopoverComponent implements OnInit {
     const maxDate: Date | undefined = this._navParams.get('maxDate');
     const operatingHours: ShopWorkHoursType | undefined = this._navParams.get('operatingHours');
     const formatter: Constant.DateFormatType | undefined = this._navParams.get('dateFormatter');
+    const isBrithDay: boolean = this._navParams.get('isBrithDay');
     if (date && minDate && maxDate && formatter) {
       this.prop = {
         date: date,
@@ -37,6 +41,8 @@ export class DateSelectionPopoverComponent implements OnInit {
         disableDays: [],
         operatingHours: operatingHours,
         formatter: formatter,
+        isBrithDay: isBrithDay,
+        view: isBrithDay ? 'decade' : 'month',
       };
     } else {
       this._popoverCtrl.dismiss();

@@ -12,7 +12,7 @@
           <div class="item-price title">
             {{ 'label.title.price' | languageTransform: 'System' | async }}
           </div>
-          <div class="delete"></div>
+          <div class="delete" *ngIf="!isConfirmation"></div>
         </flex-row-item>
       </flex-row>
     </flex-col-item>
@@ -26,25 +26,31 @@
           </div>
           <div class="item-qty">
             <button
+              *ngIf="!isConfirmation"
               class="item-minus"
               kendoButton
               icon="minus"
               [disabled]="!checkout.qty"
               (click)="onDecrement(checkout)"></button>
             <p>{{ checkout.qty }}</p>
-            <button class="item-plus" kendoButton icon="plus" (click)="onIncrement(checkout)"></button>
+            <button
+              *ngIf="!isConfirmation"
+              class="item-plus"
+              kendoButton
+              icon="plus"
+              (click)="onIncrement(checkout)"></button>
           </div>
           <div class="item-price">
             {{ checkout.price * checkout.qty | currencyTransform }}
           </div>
-          <div class="delete">
+          <div class="delete" *ngIf="!isConfirmation">
             <button class="item-delete" kendoButton icon="delete" (click)="onDelete(checkout)"></button>
           </div>
         </flex-row-item>
       </flex-row>
     </flex-col-item>
   </ng-container>
-  <flex-col-item class="sub-total" *ngIf="cart.totalPrice > 0">
+  <flex-col-item class="sub-total" *ngIf="cart.totalPrice > 0 && !isConfirmation">
     <div class="total-price">
       <legend>{{ cart.totalPrice | currencyTransform }}</legend>
     </div>

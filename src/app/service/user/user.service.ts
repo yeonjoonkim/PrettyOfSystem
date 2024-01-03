@@ -38,6 +38,7 @@ export class UserService {
   public employeName$!: Observable<string>;
   public claim$!: Observable<IdTokenResult | null>;
   public preferLanguage$!: Observable<string>;
+  public isOver18$!: Observable<boolean>;
 
   constructor(
     public modal: UserModalService,
@@ -183,6 +184,7 @@ export class UserService {
     this.activateCurrentRoleListener();
     this.activateEmployeeNameListener();
     this.activatePreferLanguageListener();
+    this.isOver18();
     this.claim();
   }
 
@@ -264,6 +266,20 @@ export class UserService {
           }
         } else {
           return of([]);
+        }
+      })
+    );
+  }
+
+  private isOver18() {
+    this.isOver18$ = this.data$.pipe(
+      switchMap(user => {
+        if (user !== null) {
+          const today = this.global.date.startDay(this.global.date.shopNow(null));
+          const duration = this.global.date.duration(user.dob, today);
+          return of(duration.years !== undefined ? duration.years >= 18 : false);
+        } else {
+          return of(false);
         }
       })
     );

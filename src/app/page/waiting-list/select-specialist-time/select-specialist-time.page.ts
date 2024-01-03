@@ -68,18 +68,6 @@ export class SelectSpecialistTimePage implements OnInit, OnDestroy {
         }
         await this._waitingList.cart.start();
       });
-    this._waitingList.cart.cart$
-      .pipe(
-        takeUntil(this._destroy$),
-        filter(cart => cart !== null)
-      )
-      .subscribe(cart => {
-        if (cart !== null) {
-          if (!cart.checkout.length) {
-            this._router.navigateByUrl(`waiting-list/${this._sessionId}/cart`);
-          }
-        }
-      });
   }
 
   async onClickGoback() {

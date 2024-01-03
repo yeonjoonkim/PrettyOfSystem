@@ -33,6 +33,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./select-specialist-time/select-specialist-time.module').then(m => m.SelectSpecialistTimePageModule),
   },
+  {
+    path: 'confirmation',
+    loadChildren: () => import('./confirmation/confirmation.module').then( m => m.ConfirmationPageModule)
+  },
 ];
 
 @NgModule({

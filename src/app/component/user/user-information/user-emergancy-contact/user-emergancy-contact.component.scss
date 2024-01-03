@@ -1,0 +1,30 @@
+.setting-title {
+  display: flex;
+  justify-content: space-between;
+  legend {
+    color: var(--title);
+  }
+  button {
+    background-color: transparent;
+    text-decoration: underline;
+    font-weight: 700;
+  }
+  .edit-btn {
+    color: var(--title);
+  }
+}
+
+.default-placeholder {
+  color: var(--active);
+}
+
+.description {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 0px;
+  p {
+    margin: 2px;
+    flex-wrap: wrap;
+  }
+}

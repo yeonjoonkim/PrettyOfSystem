@@ -12,6 +12,7 @@ import {
   Medical,
   ShopCategoryTitle,
   CartItem,
+  Consult,
 } from './constant-value';
 export {
   Default,
@@ -28,6 +29,7 @@ export {
   ShopCategoryTitle,
   ChangeNumberRequestStatus,
   CartItem,
+  Consult,
 } from './constant-value';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
@@ -113,3 +115,82 @@ export type MedicalHistoryType = (typeof Medical.History.Type)[keyof typeof Medi
 
 //Cart
 export type CartItemType = (typeof CartItem)[keyof typeof CartItem];
+
+//Consult - Status
+export type ConsultPendingStatus = {
+  syncId: string;
+  type: typeof Consult.StatusType.Pending;
+  description: typeof Consult.StatusDescription.Pending;
+};
+export type ConsultScheduledStatus = {
+  syncId: string;
+  type: typeof Consult.StatusType.Scheduled;
+  description: typeof Consult.StatusDescription.Scheduled;
+};
+export type ConsultStartStatus = {
+  syncId: string;
+  type: typeof Consult.StatusType.Start;
+  description: typeof Consult.StatusDescription.Start;
+};
+export type ConsultCompletedStatus = {
+  syncId: string;
+  type: typeof Consult.StatusType.Completed;
+  description: typeof Consult.StatusDescription.Completed;
+};
+export type ConsultCancelStatus = {
+  syncId: string;
+  type: typeof Consult.StatusType.Cancel;
+  description: typeof Consult.StatusDescription.Cancel;
+};
+export type ConsultStatusType =
+  | ConsultPendingStatus
+  | ConsultScheduledStatus
+  | ConsultStartStatus
+  | ConsultCompletedStatus
+  | ConsultCancelStatus;
+
+//Consult - Payment
+export type ConsultUnPaidPayment = {
+  type: typeof Consult.PaymentType.Unpaid;
+  description: typeof Consult.PaymentDescription.Unpaid;
+};
+export type ConsultPartPaidPayment = {
+  type: typeof Consult.PaymentType.PartPaid;
+  description: typeof Consult.PaymentDescription.PartPaid;
+};
+export type ConsultFullPaidPayment = {
+  type: typeof Consult.PaymentType.FullPaid;
+  description: typeof Consult.PaymentDescription.FullPaid;
+};
+export type ConsultRefundedPayment = {
+  type: typeof Consult.PaymentType.Refunded;
+  description: typeof Consult.PaymentDescription.Refunded;
+};
+export type ConsultPaymentStatusType =
+  | ConsultUnPaidPayment
+  | ConsultPartPaidPayment
+  | ConsultFullPaidPayment
+  | ConsultRefundedPayment;
+
+//Consult - Origin
+export type ConsultPhoneOrigin = {
+  type: typeof Consult.OriginType.Phone;
+  description: typeof Consult.OriginDescription.Phone;
+};
+export type ConsultWaitingListOrigin = {
+  type: typeof Consult.OriginType.WaitingList;
+  description: typeof Consult.OriginDescription.WaitingList;
+};
+export type ConsultOnlineOrigin = {
+  type: typeof Consult.OriginType.Online;
+  description: typeof Consult.OriginDescription.Online;
+};
+export type ConsultWalkInOrigin = {
+  type: typeof Consult.OriginType.WalkIn;
+  description: typeof Consult.OriginDescription.WalkIn;
+};
+export type ConsultOriginType =
+  | ConsultPhoneOrigin
+  | ConsultWalkInOrigin
+  | ConsultOnlineOrigin
+  | ConsultWaitingListOrigin;

@@ -1,0 +1,35 @@
+<flex-col *ngIf="clientSignature !== null && clientConsent !== null && !requesting">
+  <flex-col-item class="signature">
+    <signature-input
+      [(signature)]="clientSignature"
+      (signatureChange)="onChangeClientSignature($event)"></signature-input>
+    <span (click)="clear()">{{ 'button.title.delete' | languageTransform: 'System' | async }}</span>
+  </flex-col-item>
+  <flex-col-item>
+    <yes-no-selection-group>
+      <yes-no-selection
+        title="label.title.acceptanceofterms"
+        [(value)]="agreement"
+        (valueChange)="onChangeAgreement($event)"></yes-no-selection>
+      <yes-no-selection
+        title="label.title.smsmarketingconsent"
+        [(value)]="clientConsent.hasMarketingSMSConsent"
+        (valueChange)="onChangeSmsConsent($event)"></yes-no-selection>
+      <yes-no-selection
+        title="label.title.emailmarketingconsent"
+        [(value)]="clientConsent.hasMarketingEmailConsent"
+        (valueChange)="onChangeEmailConsent($event)"></yes-no-selection>
+    </yes-no-selection-group>
+  </flex-col-item>
+  <flex-col-item>
+    <button kendoButton [disabled]="!(validator$ | async)">
+      {{ 'label.title.submit' | languageTransform: 'System' | async }}
+    </button>
+  </flex-col-item>
+</flex-col>
+
+<flex-col>
+  <flex-col-item>
+    <kendo-loader *ngIf="requesting" size="large"></kendo-loader>
+  </flex-col-item>
+</flex-col>

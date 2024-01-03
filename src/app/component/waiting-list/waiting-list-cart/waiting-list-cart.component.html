@@ -53,14 +53,4 @@
       </coupon-price-list-card>
     </ng-container>
   </div>
-  <div *ngIf="criteria.extras.length > 0 && selected?.isExtraManagement" class="price-card-list">
-    <ng-container *ngFor="let extra of criteria.extras">
-      <extra-price-list-card
-        type="Waiting-List"
-        [extra]="extra"
-        [enabledAdd]="true"
-        (add)="add($event, criteria.timezone)">
-      </extra-price-list-card>
-    </ng-container>
-  </div>
 </flex-col>

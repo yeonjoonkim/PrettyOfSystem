@@ -71,6 +71,7 @@
 
   <!-- Insurance -->
   <kendo-grid-column
+    *ngIf="isRelatedToMedical$ | async"
     media="(min-width: 525px)"
     [sortable]="true"
     field="isInsuranceCover"

@@ -7,7 +7,9 @@ import { NameValuePairType } from 'src/app/interface';
 })
 export class PrivateHealthInsuranceService {
   list!: NameValuePairType[];
+  defaultCompany!: NameValuePairType;
   constructor(private _list: PrivateHealthInsuranceListService) {
     this.list = this._list.get();
+    this.defaultCompany = this._list.defaultInsuranceCompany();
   }
 }

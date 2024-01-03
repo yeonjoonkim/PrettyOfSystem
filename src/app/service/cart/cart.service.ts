@@ -21,7 +21,7 @@ export class CartService {
     private _languageTransform: LanguageTransformService
   ) {}
 
-  public async getValue() {
+  public getValue() {
     return this._cart.getValue();
   }
 
@@ -50,6 +50,18 @@ export class CartService {
       switchMap(cart => {
         if (cart) {
           return of(cart.checkout.some(i => i.type !== Constant.CartItem.Extra));
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
+  public isAnySepcialist() {
+    return this.cart$.pipe(
+      switchMap(cart => {
+        if (cart !== null) {
+          return of(cart.specialist.name === 'label.title.anyone');
         } else {
           return of(false);
         }
@@ -123,6 +135,19 @@ export class CartService {
     );
   }
 
+  public hasInsurance() {
+    return this.cart$.pipe(
+      switchMap(cart => {
+        if (cart) {
+          const insurance = cart.checkout.filter(c => c.isInsuranceCover);
+          return of(insurance.length > 0);
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
   public async addCheckOutItem(checkout: CheckOutItem, transformType: Constant.LanguageTransformType) {
     let cart = this._cart.getValue();
     if (cart !== null) {
@@ -176,6 +201,15 @@ export class CartService {
     }
   }
 
+  public async deleteInsurance() {
+    let cart = this._cart.getValue();
+    if (cart !== null) {
+      cart = this.getDefaultCart(cart.shopId, cart.timezone, cart.timeoutMin);
+      await this._storage.storeCart(cart);
+      this._cart.next(cart);
+    }
+  }
+
   public async deleteCheckOutItem(checkout: CheckOutItem) {
     let cart = this._cart.getValue();
     if (cart !== null) {
@@ -189,6 +223,7 @@ export class CartService {
             checkout.min === c.min
           )
       );
+      cart.checkout = this.handleCheckoutExtra(cart.checkout);
       cart = this.updateCartSum(cart);
       cart = this.resetSpecialistDateTime(cart);
       await this._storage.storeCart(cart);
@@ -228,6 +263,7 @@ export class CartService {
       } else {
         cart.checkout.push(checkout);
       }
+      cart.checkout = this.handleCheckoutExtra(cart.checkout);
       cart = this.updateCartSum(cart);
       cart = this.resetSpecialistDateTime(cart);
       await this._storage.storeCart(cart);
@@ -255,7 +291,7 @@ export class CartService {
         }
         return acc;
       }, []);
-
+      cart.checkout = this.handleCheckoutExtra(cart.checkout);
       cart = this.updateCartSum(cart);
       cart = this.resetSpecialistDateTime(cart);
       await this._storage.storeCart(cart);
@@ -327,5 +363,14 @@ export class CartService {
     } else {
       return cart;
     }
+  }
+
+  public handleCheckoutExtra(checkouts: CheckOutItem[]) {
+    const available = checkouts.filter(s => s.type !== Constant.CartItem.Extra);
+    const coupon = checkouts.filter(c => c.type === Constant.CartItem.Coupon);
+    const isOnlyCoupon = available.length === coupon.length;
+    return available.length > 0 && !isOnlyCoupon
+      ? checkouts
+      : checkouts.filter(s => s.type !== Constant.CartItem.Extra);
   }
 }

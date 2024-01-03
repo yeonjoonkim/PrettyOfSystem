@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, combineLatestWith, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatestWith, filter, firstValueFrom, takeUntil } from 'rxjs';
 import { ShopExtraDocumentType } from 'src/app/interface';
 import { Cart, CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
@@ -17,6 +17,7 @@ export class CartViewPage implements OnInit, OnDestroy {
   public cart$!: Observable<Cart | null>;
   public extras$!: Observable<ShopExtraDocumentType[]>;
   public hasRelatedService$!: Observable<boolean>;
+  public hasOnlyCoupon$!: Observable<boolean>;
 
   constructor(
     private _waitingList: WaitingListService,
@@ -28,6 +29,7 @@ export class CartViewPage implements OnInit, OnDestroy {
     this.cart$ = this._waitingList.cart$;
     this.extras$ = this._waitingList.shop.getExtra();
     this.hasRelatedService$ = this._waitingList.cart.hasRelatedService();
+    this.hasOnlyCoupon$ = this._waitingList.cart.hasOnlyCoupon();
   }
 
   async ngOnInit() {
@@ -59,7 +61,12 @@ export class CartViewPage implements OnInit, OnDestroy {
   }
 
   async onClickNext() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/select-specialist-time`);
+    const hasOnlyCoupon = await firstValueFrom(this.hasOnlyCoupon$);
+    if (!hasOnlyCoupon) {
+      await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/select-specialist-time`);
+    } else {
+      this._router.navigateByUrl(`/waiting-list/${this._sessionId}/confirmation`);
+    }
   }
 
   public async incrementCheckout(checkout: CheckOutItem) {

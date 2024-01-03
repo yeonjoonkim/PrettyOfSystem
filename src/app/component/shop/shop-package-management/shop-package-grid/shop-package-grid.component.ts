@@ -9,6 +9,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
 import * as Constant from 'src/app/constant/constant';
 import { ShopPackageManagementService } from 'src/app/service/shop/shop-package-management/shop-package-management.service';
 import { cloneDeep } from 'lodash-es';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'shop-package-grid',
@@ -26,11 +27,14 @@ export class ShopPackageGridComponent implements OnInit {
   @Input() isModalOpen: boolean = false;
   @Input() isReachMax: boolean = true;
 
-  isAuthorisedRole: boolean = false;
+  public isAuthorisedRole: boolean = false;
+  public isRelatedToMedical$!: Observable<boolean>;
   constructor(
     private _global: GlobalService,
     private _shopPackage: ShopPackageManagementService
-  ) {}
+  ) {
+    this.isRelatedToMedical$ = this._shopPackage.isRelatedToMedical$;
+  }
 
   async ngOnInit() {
     this.isAuthorisedRole = await this._shopPackage.isAuthorisedRole();

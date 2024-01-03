@@ -6,6 +6,7 @@ import { ShopPackageTimeService } from '../../reservation/shop-package-time/shop
 import { GlobalService } from '../../global/global.service';
 import { WaitngListShopService } from '../waiting-list-shop/waitng-list-shop.service';
 import * as Constant from 'src/app/constant/constant';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,7 +16,8 @@ export class WaitingListCartService {
     private _cart: CartService,
     private _packageTime: ShopPackageTimeService,
     private _shop: WaitngListShopService,
-    private _global: GlobalService
+    private _global: GlobalService,
+    private _router: Router
   ) {
     this.cart$ = this._cart.cart$;
   }
@@ -41,12 +43,28 @@ export class WaitingListCartService {
     return this._cart.hasSpecialist();
   }
 
+  public isAnyone() {
+    return this._cart.isAnySepcialist();
+  }
+
   public hasSelectDateTime() {
     return this._cart.hasSelectTime();
   }
 
   public hasRelatedService() {
     return this._cart.hasRelatedService();
+  }
+
+  public hasOnlyCoupon() {
+    return this._cart.hasOnlyCoupon();
+  }
+
+  public hasInsurance() {
+    return this._cart.hasInsurance();
+  }
+
+  public async deleteInsurance() {
+    await this._cart.deleteInsurance();
   }
 
   public relatedSpecialistIds() {

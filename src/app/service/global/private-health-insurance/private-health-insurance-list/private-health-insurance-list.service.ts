@@ -30,6 +30,13 @@ export class PrivateHealthInsuranceListService {
   ];
   constructor() {}
 
+  public defaultInsuranceCompany() {
+    return {
+      name: 'Medibank',
+      value: 'Medibank',
+    };
+  }
+
   public get() {
     return this._list.map(comp => {
       return { name: comp, value: comp } as NameValuePairType;
