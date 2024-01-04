@@ -18,6 +18,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" *ngIf="(loaded$ | async)">
+  <waiting-list-stepper *ngIf="sessionId" title="label.title.cart" [sessionId]="sessionId"></waiting-list-stepper>
   <div class="cart-container" *ngIf="{criteria: criteria$ | async, cart: cart$ | async} as view">
     <waiting-list-cart
       *ngIf="view.cart !== null && view.criteria !== null"

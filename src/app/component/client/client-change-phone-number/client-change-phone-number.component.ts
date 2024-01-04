@@ -34,7 +34,7 @@ export class ClientChangePhoneNumberComponent implements OnInit {
     private _formCtrl: FormControllerService,
     private _request: ChangePhoneNumberRequestRepositoryService
   ) {
-    this.form = this._formCtrl.setCreateFormHeaderModalProp();
+    this.form = this._formCtrl.setReadFormHeaderModalProp();
     this.form.headerTitle = 'label.description.changephonenumber';
   }
 

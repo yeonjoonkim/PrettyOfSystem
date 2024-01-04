@@ -12,6 +12,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" *ngIf="loaded$ | async">
+  <waiting-list-stepper
+    *ngIf="sessionId"
+    title="label.title.selectspecialistandtime"
+    [sessionId]="sessionId"></waiting-list-stepper>
   <div
     class="select-speicalist-time-container"
     *ngIf="{cart: cart$ | async, availableTime: availableTime$ | async, selectedSpecialist: selectedSpecialist$ | async, specialists: specialists$ | async } as view">

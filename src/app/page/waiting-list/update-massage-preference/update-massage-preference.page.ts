@@ -7,11 +7,10 @@ import {
   MassageBodySelectorAreaType,
   MassageDifficultChangePosition,
   MassagePressureType,
-  ShopCategoryType,
 } from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
-
+import * as Constant from 'src/app/constant/constant';
 @Component({
   selector: 'app-update-massage-preference',
   templateUrl: './update-massage-preference.page.html',
@@ -19,7 +18,7 @@ import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.se
 })
 export class UpdateMassagePreferencePage implements OnInit {
   private _destroy$ = new Subject<void>();
-  private _sessionId: string | null = this._route.snapshot.paramMap.get('id');
+  public sessionId: string | null = this._route.snapshot.paramMap.get('id');
   public loaded$!: Observable<boolean>;
   public isLoading$!: Observable<boolean>;
   public client$!: Observable<IUser | null>;
@@ -44,7 +43,7 @@ export class UpdateMassagePreferencePage implements OnInit {
         takeUntil(this._destroy$)
       )
       .subscribe(async ([start, login, info]) => {
-        const hasSessionId: boolean = typeof this._sessionId === 'string';
+        const hasSessionId: boolean = typeof this.sessionId === 'string';
         const hasInfo = info !== null;
         const navigateToWaitingList = !start && !login && hasSessionId && !hasInfo;
         const validateSession = !start && login && hasSessionId;
@@ -52,10 +51,10 @@ export class UpdateMassagePreferencePage implements OnInit {
           this._router.navigateByUrl(`booking`);
         }
         if (navigateToWaitingList) {
-          this._router.navigateByUrl(`waiting-list/${this._sessionId}`);
+          this._router.navigateByUrl(`waiting-list/${this.sessionId}`);
         }
         if (validateSession) {
-          await this._waitingList.validateSession(this._sessionId);
+          await this._waitingList.validateSession(this.sessionId);
         }
 
         if (hasInfo) {
@@ -64,10 +63,23 @@ export class UpdateMassagePreferencePage implements OnInit {
           this.position = info.setting.massage.difficultChangePosition;
         }
       });
+    this._waitingList.shop
+      .category()
+      .pipe(
+        takeUntil(this._destroy$),
+        filter(cat => cat !== null)
+      )
+      .subscribe(async cat => {
+        if (cat !== null) {
+          if (cat.name !== Constant.ShopCategoryTitle.MassageTheraphy) {
+            this.onClickGoback();
+          }
+        }
+      });
   }
 
   async onClickGoback() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-client-info`);
+    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/update-client-info`);
   }
 
   async onClickNext() {
@@ -82,7 +94,7 @@ export class UpdateMassagePreferencePage implements OnInit {
       const result = await this._user.updateUser(after, before);
       if (result) {
         this.request = false;
-        await this._router.navigateByUrl(`waiting-list/${this._sessionId}/cart`);
+        await this._router.navigateByUrl(`waiting-list/${this.sessionId}/cart`);
       } else {
         this.request = false;
       }

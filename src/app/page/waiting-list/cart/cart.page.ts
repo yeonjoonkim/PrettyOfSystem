@@ -13,7 +13,7 @@ import { WaitingListShopCartCriteriaType } from 'src/app/service/waiting-list/wa
 })
 export class CartPage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
-  private _sessionId: string | null = this._route.snapshot.paramMap.get('id');
+  public sessionId: string | null = this._route.snapshot.paramMap.get('id');
   public loaded$!: Observable<boolean>;
   public isLoading$!: Observable<boolean>;
   public client$!: Observable<IUser | null>;
@@ -45,17 +45,17 @@ export class CartPage implements OnInit, OnDestroy {
     this._waitingList.start$
       .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(async ([start, login]) => {
-        const hasSessionId: boolean = typeof this._sessionId === 'string';
+        const hasSessionId: boolean = typeof this.sessionId === 'string';
         const navigateToWaitingList = !start && !login && hasSessionId;
         const validateSession = !start && login && hasSessionId;
         if (!hasSessionId) {
           this._router.navigateByUrl(`booking`);
         }
         if (navigateToWaitingList) {
-          this._router.navigateByUrl(`waiting-list/${this._sessionId}`);
+          this._router.navigateByUrl(`waiting-list/${this.sessionId}`);
         }
         if (validateSession) {
-          await this._waitingList.validateSession(this._sessionId);
+          await this._waitingList.validateSession(this.sessionId);
         }
         await this._waitingList.cart.start();
       });
@@ -65,10 +65,10 @@ export class CartPage implements OnInit, OnDestroy {
     if (category !== null) {
       switch (category.name as Constant.ShopCategoryTitleType) {
         case Constant.ShopCategoryTitle.MassageTheraphy:
-          await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-massage-preference`);
+          await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/update-massage-preference`);
           break;
         default:
-          await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/update-client-info`);
+          await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/update-client-info`);
       }
     } else {
       await this._router.navigateByUrl('booking');
@@ -80,7 +80,7 @@ export class CartPage implements OnInit, OnDestroy {
   }
 
   async onClickNext() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart-view`);
+    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart-view`);
   }
 
   ngOnDestroy() {

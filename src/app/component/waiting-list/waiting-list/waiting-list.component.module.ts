@@ -14,6 +14,7 @@ import { ClientChangePhoneNumberModule } from '../../client/client-change-phone-
 //Import Component
 import { WaitingListComponent } from './waiting-list.component';
 import { WaitingListLoginComponent } from '../waiting-list-login/waiting-list-login.component';
+import { WaitingListStepperModule } from '../waiting-list-stepper/waiting-list-stepper.component.module';
 @NgModule({
   declarations: [WaitingListComponent, WaitingListLoginComponent],
   providers: [LanguageTransformPipeModule],
@@ -27,6 +28,7 @@ import { WaitingListLoginComponent } from '../waiting-list-login/waiting-list-lo
     KendoUiModule,
     ClientCreateAccountModule,
     ClientChangePhoneNumberModule,
+    WaitingListStepperModule,
   ],
   exports: [WaitingListComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

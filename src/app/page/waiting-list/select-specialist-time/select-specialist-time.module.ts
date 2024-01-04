@@ -13,6 +13,7 @@ import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pip
 import { WaitingListSelectEmployeeModule } from 'src/app/component/waiting-list/waiting-list-select-employee/waiting-list-select-employee.component.module';
 import { WaitingListSelectTimeModule } from 'src/app/component/waiting-list/waiting-list-select-time/waiting-list-select-time.component.module';
 import { WaitingListSelectTimeSummaryModule } from 'src/app/component/waiting-list/waiting-list-select-time-summary/waiting-list-select-time-summary.component.module';
+import { WaitingListStepperModule } from 'src/app/component/waiting-list/waiting-list-stepper/waiting-list-stepper.component.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,6 +25,7 @@ import { WaitingListSelectTimeSummaryModule } from 'src/app/component/waiting-li
     KendoUiModule,
     WaitingListSelectTimeSummaryModule,
     WaitingListSelectTimeModule,
+    WaitingListStepperModule,
   ],
   declarations: [SelectSpecialistTimePage],
 })

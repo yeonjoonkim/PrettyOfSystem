@@ -10,7 +10,9 @@
 <ion-content [fullscreen]="true" *ngIf="(loaded$ | async)">
   <div class="confirmation-info-container" *ngIf="!(hasOnlyCoupon$ | async)">
     <div>
-      <waiting-list-consult-confirmation></waiting-list-consult-confirmation>
+      <waiting-list-consult-confirmation
+        *ngIf="sessionId"
+        [sessionId]="sessionId"></waiting-list-consult-confirmation>
     </div>
   </div>
 </ion-content>

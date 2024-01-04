@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 
@@ -8,6 +8,7 @@ import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.se
   styleUrls: ['./waiting-list.component.scss'],
 })
 export class WaitingListComponent implements OnInit {
+  @Input() sessionId!: string;
   public businessName$!: Observable<string | null>;
   public logo$!: Observable<string | null>;
   public imageLoaded = false;

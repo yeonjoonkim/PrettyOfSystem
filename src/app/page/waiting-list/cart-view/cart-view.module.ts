@@ -13,6 +13,7 @@ import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pip
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { CartCheckoutListModule } from 'src/app/component/cart/cart-check-out-list/cart-check-out-list.module';
 import { CartCheckoutExtrasModule } from 'src/app/component/cart/cart-check-out-extras/cart-check-out-extras.module';
+import { WaitingListStepperModule } from 'src/app/component/waiting-list/waiting-list-stepper/waiting-list-stepper.component.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,6 +25,7 @@ import { CartCheckoutExtrasModule } from 'src/app/component/cart/cart-check-out-
     SharedFormModule,
     CartCheckoutListModule,
     CartCheckoutExtrasModule,
+    WaitingListStepperModule,
   ],
   declarations: [CartViewPage],
 })
