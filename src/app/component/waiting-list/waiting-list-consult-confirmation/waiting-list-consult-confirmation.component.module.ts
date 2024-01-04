@@ -22,6 +22,7 @@ import { WaitingListConsultPrivateInsuranceRequestComponent } from './waiting-li
 import { CurrencyPipeTransformModule } from 'src/app/pipe/currency/currency.pipe.module';
 import { ShopAgreementModule } from '../../agreement/shop/shop-agreement/shop-agreement.component.module';
 import { WaitingListConsultAgreementComponent } from './waiting-list-consult-agreement/waiting-list-consult-agreement.component';
+import { WaitingListStepperModule } from '../waiting-list-stepper/waiting-list-stepper.component.module';
 @NgModule({
   declarations: [
     WaitingListConsultConfirmationComponent,
@@ -46,6 +47,7 @@ import { WaitingListConsultAgreementComponent } from './waiting-list-consult-agr
     DaysTransformPipeModule,
     CurrencyPipeTransformModule,
     ShopAgreementModule,
+    WaitingListStepperModule,
   ],
   exports: [WaitingListConsultConfirmationComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

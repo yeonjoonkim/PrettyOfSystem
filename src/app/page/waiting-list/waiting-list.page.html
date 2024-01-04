@@ -1,3 +1,3 @@
 <ion-content [fullscreen]="true" *ngIf="loaded$ | async">
-  <waiting-list></waiting-list>
+  <waiting-list *ngIf="sessionId !== null" [sessionId]="sessionId"></waiting-list>
 </ion-content>

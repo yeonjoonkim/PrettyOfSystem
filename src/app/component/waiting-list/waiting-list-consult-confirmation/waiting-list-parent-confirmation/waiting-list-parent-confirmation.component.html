@@ -45,6 +45,8 @@
   </flex-col-item>
   <flex-col-item class="signature">
     <signature-input [(signature)]="signature" (signatureChange)="handle()"></signature-input>
+  </flex-col-item>
+  <flex-col-item class="signature-delete">
     <span (click)="onClickClearSignature()">{{
       'button.title.delete' | languageTransform: 'System' | async
     }}</span>

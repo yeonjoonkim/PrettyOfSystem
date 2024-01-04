@@ -11,7 +11,7 @@ import { UpdateClientInfoPageRoutingModule } from './update-client-info-routing.
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { UpdateClientInfoPage } from './update-client-info.page';
 import { UserInformationModule } from 'src/app/component/user/user-information/user-information.module';
-
+import { WaitingListStepperModule } from 'src/app/component/waiting-list/waiting-list-stepper/waiting-list-stepper.component.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -23,6 +23,7 @@ import { UserInformationModule } from 'src/app/component/user/user-information/u
     LanguageTransformPipeModule,
     UserInformationModule,
     SharedFormModule,
+    WaitingListStepperModule,
   ],
   declarations: [UpdateClientInfoPage],
 })

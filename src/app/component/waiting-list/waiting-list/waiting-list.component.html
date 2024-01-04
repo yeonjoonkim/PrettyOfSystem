@@ -1,4 +1,8 @@
 <flex-col *ngIf="logo$ && businessName$" class="business-detail">
+  <waiting-list-stepper
+    title="label.title.login"
+    [sessionId]="sessionId"
+    [disableStepper]="true"></waiting-list-stepper>
   <flex-col-item class="logo" [ngClass]="{ 'load-image': !imageLoaded }">
     <img [src]="logo$ | async" (load)="imageLoaded = true" />
   </flex-col-item>

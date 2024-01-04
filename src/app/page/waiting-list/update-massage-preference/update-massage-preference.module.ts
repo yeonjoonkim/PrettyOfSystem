@@ -16,6 +16,7 @@ import { DesktopVersionBodySelectorModule } from 'src/app/component/massage/desk
 import { ClientMassageBodySummaryModule } from 'src/app/component/massage/client-massage-body-summary/client-massage-body-summary.module';
 import { MassagePressureLevelSelectorModule } from 'src/app/component/massage/massage-pressure-level-selector/massage-pressure-level-selector.module';
 import { MassageDifficultChangePositionModule } from 'src/app/component/massage/massage-difficult-change-position/massage-difficult-change-position.module';
+import { WaitingListStepperModule } from 'src/app/component/waiting-list/waiting-list-stepper/waiting-list-stepper.component.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -31,6 +32,7 @@ import { MassageDifficultChangePositionModule } from 'src/app/component/massage/
     ClientMassageBodySummaryModule,
     MassagePressureLevelSelectorModule,
     MassageDifficultChangePositionModule,
+    WaitingListStepperModule,
   ],
   declarations: [UpdateMassagePreferencePage],
 })

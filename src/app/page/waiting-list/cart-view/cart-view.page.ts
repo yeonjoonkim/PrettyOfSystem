@@ -11,7 +11,7 @@ import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.se
 })
 export class CartViewPage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
-  private _sessionId: string | null = this._route.snapshot.paramMap.get('id');
+  public sessionId: string | null = this._route.snapshot.paramMap.get('id');
   public loaded$!: Observable<boolean>;
   public isLoading$!: Observable<boolean>;
   public cart$!: Observable<Cart | null>;
@@ -36,24 +36,24 @@ export class CartViewPage implements OnInit, OnDestroy {
     this._waitingList.start$
       .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(async ([start, login]) => {
-        const hasSessionId: boolean = typeof this._sessionId === 'string';
+        const hasSessionId: boolean = typeof this.sessionId === 'string';
         const navigateToWaitingList = !start && !login && hasSessionId;
         const validateSession = !start && login && hasSessionId;
         if (!hasSessionId) {
           this._router.navigateByUrl(`booking`);
         }
         if (navigateToWaitingList) {
-          this._router.navigateByUrl(`waiting-list/${this._sessionId}`);
+          this._router.navigateByUrl(`waiting-list/${this.sessionId}`);
         }
         if (validateSession) {
-          await this._waitingList.validateSession(this._sessionId);
+          await this._waitingList.validateSession(this.sessionId);
         }
         await this._waitingList.cart.start();
       });
   }
 
   async onClickGoback() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart`);
+    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart`);
   }
 
   public qty(cart: Cart | null) {
@@ -63,9 +63,9 @@ export class CartViewPage implements OnInit, OnDestroy {
   async onClickNext() {
     const hasOnlyCoupon = await firstValueFrom(this.hasOnlyCoupon$);
     if (!hasOnlyCoupon) {
-      await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/select-specialist-time`);
+      await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/select-specialist-time`);
     } else {
-      this._router.navigateByUrl(`/waiting-list/${this._sessionId}/confirmation`);
+      this._router.navigateByUrl(`/waiting-list/${this.sessionId}/confirmation`);
     }
   }
 

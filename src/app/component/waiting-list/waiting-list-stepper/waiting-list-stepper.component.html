@@ -1,0 +1,17 @@
+<flex-col class="stepper-container">
+  <flex-col-item *ngIf="!disableStepper">
+    <kendo-stepper
+      [steps]="steps"
+      stepType="full"
+      [(currentStep)]="currentIndex"
+      [linear]="false"
+      stepType="full"
+      (activate)="activate($event)"
+      (currentStepChange)="onChangeStep($event)">
+      <ng-template kendoStepperLabelTemplate let-step></ng-template>
+    </kendo-stepper>
+  </flex-col-item>
+  <flex-col-item *ngIf="description && description.length" class="stepper-description">
+    {{ description | languageTransform: 'System' | async }}
+  </flex-col-item>
+</flex-col>

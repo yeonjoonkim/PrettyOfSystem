@@ -11,7 +11,7 @@ import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.se
 })
 export class WaitingListPage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
-  private _sessionId: string | null = this._route.snapshot.paramMap.get('id');
+  public sessionId: string | null = this._route.snapshot.paramMap.get('id');
   public isValidated: boolean = false;
 
   public shopConfig$!: Observable<ShopConfigurationType | null>;
@@ -30,12 +30,12 @@ export class WaitingListPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    await this._waitngList.validateSession(this._sessionId);
+    await this._waitngList.validateSession(this.sessionId);
     this._waitngList.start$
       .pipe(combineLatestWith(this._waitngList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(([start, isLogin]) => {
         if (start && isLogin) {
-          this._router.navigateByUrl(`waiting-list/${this._sessionId}/update-client-info`);
+          this._router.navigateByUrl(`waiting-list/${this.sessionId}/update-client-info`);
         }
       });
     this._waitngList.start$

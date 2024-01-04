@@ -1,16 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
-import {
-  Subject,
-  filter,
-  takeUntil,
-  distinctUntilChanged,
-  switchMap,
-  map,
-  firstValueFrom,
-  combineLatestWith,
-} from 'rxjs';
+import { Subject, filter, takeUntil, distinctUntilChanged, map, firstValueFrom } from 'rxjs';
 import { WaitingListConsultService } from 'src/app/service/waiting-list/waiting-list-consult/waiting-list-consult.service';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 import { WaitingListConsultPrivateInsuranceRequestComponent } from './waiting-list-consult-private-insurance-request/waiting-list-consult-private-insurance-request.component';
@@ -22,6 +13,7 @@ import { WaitingListParentConfirmationComponent } from './waiting-list-parent-co
   styleUrls: ['./waiting-list-consult-confirmation.component.scss'],
 })
 export class WaitingListConsultConfirmationComponent implements OnInit, OnDestroy {
+  @Input() sessionId!: string;
   private _destroy$ = new Subject<void>();
 
   public prop$ = this._consult.prop().pipe(

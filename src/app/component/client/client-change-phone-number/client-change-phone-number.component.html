@@ -61,10 +61,14 @@
           title="label.title.dateofbrith"
           [displayNextDay]="0"
           [isDateOfBrith]="true"
-          [readOnly]="form.readOnly"
           [(date)]="criteria.dob"></date-picker>
       </flex-row-item>
     </flex-row>
+    <flex-col-item>
+      <button kendoButton [disabled]="!form.enabledSavebutton" (click)="onRequest()" class="request-up-btn">
+        {{ 'label.title.request' | languageTransform: 'System' | async }}
+      </button>
+    </flex-col-item>
   </flex-col>
   <flex-col *ngIf="!verifying && verified" class="modal-container">
     <flex-col-item class="email-verification-title">

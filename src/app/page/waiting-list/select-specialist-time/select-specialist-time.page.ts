@@ -22,7 +22,7 @@ import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.se
 })
 export class SelectSpecialistTimePage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
-  private _sessionId: string | null = this._route.snapshot.paramMap.get('id');
+  public sessionId: string | null = this._route.snapshot.paramMap.get('id');
   public loaded$: Observable<boolean> = this._waitingList.isLoaded$;
   public isLoading$: Observable<boolean> = this._waitingList.isLoading$;
 
@@ -54,28 +54,28 @@ export class SelectSpecialistTimePage implements OnInit, OnDestroy {
     this._waitingList.start$
       .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(async ([start, login]) => {
-        const hasSessionId: boolean = typeof this._sessionId === 'string';
+        const hasSessionId: boolean = typeof this.sessionId === 'string';
         const navigateToWaitingList = !start && !login && hasSessionId;
         const validateSession = !start && login && hasSessionId;
         if (!hasSessionId) {
           this._router.navigateByUrl(`booking`);
         }
         if (navigateToWaitingList) {
-          this._router.navigateByUrl(`waiting-list/${this._sessionId}`);
+          this._router.navigateByUrl(`waiting-list/${this.sessionId}`);
         }
         if (validateSession) {
-          await this._waitingList.validateSession(this._sessionId);
+          await this._waitingList.validateSession(this.sessionId);
         }
         await this._waitingList.cart.start();
       });
   }
 
   async onClickGoback() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/cart-view`);
+    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart-view`);
   }
 
   async onClickNext() {
-    await this._router.navigateByUrl(`/waiting-list/${this._sessionId}/confirmation`);
+    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/confirmation`);
   }
 
   ngOnDestroy() {

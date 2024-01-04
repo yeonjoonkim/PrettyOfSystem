@@ -8,6 +8,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" *ngIf="(loaded$ | async)">
+  <waiting-list-stepper
+    *ngIf="sessionId"
+    [sessionId]="sessionId"
+    title="label.title.personalinformation"></waiting-list-stepper>
   <div *ngIf="{isRelatedToMedicalService: isRelatedToMedicalService$ | async, client: client$ | async} as view">
     <div
       class="client-info-container"

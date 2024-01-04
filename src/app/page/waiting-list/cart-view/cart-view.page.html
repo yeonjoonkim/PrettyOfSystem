@@ -17,6 +17,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" *ngIf="loaded$ | async">
+  <waiting-list-stepper
+    *ngIf="sessionId"
+    [sessionId]="sessionId"
+    title="label.title.cartview"></waiting-list-stepper>
   <div class="client-info-container">
     <cart-check-out-list
       *ngIf="cart$ | async as cart"
