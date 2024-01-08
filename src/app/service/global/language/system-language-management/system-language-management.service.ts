@@ -15,12 +15,9 @@ import { ToastService } from '../../toast/toast.service';
 import { SystemLanguageAddService } from './system-language-add/system-language-add.service';
 import { LanguageTranslationPackageService } from '../../language-translation-package/language-translation-package.service';
 import { lastValueFrom } from 'rxjs';
-import getUserLocale from 'get-user-locale';
-const localeOption = {
-  useFallbackLocale: false,
-  fallbackLocale: 'en-US',
-};
-const currentLocale = getUserLocale(localeOption) === null ? 'en' : getUserLocale(localeOption);
+import { getUserLocale } from 'get-user-locale';
+
+const currentLocale = getUserLocale() === null ? 'en' : getUserLocale();
 @Injectable({
   providedIn: 'root',
 })
