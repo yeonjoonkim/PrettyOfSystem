@@ -4,13 +4,9 @@ import { SystemLanguageRepositoryService } from 'src/app/firebase/system-reposit
 import { ILanguageKey, LanguageSelectionType } from 'src/app/interface';
 import * as StorageKey from 'src/app/service/global/storage/storage.key';
 import { StorageService } from 'src/app/service/global/storage/storage.service';
-import getUserLocale from 'get-user-locale';
-const localeOption = {
-  useFallbackLocale: false,
-  fallbackLocale: 'en-US',
-};
+import { getUserLocale } from 'get-user-locale';
 
-const currentLocale = getUserLocale(localeOption) === null ? 'en' : getUserLocale(localeOption);
+const currentLocale = getUserLocale() === null ? 'en' : getUserLocale();
 
 @Injectable({
   providedIn: 'root',
