@@ -8,7 +8,6 @@ export const override = function (s: I.UserSettingType) {
   s.massage = massage(s?.massage);
   s.medical = medical(s?.medical);
   s.emergencyContact = emergencyContact(s?.emergencyContact);
-  s.parentSignature = parentSignature(s?.parentSignature);
   return s;
 };
 
@@ -78,8 +77,4 @@ const otherStatus = function (condition: I.ShopConfigurationLanguagePackageType 
 //EmergencyContact
 const emergencyContact = function (emergencyContact: I.UserSettingEmergencyContactType | undefined | null) {
   return emergencyContact !== null && emergencyContact !== undefined ? emergencyContact : null;
-};
-
-const parentSignature = function (signature: string | undefined | null) {
-  return typeof signature === 'string' ? signature : null;
 };

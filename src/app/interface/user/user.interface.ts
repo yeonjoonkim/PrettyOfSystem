@@ -89,7 +89,6 @@ export type UserSettingType = {
   massage: UserSettingMassageType;
   medical: UserSettingMedicalHistroyType;
   emergencyContact: UserSettingEmergencyContactType | null;
-  parentSignature: string | null;
 };
 
 export type UserSettingEmergencyContactType = {

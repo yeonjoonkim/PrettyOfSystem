@@ -96,7 +96,7 @@ export class WaitingListStepperService {
             const list =
               category.name === Constant.ShopCategoryTitle.MassageTheraphy && !hasOnlyCoupon
                 ? [login, clientInfo, massageOption, cart, cartView, specialistAndTime, confirmation]
-                : Constant.ShopCategoryTitle.MassageTheraphy && hasOnlyCoupon
+                : category.name === Constant.ShopCategoryTitle.MassageTheraphy && hasOnlyCoupon
                 ? [login, clientInfo, massageOption, cart, cartView, confirmation]
                 : !hasOnlyCoupon
                 ? [login, clientInfo, cart, cartView, specialistAndTime, confirmation]

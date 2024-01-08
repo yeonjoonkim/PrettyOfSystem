@@ -41,7 +41,6 @@ const status = function (status: I.ConsultStatusType | undefined | null): I.Cons
   return status !== undefined && status !== null
     ? status
     : {
-        syncId: T.string(''),
         type: Constant.Consult.StatusType.Cancel,
         description: Constant.Consult.StatusDescription.Cancel,
       };
@@ -115,7 +114,6 @@ const consultClient = function (c: I.ConsultClientInfoType | undefined | null): 
     isOver18: false,
     isPregrant: false,
     signature: '',
-    parentSignature: null,
     emergancyContact: null,
     privateInsurance:
       c?.privateInsurance !== undefined && c?.privateInsurance !== null ? c.privateInsurance : null,

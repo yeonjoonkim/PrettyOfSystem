@@ -1,5 +1,10 @@
 import { RoleConfigurationType } from '../system/role/role.interface';
-import { ShopOperatingDailyType, ShopOperatingHoursType, ShopWorkHoursType } from './shop.interface';
+import {
+  ShopOperatingBreakType,
+  ShopOperatingDailyType,
+  ShopOperatingHoursType,
+  ShopWorkHoursType,
+} from './shop.interface';
 import * as Constant from '../../constant/constant';
 import { IUserLoginOption, UserSettingType } from '../user/user.interface';
 import { NameValuePairType, StartEndStringDateType } from '../global/global.interface';
@@ -83,4 +88,5 @@ export type ShopEmployeeTimeSheetAvailableType = {
   start: string | null;
   end: string | null;
   isWorking: boolean;
+  breakTimes: ShopOperatingBreakType[];
 };

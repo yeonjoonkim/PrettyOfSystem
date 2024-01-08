@@ -41,7 +41,7 @@ export class ConfirmationPage implements OnInit, OnDestroy {
     ),
     switchMap(([start, hasOnlyCoupon, session]) => {
       if (start && !hasOnlyCoupon && session) {
-        return this._consult.getConsult(session.id);
+        return this._consult.newConsult();
       } else {
         return of(null);
       }

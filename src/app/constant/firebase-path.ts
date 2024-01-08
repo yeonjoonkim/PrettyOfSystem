@@ -78,6 +78,7 @@ export const ShopExtra = (shopId: string): string => `shop/${shopId}/extra/`;
 export const ShopPackage = (shopId: string): string => `shop/${shopId}/package/`;
 export const ShopCoupon = (shopId: string): string => `shop/${shopId}/coupon/`;
 export const ShopConsult = (shopId: string): string => `shop/${shopId}/consult/`;
+export const ShopConsultStatusSync = (shopId: string): string => `shop/${shopId}/consultSyncStatus/`;
 export const ShopTransaction = (shopId: string): string => `shop/${shopId}/transaction/`;
 
 export const ShopLogo = (shopId: string, file: File): string =>

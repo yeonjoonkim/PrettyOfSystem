@@ -22,7 +22,7 @@
     </yes-no-selection-group>
   </flex-col-item>
   <flex-col-item>
-    <button kendoButton [disabled]="!(validator$ | async)">
+    <button kendoButton [disabled]="!(disableRequestBtn$ | async)">
       {{ 'label.title.request' | languageTransform: 'System' | async }}
     </button>
   </flex-col-item>

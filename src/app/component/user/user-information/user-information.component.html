@@ -15,8 +15,5 @@
       *ngIf="user.gender !== 'Male'"
       [pregnancyDueDate]="user.setting.pregnancyDueDate"></user-pregrancy-due-date>
     <user-signature [signature]="user.signature" *ngIf="isRequiredSignature"></user-signature>
-    <user-parent-signature
-      [signature]="user.setting.parentSignature"
-      *ngIf="isRequiredSignature && !(isOver18$ | async)"></user-parent-signature>
   </flex-col>
 </flex-row>

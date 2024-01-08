@@ -1,11 +1,22 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
-import { Subject, filter, takeUntil, distinctUntilChanged, map, firstValueFrom } from 'rxjs';
+import {
+  Subject,
+  filter,
+  takeUntil,
+  distinctUntilChanged,
+  map,
+  firstValueFrom,
+  switchMap,
+  combineLatestWith,
+  of,
+} from 'rxjs';
 import { WaitingListConsultService } from 'src/app/service/waiting-list/waiting-list-consult/waiting-list-consult.service';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 import { WaitingListConsultPrivateInsuranceRequestComponent } from './waiting-list-consult-private-insurance-request/waiting-list-consult-private-insurance-request.component';
 import { WaitingListParentConfirmationComponent } from './waiting-list-parent-confirmation/waiting-list-parent-confirmation.component';
+import { GlobalService } from 'src/app/service/global/global.service';
 
 @Component({
   selector: 'waiting-list-consult-confirmation',
@@ -26,18 +37,16 @@ export class WaitingListConsultConfirmationComponent implements OnInit, OnDestro
     .privateInsurance()
     .pipe(map(privateInsurance => privateInsurance !== null));
 
-  public hasParentConsent$ = this._consult
-    .parentconsent()
-    .pipe(
-      map(consent =>
-        consent !== null
-          ? consent.emergancyContact !== null &&
-            consent.parentSignature !== null &&
-            consent.parentSignature.length > 0 &&
-            !consent.isOver18
-          : false
-      )
-    );
+  public hasParentConsent$ = this._consult.consult$.pipe(
+    combineLatestWith(this._consult.parentConsent$),
+    switchMap(([consult, parentConsent]) => {
+      if (consult !== null) {
+        return of(!consult.client.isOver18 && parentConsent);
+      } else {
+        return of(false);
+      }
+    })
+  );
 
   private _hasOpenPopover: boolean = false;
 
@@ -45,7 +54,8 @@ export class WaitingListConsultConfirmationComponent implements OnInit, OnDestro
     private _consult: WaitingListConsultService,
     private _waitingList: WaitingListService,
     private _router: Router,
-    private _popoverCtrl: PopoverController
+    private _popoverCtrl: PopoverController,
+    private _global: GlobalService
   ) {}
 
   async ngOnInit() {
@@ -63,6 +73,49 @@ export class WaitingListConsultConfirmationComponent implements OnInit, OnDestro
         );
       }
     });
+
+    this._waitingList.client.isOver18$
+      .pipe(
+        combineLatestWith(this.hasParentConsent$, this.prop$),
+        takeUntil(this._destroy$),
+        filter(
+          ([isOver18, hasParentConsent, prop]) =>
+            typeof isOver18 === 'boolean' &&
+            !isOver18 &&
+            typeof hasParentConsent === 'boolean' &&
+            !hasParentConsent &&
+            prop !== null
+        ),
+        map(([isOver18, hasParentConsent]) => !isOver18 && !hasParentConsent),
+        distinctUntilChanged()
+      )
+      .subscribe(async needParentConsent => {
+        if (needParentConsent) {
+          await this.displayParentConfirmation();
+        }
+      });
+    this._waitingList
+      .isAvailableTime()
+      .pipe(
+        combineLatestWith(this._waitingList.startSessionShopId$),
+        takeUntil(this._destroy$),
+        filter(
+          ([isAvailableTime, sessionId]) =>
+            typeof isAvailableTime === 'boolean' &&
+            typeof sessionId === 'string' &&
+            !isAvailableTime &&
+            sessionId !== null &&
+            sessionId.length > 0
+        ),
+        distinctUntilChanged()
+      )
+      .subscribe(async ([isAvailable, sessionId]) => {
+        if (!isAvailable && sessionId !== null) {
+          await this.presentUnavailableTime();
+          this._waitingList.cart.resetTime();
+          this._router.navigateByUrl(`waiting-list/${sessionId}/select-specialist-time`);
+        }
+      });
   }
 
   public async deleteInsuranceFromCart() {
@@ -112,5 +165,10 @@ export class WaitingListConsultConfirmationComponent implements OnInit, OnDestro
         this._hasOpenPopover = false;
       }
     }
+  }
+
+  public async presentUnavailableTime() {
+    const msg = await this._global.language.transform('messagefail.description.selectedtimeisnotavailablenow');
+    await this._global.toast.presentError(msg);
   }
 }

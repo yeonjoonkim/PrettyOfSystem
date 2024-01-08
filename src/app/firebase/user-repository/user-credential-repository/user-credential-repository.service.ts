@@ -317,7 +317,6 @@ export class UserCredentialRepositoryService {
           areas: [],
         },
         emergencyContact: null,
-        parentSignature: null,
       },
       loginOption: { phoneNumber: true, email: false },
       phoneNumber: '',

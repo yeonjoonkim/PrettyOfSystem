@@ -95,6 +95,10 @@ export class WaitingListCartService {
     return this._cart.selectedSpecialist();
   }
 
+  public async resetTime() {
+    await this._cart.resetSelectTime();
+  }
+
   public async updateTime(shopId: string, startTime: string) {
     await this._cart.updateSelectTime(shopId, startTime);
   }

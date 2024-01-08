@@ -211,9 +211,11 @@ export class WaitngListShopService {
     );
   }
 
-  public getCartCriteriaValueChangeListener(clientId: string) {
+  public getCartCriteriaValueChangeListener(isPregnant: boolean) {
     return combineLatest([this.coupons(), this.services(), this.packages(), this.config$]).pipe(
       map(([coupons, services, packages, config]) => {
+        services = isPregnant ? services : services.filter(s => !s.recommandForPregnant);
+        packages = isPregnant ? packages : packages.filter(s => !s.recommandForPregnant);
         const result: WaitingListShopCartCriteriaType = {
           buttons: this._button.get(coupons, packages, services),
           coupons: coupons,
