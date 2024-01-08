@@ -70,27 +70,6 @@ export const getPregrancyUsers = async function () {
   }
 };
 
-export const getUnderAgeUsers = async function () {
-  const snapshots = await firestore()
-    .collection(Db.Context.User)
-    .where('setting.parentSignature', '!=', null)
-    .get();
-  try {
-    if (!snapshots.empty) {
-      return snapshots.docs.map(doc => {
-        let data = doc.data() as I.IUser;
-        data.setting = Service.Override.User.Setting.override(data.setting);
-        return data;
-      });
-    } else {
-      return [] as I.IUser[];
-    }
-  } catch (error) {
-    logger.error(error);
-    return [] as I.IUser[];
-  }
-};
-
 export const updateSelectedUser = async function (user: I.IUser) {
   const documentation = firestore().collection(Db.Context.User).doc(user.id);
   const data = await documentation.get();

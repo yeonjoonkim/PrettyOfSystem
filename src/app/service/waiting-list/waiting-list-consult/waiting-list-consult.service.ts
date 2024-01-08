@@ -1,5 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest, filter, map, of, switchMap, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  combineLatest,
+  combineLatestWith,
+  filter,
+  map,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
 import {
   Cart,
   ConsultClientInfoType,
@@ -13,18 +23,24 @@ import {
 import { GlobalService } from '../../global/global.service';
 import { WaitingListService } from '../waiting-list.service';
 import * as Constant from 'src/app/constant/constant';
+import { ShopConsultRepositoryService } from 'src/app/firebase/shop-repository/shop-consult-repository/shop-consult-repository.service';
 @Injectable({
   providedIn: 'root',
 })
 export class WaitingListConsultService {
   private _consult = new BehaviorSubject<ConsultDocumentType | null>(null);
   private _consent = new BehaviorSubject<UserVisitShopConsentType | null>(null);
+  private _parentConsent = new BehaviorSubject<boolean>(false);
   public consult$: Observable<ConsultDocumentType | null> = this._consult.asObservable();
   public consent$: Observable<UserVisitShopConsentType | null> = this._consent.asObservable();
+  public parentConsent$: Observable<boolean> = this._parentConsent.asObservable();
+
+  public isFirstVisit$: Observable<boolean> = this.isFirstVisit();
 
   constructor(
     private _waitingList: WaitingListService,
-    private _global: GlobalService
+    private _global: GlobalService,
+    private _consultRepo: ShopConsultRepositoryService
   ) {}
 
   public value() {
@@ -47,23 +63,6 @@ export class WaitingListConsultService {
       switchMap(consult => {
         if (consult !== null) {
           return of(consult.client.privateInsurance);
-        } else {
-          return of(null);
-        }
-      })
-    );
-  }
-
-  public parentconsent() {
-    return this.consult$.pipe(
-      filter(consult => consult !== null),
-      switchMap(consult => {
-        if (consult !== null) {
-          return of({
-            isOver18: consult.client.isOver18,
-            emergancyContact: consult.client.emergancyContact,
-            parentSignature: consult.client.parentSignature,
-          });
         } else {
           return of(null);
         }
@@ -113,14 +112,14 @@ export class WaitingListConsultService {
     }
   }
 
-  public updateParentConsent(emergancyContact: UserSettingEmergencyContactType, parentSignature: string) {
+  public updateParentConsent(emergancyContact: UserSettingEmergencyContactType) {
     const value = this.value();
     if (value !== null) {
       emergancyContact.lastName = this._global.textTransform.getTitleFormat(emergancyContact.lastName);
       emergancyContact.firstName = this._global.textTransform.getTitleFormat(emergancyContact.firstName);
       value.client.emergancyContact = emergancyContact;
-      value.client.parentSignature = parentSignature;
       this._consult.next(value);
+      this._parentConsent.next(true);
     }
   }
 
@@ -196,7 +195,6 @@ export class WaitingListConsultService {
       isOver18: this._global.date.isOver18(client.dob),
       isPregrant: false,
       signature: client.signature !== null ? client.signature : '',
-      parentSignature: client.setting.parentSignature,
       emergancyContact: client.setting.emergencyContact,
       privateInsurance: client.setting.privateInsurance,
       medicalHistory: client.setting.medical,
@@ -236,13 +234,10 @@ export class WaitingListConsultService {
 
   public validator() {
     return this.consult$.pipe(
-      switchMap(consult => {
+      combineLatestWith(this.parentConsent$),
+      switchMap(([consult, parentConsent]) => {
         if (consult !== null) {
-          const underAgeRequirements = !consult.client.isOver18
-            ? consult.client.parentSignature !== null &&
-              consult.client.parentSignature.length > 0 &&
-              consult.client.emergancyContact !== null
-            : true;
+          const underAgeRequirements = !consult.client.isOver18 ? parentConsent : true;
 
           const insuranceRequirements = consult.isInsuranceClaimRequest
             ? consult.client.privateInsurance !== null
@@ -265,6 +260,40 @@ export class WaitingListConsultService {
     }
   }
 
+  public isFirstVisit() {
+    return combineLatest([
+      this._waitingList.start$,
+      this._waitingList.shop.config$,
+      this._waitingList.client.info$,
+    ]).pipe(
+      filter(([start, config, client]) => start !== null && start && config !== null && client !== null),
+      switchMap(([start, config, client]) => {
+        if (start && config && client) {
+          return this._consultRepo.isFirstVisit(config.id, client.id);
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
+  public isAvailableDateTime() {
+    return this.consult$.pipe(
+      filter(consult => consult !== null),
+      switchMap(consult => {
+        if (consult !== null) {
+          if (consult.associatedEmployee.id.length > 0) {
+            return of(true);
+          } else {
+            return of(true);
+          }
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
   public prop() {
     return combineLatest([
       this._waitingList.start$,
@@ -275,7 +304,7 @@ export class WaitingListConsultService {
       this._waitingList.cart.hasInsurance(),
       this._waitingList.client.isOver18$,
       this._waitingList.client.isPregrant$,
-      this._waitingList.isFirstVisit$,
+      this.isFirstVisit$,
       this._waitingList.cart.isAnyone(),
       this._waitingList.shop.isDepositRequired(),
       this._waitingList.consent$,
@@ -349,22 +378,7 @@ export class WaitingListConsultService {
     );
   }
 
-  private test(id: string): Observable<ConsultDocumentType | null> {
-    return of(null);
-  }
-  public getConsult(id: string): Observable<ConsultDocumentType | null> {
-    return this.test(id).pipe(
-      switchMap(document => {
-        if (document !== null) {
-          return of(document);
-        } else {
-          return this.newConsult(id);
-        }
-      })
-    );
-  }
-
-  public newConsult(sessionId: string) {
+  public newConsult() {
     return combineLatest([
       this._waitingList.start$,
       this._waitingList.shop.config$,
@@ -374,7 +388,7 @@ export class WaitingListConsultService {
       this._waitingList.cart.hasInsurance(),
       this._waitingList.client.isOver18$,
       this._waitingList.client.isPregrant$,
-      this._waitingList.isFirstVisit$,
+      this.isFirstVisit$,
       this._waitingList.shop.isDepositRequired(),
     ]).pipe(
       filter(
@@ -421,7 +435,7 @@ export class WaitingListConsultService {
         ]) => {
           if (start && shopConfig && cart && client) {
             const newConsult: ConsultDocumentType = {
-              id: sessionId,
+              id: this._global.newId(),
               origin: {
                 type: Constant.Consult.OriginType.WaitingList,
                 description: Constant.Consult.OriginDescription.WaitingList,
@@ -432,7 +446,6 @@ export class WaitingListConsultService {
               shopId: shopConfig.id,
               shopTimezone: shopConfig.timezone,
               status: {
-                syncId: this._global.newId(),
                 type: Constant.Consult.StatusType.Pending,
                 description: Constant.Consult.StatusDescription.Pending,
               },
@@ -471,7 +484,6 @@ export class WaitingListConsultService {
                 isOver18: isClientOver18,
                 isPregrant: isClientPregrant,
                 signature: client.signature !== null ? client.signature : '',
-                parentSignature: client.setting.parentSignature,
                 emergancyContact: client.setting.emergencyContact,
                 privateInsurance: client.setting.privateInsurance,
                 medicalHistory: client.setting.medical,

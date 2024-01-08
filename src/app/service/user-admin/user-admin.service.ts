@@ -98,7 +98,6 @@ export class UserAdminService {
         },
       },
       emergencyContact: null,
-      parentSignature: null,
     };
   }
 

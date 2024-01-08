@@ -6,18 +6,11 @@ import {
   combineLatestWith,
   distinctUntilChanged,
   filter,
-  firstValueFrom,
   map,
   of,
   switchMap,
-  take,
 } from 'rxjs';
-import {
-  UserSettingEmergencyContactType,
-  UserSettingPrivateInsuranceType,
-  UserVisitShopConsentType,
-  WaitingListSessionType,
-} from 'src/app/interface';
+import { ConsultScheduleTimeType, UserVisitShopConsentType, WaitingListSessionType } from 'src/app/interface';
 import { LanguageService } from '../global/language/language.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../global/toast/toast.service';
@@ -28,8 +21,7 @@ import { WaitingListCartService } from './waiting-list-cart/waiting-list-cart.se
 import { Cart } from 'src/app/interface/booking/cart/cart.interface';
 import { EmployeeService } from '../employee/employee.service';
 import { DateService } from '../global/date/date.service';
-import { cloneDeep } from 'lodash-es';
-import { TextTransformService } from '../global/text-transform/text-transform.service';
+import { ShopConsultRepositoryService } from 'src/app/firebase/shop-repository/shop-consult-repository/shop-consult-repository.service';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +38,6 @@ export class WaitingListService {
   public isLoaded$!: Observable<boolean>;
   public cart$!: Observable<Cart | null>;
   public consent$: Observable<UserVisitShopConsentType | null> = of(null);
-  public isFirstVisit$: Observable<boolean> = of(true);
 
   constructor(
     public shop: WaitngListShopService,
@@ -57,8 +48,8 @@ export class WaitingListService {
     private _toaster: ToastService,
     private _language: LanguageService,
     private _employee: EmployeeService,
-    private _date: DateService,
-    private _textTransform: TextTransformService
+    private _consultRepo: ShopConsultRepositoryService,
+    private _date: DateService
   ) {
     this.shop.config$ = this.shop.shopConfigurationValueListener(this.startSessionShopId$);
     this.startWaitingList();
@@ -100,6 +91,24 @@ export class WaitingListService {
     );
   }
 
+  public isAvailableTime() {
+    return combineLatest([this.start$, this.cart.cart$]).pipe(
+      filter(([start, cart]) => start === true && cart !== null),
+      switchMap(([start, cart]) => {
+        if (start && cart !== null && cart.selectedTime !== null) {
+          return this._consultRepo.isAvailableDateTime(
+            cart.shopId,
+            cart.specialist.id,
+            cart.selectedTime.start,
+            cart.selectedTime.end
+          );
+        } else {
+          return of(true);
+        }
+      })
+    );
+  }
+
   public async invalidSessionId() {
     const errorMsg = await this._language.transform('messagefail.title.accessdenied');
     await this._toaster.presentError(errorMsg);
@@ -118,6 +127,21 @@ export class WaitingListService {
           return of(true);
         } else {
           return of(null);
+        }
+      })
+    );
+  }
+
+  private todayConsults() {
+    return this.start$.pipe(
+      combineLatestWith(this.shop.config$, this.cart$),
+      filter(([start, config, cart]) => cart !== null && start === true && config !== null),
+      switchMap(([start, config, cart]) => {
+        if (start && config && cart) {
+          const today = this._date.startDay(cart.dateTime);
+          return this._consultRepo.getScheduledConsultsForDayValueChangeListener(today, config.id);
+        } else {
+          return of([]);
         }
       })
     );
@@ -177,21 +201,34 @@ export class WaitingListService {
 
   public selectTodaySpecialistTime() {
     return this.todaySpecialists().pipe(
-      combineLatestWith(this.cart$, this.shop.config$),
+      combineLatestWith(this.cart$, this.shop.config$, this.todayConsults()),
       filter(([specialists, cart, config]) => specialists !== null && cart !== null && config !== null),
-      switchMap(([specialists, cart, config]) => {
+      switchMap(([specialists, cart, config, consults]) => {
         if (specialists && cart && config) {
           const today = this._date.startDay(this._date.shopNow(config.timezone));
           const specialist = specialists.find(s => s.employeeId === cart.specialist.id);
           if (specialist !== undefined && specialist.employeeId.length > 0) {
             const availableTimeSheet = specialist.avaliable.find(a => a.date === today);
-            const timeSheet = this._employee.timeSheet.availableTodayTimeSheet(
+            const timeSheet = this._employee.timeSheet.getAvailableTimeSheet(
               availableTimeSheet,
               config.timezone,
               today
             );
-            //TODO - Simulate the Available Time;
-            return of(this._employee.timeSheet.simulateTimeSheet(timeSheet, cart));
+            const leftOverTimeSheet = this._employee.timeSheet.simulateTimeSheetByCheckOut(
+              timeSheet,
+              cart.totalMin,
+              cart.checkout
+            );
+            const scheduleTime = consults
+              .filter(consult => consult.associatedEmployee.id === specialist.employeeId)
+              .filter(consult => consult.scheduled !== null)
+              .map(c => c.scheduled as ConsultScheduleTimeType);
+
+            const available = this._employee.timeSheet.deleteUnavailableTimeByConsult(
+              leftOverTimeSheet,
+              scheduleTime
+            );
+            return of(available);
           } else {
             const anyoneTimeSheet = this._employee.timeSheet.anyoneTimeSheet(
               config.id,
@@ -200,13 +237,15 @@ export class WaitingListService {
               config.operatingHours
             );
             const availableTimeSheet = anyoneTimeSheet.avaliable.find(a => a.date === today);
-            const timeSheet = this._employee.timeSheet.availableTodayTimeSheet(
+            const timeSheet = this._employee.timeSheet.getAvailableTimeSheet(
               availableTimeSheet,
               config.timezone,
               today
             );
 
-            return of(this._employee.timeSheet.simulateTimeSheet(timeSheet, cart));
+            return of(
+              this._employee.timeSheet.simulateTimeSheetByCheckOut(timeSheet, cart.totalMin, cart.checkout)
+            );
           }
         } else {
           return of(null);

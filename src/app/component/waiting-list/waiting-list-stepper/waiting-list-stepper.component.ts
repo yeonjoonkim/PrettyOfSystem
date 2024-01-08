@@ -40,12 +40,6 @@ export class WaitingListStepperComponent implements OnInit, OnDestroy {
         this.steps = stepper;
         this.setCurrentStepper();
       });
-
-    this._router.events.pipe(takeUntil(this._destroy$)).subscribe(change => {
-      if (change instanceof NavigationEnd) {
-        this.setCurrentStepper();
-      }
-    });
   }
 
   onChangeStep(index: number) {

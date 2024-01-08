@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DateService } from '../../global/date/date.service';
 import {
+  ConsultScheduleTimeType,
   ShopEmployeeManagementUserType,
   ShopEmployeeTimeSheet,
   ShopEmployeeTimeSheetAvailableType,
@@ -10,7 +11,7 @@ import {
   TimeItemType,
 } from 'src/app/interface';
 import * as Constant from 'src/app/constant/constant';
-import { Cart } from 'src/app/interface/booking/cart/cart.interface';
+import { Cart, CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -50,9 +51,13 @@ export class EmployeeTimeSheetService {
       avaliable: [...thisWeek],
     };
   }
-  public simulateTimeSheet(timeSheet: ShopEmployeeTimeSheetAvailableType, cart: Cart) {
-    const lastAvailableTime = timeSheet.end !== null ? this._date.addMin(timeSheet.end, -cart.totalMin) : null;
-    const limitedTimes = cart.checkout
+  public simulateTimeSheetByCheckOut(
+    timeSheet: ShopEmployeeTimeSheetAvailableType,
+    consultMin: number,
+    checkouts: CheckOutItem[]
+  ) {
+    const lastAvailableTime = timeSheet.end !== null ? this._date.addMin(timeSheet.end, -consultMin) : null;
+    const limitedTimes = checkouts
       .filter(c => c.limitedTime !== null && c.limitedTime)
       .map(c => c.limitedTime as ShopPackageLimitedTime)
       .map(c => {
@@ -64,10 +69,34 @@ export class EmployeeTimeSheetService {
     timeSheet.times =
       lastAvailableTime !== null ? timeSheet.times.filter(time => time < lastAvailableTime) : timeSheet.times;
 
+    const breakTimes: { start: string; end: string }[] = timeSheet.breakTimes.map(bt => {
+      return this.getStartEnd(timeSheet.date, bt.start, bt.end);
+    });
+
     if (limitedTimes.length > 0) {
       for (let limitedTime of limitedTimes) {
         timeSheet.times = timeSheet.times.filter(time => {
           return time >= limitedTime.start && time <= limitedTime.end;
+        });
+      }
+    }
+
+    timeSheet.times = timeSheet.times.filter(startTime => {
+      const endTime = this._date.addMin(startTime, consultMin);
+      const isOverlap = breakTimes.some(bt => startTime < bt.end && endTime > bt.start);
+      return !isOverlap;
+    });
+    return timeSheet;
+  }
+
+  public deleteUnavailableTimeByConsult(
+    timeSheet: ShopEmployeeTimeSheetAvailableType,
+    scheduledTime: ConsultScheduleTimeType[]
+  ) {
+    if (scheduledTime.length > 0) {
+      for (const scheduled of scheduledTime) {
+        timeSheet.times = timeSheet.times.filter(time => {
+          return time >= scheduled.startDateTime && time <= scheduled.endDateTime;
         });
       }
     }
@@ -108,17 +137,21 @@ export class EmployeeTimeSheetService {
     };
   }
 
-  public availableTodayTimeSheet(
+  public getAvailableTimeSheet(
     available: ShopEmployeeTimeSheetAvailableType | undefined,
     timezone: Constant.TimeZoneType,
-    today: string
+    date: string
   ) {
     if (available !== undefined) {
       const currentDateTime = this._date.transform.formatLocalDateTime(this._date.shopNow(timezone));
-      available.times = available.times.filter(time => currentDateTime < time);
+      const startOfCurrentDate = this._date.startDay(currentDateTime);
+
+      if (date === startOfCurrentDate) {
+        available.times = available.times.filter(time => currentDateTime < time);
+      }
       return available;
     } else {
-      return { date: today, times: [] as string[], isWorking: false, start: null, end: null };
+      return { date: date, times: [] as string[], isWorking: false, start: null, end: null, breakTimes: [] };
     }
   }
 
@@ -131,6 +164,7 @@ export class EmployeeTimeSheetService {
     const startTime = this.getStartTime(date, roster);
     const endTime = this.getEndTime(date, roster);
     const is24Hours = startTime !== null && endTime !== null ? this.is24Hours(startTime, endTime) : false;
+    const breakTimes = this.getBreakTimes(date, roster);
     return {
       date: date,
       times: availableTime,
@@ -142,6 +176,7 @@ export class EmployeeTimeSheetService {
           : endTime !== null && !is24Hours
           ? this._date.transform.formatByTimeItem(date, endTime)
           : null,
+      breakTimes: breakTimes !== null ? breakTimes : [],
     };
   }
 
@@ -182,6 +217,26 @@ export class EmployeeTimeSheetService {
         return roster.fri.isOpen ? roster.fri.operatingHours.openTime : null;
       case Constant.Date.DayIndex.Sat:
         return roster.sat.isOpen ? roster.sat.operatingHours.openTime : null;
+    }
+  }
+
+  private getBreakTimes(date: string, roster: ShopWorkHoursType) {
+    const day = this._date.getDay(date);
+    switch (day) {
+      case Constant.Date.DayIndex.Sun:
+        return roster.sun.isOpen ? roster.sun.breakTimes : null;
+      case Constant.Date.DayIndex.Mon:
+        return roster.mon.isOpen ? roster.mon.breakTimes : null;
+      case Constant.Date.DayIndex.Tue:
+        return roster.tue.isOpen ? roster.tue.breakTimes : null;
+      case Constant.Date.DayIndex.Wed:
+        return roster.wed.isOpen ? roster.wed.breakTimes : null;
+      case Constant.Date.DayIndex.Thu:
+        return roster.thu.isOpen ? roster.thu.breakTimes : null;
+      case Constant.Date.DayIndex.Fri:
+        return roster.fri.isOpen ? roster.fri.breakTimes : null;
+      case Constant.Date.DayIndex.Sat:
+        return roster.sat.isOpen ? roster.sat.breakTimes : null;
     }
   }
 

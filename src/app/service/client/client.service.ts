@@ -30,7 +30,7 @@ export class ClientService {
   public privateInsurance$!: Observable<UserSettingPrivateInsuranceType | null>;
   public emergencyContact$!: Observable<UserSettingEmergencyContactType | null>;
   public signature$!: Observable<string | null>;
-  public parentSignature$!: Observable<string | null>;
+
   constructor(
     public modal: ClientModalService,
     public global: GlobalService,
@@ -51,7 +51,6 @@ export class ClientService {
     this.privateInsurance();
     this.signature();
     this.emergencyContact();
-    this.parentSignature();
   }
 
   public async createAccount(u: IUser) {
@@ -141,18 +140,6 @@ export class ClientService {
       switchMap(user => {
         if (user !== null) {
           return of(user.signature);
-        } else {
-          return of(null);
-        }
-      })
-    );
-  }
-
-  private parentSignature() {
-    this.parentSignature$ = this.info$.pipe(
-      switchMap(user => {
-        if (user !== null) {
-          return of(user.setting.parentSignature);
         } else {
           return of(null);
         }

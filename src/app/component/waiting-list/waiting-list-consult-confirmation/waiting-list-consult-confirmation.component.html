@@ -41,6 +41,12 @@
     <flex-col-item>
       <legend class="title parent-consent-title">
         {{ 'label.title.parentconsent' | languageTransform: 'System' | async }}
+        <span *ngIf="!(hasParentConsent$ | async)"
+          >({{ 'placeholder.title.required' | languageTransform: 'System' | async }})</span
+        >
+        <span *ngIf="hasParentConsent$ | async"
+          >({{ 'placeholder.title.provided' | languageTransform: 'System' | async }})</span
+        >
       </legend>
     </flex-col-item>
     <flex-row-item class="insurance-btns">
@@ -56,7 +62,7 @@
         class="update-btn"
         *ngIf="hasParentConsent$ | async"
         (click)="displayParentConfirmation()">
-        {{ 'label.title.edit' | languageTransform: 'System' | async }}
+        {{ 'label.title.view' | languageTransform: 'System' | async }}
       </button>
     </flex-row-item>
   </flex-col>
@@ -68,6 +74,12 @@
     <flex-col-item>
       <legend class="title insurance-title">
         {{ 'label.title.insuranceclaimmandatoryfield' | languageTransform: 'System' | async }}
+        <span *ngIf="!(hasPrivateInsurance$ | async)"
+          >({{ 'placeholder.title.required' | languageTransform: 'System' | async }})</span
+        >
+        <span *ngIf="hasPrivateInsurance$ | async"
+          >({{ 'placeholder.title.provided' | languageTransform: 'System' | async }})</span
+        >
       </legend>
     </flex-col-item>
     <flex-row-item class="insurance-btns">
@@ -83,7 +95,7 @@
         class="update-btn"
         *ngIf="hasPrivateInsurance$ | async"
         (click)="displayPrivateInsurance()">
-        {{ 'label.title.edit' | languageTransform: 'System' | async }}
+        {{ 'label.title.view' | languageTransform: 'System' | async }}
       </button>
     </flex-row-item>
     <flex-col-item>

@@ -19,12 +19,12 @@ export class CartPage implements OnInit, OnDestroy {
   public client$!: Observable<IUser | null>;
   public cart$: Observable<Cart | null> = this._waitingList.cart$;
   public category$: Observable<ShopCategoryType | null> = this._waitingList.shop.category();
-  public criteria$: Observable<WaitingListShopCartCriteriaType | null> = this._waitingList.client.id$.pipe(
-    combineLatestWith(this._waitingList.start$),
-    filter(([id, start]) => typeof id === 'string' && start !== null && start),
-    switchMap(([id, _]) => {
-      if (typeof id === 'string') {
-        return this._waitingList.shop.getCartCriteriaValueChangeListener(id);
+  public criteria$: Observable<WaitingListShopCartCriteriaType | null> = this._waitingList.start$.pipe(
+    combineLatestWith(this._waitingList.client.info$),
+    filter(([start, info]) => start !== null && start && info !== null),
+    switchMap(([_, info]) => {
+      if (_ && info) {
+        return this._waitingList.shop.getCartCriteriaValueChangeListener(info.setting.pregnancyDueDate !== null);
       } else {
         return of(null);
       }

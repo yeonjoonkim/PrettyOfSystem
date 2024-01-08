@@ -15,7 +15,6 @@ export class WaitingListParentConfirmationComponent implements OnInit, OnDestroy
   public form!: IFormHeaderModalProp;
   private _destroy$ = new Subject<void>();
 
-  public signature!: string;
   public emergancyContact!: UserSettingEmergencyContactType;
   public enableUpdateRequestButton: boolean = false;
 
@@ -23,7 +22,6 @@ export class WaitingListParentConfirmationComponent implements OnInit, OnDestroy
     firstName: false,
     lastName: false,
     phoneNumber: false,
-    signature: false,
   };
 
   constructor(
@@ -36,16 +34,12 @@ export class WaitingListParentConfirmationComponent implements OnInit, OnDestroy
   }
 
   public handle() {
-    this.validator.signature = this.signature.length > 0;
     this.enableUpdateRequestButton =
-      this.validator.firstName &&
-      this.validator.lastName &&
-      this.validator.phoneNumber &&
-      this.validator.signature;
+      this.validator.firstName && this.validator.lastName && this.validator.phoneNumber;
   }
 
   public async OnClickSave() {
-    this._consult.updateParentConsent(this.emergancyContact, this.signature);
+    this._consult.updateParentConsent(this.emergancyContact);
     await this._popoverCtrl.dismiss();
   }
 
@@ -53,14 +47,8 @@ export class WaitingListParentConfirmationComponent implements OnInit, OnDestroy
     await this._popoverCtrl.dismiss();
   }
 
-  public onClickClearSignature() {
-    this.signature = '';
-    this.handle();
-  }
-
   ngOnInit() {
-    this._consult
-      .parentconsent()
+    this._consult.consult$
       .pipe(
         take(1),
         filter(consult => consult !== null)
@@ -68,14 +56,13 @@ export class WaitingListParentConfirmationComponent implements OnInit, OnDestroy
       .subscribe(consult => {
         if (consult !== null) {
           this.emergancyContact =
-            consult.emergancyContact !== null
-              ? consult.emergancyContact
+            consult.client.emergancyContact !== null
+              ? consult.client.emergancyContact
               : {
                   firstName: '',
                   lastName: '',
                   phoneNumber: '',
                 };
-          this.signature = consult.parentSignature !== null ? consult.parentSignature : '';
           this.handle();
         }
       });

@@ -7,9 +7,10 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatest, combineLatestAll, map, takeUntil } from 'rxjs';
 import { UserVisitShopConsentType } from 'src/app/interface';
 import { WaitingListConsultService } from 'src/app/service/waiting-list/waiting-list-consult/waiting-list-consult.service';
+import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
 
 @Component({
   selector: 'waiting-list-consult-agreement',
@@ -23,10 +24,21 @@ export class WaitingListConsultAgreementComponent implements OnInit, OnChanges, 
   @Input() clientConsent!: UserVisitShopConsentType | null;
 
   public validator$: Observable<boolean> = this._consult.validator();
+  public isAvailableTime$: Observable<boolean> = this._waitingList.isAvailableTime();
+
   public agreement: boolean = false;
   public requesting: boolean = false;
 
-  constructor(private _consult: WaitingListConsultService) {}
+  public disableRequestBtn$: Observable<boolean> = combineLatest([this.validator$, this.isAvailableTime$]).pipe(
+    map(([validatorResult, isAvailableTimeResult]) => {
+      return validatorResult && isAvailableTimeResult;
+    })
+  );
+
+  constructor(
+    private _consult: WaitingListConsultService,
+    private _waitingList: WaitingListService
+  ) {}
   ngOnChanges(changes: SimpleChanges) {
     const signature = changes['clientSignature'];
     if (signature !== undefined && signature !== null) {

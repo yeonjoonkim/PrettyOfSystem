@@ -118,27 +118,22 @@ export type CartItemType = (typeof CartItem)[keyof typeof CartItem];
 
 //Consult - Status
 export type ConsultPendingStatus = {
-  syncId: string;
   type: typeof Consult.StatusType.Pending;
   description: typeof Consult.StatusDescription.Pending;
 };
 export type ConsultScheduledStatus = {
-  syncId: string;
   type: typeof Consult.StatusType.Scheduled;
   description: typeof Consult.StatusDescription.Scheduled;
 };
 export type ConsultStartStatus = {
-  syncId: string;
   type: typeof Consult.StatusType.Start;
   description: typeof Consult.StatusDescription.Start;
 };
 export type ConsultCompletedStatus = {
-  syncId: string;
   type: typeof Consult.StatusType.Completed;
   description: typeof Consult.StatusDescription.Completed;
 };
 export type ConsultCancelStatus = {
-  syncId: string;
   type: typeof Consult.StatusType.Cancel;
   description: typeof Consult.StatusDescription.Cancel;
 };

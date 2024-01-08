@@ -190,6 +190,15 @@ export class CartService {
     }
   }
 
+  public async resetSelectTime() {
+    let cart = this._cart.getValue();
+    if (cart !== null) {
+      cart.selectedTime = null;
+      await this._storage.storeCart(cart);
+      this._cart.next(cart);
+    }
+  }
+
   public async updateSpecialist(shopId: string, spcialistId: string, name: string) {
     let cart = this._cart.getValue();
     if (cart !== null) {

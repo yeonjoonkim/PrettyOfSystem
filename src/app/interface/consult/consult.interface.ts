@@ -41,12 +41,6 @@ export type ConsultDocumentType = {
   recieptId: null | string;
 };
 
-export type ConsultStatusDocumentType = {
-  shopId: string;
-  consultId: string;
-  status: ConsultStatusType;
-};
-
 export type ConsultAssociatedEmployee = {
   id: string;
   name: string;
@@ -64,7 +58,6 @@ export type ConsultClientInfoType = {
   isOver18: boolean;
   isPregrant: boolean;
   signature: string;
-  parentSignature: string | null;
   emergancyContact: UserSettingEmergencyContactType | null;
   privateInsurance: UserSettingPrivateInsuranceType | null;
   medicalHistory: UserSettingMedicalHistroyType;
