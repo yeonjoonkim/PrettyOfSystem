@@ -217,6 +217,18 @@ export class UserCredentialRepositoryService {
     }
   }
 
+  public async updateUserWithoutSuccessNotification(user: IUser) {
+    const updateCriteria = { ...user, ...this._timeStamp };
+    try {
+      await this._afs.collection(Db.Context.User).doc(user.id).update(updateCriteria);
+      return true;
+    } catch (error) {
+      await this._toaster.updateFail(error);
+      console.error(error);
+      return false;
+    }
+  }
+
   public async deleteUser(user: IUser) {
     try {
       await this._afs.collection(Db.Context.User).doc(user.id).delete();
@@ -255,8 +267,8 @@ export class UserCredentialRepositoryService {
     u: IUser,
     sId: string
   ): ShopEmployeeManagementUserType | null {
-    const as = u.associatedShops.find(s => (s.shopId = sId)) as UserAssociatedShopType;
-    if (as !== null) {
+    const as = u.associatedShops.find(s => s.shopId === sId) as UserAssociatedShopType;
+    if (as !== undefined) {
       const result: ShopEmployeeManagementUserType = {
         userId: u.id,
         shopId: as.shopId,

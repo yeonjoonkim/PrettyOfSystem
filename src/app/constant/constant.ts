@@ -55,6 +55,7 @@ export type DateDayNightType = (typeof Date.DayNightType)[keyof typeof Date.DayN
 export type DateFormatType = (typeof Date.Format)[keyof typeof Date.Format];
 export type DateTimeStatusType = (typeof Date.TimeStatus)[keyof typeof Date.TimeStatus];
 export type PeriodType = (typeof Date.Period)[keyof typeof Date.Period];
+export type WeekType = (typeof Date.WeekType)[keyof typeof Date.WeekType];
 
 //Country
 export type CountryCodeType = (typeof Default.CountryCodeType)[keyof typeof Default.CountryCodeType];
@@ -137,8 +138,17 @@ export type ConsultCancelStatus = {
   type: typeof Consult.StatusType.Cancel;
   description: typeof Consult.StatusDescription.Cancel;
 };
+
+export type ConsultAwaitingStatus = {
+  type: typeof Consult.StatusType.Awaiting;
+  description: typeof Consult.StatusDescription.Awaiting;
+};
+
+export type ConsultAnyEmployee = 'label.title.anyone';
+
 export type ConsultStatusType =
   | ConsultPendingStatus
+  | ConsultAwaitingStatus
   | ConsultScheduledStatus
   | ConsultStartStatus
   | ConsultCompletedStatus

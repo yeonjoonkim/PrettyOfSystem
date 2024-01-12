@@ -17,11 +17,12 @@
           {{ prop.date | dateTransform: 'LongDate' }}
           {{ prop.day | languageTransform: 'System' | async }}
         </legend>
-        <p *ngIf="prop.roster.isOpen">
-          {{ 'label.title.workhours' | languageTransform: 'System' | async }}: {{ prop.roster.workHours
-          }}{{ 'date.title.hour' | languageTransform: 'System' | async }}
+        <p *ngIf="roster.isOpen">
+          {{ 'label.title.workhours' | languageTransform: 'System' | async }}:
+          {{ roster.workHours }}
+          {{ 'date.title.hour' | languageTransform: 'System' | async }}
         </p>
-        <p *ngIf="prop.roster.isOpen">
+        <p *ngIf="roster.isOpen">
           {{ 'label.title.breaktime' | languageTransform: 'System' | async }}: {{ breakHours() }}
           {{ 'date.title.hour' | languageTransform: 'System' | async }}
         </p>
@@ -31,7 +32,7 @@
           <input
             type="checkbox"
             kendoCheckBox
-            [(ngModel)]="!prop.roster.isOpen"
+            [(ngModel)]="!roster.isOpen"
             [disabled]="form.readOnly"
             (ngModelChange)="onChangeDayOff()" />
         </kendo-label>
@@ -41,35 +42,58 @@
       </flex-row-item>
     </flex-row>
 
-    <flex-col-item id="error-container">
-      <div class="form-error-container" *ngIf="changed && !form.enabledSavebutton">
+    <flex-col-item
+      id="error-container"
+      *ngIf="{ shift: shiftValidator$ | async, consult: consultValidator$ | async } as validator">
+      <div class="form-error-container" *ngIf="changed && !validator.shift">
         <kendo-formerror>{{
           'messageerror.description.workhours' | languageTransform: 'System' | async
         }}</kendo-formerror>
       </div>
+      <div
+        class="form-error-container"
+        *ngIf="changed && validator.consult !== null && validator.consult.cannotDayOff">
+        <kendo-formerror>{{
+          'messageerror.description.cannotdayoff' | languageTransform: 'System' | async
+        }}</kendo-formerror>
+      </div>
+      <div
+        class="form-error-container"
+        *ngIf="changed && validator.consult !== null && validator.consult.hasOutSideBooking">
+        <kendo-formerror>{{
+          'messageerror.description.bookingisconflictwithshift' | languageTransform: 'System' | async
+        }}</kendo-formerror>
+      </div>
+      <div
+        class="form-error-container"
+        *ngIf="changed && validator.consult !== null && validator.consult.hasOverlapBreak">
+        <kendo-formerror>{{
+          'messageerror.description.bookingisconflictwithbreaktime' | languageTransform: 'System' | async
+        }}</kendo-formerror>
+      </div>
     </flex-col-item>
     <flex-row>
-      <flex-row-item *ngIf="prop.roster.isOpen">
+      <flex-row-item *ngIf="roster.isOpen">
         <time-picker
           title="date.title.start"
-          [(time)]="prop.roster.operatingHours.openTime"
+          [(time)]="startTime"
           [readOnly]="form.readOnly"
           [openTime]="prop.operating.openTime"
           [closeTime]="prop.operating.closeTime"
-          (timeChange)="handleEnabledSaveBtn()"></time-picker>
+          (timeChange)="handleShfitValidator()"></time-picker>
       </flex-row-item>
-      <flex-row-item *ngIf="prop.roster.isOpen">
+      <flex-row-item *ngIf="roster.isOpen">
         <time-picker
           title="date.title.end"
-          [(time)]="prop.roster.operatingHours.closeTime"
+          [(time)]="endTime"
           [readOnly]="form.readOnly"
           [openTime]="prop.operating.openTime"
           [closeTime]="prop.operating.closeTime"
-          (timeChange)="handleEnabledSaveBtn()"></time-picker>
+          (timeChange)="handleShfitValidator()"></time-picker>
       </flex-row-item>
     </flex-row>
 
-    <flex-col id="break-container" *ngIf="prop.roster.isOpen">
+    <flex-col id="break-container" *ngIf="roster.isOpen">
       <flex-col-item class="title-container">
         <legend>{{ 'label.title.breaktime' | languageTransform: 'System' | async }}</legend>
         <button
@@ -81,34 +105,34 @@
           [disabled]="tempBreakTime !== undefined"></button>
       </flex-col-item>
 
-      <flex-row class="new-break" *ngIf="tempBreakTime !== undefined && prop.roster.isOpen">
+      <flex-row class="new-break" *ngIf="tempBreakTime !== undefined && roster.isOpen">
         <time-picker
           [(time)]="tempBreakTime.start"
           [readOnly]="form.readOnly"
           [openTime]="prop.operating.openTime"
           [closeTime]="prop.operating.closeTime"
-          (timeChange)="handleEnabledSaveBtn()"></time-picker>
+          (timeChange)="handleShfitValidator()"></time-picker>
         <span>-</span>
         <time-picker
           [(time)]="tempBreakTime.end"
           [readOnly]="form.readOnly"
           [openTime]="prop.operating.openTime"
           [closeTime]="prop.operating.closeTime"
-          (timeChange)="handleEnabledSaveBtn()"></time-picker>
+          (timeChange)="handleShfitValidator()"></time-picker>
         <button
           kendoButton
           id="break-add"
           *ngIf="!form.readOnly"
           (click)="updateBreak()"
-          [disabled]="handleBreak()">
+          [disabled]="disableAddBreak()">
           <span>{{ 'button.title.add' | languageTransform: 'System' | async }}</span>
         </button>
       </flex-row>
     </flex-col>
   </flex-col>
 
-  <flex-row *ngFor="let breakTime of prop.roster.breakTimes" ß>
-    <flex-row-item *ngIf="prop.roster.isOpen" class="break-time">
+  <flex-row *ngFor="let breakTime of roster.breakTimes" ß>
+    <flex-row-item *ngIf="roster.isOpen" class="break-time">
       <p class="time">{{ breakTime.start | timeItemTransform }} - {{ breakTime.end | timeItemTransform }}</p>
       <span class="duration">
         ({{ breakTime.durationHour }} {{ 'date.title.hour' | languageTransform: 'System' | async }})

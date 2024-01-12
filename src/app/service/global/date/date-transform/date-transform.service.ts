@@ -30,6 +30,17 @@ export class DateTransformService {
     return utcToZonedTime(utc, timezone);
   }
 
+  getTimeByDateType(date: DateType) {
+    const local = this.toLocalDateTime(date);
+    const formatted = this.formatLocalDateTime(local);
+    return formatted.split('T')[1];
+  }
+
+  getTimeByTimeItem(time: TimeItemType) {
+    const formatted = this.formatByTimeItem(new Date(), time);
+    return formatted.split('T')[1];
+  }
+
   formatByTimeItem(date: DateType, time: TimeItemType) {
     const local = this.toLocalDateTime(date);
     local.setHours(time.hr);

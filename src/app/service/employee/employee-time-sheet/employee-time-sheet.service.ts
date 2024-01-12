@@ -11,7 +11,7 @@ import {
   TimeItemType,
 } from 'src/app/interface';
 import * as Constant from 'src/app/constant/constant';
-import { Cart, CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
+import { CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -94,11 +94,10 @@ export class EmployeeTimeSheetService {
     scheduledTime: ConsultScheduleTimeType[]
   ) {
     if (scheduledTime.length > 0) {
-      for (const scheduled of scheduledTime) {
-        timeSheet.times = timeSheet.times.filter(time => {
-          return time >= scheduled.startDateTime && time <= scheduled.endDateTime;
-        });
-      }
+      timeSheet.times = timeSheet.times.filter(startTime => {
+        const isOverLap = scheduledTime.some(s => startTime >= s.startDateTime && startTime < s.endDateTime);
+        return !isOverLap;
+      });
     }
     return timeSheet;
   }

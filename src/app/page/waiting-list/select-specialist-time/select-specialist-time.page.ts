@@ -1,16 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  Subject,
-  Observable,
-  combineLatestWith,
-  takeUntil,
-  filter,
-  combineLatestAll,
-  combineLatest,
-  switchMap,
-  of,
-} from 'rxjs';
+import { Subject, Observable, combineLatestWith, takeUntil, combineLatest, switchMap, of, filter } from 'rxjs';
 import { ShopEmployeeTimeSheet } from 'src/app/interface';
 import { CheckOutSpecialistType } from 'src/app/interface/booking/cart/cart.interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
@@ -66,6 +56,14 @@ export class SelectSpecialistTimePage implements OnInit, OnDestroy {
         if (validateSession) {
           await this._waitingList.validateSession(this.sessionId);
         }
+        await this._waitingList.cart.start();
+      });
+    this._waitingList.start$
+      .pipe(
+        takeUntil(this._destroy$),
+        filter(start => start !== null && start)
+      )
+      .subscribe(async () => {
         await this._waitingList.cart.start();
       });
   }

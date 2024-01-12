@@ -13,7 +13,6 @@ const shopExtra: string = shop + '{shopId}/extra';
 const shopPackage: string = shop + '{shopId}/package';
 const shopCoupon: string = shop + '{shopId}/coupon';
 const shopConsult: string = shop + '{shopId}/consult';
-const shopConsultSyncStatus: string = shop + '{shopId}/consultSyncStatus';
 const shopTransaction: string = shop + '{shopId}/transaction';
 
 //Reporter
@@ -44,7 +43,6 @@ export const Context = {
     Package: shopPackage,
     Coupon: shopCoupon,
     Consult: shopConsult,
-    ConsultSyncStatus: shopConsultSyncStatus,
     Transaction: shopTransaction,
   } as const,
   WaitingList: {
@@ -78,7 +76,6 @@ export const ShopExtra = (shopId: string): string => `shop/${shopId}/extra/`;
 export const ShopPackage = (shopId: string): string => `shop/${shopId}/package/`;
 export const ShopCoupon = (shopId: string): string => `shop/${shopId}/coupon/`;
 export const ShopConsult = (shopId: string): string => `shop/${shopId}/consult/`;
-export const ShopConsultStatusSync = (shopId: string): string => `shop/${shopId}/consultSyncStatus/`;
 export const ShopTransaction = (shopId: string): string => `shop/${shopId}/transaction/`;
 
 export const ShopLogo = (shopId: string, file: File): string =>

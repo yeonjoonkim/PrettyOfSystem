@@ -1,5 +1,5 @@
 <flex-col *ngIf="clientSignature !== null && clientConsent !== null && !requesting">
-  <flex-col-item class="signature">
+  <flex-col-item class="signature" *ngIf="isRelateToMedical$ | async">
     <signature-input
       [(signature)]="clientSignature"
       (signatureChange)="onChangeClientSignature($event)"></signature-input>
@@ -22,7 +22,7 @@
     </yes-no-selection-group>
   </flex-col-item>
   <flex-col-item>
-    <button kendoButton [disabled]="!(disableRequestBtn$ | async)">
+    <button kendoButton [disabled]="!(disableRequestBtn$ | async)" (click)="onClickRequest()">
       {{ 'label.title.request' | languageTransform: 'System' | async }}
     </button>
   </flex-col-item>

@@ -1,0 +1,10 @@
+<ion-header *ngIf="loaded$ | async"> </ion-header>
+<ion-content [fullscreen]="true" *ngIf="(loaded$ | async)">
+  <div class="loading-container" *ngIf="requesting">
+    <kendo-loader size="large"></kendo-loader>
+  </div>
+</ion-content>
+
+<div class="loading-container" *ngIf="isLoading$ | async">
+  <kendo-loader size="large"></kendo-loader>
+</div>

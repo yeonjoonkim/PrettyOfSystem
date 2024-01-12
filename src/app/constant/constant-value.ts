@@ -229,6 +229,7 @@ export const Massage = {
 export const Consult = {
   StatusType: {
     Pending: 'Pending',
+    Awaiting: 'Awaiting',
     Scheduled: 'Scheduled',
     Start: 'Start',
     Completed: 'Completed',
@@ -236,6 +237,7 @@ export const Consult = {
   } as const,
   StatusDescription: {
     Pending: 'label.title.pending',
+    Awaiting: 'label.title.awaiting',
     Scheduled: 'label.title.scheduled',
     Start: 'label.title.start',
     Completed: 'label.title.completed',
@@ -313,6 +315,13 @@ export const Medical = {
 };
 
 export const Date = {
+  WeekType: {
+    ThisWeek: 'ThisWeek',
+    NextWeek: 'NextWeek',
+    TwoWeek: 'TwoWeek',
+    ThreeWeek: 'ThreeWeek',
+    FourWeek: 'FourWeek',
+  } as const,
   DayNightType: {
     NIGHT: 'PM',
     DAY: 'AM',

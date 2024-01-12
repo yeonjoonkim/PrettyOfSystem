@@ -72,6 +72,7 @@ export type ShopEmployeeScheduleSettingProp = {
   roster: ShopOperatingDailyType;
   operating: ShopOperatingHoursType;
   employeeId: string;
+  daysInFourWeeks: string[];
 };
 
 export type ShopEmployeeTimeSheet = {

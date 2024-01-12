@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ShopService } from '../shop.service';
 import {
+  DayIndexType,
   RoleConfigurationType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,

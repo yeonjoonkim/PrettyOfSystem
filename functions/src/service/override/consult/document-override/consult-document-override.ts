@@ -17,7 +17,7 @@ export const override = function (doc: I.ConsultDocumentType) {
     totalMin: T.number(doc?.totalMin),
     totalPrice: T.number(doc?.totalPrice),
     adjustedPrice: T.number(doc?.adjustedPrice),
-    transactionIds: T.stringArray(doc?.transactionIds),
+    paymentId: T.string(doc?.paymentId),
     smsRequestIds: T.stringArray(doc?.smsRequestIds),
     isFirstVisit: T.boolean(doc?.isFirstVisit),
     isInsuranceClaimRequest: T.boolean(doc?.isInsuranceClaimRequest),

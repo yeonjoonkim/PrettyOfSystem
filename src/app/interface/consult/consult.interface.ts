@@ -22,6 +22,7 @@ export type ConsultDocumentType = {
   shopId: string;
   shopTimezone: TimeZoneType;
   status: ConsultStatusType;
+  paymentId: string;
   paymentStatus: ConsultPaymentStatusType;
   scheduled: ConsultScheduleTimeType | null;
   checkouts: CheckOutItem[];
@@ -29,7 +30,6 @@ export type ConsultDocumentType = {
   totalPrice: number;
   adjustedPrice: number;
   remainingBalance: number;
-  transactionIds: string[];
   smsRequestIds: string[];
   isFirstVisit: boolean;
   isInsuranceClaimRequest: boolean;
@@ -71,6 +71,7 @@ export type ConsultReportType = {
 };
 
 export type ConsultScheduleTimeType = {
+  startOfDay: string;
   startDateTime: string;
   endDateTime: string;
 };

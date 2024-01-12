@@ -38,15 +38,17 @@ export class WaitingListConsultConfirmationComponent implements OnInit, OnDestro
     .pipe(map(privateInsurance => privateInsurance !== null));
 
   public hasParentConsent$ = this._consult.consult$.pipe(
-    combineLatestWith(this._consult.parentConsent$),
-    switchMap(([consult, parentConsent]) => {
+    combineLatestWith(this._consult.parentConsent$, this._consult.isRelateToMedical$),
+    switchMap(([consult, parentConsent, isRelateToMedical]) => {
       if (consult !== null) {
-        return of(!consult.client.isOver18 && parentConsent);
+        return of(!consult.client.isOver18 && parentConsent && isRelateToMedical);
       } else {
         return of(false);
       }
     })
   );
+
+  public isRelateToMedical$ = this._consult.isRelateToMedical$;
 
   private _hasOpenPopover: boolean = false;
 
@@ -76,17 +78,21 @@ export class WaitingListConsultConfirmationComponent implements OnInit, OnDestro
 
     this._waitingList.client.isOver18$
       .pipe(
-        combineLatestWith(this.hasParentConsent$, this.prop$),
+        combineLatestWith(this.hasParentConsent$, this.prop$, this._consult.isRelateToMedical$),
         takeUntil(this._destroy$),
         filter(
-          ([isOver18, hasParentConsent, prop]) =>
+          ([isOver18, hasParentConsent, prop, isRelateToMedical]) =>
             typeof isOver18 === 'boolean' &&
             !isOver18 &&
             typeof hasParentConsent === 'boolean' &&
+            typeof isRelateToMedical === 'boolean' &&
             !hasParentConsent &&
             prop !== null
         ),
-        map(([isOver18, hasParentConsent]) => !isOver18 && !hasParentConsent),
+        map(
+          ([isOver18, hasParentConsent, prop, isRelateToMedical]) =>
+            !isOver18 && !hasParentConsent && isRelateToMedical && prop
+        ),
         distinctUntilChanged()
       )
       .subscribe(async needParentConsent => {
@@ -110,7 +116,7 @@ export class WaitingListConsultConfirmationComponent implements OnInit, OnDestro
         distinctUntilChanged()
       )
       .subscribe(async ([isAvailable, sessionId]) => {
-        if (!isAvailable && sessionId !== null) {
+        if (!isAvailable && sessionId !== null && !this._waitingList.requestConsult) {
           await this.presentUnavailableTime();
           this._waitingList.cart.resetTime();
           this._router.navigateByUrl(`waiting-list/${sessionId}/select-specialist-time`);

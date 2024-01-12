@@ -9,14 +9,11 @@ import { DatePipeModule } from 'src/app/pipe/date/date.pipe.module';
 import { TimeItemTransformPipeModule } from 'src/app/pipe/time-item/time-item.pipe.module';
 //Import Module
 import { SharedFormModule } from 'src/app/component/form/form.module';
-import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.module';
+import { KendoUiModule } from '../../../global/kendo-ui-module/kendo-ui-module.module';
 //Import Component
-import { ShopEmployeeScheduleComponent } from './shop-employee-schedule.component';
-import { EmployeeScheduleTitleComponent } from './employee-schedule-title/employee-schedule-title.component';
-import { ShopEmployeeScheduleBtnComponent } from './shop-employee-schedule-btn/shop-employee-schedule-btn.component';
-import { ShopEmployeeScheduleSettingModule } from './shop-employee-schedule-setting/shop-employee-schedule-setting.module';
+import { ShopEmployeeScheduleSettingComponent } from './shop-employee-schedule-setting.component';
 @NgModule({
-  declarations: [ShopEmployeeScheduleComponent, EmployeeScheduleTitleComponent, ShopEmployeeScheduleBtnComponent],
+  declarations: [ShopEmployeeScheduleSettingComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -26,9 +23,8 @@ import { ShopEmployeeScheduleSettingModule } from './shop-employee-schedule-sett
     KendoUiModule,
     DatePipeModule,
     TimeItemTransformPipeModule,
-    ShopEmployeeScheduleSettingModule,
   ],
-  exports: [ShopEmployeeScheduleComponent],
+  exports: [ShopEmployeeScheduleSettingComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class ShopEmployeeScheduleModule {}
+export class ShopEmployeeScheduleSettingModule {}

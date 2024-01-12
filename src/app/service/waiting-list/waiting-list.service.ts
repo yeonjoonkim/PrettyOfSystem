@@ -22,22 +22,41 @@ import { Cart } from 'src/app/interface/booking/cart/cart.interface';
 import { EmployeeService } from '../employee/employee.service';
 import { DateService } from '../global/date/date.service';
 import { ShopConsultRepositoryService } from 'src/app/firebase/shop-repository/shop-consult-repository/shop-consult-repository.service';
+import { WaitingListRepositoryService } from 'src/app/firebase/internal-api-repository/waiting-list-repository/waiting-list-repository.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WaitingListService {
   //Start Session;
+  private _requestConsult = new BehaviorSubject<boolean>(false);
   private _waitingListSession = new BehaviorSubject<WaitingListSessionType | null>(null);
   private _startSessionShopId = new BehaviorSubject<string | null>(null);
   public waitingListSession$ = this._waitingListSession.asObservable();
   public startSessionShopId$ = this._startSessionShopId.asObservable();
+  public requestConsult$ = this._requestConsult.asObservable();
+  public session$ = this.waitingListSession$.pipe(
+    switchMap(session => {
+      if (session !== null) {
+        return this._waitingListRepo.sessionValueListener(session.id);
+      } else {
+        return of(null);
+      }
+    })
+  );
 
   public start$!: Observable<boolean | null>;
   public isLoading$!: Observable<boolean>;
   public isLoaded$!: Observable<boolean>;
   public cart$!: Observable<Cart | null>;
   public consent$: Observable<UserVisitShopConsentType | null> = of(null);
+
+  set requestConsult(value: boolean) {
+    this._requestConsult.next(value);
+  }
+  get requestConsult() {
+    return this._requestConsult.getValue();
+  }
 
   constructor(
     public shop: WaitngListShopService,
@@ -49,7 +68,8 @@ export class WaitingListService {
     private _language: LanguageService,
     private _employee: EmployeeService,
     private _consultRepo: ShopConsultRepositoryService,
-    private _date: DateService
+    private _date: DateService,
+    private _waitingListRepo: WaitingListRepositoryService
   ) {
     this.shop.config$ = this.shop.shopConfigurationValueListener(this.startSessionShopId$);
     this.startWaitingList();
@@ -59,8 +79,14 @@ export class WaitingListService {
     this.cart$ = this.cart.cart$;
   }
 
+  public async deleteSession(sessionId: string) {
+    return await this._waitingListRepo.deleteSession(sessionId);
+  }
+
   public completeSession() {
     this._waitingListSession.complete();
+    this._startSessionShopId.complete();
+    this.cart.complete();
   }
 
   public async validateSession(sessionId: string | null) {
@@ -214,21 +240,18 @@ export class WaitingListService {
               config.timezone,
               today
             );
-            const leftOverTimeSheet = this._employee.timeSheet.simulateTimeSheetByCheckOut(
-              timeSheet,
-              cart.totalMin,
-              cart.checkout
-            );
             const scheduleTime = consults
               .filter(consult => consult.associatedEmployee.id === specialist.employeeId)
               .filter(consult => consult.scheduled !== null)
               .map(c => c.scheduled as ConsultScheduleTimeType);
 
-            const available = this._employee.timeSheet.deleteUnavailableTimeByConsult(
-              leftOverTimeSheet,
-              scheduleTime
+            const available = this._employee.timeSheet.deleteUnavailableTimeByConsult(timeSheet, scheduleTime);
+            const leftOverTimeSheet = this._employee.timeSheet.simulateTimeSheetByCheckOut(
+              available,
+              cart.totalMin,
+              cart.checkout
             );
-            return of(available);
+            return of(leftOverTimeSheet);
           } else {
             const anyoneTimeSheet = this._employee.timeSheet.anyoneTimeSheet(
               config.id,
