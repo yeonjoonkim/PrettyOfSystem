@@ -54,21 +54,21 @@
         class="form-error-container"
         *ngIf="changed && validator.consult !== null && validator.consult.cannotDayOff">
         <kendo-formerror>{{
-          'messageerror.description.cannotdayoff' | languageTransform: 'System' | async
+          'label.description.cannotdayoff' | languageTransform: 'System' | async
         }}</kendo-formerror>
       </div>
       <div
         class="form-error-container"
         *ngIf="changed && validator.consult !== null && validator.consult.hasOutSideBooking">
         <kendo-formerror>{{
-          'messageerror.description.bookingisconflictwithshift' | languageTransform: 'System' | async
+          'label.description.shfitconflictedwithexistingconsults' | languageTransform: 'System' | async
         }}</kendo-formerror>
       </div>
       <div
         class="form-error-container"
         *ngIf="changed && validator.consult !== null && validator.consult.hasOverlapBreak">
         <kendo-formerror>{{
-          'messageerror.description.bookingisconflictwithbreaktime' | languageTransform: 'System' | async
+          'label.description.breaktimconflictedwithexistingconsults' | languageTransform: 'System' | async
         }}</kendo-formerror>
       </div>
     </flex-col-item>
@@ -140,4 +140,85 @@
       <button kendoButton icon="trash" (click)="deleteBreak(breakTime)"></button>
     </flex-row-item>
   </flex-row>
+
+  <flex-col id="consults-container" *ngIf="consultValidators$ | async as data">
+    <flex-col-item class="title-container">
+      <legend>{{ 'label.title.consult' | languageTransform: 'System' | async }}</legend>
+    </flex-col-item>
+    <flex-col-item>
+      <kendo-grid [kendoGridBinding]="data" [sortable]="true" [height]="200" [autoSize]="true">
+        <kendo-grid-column
+          [sortable]="true"
+          [width]="110"
+          field="consult.scheduled.startOfDay"
+          title="{{ 'date.title.date' | languageTransform: 'System' | async }}">
+          <ng-template kendoGridCellTemplate let-data>
+            {{ data.consult.scheduled.startOfDay | dateTransform: 'LongDate' }}
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column
+          [sortable]="true"
+          [width]="90"
+          field="consult.scheduled.startDateTime"
+          title="{{ 'label.title.start' | languageTransform: 'System' | async }}">
+          <ng-template kendoGridCellTemplate let-data>
+            {{ data.consult.scheduled.startDateTime | dateTransform: 'Time' }}
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column
+          [sortable]="true"
+          [width]="90"
+          field="consult.scheduled.endDateTime"
+          title="{{ 'label.title.end' | languageTransform: 'System' | async }}">
+          <ng-template kendoGridCellTemplate let-data>
+            {{ data.consult.scheduled.endDateTime | dateTransform: 'Time' }}
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column
+          [sortable]="true"
+          [width]="100"
+          field="consult.status.description"
+          title="{{ 'label.title.status' | languageTransform: 'System' | async }}">
+          <ng-template kendoGridCellTemplate let-data>
+            {{ data.consult.status.description | languageTransform: 'System' | async }}
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column
+          [sortable]="true"
+          [width]="140"
+          field="validator.hasOverlapBreak"
+          title="{{ 'label.title.conflictedbreaktime' | languageTransform: 'System' | async }}">
+          <ng-template kendoGridCellTemplate let-data>
+            <input
+              type="checkbox"
+              class="validator-checkbox"
+              kendoCheckBox
+              [disabled]="true"
+              [checked]="data.validator.hasOverlapBreak" />
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column
+          [sortable]="true"
+          field="validator.hasOutSideBooking"
+          [width]="140"
+          title="{{ 'label.title.conflictedshift' | languageTransform: 'System' | async }}">
+          <ng-template kendoGridCellTemplate let-data>
+            <input
+              type="checkbox"
+              class="validator-checkbox"
+              kendoCheckBox
+              [disabled]="true"
+              [checked]="data.validator.hasOutSideBooking" />
+          </ng-template>
+        </kendo-grid-column>
+        <!-- NO Data-->
+        <ng-template kendoGridNoRecordsTemplate></ng-template>
+      </kendo-grid>
+    </flex-col-item>
+  </flex-col>
 </ion-content>

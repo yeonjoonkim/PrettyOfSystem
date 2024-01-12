@@ -9,14 +9,20 @@ import { ShopConsult } from 'src/app/constant/firebase-path';
 import * as Constant from 'src/app/constant/constant';
 import { map, of, switchMap } from 'rxjs';
 
-const ScheduledStatuses = [
+export const ScheduledStatuses = [
   Constant.Consult.StatusType.Pending,
   Constant.Consult.StatusType.Awaiting,
   Constant.Consult.StatusType.Scheduled,
   Constant.Consult.StatusType.Start,
   Constant.Consult.StatusType.Completed,
 ];
-const CancelStatuses = [Constant.Consult.StatusType.Cancel];
+export const FutureScheduledStatuses = [
+  Constant.Consult.StatusType.Pending,
+  Constant.Consult.StatusType.Awaiting,
+  Constant.Consult.StatusType.Scheduled,
+];
+export const CompletedStatuses = [Constant.Consult.StatusType.Completed];
+export const CancelStatuses = [Constant.Consult.StatusType.Cancel];
 @Injectable({
   providedIn: 'root',
 })

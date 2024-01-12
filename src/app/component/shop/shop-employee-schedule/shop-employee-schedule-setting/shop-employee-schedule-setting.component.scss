@@ -93,3 +93,17 @@ button {
 #break-add {
   margin-top: 5px;
 }
+
+:host {
+  ::ng-deep .form-error-container {
+    height: unset;
+  }
+  ::ng-deep kendo-formerror {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 10px;
+  }
+  .validator-checkbox {
+    margin: 0;
+  }
+}
