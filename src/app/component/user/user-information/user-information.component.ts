@@ -17,6 +17,8 @@ export class UserInformationComponent implements OnInit, OnDestroy {
   @Input() isRequiredInsurance: boolean = true;
   @Input() onlyUserInfo: boolean = false;
   @Input() onlyMedical: boolean = false;
+  @Input() allowAddress: boolean = true;
+  @Input() allowEmergencyContact: boolean = true;
 
   public isOver18$!: Observable<boolean>;
 

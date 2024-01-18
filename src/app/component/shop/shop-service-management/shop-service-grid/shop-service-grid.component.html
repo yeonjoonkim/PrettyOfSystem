@@ -54,6 +54,7 @@
 
   <!--Oil-->
   <kendo-grid-column
+    *ngIf="isMassageShop$ | async"
     media="(min-width: 690px)"
     [sortable]="true"
     field="isOil"
@@ -168,6 +169,15 @@
             'label.title.fail' | languageTransform: 'System' | async
           }}</span>
         </div>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Refresh -->
+  <kendo-grid-column>
+    <ng-template kendoGridCellTemplate let-service>
+      <div *ngIf="translatedRequests && allowRefresh(service, translatedRequests)">
+        <button kendoGridEditCommand icon="refresh" (click)="handleRefresh(service, translatedRequests)"></button>
       </div>
     </ng-template>
   </kendo-grid-column>

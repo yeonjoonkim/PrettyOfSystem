@@ -37,6 +37,7 @@ export class ShopPackageServicePopoverComponent implements OnInit {
           min: min,
           price: price,
         },
+        relatedService: service.relatedService,
       };
       this.packageServices.push(newService);
     }

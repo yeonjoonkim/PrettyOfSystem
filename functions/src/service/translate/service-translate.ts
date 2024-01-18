@@ -4,11 +4,7 @@ import * as TextTransform from '../text/service-text';
 import * as Repo from '../../repository/index';
 import { logger } from 'firebase-functions/v2';
 
-export const EnglishProcess = async function (
-  vm: I.OpenApiInstanceType,
-  prop: string,
-  format: I.TextFormatType
-) {
+export const EnglishProcess = async function (vm: I.OpenApiInstanceType, prop: string, format: I.TextFormatType) {
   let attempt = 0;
   let error = false;
 
@@ -44,10 +40,7 @@ export const EnglishProcess = async function (
   return result;
 };
 
-export const process = async function (
-  vm: I.OpenApiInstanceType,
-  doc: I.ChatGptTranslateDocumentType
-) {
+export const process = async function (vm: I.OpenApiInstanceType, doc: I.ChatGptTranslateDocumentType) {
   doc.attempt = doc.attempt || 0;
 
   // Utility function to handle translation
@@ -136,10 +129,7 @@ const setFormatter = function (format: I.TextFormatType): I.ILanguageTranslatedF
   };
 };
 
-const translatedObjectResult = async function (
-  result: string,
-  code: string
-): Promise<I.ILanguageTranslateResult> {
+const translatedObjectResult = async function (result: string, code: string): Promise<I.ILanguageTranslateResult> {
   let object: I.ILanguageTranslateResult = {};
   object[code] = '';
 
@@ -151,23 +141,13 @@ const translatedObjectResult = async function (
 
     const json = safeJsonParse(jsonString, 10);
     if (json.error) {
-      await Repo.Error.createErrorReport(
-        result,
-        JSON.stringify(json),
-        'update',
-        'LanguageTransJSON'
-      );
+      await Repo.Error.createErrorReport(result, JSON.stringify(json), 'update', 'LanguageTransJSON');
       logger.error('Failed to parse JSON:', json);
     } else {
       object = json.data;
     }
   } catch (error) {
-    await Repo.Error.createErrorReport(
-      result,
-      JSON.stringify(error),
-      'update',
-      'LanguageTransJSON'
-    );
+    await Repo.Error.createErrorReport(result, JSON.stringify(error), 'update', 'LanguageTransJSON');
     logger.error('Failed to parse JSON:', error);
   }
   return object;
@@ -214,7 +194,7 @@ const setCommand = function (
     : '. Translated Value is "';
 
   return (
-    'Please correct any grammatical errors in the input and then translate it to' +
+    'Please correct any grammatical errors in the input and then translate it to ' +
     lang.name +
     formatCommand +
     cleansedProp +

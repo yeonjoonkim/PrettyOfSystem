@@ -38,6 +38,7 @@ export class ShopServiceManagementService {
   public hasInsuranceProvider$!: Observable<boolean>;
   public hasNotInsuranceProvider$!: Observable<boolean>;
   public isRelatedToMedical$!: Observable<boolean>;
+  public isMassageShop$!: Observable<boolean>;
   constructor(
     public relateShopService: ShopRelatedServiceService,
     public modal: ShopServiceModalService,
@@ -59,6 +60,7 @@ export class ShopServiceManagementService {
     this.hasInsuranceProvider$ = this._shop.hasInsuranceProvider$;
     this.hasNotInsuranceProvider$ = this._shop.hasNotInsuranceProvider$;
     this.isRelatedToMedical$ = this._shop.isRelatedToMedical$;
+    this.isMassageShop$ = this._shop.isMassageShop$;
     this.translateRequest();
     this.isReachToMaxListener();
     this.activeProgressBar();

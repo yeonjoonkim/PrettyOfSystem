@@ -92,6 +92,22 @@ export class ShopPackageGridComponent implements OnInit {
     }
   }
 
+  public allowRefresh(pack: ShopPackageDocumentType, requests: ChatGptTranslateDocumentType[]) {
+    return requests
+      .filter(s => s.serviceId === pack.id)
+      .map(doc => doc.status)
+      .every(status => status === 'Success' || status === 'Completed' || status === 'Failed');
+  }
+
+  public async handleRefresh(pack: ShopPackageDocumentType, requests: ChatGptTranslateDocumentType[]) {
+    const docs = requests
+      .filter(s => s.serviceId === pack.id)
+      .map(async doc => {
+        await this._shopPackage.requeueTranslatedRequest(doc);
+      });
+    Promise.all(docs);
+  }
+
   private async handlePackageProp(s: ShopPackageDocumentType) {
     const c = await this._shopPackage.getShopConfig();
     if (c != null && !this.isModalOpen) {

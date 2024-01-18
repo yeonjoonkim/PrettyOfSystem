@@ -1,0 +1,22 @@
+<ion-header *ngIf="loaded$ | async"> </ion-header>
+<ion-content [fullscreen]="true" *ngIf="loaded$ | async">
+  <div class="modal-container">
+    <div class="success-container" *ngIf="status !== null && status.type !== 'Creating'">
+      <success-check-mark></success-check-mark>
+      <legend>{{status.description | languageTransform:'System' | async}}</legend>
+    </div>
+
+    <div *ngIf="status !== null" class="status-description-container">
+      <div *ngIf="status.type === 'Pending'" class="status-description">
+        {{'label.description.waitinglistpendingstatus' | languageTransform: 'System' | async}}
+      </div>
+      <div *ngIf="status.type === 'Scheduled'" class="status-description">
+        {{'label.description.waitinglistscheduledstatus' | languageTransform: 'System' | async }}
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<div class="loading-container" *ngIf="(isLoading$ | async) || (status !== null && status.type === 'Creating')">
+  <kendo-loader size="large"></kendo-loader>
+</div>

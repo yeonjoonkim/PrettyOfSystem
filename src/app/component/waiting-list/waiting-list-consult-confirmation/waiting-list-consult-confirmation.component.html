@@ -37,7 +37,7 @@
   </flex-col>
 
   <!-- Parent Consent -->
-  <flex-col class="parent-consent" *ngIf="!prop.isClientOver18">
+  <flex-col class="parent-consent" *ngIf="!prop.isClientOver18 && (isRelateToMedical$ | async)">
     <flex-col-item>
       <legend class="title parent-consent-title">
         {{ 'label.title.parentconsent' | languageTransform: 'System' | async }}
@@ -123,6 +123,7 @@
     </flex-col>
     <waiting-list-consult-agreement
       [clientConsent]="prop.consent"
-      [clientSignature]="prop.client.signature"></waiting-list-consult-agreement>
+      [clientSignature]="prop.client.signature"
+      [sessionId]="sessionId"></waiting-list-consult-agreement>
   </div>
 </div>

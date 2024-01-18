@@ -40,6 +40,32 @@ export class WaitingListRepositoryService {
     }
   }
 
+  public sessionValueListener(sessionId: string) {
+    const sessionRef = this._afs.collection<WaitingListSessionType>(Db.Context.WaitingList.Session, ref =>
+      ref.where('id', '==', sessionId).limit(1)
+    );
+
+    return sessionRef.valueChanges().pipe(
+      map(snapshot => {
+        if (snapshot.length > 0) {
+          return snapshot[0];
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  public async deleteSession(sessionId: string) {
+    try {
+      this._afs.collection<WaitingListSessionType>(Db.Context.WaitingList.Session).doc(sessionId).delete();
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
   public getSession(sessionId: string, ipAddress: string | null) {
     const sessionRef = this._afs.collection<WaitingListSessionType>(Db.Context.WaitingList.Session, ref =>
       ref.where('id', '==', sessionId).where('ipAddress', '==', ipAddress).limit(1)

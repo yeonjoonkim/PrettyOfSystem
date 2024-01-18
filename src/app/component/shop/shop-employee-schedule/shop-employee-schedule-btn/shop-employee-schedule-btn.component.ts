@@ -40,12 +40,20 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Sun);
     const day = this.getDay()[0];
     const roster = this.getRoster();
+    const daysInFourWeeks = [
+      this.scheduleTime.thisWeeks[Constant.Date.DayIndex.Sun],
+      this.scheduleTime.nextWeeks[Constant.Date.DayIndex.Sun],
+      this.scheduleTime.twoWeeks[Constant.Date.DayIndex.Sun],
+      this.scheduleTime.threeWeeks[Constant.Date.DayIndex.Sun],
+      this.scheduleTime.fourWeeks[Constant.Date.DayIndex.Sun],
+    ];
 
     if (isShopOpen) {
       const modal = await this._scheduler.modal.build(
         this.fullName(),
         day,
         'date.title.sun',
+        daysInFourWeeks,
         roster.sun,
         this.operatingHours.sun.operatingHours,
         this.employeeId()
@@ -140,7 +148,14 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
 
   public async mon() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Mon);
-    const day = this.getDay()[1];
+    const day = this.getDay()[Constant.Date.DayIndex.Mon];
+    const daysInFourWeeks = [
+      this.scheduleTime.thisWeeks[Constant.Date.DayIndex.Mon],
+      this.scheduleTime.nextWeeks[Constant.Date.DayIndex.Mon],
+      this.scheduleTime.twoWeeks[Constant.Date.DayIndex.Mon],
+      this.scheduleTime.threeWeeks[Constant.Date.DayIndex.Mon],
+      this.scheduleTime.fourWeeks[Constant.Date.DayIndex.Mon],
+    ];
     const roster = this.getRoster();
 
     if (isShopOpen) {
@@ -148,6 +163,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         this.fullName(),
         day,
         'date.title.mon',
+        daysInFourWeeks,
         roster.mon,
         this.operatingHours.tue.operatingHours,
         this.employeeId()
@@ -242,14 +258,22 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
 
   public async tue() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Tue);
-    const day = this.getDay()[2];
+    const day = this.getDay()[Constant.Date.DayIndex.Tue];
     const roster = this.getRoster();
+    const daysInFourWeeks = [
+      this.scheduleTime.thisWeeks[Constant.Date.DayIndex.Tue],
+      this.scheduleTime.nextWeeks[Constant.Date.DayIndex.Tue],
+      this.scheduleTime.twoWeeks[Constant.Date.DayIndex.Tue],
+      this.scheduleTime.threeWeeks[Constant.Date.DayIndex.Tue],
+      this.scheduleTime.fourWeeks[Constant.Date.DayIndex.Tue],
+    ];
 
     if (isShopOpen) {
       const modal = await this._scheduler.modal.build(
         this.fullName(),
         day,
         'date.title.tue',
+        daysInFourWeeks,
         roster.tue,
         this.operatingHours.tue.operatingHours,
         this.employeeId()
@@ -344,7 +368,14 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
 
   public async wed() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Wed);
-    const day = this.getDay()[3];
+    const day = this.getDay()[Constant.Date.DayIndex.Wed];
+    const daysInFourWeeks = [
+      this.scheduleTime.thisWeeks[Constant.Date.DayIndex.Wed],
+      this.scheduleTime.nextWeeks[Constant.Date.DayIndex.Wed],
+      this.scheduleTime.twoWeeks[Constant.Date.DayIndex.Wed],
+      this.scheduleTime.threeWeeks[Constant.Date.DayIndex.Wed],
+      this.scheduleTime.fourWeeks[Constant.Date.DayIndex.Wed],
+    ];
     const roster = this.getRoster();
 
     if (isShopOpen) {
@@ -352,6 +383,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         this.fullName(),
         day,
         'date.title.wed',
+        daysInFourWeeks,
         roster.wed,
         this.operatingHours.wed.operatingHours,
         this.employeeId()
@@ -446,7 +478,14 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
 
   public async thu() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Thu);
-    const day = this.getDay()[4];
+    const day = this.getDay()[Constant.Date.DayIndex.Thu];
+    const daysInFourWeeks = [
+      this.scheduleTime.thisWeeks[Constant.Date.DayIndex.Thu],
+      this.scheduleTime.nextWeeks[Constant.Date.DayIndex.Thu],
+      this.scheduleTime.twoWeeks[Constant.Date.DayIndex.Thu],
+      this.scheduleTime.threeWeeks[Constant.Date.DayIndex.Thu],
+      this.scheduleTime.fourWeeks[Constant.Date.DayIndex.Thu],
+    ];
     const roster = this.getRoster();
 
     if (isShopOpen) {
@@ -454,6 +493,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         this.fullName(),
         day,
         'date.title.thu',
+        daysInFourWeeks,
         roster.thu,
         this.operatingHours.thu.operatingHours,
         this.employeeId()
@@ -548,7 +588,14 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
 
   public async fri() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Fri);
-    const day = this.getDay()[5];
+    const day = this.getDay()[Constant.Date.DayIndex.Fri];
+    const daysInFourWeeks = [
+      this.scheduleTime.thisWeeks[Constant.Date.DayIndex.Fri],
+      this.scheduleTime.nextWeeks[Constant.Date.DayIndex.Fri],
+      this.scheduleTime.twoWeeks[Constant.Date.DayIndex.Fri],
+      this.scheduleTime.threeWeeks[Constant.Date.DayIndex.Fri],
+      this.scheduleTime.fourWeeks[Constant.Date.DayIndex.Fri],
+    ];
     const roster = this.getRoster();
 
     if (isShopOpen) {
@@ -556,6 +603,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         this.fullName(),
         day,
         'date.title.fri',
+        daysInFourWeeks,
         roster.fri,
         this.operatingHours.fri.operatingHours,
         this.employeeId()
@@ -650,7 +698,14 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
 
   public async sat() {
     const isShopOpen = this.isOpenDay(Constant.Date.DayIndex.Sat);
-    const day = this.getDay()[6];
+    const day = this.getDay()[Constant.Date.DayIndex.Sat];
+    const daysInFourWeeks = [
+      this.scheduleTime.thisWeeks[Constant.Date.DayIndex.Sat],
+      this.scheduleTime.nextWeeks[Constant.Date.DayIndex.Sat],
+      this.scheduleTime.twoWeeks[Constant.Date.DayIndex.Sat],
+      this.scheduleTime.threeWeeks[Constant.Date.DayIndex.Sat],
+      this.scheduleTime.fourWeeks[Constant.Date.DayIndex.Sat],
+    ];
     const roster = this.getRoster();
 
     if (isShopOpen) {
@@ -658,6 +713,7 @@ export class ShopEmployeeScheduleBtnComponent implements OnInit {
         this.fullName(),
         day,
         'date.title.sat',
+        daysInFourWeeks,
         roster.sat,
         this.operatingHours.sat.operatingHours,
         this.employeeId()

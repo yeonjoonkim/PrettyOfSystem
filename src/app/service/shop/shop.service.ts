@@ -61,6 +61,7 @@ export class ShopService {
 
   //Related
   public isRelatedToMedical$!: Observable<boolean>;
+  public isMassageShop$!: Observable<boolean>;
 
   constructor(
     public role: UserRoleService,
@@ -101,6 +102,7 @@ export class ShopService {
     this.extraPriceListListener();
     this.insuranceProviderListener();
     this.isRelatedToMedical();
+    this.isMassageShop();
   }
 
   public translatedRequestFilterByServiceIds(shopId: string, serviceIds: string[]) {
@@ -132,6 +134,20 @@ export class ShopService {
             name === Constant.ShopCategoryTitle.MassageTheraphy ||
             name === Constant.ShopCategoryTitle.PersonalTraining ||
             name === Constant.ShopCategoryTitle.SkinCare;
+          return of(relatedName);
+        } else {
+          return of(false);
+        }
+      })
+    );
+  }
+
+  private isMassageShop() {
+    this.isMassageShop$ = this.config$.pipe(
+      switchMap(category => {
+        if (category !== null) {
+          const name = category.category.name as Constant.ShopCategoryTitleType;
+          const relatedName = name === Constant.ShopCategoryTitle.MassageTheraphy;
           return of(relatedName);
         } else {
           return of(false);

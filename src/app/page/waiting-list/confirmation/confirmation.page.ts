@@ -97,6 +97,15 @@ export class ConfirmationPage implements OnInit, OnDestroy {
           this._consult.setConsent(consent);
         }
       });
+
+    this._waitingList.start$
+      .pipe(
+        takeUntil(this._destroy$),
+        filter(start => start !== null && start)
+      )
+      .subscribe(async () => {
+        await this._waitingList.cart.start();
+      });
   }
 
   async onClickGoback() {

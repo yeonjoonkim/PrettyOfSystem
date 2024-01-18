@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ShopEmployeeManagementUserType, ShopEmployeeScheduleTimeType } from 'src/app/interface';
 import { ShopEmployeeScheduleService } from 'src/app/service/shop/shop-employee-schedule/shop-employee-schedule.service';
-
+import * as Constant from 'src/app/constant/constant';
 @Component({
   selector: 'shop-employee-schedule',
   templateUrl: './shop-employee-schedule.component.html',
@@ -12,7 +12,7 @@ export class ShopEmployeeScheduleComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   public scheduledEmployees!: ShopEmployeeManagementUserType[];
   public schedulerTime!: ShopEmployeeScheduleTimeType;
-  public type: 'ThisWeek' | 'NextWeek' | 'TwoWeek' | 'ThreeWeek' | 'FourWeek' = 'ThisWeek';
+  public type: Constant.WeekType = Constant.Date.WeekType.ThisWeek;
   constructor(private _employeeScheduler: ShopEmployeeScheduleService) {}
 
   ngOnInit() {

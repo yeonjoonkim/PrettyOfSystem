@@ -77,7 +77,25 @@ export class ClientService {
   }
 
   public async update(client: IUser) {
-    return await this._userRepo.updateUser(client);
+    return await this._userRepo.updateUserWithoutSuccessNotification(client);
+  }
+
+  public updateVisitShopConsent(client: IUser, consent: UserVisitShopConsentType) {
+    const prev = client.visitedShops.find(v => v.shopId === consent.shopId);
+    if (prev !== undefined && prev !== undefined) {
+      const index = client.visitedShops.findIndex(v => v.shopId === consent.shopId);
+      client.visitedShops[index] = consent;
+    } else {
+      client.visitedShopIds.push(consent.shopId);
+      client.visitedShops.push(consent);
+    }
+    return client;
+  }
+
+  public deleteVisitShopConsent(client: IUser, shopId: string) {
+    client.visitedShopIds = client.visitedShopIds.filter(v => v !== shopId);
+    client.visitedShops = client.visitedShops.filter(v => v.shopId !== shopId);
+    return client;
   }
 
   private async toastExsitingAccountError() {

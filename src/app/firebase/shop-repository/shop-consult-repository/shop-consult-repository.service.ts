@@ -1,30 +1,19 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { DateService } from 'src/app/service/global/date/date.service';
-import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 import * as Document from 'functions/src/service/override/consult/document-override/consult-document-override';
-import { ConsultDocumentType, ConsultStatusType } from 'src/app/interface';
-import { ShopConsult, ShopConsultStatusSync } from 'src/app/constant/firebase-path';
+import { ConsultDocumentType } from 'src/app/interface';
+import { ShopConsult } from 'src/app/constant/firebase-path';
 import * as Constant from 'src/app/constant/constant';
-import { map, of, switchMap } from 'rxjs';
+import { firstValueFrom, map, of, switchMap } from 'rxjs';
 
-const ScheduledStatuses = [
-  Constant.Consult.StatusType.Pending,
-  Constant.Consult.StatusType.Scheduled,
-  Constant.Consult.StatusType.Start,
-  Constant.Consult.StatusType.Completed,
-];
-const CancelStatuses = [Constant.Consult.StatusType.Cancel];
 @Injectable({
   providedIn: 'root',
 })
 export class ShopConsultRepositoryService {
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService,
-    private _date: DateService,
-    private _languageStorage: SystemLanguageStorageService
+    private _toaster: FirebaseToasterService
   ) {}
 
   public isFirstVisit(shopId: string, clientId: string) {
@@ -56,6 +45,48 @@ export class ShopConsultRepositoryService {
       .pipe(
         map(doc => {
           return doc.map(doc => Document.override(doc));
+        })
+      );
+  }
+
+  private async isExistedDocument(shopId: string, consultId: string) {
+    const isExisted = this._afs
+      .collection<ConsultDocumentType>(ShopConsult(shopId))
+      .doc(consultId)
+      .get()
+      .pipe(
+        map(document => {
+          return document.exists;
+        })
+      );
+    return await firstValueFrom(isExisted);
+  }
+
+  public async create(consult: ConsultDocumentType) {
+    const isExistedDocument = await this.isExistedDocument(consult.id, consult.shopId);
+    if (!isExistedDocument) {
+      try {
+        await this._afs.collection<ConsultDocumentType>(ShopConsult(consult.shopId)).doc(consult.id).set(consult);
+        await this._toaster.requestSuccess();
+        return true;
+      } catch (error) {
+        await this._toaster.requestFail(error);
+        console.error(error);
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  public getValueChangeListenerById(shopId: string, consultId: string) {
+    return this._afs
+      .collection<ConsultDocumentType>(ShopConsult(shopId), ref => ref.where('id', '==', consultId).limit(1))
+      .valueChanges()
+      .pipe(
+        map(doc => {
+          const document = doc.length > 0 ? doc[0] : null;
+          return document !== null ? Document.override(document) : null;
         })
       );
   }
@@ -112,11 +143,23 @@ export class ShopConsultRepositoryService {
       );
   }
 
-  public updateStatusSync(shopId: string, consultId: string, status: ConsultStatusType) {
-    this._afs
-      .collection<ConsultDocumentType>(ShopConsultStatusSync(shopId))
-      .doc(consultId)
-      .update({ status: status });
+  public getEmployeeConsultWithinDays(shopId: string, employeeId: string, startDays: string[]) {
+    return startDays.length > 0
+      ? this._afs
+          .collection<ConsultDocumentType>(ShopConsult(shopId), ref =>
+            ref
+              .where('associatedEmployee.id', '==', employeeId)
+              .where('scheduled.startOfDay', 'in', startDays)
+              .where('status.type', 'in', Constant.Consult_ScheduledStatusTypes)
+              .orderBy('scheduled.startDateTime', 'asc')
+          )
+          .valueChanges()
+          .pipe(
+            map(doc => {
+              return doc.map(doc => Document.override(doc));
+            })
+          )
+      : of([] as ConsultDocumentType[]);
   }
 
   public isAvailableDateTime(shopId: string, employeeId: string, startDateTime: string, endDateTime: string) {
@@ -127,7 +170,7 @@ export class ShopConsultRepositoryService {
               .where('associatedEmployee.id', '==', employeeId)
               .where('scheduled.startDateTime', '>=', startDateTime)
               .where('scheduled.startDateTime', '<', endDateTime)
-              .where('status.type', 'in', ScheduledStatuses)
+              .where('status.type', 'in', Constant.Consult_ScheduledStatusTypes)
               .limit(1)
           )
           .valueChanges()

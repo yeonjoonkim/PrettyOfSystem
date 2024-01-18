@@ -14,14 +14,9 @@ import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.modu
 import { ShopEmployeeScheduleComponent } from './shop-employee-schedule.component';
 import { EmployeeScheduleTitleComponent } from './employee-schedule-title/employee-schedule-title.component';
 import { ShopEmployeeScheduleBtnComponent } from './shop-employee-schedule-btn/shop-employee-schedule-btn.component';
-import { ShopEmployeeScheduleSettingComponent } from './shop-employee-schedule-setting/shop-employee-schedule-setting.component';
+import { ShopEmployeeScheduleSettingModule } from './shop-employee-schedule-setting/shop-employee-schedule-setting.module';
 @NgModule({
-  declarations: [
-    ShopEmployeeScheduleComponent,
-    EmployeeScheduleTitleComponent,
-    ShopEmployeeScheduleBtnComponent,
-    ShopEmployeeScheduleSettingComponent,
-  ],
+  declarations: [ShopEmployeeScheduleComponent, EmployeeScheduleTitleComponent, ShopEmployeeScheduleBtnComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -31,6 +26,7 @@ import { ShopEmployeeScheduleSettingComponent } from './shop-employee-schedule-s
     KendoUiModule,
     DatePipeModule,
     TimeItemTransformPipeModule,
+    ShopEmployeeScheduleSettingModule,
   ],
   exports: [ShopEmployeeScheduleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

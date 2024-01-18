@@ -37,6 +37,7 @@ export class ShopPackageComponent implements OnInit {
   public hasInsuranceProvider$!: Observable<boolean>;
   public hasNotInsuranceProvider$!: Observable<boolean>;
   public isRelatedToMedical$!: Observable<boolean>;
+  public isMassageShop$!: Observable<boolean>;
   private _before!: ShopPackageModalDocumentProp;
   constructor(
     private _modalCtrl: ModalController,

@@ -1,15 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  combineLatest,
-  combineLatestWith,
-  filter,
-  map,
-  of,
-  switchMap,
-  take,
-} from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, combineLatestWith, filter, of, switchMap, take } from 'rxjs';
 import {
   Cart,
   ConsultClientInfoType,
@@ -24,23 +14,28 @@ import { GlobalService } from '../../global/global.service';
 import { WaitingListService } from '../waiting-list.service';
 import * as Constant from 'src/app/constant/constant';
 import { ShopConsultRepositoryService } from 'src/app/firebase/shop-repository/shop-consult-repository/shop-consult-repository.service';
+import { WaitingListRepositoryService } from 'src/app/firebase/internal-api-repository/waiting-list-repository/waiting-list-repository.service';
 @Injectable({
   providedIn: 'root',
 })
 export class WaitingListConsultService {
   private _consult = new BehaviorSubject<ConsultDocumentType | null>(null);
   private _consent = new BehaviorSubject<UserVisitShopConsentType | null>(null);
+  private _completed = new BehaviorSubject<boolean>(false);
   private _parentConsent = new BehaviorSubject<boolean>(false);
   public consult$: Observable<ConsultDocumentType | null> = this._consult.asObservable();
   public consent$: Observable<UserVisitShopConsentType | null> = this._consent.asObservable();
   public parentConsent$: Observable<boolean> = this._parentConsent.asObservable();
+  public completed$ = this._completed.asObservable();
+  public isRelateToMedical$ = this._waitingList.shop.isRelatedToMedical();
 
   public isFirstVisit$: Observable<boolean> = this.isFirstVisit();
 
   constructor(
     private _waitingList: WaitingListService,
     private _global: GlobalService,
-    private _consultRepo: ShopConsultRepositoryService
+    private _consultRepo: ShopConsultRepositoryService,
+    private _waitingListRepo: WaitingListRepositoryService
   ) {}
 
   public value() {
@@ -170,10 +165,10 @@ export class WaitingListConsultService {
     consult.checkouts = cart.checkout;
     consult.totalMin = cart.totalMin;
     consult.totalPrice = cart.totalPrice;
-    consult.adjustedPrice = cart.totalPrice;
     consult.scheduled =
       cart.selectedTime !== null
         ? {
+            startOfDay: this._global.date.startDay(cart.selectedTime.start),
             startDateTime: cart.selectedTime.start,
             endDateTime: cart.selectedTime.end,
           }
@@ -234,17 +229,22 @@ export class WaitingListConsultService {
 
   public validator() {
     return this.consult$.pipe(
-      combineLatestWith(this.parentConsent$),
-      switchMap(([consult, parentConsent]) => {
+      combineLatestWith(
+        this.parentConsent$,
+        this._waitingList.shop.isRelatedToMedical(),
+        this._waitingList.session$
+      ),
+      switchMap(([consult, parentConsent, isRelatedToMedical, session]) => {
         if (consult !== null) {
-          const underAgeRequirements = !consult.client.isOver18 ? parentConsent : true;
+          const underAgeRequirements = !consult.client.isOver18 && isRelatedToMedical ? parentConsent : true;
 
-          const insuranceRequirements = consult.isInsuranceClaimRequest
-            ? consult.client.privateInsurance !== null
-            : true;
+          const insuranceRequirements =
+            consult.isInsuranceClaimRequest && isRelatedToMedical
+              ? consult.client.privateInsurance !== null
+              : true;
           const defaultRequirements = consult.hasTermandConditionConsent && consult.client.signature.length > 0;
 
-          return of(underAgeRequirements && insuranceRequirements && defaultRequirements);
+          return of(underAgeRequirements && insuranceRequirements && defaultRequirements && session !== null);
         } else {
           return of(false);
         }
@@ -390,6 +390,7 @@ export class WaitingListConsultService {
       this._waitingList.client.isPregrant$,
       this.isFirstVisit$,
       this._waitingList.shop.isDepositRequired(),
+      this._waitingList.session$,
     ]).pipe(
       filter(
         ([
@@ -403,6 +404,7 @@ export class WaitingListConsultService {
           isClientPregrant,
           isFirstVisit,
           isDepositRequired,
+          session,
         ]) => {
           return (
             start !== null &&
@@ -410,6 +412,7 @@ export class WaitingListConsultService {
             shopConfig !== null &&
             cart !== null &&
             client !== null &&
+            session !== null &&
             typeof isShopInsuranceProvider === 'boolean' &&
             typeof hasInsuranceCartCheckout === 'boolean' &&
             typeof isClientOver18 === 'boolean' &&
@@ -432,10 +435,11 @@ export class WaitingListConsultService {
           isClientPregrant,
           isFirstVisit,
           isDepositRequired,
+          session,
         ]) => {
-          if (start && shopConfig && cart && client) {
+          if (start && shopConfig && cart && client && session) {
             const newConsult: ConsultDocumentType = {
-              id: this._global.newId(),
+              id: session.id,
               origin: {
                 type: Constant.Consult.OriginType.WaitingList,
                 description: Constant.Consult.OriginDescription.WaitingList,
@@ -446,16 +450,17 @@ export class WaitingListConsultService {
               shopId: shopConfig.id,
               shopTimezone: shopConfig.timezone,
               status: {
-                type: Constant.Consult.StatusType.Pending,
-                description: Constant.Consult.StatusDescription.Pending,
+                type: Constant.Consult.StatusType.Creating,
+                description: Constant.Consult.StatusDescription.Creating,
               },
               paymentStatus: {
-                type: Constant.Consult.PaymentType.Unpaid,
-                description: Constant.Consult.PaymentDescription.Unpaid,
+                type: Constant.Payment.Type.Unpaid,
+                description: Constant.Payment.Description.Unpaid,
               },
               scheduled:
                 cart.selectedTime !== null
                   ? {
+                      startOfDay: this._global.date.startDay(cart.selectedTime.start),
                       startDateTime: cart.selectedTime.start,
                       endDateTime: cart.selectedTime.end,
                     }
@@ -463,11 +468,9 @@ export class WaitingListConsultService {
               checkouts: cart.checkout,
               totalMin: cart.totalMin,
               totalPrice: cart.totalPrice,
-              adjustedPrice: cart.totalPrice,
               associatedEmployee: cart.specialist,
-              remainingBalance: cart.totalPrice,
               recieptId: null,
-              transactionIds: [],
+              paymentId: this._global.newId(),
               smsRequestIds: [],
               isFirstVisit: isFirstVisit,
               isInsuranceClaimRequest: hasInsuranceCartCheckout && isShopInsuranceProvider,
@@ -505,5 +508,50 @@ export class WaitingListConsultService {
         }
       )
     );
+  }
+
+  public async sendRequest(client: IUser, consent: UserVisitShopConsentType, consult: ConsultDocumentType) {
+    if (client !== null && consent !== null && consult !== null) {
+      this._waitingList.requestConsult = true;
+      const updateClient = await this.updateClientByConsult(client, consult, consent);
+      const createConsult = updateClient ? await this._consultRepo.create(consult) : false;
+      const updated = updateClient && createConsult;
+      this._waitingList.requestConsult = updated;
+      return updated;
+    } else {
+      return false;
+    }
+  }
+
+  public valueChangeListener(shopId: string, consultId: string) {
+    return this._consultRepo.getValueChangeListenerById(shopId, consultId);
+  }
+
+  private async updateClientByConsult(
+    client: IUser,
+    consult: ConsultDocumentType,
+    consent: UserVisitShopConsentType
+  ) {
+    client = this._waitingList.client.updateVisitShopConsent(client, consent);
+    client.setting.emergencyContact = this.updateClientEmergencyContact(consult.client.emergancyContact);
+    client.setting.privateInsurance = consult.client.privateInsurance;
+    client.signature = consult.client.signature;
+
+    return await this._waitingList.client.update(client);
+  }
+
+  private updateClientEmergencyContact(contact: UserSettingEmergencyContactType | null) {
+    return contact !== null &&
+      contact.firstName.length > 0 &&
+      contact.lastName.length > 0 &&
+      contact.phoneNumber.length > 0
+      ? contact
+      : null;
+  }
+
+  public completed() {
+    this._consent.complete();
+    this._consult.complete();
+    this._completed.next(true);
   }
 }

@@ -5,3 +5,4 @@ export * as SystemTranslateRequest from './doc-system-translate/doc-system-trans
 export * as ShopService from './doc-shop-service/doc-shop-service';
 export * as ShopPackage from './doc-shop-package/doc-shop-package';
 export * as ShopCoupon from './doc-shop-coupon/doc-shop-coupon';
+export * as Consult from './doc-consult/doc-consult';

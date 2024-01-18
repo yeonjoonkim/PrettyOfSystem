@@ -46,7 +46,7 @@
                   (ngModelChange)="handleEnabledSaveBtn()" />
               </kendo-label>
             </div>
-            <div id="pregnant">
+            <div id="pregnant" *ngIf="isMassageShop$ | async">
               <kendo-label text="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
                 <input
                   kendoCheckBox

@@ -1,8 +1,10 @@
 <flex-row class="modal-container user-information-container" *ngIf="user">
   <flex-col class="user-info" *ngIf="!onlyMedical">
     <user-info [user]="user" [isRequiredLoginOption]="isRequiredLoginOption"></user-info>
-    <user-address [address]="user.address"></user-address>
-    <user-emergancy-contact [emergencyContact]="user.setting.emergencyContact"></user-emergancy-contact>
+    <user-address *ngIf="allowAddress" [address]="user.address"></user-address>
+    <user-emergancy-contact
+      *ngIf="allowAddress"
+      [emergencyContact]="user.setting.emergencyContact"></user-emergancy-contact>
     <user-private-insurance
       [privateInsurance]="user.setting.privateInsurance"
       *ngIf="isRequiredInsurance"></user-private-insurance>

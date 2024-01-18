@@ -100,12 +100,14 @@ export type UserSettingEmergencyContactType = {
 export type UserSettingMedicalHistroyType = {
   otherStatus: ShopConfigurationLanguagePackageType | null;
   symptomsAndDiseases: UserMedicalHistoryType[];
+  hasPaceMaker: boolean;
 };
 
 export type UserSettingMassageType = {
   pressure: MassagePressureType;
   areas: MassageBodySelectorAreaType[];
   difficultChangePosition: MassageDifficultChangePosition;
+  preferGender: Constant.GenderType;
 };
 
 export type MassageDifficultChangePosition = {

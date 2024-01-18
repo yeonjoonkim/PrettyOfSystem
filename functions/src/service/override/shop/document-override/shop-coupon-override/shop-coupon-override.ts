@@ -19,6 +19,7 @@ export const override = function (doc: I.ShopCouponDocumentType): I.ShopCouponDo
     originalPrice: T.number(doc?.originalPrice),
     option: shopServiceOptionType(doc?.option),
     discount: shopCouponDiscount(doc?.discount),
+    relatedService: T.nameValuePair(doc?.relatedService),
   };
 };
 

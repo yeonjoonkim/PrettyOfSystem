@@ -147,6 +147,14 @@
     </ng-template>
   </kendo-grid-column>
 
+  <kendo-grid-column>
+    <ng-template kendoGridCellTemplate let-package>
+      <div *ngIf="translatedRequests && allowRefresh(package, translatedRequests)">
+        <button kendoGridEditCommand icon="refresh" (click)="handleRefresh(package, translatedRequests)"></button>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+
   <!-- NO Data-->
   <ng-template kendoGridNoRecordsTemplate></ng-template>
 </kendo-grid>

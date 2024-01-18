@@ -64,6 +64,7 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       if (event.isActivateAccount) {
         current = await handleActiveLogin(current);
       }
+      await Service.User.DisplayInBooking.manage(prev, current);
     } catch (error) {
       await Repository.Error.createErrorReport(current, error, 'update', 'onUserUpdate');
     }
@@ -77,6 +78,7 @@ export const onUserDelete = onDocumentDeleted(Db.Context.User + '/{userId}', asy
 
   if (user !== null) {
     await handleAuthenticationLogin(user, 'delete');
+    await Service.User.DisplayInBooking.deleteUser(user);
   }
 });
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WaitingListPage } from './waiting-list.page';
+
 const routes: Routes = [
   {
     path: '',
@@ -34,6 +35,13 @@ const routes: Routes = [
   {
     path: 'confirmation',
     loadChildren: () => import('./confirmation/confirmation.module').then(m => m.ConfirmationPageModule),
+  },
+  {
+    path: 'consult-request',
+    loadChildren: () =>
+      import('./waiting-list-consult-request/waiting-list-consult-request.module').then(
+        m => m.WaitingListConsultRequestPageModule
+      ),
   },
 ];
 

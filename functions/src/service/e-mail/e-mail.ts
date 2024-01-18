@@ -3,6 +3,7 @@ import * as Repository from '../../repository/index';
 import * as nodeEmailer from 'nodemailer';
 import * as Constant from '../../constant';
 import { google } from 'googleapis';
+import Mail = require('nodemailer/lib/mailer');
 
 const transporter = async function () {
   const token = await getAccessToken();
@@ -48,27 +49,35 @@ const getAccessToken = async function () {
   }
 };
 
-const criteria = function (to: string, subject: string, text: string, html: string | null) {
-  return html === null
-    ? {
-        from: Constant.Email.Address,
-        to: to,
-        subject: subject,
-        text: text,
-      }
-    : {
-        from: Constant.Email.Address,
-        to: to,
-        subject: subject,
-        text: text,
-        html: html,
-      };
+const criteria = function (
+  to: string,
+  subject: string,
+  text: string,
+  html: string,
+  attachmentents: Mail.Attachment[]
+) {
+  const option: nodeEmailer.SendMailOptions = {
+    from: Constant.Email.Address,
+    to: to,
+    subject: subject,
+    text: text,
+    html: html,
+    attachments: attachmentents,
+  };
+
+  return option;
 };
 
-export const send = async function (to: string, subject: string, text: string, html: string | null) {
+export const send = async function (
+  to: string,
+  subject: string,
+  text: string,
+  html: string,
+  attachmentents: Mail.Attachment[]
+) {
   const transport = await transporter();
   // logger.info(transport);
-  const option = criteria(to, subject, text, html);
+  const option = criteria(to, subject, text, html, attachmentents);
   try {
     if (transport !== null) {
       await transport.verify();

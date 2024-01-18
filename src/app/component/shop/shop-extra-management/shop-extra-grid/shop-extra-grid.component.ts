@@ -48,6 +48,22 @@ export class ShopExtraGridComponent implements OnInit {
     }
   }
 
+  public allowRefresh(extra: ShopExtraDocumentType, requests: ChatGptTranslateDocumentType[]) {
+    return requests
+      .filter(s => s.serviceId === extra.id)
+      .map(doc => doc.status)
+      .every(status => status === 'Success' || status === 'Completed' || status === 'Failed');
+  }
+
+  public async handleRefresh(service: ShopExtraDocumentType, requests: ChatGptTranslateDocumentType[]) {
+    const docs = requests
+      .filter(s => s.serviceId === service.id)
+      .map(async doc => {
+        await this._extraService.requeueTranslatedRequest(doc);
+      });
+    Promise.all(docs);
+  }
+
   public isCompletedRequest(serviceId: string) {
     const titleRequest = this.translatedRequests?.find(
       s => s.serviceId === serviceId && s.format === Constant.Text.Format.Title

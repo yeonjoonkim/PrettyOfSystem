@@ -28,15 +28,6 @@
   margin: 0px 15px 0px 0px;
 }
 
-#selections {
-  flex: 1;
-  #related-service,
-  #specialized-employees,
-  #extra {
-    max-width: 200px;
-  }
-}
-
 #option-container {
   display: flex;
   flex-direction: row;

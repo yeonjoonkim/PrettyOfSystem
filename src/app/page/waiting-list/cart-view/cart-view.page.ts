@@ -50,6 +50,14 @@ export class CartViewPage implements OnInit, OnDestroy {
         }
         await this._waitingList.cart.start();
       });
+    this._waitingList.start$
+      .pipe(
+        takeUntil(this._destroy$),
+        filter(start => start !== null && start)
+      )
+      .subscribe(async () => {
+        await this._waitingList.cart.start();
+      });
   }
 
   async onClickGoback() {

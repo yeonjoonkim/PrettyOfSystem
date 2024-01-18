@@ -26,7 +26,20 @@ export const override = function (doc: I.ShopPackageDocumentType): I.ShopPackage
 };
 
 const shopPackageServiceArray = function (array: I.ShopPackageServiceType[] | null | undefined) {
-  return array !== undefined && array !== null ? array : [];
+  return array !== undefined && array !== null ? services(array) : [];
+};
+
+const services = function (services: I.ShopPackageServiceType[]) {
+  return services.map(service => {
+    const newService: I.ShopPackageServiceType = {
+      id: service?.id,
+      description: service?.description,
+      title: service?.title,
+      option: service?.option,
+      relatedService: T.nameValuePair(service?.relatedService),
+    };
+    return newService;
+  });
 };
 
 const shopPackageExtraArray = function (array: I.ShopPackageExtraType[] | null | undefined) {

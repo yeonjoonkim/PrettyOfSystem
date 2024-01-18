@@ -19,6 +19,8 @@
       <user-information
         [isRequiredSignature]="false"
         [isRequiredLoginOption]="false"
+        [allowAddress]="view.isRelatedToMedicalService !== null ? view.isRelatedToMedicalService : false"
+        [allowEmergencyContact]="view.isRelatedToMedicalService !== null ? view.isRelatedToMedicalService : false"
         [isRequiredInsurance]="view.isRelatedToMedicalService !== null ? view.isRelatedToMedicalService :  false"
         [onlyUserInfo]="true"></user-information>
     </div>

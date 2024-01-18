@@ -7,7 +7,8 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { Observable, Subject, combineLatest, combineLatestAll, map, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, Subject, combineLatest, map, takeUntil } from 'rxjs';
 import { UserVisitShopConsentType } from 'src/app/interface';
 import { WaitingListConsultService } from 'src/app/service/waiting-list/waiting-list-consult/waiting-list-consult.service';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
@@ -22,6 +23,7 @@ export class WaitingListConsultAgreementComponent implements OnInit, OnChanges, 
   private _destroy$ = new Subject<void>();
   @Input() clientSignature!: string | null;
   @Input() clientConsent!: UserVisitShopConsentType | null;
+  @Input() sessionId!: string;
 
   public validator$: Observable<boolean> = this._consult.validator();
   public isAvailableTime$: Observable<boolean> = this._waitingList.isAvailableTime();
@@ -35,9 +37,12 @@ export class WaitingListConsultAgreementComponent implements OnInit, OnChanges, 
     })
   );
 
+  public isRelateToMedical$ = this._consult.isRelateToMedical$;
+
   constructor(
     private _consult: WaitingListConsultService,
-    private _waitingList: WaitingListService
+    private _waitingList: WaitingListService,
+    private _router: Router
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     const signature = changes['clientSignature'];
@@ -79,6 +84,12 @@ export class WaitingListConsultAgreementComponent implements OnInit, OnChanges, 
 
   public onChangeSmsConsent(agreed: boolean) {
     this._consult.updateSmsMarketing(agreed);
+  }
+
+  public async onClickRequest() {
+    if (this.sessionId !== undefined && this.sessionId !== null) {
+      this._router.navigateByUrl(`waiting-list/${this.sessionId}/consult-request`);
+    }
   }
 
   ngOnDestroy() {
