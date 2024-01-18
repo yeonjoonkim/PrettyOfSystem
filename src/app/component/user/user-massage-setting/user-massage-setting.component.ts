@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
 import { firstValueFrom } from 'rxjs';
 import {
+  GenderType,
   MassageBodySelectorAreaType,
   MassageDifficultChangePosition,
   UserSettingMassageType,
@@ -33,6 +34,21 @@ export class UserMassageSettingComponent implements OnInit {
       if (before) {
         const current = cloneDeep(before);
         current.setting.massage.pressure = this.massage.pressure;
+        await this._user.updateUser(current, before);
+        this.requesting = false;
+      }
+    }
+  }
+
+  public async onChangeGender(gender: GenderType) {
+    const hasMassage = this.massage !== undefined;
+    if (hasMassage) {
+      this.requesting = true;
+      const before = await firstValueFrom(this._user.data$);
+      if (before) {
+        const current = cloneDeep(before);
+        console.log(gender);
+        current.setting.massage.preferGender = gender;
         await this._user.updateUser(current, before);
         this.requesting = false;
       }

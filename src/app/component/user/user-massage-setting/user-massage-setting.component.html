@@ -1,11 +1,19 @@
 <flex-col *ngIf="massage && !requesting" class="modal-container">
+  <massage-pressure-level-selector
+    [(pressure)]="massage.pressure"
+    (pressureChange)="onChangePressureLevel()"></massage-pressure-level-selector>
+
   <div class="info-container">
-    <massage-pressure-level-selector
-      [(pressure)]="massage.pressure"
-      (pressureChange)="onChangePressureLevel()"></massage-pressure-level-selector>
     <massage-difficult-change-position
       [(position)]="massage.difficultChangePosition"
       (positionChange)="onChangePosition($event)"></massage-difficult-change-position>
+    <flex-col-item>
+      <gender-selection
+        title="label.title.preferencespecialistgender"
+        mode="filter"
+        [(gender)]="massage.preferGender"
+        (genderChange)="onChangeGender($event)"></gender-selection>
+    </flex-col-item>
   </div>
 </flex-col>
 <desktop-version-body-selector

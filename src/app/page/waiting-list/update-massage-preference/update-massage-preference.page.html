@@ -16,9 +16,16 @@
     [sessionId]="sessionId"
     title="label.title.massageoption"></waiting-list-stepper>
   <div class="client-info-container">
+    <massage-pressure-level-selector [(pressure)]="pressure"></massage-pressure-level-selector>
+
     <div class="info-container">
-      <massage-pressure-level-selector [(pressure)]="pressure"></massage-pressure-level-selector>
       <massage-difficult-change-position [(position)]="position"></massage-difficult-change-position>
+      <flex-col-item>
+        <gender-selection
+          title="label.title.preferencespecialistgender"
+          mode="filter"
+          [(gender)]="preferGender"></gender-selection>
+      </flex-col-item>
     </div>
     <desktop-version-body-selector
       *ngIf="massageArea"

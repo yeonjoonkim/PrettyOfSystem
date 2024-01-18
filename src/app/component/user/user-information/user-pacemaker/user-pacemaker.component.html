@@ -1,0 +1,31 @@
+<flex-row>
+  <flex-row-item class="setting-title">
+    <legend>{{ 'label.title.pacemaker' | languageTransform: 'System' | async }}</legend>
+    <button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </button>
+    <button
+      *ngIf="!readOnly"
+      class="save-btn"
+      themeColor="success"
+      (click)="onSave()"
+      [disabled]="!enableSaveBtn || requesting">
+      {{ 'button.title.save' | languageTransform: 'System' | async }}
+    </button>
+  </flex-row-item>
+</flex-row>
+
+<flex-col *ngIf="!requesting">
+  <flex-col-item>
+    <yes-no-selection
+      [(value)]="hasPaceMaker"
+      [readOnly]="readOnly"
+      (valueChange)="enableSaveBtn = true"></yes-no-selection>
+  </flex-col-item>
+</flex-col>
+
+<flex-col>
+  <flex-col-item>
+    <kendo-loader *ngIf="requesting" size="large"></kendo-loader>
+  </flex-col-item>
+</flex-col>
