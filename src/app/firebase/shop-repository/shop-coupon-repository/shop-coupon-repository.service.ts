@@ -92,6 +92,10 @@ export class ShopCouponRepositoryService {
         min: 0,
         price: 0,
       },
+      relatedService: {
+        name: '',
+        value: '',
+      },
     };
 
     result.title = result.id + '.' + Constant.Text.Format.Title;

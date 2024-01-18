@@ -23,7 +23,7 @@ export class EmployeeTimeSheetService {
     return {
       shopId: specialist.shopId,
       employeeId: '',
-      fullName: 'label.title.anyone',
+      fullName: Constant.Default.Anyone,
       gender: Constant.Default.Gender.Other,
       avaliable: [],
     };
@@ -46,7 +46,7 @@ export class EmployeeTimeSheetService {
     return {
       shopId: shopId,
       employeeId: '',
-      fullName: `label.title.anyone`,
+      fullName: Constant.Default.Anyone,
       gender: Constant.Default.Gender.Other,
       avaliable: [...thisWeek],
     };

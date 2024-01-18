@@ -32,6 +32,7 @@ export class ExtraPriceListCardComponent implements OnInit {
       qty: 1,
       min: 0,
       couponCriteria: null,
+      relatedServices: [],
     };
     this.add.emit(checkout);
   }

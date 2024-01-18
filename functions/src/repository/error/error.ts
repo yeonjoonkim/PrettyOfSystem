@@ -8,7 +8,7 @@ export const createErrorReport = async function (
   actionType: Constant.APIActionType,
   where: string
 ) {
-  const errorData = { data: data, error: error, actionType: actionType, location: where };
+  const errorData = { info: JSON.stringify(data), error: error, actionType: actionType, location: where };
   const docRef = firestore().collection(Db.Context.Report.FunctionError).doc();
   await docRef.set(errorData);
 };

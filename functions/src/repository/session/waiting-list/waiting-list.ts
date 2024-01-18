@@ -20,7 +20,7 @@ export const createCriteria = async function async(config: I.ShopConfigurationTy
   }
 };
 
-export const upadteCriteria = async function (config: I.ShopConfigurationType) {
+export const updateCriteria = async function (config: I.ShopConfigurationType) {
   const criteria = getCriteria(config);
   try {
     await firestore().collection(Db.Context.WaitingList.Criteria).doc(criteria.id).update(criteria);

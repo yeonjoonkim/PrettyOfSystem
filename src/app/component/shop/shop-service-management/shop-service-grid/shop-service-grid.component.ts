@@ -36,6 +36,7 @@ export class ShopServiceGridComponent implements OnInit {
   @Input() extraFilter: NameValuePairType[] = [];
 
   public isRelatedToMedical$!: Observable<boolean>;
+  public isMassageShop$!: Observable<boolean>;
 
   constructor(
     private _shopEmp: ShopEmployeeManagementService,
@@ -44,6 +45,7 @@ export class ShopServiceGridComponent implements OnInit {
     private _popover: PopoverController
   ) {
     this.isRelatedToMedical$ = this._shopService.isRelatedToMedical$;
+    this.isMassageShop$ = this._shopService.isMassageShop$;
   }
 
   ngOnInit() {}
@@ -66,6 +68,15 @@ export class ShopServiceGridComponent implements OnInit {
       },
     });
     await popover.present();
+  }
+
+  public async handleRefresh(service: ShopServiceDocumentType, requests: ChatGptTranslateDocumentType[]) {
+    const docs = requests
+      .filter(s => s.serviceId === service.id)
+      .map(async doc => {
+        await this._shopService.requeueTranslatedRequest(doc);
+      });
+    Promise.all(docs);
   }
 
   public async handleRequeue(
@@ -103,6 +114,13 @@ export class ShopServiceGridComponent implements OnInit {
     const createdDate = this._global.date.transform.toLocalDateTime(doc.createdDate);
     const isCreatedDateThreeMinsAgo = createdDate < FiveMinutesAgo;
     return isInProgress && isCreatedDateThreeMinsAgo;
+  }
+
+  public allowRefresh(service: ShopServiceDocumentType, requests: ChatGptTranslateDocumentType[]) {
+    return requests
+      .filter(s => s.serviceId === service.id)
+      .map(doc => doc.status)
+      .every(status => status === 'Success' || status === 'Completed' || status === 'Failed');
   }
 
   public onClickCreate() {

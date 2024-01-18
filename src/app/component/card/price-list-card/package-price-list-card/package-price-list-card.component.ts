@@ -40,6 +40,7 @@ export class PackagePriceListCardComponent implements OnInit {
       qty: 1,
       min: this.pack.totalMin,
       couponCriteria: null,
+      relatedServices: this.pack.services.map(s => s.relatedService),
     };
     this.add.emit(checkout);
   }

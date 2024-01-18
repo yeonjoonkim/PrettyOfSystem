@@ -115,6 +115,14 @@ export const getStartEndDateTime = function (
   };
 };
 
+export const getTotalMin = function (start: string, end: string) {
+  const startTime = moment(start, dateFormatter);
+  const endTime = moment(end, dateFormatter);
+
+  const diff = endTime.diff(startTime, 'minutes');
+  return diff;
+};
+
 export const interval = function (start: FunctionDateType, end: FunctionDateType): Duration {
   const interval: Interval = {
     start: toLocalDateTime(start),

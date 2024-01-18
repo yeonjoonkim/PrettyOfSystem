@@ -8,6 +8,7 @@ export const override = function (s: I.IShopSetting): I.IShopSetting {
   s.qrCode = QRcode(s?.qrCode);
   s.insurance = insurance(s?.insurance);
   s.waitingList = waitingList(s?.waitingList);
+  s.smsRule = smsRule(s?.smsRule);
   return s;
 };
 
@@ -112,4 +113,21 @@ const waitingListIntervalMin = function (waitingListIntervalMin: number | undefi
   return typeof waitingListIntervalMin === 'number'
     ? waitingListIntervalMin
     : Constant.ShopSetting.WaitingList.intervalMin;
+};
+
+//SMS Rule
+const smsRule = function (sms: I.ShopSendSMSRuleType | null | undefined) {
+  const result: I.ShopSendSMSRuleType = {
+    Confirmation_SMS_Before_Min: T.nullabelNumber(sms?.Confirmation_SMS_Before_Min),
+    Reminder_SMS_Before_Start_Day: T.nullabelNumber(sms?.Reminder_SMS_Before_Start_Day),
+    Send_Cancellation: T.booleanDefaultTrue(sms?.Send_Cancellation),
+    Send_Rescheduled: T.booleanDefaultTrue(sms?.Send_Rescheduled),
+    Shceduled_Revisit_Reminder_After_Day: T.nullabelNumber(sms?.Shceduled_Revisit_Reminder_After_Day),
+    Send_BrithDay_Event: sendBridthDayEvent(sms?.Send_BrithDay_Event),
+  };
+  return result;
+};
+
+const sendBridthDayEvent = function (event: I.ShopSendBrithDayEventType | null | undefined) {
+  return event !== null && event !== undefined ? event : null;
 };

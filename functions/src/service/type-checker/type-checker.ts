@@ -28,6 +28,10 @@ export const boolean = function (bool: boolean | null | undefined) {
   return typeof bool === 'boolean' ? bool : false;
 };
 
+export const booleanDefaultTrue = function (bool: boolean | null | undefined) {
+  return typeof bool === 'boolean' ? bool : true;
+};
+
 export const nameValuePair = function (pair: I.NameValuePairType | null | undefined) {
   return pair !== undefined && pair !== null ? pair : { name: '', value: '' };
 };

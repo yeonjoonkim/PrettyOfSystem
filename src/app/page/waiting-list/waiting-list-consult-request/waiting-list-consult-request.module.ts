@@ -10,6 +10,7 @@ import { WaitingListConsultRequestPage } from './waiting-list-consult-request.pa
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
+import { SuccessCheckMarkModule } from 'src/app/component/animation/success-check-mark/success-check-mark.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,6 +20,7 @@ import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pip
     KendoUiModule,
     LanguageTransformPipeModule,
     SharedFormModule,
+    SuccessCheckMarkModule,
   ],
   declarations: [WaitingListConsultRequestPage],
 })

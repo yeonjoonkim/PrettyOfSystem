@@ -35,7 +35,7 @@ export const sendEmail = async function (docs: I.ChangePhoneNumberRequestDocumen
       const button = `<a href="${doc.url}" style="background-color: black; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block;">
        ${name}
   </a>`;
-      const result = await Email.send(doc.emailAddress, 'Change Phone Number Request', '', button);
+      const result = await Email.send(doc.emailAddress, 'Change Phone Number Request', '', button, []);
       if (result) {
         successDocs.push(doc);
       } else {

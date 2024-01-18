@@ -10,13 +10,11 @@ export const override = function (doc: I.ConsultDocumentType) {
     origin: origin(doc?.origin),
     shopTimezone: T.timezone(doc?.shopTimezone),
     status: status(doc?.status),
-    remainingBalance: T.number(doc?.remainingBalance),
     paymentStatus: paymentStatus(doc?.paymentStatus),
     scheduled: scheduled(doc?.scheduled),
     checkouts: checkouts(doc?.checkouts),
     totalMin: T.number(doc?.totalMin),
     totalPrice: T.number(doc?.totalPrice),
-    adjustedPrice: T.number(doc?.adjustedPrice),
     paymentId: T.string(doc?.paymentId),
     smsRequestIds: T.stringArray(doc?.smsRequestIds),
     isFirstVisit: T.boolean(doc?.isFirstVisit),
@@ -55,14 +53,12 @@ const associatedEmployee = function (associatedEmployee: I.ConsultAssociatedEmpl
       };
 };
 
-const paymentStatus = function (
-  paymentStatus: I.ConsultPaymentStatusType | undefined | null
-): I.ConsultPaymentStatusType {
+const paymentStatus = function (paymentStatus: I.PaymentStatusType | undefined | null): I.PaymentStatusType {
   return paymentStatus !== undefined && paymentStatus !== null
     ? paymentStatus
     : {
-        type: Constant.Consult.PaymentType.Unpaid,
-        description: Constant.Consult.PaymentDescription.Unpaid,
+        type: Constant.Payment.Type.Unpaid,
+        description: Constant.Payment.Description.Unpaid,
       };
 };
 
@@ -86,6 +82,7 @@ const checkouts = function (checkouts: I.CheckOutItem[] | undefined | null) {
       min: T.number(c?.min),
       couponCriteria:
         c?.couponCriteria !== undefined && c?.couponCriteria !== null ? coupoonCriteria(c.couponCriteria) : null,
+      relatedServices: [],
     };
     return newCheckout;
   });
@@ -123,6 +120,7 @@ const consultClient = function (c: I.ConsultClientInfoType | undefined | null): 
         : {
             otherStatus: null,
             symptomsAndDiseases: [],
+            hasPaceMaker: false,
           },
     massage: massage(c?.massage),
   };
@@ -146,6 +144,8 @@ const massage = function (m: I.UserSettingMassageType | undefined | null) {
             type: Constant.Massage.DifficultChangePosition.Type.NoProblem,
             description: Constant.Massage.DifficultChangePosition.Description.NoProblem,
           },
+    preferGender:
+      m?.preferGender !== null && m?.preferGender !== undefined ? m.preferGender : Constant.Default.Gender.All,
   };
   return newMassage;
 };

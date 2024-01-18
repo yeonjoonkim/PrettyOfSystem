@@ -277,6 +277,17 @@ export class ShopConfigurationService {
         intervalMin: Constant.ShopSetting.WaitingList.intervalMin,
         depositRate: null,
       },
+      smsRule: {
+        Confirmation_SMS_Before_Min: Constant.ShopSetting.SMSRule.Confirmation_SMS_Before_Min,
+        Reminder_SMS_Before_Start_Day: Constant.ShopSetting.SMSRule.Reminder_SMS_Before_Start_Day,
+        Shceduled_Revisit_Reminder_After_Day: Constant.ShopSetting.SMSRule.Shceduled_Revisit_Reminder_After_Day,
+        Send_Cancellation: true,
+        Send_Rescheduled: true,
+        Send_BrithDay_Event: {
+          discountType: 'Percent',
+          discountValue: 0.1,
+        },
+      },
       insurance: null,
     };
     return result;

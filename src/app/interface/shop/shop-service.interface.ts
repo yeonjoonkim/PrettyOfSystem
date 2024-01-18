@@ -125,6 +125,7 @@ export type ShopPackageServiceType = {
   description: string;
   title: string;
   option: ShopServiceOptionType;
+  relatedService: NameValuePairType;
 };
 
 export type ShopPackageExtraType = {
@@ -155,6 +156,7 @@ export type ShopCouponDocumentType = {
   lastModifiedEmployee: string;
   serviceId: string;
   option: ShopServiceOptionType;
+  relatedService: NameValuePairType;
 };
 
 export type ShopCouponDiscountType = {

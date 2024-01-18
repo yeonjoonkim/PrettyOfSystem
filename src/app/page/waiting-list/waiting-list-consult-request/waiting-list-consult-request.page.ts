@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Observable, combineLatestWith, takeUntil, take, filter, pairwise } from 'rxjs';
+import { Subject, Observable, combineLatestWith, takeUntil, take, filter, BehaviorSubject } from 'rxjs';
 import { ClientService } from 'src/app/service/client/client.service';
 import { WaitingListConsultService } from 'src/app/service/waiting-list/waiting-list-consult/waiting-list-consult.service';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
+import * as Constant from 'src/app/constant/constant';
 
 @Component({
   selector: 'app-waiting-list-consult-request',
@@ -13,10 +14,46 @@ import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.se
 export class WaitingListConsultRequestPage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   public sessionId: string | null = this._route.snapshot.paramMap.get('id');
+  private _specialist = new BehaviorSubject<string | null>(null);
+  private _status = new BehaviorSubject<Constant.ConsultStatusType | null>(null);
+  private _startTime = new BehaviorSubject<string | null>(null);
+  private _endTime = new BehaviorSubject<string | null>(null);
+
+  public status$ = this._status.asObservable();
   public loaded$: Observable<boolean> = this._waitingList.isLoaded$;
   public isLoading$: Observable<boolean> = this._waitingList.isLoading$;
-  public completed: boolean = false;
-  public requesting: boolean = false;
+
+  get status() {
+    return this._status.getValue();
+  }
+
+  set status(value: Constant.ConsultStatusType | null) {
+    this._status.next(value);
+  }
+
+  get specialist() {
+    return this._specialist.getValue();
+  }
+
+  set specialist(value: string | null) {
+    this._specialist.next(value);
+  }
+
+  get startTime() {
+    return this._startTime.getValue();
+  }
+
+  set startTime(value: string | null) {
+    this._startTime.next(value);
+  }
+
+  get endTime() {
+    return this._endTime.getValue();
+  }
+
+  set endTime(value: string | null) {
+    this._endTime.next(value);
+  }
 
   constructor(
     private _waitingList: WaitingListService,
@@ -65,15 +102,13 @@ export class WaitingListConsultRequestPage implements OnInit, OnDestroy {
       )
       .subscribe(async ([_, client, consult, consent, __]) => {
         if (client !== null && consult !== null && consent !== null) {
-          this.requesting = true;
           const result = await this._consultSvc.sendRequest(client, consent, consult);
-          this.requesting = false;
           if (result) {
-            this.startValueChangeListener(consult.shopId, consult.id);
             const deleteSession =
               this.sessionId !== null ? this._waitingList.deleteSession(this.sessionId) : false;
             console.log(`Session has ${deleteSession ? 'completed' : 'not completed'}`);
             this._waitingList.completeSession();
+            this.startValueChangeListener(consult.shopId, consult.id);
           } else {
             await this._router.navigateByUrl(`waiting-list/${this.sessionId}/confirmation`);
           }
@@ -84,10 +119,12 @@ export class WaitingListConsultRequestPage implements OnInit, OnDestroy {
   private startValueChangeListener(shopId: string, consultId: string) {
     this._consultSvc
       .valueChangeListener(shopId, consultId)
-      .pipe(pairwise(), takeUntil(this._destroy$))
-      .subscribe(([before, after]) => {
-        console.log(before);
-        console.log(after);
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(consult => {
+        this.status = consult !== null ? consult.status : null;
+        this.specialist = consult !== null ? consult.associatedEmployee.name : null;
+        this.startTime = consult !== null && consult.scheduled !== null ? consult.scheduled.startDateTime : null;
+        this.endTime = consult !== null && consult.scheduled !== null ? consult.scheduled.endDateTime : null;
       });
   }
 

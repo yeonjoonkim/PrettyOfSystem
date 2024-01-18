@@ -13,6 +13,7 @@ const shopExtra: string = shop + '{shopId}/extra';
 const shopPackage: string = shop + '{shopId}/package';
 const shopCoupon: string = shop + '{shopId}/coupon';
 const shopConsult: string = shop + '{shopId}/consult';
+const shopPayment: string = shop + '{shopId}/payment';
 const shopTransaction: string = shop + '{shopId}/transaction';
 
 //Reporter
@@ -44,6 +45,7 @@ export const Context = {
     Coupon: shopCoupon,
     Consult: shopConsult,
     Transaction: shopTransaction,
+    Payment: shopPayment,
   } as const,
   WaitingList: {
     Criteria: waitingListCriteria,
@@ -76,6 +78,7 @@ export const ShopExtra = (shopId: string): string => `shop/${shopId}/extra/`;
 export const ShopPackage = (shopId: string): string => `shop/${shopId}/package/`;
 export const ShopCoupon = (shopId: string): string => `shop/${shopId}/coupon/`;
 export const ShopConsult = (shopId: string): string => `shop/${shopId}/consult/`;
+export const ShopPayment = (shopId: string): string => `shop/${shopId}/payment/`;
 export const ShopTransaction = (shopId: string): string => `shop/${shopId}/transaction/`;
 
 export const ShopLogo = (shopId: string, file: File): string =>

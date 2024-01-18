@@ -11,7 +11,7 @@ import * as Constant from 'src/app/constant/constant';
 import { cloneDeep } from 'lodash-es';
 import { ModalController } from '@ionic/angular';
 import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-management/shop-service-management.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'shop-service',
@@ -19,7 +19,7 @@ import { Observable, Subscription } from 'rxjs';
   styleUrls: ['./shop-service.component.scss'],
 })
 export class ShopServiceComponent implements OnInit, OnDestroy {
-  private _configSubscription!: Subscription;
+  private _destroy$ = new Subject<void>();
   public country!: ShopCountryType;
   public form!: IFormHeaderModalProp;
   public current!: ShopServiceModalDocumentProp;
@@ -28,7 +28,9 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
   public hasInsuranceProvider$!: Observable<boolean>;
   public hasNotInsuranceProvider$!: Observable<boolean>;
   public isRelatedToMedical$!: Observable<boolean>;
+  public isMassageShop$!: Observable<boolean>;
   private _before!: ShopServiceModalDocumentProp;
+  private _isMassageShop: boolean = false;
 
   public validator = {
     title: false,
@@ -42,18 +44,24 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
     this.hasInsuranceProvider$ = this._shopService.hasInsuranceProvider$;
     this.hasNotInsuranceProvider$ = this._shopService.hasNotInsuranceProvider$;
     this.isRelatedToMedical$ = this._shopService.isRelatedToMedical$;
+    this.isMassageShop$ = this._shopService.isMassageShop$;
   }
 
   ngOnDestroy() {
-    this._configSubscription?.unsubscribe();
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   async ngOnInit() {
     await this.loadingFormCtrl();
-    this._configSubscription = this._shopService.currentShopConfig$.subscribe(config => {
+    this._shopService.currentShopConfig$.pipe(takeUntil(this._destroy$)).subscribe(config => {
       if (config !== null) {
         this.country = config.country;
       }
+    });
+    this.isMassageShop$.pipe(takeUntil(this._destroy$)).subscribe(isMassageShop => {
+      this._isMassageShop = isMassageShop;
+      this.handleEnabledSaveBtn();
     });
   }
 
@@ -142,11 +150,10 @@ export class ShopServiceComponent implements OnInit, OnDestroy {
       isOptionAvailable = false;
     }
 
+    const relatedService = this._isMassageShop ? this.current.service.relatedService.value.length > 0 : true;
+
     this.form.enabledSavebutton =
-      this.validator.title &&
-      this.validator.description &&
-      this.current.service.relatedService.value.length > 0 &&
-      isOptionAvailable;
+      this.validator.title && this.validator.description && relatedService && isOptionAvailable;
   }
 
   public onChangeTitleProp() {

@@ -128,3 +128,41 @@ export type ShopUpdateContactProp = {
   address: AddressType;
   taxNumber: string;
 };
+
+export type ShopSMSCreditBalanceType = {
+  id: string;
+  shopId: string;
+  balance: number;
+  autoChargeAmount: number;
+  autoChargeStartAmount: number;
+};
+
+export type ShopCreditCardType = {
+  encryptedFirstName: string;
+  encryptedLastName: string;
+  encryptedFirstSegment: string;
+  encryptedSecondSegment: string;
+  encryptedLastSegment: string;
+  encryptedCSV: string;
+  encryptedType: string;
+};
+
+export type ShopSMSCreditTransactionType = {
+  id: string;
+  to: string;
+  phoneNumber: string;
+  type: string;
+  amount: number;
+  surcharged: number;
+  totalAmount: number;
+  remainingBalance: string;
+};
+
+export type SMSRequestTransactionDocumentType = {
+  id: string;
+  shopId: string;
+  shopTimezone: string;
+  status: 'Scheduled' | 'Failed' | 'Sent' | 'Cancel';
+  type: 'Confirmation' | 'Reminder' | 'ReScheduled' | 'Cancel' | 'Brithday';
+  attempt: number; // 0 - 2;
+};

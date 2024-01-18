@@ -34,6 +34,25 @@ export const getReportLanguage = async function (): Promise<I.LanguageSelectionT
   }
 };
 
+export const getSelectLanguageByCode = async function (code: string): Promise<I.LanguageSelectionType | null> {
+  const snapshot = await firestore()
+    .collection(Db.Context.System.Language.Selection)
+    .where('code', '==', code)
+    .limit(1)
+    .get();
+
+  try {
+    if (!snapshot.empty) {
+      return snapshot.docs[0].data() as I.LanguageSelectionType;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    await Error.createErrorReport(snapshot, error, 'Sync', 'getSelectLanguageByCode');
+    return null;
+  }
+};
+
 export const getAllNameValueTypeList = async function () {
   const selections = await getAll();
   const result: I.NameValuePairType[] = selections.map(s => {

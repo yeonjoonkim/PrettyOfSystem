@@ -5,21 +5,6 @@ import * as Service from '../../../service/index';
 import * as Constant from '../../../constant';
 import { logger } from 'firebase-functions/v2';
 
-export const ScheduledStatuses = [
-  Constant.Consult.StatusType.Pending,
-  Constant.Consult.StatusType.Awaiting,
-  Constant.Consult.StatusType.Scheduled,
-  Constant.Consult.StatusType.Start,
-  Constant.Consult.StatusType.Completed,
-];
-export const FutureScheduledStatuses = [
-  Constant.Consult.StatusType.Pending,
-  Constant.Consult.StatusType.Awaiting,
-  Constant.Consult.StatusType.Scheduled,
-];
-export const CompletedStatuses = [Constant.Consult.StatusType.Completed];
-export const CancelStatuses = [Constant.Consult.StatusType.Cancel];
-
 export const getEmployeesFutureScheduledStatuses = async function (
   shopid: string,
   employeeIds: string[],
@@ -30,13 +15,58 @@ export const getEmployeesFutureScheduledStatuses = async function (
     .where('associatedEmployee.id', 'in', employeeIds)
     .where('scheduled', '!=', null)
     .where('scheduled.startOfDay', '>=', startOfDay)
-    .orderBy('scheduled.startDateTime', 'asc')
-    .where('status.type', 'in', FutureScheduledStatuses)
+    .where('status.type', 'in', Constant.Consult_FutureScheduledStatusTypes)
     .get();
   const docs = snapshot.docs.map(doc => {
     return Service.Override.Consult.Document.override(doc.data() as I.ConsultDocumentType);
   });
 
+  return docs;
+};
+
+export const getEmployeeConsults = async function (shopid: string, employeeId: string) {
+  const snapshot = await firestore()
+    .collection(Db.ShopConsult(shopid))
+    .where('associatedEmployee.id', '==', employeeId)
+    .get();
+  const docs = snapshot.docs.map(doc => {
+    return Service.Override.Consult.Document.override(doc.data() as I.ConsultDocumentType);
+  });
+
+  return docs;
+};
+
+export const getEmployeeScheduledOfDay = async function (
+  shopid: string,
+  employeeId: string,
+  startOfDay: string
+): Promise<I.ConsultDocumentType[]> {
+  const snapshot = await firestore()
+    .collection(Db.ShopConsult(shopid))
+    .where('associatedEmployee.id', '==', employeeId)
+    .where('scheduled', '!=', null)
+    .where('scheduled.startOfDay', '==', startOfDay)
+    .where('status.type', 'in', Constant.Consult_ScheduledStatusTypes)
+    .get();
+  const docs = snapshot.docs.map(doc => {
+    return Service.Override.Consult.Document.override(doc.data() as I.ConsultDocumentType);
+  });
+
+  return docs;
+};
+
+export const getInCompletedStatus = async function (
+  shopid: string,
+  createDateTime: string
+): Promise<I.ConsultDocumentType[]> {
+  const snapshot = await firestore()
+    .collection(Db.ShopConsult(shopid))
+    .where('createdDateTime', '<=', createDateTime)
+    .where('status.type', 'in', Constant.Consult_InCompletedStatusTypes)
+    .get();
+  const docs = snapshot.docs.map(doc => {
+    return Service.Override.Consult.Document.override(doc.data() as I.ConsultDocumentType);
+  });
   return docs;
 };
 
@@ -57,40 +87,35 @@ export const updateDocument = async function (doc: I.ConsultDocumentType) {
 };
 
 export const updateToAnyoneAwaitingStatus = async function (consults: I.ConsultDocumentType[]) {
-  const updatePromises = consults.map(consult => {
+  const updatePromises = consults.map(async consult => {
     consult.associatedEmployee = {
       id: '',
-      name: 'label.title.anyone',
+      name: Constant.Default.Anyone,
     };
-    consult.status = AwaitingStatus;
-    return updateDocument(consult);
+    consult.status = Constant.Consult_PendingStatus;
+    return await updateDocument(consult);
   });
 
   const results = await Promise.all(updatePromises);
   return results.every(result => result === true);
 };
 
-export const PendingStatus = {
-  type: Constant.Consult.StatusType.Pending,
-  description: Constant.Consult.StatusDescription.Pending,
+export const updateToCancelStatus = async function (consults: I.ConsultDocumentType[]) {
+  const updatePromises = consults.map(async consult => {
+    consult.status = Constant.Consult_CancelStatus;
+    return await updateDocument(consult);
+  });
+
+  const results = await Promise.all(updatePromises);
+  return results.every(result => result === true);
 };
 
-export const AwaitingStatus = {
-  type: Constant.Consult.StatusType.Awaiting,
-  description: Constant.Consult.StatusDescription.Awaiting,
-};
+export const updateToPendingStatus = async function (consults: I.ConsultDocumentType[]) {
+  const updatePromises = consults.map(async consult => {
+    consult.status = Constant.Consult_PendingStatus;
+    return await updateDocument(consult);
+  });
 
-export const ScheduledStatus = {
-  type: Constant.Consult.StatusType.Scheduled,
-  description: Constant.Consult.StatusDescription.Scheduled,
-};
-
-export const StartStatus = {
-  type: Constant.Consult.StatusType.Start,
-  description: Constant.Consult.StatusDescription.Start,
-};
-
-export const CancelStatus = {
-  type: Constant.Consult.StatusType.Cancel,
-  description: Constant.Consult.StatusDescription.Cancel,
+  const results = await Promise.all(updatePromises);
+  return results.every(result => result === true);
 };

@@ -9,7 +9,7 @@ import {
   SimpleChange,
 } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
-import { ShopServiceDocumentType, ShopServiceOptionType } from 'src/app/interface';
+import { NameValuePairType, ShopServiceDocumentType, ShopServiceOptionType } from 'src/app/interface';
 import { CheckOutItem } from 'src/app/interface/booking/cart/cart.interface';
 
 @Component({
@@ -38,7 +38,7 @@ export class ServicePriceListCardComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
 
-  public onClickAdd(option: ShopServiceOptionType) {
+  public onClickAdd(option: ShopServiceOptionType, relatedService: NameValuePairType) {
     const checkout: CheckOutItem = {
       shopId: this.service.shopId,
       type: Constant.CartItem.Service,
@@ -51,6 +51,7 @@ export class ServicePriceListCardComponent implements OnInit, OnChanges {
       qty: 1,
       min: option.min,
       couponCriteria: null,
+      relatedServices: [relatedService],
     };
     this.add.emit(checkout);
   }

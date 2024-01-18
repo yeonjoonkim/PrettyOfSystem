@@ -70,6 +70,14 @@
     </ng-template>
   </kendo-grid-column>
 
+  <kendo-grid-column>
+    <ng-template kendoGridCellTemplate let-extra>
+      <div *ngIf="translatedRequests && allowRefresh(extra, translatedRequests)">
+        <button kendoGridEditCommand icon="refresh" (click)="handleRefresh(extra, translatedRequests)"></button>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+
   <!-- NO Data-->
   <ng-template kendoGridNoRecordsTemplate></ng-template>
 </kendo-grid>

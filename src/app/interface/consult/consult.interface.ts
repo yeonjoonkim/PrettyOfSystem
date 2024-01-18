@@ -2,7 +2,7 @@ import {
   TimeZoneType,
   ConsultOriginType,
   ConsultStatusType,
-  ConsultPaymentStatusType,
+  PaymentStatusType,
   GenderType,
 } from '../../constant/constant';
 import { CheckOutItem } from '../booking/cart/cart.interface';
@@ -23,13 +23,11 @@ export type ConsultDocumentType = {
   shopTimezone: TimeZoneType;
   status: ConsultStatusType;
   paymentId: string;
-  paymentStatus: ConsultPaymentStatusType;
+  paymentStatus: PaymentStatusType;
   scheduled: ConsultScheduleTimeType | null;
   checkouts: CheckOutItem[];
   totalMin: number;
   totalPrice: number;
-  adjustedPrice: number;
-  remainingBalance: number;
   smsRequestIds: string[];
   isFirstVisit: boolean;
   isInsuranceClaimRequest: boolean;

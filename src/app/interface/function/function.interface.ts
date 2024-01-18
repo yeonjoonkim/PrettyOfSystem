@@ -66,3 +66,16 @@ export type OnChangeSopServiceOptionUpdateType = {
   previous: ShopServiceOptionType;
   current: ShopServiceOptionType;
 };
+
+export type CheckoutValidatorType = {
+  isTotalPriceCorrect: boolean;
+  isTotalMinCorrect: boolean;
+  correctedTotalPrice: number;
+  correctedTotalMin: number;
+};
+
+export type CheckoutChangeValidatorType = {
+  hasModifiedCheckout: boolean;
+  hasUpdatedPrice: boolean;
+  hasUpdateMin: boolean;
+};

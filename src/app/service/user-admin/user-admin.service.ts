@@ -85,6 +85,7 @@ export class UserAdminService {
       medical: {
         symptomsAndDiseases: [],
         otherStatus: null,
+        hasPaceMaker: false,
       },
       massage: {
         pressure: {
@@ -96,6 +97,7 @@ export class UserAdminService {
           type: Constant.Massage.DifficultChangePosition.Type.NoProblem,
           description: Constant.Massage.DifficultChangePosition.Description.NoProblem,
         },
+        preferGender: Constant.Default.Gender.All,
       },
       emergencyContact: null,
     };
@@ -161,8 +163,8 @@ export class UserAdminService {
           user.currentShopId === shopId && user.associatedShops.length > 0
             ? user.associatedShops[0].shopId
             : user.currentShopId !== shopId
-            ? user.currentShopId
-            : '';
+              ? user.currentShopId
+              : '';
       }
     }
 

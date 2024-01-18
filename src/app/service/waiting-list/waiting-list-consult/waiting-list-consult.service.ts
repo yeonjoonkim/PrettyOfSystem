@@ -165,7 +165,6 @@ export class WaitingListConsultService {
     consult.checkouts = cart.checkout;
     consult.totalMin = cart.totalMin;
     consult.totalPrice = cart.totalPrice;
-    consult.adjustedPrice = cart.totalPrice;
     consult.scheduled =
       cart.selectedTime !== null
         ? {
@@ -391,6 +390,7 @@ export class WaitingListConsultService {
       this._waitingList.client.isPregrant$,
       this.isFirstVisit$,
       this._waitingList.shop.isDepositRequired(),
+      this._waitingList.session$,
     ]).pipe(
       filter(
         ([
@@ -404,6 +404,7 @@ export class WaitingListConsultService {
           isClientPregrant,
           isFirstVisit,
           isDepositRequired,
+          session,
         ]) => {
           return (
             start !== null &&
@@ -411,6 +412,7 @@ export class WaitingListConsultService {
             shopConfig !== null &&
             cart !== null &&
             client !== null &&
+            session !== null &&
             typeof isShopInsuranceProvider === 'boolean' &&
             typeof hasInsuranceCartCheckout === 'boolean' &&
             typeof isClientOver18 === 'boolean' &&
@@ -433,10 +435,11 @@ export class WaitingListConsultService {
           isClientPregrant,
           isFirstVisit,
           isDepositRequired,
+          session,
         ]) => {
-          if (start && shopConfig && cart && client) {
+          if (start && shopConfig && cart && client && session) {
             const newConsult: ConsultDocumentType = {
-              id: this._global.newId(),
+              id: session.id,
               origin: {
                 type: Constant.Consult.OriginType.WaitingList,
                 description: Constant.Consult.OriginDescription.WaitingList,
@@ -447,12 +450,12 @@ export class WaitingListConsultService {
               shopId: shopConfig.id,
               shopTimezone: shopConfig.timezone,
               status: {
-                type: Constant.Consult.StatusType.Pending,
-                description: Constant.Consult.StatusDescription.Pending,
+                type: Constant.Consult.StatusType.Creating,
+                description: Constant.Consult.StatusDescription.Creating,
               },
               paymentStatus: {
-                type: Constant.Consult.PaymentType.Unpaid,
-                description: Constant.Consult.PaymentDescription.Unpaid,
+                type: Constant.Payment.Type.Unpaid,
+                description: Constant.Payment.Description.Unpaid,
               },
               scheduled:
                 cart.selectedTime !== null
@@ -465,9 +468,7 @@ export class WaitingListConsultService {
               checkouts: cart.checkout,
               totalMin: cart.totalMin,
               totalPrice: cart.totalPrice,
-              adjustedPrice: cart.totalPrice,
               associatedEmployee: cart.specialist,
-              remainingBalance: cart.totalPrice,
               recieptId: null,
               paymentId: this._global.newId(),
               smsRequestIds: [],
@@ -532,11 +533,20 @@ export class WaitingListConsultService {
     consent: UserVisitShopConsentType
   ) {
     client = this._waitingList.client.updateVisitShopConsent(client, consent);
-    client.setting.emergencyContact = consult.client.emergancyContact;
+    client.setting.emergencyContact = this.updateClientEmergencyContact(consult.client.emergancyContact);
     client.setting.privateInsurance = consult.client.privateInsurance;
     client.signature = consult.client.signature;
 
     return await this._waitingList.client.update(client);
+  }
+
+  private updateClientEmergencyContact(contact: UserSettingEmergencyContactType | null) {
+    return contact !== null &&
+      contact.firstName.length > 0 &&
+      contact.lastName.length > 0 &&
+      contact.phoneNumber.length > 0
+      ? contact
+      : null;
   }
 
   public completed() {

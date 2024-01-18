@@ -52,6 +52,7 @@ export const ChangeNumberRequestStatus = {
 
 export const Default = {
   Refresh: 'Refresh',
+  Anyone: 'label.title.anyone',
   Gender: {
     Male: 'Male',
     Female: 'Female',
@@ -226,34 +227,49 @@ export const Massage = {
   } as const,
 };
 
+export const Transaction = {
+  Method: {
+    Coupon: 'Coupon',
+    Cash: 'Cash',
+    Card: 'Card',
+    Hicap: 'Hicap',
+    ApplePay: 'ApplePay',
+    GPay: 'GPay',
+    OnlineCard: 'OnlineCard',
+  },
+} as const;
+
+export const Payment = {
+  Type: {
+    Unpaid: 'Unpaid',
+    PartPaid: 'PartPaid',
+    FullPaid: 'FullPaid',
+    Refunded: 'Refunded',
+  } as const,
+  Description: {
+    Unpaid: 'label.title.unpaid',
+    PartPaid: 'label.title.partpaid',
+    FullPaid: 'label.title.fullpaid',
+    Refunded: 'label.title.refunded',
+  } as const,
+} as const;
+
 export const Consult = {
   StatusType: {
+    Creating: 'Creating',
     Pending: 'Pending',
-    Awaiting: 'Awaiting',
     Scheduled: 'Scheduled',
     Start: 'Start',
     Completed: 'Completed',
     Cancel: 'Cancel',
   } as const,
   StatusDescription: {
+    Creating: 'label.title.creating',
     Pending: 'label.title.pending',
-    Awaiting: 'label.title.awaiting',
     Scheduled: 'label.title.scheduled',
     Start: 'label.title.start',
     Completed: 'label.title.completed',
     Cancel: 'label.title.cancel',
-  } as const,
-  PaymentType: {
-    Unpaid: 'Unpaid',
-    PartPaid: 'PartPaid',
-    FullPaid: 'FullPaid',
-    Refunded: 'Refunded',
-  } as const,
-  PaymentDescription: {
-    Unpaid: 'label.title.unpaid',
-    PartPaid: 'label.title.partpaid',
-    FullPaid: 'label.title.fullpaid',
-    Refunded: 'label.title.refunded',
   } as const,
   OriginType: {
     Phone: 'Phone',
@@ -391,6 +407,11 @@ export const ShopSetting = {
   WaitingList: {
     intervalMin: 5,
   },
+  SMSRule: {
+    Confirmation_SMS_Before_Min: 10,
+    Reminder_SMS_Before_Start_Day: 1,
+    Shceduled_Revisit_Reminder_After_Day: 7,
+  },
 } as const;
 
 export const CartItem = {
@@ -398,4 +419,5 @@ export const CartItem = {
   Coupon: 'label.title.coupon',
   Package: 'label.title.package',
   Extra: 'label.title.extra',
+  PurchasedCoupon: 'label.title.purchasedcoupon',
 } as const;

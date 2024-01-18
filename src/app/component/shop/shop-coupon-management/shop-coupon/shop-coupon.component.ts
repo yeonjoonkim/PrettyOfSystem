@@ -150,6 +150,7 @@ export class ShopCouponComponent implements OnInit {
     this.current.coupon.title = service.title;
     this.current.coupon.description = service.description;
     this.current.coupon.titleProp = service.titleProp;
+    this.current.coupon.relatedService = service.relatedService;
   }
 
   private updatePrice() {

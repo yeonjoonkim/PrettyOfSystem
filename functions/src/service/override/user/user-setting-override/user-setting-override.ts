@@ -1,6 +1,6 @@
 import * as I from '../../../../interface';
 import * as Constant from '../../../../constant';
-
+import * as T from '../../../type-checker/type-checker';
 export const override = function (s: I.UserSettingType) {
   s.pregnancyDueDate = pregnancyDueDate(s?.pregnancyDueDate);
   s.preferLanguage = preferLanguage(s?.preferLanguage);
@@ -31,6 +31,7 @@ const massage = function (massage: I.UserSettingMassageType | undefined) {
     pressure: massagePressure(massage?.pressure),
     areas: areas(massage?.areas),
     difficultChangePosition: difficultChangePosition(massage?.difficultChangePosition),
+    preferGender: preferGender(massage?.preferGender),
   };
   return result;
 };
@@ -53,6 +54,10 @@ const massagePressure = function (pressureType: I.MassagePressureType | undefine
       };
 };
 
+const preferGender = function (gender: I.GenderType | undefined | null) {
+  return gender !== null && gender !== undefined ? gender : Constant.Default.Gender.All;
+};
+
 const areas = function (areas: I.MassageBodySelectorAreaType[] | null | undefined) {
   return areas !== undefined && areas !== null ? areas : [];
 };
@@ -62,6 +67,7 @@ const medical = function (medical: I.UserSettingMedicalHistroyType | undefined |
   const result = {
     symptomsAndDiseases: symptomsAndDiseases(medical?.symptomsAndDiseases),
     otherStatus: otherStatus(medical?.otherStatus),
+    hasPaceMaker: T.boolean(medical?.hasPaceMaker),
   };
   return result;
 };

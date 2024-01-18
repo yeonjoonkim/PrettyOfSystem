@@ -37,6 +37,7 @@ export class CouponPriceListCardComponent implements OnInit {
         numberOfCoupon: this.coupon.numOfCoupon,
         expiredMonth: this.coupon.expiryMonth,
       },
+      relatedServices: [this.coupon.relatedService],
     };
     this.add.emit(checkout);
   }

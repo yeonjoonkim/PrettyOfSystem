@@ -59,7 +59,7 @@
               </kendo-label>
             </div>
           </flex-col-item>
-          <flex-col-item id="check-box-container">
+          <flex-col-item id="check-box-container" *ngIf="isMassageShop$ | async">
             <div id="oil">
               <kendo-label text="{{ 'label.title.oil' | languageTransform: 'System' | async }}">
                 <input
@@ -82,6 +82,7 @@
         [readOnly]="form.readOnly"
         [isRequired]="true"
         [min]="10"
+        [max]="300"
         (valueChange)="onChangeDescriptionProp()"
         [(value)]="current.service.descriptionProp"
         [(validate)]="validator.description">
@@ -89,7 +90,7 @@
     </flex-col-item>
 
     <flex-row id="selections">
-      <flex-row-item id="related-service">
+      <flex-row-item id="related-service" *ngIf="isMassageShop$ | async">
         <name-value-pair-single-dropdown-selection
           [isRequired]="true"
           [readOnly]="form.readOnly"
@@ -104,15 +105,6 @@
           title="label.title.specializedemployees"
           [(selected)]="current.service.specializedEmployees"
           [selection]="current.specializedEmployees"></name-value-pair-multi-dropdown-selection>
-      </flex-row-item>
-
-      <flex-row-item id="extra">
-        <name-value-pair-multi-dropdown-selection
-          [readOnly]="form.readOnly"
-          title="label.title.extra"
-          [(selected)]="selectedExtras"
-          [selection]="extraSelection"
-          (selectedChange)="onChangeExtra()"></name-value-pair-multi-dropdown-selection>
       </flex-row-item>
     </flex-row>
 

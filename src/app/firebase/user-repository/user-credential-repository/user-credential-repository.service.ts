@@ -316,6 +316,7 @@ export class UserCredentialRepositoryService {
         medical: {
           symptomsAndDiseases: [],
           otherStatus: null,
+          hasPaceMaker: false,
         },
         massage: {
           pressure: {
@@ -327,6 +328,7 @@ export class UserCredentialRepositoryService {
             description: Constant.Massage.DifficultChangePosition.Description.NoProblem,
           },
           areas: [],
+          preferGender: Constant.Default.Gender.All,
         },
         emergencyContact: null,
       },

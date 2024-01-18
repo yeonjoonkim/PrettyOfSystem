@@ -1,4 +1,4 @@
-import { MedicalInsuranceType } from '..';
+import { MedicalInsuranceType, ShopPackageDiscountType } from '..';
 
 export interface IShopSetting {
   calendar: ShopCalendarType;
@@ -7,7 +7,22 @@ export interface IShopSetting {
   qrCode: ShopQRCodeType;
   insurance: ShopInsuranceProvider | null;
   waitingList: ShopWaitingListType;
+  smsRule: ShopSendSMSRuleType;
 }
+
+export type ShopSendSMSRuleType = {
+  Confirmation_SMS_Before_Min: number | null;
+  Reminder_SMS_Before_Start_Day: number | null;
+  Shceduled_Revisit_Reminder_After_Day: number | null;
+  Send_Cancellation: boolean;
+  Send_Rescheduled: boolean;
+  Send_BrithDay_Event: ShopSendBrithDayEventType | null;
+};
+
+export type ShopSendBrithDayEventType = {
+  discountValue: number;
+  discountType: 'Dollar' | 'Percent';
+};
 
 export type ShopQRCodeType = {
   waitingListSessionExiryMin: number;

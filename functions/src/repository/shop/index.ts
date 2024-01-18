@@ -4,3 +4,4 @@ export * as Extra from './shop-extra/shop-extra';
 export * as Package from './shop-package/shop-package';
 export * as Coupon from './shop-coupon/shop-coupon';
 export * as Consult from './shop-consult/shop-consult';
+export * as Payment from './shop-payment/shop-payment';

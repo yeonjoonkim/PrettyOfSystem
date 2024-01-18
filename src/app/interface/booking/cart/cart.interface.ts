@@ -34,6 +34,7 @@ export type CheckOutItem = {
   isInsuranceCover: boolean;
   specializedEmployees: NameValuePairType[];
   limitedTime: ShopPackageLimitedTime | null;
+  relatedServices: NameValuePairType[];
   price: number;
   qty: number;
   min: number;

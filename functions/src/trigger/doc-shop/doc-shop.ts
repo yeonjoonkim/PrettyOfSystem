@@ -67,6 +67,8 @@ export const onShopDelete = onDocumentDeleted(Db.Context.ShopConfiguration + '/{
     await deleteCollection(Db.ShopExtra(shop.id));
     await deleteCollection(Db.ShopPackage(shop.id));
     await deleteCollection(Db.ShopCoupon(shop.id));
+    await deleteCollection(Db.ShopConsult(shop.id));
+    await deleteCollection(Db.ShopPayment(shop.id));
     await Repository.TranslateRequest.deleteDocumentsByShopId(shop.id);
     await Repository.Session.WaitingList.deleteCriteria(shop);
     await deleteFromUserAssociatedShops(shop);
@@ -205,7 +207,7 @@ const handleSessionChange = async function (
     await refeshWaitingList(before, after);
   }
   if (change.session.isWaitingListUpdate) {
-    await Repository.Session.WaitingList.upadteCriteria(after);
+    await Repository.Session.WaitingList.updateCriteria(after);
   }
 };
 

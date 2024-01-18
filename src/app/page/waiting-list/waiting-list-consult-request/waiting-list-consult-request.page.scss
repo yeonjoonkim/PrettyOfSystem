@@ -1,0 +1,20 @@
+.success-container {
+  width: 150px;
+  margin: auto;
+  legend {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.status-description {
+  max-width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-description-container {
+  display: flex;
+  justify-content: center;
+}

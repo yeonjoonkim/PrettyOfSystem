@@ -1,37 +1,19 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { DateService } from 'src/app/service/global/date/date.service';
-import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 import * as Document from 'functions/src/service/override/consult/document-override/consult-document-override';
-import { ConsultDocumentType, ConsultStatusType } from 'src/app/interface';
+import { ConsultDocumentType } from 'src/app/interface';
 import { ShopConsult } from 'src/app/constant/firebase-path';
 import * as Constant from 'src/app/constant/constant';
-import { map, of, switchMap } from 'rxjs';
+import { firstValueFrom, map, of, switchMap } from 'rxjs';
 
-export const ScheduledStatuses = [
-  Constant.Consult.StatusType.Pending,
-  Constant.Consult.StatusType.Awaiting,
-  Constant.Consult.StatusType.Scheduled,
-  Constant.Consult.StatusType.Start,
-  Constant.Consult.StatusType.Completed,
-];
-export const FutureScheduledStatuses = [
-  Constant.Consult.StatusType.Pending,
-  Constant.Consult.StatusType.Awaiting,
-  Constant.Consult.StatusType.Scheduled,
-];
-export const CompletedStatuses = [Constant.Consult.StatusType.Completed];
-export const CancelStatuses = [Constant.Consult.StatusType.Cancel];
 @Injectable({
   providedIn: 'root',
 })
 export class ShopConsultRepositoryService {
   constructor(
     private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService,
-    private _date: DateService,
-    private _languageStorage: SystemLanguageStorageService
+    private _toaster: FirebaseToasterService
   ) {}
 
   public isFirstVisit(shopId: string, clientId: string) {
@@ -67,14 +49,32 @@ export class ShopConsultRepositoryService {
       );
   }
 
+  private async isExistedDocument(shopId: string, consultId: string) {
+    const isExisted = this._afs
+      .collection<ConsultDocumentType>(ShopConsult(shopId))
+      .doc(consultId)
+      .get()
+      .pipe(
+        map(document => {
+          return document.exists;
+        })
+      );
+    return await firstValueFrom(isExisted);
+  }
+
   public async create(consult: ConsultDocumentType) {
-    try {
-      await this._afs.collection<ConsultDocumentType>(ShopConsult(consult.shopId)).doc(consult.id).set(consult);
-      await this._toaster.requestSuccess();
-      return true;
-    } catch (error) {
-      await this._toaster.requestFail(error);
-      console.error(error);
+    const isExistedDocument = await this.isExistedDocument(consult.id, consult.shopId);
+    if (!isExistedDocument) {
+      try {
+        await this._afs.collection<ConsultDocumentType>(ShopConsult(consult.shopId)).doc(consult.id).set(consult);
+        await this._toaster.requestSuccess();
+        return true;
+      } catch (error) {
+        await this._toaster.requestFail(error);
+        console.error(error);
+        return false;
+      }
+    } else {
       return false;
     }
   }
@@ -150,7 +150,7 @@ export class ShopConsultRepositoryService {
             ref
               .where('associatedEmployee.id', '==', employeeId)
               .where('scheduled.startOfDay', 'in', startDays)
-              .where('status.type', 'in', ScheduledStatuses)
+              .where('status.type', 'in', Constant.Consult_ScheduledStatusTypes)
               .orderBy('scheduled.startDateTime', 'asc')
           )
           .valueChanges()
@@ -170,7 +170,7 @@ export class ShopConsultRepositoryService {
               .where('associatedEmployee.id', '==', employeeId)
               .where('scheduled.startDateTime', '>=', startDateTime)
               .where('scheduled.startDateTime', '<', endDateTime)
-              .where('status.type', 'in', ScheduledStatuses)
+              .where('status.type', 'in', Constant.Consult_ScheduledStatusTypes)
               .limit(1)
           )
           .valueChanges()
