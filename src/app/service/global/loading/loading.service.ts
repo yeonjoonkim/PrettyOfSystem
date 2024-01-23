@@ -28,7 +28,7 @@ export class LoadingService {
       cssClass: 'logo-loading',
       translucent: false,
     });
-    loading.present();
+    await loading.present();
   }
 
   async init() {

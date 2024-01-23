@@ -1,0 +1,32 @@
+.client-info-title {
+  legend {
+    color: var(--title);
+  }
+}
+.client-info-checkbox-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  margin: 12px 15px 0px 0px;
+  .checkbox-container {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0px 0px 15px 0px;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.expand-btn {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  color: white;
+  &:hover {
+    cursor: pointer;
+  }
+}

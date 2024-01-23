@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Menu -->
+    <ion-buttons slot="start">
+      <ion-menu-button auto-hide="true"></ion-menu-button>
+    </ion-buttons>
+    <!-- Title -->
+    <ion-title>{{'label.title.visitedshop'| languageTransform:'System' | async }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="prop$ | async as prop">
+  <div>
+    <flex-col class="visited-shop-info" *ngIf="prop !== null && prop.selected.value.length > 0 && !requesting">
+      <flex-col-item>
+        <name-value-pair-single-dropdown-selection
+          [selection]="prop.selection"
+          [selected]="prop.selected"
+          (selectedChange)="selectedShop = $event"></name-value-pair-single-dropdown-selection>
+      </flex-col-item>
+
+      <flex-col-item>
+        <div id="selection-btn-container">
+          <div id="selection-btn">
+            <ng-container *ngFor="let btn of prop.buttons">
+              <div id="btn">
+                <div
+                  id="icon-btn"
+                  [ngClass]="{
+                activeIconBtn: isActive(btn) ,
+                deActiveIconBtn: !isActive(btn)
+              }"
+                  (click)="action = btn">
+                  <div id="btn-title">{{ btn | languageTransform:'System' | async }}</div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </flex-col-item>
+      <flex-col-item
+        class="marketing-agreement"
+        *ngIf="action === marketing && hasMarketingEmailConsent !== null && hasMarketingSMSConsent !== null ">
+        <yes-no-selection
+          title="label.title.smsmarketingconsent"
+          [(value)]="hasMarketingSMSConsent"></yes-no-selection>
+        <yes-no-selection
+          title="label.title.emailmarketingconsent"
+          [(value)]="hasMarketingEmailConsent"></yes-no-selection>
+      </flex-col-item>
+      <flex-col-item
+        *ngIf="action === marketing && hasMarketingEmailConsent !== null && hasMarketingSMSConsent !== null ">
+        <button class="update-btn" kendoButton (click)="updateClientConsent()">
+          {{'label.title.update' | languageTransform:'System' | async}}
+        </button>
+      </flex-col-item>
+    </flex-col>
+  </div>
+
+  <div *ngIf="prop$ | async as prop">
+    <div class="loading-container" *ngIf="prop === null || requesting">
+      <kendo-loader size="large"></kendo-loader>
+      <legend *ngIf="prop.selected.value.length === 0 || (prop === null && !requesting)">
+        {{'label.description.thereisnovisitedshop' | languageTransform:'System'| async}}
+      </legend>
+    </div>
+  </div>
+</ion-content>

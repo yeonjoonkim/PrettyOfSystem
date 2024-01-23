@@ -43,10 +43,8 @@ export class UserMedicalOtherConditionComponent implements OnInit {
     const object = 'djaksdadasdas.dsaasda.daadasdafafa';
     const translated = await this._global.language.management.translate.translateDescriptionFormat(object, prop);
     if (!translated.result.isEmpty) {
-      await this._global.loading.start('label.title.saving');
       this.otherStatus = translated.result.translated;
       await this.onSave();
-      await this._global.loading.end();
     } else {
       await this._global.toast.presentError('label.title.pleasetryagin');
     }

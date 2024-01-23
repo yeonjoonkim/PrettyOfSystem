@@ -5,6 +5,8 @@ import {
   NameValuePairType,
   RoleConfigurationType,
   ShopCapacityType,
+  ShopCategoryType,
+  ShopClientManagementUserType,
   ShopConfigurationType,
   ShopCouponDocumentType,
   ShopEmployeeManagementUserType,
@@ -26,10 +28,13 @@ import { SystemLanguageManagementService } from '../global/language/system-langu
 import { SystemShopCapacityRepositoryService } from 'src/app/firebase/system-repository/system-shop-capacity/system-shop-capacity-repository.service';
 import * as Constant from 'src/app/constant/constant';
 import { DateService } from '../global/date/date.service';
+import { ClientCredentialRepositoryService } from 'src/app/firebase/user-repository/client-credential-repository/client-credential-repository.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
+  public id$!: Observable<string | null>;
   public role$!: Observable<RoleConfigurationType | null>;
   public config$!: Observable<ShopConfigurationType | null>;
   public capacity$!: Observable<ShopCapacityType | null>;
@@ -60,8 +65,15 @@ export class ShopService {
   public hasNotInsuranceProvider$!: Observable<boolean>;
 
   //Related
+  public category$!: Observable<ShopCategoryType | null>;
   public isRelatedToMedical$!: Observable<boolean>;
+
   public isMassageShop$!: Observable<boolean>;
+  public isSkinCare$!: Observable<boolean>;
+  public isHairSalon$!: Observable<boolean>;
+  public isPersonalTraining$!: Observable<boolean>;
+  public isNailArt$!: Observable<boolean>;
+  public isMobileShop$!: Observable<boolean>;
 
   constructor(
     public role: UserRoleService,
@@ -73,6 +85,7 @@ export class ShopService {
     private _packageRepo: ShopPackageRepositoryService,
     private _couponRepo: ShopCouponRepositoryService,
     private _pictureRepo: ShopPictureRepositoryService,
+    private _clientRepo: ClientCredentialRepositoryService,
     private _systemLanguage: SystemLanguageManagementService,
     private _capacity: SystemShopCapacityRepositoryService,
     private _date: DateService
@@ -81,6 +94,8 @@ export class ShopService {
     this.config$ = this._user.currentShopConfig$;
     this.role$ = this._user.currentRole$;
     this.translatedRequests$ = this.translated.translatedRequest$;
+    this.idListener();
+    this.categoryListener();
     this.capacityListener();
     this.timezoneListener();
     this.associatedUserListener();
@@ -102,7 +117,7 @@ export class ShopService {
     this.extraPriceListListener();
     this.insuranceProviderListener();
     this.isRelatedToMedical();
-    this.isMassageShop();
+    this.relatedShopCategoryListener();
   }
 
   public translatedRequestFilterByServiceIds(shopId: string, serviceIds: string[]) {
@@ -111,6 +126,10 @@ export class ShopService {
     } else {
       return of([]);
     }
+  }
+
+  public idListener() {
+    this.id$ = this.config$.pipe(map(config => (config !== null ? config.id : null)));
   }
 
   private timezoneListener() {
@@ -142,15 +161,13 @@ export class ShopService {
     );
   }
 
-  private isMassageShop() {
-    this.isMassageShop$ = this.config$.pipe(
-      switchMap(category => {
-        if (category !== null) {
-          const name = category.category.name as Constant.ShopCategoryTitleType;
-          const relatedName = name === Constant.ShopCategoryTitle.MassageTheraphy;
-          return of(relatedName);
+  private categoryListener() {
+    this.category$ = this.config$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return of(config.category);
         } else {
-          return of(false);
+          return of(null);
         }
       })
     );
@@ -422,6 +439,75 @@ export class ShopService {
           return extras.filter(extra => config.package[`${extra.title}.${language}`] !== undefined);
         } else {
           return [] as ShopExtraDocumentType[];
+        }
+      })
+    );
+  }
+
+  private relatedShopCategoryListener() {
+    this.isMassageShop$ = this.config$.pipe(
+      switchMap(category => {
+        if (category !== null) {
+          const name = category.category.name as Constant.ShopCategoryTitleType;
+          const relatedName = name === Constant.ShopCategoryTitle.MassageTheraphy;
+          return of(relatedName);
+        } else {
+          return of(false);
+        }
+      })
+    );
+    this.isSkinCare$ = this.config$.pipe(
+      switchMap(category => {
+        if (category !== null) {
+          const name = category.category.name as Constant.ShopCategoryTitleType;
+          const relatedName = name === Constant.ShopCategoryTitle.SkinCare;
+          return of(relatedName);
+        } else {
+          return of(false);
+        }
+      })
+    );
+    this.isHairSalon$ = this.config$.pipe(
+      switchMap(category => {
+        if (category !== null) {
+          const name = category.category.name as Constant.ShopCategoryTitleType;
+          const relatedName = name === Constant.ShopCategoryTitle.Hairsalon;
+          return of(relatedName);
+        } else {
+          return of(false);
+        }
+      })
+    );
+    this.isPersonalTraining$ = this.config$.pipe(
+      switchMap(category => {
+        if (category !== null) {
+          const name = category.category.name as Constant.ShopCategoryTitleType;
+          const relatedName = name === Constant.ShopCategoryTitle.PersonalTraining;
+          return of(relatedName);
+        } else {
+          return of(false);
+        }
+      })
+    );
+    this.isMobileShop$ = this.config$.pipe(
+      switchMap(category => {
+        if (category !== null) {
+          const name = category.category.name as Constant.ShopCategoryTitleType;
+          const relatedName = name === Constant.ShopCategoryTitle.MobileShop;
+          return of(relatedName);
+        } else {
+          return of(false);
+        }
+      })
+    );
+    this.isNailArt$ = this.config$.pipe(
+      switchMap(category => {
+        if (category !== null) {
+          const name = category.category.name as Constant.ShopCategoryTitleType;
+          const relatedName = name === Constant.ShopCategoryTitle.NailArt;
+          return of(relatedName);
+        } else {
+          return of(false);
         }
       })
     );

@@ -1,0 +1,36 @@
+.go-back {
+  background: transparent;
+  margin-right: 12px;
+  &:hover {
+    background: transparent;
+  }
+}
+
+.editor-container {
+  display: flex;
+  flex-direction: row;
+  .client-editor,
+  .client-history {
+    flex: 1;
+  }
+
+  .client-editor {
+    height: 95vh;
+    padding-top: 10px;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+
+  .client-history {
+    border-left: 1px solid var(--active);
+  }
+}
+
+@media (max-width: 800px) {
+  .editor-container {
+    flex-direction: column-reverse;
+  }
+  .client-editor {
+    height: auto;
+  }
+}

@@ -1,0 +1,73 @@
+.setting-title {
+  legend {
+    color: var(--title);
+  }
+}
+
+.pressure-level {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  kendo-label {
+    font-weight: 900;
+  }
+  .pressure-slider {
+    max-width: 1000px;
+    kendo-slider {
+      width: 350px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    flex-direction: column;
+    justify-content: flex-start;
+    .pressure-slider {
+      margin-top: 15px;
+      kendo-slider {
+        width: 300px;
+      }
+    }
+  }
+}
+
+@media (min-width: 620px) {
+  mobile-version-body-selector {
+    display: none;
+  }
+  desktop-version-body-selector {
+    display: block;
+  }
+
+  .massage-option-selection {
+    display: flex;
+    flex-direction: row;
+    gender-selection,
+    massage-difficult-change-position {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: 620px) {
+  desktop-version-body-selector {
+    display: none;
+  }
+  mobile-version-body-selector {
+    display: block;
+  }
+  .massage-option-selection {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+}
+
+.force-mobile {
+  display: block;
+}
+
+.force-mobile-option-selection {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}

@@ -15,6 +15,7 @@ import {
   Consult,
   Payment,
   Transaction,
+  Query,
 } from './constant-value';
 export {
   Default,
@@ -34,6 +35,7 @@ export {
   Consult,
   Payment,
   Transaction,
+  Query,
 } from './constant-value';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
@@ -87,6 +89,7 @@ export type LanguageTransformType =
   (typeof Default.LanguageTransformType)[keyof typeof Default.LanguageTransformType];
 
 //API
+export type QueryOperatorType = (typeof Query)[keyof typeof Query];
 export type APIResponseType = (typeof API.Response)[keyof typeof API.Response];
 export type APIActionType = (typeof API.Action)[keyof typeof API.Action];
 export type APITranslationStatus = (typeof API.TranslateStatus)[keyof typeof API.TranslateStatus];

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -17,6 +17,7 @@ import { ClientMassageBodySummaryModule } from 'src/app/component/massage/client
 import { MassagePressureLevelSelectorModule } from 'src/app/component/massage/massage-pressure-level-selector/massage-pressure-level-selector.module';
 import { MassageDifficultChangePositionModule } from 'src/app/component/massage/massage-difficult-change-position/massage-difficult-change-position.module';
 import { WaitingListStepperModule } from 'src/app/component/waiting-list/waiting-list-stepper/waiting-list-stepper.component.module';
+import { GenderSelectionModule } from 'src/app/component/user/gender-selection/gender-selection.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,7 +34,9 @@ import { WaitingListStepperModule } from 'src/app/component/waiting-list/waiting
     MassagePressureLevelSelectorModule,
     MassageDifficultChangePositionModule,
     WaitingListStepperModule,
+    GenderSelectionModule,
   ],
   declarations: [UpdateMassagePreferencePage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
 export class UpdateMassagePreferencePageModule {}

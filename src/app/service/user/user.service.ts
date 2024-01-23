@@ -31,6 +31,7 @@ export class UserService {
   public data$!: Observable<IUser | null>;
   public menu$!: Observable<MenuCategoryType[]>;
   public associatedShopConfigurations$!: Observable<ShopConfigurationType[] | []>;
+  public associatedVisitedShopConfiguration$!: Observable<ShopConfigurationType[]>;
   public currentShopConfig$!: Observable<ShopConfigurationType | null>;
   public shopSelection$!: Observable<NameValuePairType[]>;
   public currentShop$!: Observable<NameValuePairType>;
@@ -167,7 +168,7 @@ export class UserService {
           return of(null);
         }
       }),
-      delay(1000),
+      delay(3000),
       distinctUntilChanged()
     );
   }
@@ -184,6 +185,7 @@ export class UserService {
     this.activateCurrentRoleListener();
     this.activateEmployeeNameListener();
     this.activatePreferLanguageListener();
+    this.associatedVisitedShopConfiguration();
     this.isOver18();
     this.claim();
   }
@@ -259,6 +261,23 @@ export class UserService {
             .map(s => {
               return s.shopId;
             });
+          if (shopIds.length > 0) {
+            return this._systemShop.assocatedShopConfigurationValueChangeListener(shopIds);
+          } else {
+            return of([]);
+          }
+        } else {
+          return of([]);
+        }
+      })
+    );
+  }
+
+  private associatedVisitedShopConfiguration() {
+    this.associatedVisitedShopConfiguration$ = this.data$.pipe(
+      switchMap(user => {
+        if (user !== null) {
+          const shopIds: string[] = user.visitedShopIds;
           if (shopIds.length > 0) {
             return this._systemShop.assocatedShopConfigurationValueChangeListener(shopIds);
           } else {

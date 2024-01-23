@@ -16,3 +16,8 @@
   --min-width: 300px;
   --max-width: 300px;
 }
+
+.popover-container::part(content) {
+  top: 50% !important;
+  --min-width: 200px;
+}

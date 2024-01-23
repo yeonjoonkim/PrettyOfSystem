@@ -1,0 +1,58 @@
+.action-btn {
+  width: 100%;
+  background: var(--title);
+}
+
+.delete-btn {
+  width: 100%;
+  background: var(--error);
+}
+
+.signature-conatiner {
+  margin: 0px;
+}
+
+legend {
+  color: var(--title);
+}
+
+.mobile-general-term-and-condition-container {
+  flex-direction: column;
+  .signature-title-conatiner,
+  .signature-conatiner {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+.signature-title-conatiner {
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  kendo-buttongroup {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    .signature-btn {
+      height: 30px;
+    }
+  }
+}
+.consent-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+@media (max-width: 620px) {
+  .general-term-and-condition-container {
+    flex-direction: column;
+  }
+  .signature-title-conatiner,
+  .signature-conatiner {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

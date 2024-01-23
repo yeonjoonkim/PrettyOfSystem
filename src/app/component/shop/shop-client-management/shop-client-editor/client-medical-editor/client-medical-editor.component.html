@@ -1,0 +1,240 @@
+<!-- Medical History -->
+<flex-row>
+  <flex-row-item class="setting-title">
+    <legend>{{ 'label.title.medicalhistory' | languageTransform: 'System' | async }}</legend>
+    <button
+      *ngIf="viewHistoryMode === 'view' && mode === 'edit'"
+      (click)="viewHistoryMode = 'edit'"
+      class="edit-btn">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </button>
+    <button
+      *ngIf="viewHistoryMode === 'edit' && mode === 'edit'"
+      (click)="viewHistoryMode = 'view'"
+      class="edit-btn">
+      {{ 'label.title.view' | languageTransform: 'System' | async }}
+    </button>
+  </flex-row-item>
+</flex-row>
+<flex-col class="medical-history-container" *ngIf="viewHistoryMode === 'edit'">
+  <!-- Cardiovasular -->
+  <medical-histroy-list
+    system="Cardiovascular"
+    [title]="medicalHistory.cardiovascular.title"
+    [selection]="medicalHistory.cardiovascular.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Digestive -->
+  <medical-histroy-list
+    system="Digestive"
+    [title]="medicalHistory.digestive.title"
+    [selection]="medicalHistory.digestive.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Endocrine -->
+  <medical-histroy-list
+    system="Endocrine"
+    [title]="medicalHistory.endocrine.title"
+    [selection]="medicalHistory.endocrine.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Integumentary -->
+  <medical-histroy-list
+    system="Integumentary"
+    [title]="medicalHistory.integumentary.title"
+    [selection]="medicalHistory.integumentary.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Lymphatic -->
+  <medical-histroy-list
+    system="Lymphatic"
+    [title]="medicalHistory.lymphatic.title"
+    [selection]="medicalHistory.lymphatic.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Muscular -->
+  <medical-histroy-list
+    system="Muscular"
+    [title]="medicalHistory.muscular.title"
+    [selection]="medicalHistory.muscular.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Nervous -->
+  <medical-histroy-list
+    system="Nervous"
+    [title]="medicalHistory.nervous.title"
+    [selection]="medicalHistory.nervous.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Reproductive -->
+  <medical-histroy-list
+    system="Reproductive"
+    [title]="medicalHistory.reproductive.title"
+    [selection]="medicalHistory.reproductive.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Respiratory -->
+  <medical-histroy-list
+    system="Respiratory"
+    [title]="medicalHistory.respiratory.title"
+    [selection]="medicalHistory.respiratory.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Skeletal -->
+  <medical-histroy-list
+    system="Skeletal"
+    [title]="medicalHistory.skeletal.title"
+    [selection]="medicalHistory.skeletal.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+
+  <!-- Urinary -->
+  <medical-histroy-list
+    system="Urinary"
+    [title]="medicalHistory.urinary.title"
+    [selection]="medicalHistory.urinary.list"
+    [(userList)]="medical.symptomsAndDiseases"
+    (userListChange)="onChangeSymptomAndDisease()"
+    [isClient]="true"
+    [readOnly]="false"></medical-histroy-list>
+</flex-col>
+<flex-col *ngIf="viewHistoryMode === 'view' && mode === 'edit'">
+  <flex-col-item class="user-active-medical-history" *ngIf="medical.symptomsAndDiseases.length > 0">
+    <ng-container *ngFor="let history of medical.symptomsAndDiseases">
+      <medical-histroy-chip
+        [active]="false"
+        [isClient]="type === 'client'"
+        [history]="history"></medical-histroy-chip>
+    </ng-container>
+  </flex-col-item>
+  <flex-col-item class="user-active-medical-history" *ngIf="!medical.symptomsAndDiseases.length">
+    <p class="default-placeholder">
+      {{ 'label.description.thereisnorelatedmedicalhistory' | languageTransform: 'System' | async }}
+    </p>
+  </flex-col-item>
+</flex-col>
+
+<!--Other Condition-->
+<flex-row>
+  <flex-row-item class="setting-title">
+    <legend>{{ 'label.title.ohterstatus' | languageTransform: 'System' | async }}</legend>
+    <button
+      *ngIf="viewOtherStatusMode === 'view' && mode === 'edit'"
+      (click)="viewOtherStatusMode = 'edit'"
+      class="edit-btn">
+      {{ 'button.title.edit' | languageTransform: 'System' | async }}
+    </button>
+    <button
+      *ngIf="viewOtherStatusMode === 'edit' && mode === 'edit'"
+      (click)="viewOtherStatusMode = 'view'"
+      class="edit-btn">
+      {{ 'label.title.view' | languageTransform: 'System' | async }}
+    </button>
+  </flex-row-item>
+</flex-row>
+<flex-col>
+  <flex-col-item [class.default-placeholder]="medical.otherStatus === null">
+    {{ medical.otherStatus | transformMedicalHsitoryOtherStatus | async }}
+  </flex-col-item>
+  <flex-col-item *ngIf="medical.otherStatus === null && viewOtherStatusMode === 'edit'" class="default-placeholder"
+    >{{ 'label.description.doyouwanttoprovideothermedicalstatus' | languageTransform: 'System' | async }}
+    {{ 'label.description.medicalotherstatusinputstatus' | languageTransform: 'System' | async }}
+    {{ 'label.description.itmaytakebetweentenandthritysecond' | languageTransform: 'System' | async }}
+  </flex-col-item>
+  <flex-col-item *ngIf="medical.otherStatus !== null" class="default-placeholder"
+    >{{ 'label.description.doyouwanttoreset' | languageTransform: 'System' | async }}
+    <input type="checkbox" kendoCheckBox [checked]="false" (click)="resetOtherStatus()" />
+  </flex-col-item>
+</flex-col>
+<flex-col *ngIf="medical.otherStatus === null && viewOtherStatusMode === 'edit'">
+  <flex-col-item>
+    <text-area
+      [isTitleRequired]="false"
+      [isRequired]="true"
+      [min]="3"
+      [max]="100"
+      [showCounter]="true"
+      [(value)]="otherStatusProp"></text-area>
+  </flex-col-item>
+  <flex-row>
+    <flex-row-item>
+      <kendo-button
+        class="translate-request-btn"
+        [disabled]="!(otherStatusProp.length > 2)"
+        (click)="translatingOtherStatus()"
+        >{{ 'label.title.request' | languageTransform: 'System' | async }}</kendo-button
+      >
+    </flex-row-item>
+    <flex-row-item> </flex-row-item>
+  </flex-row>
+</flex-col>
+
+<div [class.hidden]="mode === 'edit' && hidden">
+  <!--Pace Maker-->
+  <flex-row>
+    <flex-row-item class="setting-title">
+      <legend>{{ 'label.title.pacemaker' | languageTransform: 'System' | async }}</legend>
+    </flex-row-item>
+    <flex-row-item>
+      <yes-no-selection [(value)]="medical.hasPaceMaker" (valueChange)="onChangePaceMaker()"></yes-no-selection>
+    </flex-row-item>
+  </flex-row>
+
+  <!--Expected Date Of birth-->
+  <flex-col *ngIf="gender === 'Female'">
+    <flex-col-item class="setting-title">
+      <legend>{{ 'label.title.expecteddateofbirth' | languageTransform: 'System' | async }}</legend>
+    </flex-col-item>
+    <flex-col-item class="default-placeholder">
+      {{ 'label.description.doyouwanttoprovideexpecteddateofbirth' | languageTransform: 'System' | async }}
+      <input
+        type="checkbox"
+        kendoCheckBox
+        [checked]="pregancyDueDate !== null"
+        (click)="onChangePregancyDueDateFormat()" />
+    </flex-col-item>
+    <flex-col-item *ngIf="pregancyDueDate !== null">
+      <date-picker
+        [(date)]="pregancyDueDate"
+        [shopTimeZone]="timezone"
+        (dateChange)="onChangePregancyDueDate($event)"
+        [restrictedFromToday]="true"></date-picker>
+    </flex-col-item>
+  </flex-col>
+</div>
+
+<div (click)="hidden = !hidden" *ngIf="mode === 'edit'">
+  <div class="expand-btn">
+    <ion-icon *ngIf="hidden" name="chevron-down-outline"></ion-icon>
+    <ion-icon *ngIf="!hidden" name="chevron-up-outline"></ion-icon>
+  </div>
+</div>

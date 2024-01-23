@@ -27,6 +27,28 @@ export class DeleteConfirmationAlert {
     return confirmation?.role === 'delete';
   }
 
+  public async confirmation(name: string, msg: string) {
+    const header = await this._language.transform(msg);
+    let confirm: AlertOptions = {
+      header: name.length > 0 ? `${name}, ${header}` : `${header}`,
+      buttons: [
+        {
+          text: await this._language.transform('label.title.confirmation'),
+          role: 'confirm',
+        },
+        {
+          text: await this._language.transform('button.title.cancel'),
+          role: '',
+        },
+      ],
+    };
+
+    let confirmation = await this._alertCtrl.create(confirm);
+    await confirmation.present();
+    const action = await confirmation.onWillDismiss();
+    return action?.role === 'confirm';
+  }
+
   private async setConfirmationDeleteAlert(selectedName: string, withName: boolean) {
     let name = await this._language.transform(selectedName);
     let deleteMsg = await this._language.transform('confirmation.title.delete');

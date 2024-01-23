@@ -34,6 +34,22 @@ export interface IUser {
   signature: string | null;
 }
 
+export type ShopClientManagementUserType = {
+  id: string;
+  shopId: string;
+  firstName: string;
+  lastName: string;
+  loginOption: IUserLoginOption;
+  gender: Constant.GenderType;
+  dob: string;
+  phoneNumber: string;
+  address: AddressType | null;
+  email: string;
+  setting: UserSettingType;
+  consent: UserVisitShopConsentType;
+  signature: string | null;
+};
+
 export type ChangeNumberUserCriteriaType = {
   firstName: string;
   lastName: string;

@@ -1,0 +1,15 @@
+.signature-input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 5px;
+  .reset-btn {
+    cursor: pointer;
+    background-color: transparent;
+    text-decoration: underline;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-bottom: 13px;
+  }
+}

@@ -22,6 +22,7 @@ export class ShopEmployeeAccountService {
     acc.email = se.email;
     acc.encryptedPassword = se.encryptedPassword;
     acc.gender = se.gender;
+    acc.dob = se.dob;
     acc.loginOption = se.loginOption;
 
     return acc;
@@ -40,7 +41,6 @@ export class ShopEmployeeAccountService {
   public handleUpdateAssociatedShop(acc: IUser, se: ShopEmployeeManagementUserType) {
     acc = this.updateAssociatedShop(acc, se);
     acc = this.updateAssociatedShopIds(acc, se.shopId);
-    acc.disabledAccount = this.isDeactiveAccount(acc);
     acc.currentShopId = acc.currentShopId.length > 0 ? acc.currentShopId : se.shopId;
 
     return acc;
@@ -76,10 +76,6 @@ export class ShopEmployeeAccountService {
       acc.associatedShopIds.push(shopId);
       return acc;
     }
-  }
-
-  private isDeactiveAccount(acc: IUser) {
-    return acc.associatedShops.filter(s => s.active).length === 0;
   }
 
   private transformIntoAssociatedShopUser(user: IUser, se: ShopEmployeeManagementUserType) {

@@ -1,0 +1,32 @@
+<div *ngIf="query.loaded$ | async">
+  <flex-row>
+    <flex-row-item>
+      <text-box title="label.title.firstname" [(value)]="query.firstNameParam"></text-box>
+    </flex-row-item>
+    <flex-row-item>
+      <text-box title="label.title.lastname" [(value)]="query.lastNameParam"></text-box>
+    </flex-row-item>
+  </flex-row>
+
+  <flex-row>
+    <flex-row-item>
+      <phone-number [(phone)]="query.phoneNumberParam"></phone-number>
+    </flex-row-item>
+    <flex-row-item>
+      <e-mail [isRequired]="false" [(email)]="query.emailParam"></e-mail>
+    </flex-row-item>
+  </flex-row>
+  <flex-row>
+    <flex-row-item>
+      <gender-selection [(gender)]="query.genderParam" mode="filter"></gender-selection>
+    </flex-row-item>
+    <flex-row-item class="filter-tooltip">
+      <button kendoButton class="apply-btn" (click)="applyFilter()">
+        {{ 'label.title.apply' | languageTransform: 'System' | async }}
+      </button>
+      <button kendoButton class="reset-btn" (click)="reset()">
+        {{ 'label.title.reset' | languageTransform: 'System' | async }}
+      </button>
+    </flex-row-item>
+  </flex-row>
+</div>

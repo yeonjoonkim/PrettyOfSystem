@@ -101,7 +101,9 @@ export class DatePickerComponent implements OnInit, OnChanges {
     );
     const maxDate = this._global.date.maximumDate(this.shopTimeZone, this.displayNextDay);
     this.minDate = this._global.date.transform.toLocalDateTime(minDate);
-    this.maxDate = this._global.date.transform.toLocalDateTime(maxDate);
+    this.maxDate = this.isDateOfBrith
+      ? this._global.date.transform.toLocalDateTime(new Date())
+      : this._global.date.transform.toLocalDateTime(maxDate);
   }
 
   private async handleButtonClick(event: Event) {

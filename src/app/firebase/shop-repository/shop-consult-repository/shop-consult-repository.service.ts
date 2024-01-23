@@ -79,6 +79,18 @@ export class ShopConsultRepositoryService {
     }
   }
 
+  public getAssociatedClientValueChangeListener(shopId: string, clientId: string) {
+    return this._afs
+      .collection<ConsultDocumentType>(ShopConsult(shopId), ref => ref.where('client.id', '==', clientId).limit(1))
+      .valueChanges()
+      .pipe(
+        map(doc => {
+          const document = doc.length > 0 ? doc[0] : null;
+          return document !== null ? Document.override(document) : null;
+        })
+      );
+  }
+
   public getValueChangeListenerById(shopId: string, consultId: string) {
     return this._afs
       .collection<ConsultDocumentType>(ShopConsult(shopId), ref => ref.where('id', '==', consultId).limit(1))

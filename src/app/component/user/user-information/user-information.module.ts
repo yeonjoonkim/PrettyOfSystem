@@ -26,6 +26,7 @@ import { UserMedicalOtherConditionComponent } from './user-medical-other-conditi
 import { UserSignatureComponent } from './user-signature/user-signature.component';
 import { UserPregrancyDueDateComponent } from './user-pregrancy-due-date/user-pregrancy-due-date.component';
 import { UserEmergancyContactComponent } from './user-emergancy-contact/user-emergancy-contact.component';
+import { UserPacemakerComponent } from './user-pacemaker/user-pacemaker.component';
 @NgModule({
   declarations: [
     UserInformationComponent,
@@ -37,6 +38,7 @@ import { UserEmergancyContactComponent } from './user-emergancy-contact/user-eme
     UserSignatureComponent,
     UserPregrancyDueDateComponent,
     UserEmergancyContactComponent,
+    UserPacemakerComponent,
   ],
   imports: [
     CommonModule,

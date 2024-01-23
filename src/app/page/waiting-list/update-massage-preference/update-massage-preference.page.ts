@@ -25,6 +25,7 @@ export class UpdateMassagePreferencePage implements OnInit {
   public massageArea!: MassageBodySelectorAreaType[];
   public pressure!: MassagePressureType;
   public position!: MassageDifficultChangePosition;
+  public preferGender!: Constant.GenderType;
   public request: boolean = false;
   constructor(
     private _waitingList: WaitingListService,
@@ -61,6 +62,7 @@ export class UpdateMassagePreferencePage implements OnInit {
           this.massageArea = info.setting.massage.areas;
           this.pressure = info.setting.massage.pressure;
           this.position = info.setting.massage.difficultChangePosition;
+          this.preferGender = info.setting.massage.preferGender;
         }
       });
     this._waitingList.shop
@@ -91,6 +93,7 @@ export class UpdateMassagePreferencePage implements OnInit {
       after.setting.massage.areas = this.massageArea;
       after.setting.massage.pressure = this.pressure;
       after.setting.massage.difficultChangePosition = this.position;
+      after.setting.massage.preferGender = this.preferGender;
       const result = await this._user.updateUser(after, before);
       if (result) {
         this.request = false;

@@ -8,7 +8,7 @@ import { MassageBodySelectorAreaType } from 'src/app/interface';
 })
 export class DesktopVersionBodySelectorComponent implements OnInit {
   @Output() selectedAreasChange = new EventEmitter<MassageBodySelectorAreaType[]>();
-  @Input() selectedAreas: MassageBodySelectorAreaType[] = [];
+  @Input() selectedAreas!: MassageBodySelectorAreaType[];
   @Input() readOnly: boolean = true;
   @Input() isReport: boolean = true;
   constructor() {}

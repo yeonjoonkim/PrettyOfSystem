@@ -1,0 +1,38 @@
+<flex-col>
+  <flex-col-item class="setting-title">
+    <legend>{{ 'label.title.massageoption' | languageTransform: 'System' | async }}</legend>
+  </flex-col-item>
+</flex-col>
+<flex-col>
+  <massage-pressure-level-selector
+    [(pressure)]="massage.pressure"
+    (pressureChange)="onChangePressureLevel($event)"></massage-pressure-level-selector>
+
+  <div class="massage-option-selection" [class.force-mobile-option-selection]="forceMobile">
+    <massage-difficult-change-position
+      [(position)]="massage.difficultChangePosition"
+      (positionChange)="onChangePosition($event)"></massage-difficult-change-position>
+    <flex-col-item>
+      <gender-selection
+        title="label.title.preferencespecialistgender"
+        mode="filter"
+        [(gender)]="massage.preferGender"
+        (genderChange)="onChangeGender($event)"></gender-selection>
+    </flex-col-item>
+  </div>
+</flex-col>
+
+<desktop-version-body-selector
+  *ngIf="!forceMobile"
+  [readOnly]="false"
+  [isReport]="false"
+  [(selectedAreas)]="massage.areas"
+  (selectedAreasChange)="onChangeAreas($event)"></desktop-version-body-selector>
+<mobile-version-body-selector
+  [class.force-mobile]="forceMobile"
+  [readOnly]="false"
+  [isReport]="false"
+  [(selectedAreas)]="massage.areas"
+  (selectedAreasChange)="onChangeAreas($event)"></mobile-version-body-selector>
+
+<!--TODO Shop Massage Summary-->

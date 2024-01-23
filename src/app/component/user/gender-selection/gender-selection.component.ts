@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { NameValuePairType } from 'src/app/interface/global/global.interface';
 
@@ -7,8 +7,9 @@ import { NameValuePairType } from 'src/app/interface/global/global.interface';
   templateUrl: './gender-selection.component.html',
   styleUrls: ['./gender-selection.component.scss'],
 })
-export class GenderSelectionComponent implements OnInit {
+export class GenderSelectionComponent implements OnInit, OnChanges {
   @Output() genderChange: EventEmitter<Constant.GenderType> = new EventEmitter<Constant.GenderType>();
+  @Input() title: string = 'label.title.gender';
   @Input() readOnly: boolean = false;
   @Input() mode: Constant.ComponentModeType = 'form';
   @Input()
@@ -16,10 +17,7 @@ export class GenderSelectionComponent implements OnInit {
     return this.inputGender;
   }
   set gender(gender: Constant.GenderType) {
-    let selected = this.genderSelection.find(r => r.value === gender);
     this.inputGender = gender;
-    this.selectedGender = selected !== undefined ? selected : this.selectedGender;
-    this.genderChange.emit(gender);
   }
 
   public genderSelection: NameValuePairType[] = [
@@ -34,6 +32,13 @@ export class GenderSelectionComponent implements OnInit {
   };
   public inputGender: Constant.GenderType = Constant.Default.Gender.Male;
   constructor() {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const genderChange = changes['gender'];
+    if (genderChange !== undefined) {
+      this.selectedGender = this.convertToGenderSelectionType(genderChange.currentValue);
+    }
+  }
 
   ngOnInit() {
     if (this.mode === 'filter') {
@@ -50,6 +55,7 @@ export class GenderSelectionComponent implements OnInit {
     let selectedGenderType: Constant.GenderType = this.convertToGenderType(this.selectedGender.value);
     this.inputGender = selectedGenderType;
     this.gender = this.inputGender;
+    this.genderChange.emit(this.inputGender);
   }
 
   private convertToGenderType(g: string): Constant.GenderType {
@@ -57,13 +63,26 @@ export class GenderSelectionComponent implements OnInit {
       g === Constant.Default.Gender.Male
         ? Constant.Default.Gender.Male
         : g === Constant.Default.Gender.Female
-        ? Constant.Default.Gender.Female
-        : g === Constant.Default.Gender.Other
-        ? Constant.Default.Gender.Other
-        : g === Constant.Default.Gender.All
-        ? Constant.Default.Gender.All
-        : Constant.Default.Gender.Male;
+          ? Constant.Default.Gender.Female
+          : g === Constant.Default.Gender.Other
+            ? Constant.Default.Gender.Other
+            : g === Constant.Default.Gender.All
+              ? Constant.Default.Gender.All
+              : Constant.Default.Gender.Male;
 
     return result;
+  }
+
+  private convertToGenderSelectionType(g: Constant.GenderType): NameValuePairType {
+    switch (g) {
+      case Constant.Default.Gender.All:
+        return { value: Constant.Default.Gender.All, name: 'label.title.all' };
+      case Constant.Default.Gender.Male:
+        return { value: Constant.Default.Gender.Male, name: 'label.title.male' };
+      case Constant.Default.Gender.Female:
+        return { value: Constant.Default.Gender.Female, name: 'label.title.female' };
+      case Constant.Default.Gender.Other:
+        return { value: Constant.Default.Gender.Other, name: 'label.title.other' };
+    }
   }
 }

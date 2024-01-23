@@ -1,0 +1,29 @@
+<form-header
+  *ngIf="!requesting"
+  [action]="form.action"
+  [readOnly]="form.readOnly"
+  [title]="form.headerTitle"
+  (onClickDismiss)="dismiss()"></form-header>
+
+<ion-content *ngIf="!requesting">
+  <flex-col class="modal-container">
+    <flex-col-item>
+      <phone-number [isRequired]="true" [(validate)]="validator" [(phone)]="phoneNumber"></phone-number>
+    </flex-col-item>
+    <flex-col-item>
+      <button kendoButton class="verify-btn" [disabled]="!validator" (click)="onClickVerifyAccount()">
+        {{ 'label.title.verification' | languageTransform: 'System' | async }}
+      </button>
+    </flex-col-item>
+  </flex-col>
+</ion-content>
+
+<ion-content *ngIf="requesting">
+  <flex-col>
+    <flex-col-item>
+      <div class="loading">
+        <kendo-loader size="large"></kendo-loader>
+      </div>
+    </flex-col-item>
+  </flex-col>
+</ion-content>
