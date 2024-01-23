@@ -236,6 +236,41 @@ legend {
   }
 }
 
+.border-right {
+  border-right: 1px solid var(--active) !important;
+}
+
+.border-left {
+  border-left: 1px solid var(--active) !important;
+}
+
+.border-top {
+  border-top: 1px solid var(--active) !important;
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--active) !important;
+}
+
+.gender-icon {
+  --ionicon-stroke-width: 64px;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.female {
+  background: var(--error);
+}
+
+.male {
+  background: var(--inprogress);
+}
+
+.male-female {
+  background: var(--active);
+}
+
 ion-loading {
   --backdrop-opacity: 0;
   background: transparent;

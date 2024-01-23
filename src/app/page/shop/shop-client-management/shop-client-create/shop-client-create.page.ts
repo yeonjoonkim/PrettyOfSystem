@@ -39,12 +39,6 @@ export class ShopClientCreatePage implements OnInit, OnDestroy {
     } else {
       await this.gotoClientManagement();
     }
-    // this.account.newClient$.pipe(takeUntil(this._destroy$)).subscribe(s => {
-    //   console.log(s);
-    // });
-    // this.account.validator.validator$.pipe(takeUntil(this._destroy$)).subscribe(s => {
-    //   console.log(s);
-    // });
   }
 
   ngOnDestroy() {

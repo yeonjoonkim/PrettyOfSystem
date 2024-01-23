@@ -2,6 +2,13 @@
   margin: 0;
 }
 
+a {
+  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .grid-tool-tip-left,
 .grid-tool-tip-right {
   margin: 0;
@@ -11,6 +18,9 @@
 .client-name {
   text-decoration: underline;
   color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   &:hover {
     color: var(--active);
     cursor: pointer;

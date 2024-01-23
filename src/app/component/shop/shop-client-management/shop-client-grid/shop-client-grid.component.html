@@ -26,7 +26,13 @@
       </ng-template>
 
       <!--VIP-->
-      <kendo-grid-column [sortable]="true" field="consent.isVIP" title="VIP" [width]="55">
+      <kendo-grid-column
+        [sortable]="true"
+        field="consent.isVIP"
+        title="VIP"
+        [width]="50"
+        [stickable]="true"
+        [sticky]="true">
         <ng-template kendoGridCellTemplate let-client>
           <input class="checkbox" type="checkbox" kendoCheckBox [checked]="client.consent.isVIP" disabled />
         </ng-template>
@@ -35,8 +41,11 @@
       <!-- Name -->
       <kendo-grid-column
         [sortable]="true"
+        [stickable]="true"
+        [sticky]="true"
         field="firstName"
-        [width]="130"
+        [width]="100"
+        class="border-right"
         title="{{ 'label.title.name' | languageTransform: 'System' | async }}">
         <ng-template kendoGridCellTemplate let-client>
           <p class="client-name" (click)="onClickClient(client.id)">
@@ -45,34 +54,45 @@
         </ng-template>
       </kendo-grid-column>
 
-      <!-- Phone Number -->
       <kendo-grid-column
-        [sortable]="true"
         field="phoneNumber"
-        [width]="130"
+        [width]="140"
         title="{{ 'label.title.phone' | languageTransform: 'System' | async }}">
         <ng-template kendoGridCellTemplate let-client>
-          <a href="tel:{{ client.phoneNumber }}"
-            ><span>{{ client.phoneNumber | transformPhoneNumber }}</span></a
-          >
+          <a href="tel:{{ client.phoneNumber }}">
+            <span>{{ client.phoneNumber | transformPhoneNumber }}</span>
+          </a>
         </ng-template>
       </kendo-grid-column>
 
       <!-- Email -->
       <kendo-grid-column
-        media="(min-width: 500px)"
         [sortable]="true"
         field="email"
         [width]="140"
         title="{{ 'label.title.email' | languageTransform: 'System' | async }}">
         <ng-template kendoGridCellTemplate let-client>
-          <p>{{ client.email }}</p>
+          <a href="mailto:{{ client.email }}">
+            <span>{{ client.email }}</span>
+          </a>
+        </ng-template>
+      </kendo-grid-column>
+
+      <!-- Gender -->
+      <kendo-grid-column
+        [sortable]="true"
+        field="gender"
+        [width]="90"
+        title="{{ 'label.title.gender' | languageTransform: 'System' | async }}">
+        <ng-template kendoGridCellTemplate let-client>
+          <ion-icon
+            class="gender-icon {{ client.gender | genderIconName }}"
+            name="{{ client.gender | genderIconName }}"></ion-icon>
         </ng-template>
       </kendo-grid-column>
 
       <!-- Date of Brith -->
       <kendo-grid-column
-        media="(min-width: 600px)"
         [sortable]="true"
         field="dob"
         [width]="120"
@@ -82,15 +102,32 @@
         </ng-template>
       </kendo-grid-column>
 
-      <!-- Gender -->
+      <!-- Under Age -->
       <kendo-grid-column
-        media="(min-width: 670px)"
+        *ngIf="isMedicalRelatedShop$ | async"
         [sortable]="true"
-        field="gender"
-        [width]="70"
-        title="{{ 'label.title.gender' | languageTransform: 'System' | async }}">
+        field="client.dob"
+        [width]="100"
+        title="{{ 'label.title.underage' | languageTransform: 'System' | async }}">
         <ng-template kendoGridCellTemplate let-client>
-          <p>{{ genderTitle(client.gender) | languageTransform: 'System' | async }}</p>
+          <input class="checkbox" type="checkbox" kendoCheckBox [checked]="underAge(client.dob)" disabled />
+        </ng-template>
+      </kendo-grid-column>
+
+      <!-- Pregnant -->
+      <kendo-grid-column
+        *ngIf="isMedicalRelatedShop$ | async"
+        [sortable]="true"
+        field="client.setting.pregnancyDueDate"
+        [width]="100"
+        title="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}">
+        <ng-template kendoGridCellTemplate let-client>
+          <input
+            class="checkbox"
+            type="checkbox"
+            kendoCheckBox
+            [checked]="isPregnant(client.setting.pregnancyDueDate)"
+            disabled />
         </ng-template>
       </kendo-grid-column>
 

@@ -309,25 +309,30 @@ export class ShopClientCreateAccountService {
   ) {}
 
   public async start(phoneNumber: string) {
-    this._shop.config$
-      .pipe(combineLatestWith(this._userRepo.subscribeUserByPhoneNumber(phoneNumber)), take(1))
-      .subscribe(async ([config, client]) => {
-        if (config !== null) {
-          const isExistedClient = client !== null ? this.isExistedClient(config, client) : false;
-          if (isExistedClient) {
-            await this.toastExsitingClient();
-            await this._router.navigateByUrl(`shop/client-management`);
+    const decryptedPhoneNumber: string | null = this._global.crypt.decrypt(phoneNumber);
+    if (decryptedPhoneNumber !== null && decryptedPhoneNumber.includes('+')) {
+      this._shop.config$
+        .pipe(combineLatestWith(this._userRepo.subscribeUserByPhoneNumber(decryptedPhoneNumber)), take(1))
+        .subscribe(async ([config, client]) => {
+          if (config !== null) {
+            const isExistedClient = client !== null ? this.isExistedClient(config, client) : false;
+            if (isExistedClient) {
+              await this.toastExsitingClient();
+              await this._router.navigateByUrl(`shop/client-management`);
+            } else {
+              this.newClient =
+                client !== null
+                  ? this._clientRepo.newShopClientManagementUserType(client, config)
+                  : await this.getNewClient(config, decryptedPhoneNumber);
+              this.timezone = config.timezone;
+            }
           } else {
-            this.newClient =
-              client !== null
-                ? this._clientRepo.newShopClientManagementUserType(client, config)
-                : await this.getNewClient(config, phoneNumber);
-            this.timezone = config.timezone;
+            await this._router.navigateByUrl(`shop/client-management`);
           }
-        } else {
-          await this._router.navigateByUrl(`shop/client-management`);
-        }
-      });
+        });
+    } else {
+      await this._router.navigateByUrl(`shop/client-management`);
+    }
   }
 
   public async verify(config: ShopConfigurationType, phoneNumber: string) {
@@ -342,14 +347,16 @@ export class ShopClientCreateAccountService {
           `${account.firstName} ${account.lastName}`
         );
         if (clientConfirmation) {
-          await this._router.navigateByUrl(`shop/client-management/create/${phoneNumber}`);
+          const encryptedPhoneNumber = this._global.crypt.encrypt(phoneNumber);
+          await this._router.navigateByUrl(`shop/client-management/create/${encryptedPhoneNumber}`);
           return true;
         } else {
           return false;
         }
       }
     } else {
-      await this._router.navigateByUrl(`shop/client-management/create/${phoneNumber}`);
+      const encryptedPhoneNumber = this._global.crypt.encrypt(phoneNumber);
+      await this._router.navigateByUrl(`shop/client-management/create/${encryptedPhoneNumber}`);
       return true;
     }
   }

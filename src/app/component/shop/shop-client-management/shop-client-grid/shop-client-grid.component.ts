@@ -6,6 +6,7 @@ import { ShopClientManagementService } from 'src/app/service/shop/shop-client-ma
 import { ShopVerifyNewClientPhoneNumberPopoverComponent } from '../shop-verify-new-client-phone-number-popover/shop-verify-new-client-phone-number-popover.component';
 import { ShopClientManagementUserType } from 'src/app/interface';
 import { Router } from '@angular/router';
+import { CryptService } from 'src/app/service/global/crypt/crypt.service';
 
 @Component({
   selector: 'shop-client-grid',
@@ -21,10 +22,7 @@ export class ShopClientGridComponent implements OnInit, OnDestroy {
   public selectedClients: ShopClientManagementUserType[] = this._clientManagement.query.selectedClients;
   public pageSize = this._clientManagement.query.pageSize;
   public isAuthorised$ = this._clientManagement.isAuthorised$;
-
-  public genderTitle = (gender: string) => {
-    return `label.title.${gender.toLowerCase()}`;
-  };
+  public isMedicalRelatedShop$ = this._clientManagement.isMedicalRelatedShop$;
 
   public isPregnant = (brithDate: string | null) => {
     return brithDate !== null;
