@@ -1,0 +1,116 @@
+<div class="client-editor-container">
+  <div
+    [class.client-general-info-container]="!forceMobile"
+    [class.client-mobile-general-info-container]="forceMobile">
+    <client-info-editor
+      [type]="type"
+      [mode]="mode"
+      [isRelatedToMedical]="isRelatedToMedical"
+      [isUnderAge]="isUnderAge"
+      [pregancyDueDate]="pregancyDueDate"
+      [(firstName)]="firstName"
+      [(lastName)]="lastName"
+      [(gender)]="gender"
+      [(dob)]="dob"
+      [(email)]="email"
+      [(phoneNumber)]="phoneNumber"
+      [(preferLanguage)]="preferLanguage"
+      [(address)]="address"
+      [(emergencyContact)]="emergencyContact"
+      [(privateInsurance)]="privateInsurance"
+      [(isVIP)]="isVIP"
+      [(firstNameValidator)]="firstNameValidator"
+      [(lastNameValidator)]="lastNameValidator"
+      [(emailValidator)]="emailValidator"
+      [(phoneNumberValidator)]="phoneNumberValidator"
+      [(addressValidator)]="addressValidator"
+      [(emergencyContactValidator)]="emergencyContactValidator"
+      [(privateInsuranceValidator)]="privateInsuranceValidator"
+      (preferLanguageChange)="preferLanguageChange.emit($event)"
+      (isVIPChange)="isVIPChange.emit($event)"
+      (firstNameChange)="firstNameChange.emit($event)"
+      (lastNameChange)="lastNameChange.emit($event)"
+      (genderChange)="genderChange.emit($event)"
+      (dobChange)="dobChange.emit($event)"
+      (emailChange)="emailChange.emit($event)"
+      (phoneNumberChange)="phoneNumberChange.emit($event)"
+      (addressChange)="addressChange.emit($event)"
+      (emergencyContactChange)="emergencyContactChange.emit($event)"
+      (privateInsuranceChange)="privateInsuranceChange.emit($event)"
+      (firstNameValidatorChange)="firstNameValidatorChange.emit($event)"
+      (lastNameValidatorChange)="lastNameValidatorChange.emit($event)"
+      (emailValidatorChange)="emailValidatorChange.emit($event)"
+      (phoneNumberValidatorChange)="phoneNumberValidatorChange.emit($event)"
+      (addressValidatorChange)="addressValidatorChange.emit($event)"
+      (emergencyContactValidatorChange)="emergencyContactValidatorChange.emit($event)"
+      (privateInsuranceValidatorChange)="privateInsuranceValidatorChange.emit($event)"
+      (underAgeChange)="onUnderAgeChange($event)"></client-info-editor>
+    <client-medical-editor
+      class="medical"
+      *ngIf="isRelatedToMedical"
+      [type]="type"
+      [mode]="mode"
+      [gender]="gender"
+      [timezone]="timezone"
+      [(medical)]="medical"
+      [(pregancyDueDate)]="pregancyDueDate"
+      (medicalChange)="medicalChange.emit($event)"
+      (pregancyDueDateChange)="pregancyDueDateChange.emit($event)"></client-medical-editor>
+  </div>
+
+  <!--Massage Option-->
+  <div *ngIf="isMassageShop" class="massage-preference-container" [class.force-mobile-layout]="forceMobile">
+    <client-massage-preference-editor
+      [type]="type"
+      [mode]="mode"
+      [forceMobile]="forceMobile"
+      [(massage)]="massage"
+      (massageChange)="massageChange.emit($event)"></client-massage-preference-editor>
+  </div>
+
+  <!--Consent-->
+  <div [class.force-mobile-layout]="forceMobile" class="consent-container">
+    <div
+      *ngIf="mode === 'create' || type === 'client'"
+      [class.hidden-agreement-container]="type === 'shop' && !isExpandedAgreement"
+      [class.expanded-agreement-container]="isExpandedAgreement">
+      <shop-agreement
+        [isHairSalon]="isHairSalon"
+        [isMassageTheraphy]="isMassageShop"
+        [isMobileShop]="isMobileShop"
+        [isNailArt]="isNailArt"
+        [isPersonalTrainning]="isPersonalTraining"
+        [isSkinCare]="isSkinCare"></shop-agreement>
+    </div>
+    <div (click)="isExpandedAgreement = !isExpandedAgreement" *ngIf="mode === 'create' && type === 'shop'">
+      <div class="expand-btn">
+        <ion-icon *ngIf="!isExpandedAgreement" name="chevron-down-outline"></ion-icon>
+        <ion-icon *ngIf="isExpandedAgreement" name="chevron-up-outline"></ion-icon>
+      </div>
+    </div>
+
+    <client-consent-editor
+      [type]="type"
+      [mode]="mode"
+      [forceMobile]="forceMobile"
+      [validator]="validator"
+      [isRelatedToMedical]="isRelatedToMedical"
+      [isMassageShop]="isMassageShop"
+      [isMobileShop]="isMobileShop"
+      [isHairSalon]="isHairSalon"
+      [isSkinCare]="isSkinCare"
+      [isPersonalTraining]="isPersonalTraining"
+      [isNailArt]="isNailArt"
+      [(hasMarketingEmailConsent)]="hasMarketingEmailConsent"
+      [(hasMarketingSMSConsent)]="hasMarketingSMSConsent"
+      [(hasTermandConditionConsent)]="hasTermandConditionConsent"
+      [(signature)]="signature"
+      [(signatureValidator)]="signatureValidator"
+      (hasMarketingEmailConsentChange)="hasMarketingEmailConsentChange.emit($event)"
+      (hasMarketingSMSConsentChange)="hasMarketingSMSConsentChange.emit($event)"
+      (signatureChange)="onChangeSignautre($event)"
+      (hasTermandConditionConsentChange)="hasTermandConditionConsentChange.emit($event)"
+      (onClickAction)="onClickAction.emit()"
+      (onClickDelete)="onClickDelete.emit()"></client-consent-editor>
+  </div>
+</div>

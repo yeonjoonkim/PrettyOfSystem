@@ -1,0 +1,27 @@
+.checkbox {
+  margin: 0;
+}
+
+.grid-tool-tip-left,
+.grid-tool-tip-right {
+  margin: 0;
+  gap: 15px;
+}
+
+.client-name {
+  text-decoration: underline;
+  color: white;
+  &:hover {
+    color: var(--active);
+    cursor: pointer;
+  }
+}
+
+.book-now {
+  text-decoration: underline;
+  color: var(--title);
+  &:hover {
+    color: var(--active);
+    cursor: pointer;
+  }
+}

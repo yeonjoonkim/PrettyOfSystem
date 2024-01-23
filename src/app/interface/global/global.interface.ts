@@ -5,6 +5,7 @@ import {
   DayIndexType,
   DayType,
   PeriodType,
+  QueryOperatorType,
 } from '../../constant/constant';
 
 export type StartEndStringDateType = {
@@ -104,4 +105,16 @@ export type IFormHeaderModalProp = {
   action: FormActionType;
   enabledSavebutton: boolean;
   headerTitle: string;
+};
+
+export type QueryType = {
+  field: string;
+  operator: QueryOperatorType;
+  param: string;
+};
+
+export type QueryGenericType<T> = {
+  field: string;
+  operator: QueryOperatorType;
+  param: T;
 };

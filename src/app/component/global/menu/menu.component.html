@@ -67,6 +67,15 @@
             <ion-icon slot="start" name="settings-outline"></ion-icon>
             {{ 'label.title.massagepreference' | languageTransform: 'System' | async }}
           </ion-item>
+          <ion-item
+            button
+            routerLink="/user/visit-shop"
+            routerLinkActive="menu-active"
+            (click)="onChangeMenu('user/visit-shop')"
+            class="content-selector">
+            <ion-icon slot="start" name="bag-check-outline"></ion-icon>
+            {{ 'label.title.visitedshop' | languageTransform: 'System' | async }}
+          </ion-item>
         </ion-list>
       </ion-accordion>
     </ion-accordion-group>

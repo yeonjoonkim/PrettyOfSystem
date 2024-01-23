@@ -18,7 +18,7 @@
   <div class="client-info-container">
     <massage-pressure-level-selector [(pressure)]="pressure"></massage-pressure-level-selector>
 
-    <div class="info-container">
+    <flex-col class="info-container">
       <massage-difficult-change-position [(position)]="position"></massage-difficult-change-position>
       <flex-col-item>
         <gender-selection
@@ -26,7 +26,7 @@
           mode="filter"
           [(gender)]="preferGender"></gender-selection>
       </flex-col-item>
-    </div>
+    </flex-col>
     <desktop-version-body-selector
       *ngIf="massageArea"
       [readOnly]="false"

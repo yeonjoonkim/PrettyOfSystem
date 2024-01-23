@@ -1,0 +1,85 @@
+.client-general-info-container {
+  display: flex;
+  flex-direction: row;
+  client-info-editor,
+  client-medical-editor {
+    flex: 1;
+  }
+}
+
+.client-mobile-general-info-container {
+  max-width: 620px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  client-info-editor,
+  client-medical-editor {
+    flex: 1;
+  }
+  .medical {
+    border-left: none;
+  }
+}
+
+.force-mobile-layout {
+  max-width: 620px;
+  margin: auto;
+}
+
+.medical {
+  border-left: 1px solid var(--active);
+}
+
+client-medical-editor,
+.massage-preference-container,
+.consent-container {
+  border-top: 1px solid var(--active);
+}
+
+.client-editor-container {
+  max-width: 1000px;
+  margin: auto;
+}
+
+.hidden-agreement-container {
+  height: 70px;
+  overflow: hidden;
+}
+.expanded-agreement-container {
+  height: unset;
+  overflow: unset;
+}
+
+.expand-btn {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  color: white;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.expand-description {
+  display: flex;
+  justify-content: center;
+  p {
+    color: white;
+    font-size: 8px;
+    margin: 0px;
+    margin-bottom: 5px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 620px) {
+  .client-general-info-container {
+    flex-direction: column;
+    .medical {
+      border-left: none;
+    }
+  }
+}

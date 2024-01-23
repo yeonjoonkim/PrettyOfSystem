@@ -119,6 +119,7 @@
     "install": "^0.13.0",
     "intl-tel-input": "^18.1.8",
     "ionicons": "^6.0.3",
+    "libphonenumber-js": "^1.10.54",
     "localforage": "^1.10.0",
     "localforage-cordovasqlitedriver": "^1.8.0",
     "lodash-es": "^4.17.21",

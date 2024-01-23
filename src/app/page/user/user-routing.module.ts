@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./user-massage-setting/user-massage-setting.module').then(m => m.UserMassageSettingPageModule),
   },
+  {
+    path: 'visit-shop',
+    loadChildren: () => import('./user-visit-shop/user-visit-shop.module').then(m => m.UserVisitShopPageModule),
+  },
 ];
 
 @NgModule({

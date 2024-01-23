@@ -344,6 +344,12 @@ error-message-item {
   margin: 0px 15px 10px 15px;
 }
 
+kendo-pager-next-buttons,
+kendo-pager-prev-buttons {
+  display: flex;
+  justify-content: center;
+}
+
 /*itl-phone*/
 .iti--allow-dropdown {
   margin-top: 12px;

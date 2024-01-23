@@ -1,0 +1,71 @@
+:host ::ng-deep name-value-pair-single-dropdown-selection {
+  kendo-button {
+    margin: 0 !important;
+  }
+  kendo-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.visited-shop-selection {
+  width: 125px;
+  margin-right: 15px;
+}
+
+.visited-shop-info {
+  max-width: 800px;
+  margin: auto;
+  padding-top: 25px;
+}
+
+#selection-btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+#selection-btn {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 10px;
+  justify-content: center;
+}
+
+#btn {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+#btn-img {
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+#btn-title {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.marketing-agreement {
+  display: flex;
+  flex-direction: column;
+  yes-no-selection {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.update-btn {
+  margin-top: 45x;
+  width: 100%;
+  background: var(--title);
+}

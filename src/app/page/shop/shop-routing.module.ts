@@ -30,6 +30,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./shop-employee-schedule/shop-employee-schedule.module').then(m => m.ShopEmployeeSchedulePageModule),
   },
+  {
+    path: 'client-management',
+    loadChildren: () =>
+      import('./shop-client-management/shop-client-management.module').then(m => m.ShopClientManagementPageModule),
+  },
 ];
 
 @NgModule({

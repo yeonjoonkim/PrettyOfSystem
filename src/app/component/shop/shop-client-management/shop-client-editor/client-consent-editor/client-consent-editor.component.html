@@ -1,0 +1,73 @@
+<flex-col>
+  <flex-row
+    [class.general-term-and-condition-container]="!forceMobile"
+    [class.mobile-general-term-and-condition-container]="forceMobile">
+    <flex-row-item *ngIf="isRelatedToMedical">
+      <flex-col>
+        <flex-col-item class="signature-title-conatiner">
+          <legend>{{ 'label.title.signature' | languageTransform: 'System' | async }}</legend>
+          <kendo-buttongroup>
+            <button class="signature-btn" kendoButton>
+              <span class="k-icon k-i-photo-camera"></span>
+            </button>
+            <button kendoButton class="signature-btn">
+              <span class="k-icon k-i-link"></span>
+            </button>
+            <button kendoButton class="signature-btn">
+              <span class="k-icon k-i-upload"></span>
+            </button>
+            <button
+              kendoButton
+              class="signature-btn"
+              *ngIf="type === 'client' || mode === 'create'"
+              (click)="onClickClearSignature()">
+              <span class="k-icon k-i-reset"></span>
+            </button>
+          </kendo-buttongroup>
+        </flex-col-item>
+        <flex-col-item class="signature-conatiner">
+          <signature-input
+            [(signature)]="signature"
+            [readOnly]="!(type === 'client' || mode === 'create')"
+            (signatureChange)="onChangeSignature($event)"></signature-input>
+        </flex-col-item>
+      </flex-col>
+    </flex-row-item>
+    <flex-row-item class="consent-container">
+      <yes-no-selection-group>
+        <yes-no-selection
+          *ngIf="!(type === 'shop' && mode === 'edit')"
+          title="label.title.acceptanceofterms"
+          [(value)]="hasTermandConditionConsent"
+          (valueChange)="hasTermandConditionConsentChange.emit($event)"></yes-no-selection>
+        <yes-no-selection
+          title="label.title.smsmarketingconsent"
+          [(value)]="hasMarketingSMSConsent"
+          (valueChange)="hasMarketingSMSConsentChange.emit($event)"></yes-no-selection>
+        <yes-no-selection
+          title="label.title.emailmarketingconsent"
+          [(value)]="hasMarketingEmailConsent"
+          (valueChange)="hasMarketingEmailConsentChange.emit($event)"></yes-no-selection>
+      </yes-no-selection-group>
+    </flex-row-item>
+  </flex-row>
+
+  <flex-col-item *ngIf="mode === 'create'">
+    <button class="action-btn" kendoButton [disabled]="!validator" (click)="onClickAction.emit()">
+      {{ 'label.title.registeration' | languageTransform: 'System' | async }}
+    </button>
+  </flex-col-item>
+
+  <flex-row>
+    <flex-row-item *ngIf="mode === 'edit' && type === 'shop'">
+      <button class="delete-btn" kendoButton [disabled]="!validator" (click)="onClickDelete.emit()">
+        {{ 'button.title.delete' | languageTransform: 'System' | async }}
+      </button>
+    </flex-row-item>
+    <flex-row-item *ngIf="mode === 'edit'">
+      <button class="action-btn" kendoButton [disabled]="!validator" (click)="onClickAction.emit()">
+        {{ 'label.title.edit' | languageTransform: 'System' | async }}
+      </button>
+    </flex-row-item>
+  </flex-row>
+</flex-col>

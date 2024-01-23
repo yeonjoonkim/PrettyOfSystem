@@ -1,12 +1,17 @@
-<kendo-signature
-  #signature
-  *ngIf="input !== undefined"
-  [readonly]="readOnly"
-  [(ngModel)]="input"
-  (ngModelChange)="onChangeInputSignature($event)"
-  color="black"
-  backgroundColor="white"
-  [strokeWidth]="1"
-  [smooth]="true"
-  [maximizable]="false"
-  [hideLine]="true"></kendo-signature>
+<div class="signature-input-container">
+  <kendo-signature
+    #signature
+    *ngIf="input !== undefined"
+    [readonly]="readOnly"
+    [(ngModel)]="input"
+    (ngModelChange)="onChangeInputSignature($event)"
+    color="black"
+    backgroundColor="white"
+    [strokeWidth]="1"
+    [smooth]="true"
+    [maximizable]="false"
+    [hideLine]="true"
+    (open)="onOpen($event)"
+    (focus)="onFocus()"
+    (close)="onClose($event)"></kendo-signature>
+</div>

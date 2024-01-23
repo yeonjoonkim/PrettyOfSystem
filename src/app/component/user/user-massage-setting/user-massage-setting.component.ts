@@ -47,7 +47,6 @@ export class UserMassageSettingComponent implements OnInit {
       const before = await firstValueFrom(this._user.data$);
       if (before) {
         const current = cloneDeep(before);
-        console.log(gender);
         current.setting.massage.preferGender = gender;
         await this._user.updateUser(current, before);
         this.requesting = false;

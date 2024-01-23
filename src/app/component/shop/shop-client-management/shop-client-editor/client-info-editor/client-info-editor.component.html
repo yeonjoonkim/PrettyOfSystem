@@ -1,0 +1,216 @@
+<flex-row>
+  <flex-row-item class="client-info-title">
+    <legend>{{ 'label.title.information' | languageTransform: 'System' | async }}</legend>
+  </flex-row-item>
+  <flex-row-item class="client-info-checkbox-container">
+    <kendo-label text="{{ 'label.title.underage' | languageTransform: 'System' | async }}">
+      <input kendoCheckBox type="checkbox" [disabled]="true" [(ngModel)]="isUnderAge" />
+    </kendo-label>
+    <kendo-label
+      text="{{ 'label.title.pregnant' | languageTransform: 'System' | async }}"
+      *ngIf="isRelatedToMedical && gender === 'Female'">
+      <input kendoCheckBox type="checkbox" [disabled]="true" [checked]="pregancyDueDate !== null" />
+    </kendo-label>
+    <kendo-label text="VIP" *ngIf="type == 'shop'">
+      <input kendoCheckBox type="checkbox" [(ngModel)]="isVIP" (ngModelChange)="isVIPChange.emit($event)" />
+    </kendo-label>
+  </flex-row-item>
+</flex-row>
+
+<flex-row>
+  <flex-row-item>
+    <gender-selection [(gender)]="gender" (genderChange)="genderChange.emit($event)"></gender-selection>
+  </flex-row-item>
+  <flex-row-item>
+    <langauge-selection
+      [(selectedCode)]="preferLanguage"
+      (selectedCodeChange)="preferLanguageChange.emit($event)"></langauge-selection>
+  </flex-row-item>
+</flex-row>
+
+<flex-row>
+  <flex-row-item>
+    <text-box
+      title="label.title.firstname"
+      [isRequired]="true"
+      [min]="1"
+      [max]="100"
+      [(value)]="firstName"
+      [(validate)]="firstNameValidator"
+      (valueChange)="firstNameChange.emit($event)"
+      (validateChange)="firstNameValidatorChange.emit($event)">
+    </text-box>
+  </flex-row-item>
+  <flex-row-item>
+    <text-box
+      title="label.title.lastname"
+      [isRequired]="true"
+      [min]="1"
+      [max]="100"
+      [(value)]="lastName"
+      [(validate)]="lastNameValidator"
+      (valueChange)="lastNameChange.emit($event)"
+      (validateChange)="lastNameValidatorChange.emit($event)">
+    </text-box>
+  </flex-row-item>
+</flex-row>
+
+<flex-row>
+  <flex-row-item>
+    <phone-number
+      [isRequired]="true"
+      [isTitleRequired]="true"
+      [(phone)]="phoneNumber"
+      [(validate)]="phoneNumberValidator"
+      [readOnly]="mode === 'create'"
+      (phoneChange)="phoneNumberChange.emit($event)"
+      (validateChange)="phoneNumberValidatorChange.emit($event)"></phone-number>
+  </flex-row-item>
+  <flex-row-item>
+    <e-mail
+      [isRequired]="true"
+      [(email)]="email"
+      [(validate)]="emailValidator"
+      (emailChange)="emailChange.emit($event)"
+      (validateChange)="emailValidatorChange.emit($event)"></e-mail>
+  </flex-row-item>
+</flex-row>
+
+<flex-row>
+  <flex-row-item>
+    <date-picker
+      title="label.title.dateofbrith"
+      [displayNextDay]="0"
+      [isDateOfBrith]="true"
+      [(date)]="dob"
+      (dateChange)="onChangeDateOfBrith($event)"></date-picker>
+  </flex-row-item>
+  <flex-row-item> </flex-row-item>
+</flex-row>
+
+<!-- Private Insurance -->
+<flex-col *ngIf="isRelatedToMedical">
+  <flex-col-item class="client-info-title">
+    <legend>{{ 'label.title.privateinsurance' | languageTransform: 'System' | async }}</legend>
+  </flex-col-item>
+  <flex-col-item class="default-placeholder question-container"
+    >{{ 'label.description.doyouwanttoprovideprivateinsurance' | languageTransform: 'System' | async }}
+    <input
+      type="checkbox"
+      kendoCheckBox
+      [checked]="privateInsurance !== null"
+      (click)="onChangePrivateInsurance()" />
+  </flex-col-item>
+</flex-col>
+<flex-col *ngIf="privateInsurance !== null && isRelatedToMedical">
+  <flex-col-item>
+    <name-value-pair-single-dropdown-selection
+      title="label.title.company"
+      [(selected)]="selectedInsurance"
+      [selection]="insuranceSelection"
+      (selectedChange)="onChangePrivateInsuranceCompany($event)"></name-value-pair-single-dropdown-selection>
+  </flex-col-item>
+  <flex-col-item>
+    <text-box
+      title="label.title.membershipnumber"
+      [isRequired]="true"
+      [min]="1"
+      [max]="100"
+      [(value)]="privateInsurance.memberNum"
+      [(validate)]="privateInsuranceValidator"
+      (valueChange)="onChangePrivateInsuranceValue()"></text-box>
+  </flex-col-item>
+  <flex-col-item>
+    <text-box
+      title="label.title.referencenumber"
+      [isRequired]="false"
+      [(value)]="privateInsurance.reference"
+      (valueChange)="onChangePrivateInsuranceValue()"></text-box>
+  </flex-col-item>
+</flex-col>
+
+<div [class.hidden]="mode === 'edit' && hidden && isRelatedToMedical">
+  <!--Address-->
+  <flex-col *ngIf="isRelatedToMedical">
+    <flex-col-item class="client-info-title">
+      <legend>{{ 'label.title.address' | languageTransform: 'System' | async }}</legend>
+    </flex-col-item>
+    <flex-col-item class="default-placeholder">
+      {{ 'label.description.doyouwanttoprovideaddress' | languageTransform: 'System' | async }}
+      <input type="checkbox" kendoCheckBox [checked]="address !== null" (click)="onChangeProvideAddress()" />
+    </flex-col-item>
+    <address
+      *ngIf="address !== null"
+      [isIncludeTitle]="false"
+      [(address)]="address"
+      [(validate)]="addressValidator"
+      (addressChange)="addressChange.emit($event)"
+      (validateChange)="addressValidatorChange.emit($event)"></address>
+  </flex-col>
+
+  <!--Emergency Contact-->
+  <flex-row *ngIf="isRelatedToMedical">
+    <flex-row-item class="client-info-title">
+      <legend>
+        {{ 'label.title.emergencycontact' | languageTransform: 'System' | async }}
+        <span *ngIf="isRelatedToMedical && isUnderAge"
+          >({{ 'placeholder.title.required' | languageTransform: 'System' | async }})</span
+        >
+      </legend>
+    </flex-row-item>
+  </flex-row>
+  <flex-col *ngIf="isRelatedToMedical">
+    <flex-col-item class="default-placeholder" *ngIf="!requiresEmergencyContact"
+      >{{ 'label.description.doyouwanttoprovideemergencycontact' | languageTransform: 'System' | async }}
+      <input
+        type="checkbox"
+        kendoCheckBox
+        [checked]="emergencyContact !== null"
+        (click)="onChangeEmergencyContact()" />
+    </flex-col-item>
+  </flex-col>
+  <flex-row *ngIf="emergencyContact !== null && isRelatedToMedical">
+    <flex-row-item>
+      <text-box
+        title="label.title.firstname"
+        [isRequired]="true"
+        [min]="1"
+        [max]="100"
+        [(value)]="emergencyContact.firstName"
+        [(validate)]="emergencyContactValidators.firstName"
+        (validateChange)="onEmergencyValidator()"
+        (valueChange)="onEmergencyValidator()">
+      </text-box>
+    </flex-row-item>
+    <flex-row-item>
+      <text-box
+        title="label.title.lastname"
+        [isRequired]="true"
+        [min]="1"
+        [max]="100"
+        [(value)]="emergencyContact.lastName"
+        [(validate)]="emergencyContactValidators.lastName"
+        (validateChange)="onEmergencyValidator()"
+        (valueChange)="onEmergencyValidator()">
+      </text-box>
+    </flex-row-item>
+  </flex-row>
+  <flex-row *ngIf="emergencyContact !== null && isRelatedToMedical">
+    <flex-row-item>
+      <phone-number
+        [isRequired]="true"
+        [isTitleRequired]="true"
+        [(phone)]="emergencyContact.phoneNumber"
+        [(validate)]="emergencyContactValidators.phone"
+        (validateChange)="onEmergencyValidator()"
+        (valueChange)="onEmergencyValidator()">
+      </phone-number>
+    </flex-row-item>
+  </flex-row>
+</div>
+<div (click)="hidden = !hidden" *ngIf="mode === 'edit' && type === 'shop' && isRelatedToMedical">
+  <div class="expand-btn">
+    <ion-icon *ngIf="hidden" name="chevron-down-outline"></ion-icon>
+    <ion-icon *ngIf="!hidden" name="chevron-up-outline"></ion-icon>
+  </div>
+</div>

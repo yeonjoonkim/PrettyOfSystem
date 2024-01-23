@@ -8,6 +8,8 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { MenuController } from '@ionic/angular';
+import { SignatureCloseEvent, SignatureOpenEvent } from '@progress/kendo-angular-inputs';
 
 @Component({
   selector: 'signature-input',
@@ -22,7 +24,7 @@ export class SignatureInputComponent implements OnInit, OnChanges {
 
   public input!: string;
 
-  constructor() {}
+  constructor(private _menuCtrl: MenuController) {}
   ngOnChanges(changes: SimpleChanges): void {
     const onSignatureChange = changes['signature'];
 
@@ -32,6 +34,11 @@ export class SignatureInputComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {}
+
+  onOpen(event: SignatureOpenEvent) {}
+  onFocus() {}
+
+  onClose(event: SignatureCloseEvent) {}
 
   onChangeInputSignature(s: string) {
     this.signature = s;

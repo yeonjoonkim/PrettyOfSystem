@@ -4,6 +4,19 @@ export const SystemSetting = {
   TimeZone: TimeZone.AustraliaBrisbane,
 };
 
+export const Query = {
+  Equal: '==',
+  LessThan: '<',
+  GreaterThan: '>',
+  LessThanOrEqual: '<=',
+  GreaterThanOrEqual: '>=',
+  NotEqual: '!=',
+  ArrayContains: 'array-contains',
+  ArrayContainsAny: 'array-contains-any',
+  In: 'in',
+  NotIn: 'not-in',
+} as const;
+
 export const ShopCategoryTitle = {
   MobileShop: 'label.title.mobileshop',
   PersonalTraining: 'label.title.personaltraining',

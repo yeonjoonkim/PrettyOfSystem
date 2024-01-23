@@ -13,6 +13,15 @@ export type ShopCategoryType = {
   name: string;
 };
 
+export type ShopCategoryIndicatorType = {
+  isHairSalon: boolean;
+  isMassageTheraphy: boolean;
+  isPersonalTrainning: boolean;
+  isSkinCare: boolean;
+  isMobileShop: boolean;
+  isNailArt: boolean;
+};
+
 export type ShopCapacityType = {
   id: string;
   name: string;

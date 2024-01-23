@@ -48,22 +48,13 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
     const beforeSnapshotData = !updateSnapshot?.before ? null : updateSnapshot.before.data();
     const afterSnapshotData = !updateSnapshot?.after ? null : updateSnapshot.after.data();
 
-    let before =
-      beforeSnapshotData !== null ? (beforeSnapshotData as I.ChatGptTranslateDocumentType) : null;
-    let after =
-      afterSnapshotData !== null ? (afterSnapshotData as I.ChatGptTranslateDocumentType) : null;
+    let before = beforeSnapshotData !== null ? (beforeSnapshotData as I.ChatGptTranslateDocumentType) : null;
+    let after = afterSnapshotData !== null ? (afterSnapshotData as I.ChatGptTranslateDocumentType) : null;
 
     if (before !== null && after !== null) {
-      const lifeCycle = Service.Trigger.Translate.OnChange.getLifeCycle(
-        before.status,
-        after.status
-      );
+      const lifeCycle = Service.Trigger.Translate.OnChange.getLifeCycle(before.status, after.status);
       const action = Service.Trigger.Translate.OnChange.getActionByLifeCycle(lifeCycle);
-      const vm = await Repository.OpenApiInstance.getSelectedInstance(
-        after.shopId,
-        after.serviceId,
-        after.format
-      );
+      const vm = await Repository.OpenApiInstance.getSelectedInstance(after.shopId, after.serviceId, after.format);
 
       if (
         lifeCycle.inProgressToPending ||
@@ -74,6 +65,7 @@ export const onUpdateChatGptTranslateRequest = onDocumentUpdated(
         after.error = [];
         after.attempt = 0;
         after.result = [];
+        after.translateResult = [];
         after.createdDate = new Date();
       }
 

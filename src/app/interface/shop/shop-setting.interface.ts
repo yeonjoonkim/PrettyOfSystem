@@ -1,4 +1,4 @@
-import { MedicalInsuranceType, ShopPackageDiscountType } from '..';
+import { MedicalInsuranceType } from '..';
 
 export interface IShopSetting {
   calendar: ShopCalendarType;
