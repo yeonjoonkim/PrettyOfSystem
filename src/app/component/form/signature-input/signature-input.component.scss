@@ -13,3 +13,25 @@
     margin-bottom: 13px;
   }
 }
+
+:host ::ng-deep kendo-signature {
+  width: 198px;
+  height: 82px;
+  canvas {
+    filter: grayscale(100%) contrast(300%);
+    mix-blend-mode: multiply;
+    object-fit: cover;
+  }
+}
+
+.preview {
+  width: 198px;
+  height: 82px;
+  margin-bottom: 10px;
+  margin-top: 13px;
+  margin-left: 1px;
+  margin-right: 1px;
+
+  filter: grayscale(100%) contrast(300%);
+  mix-blend-mode: multiply;
+}

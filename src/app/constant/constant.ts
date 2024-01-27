@@ -16,6 +16,7 @@ import {
   Payment,
   Transaction,
   Query,
+  SignatureTransferStatus,
 } from './constant-value';
 export {
   Default,
@@ -36,6 +37,7 @@ export {
   Payment,
   Transaction,
   Query,
+  SignatureTransferStatus,
 } from './constant-value';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
@@ -87,6 +89,7 @@ export type CurrencyType = (typeof Default.CurrencyType)[keyof typeof Default.Cu
 export type TextFormatType = (typeof Text.Format)[keyof typeof Text.Format];
 export type LanguageTransformType =
   (typeof Default.LanguageTransformType)[keyof typeof Default.LanguageTransformType];
+export type SignatureTransferStatusType = (typeof SignatureTransferStatus)[keyof typeof SignatureTransferStatus];
 
 //API
 export type QueryOperatorType = (typeof Query)[keyof typeof Query];

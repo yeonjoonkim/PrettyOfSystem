@@ -22,3 +22,4 @@ export * from './function/function-translation/function-translation.interface';
 export * from './function/function-consult/function-consult-change-action.interface';
 export * from './function/function-consult/function-consult-validator.interface';
 export * from './function/function-system-translation/function-system-translation.interface';
+export * from './function/function-signature-transfer/function-siganture-transfer.interface';

@@ -10,5 +10,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <shop-client-management *ngIf="(isAuthorised$ | async)"></shop-client-management>
+  <shop-client-management
+    *ngIf="(isAuthorised$ | async)"
+    (onRequestNewClientPhoneNumber)="createNewClient($event)"></shop-client-management>
 </ion-content>

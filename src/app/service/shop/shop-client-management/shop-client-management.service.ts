@@ -45,28 +45,23 @@ export class ShopClientManagementService {
   public async create(c: ShopClientManagementUserType) {
     c.firstName = this._global.textTransform.getTitleFormat(c.firstName);
     c.lastName = this._global.textTransform.getTitleFormat(c.lastName);
-    const isAuthroisedUser = await firstValueFrom(this.isAuthorised$);
     const loginInput: string = c.loginOption.phoneNumber ? c.phoneNumber : c.email;
-    if (isAuthroisedUser) {
-      try {
-        const userAccount = this._userRepo.subscribeUserAccount(loginInput);
-        let acc = await firstValueFrom(userAccount);
-        //Client has account
-        if (acc !== null) {
-          const updatedAcc = this._shopClientAcc.handleUpdateClient(acc, c);
-          return await this._userRepo.updateUser(updatedAcc);
-        }
-        //Client has no Account
-        else {
-          const newAcc = this._shopClientAcc.createAccount(c);
-          return await this._userRepo.createUser(newAcc);
-        }
-      } catch (error) {
-        console.error(error);
-        return false;
+
+    try {
+      const userAccount = this._userRepo.subscribeUserAccount(loginInput);
+      let acc = await firstValueFrom(userAccount);
+      //Client has account
+      if (acc !== null) {
+        const updatedAcc = this._shopClientAcc.handleUpdateClient(acc, c);
+        return await this._userRepo.updateUser(updatedAcc);
       }
-    } else {
-      await this.toastAuthError();
+      //Client has no Account
+      else {
+        const newAcc = this._shopClientAcc.createAccount(c);
+        return await this._userRepo.createUser(newAcc);
+      }
+    } catch (error) {
+      console.error(error);
       return false;
     }
   }

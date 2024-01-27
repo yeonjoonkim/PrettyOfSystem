@@ -18,6 +18,7 @@ export const EveryMinute = onSchedule('* * * * *', async event => {
     //Every Minute
     await Session.WaitingList.manage(event.scheduleTime);
     await Session.ChangePhoneNumber.manage(event.scheduleTime);
+    await Session.SigantureTransfer.manage(event.scheduleTime);
     await PregrancyUser.manage(event.scheduleTime);
     await Consult.DailyIncompletedStatus.manage(event.scheduleTime);
   } catch (error) {

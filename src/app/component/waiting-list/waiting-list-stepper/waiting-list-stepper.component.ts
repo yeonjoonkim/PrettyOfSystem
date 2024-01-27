@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { StepperActivateEvent, StepperStep } from '@progress/kendo-angular-layout';
 import { Subject, takeUntil } from 'rxjs';
 import {

@@ -146,7 +146,6 @@ export class ShopClientValidatorService {
           privateInsurance &&
           emergencyContact;
         const medicalValidator = isRelatedToMedical ? signature : true;
-
         return defaultValidators && medicalValidator;
       }
     )

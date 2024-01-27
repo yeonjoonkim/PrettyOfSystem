@@ -21,3 +21,28 @@
   top: 50% !important;
   --min-width: 200px;
 }
+
+.signature-transfer-popover-container::part(content) {
+  top: 40% !important;
+  left: 40% !important;
+  --min-width: 200px;
+  --max-width: 200px;
+  --min-height: 230px;
+  --max-height: 230px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .signature-transfer-popover-container::part(content) {
+    top: 40% !important;
+    left: 30% !important;
+  }
+}
+
+@media (max-width: 450px) {
+  .signature-transfer-popover-container::part(content) {
+    top: 40% !important;
+    left: 25% !important;
+  }
+}

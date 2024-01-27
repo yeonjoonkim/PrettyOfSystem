@@ -6,7 +6,6 @@ import {
   RoleConfigurationType,
   ShopCapacityType,
   ShopCategoryType,
-  ShopClientManagementUserType,
   ShopConfigurationType,
   ShopCouponDocumentType,
   ShopEmployeeManagementUserType,
@@ -306,6 +305,18 @@ export class ShopService {
           return services.map(s => {
             return { name: s.titleProp, value: s.id };
           });
+        }
+      })
+    );
+  }
+
+  public getAssociatedClients() {
+    return this.config$.pipe(
+      switchMap(config => {
+        if (config !== null) {
+          return this._clientRepo.getAssociatedClients(config.id);
+        } else {
+          return of([]);
         }
       })
     );

@@ -116,6 +116,7 @@
     "get-user-locale": "^2.2.1",
     "google-libphonenumber": "^3.2.32",
     "hammerjs": "^2.0.0",
+    "image-js": "^0.35.5",
     "install": "^0.13.0",
     "intl-tel-input": "^18.1.8",
     "ionicons": "^6.0.3",

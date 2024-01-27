@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <booking-language-selection slot="end"></booking-language-selection>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="session$ | async as session">
+  <div *ngIf="session !== null" class="signature-transfer-container">
+    <div class="shop-agreement">
+      <shop-agreement
+        [isMassageTheraphy]="session.shopCategory.isMassageTheraphy"
+        [isHairSalon]="session.shopCategory.isHairSalon"
+        [isMobileShop]="session.shopCategory.isMobileShop"
+        [isNailArt]="session.shopCategory.isNailArt"
+        [isPersonalTrainning]="session.shopCategory.isPersonalTrainning"
+        [isSkinCare]="session.shopCategory.isSkinCare"></shop-agreement>
+    </div>
+    <div class="signature-description">
+      {{ 'label.description.pleasechooseoneoftheoptionsbelowtocompleteyoursignature' | languageTransform: 'System'
+      | async }}
+    </div>
+    <div class="signature-transfer">
+      <signature-transfer-sender [sessionId]="sessionId"></signature-transfer-sender>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="!session">
+    <kendo-loader size="large"></kendo-loader>
+  </div>
+</ion-content>

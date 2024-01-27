@@ -70,6 +70,30 @@
 
   <!--Consent-->
   <div [class.force-mobile-layout]="forceMobile" class="consent-container">
+    <flex-col *ngIf="type === 'client'">
+      <!-- Privacy -->
+      <flex-col-item>
+        <div class="app-terms-and-condition-title">
+          <legend class="title">{{ 'label.title.privacypolicy' | languageTransform: 'System' | async }}</legend>
+        </div>
+        <div class="app-terms-and-condition">
+          <app-privacy-policy [isRequiredHeader]="false"></app-privacy-policy>
+        </div>
+      </flex-col-item>
+
+      <!-- Terms and Condition -->
+      <flex-col-item>
+        <div class="app-terms-and-condition-title">
+          <legend class="title">
+            {{ 'label.title.termsandconditions' | languageTransform: 'System' | async }}
+          </legend>
+        </div>
+        <div class="app-terms-and-condition">
+          <app-terms-and-conditions [isRequiredHeader]="false"></app-terms-and-conditions>
+        </div>
+      </flex-col-item>
+    </flex-col>
+
     <div
       *ngIf="mode === 'create' || type === 'client'"
       [class.hidden-agreement-container]="type === 'shop' && !isExpandedAgreement"

@@ -119,7 +119,6 @@ export class ClientInfoEditorComponent implements OnInit, OnChanges {
     this.privateInsuranceValidator = this.privateInsurance !== null ? this.privateInsuranceValidator : true;
     this.onChangeDateOfBrith(this.dob);
     this.addressValidatorChange.emit(this.addressValidator);
-    this.privateInsuranceValidatorChange.emit(this.privateInsuranceValidator);
 
     //Emergency
     this.emergencyContactValidator = this.emergencyContact !== null ? this.emergencyContactValidator : true;
@@ -127,6 +126,11 @@ export class ClientInfoEditorComponent implements OnInit, OnChanges {
     if (this.requiresEmergencyContact && this.emergencyContact === null) {
       this.onChangeEmergencyContact();
     }
+    if (!this.requiresEmergencyContact) {
+      this.onEmergencyValidator();
+    }
+    //PrivateInsurance
+    this.onChangePrivateInsuranceValue();
   }
 
   onChangeProvideAddress() {
@@ -149,17 +153,28 @@ export class ClientInfoEditorComponent implements OnInit, OnChanges {
   }
 
   public onEmergencyValidator() {
-    this.emergencyContactValidator =
-      this.emergencyContact !== null
-        ? this.emergencyContactValidators.firstName &&
-          this.emergencyContactValidators.lastName &&
-          this.emergencyContactValidators.phone &&
-          this.emergencyContact.firstName.length > 0 &&
-          this.emergencyContact.lastName.length > 0 &&
-          this.emergencyContact?.phoneNumber.length > 0
-        : true;
-    this.emergencyContactChange.emit(this.emergencyContact);
-    this.emergencyContactValidatorChange.emit(this.emergencyContactValidator);
+    if (this.requiresEmergencyContact) {
+      this.emergencyContactValidator =
+        this.emergencyContact !== null
+          ? this.emergencyContactValidators.firstName &&
+            this.emergencyContactValidators.lastName &&
+            this.emergencyContactValidators.phone &&
+            this.emergencyContact.firstName.length > 0 &&
+            this.emergencyContact.lastName.length > 0 &&
+            this.emergencyContact.phoneNumber.length > 0
+          : true;
+      this.emergencyContactChange.emit(this.emergencyContact);
+      this.emergencyContactValidatorChange.emit(this.emergencyContactValidator);
+    } else {
+      this.emergencyContactValidator =
+        this.emergencyContact !== null
+          ? this.emergencyContact.firstName.length > 0 &&
+            this.emergencyContact.lastName.length > 0 &&
+            this.emergencyContact.phoneNumber.length > 0
+          : true;
+      this.emergencyContactChange.emit(this.emergencyContact);
+      this.emergencyContactValidatorChange.emit(this.emergencyContactValidator);
+    }
   }
 
   public onChangePrivateInsurance() {

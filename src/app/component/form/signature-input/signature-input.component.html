@@ -1,17 +1,17 @@
 <div class="signature-input-container">
   <kendo-signature
     #signature
-    *ngIf="input !== undefined"
+    *ngIf="input !== undefined && !readOnly"
     [readonly]="readOnly"
     [(ngModel)]="input"
     (ngModelChange)="onChangeInputSignature($event)"
     color="black"
     backgroundColor="white"
     [strokeWidth]="1"
-    [smooth]="true"
+    [smooth]="false"
     [maximizable]="false"
     [hideLine]="true"
-    (open)="onOpen($event)"
-    (focus)="onFocus()"
-    (close)="onClose($event)"></kendo-signature>
+    [width]="200"
+    [height]="80"></kendo-signature>
+  <img *ngIf="readOnly && input?.length" [src]="signature" class="preview" />
 </div>

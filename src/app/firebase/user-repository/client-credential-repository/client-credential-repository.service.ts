@@ -24,9 +24,27 @@ export class ClientCredentialRepositoryService {
   private readonly _timeStamp = { lastModifiedDate: new Date() };
   constructor(
     private _afs: AngularFirestore,
-    private _date: DateService,
-    private _textTransform: TextTransformService
+    private _date: DateService
   ) {}
+
+  public getAssociatedClients(shopId: string): Observable<ShopClientManagementUserType[]> {
+    return from(
+      this._afs
+        .collection<IUser>(Db.Context.User, ref =>
+          ref.where('visitedShopIds', 'array-contains', shopId).orderBy('firstName', 'asc')
+        )
+        .get()
+    ).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => doc.data() as IUser);
+      }),
+      map(filteredUsers =>
+        filteredUsers.map(user => this.transformIntoShopClientManagementUserType(user, shopId))
+      ),
+      map(transformedUsers => transformedUsers.filter(user => user !== null)),
+      map(nonNullUsers => nonNullUsers as ShopClientManagementUserType[])
+    );
+  }
 
   public getClientsByQuery(
     shopId: string,
