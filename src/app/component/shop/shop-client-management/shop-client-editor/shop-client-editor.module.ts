@@ -35,6 +35,10 @@ import { ClientInfoEditorComponent } from './client-info-editor/client-info-edit
 import { ClientMedicalEditorComponent } from './client-medical-editor/client-medical-editor.component';
 import { ClientConsentEditorComponent } from './client-consent-editor/client-consent-editor.component';
 import { ClientMassagePreferenceEditorComponent } from './client-massage-preference-editor/client-massage-preference-editor.component';
+import { SignatureTransferReceiverModule } from 'src/app/component/signature-transfer/signature-transfer-receiver/signature-transfer-receiver.component.module';
+import { SignatureTransferUploadPhotoModule } from 'src/app/component/signature-transfer/signature-transfer-upload-photo/signature-transfer-upload.component.module';
+import { AppPrivacyPolicyModule } from 'src/app/component/agreement/app/app-privacy-policy/app-privacy-policy.module';
+import { AppTermsAndConditionModule } from 'src/app/component/agreement/app/app-terms-and-conditions/app-terms-and-condition.module';
 @NgModule({
   declarations: [
     ShopClientEditorComponent,
@@ -70,6 +74,10 @@ import { ClientMassagePreferenceEditorComponent } from './client-massage-prefere
     MobileVersionBodySelectorModule,
     ClientMassageBodySummaryModule,
     MassageDifficultChangePositionModule,
+    SignatureTransferReceiverModule,
+    SignatureTransferUploadPhotoModule,
+    AppTermsAndConditionModule,
+    AppPrivacyPolicyModule,
   ],
   exports: [ShopClientEditorComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

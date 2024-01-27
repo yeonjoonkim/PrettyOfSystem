@@ -1,4 +1,4 @@
-<flex-col>
+<flex-col *ngIf="!processLink">
   <flex-row
     [class.general-term-and-condition-container]="!forceMobile"
     [class.mobile-general-term-and-condition-container]="forceMobile">
@@ -6,15 +6,10 @@
       <flex-col>
         <flex-col-item class="signature-title-conatiner">
           <legend>{{ 'label.title.signature' | languageTransform: 'System' | async }}</legend>
-          <kendo-buttongroup>
-            <button class="signature-btn" kendoButton>
-              <span class="k-icon k-i-photo-camera"></span>
-            </button>
-            <button kendoButton class="signature-btn">
+          <div class="button-container">
+            <signature-transfer-upload-photo [(signature)]="signature"></signature-transfer-upload-photo>
+            <button kendoButton class="signature-btn" (click)="onClickLink($event)">
               <span class="k-icon k-i-link"></span>
-            </button>
-            <button kendoButton class="signature-btn">
-              <span class="k-icon k-i-upload"></span>
             </button>
             <button
               kendoButton
@@ -23,7 +18,7 @@
               (click)="onClickClearSignature()">
               <span class="k-icon k-i-reset"></span>
             </button>
-          </kendo-buttongroup>
+          </div>
         </flex-col-item>
         <flex-col-item class="signature-conatiner">
           <signature-input
@@ -70,4 +65,10 @@
       </button>
     </flex-row-item>
   </flex-row>
+</flex-col>
+
+<flex-col>
+  <flex-col-item *ngIf="processLink">
+    <kendo-loader size="large"></kendo-loader>
+  </flex-col-item>
 </flex-col>

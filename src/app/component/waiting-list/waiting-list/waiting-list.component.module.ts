@@ -15,6 +15,7 @@ import { ClientChangePhoneNumberModule } from '../../client/client-change-phone-
 import { WaitingListComponent } from './waiting-list.component';
 import { WaitingListLoginComponent } from '../waiting-list-login/waiting-list-login.component';
 import { WaitingListStepperModule } from '../waiting-list-stepper/waiting-list-stepper.component.module';
+import { ClientShopRegisterModalModule } from '../../client/client-shop-register-modal/client-shop-register-modal.module';
 @NgModule({
   declarations: [WaitingListComponent, WaitingListLoginComponent],
   providers: [LanguageTransformPipeModule],
@@ -29,6 +30,7 @@ import { WaitingListStepperModule } from '../waiting-list-stepper/waiting-list-s
     ClientCreateAccountModule,
     ClientChangePhoneNumberModule,
     WaitingListStepperModule,
+    ClientShopRegisterModalModule,
   ],
   exports: [WaitingListComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

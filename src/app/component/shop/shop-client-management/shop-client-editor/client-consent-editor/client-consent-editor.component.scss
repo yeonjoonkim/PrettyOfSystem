@@ -56,3 +56,20 @@ legend {
     justify-content: flex-end;
   }
 }
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-direction: row;
+  align-items: center;
+  button {
+    height: 32px;
+  }
+}
+
+:host ::ng-deep signature-transfer-upload-photo {
+  button {
+    height: 32px;
+  }
+}

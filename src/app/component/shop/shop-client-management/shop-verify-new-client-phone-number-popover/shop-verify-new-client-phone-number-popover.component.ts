@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { filter, take } from 'rxjs';
 import { IFormHeaderModalProp } from 'src/app/interface';
@@ -19,7 +20,8 @@ export class ShopVerifyNewClientPhoneNumberPopoverComponent implements OnInit {
   constructor(
     private _popoverCtrl: PopoverController,
     private _createAccount: ShopClientCreateAccountService,
-    private _formCtrl: FormControllerService
+    private _formCtrl: FormControllerService,
+    private _router: Router
   ) {
     this.form.headerTitle = 'label.title.verifyaccount';
   }
@@ -42,7 +44,7 @@ export class ShopVerifyNewClientPhoneNumberPopoverComponent implements OnInit {
           if (config !== null) {
             const verification = await this._createAccount.verify(config, this.phoneNumber);
             if (verification) {
-              await this._popoverCtrl.dismiss();
+              await this._popoverCtrl.dismiss(this.phoneNumber);
             } else {
               this.requesting = false;
             }

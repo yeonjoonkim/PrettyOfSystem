@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { StepperStep } from '@progress/kendo-angular-layout';
 import { BehaviorSubject, Observable, combineLatest, combineLatestWith, filter, map, of, switchMap } from 'rxjs';
 import { WaitingListService } from '../waiting-list.service';
 import * as Constant from 'src/app/constant/constant';
@@ -97,10 +96,10 @@ export class WaitingListStepperService {
               category.name === Constant.ShopCategoryTitle.MassageTheraphy && !hasOnlyCoupon
                 ? [login, clientInfo, massageOption, cart, cartView, specialistAndTime, confirmation]
                 : category.name === Constant.ShopCategoryTitle.MassageTheraphy && hasOnlyCoupon
-                ? [login, clientInfo, massageOption, cart, cartView, confirmation]
-                : !hasOnlyCoupon
-                ? [login, clientInfo, cart, cartView, specialistAndTime, confirmation]
-                : [login, clientInfo, cart, cartView, confirmation];
+                  ? [login, clientInfo, massageOption, cart, cartView, confirmation]
+                  : !hasOnlyCoupon
+                    ? [login, clientInfo, cart, cartView, specialistAndTime, confirmation]
+                    : [login, clientInfo, cart, cartView, confirmation];
             return of(list);
           } else {
             return of([login, clientInfo, cart, cartView, confirmation]);

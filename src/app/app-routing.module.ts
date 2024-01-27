@@ -53,6 +53,11 @@ const routes: Routes = [
         m => m.ChangePhoneNumberPageModule
       ),
   },
+  {
+    path: 'signature-transfer/:id',
+    loadChildren: () =>
+      import('./page/signature-transfer/signature-transfer.module').then(m => m.SignatureTransferPageModule),
+  },
 ];
 
 @NgModule({

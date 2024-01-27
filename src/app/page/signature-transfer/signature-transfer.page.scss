@@ -1,0 +1,20 @@
+.signature-transfer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  signature-transfer-sender {
+    width: 300px;
+  }
+}
+
+.signature-transfer-container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.signature-description {
+  margin: 0px 15px 10px 15px;
+  color: var(--title);
+  text-align: right;
+  font-weight: 500;
+}

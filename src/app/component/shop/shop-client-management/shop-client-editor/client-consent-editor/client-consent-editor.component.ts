@@ -1,4 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
+import { SignatureTransferReceiverComponent } from 'src/app/component/signature-transfer/signature-transfer-receiver/signature-transfer-receiver.component';
+import { SignatureTransferService } from 'src/app/service/signature-transfer/signature-transfer.service';
 
 @Component({
   selector: 'client-consent-editor',
@@ -33,7 +36,12 @@ export class ClientConsentEditorComponent implements OnInit {
   @Input() hasTermandConditionConsent!: boolean;
   @Input() signature!: string | null;
 
-  constructor() {}
+  public processLink = false;
+
+  constructor(
+    private _popover: PopoverController,
+    private _transfer: SignatureTransferService
+  ) {}
 
   ngOnInit() {
     this.start();
@@ -61,5 +69,34 @@ export class ClientConsentEditorComponent implements OnInit {
     this.signature = '';
     this.signatureChange.emit('');
     this.validateSignature();
+  }
+
+  async onClickLink(event: Event) {
+    if (!this.processLink) {
+      this.processLink = true;
+      await this._transfer.create({
+        isHairSalon: this.isHairSalon,
+        isMassageTheraphy: this.isMassageShop,
+        isMobileShop: this.isMobileShop,
+        isNailArt: this.isNailArt,
+        isPersonalTrainning: this.isPersonalTraining,
+        isSkinCare: this.isSkinCare,
+      });
+      const popover = await this._popover.create({
+        component: SignatureTransferReceiverComponent,
+        event: event,
+        translucent: true,
+        size: 'auto',
+        cssClass: 'signature-transfer-popover-container',
+      });
+      await popover.present();
+      const result = await popover.onWillDismiss();
+      if (result && result.data !== undefined) {
+        this.signature = result.data;
+        this.signatureChange.emit(result.data);
+      }
+      await this._transfer.delete();
+      this.processLink = false;
+    }
   }
 }

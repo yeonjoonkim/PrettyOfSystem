@@ -12,6 +12,7 @@ import { GlobalService } from '../global/global.service';
 import { ClientModalService } from './client-modal/client-modal.service';
 import { IdTokenResult } from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { ClientShopAccountService } from './client-shop-account/client-shop-account.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,7 @@ export class ClientService {
 
   constructor(
     public modal: ClientModalService,
+    public shopAccount: ClientShopAccountService,
     public global: GlobalService,
     private _userRepo: UserCredentialRepositoryService,
     private _user: UserService,

@@ -1,0 +1,24 @@
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-direction: row;
+}
+
+.signature-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-direction: row;
+}
+
+.confirmation-btn {
+  width: 100%;
+  background: var(--title);
+}
+
+.activeSignatureUpload {
+  ::ng-deep button {
+    background-color: var(--active);
+  }
+}

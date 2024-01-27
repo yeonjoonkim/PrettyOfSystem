@@ -1,4 +1,5 @@
 <flex-col class="container">
   <shop-client-filter></shop-client-filter>
-  <shop-client-grid></shop-client-grid>
+  <shop-client-grid
+    (onRequestNewClientPhoneNumber)="onRequestNewClientPhoneNumber.emit($event)"></shop-client-grid>
 </flex-col>

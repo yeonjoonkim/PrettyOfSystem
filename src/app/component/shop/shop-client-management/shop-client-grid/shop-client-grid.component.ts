@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Subject, map, takeUntil } from 'rxjs';
 import { DateService } from 'src/app/service/global/date/date.service';
@@ -14,6 +14,7 @@ import { CryptService } from 'src/app/service/global/crypt/crypt.service';
   styleUrls: ['./shop-client-grid.component.scss'],
 })
 export class ShopClientGridComponent implements OnInit, OnDestroy {
+  @Output() onRequestNewClientPhoneNumber = new EventEmitter<string>();
   private _destroy$ = new Subject<void>();
   public loaded$ = this._clientManagement.query.loaded$;
   public loading$ = this._clientManagement.query.loading$;
@@ -62,6 +63,11 @@ export class ShopClientGridComponent implements OnInit, OnDestroy {
       cssClass: 'dynamic-popover-container',
     });
     await popover.present();
+
+    const confirmation = await popover.onWillDismiss();
+    if (confirmation && typeof confirmation.data === 'string') {
+      this.onRequestNewClientPhoneNumber.emit(confirmation.data);
+    }
   }
 
   public async onClickClient(clientId: string) {

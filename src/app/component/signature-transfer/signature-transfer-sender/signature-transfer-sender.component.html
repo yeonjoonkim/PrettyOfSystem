@@ -1,0 +1,25 @@
+<flex-col>
+  <flex-col-item>
+    <div class="button-container">
+      <button kendoButton (click)="mode = 'input'" [ngClass]="{ active: mode === 'input' }">
+        <span class="k-icon k-i-pencil"></span>
+      </button>
+      <signature-transfer-upload-photo
+        [ngClass]="{ activeSignatureUpload: mode === 'upload' }"
+        [(signature)]="signature"
+        (signatureChange)="onUpload()"
+        (click)="mode = 'upload'"></signature-transfer-upload-photo>
+      <button kendoButton (click)="signature = ''">
+        <span class="k-icon k-i-reset"></span>
+      </button>
+    </div>
+  </flex-col-item>
+  <flex-col-item class="signature-container" *ngIf="mode !== 'none'">
+    <signature-input [(signature)]="signature" [readOnly]="isReadOnly()"></signature-input>
+  </flex-col-item>
+  <flex-col-item>
+    <button class="confirmation-btn" kendoButton (click)="send()" [disabled]="!(signature.length > 0)">
+      {{ 'label.title.confirmation' | languageTransform: 'System' | async }}
+    </button>
+  </flex-col-item>
+</flex-col>

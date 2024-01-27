@@ -434,3 +434,9 @@ export const CartItem = {
   Extra: 'label.title.extra',
   PurchasedCoupon: 'label.title.purchasedcoupon',
 } as const;
+
+export const SignatureTransferStatus = {
+  StandBy: 'StandBy',
+  Sending: 'Sending',
+  Connected: 'Connected',
+} as const;

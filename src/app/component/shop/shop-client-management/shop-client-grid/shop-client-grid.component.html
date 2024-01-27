@@ -131,6 +131,17 @@
         </ng-template>
       </kendo-grid-column>
 
+      <!-- Registered Date -->
+      <kendo-grid-column
+        [sortable]="true"
+        field="consent.agreedDate"
+        [width]="120"
+        title="{{ 'label.title.registereddate' | languageTransform: 'System' | async }}">
+        <ng-template kendoGridCellTemplate let-client>
+          <p>{{ client.consent.agreedDate | dateTransform: 'LongDate' }}</p>
+        </ng-template>
+      </kendo-grid-column>
+
       <!-- New Consult -->
       <kendo-grid-column [width]="80">
         <ng-template kendoGridCellTemplate let-client>

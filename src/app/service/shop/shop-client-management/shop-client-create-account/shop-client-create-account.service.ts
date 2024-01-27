@@ -309,7 +309,7 @@ export class ShopClientCreateAccountService {
   ) {}
 
   public async start(phoneNumber: string) {
-    const decryptedPhoneNumber: string | null = this._global.crypt.decrypt(phoneNumber);
+    const decryptedPhoneNumber: string | null = this._global.crypt.decryptUrlParam(phoneNumber);
     if (decryptedPhoneNumber !== null && decryptedPhoneNumber.includes('+')) {
       this._shop.config$
         .pipe(combineLatestWith(this._userRepo.subscribeUserByPhoneNumber(decryptedPhoneNumber)), take(1))
@@ -347,16 +347,12 @@ export class ShopClientCreateAccountService {
           `${account.firstName} ${account.lastName}`
         );
         if (clientConfirmation) {
-          const encryptedPhoneNumber = this._global.crypt.encrypt(phoneNumber);
-          await this._router.navigateByUrl(`shop/client-management/create/${encryptedPhoneNumber}`);
           return true;
         } else {
           return false;
         }
       }
     } else {
-      const encryptedPhoneNumber = this._global.crypt.encrypt(phoneNumber);
-      await this._router.navigateByUrl(`shop/client-management/create/${encryptedPhoneNumber}`);
       return true;
     }
   }

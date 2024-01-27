@@ -4,6 +4,9 @@ const systemMenu: string = system + 'menu/';
 const systemRole: string = system + 'role/';
 const systemShop: string = system + 'shop/';
 
+//Signature Transfer
+const sigantureTransfer: string = 'signatureTransfer';
+
 //Shop
 const shopConfiguration: string = 'shopConfiguration';
 const user: string = 'user';
@@ -37,6 +40,7 @@ export const Context = {
   ChatGptTranslateRequest: ChatGptTranslateRequest,
   ShopConfiguration: shopConfiguration,
   User: user,
+  SigantureTransfer: sigantureTransfer,
   ChangePhoneNumberRequest: changePhoneNumberRequest,
   Shop: {
     Service: shopService,

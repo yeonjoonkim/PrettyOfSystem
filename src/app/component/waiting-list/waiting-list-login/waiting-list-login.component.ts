@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecaptchaVerifier, getAuth } from 'firebase/auth';
-import { Subject, filter, takeUntil, timeout } from 'rxjs';
+import { Subject, filter, firstValueFrom, take, takeUntil, timeout } from 'rxjs';
 import { ClientLogin } from 'src/app/class/client/client-login.class';
 import { ITimer } from 'src/app/interface';
 import { ClientService } from 'src/app/service/client/client.service';
@@ -114,15 +114,19 @@ export class WaitingListLoginComponent implements OnInit {
   }
 
   private async createAccount() {
-    const modal = await this._client.modal.createAccount(this.login.phoneNumber);
-    await modal.present();
-    const result = await this._client.modal.handleDismissCreateAccount(modal);
+    const config = await firstValueFrom(this._waitingList.shop.config$);
 
-    if (result !== null) {
-      this.login.phoneNumber = result !== null ? result : '';
-      setTimeout(async () => {
-        await this.verifyingAccount();
-      }, 1000);
+    if (config !== null) {
+      const modal = await this._client.modal.createShopAccount(config, this.login.phoneNumber);
+      await modal.present();
+      const result = await this._client.modal.handleDismissCreateAccount(modal);
+
+      if (result !== null) {
+        this.login.phoneNumber = result !== null ? result : '';
+        setTimeout(async () => {
+          await this.verifyingAccount();
+        }, 1000);
+      }
     }
   }
 
