@@ -24,7 +24,7 @@ import { UserAdminService } from '../../user-admin/user-admin.service';
 export class ShopEmployeeManagementService {
   public role$!: Observable<RoleConfigurationType | null>;
   public shopConfig$!: Observable<ShopConfigurationType | null>;
-  public shopEmployees$!: Observable<ShopEmployeeManagementUserType[]>;
+  public shopEmployees$: Observable<ShopEmployeeManagementUserType[]> = of([]);
   public availableRoles$!: Observable<RoleConfigurationType[]>;
   public availableRoleFilter$!: Observable<NameValuePairType[]>;
   public addNewEmployee$!: Observable<boolean>;
@@ -73,12 +73,8 @@ export class ShopEmployeeManagementService {
         activeFrom: await this._shop.timeStamp(),
         activeTo: null,
         displayInSystem: true,
-        roster: shop.operatingHours,
+        defaultRoster: shop.operatingHours,
         dob: `2000-01-01T00:00:00`,
-        nextWeekRoster: shop.operatingHours,
-        nextTwoWeekRoster: shop.operatingHours,
-        nextThreeWeekRoster: shop.operatingHours,
-        nextFourWeekRoster: shop.operatingHours,
         setting: setting,
       };
       result.setting.preferLanguage = typeof currentLanguage === 'string' ? currentLanguage : 'en';

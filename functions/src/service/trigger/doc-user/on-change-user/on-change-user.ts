@@ -114,7 +114,7 @@ const areAssociatedShopsRosterChange = function (before: I.IUser, after: I.IUser
 
   return afterActiveShops.some(afterShop => {
     const beforeShop = beforeActiveShops.find(s => s.shopId === afterShop.shopId);
-    return beforeShop && isRosterChange(beforeShop.roster, afterShop.roster);
+    return beforeShop && isRosterChange(beforeShop.defaultRoster, afterShop.defaultRoster);
   });
 };
 
@@ -140,10 +140,7 @@ const isDayOffChanged = function (a: I.DayIndexType[], b: I.DayIndexType[]) {
   return a.every((val, index) => val === b[index]);
 };
 
-const isWorkHoursChange = function (
-  before: I.ShopOperatingDailyType,
-  after: I.ShopOperatingDailyType
-) {
+const isWorkHoursChange = function (before: I.ShopOperatingDailyType, after: I.ShopOperatingDailyType) {
   return (
     before.index !== after.index ||
     before.day !== after.day ||

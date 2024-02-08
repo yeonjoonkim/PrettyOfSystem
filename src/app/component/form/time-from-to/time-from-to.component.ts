@@ -31,6 +31,9 @@ export class TimeFromToComponent implements OnInit {
     this.timeToChange.emit(this._timeTo);
   }
 
+  @Input() min!: TimeItemType;
+  @Input() max!: TimeItemType;
+
   @Input() readOnly: boolean = false;
 
   constructor() {}

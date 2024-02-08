@@ -20,8 +20,8 @@ export class DateTransformService {
     return this.isTimeStamp(date)
       ? date.toDate()
       : typeof date === 'string'
-      ? this.parseLocalDateTime(date)
-      : date;
+        ? this.parseLocalDateTime(date)
+        : date;
   }
 
   toShopDateTime(date: DateType, timezone: Constant.TimeZoneType): Date {

@@ -285,11 +285,7 @@ export class UserCredentialRepositoryService {
         activeTo: as.activeTo,
         active: as.active,
         displayInSystem: as.displayInSystem,
-        roster: as.roster,
-        nextWeekRoster: as.nextWeekRoster,
-        nextTwoWeekRoster: as.nextTwoWeekRoster,
-        nextThreeWeekRoster: as.nextThreeWeekRoster,
-        nextFourWeekRoster: as.nextFourWeekRoster,
+        defaultRoster: as.defaultRoster,
         setting: this.overrideSetting(u.setting),
       };
 

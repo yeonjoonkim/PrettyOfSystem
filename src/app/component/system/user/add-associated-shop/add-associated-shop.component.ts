@@ -96,11 +96,7 @@ export class AddAssociatedShopComponent implements OnInit {
         activeTo: null,
         active: true,
         displayInSystem: this.displayInBooking,
-        roster: shop.operatingHours,
-        nextWeekRoster: shop.operatingHours,
-        nextTwoWeekRoster: shop.operatingHours,
-        nextThreeWeekRoster: shop.operatingHours,
-        nextFourWeekRoster: shop.operatingHours,
+        defaultRoster: shop.operatingHours,
       };
       return associatedShop;
     } else {
@@ -124,8 +120,8 @@ export class AddAssociatedShopComponent implements OnInit {
         employeeFilter !== undefined
           ? employeeFilter
           : _criteria.roleFilter.length > 0
-          ? _criteria.roleFilter[0]
-          : { name: '', value: '' };
+            ? _criteria.roleFilter[0]
+            : { name: '', value: '' };
     } else {
       const err = await this._global.language.transform('messagefail.description.load');
       await this._global.toast.presentError(err);

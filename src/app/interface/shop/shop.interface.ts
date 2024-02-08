@@ -103,6 +103,8 @@ export interface ShopConfigurationType {
   timezone: string;
   capacityId: string;
   waitingListSessionId: string;
+  schedulerId: string;
+  smsId: string;
 }
 
 export type WaitingListCriteriaType = {

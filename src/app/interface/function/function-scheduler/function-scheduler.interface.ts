@@ -3,6 +3,8 @@ import { ShopConfigurationType } from '../../shop/shop.interface';
 export type SchedulerShopConfigurationType = {
   config: ShopConfigurationType;
   shopDateTime: string;
+  dayIndex: Day;
+  isOpenToday: boolean;
   isMon: boolean;
   isTue: boolean;
   isWed: boolean;

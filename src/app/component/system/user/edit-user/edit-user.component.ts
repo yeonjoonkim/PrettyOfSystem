@@ -169,7 +169,6 @@ export class EditUserComponent implements OnInit {
         this.user.associatedShops[selectedShopIndex] = selectedShop;
       }
     }
-    this.user.disabledAccount = !(this.user.associatedShops.filter(s => s.active).length > 0);
   }
 
   public async onClickDeleteAssociatedShop(selected: UserAssociatedShopType) {
@@ -178,8 +177,6 @@ export class EditUserComponent implements OnInit {
     if (shop !== undefined) {
       this.user = await this._systemAdmin.deleteAssociatedShop(this.user, selected.shopId, shop.name);
     }
-
-    this.user.disabledAccount = !(this.user.associatedShops.filter(s => s.active).length > 0);
   }
 
   private async loadingFromCtrl() {

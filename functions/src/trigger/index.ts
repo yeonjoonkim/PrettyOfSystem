@@ -16,3 +16,6 @@ export { onShopPackageUpdated } from './doc-shop-package/doc-shop-package';
 
 //Shop Consult
 export { OnConsultCreate } from './doc-consult/doc-consult';
+
+//Shop Schedule
+export { onShopScheduleUpdate } from './doc-shop-schedule/doc-shop-schedule';

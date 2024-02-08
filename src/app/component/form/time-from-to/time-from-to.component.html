@@ -1,8 +1,19 @@
 <flex-row>
   <flex-row-item>
-    <time-picker title="date.title.start" [(time)]="timeFrom" [readOnly]="readOnly"></time-picker>
+    <time-picker
+      title="date.title.start"
+      [(time)]="timeFrom"
+      [readOnly]="readOnly"
+      [openTime]="min"
+      [closeTime]="max"></time-picker>
   </flex-row-item>
   <flex-row-item>
-    <time-picker title="date.title.end" [(time)]="timeTo" [readOnly]="readOnly"></time-picker>
+    <time-picker
+      title="date.title.end"
+      [(time)]="timeTo"
+      [readOnly]="readOnly"
+      [openTime]="min"
+      [closeTime]="max"
+      [min]></time-picker>
   </flex-row-item>
 </flex-row>

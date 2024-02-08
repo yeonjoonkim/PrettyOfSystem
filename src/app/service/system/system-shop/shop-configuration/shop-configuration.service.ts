@@ -121,6 +121,8 @@ export class ShopConfigurationService {
       translatedRequestIds: [],
       capacityId: '',
       waitingListSessionId: this.global.newId(),
+      schedulerId: this.global.newId(),
+      smsId: this.global.newId(),
     };
   }
 

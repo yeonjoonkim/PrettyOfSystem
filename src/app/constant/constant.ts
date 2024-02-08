@@ -64,6 +64,15 @@ export type DateFormatType = (typeof Date.Format)[keyof typeof Date.Format];
 export type DateTimeStatusType = (typeof Date.TimeStatus)[keyof typeof Date.TimeStatus];
 export type PeriodType = (typeof Date.Period)[keyof typeof Date.Period];
 export type WeekType = (typeof Date.WeekType)[keyof typeof Date.WeekType];
+export const DayList: DayType[] = [
+  Date.Day.Sun,
+  Date.Day.Mon,
+  Date.Day.Tue,
+  Date.Day.Wed,
+  Date.Day.Thu,
+  Date.Day.Fri,
+  Date.Day.Sat,
+];
 
 //Country
 export type CountryCodeType = (typeof Default.CountryCodeType)[keyof typeof Default.CountryCodeType];

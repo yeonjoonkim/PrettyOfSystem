@@ -97,9 +97,14 @@ export class DateService {
     return dateTime.getDate();
   }
 
-  getDay(date: DateType) {
+  getDayIndex(date: DateType) {
     const dateTime = this.transform.toLocalDateTime(date);
     return dateTime.getDay() as Constant.DayIndexType;
+  }
+
+  getDay(date: DateType) {
+    const dateTime = this.transform.toLocalDateTime(date);
+    return dateTime.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase() as Constant.DayType;
   }
 
   addYear(date: DateType, year: number) {
@@ -176,8 +181,8 @@ export class DateService {
     return restrictedFromToday
       ? startDate
       : previousDay
-      ? this.addDay(startDate, -previousDay)
-      : new Date(1900, 0, 1);
+        ? this.addDay(startDate, -previousDay)
+        : new Date(1900, 0, 1);
   }
 
   maximumDate(timezone: Constant.TimeZoneType, displayNextDay: number) {
@@ -314,6 +319,15 @@ export class DateService {
       end.min === 0 &&
       end.dayNightType === Constant.Date.DayNightType.DAY
     );
+  }
+
+  getTime(date: string) {
+    return date.split('T')[1];
+  }
+
+  getTimeByTimeItem(item: TimeItemType) {
+    const formatted = this.transform.formatByTimeItem(new Date(), item);
+    return this.getTime(formatted);
   }
 }
 

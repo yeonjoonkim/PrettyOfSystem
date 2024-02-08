@@ -36,6 +36,15 @@ export const getEmployeeConsults = async function (shopid: string, employeeId: s
   return docs;
 };
 
+export const getDocumentsById = async function (shopId: string, ids: string[]) {
+  const snapshot = await firestore().collection(Db.ShopConsult(shopId)).where('id', Constant.Query.In, ids).get();
+  const docs = snapshot.docs.map(doc => {
+    return Service.Override.Consult.Document.override(doc.data() as I.ConsultDocumentType);
+  });
+
+  return docs;
+};
+
 export const getEmployeeScheduledOfDay = async function (
   shopid: string,
   employeeId: string,

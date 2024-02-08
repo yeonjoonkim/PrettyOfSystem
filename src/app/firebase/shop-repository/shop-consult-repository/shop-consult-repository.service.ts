@@ -49,6 +49,22 @@ export class ShopConsultRepositoryService {
       );
   }
 
+  public getScheduledConsultEmployeeFromDay(startOfDay: string, shopId: string, employeeId: string) {
+    return this._afs
+      .collection<ConsultDocumentType>(ShopConsult(shopId), ref =>
+        ref
+          .where('scheduled.startOfDay', '>=', startOfDay)
+          .where('status.type', 'in', Constant.Consult_ScheduledStatusTypes)
+          .where('associatedEmployee.id', '==', employeeId)
+      )
+      .get()
+      .pipe(
+        map(snapshot => {
+          return snapshot.docs.map(doc => Document.override(doc.data() as ConsultDocumentType));
+        })
+      );
+  }
+
   private async isExistedDocument(shopId: string, consultId: string) {
     const isExisted = this._afs
       .collection<ConsultDocumentType>(ShopConsult(shopId))
