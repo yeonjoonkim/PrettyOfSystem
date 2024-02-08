@@ -13,6 +13,7 @@ export const onShopCreate = onDocumentCreated(Db.Context.ShopConfiguration + '/{
   const shop = shopData !== null ? (shopData as I.ShopConfigurationType) : null;
   if (shop !== null) {
     await Repository.Session.WaitingList.createCriteria(shop);
+    await Repository.Shop.Scheduler.createDocumentByShopConfiguration(shop);
     await insertIntoSystemAdminAssociatedShops(shop);
   }
 });
@@ -41,7 +42,8 @@ export const onShopUpdate = onDocumentUpdated(Db.Context.ShopConfiguration + '/{
 
     if (event.isResetRoster) {
       logger.info('Resetting Roster');
-      await resetShopUserRoster(after);
+      await resetSchedulerTime(after);
+      await Service.User.AssociatedShop.DefaultRosterByOperatingHours.manage(after);
     }
 
     if (event.isDeactivateInsurance) {
@@ -77,6 +79,7 @@ export const onShopDelete = onDocumentDeleted(Db.Context.ShopConfiguration + '/{
     await deleteStorage(Db.Storage.Shop.Image2(shop.id));
     await deleteStorage(Db.Storage.Shop.Image3(shop.id));
     await deleteFromVisitShop(shop);
+    await Repository.Shop.Scheduler.deleteDocument(shop.id);
   }
 });
 
@@ -90,16 +93,12 @@ const insertIntoSystemAdminAssociatedShops = async function (shop: I.ShopConfigu
         let associated: I.UserAssociatedShopType = {
           userId: admin.id,
           shopId: shop.id,
-          roster: shop.operatingHours,
+          defaultRoster: shop.operatingHours,
           activeFrom: Service.Date.shopTimeStamp(null),
           activeTo: null,
           active: true,
           displayInSystem: false,
           role: systemAdminRole,
-          nextWeekRoster: shop.operatingHours,
-          nextTwoWeekRoster: shop.operatingHours,
-          nextThreeWeekRoster: shop.operatingHours,
-          nextFourWeekRoster: shop.operatingHours,
         };
         admin.associatedShops.push(associated);
         admin.associatedShopIds.push(associated.shopId);
@@ -165,6 +164,7 @@ const handleDeleteTranslatedPackage = async function (deletedIds: string[], afte
 
 const deleteFromUserAssociatedShops = async function (shop: I.ShopConfigurationType) {
   const users = await Repository.User.getAssociatedShopUsers(shop.id);
+  const systemAdmin = await Repository.User.getSystemAdmins();
 
   try {
     if (users.length > 0) {
@@ -175,6 +175,18 @@ const deleteFromUserAssociatedShops = async function (shop: I.ShopConfigurationT
           user.currentShopId === shop.id && user.associatedShops.length > 0 ? user.associatedShops[0].shopId : '';
 
         await Repository.User.updateSelectedUser(user);
+      }
+    }
+    if (systemAdmin.length > 0) {
+      for (const admin of systemAdmin) {
+        admin.associatedShops = admin.associatedShops.filter(s => s.shopId !== shop.id);
+        admin.associatedShopIds = admin.associatedShopIds.filter(s => s !== shop.id);
+        admin.currentShopId =
+          admin.currentShopId === shop.id && admin.associatedShops.length > 0
+            ? admin.associatedShops[0].shopId
+            : '';
+
+        await Repository.User.updateSelectedUser(admin);
       }
     }
   } catch (error) {
@@ -218,21 +230,6 @@ const refeshWaitingList = async function (before: I.ShopConfigurationType, after
   }
 };
 
-const resetShopUserRoster = async function (shop: I.ShopConfigurationType) {
-  const associatedUsers = await Repository.User.getAssociatedShopUsers(shop.id);
-  if (associatedUsers.length > 0) {
-    associatedUsers.map(async user => {
-      let associated = user.associatedShops.find(s => s.shopId === shop.id);
-      if (associated !== undefined && associated !== null) {
-        user.associatedShops = user.associatedShops.filter(s => s.shopId !== shop.id);
-        associated = Service.User.Roster.reset(shop.operatingHours, associated);
-        user.associatedShops.push(associated);
-        await Repository.User.updateSelectedUser(user);
-      }
-    });
-  }
-};
-
 const deactivateInsuranceServices = async function (shopId: string) {
   const service = await Repository.Shop.Service.getSelectShop(shopId);
   const pack = await Repository.Shop.Package.getSelectShop(shopId);
@@ -250,6 +247,21 @@ const deactivateInsuranceServices = async function (shopId: string) {
     for (let p of insurancedPackage) {
       p.isInsuranceCover = false;
       await Repository.Shop.Package.updatePackage(p);
+    }
+  }
+};
+
+const resetSchedulerTime = async function (config: I.ShopConfigurationType) {
+  let scheduler = await Repository.Shop.Scheduler.getDocumentByShopId(config.id);
+  if (scheduler !== null) {
+    const isWorking = Service.Date.isWorkingDate(
+      config.operatingHours,
+      Service.Date.startDay(Service.Date.shopNow(config.timezone))
+    );
+
+    if (scheduler.isOpenToday !== isWorking) {
+      scheduler.isOpenToday = isWorking;
+      await Repository.Shop.Scheduler.updateDocument(scheduler);
     }
   }
 };

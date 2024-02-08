@@ -16,6 +16,8 @@ import {
   endOfDay,
   startOfMonth,
   endOfMonth,
+  differenceInDays,
+  differenceInHours,
 } from 'date-fns';
 import * as Constant from '../../constant';
 import * as I from '../../interface';
@@ -140,6 +142,30 @@ export const differenceInTime = function (start: FunctionDateType, end: Function
   return Math.round(diff * factor) / factor;
 };
 
+export const differenceInDay = function (start: FunctionDateType, end: FunctionDateType) {
+  const startDate = toLocalDateTime(start);
+  const endDate = toLocalDateTime(end);
+  return differenceInDays(endDate, startDate);
+};
+
+export const differenceInHour = function (start: FunctionDateType, end: FunctionDateType) {
+  const startDate = toLocalDateTime(start);
+  const endDate = toLocalDateTime(end);
+  return differenceInHours(endDate, startDate);
+};
+
+export const getDateTimeRange = function (start: string, end: string) {
+  let array = [];
+  const endDate = addDay(startDay(end), 1);
+  let currentDate = startDay(start);
+
+  while (currentDate < endDate) {
+    array.push(currentDate);
+    currentDate = addDay(currentDate, 1);
+  }
+
+  return array;
+};
 export const startDay = function (date: FunctionDateType) {
   const localDateTime = toLocalDateTime(date);
   const startofDay = startOfDay(localDateTime);
@@ -240,8 +266,103 @@ export const isSaturday = function (date: FunctionDateType) {
 };
 
 export const isMidNight = function (date: FunctionDateType) {
-  const localDate = toLocalDateTime(date);
-  return localDate.getHours() === 0 && localDate.getMinutes() === 0;
+  const dateFormat = toLocalDateTime(date);
+  const localDate = formatLocalDateTime(dateFormat);
+  return localDate.endsWith('T00:00:00');
+};
+
+export const isWorkingDate = function (operatingHours: I.ShopWorkHoursType, date: FunctionDateType) {
+  if (isMonday(date)) {
+    return operatingHours.mon.isOpen;
+  }
+  if (isTuesday(date)) {
+    return operatingHours.tue.isOpen;
+  }
+  if (isWednesday(date)) {
+    return operatingHours.wed.isOpen;
+  }
+  if (isThursday(date)) {
+    return operatingHours.thu.isOpen;
+  }
+  if (isFriday(date)) {
+    return operatingHours.fri.isOpen;
+  }
+  if (isSaturday(date)) {
+    return operatingHours.sat.isOpen;
+  }
+  if (isSunday(date)) {
+    return operatingHours.sun.isOpen;
+  }
+  return false;
+};
+
+export const getDayIndex = function (date: FunctionDateType) {
+  const d = toLocalDateTime(date);
+  return d.getDay() as Day;
+};
+
+export const getDayType = function (date: FunctionDateType): Constant.DayType {
+  const index = getDayIndex(date);
+  switch (index) {
+    case Constant.Date.DayIndex.Sun:
+      return Constant.Date.Day.Sun;
+    case Constant.Date.DayIndex.Mon:
+      return Constant.Date.Day.Mon;
+    case Constant.Date.DayIndex.Tue:
+      return Constant.Date.Day.Tue;
+    case Constant.Date.DayIndex.Wed:
+      return Constant.Date.Day.Wed;
+    case Constant.Date.DayIndex.Thu:
+      return Constant.Date.Day.Thu;
+    case Constant.Date.DayIndex.Fri:
+      return Constant.Date.Day.Fri;
+    case Constant.Date.DayIndex.Sat:
+      return Constant.Date.Day.Sat;
+  }
+};
+
+export const getStartDateTimeByStartOfDay = function (roster: I.ShopWorkHoursType, startOfDay: string) {
+  const day = getDayType(startOfDay);
+  const startTime = roster[day].operatingHours.openTime;
+  const startDateTime = formatByTimeItem(startOfDay, startTime);
+  return startDateTime;
+};
+
+export const getEndDateTimeByStartOfDay = function (roster: I.ShopWorkHoursType, startOfDay: string) {
+  const day = getDayType(startOfDay);
+  const startTime = roster[day].operatingHours.closeTime;
+  const startDateTime = formatByTimeItem(startOfDay, startTime);
+  return startDateTime;
+};
+
+export const getIsWorkingByStartOfDay = function (roster: I.ShopWorkHoursType, startOfDay: string) {
+  const day = getDayType(startOfDay);
+  return roster[day].isOpen;
+};
+
+export const getFormattedBreakTimes = function (roster: I.ShopWorkHoursType, startOfDay: string) {
+  const day = getDayType(startOfDay);
+  const breakTimes: I.ShopEmployeeBreakTimeType[] = roster[day].breakTimes.map(bt => {
+    return {
+      startDateTime: formatByTimeItem(startOfDay, bt.start),
+      endDateTime: formatByTimeItem(startOfDay, bt.end),
+    };
+  });
+  return breakTimes;
+};
+
+export const getBreakTimeHours = function (breakTimes: I.ShopEmployeeBreakTimeType[]) {
+  const breakHours = breakTimes.map(bt => differenceInHour(bt.startDateTime, bt.endDateTime));
+  const totalBreakHours = breakHours.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  return parseFloat(totalBreakHours.toFixed(2));
+};
+
+export const getWorkHours = function (start: string, end: string, breakTimes: I.ShopEmployeeBreakTimeType[]) {
+  const workHours = isMidNight(start) && isMidNight(end) ? 24 : differenceInHour(start, end);
+  const breakHours = getBreakTimeHours(breakTimes);
+  const netWorkHours = workHours - breakHours;
+
+  return parseFloat(netWorkHours.toFixed(2));
 };
 
 export const isStartTime = function (type: Constant.DateTimeStatusType) {

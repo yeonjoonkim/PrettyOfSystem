@@ -7,15 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { ShopEmployeeSchedulePageRoutingModule } from './shop-employee-schedule-routing.module';
 import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
 import { ShopEmployeeSchedulePage } from './shop-employee-schedule.page';
-import { ShopEmployeeScheduleModule } from 'src/app/component/shop/shop-employee-schedule/shop-employee-schedule.module';
+import { ShopEmployeeRosterManagementModule } from 'src/app/component/shop/shop-employee-roster-management/shop-employee-roster-management.module';
+import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ShopEmployeeSchedulePageRoutingModule,
-    ShopEmployeeScheduleModule,
     LanguageTransformPipeModule,
+    ShopEmployeeRosterManagementModule,
+    KendoUiModule,
   ],
   declarations: [ShopEmployeeSchedulePage],
 })

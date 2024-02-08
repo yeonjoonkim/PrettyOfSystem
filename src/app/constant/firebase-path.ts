@@ -18,6 +18,7 @@ const shopCoupon: string = shop + '{shopId}/coupon';
 const shopConsult: string = shop + '{shopId}/consult';
 const shopPayment: string = shop + '{shopId}/payment';
 const shopTransaction: string = shop + '{shopId}/transaction';
+const shopSchedule: string = shop + '{shopId}/schedule';
 
 //Reporter
 const FunctionError: string = 'functionError';
@@ -34,11 +35,15 @@ const waitingListSession: string = 'waitingListSession';
 //Change Phone Number Request
 const changePhoneNumberRequest: string = 'changePhoneNumberRequest';
 
+//ShopScheduler
+const shopScheduler: string = 'shopScheduler';
+
 export const Context = {
   OpenApiInstance: OpenApiInstance,
   SystemLangaugeTranslateRequest: SystemLanguageTranslateRequest,
   ChatGptTranslateRequest: ChatGptTranslateRequest,
   ShopConfiguration: shopConfiguration,
+  ShopScheduler: shopScheduler,
   User: user,
   SigantureTransfer: sigantureTransfer,
   ChangePhoneNumberRequest: changePhoneNumberRequest,
@@ -50,6 +55,7 @@ export const Context = {
     Consult: shopConsult,
     Transaction: shopTransaction,
     Payment: shopPayment,
+    Schedule: shopSchedule,
   } as const,
   WaitingList: {
     Criteria: waitingListCriteria,
@@ -84,6 +90,7 @@ export const ShopCoupon = (shopId: string): string => `shop/${shopId}/coupon/`;
 export const ShopConsult = (shopId: string): string => `shop/${shopId}/consult/`;
 export const ShopPayment = (shopId: string): string => `shop/${shopId}/payment/`;
 export const ShopTransaction = (shopId: string): string => `shop/${shopId}/transaction/`;
+export const ShopSchedule = (shopId: string): string => `shop/${shopId}/schedule/`;
 
 export const ShopLogo = (shopId: string, file: File): string =>
   `logo/${shopId}/${new Date().getTime()}/${file.name}`;

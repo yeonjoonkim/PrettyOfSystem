@@ -16,6 +16,7 @@ export const onUserCreate = onDocumentCreated(Db.Context.User + '/{userId}', asy
     if (!user.isSystemAdmin) {
       await handleClaimUpdate(user);
     }
+    await Service.User.AssociatedShop.Roster.generateDefaultSchedulesByCreate(user);
     await handleSystemAdminAccount(user);
   }
 });
@@ -25,28 +26,30 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
   const currentUserData = !userSnapshot?.after ? null : userSnapshot.after.data();
   const prevUserData = !userSnapshot?.before ? null : userSnapshot.before.data();
 
-  let current = currentUserData !== null ? (currentUserData as I.IUser) : null;
-  const prev = prevUserData !== null ? (prevUserData as I.IUser) : null;
+  let after = currentUserData !== null ? (currentUserData as I.IUser) : null;
+  const before = prevUserData !== null ? (prevUserData as I.IUser) : null;
 
-  if (current !== null && prev !== null) {
+  if (after !== null && before !== null) {
     try {
-      const change = Service.Trigger.User.OnChange.getChangeDectection(prev, current);
-      const event = Service.Trigger.User.OnChange.getChangeAction(change, current);
+      const change = Service.Trigger.User.OnChange.getChangeDectection(before, after);
+      const event = Service.Trigger.User.OnChange.getChangeAction(change, after);
       logger.info(event);
+
       if (change.isLoginOptionChanged) {
-        await handleAuthenticationLogin(prev, 'delete');
-        await handleAuthenticationLogin(current, 'create');
+        await handleAuthenticationLogin(before, 'delete');
+        await handleAuthenticationLogin(after, 'create');
       }
+
       if (event.isAuthUpdate) {
-        await handleAuthenticationLogin(current, 'update');
+        await handleAuthenticationLogin(after, 'update');
       }
 
       if (event.isUpdateClaim) {
-        await handleClaimUpdate(current);
+        await handleClaimUpdate(after);
       }
 
       if (event.isCurrentShopRoleUpdate || event.isCurrentShopIdUpdate) {
-        await handleCurrentShopRoleUpdate(current);
+        await handleCurrentShopRoleUpdate(after);
       }
 
       if (event.isSendMsgRosterChange) {
@@ -54,19 +57,21 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       }
 
       if (change.beforeActiveShopCount > change.afterActiveShopCount) {
-        await handleDeleteSpecializedEmployeeInService(prev, current);
-        await handleDeleteSpecializedEmployeeInPackage(prev, current);
+        await handleDeleteSpecializedEmployeeInService(before, after);
+        await handleDeleteSpecializedEmployeeInPackage(before, after);
       }
 
       if (event.isDeactiveAccount) {
-        current = await handleDeactiveLogin(current);
+        after = await handleDeactiveLogin(after);
       }
       if (event.isActivateAccount) {
-        current = await handleActiveLogin(current);
+        after = await handleActiveLogin(after);
       }
-      await Service.User.DisplayInBooking.manage(prev, current);
+      //Todo Manage Associated Shop
+      await Service.User.AssociatedShop.Roster.manage(before, after);
     } catch (error) {
-      await Repository.Error.createErrorReport(current, error, 'update', 'onUserUpdate');
+      logger.error(error);
+      await Repository.Error.createErrorReport(after, error, 'update', 'onUserUpdate');
     }
   }
 });
@@ -78,9 +83,27 @@ export const onUserDelete = onDocumentDeleted(Db.Context.User + '/{userId}', asy
 
   if (user !== null) {
     await handleAuthenticationLogin(user, 'delete');
-    await Service.User.DisplayInBooking.deleteUser(user);
+    await deleteUserFromScheduledConsults(user);
   }
 });
+
+export const deleteUserFromScheduledConsults = async function (user: I.IUser) {
+  for (const associated of user.associatedShops) {
+    const shopConfig = await Repository.Shop.Configuration.getSelectedConfig(associated.shopId);
+    if (shopConfig !== null) {
+      logger.info(`${shopConfig.name} | Employee Name: ${user.firstName} | deleted`);
+      const currentShopTime = Service.Date.formatLocalDateTime(Service.Date.shopNow(shopConfig.timezone));
+      const startOfDay = Service.Date.startDay(currentShopTime);
+      const consults = await Repository.Shop.Consult.getEmployeesFutureScheduledStatuses(
+        shopConfig.id,
+        [associated.userId],
+        startOfDay
+      );
+      await Repository.Shop.Consult.updateToAnyoneAwaitingStatus(consults);
+      await Repository.Shop.Schedule.deleteDocumentByEmployeeId(shopConfig.id, associated.userId);
+    }
+  }
+};
 
 const handleDeleteSpecializedEmployeeInPackage = async function (before: I.IUser, after: I.IUser) {
   const beforeShops = before.associatedShops.filter(s => s.active);
@@ -133,6 +156,7 @@ const handleDeleteSpecializedEmployeeInService = async function (before: I.IUser
 
 const handleCurrentShopRoleUpdate = async function (user: I.IUser) {
   const currentShop = user.associatedShops.find(s => s.shopId === user.currentShopId);
+
   if (currentShop !== undefined) {
     if (!currentShop.active) {
       user.currentShopId =
@@ -220,15 +244,11 @@ const transformToAssociatedShop = function (
       userId: admin.id,
       shopId: config.id,
       role: adminRole,
-      roster: config.operatingHours,
+      defaultRoster: config.operatingHours,
       activeFrom: Service.Date.shopTimeStamp(null),
       activeTo: null,
       active: true,
       displayInSystem: false,
-      nextWeekRoster: config.operatingHours,
-      nextTwoWeekRoster: config.operatingHours,
-      nextThreeWeekRoster: config.operatingHours,
-      nextFourWeekRoster: config.operatingHours,
     };
     return associatedShop;
   });

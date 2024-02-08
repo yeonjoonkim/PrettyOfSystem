@@ -41,11 +41,7 @@ export type ShopEmployeeManagementUserType = {
   activeFrom: string;
   activeTo: string | null;
   displayInSystem: boolean;
-  roster: ShopWorkHoursType;
-  nextWeekRoster: ShopWorkHoursType;
-  nextTwoWeekRoster: ShopWorkHoursType;
-  nextThreeWeekRoster: ShopWorkHoursType;
-  nextFourWeekRoster: ShopWorkHoursType;
+  defaultRoster: ShopWorkHoursType;
   setting: UserSettingType;
 };
 

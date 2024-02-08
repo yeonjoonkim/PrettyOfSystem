@@ -1,0 +1,77 @@
+.dash {
+  text-align: center;
+}
+
+.time-container {
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  height: 75px;
+  width: 100%;
+  font-weight: bold;
+}
+
+.roster-time {
+  background-color: var(--inprogress);
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.day-off-time {
+  background-color: var(--created);
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.display-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.not-working {
+  background-color: var(--created);
+  width: 30px;
+  height: 19px;
+}
+
+.working {
+  background-color: var(--inprogress);
+  width: 30px;
+  height: 19px;
+}
+
+.shop-close {
+  background-color: var(--error);
+  width: 30px;
+  height: 19px;
+}
+
+.shop-close-time {
+  background-color: var(--error);
+  font-weight: bold;
+}
+
+.column-header {
+  font-weight: bold;
+}
+
+.is-same-day {
+  background-color: var(--completed);
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 5px;
+}
+
+.grid-container {
+  margin: auto;
+  max-width: 800px;
+  margin-top: 25px;
+}

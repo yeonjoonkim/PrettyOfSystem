@@ -338,6 +338,21 @@ flex-row {
     background: var(--background);
     background-color: var(--background);
   }
+  error-message-item {
+    flex: 1;
+    display: flex;
+
+    color: var(--error);
+    --background: var(--background);
+    --background-color: var(--background);
+    background: var(--background);
+    background-color: var(--background);
+    p {
+      margin: 0px;
+      margin-left: 5px;
+      font-weight: bold;
+    }
+  }
 }
 flex-col {
   --background: var(--background);
@@ -356,23 +371,21 @@ flex-col {
     background: var(--background);
     background-color: var(--background);
   }
-}
-
-error-message-item {
-  display: flex;
-  justify-content: center;
-  color: var(--error);
-  --background: var(--background);
-  --background-color: var(--background);
-  background: var(--background);
-  background-color: var(--background);
-  p {
-    margin: 0px;
-    margin-left: 5px;
-    font-weight: bold;
+  error-message-item {
+    display: flex;
+    flex: 1;
+    color: var(--error);
+    --background: var(--background);
+    --background-color: var(--background);
+    background: var(--background);
+    background-color: var(--background);
+    p {
+      margin: 0px;
+      margin-left: 5px;
+      font-weight: bold;
+    }
   }
 }
-
 flex-row-item,
 flex-col-item,
 error-message-item {

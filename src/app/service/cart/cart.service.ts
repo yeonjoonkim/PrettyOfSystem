@@ -324,7 +324,7 @@ export class CartService {
       timezone: timezone,
       selectedTime: null,
       dateTime: this._date.startDay(this._date.shopNow(timezone)),
-      dayIndex: this._date.getDay(this._date.startDay(this._date.shopNow(timezone))),
+      dayIndex: this._date.getDayIndex(this._date.startDay(this._date.shopNow(timezone))),
     };
     return result;
   }

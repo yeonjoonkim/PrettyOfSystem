@@ -10,5 +10,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <shop-employee-schedule></shop-employee-schedule>
+  <shop-employee-roster-management
+    *ngIf="loaded()"
+    [employees]="scheduledEmployees()"></shop-employee-roster-management>
+
+  <div class="loading-container" *ngIf="!loaded()">
+    <kendo-loader size="large"></kendo-loader>
+  </div>
 </ion-content>

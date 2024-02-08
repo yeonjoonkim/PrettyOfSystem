@@ -6,7 +6,7 @@ import * as Constant from 'src/app/constant/constant';
 })
 export class DaysPipe implements PipeTransform {
   constructor(private _language: LanguageService) {}
-  async transform(days: Constant.DayIndexType[]): Promise<string> {
+  async transform(days: Constant.DayIndexType[] | Constant.DayType[]): Promise<string> {
     const everyday = days.length === 0;
     const weekdays = this.isWeekdays(days);
     const weekend = this.isWeekend(days);
@@ -22,36 +22,36 @@ export class DaysPipe implements PipeTransform {
       return await this.weekend();
     }
 
-    if (days.includes(Constant.Date.DayIndex.Sun)) {
+    if (isInclude(days, Constant.Date.Day.Sun, Constant.Date.DayIndex.Sun)) {
       day = await this.sun();
     }
 
-    if (days.includes(Constant.Date.DayIndex.Mon)) {
+    if (isInclude(days, Constant.Date.Day.Mon, Constant.Date.DayIndex.Mon)) {
       const mon = await this.mon();
       day = day.length > 0 ? `${day}, ${mon}` : mon;
     }
 
-    if (days.includes(Constant.Date.DayIndex.Tue)) {
+    if (isInclude(days, Constant.Date.Day.Tue, Constant.Date.DayIndex.Tue)) {
       const tue = await this.tue();
       day = day.length > 0 ? `${day}, ${tue}` : tue;
     }
 
-    if (days.includes(Constant.Date.DayIndex.Wed)) {
+    if (isInclude(days, Constant.Date.Day.Wed, Constant.Date.DayIndex.Wed)) {
       const wed = await this.wed();
       day = day.length > 0 ? `${day}, ${wed}` : wed;
     }
 
-    if (days.includes(Constant.Date.DayIndex.Thu)) {
+    if (isInclude(days, Constant.Date.Day.Thu, Constant.Date.DayIndex.Thu)) {
       const thu = await this.thu();
       day = day.length > 0 ? `${day}, ${thu}` : thu;
     }
 
-    if (days.includes(Constant.Date.DayIndex.Fri)) {
+    if (isInclude(days, Constant.Date.Day.Fri, Constant.Date.DayIndex.Fri)) {
       const fri = await this.fri();
       day = day.length > 0 ? `${day}, ${fri}` : fri;
     }
 
-    if (days.includes(Constant.Date.DayIndex.Sat)) {
+    if (isInclude(days, Constant.Date.Day.Sat, Constant.Date.DayIndex.Sat)) {
       const sat = await this.sat();
       day = day.length > 0 ? `${day}, ${sat}` : sat;
     }
@@ -59,19 +59,50 @@ export class DaysPipe implements PipeTransform {
     return day;
   }
 
-  private isWeekend(days: Constant.DayIndexType[]) {
-    const sat = days.includes(Constant.Date.DayIndex.Sat);
-    const sun = days.includes(Constant.Date.DayIndex.Sun);
-    return sat && sun && days.length === 2;
+  private isWeekend(input: (Constant.DayIndexType | Constant.DayType)[]) {
+    const type = input.every((day: Constant.DayIndexType | Constant.DayType) => {
+      return typeof day === 'number';
+    })
+      ? 'index'
+      : 'type';
+
+    if (type === 'index') {
+      const indexes = input as Constant.DayIndexType[];
+      const sat = indexes.includes(Constant.Date.DayIndex.Sat);
+      const sun = indexes.includes(Constant.Date.DayIndex.Sun);
+      return sat && sun && indexes.length === 2;
+    } else {
+      const types = input as Constant.DayType[];
+      const sat = types.includes(Constant.Date.Day.Sat);
+      const sun = types.includes(Constant.Date.Day.Sun);
+      return sat && sun && types.length === 2;
+    }
   }
 
-  private isWeekdays(days: Constant.DayIndexType[]) {
-    const mon = days.includes(Constant.Date.DayIndex.Mon);
-    const tue = days.includes(Constant.Date.DayIndex.Tue);
-    const wed = days.includes(Constant.Date.DayIndex.Wed);
-    const thu = days.includes(Constant.Date.DayIndex.Thu);
-    const fri = days.includes(Constant.Date.DayIndex.Thu);
-    return mon && tue && wed && thu && fri && days.length === 5;
+  private isWeekdays(input: (Constant.DayIndexType | Constant.DayType)[]) {
+    const type = input.every((day: Constant.DayIndexType | Constant.DayType) => {
+      return typeof day === 'number';
+    })
+      ? 'index'
+      : 'type';
+
+    if (type === 'index') {
+      const indexes = input as Constant.DayIndexType[];
+      const mon = indexes.includes(Constant.Date.DayIndex.Mon);
+      const tue = indexes.includes(Constant.Date.DayIndex.Tue);
+      const wed = indexes.includes(Constant.Date.DayIndex.Wed);
+      const thu = indexes.includes(Constant.Date.DayIndex.Thu);
+      const fri = indexes.includes(Constant.Date.DayIndex.Thu);
+      return mon && tue && wed && thu && fri && indexes.length === 5;
+    } else {
+      const types = input as Constant.DayType[];
+      const mon = types.includes(Constant.Date.Day.Mon);
+      const tue = types.includes(Constant.Date.Day.Tue);
+      const wed = types.includes(Constant.Date.Day.Wed);
+      const thu = types.includes(Constant.Date.Day.Thu);
+      const fri = types.includes(Constant.Date.Day.Thu);
+      return mon && tue && wed && thu && fri && types.length === 5;
+    }
   }
 
   private async sun() {
@@ -114,3 +145,23 @@ export class DaysPipe implements PipeTransform {
     return this._language.transform('date.title.weekend');
   }
 }
+
+const isInclude = function (
+  input: (Constant.DayIndexType | Constant.DayType)[],
+  answerType: Constant.DayType,
+  answerIndex: Constant.DayIndexType
+) {
+  const type = input.every((day: Constant.DayIndexType | Constant.DayType) => {
+    return typeof day === 'number';
+  })
+    ? 'index'
+    : 'type';
+
+  if (type === 'index') {
+    const indexs = input as Constant.DayIndexType[];
+    return indexs.some(t => t === answerIndex);
+  } else {
+    const types = input as Constant.DayType[];
+    return types.some(t => t === answerType);
+  }
+};

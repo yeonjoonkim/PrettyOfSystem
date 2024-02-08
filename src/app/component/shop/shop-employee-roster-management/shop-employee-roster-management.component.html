@@ -1,0 +1,78 @@
+<div class="grid-container">
+  <flex-col>
+    <flex-col-item class="display-line">
+      <div class="shop-close"></div>
+      {{ 'label.title.shopclosed' | languageTransform: 'System' | async }}
+    </flex-col-item>
+    <flex-col-item class="display-line">
+      <div class="not-working"></div>
+      {{ 'label.title.dayoff' | languageTransform: 'System' | async }}
+    </flex-col-item>
+    <flex-col-item class="display-line">
+      <div class="working"></div>
+      {{ 'label.title.working' | languageTransform: 'System' | async }}
+    </flex-col-item>
+
+    <flex-col-item>
+      <kendo-grid
+        [data]="employees"
+        [height]="600"
+        [pageSize]="pageSize"
+        [sortable]="true"
+        [pageable]="{
+          buttonCount: 1,
+          info: true,
+          type: 'numeric',
+          pageSizes: [25, 50, 100, 200],
+          responsive: false,
+          previousNext: true,
+          position: 'bottom'
+        }">
+        <kendo-grid-column
+          title="{{ 'label.title.name' | languageTransform: 'System' | async }}"
+          field="firstName"
+          [width]="100"
+          [sortable]="true"
+          [stickable]="true"
+          class="border-right"
+          [sticky]="true">
+          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+            <span class="column-header">{{ column.title }}</span>
+          </ng-template>
+          <ng-template kendoGridCellTemplate let-employee>
+            <p>{{ employee.firstName }} {{ employee.lastName }}</p></ng-template
+          >
+        </kendo-grid-column>
+        <kendo-grid-column
+          *ngFor="let day of days"
+          [field]="day"
+          title="{{ [day] | daysTransform | async }}"
+          [width]="90">
+          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+            <span [ngClass]="{ 'is-same-day': isDay(day) }" class="column-header">{{ column.title }}</span>
+          </ng-template>
+          <ng-template kendoGridCellTemplate let-employee>
+            <div
+              *ngIf="isWorking(employee, day) && isShopOpen(day)"
+              class="time-container roster-time"
+              (click)="onClickRoster(employee, day)">
+              <span>{{ employee.defaultRoster[day].operatingHours.openTime | timeItemTransform }} </span>
+              <span> - </span>
+              <span>{{ employee.defaultRoster[day].operatingHours.closeTime | timeItemTransform }}</span>
+            </div>
+            <div
+              class="time-container day-off-time"
+              *ngIf="!isWorking(employee, day) && isShopOpen(day)"
+              (click)="onClickRoster(employee, day)"></div>
+            <div
+              class="time-container shop-close-time"
+              *ngIf="!isWorking(employee, day) && !isShopOpen(day)"></div>
+          </ng-template>
+
+          <!-- NO Data-->
+          <ng-template kendoGridNoRecordsTemplate></ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+    </flex-col-item>
+  </flex-col>
+</div>

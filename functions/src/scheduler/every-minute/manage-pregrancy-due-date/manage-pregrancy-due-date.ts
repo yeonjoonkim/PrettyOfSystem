@@ -14,9 +14,9 @@ export const manage = async function (timeStamp: string) {
       if (GaveBrith) {
         user.setting.pregnancyDueDate = null;
         await Repository.User.updateSelectedUser(user);
+        logger.info(`Pregancy Due: ${user.firstName} has been delivered new babies`);
       }
     }
-    logger.info(`Pregancy Due: ${PregrancyUsers.length} has been delivered new babies`);
   } catch (error) {
     logger.error(error);
     await Repository.Error.createErrorReport(error, 'Could not run', 'update', 'Manage Pregrancy Users');

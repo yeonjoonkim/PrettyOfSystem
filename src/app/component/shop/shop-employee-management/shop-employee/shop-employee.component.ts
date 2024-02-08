@@ -165,8 +165,8 @@ export class ShopEmployeeComponent implements OnInit, OnDestroy {
       this.employee.encryptedPassword = resetPassword
         ? this._encryptedPassword
         : this.employee.loginOption.phoneNumber
-        ? ''
-        : this.employee.encryptedPassword;
+          ? ''
+          : this.employee.encryptedPassword;
     }
 
     if (this.employee.loginOption.email) {
@@ -213,8 +213,8 @@ export class ShopEmployeeComponent implements OnInit, OnDestroy {
         isReachToMax !== undefined && this.employee.active
           ? false
           : this.employee.active && isReachToMax
-          ? true
-          : true;
+            ? true
+            : false;
       this.loading = false;
     } else {
       await this.dismiss();

@@ -28,6 +28,8 @@ const convertSchedulerShopConfig = function (config: I.ShopConfigurationType, se
     isSat: DateSvc.isSaturday(today),
     isSun: DateSvc.isSunday(today),
     isMidNight: DateSvc.isMidNight(today),
+    isOpenToday: DateSvc.isWorkingDate(config.operatingHours, today),
+    dayIndex: DateSvc.getDayIndex(today),
     today: {
       start: DateSvc.startDay(today),
       end: DateSvc.endDay(today),
@@ -45,6 +47,8 @@ const convertSchedulerShopConfig = function (config: I.ShopConfigurationType, se
       end: DateSvc.endDay(DateSvc.endMonth(today)),
     },
   };
+
+  logger.info(result);
 
   return result;
 };

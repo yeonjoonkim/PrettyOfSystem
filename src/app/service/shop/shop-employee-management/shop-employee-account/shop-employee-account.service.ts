@@ -33,7 +33,6 @@ export class ShopEmployeeAccountService {
     acc.associatedShops = acc.associatedShops.filter(s => s.shopId !== shopId);
     acc.associatedShopIds = acc.associatedShopIds.filter(s => s !== shopId);
     acc.currentShopId = acc.currentShopId === shopId && as.length > 0 ? as[0].shopId : '';
-    acc.disabledAccount = acc.associatedShops.filter(s => s.active).length === 0;
 
     return acc;
   }
@@ -87,11 +86,7 @@ export class ShopEmployeeAccountService {
       activeTo: se.activeTo,
       active: se.active,
       displayInSystem: se.displayInSystem,
-      roster: se.roster,
-      nextWeekRoster: se.nextWeekRoster,
-      nextTwoWeekRoster: se.nextTwoWeekRoster,
-      nextThreeWeekRoster: se.nextThreeWeekRoster,
-      nextFourWeekRoster: se.nextFourWeekRoster,
+      defaultRoster: se.defaultRoster,
     };
     return result;
   }
