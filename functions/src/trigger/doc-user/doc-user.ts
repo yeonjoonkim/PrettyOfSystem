@@ -67,7 +67,7 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       if (event.isActivateAccount) {
         after = await handleActiveLogin(after);
       }
-      //Todo Manage Associated Shop
+
       await Service.User.AssociatedShop.Roster.manage(before, after);
     } catch (error) {
       logger.error(error);

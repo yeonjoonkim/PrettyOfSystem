@@ -34,11 +34,12 @@
 .signature-transfer-popover-container::part(content) {
   top: 40% !important;
   left: 40% !important;
-  --min-width: 200px;
-  --max-width: 200px;
-  --min-height: 230px;
-  --max-height: 230px;
+  --min-width: 210px;
+  --max-width: 210px;
+  --min-height: 240px;
+  --max-height: 240px;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 

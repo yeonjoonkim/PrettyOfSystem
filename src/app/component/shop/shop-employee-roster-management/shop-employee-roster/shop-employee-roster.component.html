@@ -9,7 +9,7 @@
   (onClickDismiss)="onDismiss()"></form-header>
 
 <ion-content [scrollable]="true" *ngIf="roster.loaded()">
-  <!--Information-->
+  <!-- Information -->
   <flex-row class="modal-container roster-info">
     <flex-row-item class="roster-info-detail">
       <legend>{{ [roster.day()] | daysTransform | async }}</legend>
@@ -38,7 +38,7 @@
     </flex-col-item>
   </flex-col>
 
-  <!--ERROR-->
+  <!-- Error -->
   <flex-col>
     <error-message-item *ngIf="roster.isOutRangeOfOperatingOpenTime()">
       <p>{{ 'messageerror.description.isoutrangeofoperatingopentime' | languageTransform: 'System' | async }}</p>
@@ -89,9 +89,10 @@
     </flx-row-item>
   </flex-row>
 
+  <!--Break Time Brid-->
   <flex-col *ngIf="roster.isWorking()">
     <flex-col-item>
-      <kendo-grid [data]="roster.breakTimes()" [height]="200" [sortable]="true">
+      <kendo-grid [data]="roster.breakTimes()" [height]="200" [sortable]="true" [pageable]="false">
         <!-- NO Data-->
         <kendo-grid-column
           title="{{ 'label.title.start' | languageTransform: 'System' | async }}"
@@ -142,6 +143,8 @@
       </kendo-grid>
     </flex-col-item>
   </flex-col>
+
+  <!-- TODO: ADD Consult Validator -->
 
   <flex-col *ngFor="let consult of roster.consultsValidators()"> </flex-col>
 </ion-content>

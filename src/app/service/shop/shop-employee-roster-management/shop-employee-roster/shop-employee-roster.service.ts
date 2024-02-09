@@ -372,9 +372,10 @@ export class ShopEmployeeRosterService {
     const startEnd = {
       id: newBreakTime.id,
       start: this._dateSvc.getTimeByTimeItem(newBreakTime.start),
-      end: this._dateSvc.getTimeByTimeItem(newBreakTime.start),
+      end: this._dateSvc.getTimeByTimeItem(newBreakTime.end),
     };
-    const breakTimes = this.breakStartEndTimes().concat([startEnd]);
+    const existing = this.breakStartEndTimes();
+    const breakTimes = [...existing, ...[startEnd]];
 
     return breakTimes.some((a, indexA) =>
       breakTimes.some(
@@ -387,7 +388,7 @@ export class ShopEmployeeRosterService {
   public hasNewBreakTimeConflictWithStartEndTime(newBreakTime: ShopOperatingBreakType) {
     const startEnd = {
       start: this._dateSvc.getTimeByTimeItem(newBreakTime.start),
-      end: this._dateSvc.getTimeByTimeItem(newBreakTime.start),
+      end: this._dateSvc.getTimeByTimeItem(newBreakTime.end),
     };
     const is24Hours = this.is24Hours();
     const startTime = this.startTime();
@@ -443,7 +444,7 @@ export class ShopEmployeeRosterService {
     const startEnd = {
       id: after.id,
       start: this._dateSvc.getTimeByTimeItem(after.start),
-      end: this._dateSvc.getTimeByTimeItem(after.start),
+      end: this._dateSvc.getTimeByTimeItem(after.end),
     };
 
     const breakTimes = this.breakStartEndTimes()
@@ -461,7 +462,7 @@ export class ShopEmployeeRosterService {
   public hasUpdateBreakTimeConflictWithConsults(after: ShopOperatingBreakType) {
     const startEnd = {
       start: this._dateSvc.getTimeByTimeItem(after.start),
-      end: this._dateSvc.getTimeByTimeItem(after.start),
+      end: this._dateSvc.getTimeByTimeItem(after.end),
     };
     const query = this.consultsInDayStartEndTimes().concat(startEnd);
     return query.some((a, indexA) =>
@@ -475,7 +476,7 @@ export class ShopEmployeeRosterService {
   public hasUpdateBreakTimeConflictWithStartEndTime(after: ShopOperatingBreakType) {
     const startEnd = {
       start: this._dateSvc.getTimeByTimeItem(after.start),
-      end: this._dateSvc.getTimeByTimeItem(after.start),
+      end: this._dateSvc.getTimeByTimeItem(after.end),
     };
     const is24Hours = this.is24Hours();
     const startTime = this.startTime();
