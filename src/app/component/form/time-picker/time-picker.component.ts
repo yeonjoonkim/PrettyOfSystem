@@ -115,7 +115,6 @@ export class TimePickerComponent implements OnInit, OnChanges {
     let minHours: number = !this._global.isUndefinedOrNull(this.openTime) ? this.openTime.hr : 0;
     let minMintues: number = !this._global.isUndefinedOrNull(this.openTime) ? this.openTime.min : 0;
     minMintues = this.openTime?.min > 0 || minMintues === 0 ? minMintues : 0;
-    console.log(minHours);
     this.minTime.setHours(minHours);
     this.minTime.setMinutes(minMintues);
     this.minTime.setSeconds(0);

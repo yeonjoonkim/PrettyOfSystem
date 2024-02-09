@@ -12,9 +12,7 @@ export class ShopEmployeeRosterAddBreakPopoverComponent implements OnInit {
   public newBreakTime = inject(ShopEmployeeAddBreakService);
   constructor() {}
 
-  ngOnInit() {
-    console.log(this.newBreakTime.employeeStartTimeItem());
-  }
+  ngOnInit() {}
 
   async onDismiss() {
     await this._popoverCtrl.dismiss();

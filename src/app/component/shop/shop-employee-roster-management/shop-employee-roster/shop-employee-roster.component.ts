@@ -16,9 +16,10 @@ import { ShopOperatingBreakType } from 'src/app/interface';
 export class ShopEmployeeRosterComponent implements OnInit {
   private _modalCtrl = inject(ModalController);
   private _popoverCtrl = inject(PopoverController);
+  private _formCtrl = inject(FormControllerService);
+
   private add = inject(ShopEmployeeAddBreakService);
   private update = inject(ShopEmployeeUpdateBreakService);
-  private _formCtrl = inject(FormControllerService);
   public roster = inject(ShopEmployeeRosterService);
 
   public form = this._formCtrl.setEditFormHeaderModalProp();
