@@ -23,6 +23,11 @@ export const API = {
     Completed: 'Completed',
     Failed: 'Failed',
   },
+  QueryMethod: {
+    Get: 'Get',
+    Snapshot: 'Snapshot',
+    Valuechange: 'ValueChange',
+  },
 } as const;
 
 export const Email = {

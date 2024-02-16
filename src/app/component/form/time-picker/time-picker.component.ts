@@ -125,6 +125,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
     maxHours = maxHours > 0 ? maxHours : 23;
     let maxMintues: number = !this._global.isUndefinedOrNull(this.closeTime) ? this.closeTime.min : 59;
     maxMintues = (this.closeTime?.hr > 0 && this.closeTime?.min > 0) || maxMintues === 0 ? maxMintues : 59;
+
     this.maxTime.setHours(maxHours);
     this.maxTime.setMinutes(maxMintues);
     this.maxTime.setSeconds(0);

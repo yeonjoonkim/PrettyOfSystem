@@ -78,19 +78,11 @@ export class DateSelectionPopoverComponent implements OnInit {
   }
 
   private newDisableDates(minDate: string, maxDate: string) {
-    const min = this._global.date.transform.toLocalDateTime(minDate);
-    const max = this._global.date.transform.toLocalDateTime(maxDate);
+    const diff = this._global.date.differenceInWeeks(maxDate, minDate) + 1;
 
-    const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // One day in milliseconds
-
-    for (
-      let currentDate = new Date(min);
-      currentDate <= max;
-      currentDate.setTime(currentDate.getTime() + oneDayInMilliseconds)
-    ) {
-      if (currentDate.getDay() === 0) {
-        this.prop.disableDays.push(new Date(currentDate));
-      }
+    for (let i = 0; i < diff; i++) {
+      const param = this._global.date.addWeek(minDate, i);
+      this.prop.disableDays.push(new Date(param));
     }
   }
 }

@@ -1,4 +1,5 @@
 import * as I from '../../interface';
+import * as Constant from '../../constant';
 
 export const string = function (str: string | null | undefined) {
   return typeof str === 'string' ? str : '';
@@ -68,4 +69,15 @@ export const nameValuePair = function (pair: I.NameValuePairType | null | undefi
 
 export const nameValuePairArray = function (pairs: I.NameValuePairType[] | null | undefined) {
   return pairs !== undefined && pairs !== null ? pairs : [];
+};
+
+//Constant
+export const gender = function (gender: I.GenderType | null | undefined) {
+  return typeof gender === 'string' ? gender : Constant.Default.Gender.Other;
+};
+
+export const dayIndex = function (dayIndex: I.DayIndexType | null | undefined) {
+  return typeof dayIndex === 'number' && Constant.DayIndexList.some(index => index === dayIndex)
+    ? dayIndex
+    : Constant.Date.DayIndex.Sun;
 };

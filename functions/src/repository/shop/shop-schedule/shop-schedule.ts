@@ -116,24 +116,6 @@ export const updateDocumentByUserAndRoster = function (
   return doc;
 };
 
-export const updateDocumentByRoster = function (roster: I.ShopWorkHoursType, doc: I.ShopScheduleDocumentType) {
-  const dayIndex = DateSvc.getDayIndex(doc.startOfDay);
-  const startDateTime = DateSvc.getStartDateTimeByStartOfDay(roster, doc.startOfDay);
-  const endDateTime = DateSvc.getEndDateTimeByStartOfDay(roster, doc.startOfDay);
-  const isWorking = DateSvc.getIsWorkingByStartOfDay(roster, doc.startOfDay);
-  const breakTimes = DateSvc.getFormattedBreakTimes(roster, doc.startOfDay);
-  const breakHours = DateSvc.getBreakTimeHours(breakTimes);
-  const workHours = DateSvc.getWorkHours(startDateTime, endDateTime, breakTimes);
-  doc.dayIndex = dayIndex;
-  doc.startDateTime = startDateTime;
-  doc.endDateTime = endDateTime;
-  doc.isWorking = isWorking;
-  doc.breakTimes = breakTimes;
-  doc.workHours = workHours;
-  doc.breakHours = breakHours;
-  return doc;
-};
-
 export const getAll = async function (shopId: string): Promise<I.ShopScheduleDocumentType[]> {
   const allSnapshot = await firestore().collection(Db.ShopSchedule(shopId)).get();
   const docs = allSnapshot.docs.map(doc => {

@@ -77,6 +77,7 @@ export class TimeSelectionPopoverComponent implements OnInit {
       const formattedMinute = ('0' + minute).slice(-2);
       mins.push(formattedMinute);
     }
+
     return mins;
   }
 

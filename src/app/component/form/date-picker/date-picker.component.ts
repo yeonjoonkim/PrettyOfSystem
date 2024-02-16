@@ -133,7 +133,7 @@ export class DatePickerComponent implements OnInit, OnChanges {
       event: event,
       translucent: true,
       size: 'auto',
-      cssClass: 'dynamic-popover-container date-popover-container',
+      cssClass: 'date-popover-container',
       componentProps: {
         date: this.inputDate,
         minDate: this.minDate,

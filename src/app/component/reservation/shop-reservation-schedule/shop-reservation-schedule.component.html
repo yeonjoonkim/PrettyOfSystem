@@ -1,0 +1,101 @@
+<flex-col *ngIf="scheduler.loaded()">
+  <flex-col-item>
+    <date-picker
+      [date]="scheduler.startOfDay()"
+      [shopTimeZone]="scheduler.timezone()"
+      [displayNextDay]="scheduler.displayNextDays()"
+      [displayPreviousDay]="scheduler.displayPreviousDay()"
+      [operatingHours]="scheduler.operatingHours()"
+      (dateChange)="scheduler.startOfDay.set($event)"></date-picker>
+    <div>
+      <kendo-buttongroup>
+        <button kendoButton [disabled]="!scheduler.allowPreviousDate()" (click)="scheduler.previousDay()">
+          <span class="k-icon k-i-arrow-60-left"></span>
+        </button>
+        <button kendoButton [disabled]="!scheduler.allowNextDate()" (click)="scheduler.nextDay()">
+          <span class="k-icon k-i-arrow-60-right"></span>
+        </button>
+      </kendo-buttongroup>
+    </div>
+  </flex-col-item>
+  <flex-col-item>
+    <kendo-buttongroup>
+      <button
+        kendoButton
+        [ngClass]="{ active: scheduler.isDayViewMode() }"
+        [svgIcon]="kendo.icon.alignHorizontalIcon"
+        [selected]="scheduler.isDayViewMode()"
+        (click)="onChangeView(scheduler.dayMode)"></button>
+      <button
+        kendoButton
+        [ngClass]="{ active: scheduler.isTimelineViewMode() }"
+        [svgIcon]="kendo.icon.alignVerticalIcon"
+        [selected]="scheduler.isTimelineViewMode()"
+        (click)="onChangeView(scheduler.timelineMode)"></button>
+    </kendo-buttongroup>
+  </flex-col-item>
+</flex-col>
+
+<flex-col *ngIf="scheduler.isDayViewMode()">
+  <flex-col-item class="horizontal-container">
+    <kendo-scheduler
+      class="scheduler"
+      [showWorkHours]="true"
+      [loading]="!scheduler.loaded()"
+      [kendoSchedulerBinding]="scheduler.events()"
+      [selectedDate]="scheduler.selectedDate()"
+      [group]="{
+        resources: ['EmployeeName'],
+        orientation: 'horizontal'
+      }"
+      [resources]="scheduler.resources()"
+      [minDate]="scheduler.minDate()"
+      [maxDate]="scheduler.maxDate()"
+      [slotDuration]="scheduler.slotDuration()"
+      [slotDivisions]="scheduler.slotDivision()"
+      [workDayStart]="scheduler.workDayStart()"
+      [workDayEnd]="scheduler.workDayEnd()"
+      [startTime]="scheduler.workDayStart()"
+      [endTime]="scheduler.workDayEnd()"
+      [currentTimeMarker]="scheduler.currentTimeMarker()"
+      [editable]="scheduler.editable()">
+      <!-- Header -->
+      <ng-template kendoSchedulerGroupHeaderTemplate let-resource="resource">
+        <span class="hey">{{ resource?.firstName }} {{ resource?.lastName }}</span>
+      </ng-template>
+      <kendo-scheduler-day-view> </kendo-scheduler-day-view>
+    </kendo-scheduler>
+  </flex-col-item>
+</flex-col>
+
+<flex-col *ngIf="scheduler.isTimelineViewMode()">
+  <flex-col-item>
+    <kendo-scheduler
+      [showWorkHours]="true"
+      [loading]="!scheduler.loaded()"
+      [kendoSchedulerBinding]="scheduler.events()"
+      [selectedDate]="scheduler.selectedDate()"
+      [group]="{
+        resources: ['EmployeeName'],
+        orientation: 'vertical'
+      }"
+      [resources]="scheduler.resources()"
+      [minDate]="scheduler.minDate()"
+      [maxDate]="scheduler.maxDate()"
+      [slotDuration]="scheduler.slotDuration()"
+      [slotDivisions]="scheduler.slotDivision()"
+      [workDayStart]="scheduler.workDayStart()"
+      [workDayEnd]="scheduler.workDayEnd()"
+      [startTime]="scheduler.workDayStart()"
+      [endTime]="scheduler.workDayEnd()"
+      [currentTimeMarker]="scheduler.currentTimeMarker()"
+      [editable]="scheduler.editable()"
+      [columnWidth]="75">
+      <!-- Header -->
+      <ng-template kendoSchedulerGroupHeaderTemplate let-resource="resource">
+        <span class="hey">{{ resource?.firstName }} {{ resource?.lastName }}</span>
+      </ng-template>
+      <kendo-scheduler-timeline-view></kendo-scheduler-timeline-view>
+    </kendo-scheduler>
+  </flex-col-item>
+</flex-col>

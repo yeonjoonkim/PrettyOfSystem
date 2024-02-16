@@ -11,8 +11,17 @@ import { ShopWorkHoursType } from 'src/app/interface';
 export class ShopOperatingHoursService {
   private _shop = inject(ShopService);
   private _dateSvc = inject(DateService);
-  private operatingHours = toSignal(this._shop.operatingWorkHours$) as Signal<ShopWorkHoursType>;
+  private operatingHours = toSignal(this._shop.operatingWorkHours$, {
+    initialValue: null,
+  }) as Signal<ShopWorkHoursType>;
   private timezone = toSignal(this._shop.timezone$) as Signal<string>;
+
+  public loaded = computed(() => {
+    const hours = this.operatingHours();
+    return hours !== null && hours !== undefined;
+  });
+
+  public data = this.operatingHours;
 
   startOfToday = computed(() => {
     return this._dateSvc.startDay(this._dateSvc.shopNow(this.timezone()));
@@ -34,12 +43,15 @@ export class ShopOperatingHoursService {
   }
 
   public closeTimeItem(day: Constant.DayType) {
-    return this.operatingHours()[day].operatingHours.closeTime;
+    const hours = this.operatingHours();
+    return hours[day].operatingHours.closeTime;
   }
 
   public closeTime(day: Constant.DayType) {
     const closeTimeItem = this.closeTimeItem(day);
-    return this._dateSvc.getTimeByTimeItem(closeTimeItem);
+    const is24Hours = this.is24Hours(day);
+    console.log(is24Hours);
+    return is24Hours ? '23:59:59' : this._dateSvc.getTimeByTimeItem(closeTimeItem);
   }
 
   public is24Hours(day: Constant.DayType) {

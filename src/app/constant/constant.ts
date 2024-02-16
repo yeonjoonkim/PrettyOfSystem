@@ -73,6 +73,15 @@ export const DayList: DayType[] = [
   Date.Day.Fri,
   Date.Day.Sat,
 ];
+export const DayIndexList: DayIndexType[] = [
+  Date.DayIndex.Sun,
+  Date.DayIndex.Mon,
+  Date.DayIndex.Tue,
+  Date.DayIndex.Wed,
+  Date.DayIndex.Thu,
+  Date.DayIndex.Fri,
+  Date.DayIndex.Sat,
+];
 
 //Country
 export type CountryCodeType = (typeof Default.CountryCodeType)[keyof typeof Default.CountryCodeType];
@@ -105,6 +114,7 @@ export type QueryOperatorType = (typeof Query)[keyof typeof Query];
 export type APIResponseType = (typeof API.Response)[keyof typeof API.Response];
 export type APIActionType = (typeof API.Action)[keyof typeof API.Action];
 export type APITranslationStatus = (typeof API.TranslateStatus)[keyof typeof API.TranslateStatus];
+export type APIQueryMethodType = (typeof API.QueryMethod)[keyof typeof API.QueryMethod];
 
 //Booking
 export type BookingSearchIconType = (typeof BookingSearchIconType)[keyof typeof BookingSearchIconType];
