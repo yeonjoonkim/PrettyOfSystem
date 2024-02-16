@@ -5,21 +5,21 @@
     }}</kendo-formerror>
   </div>
   <form [formGroup]="phoneNumberForm">
-    <ngx-intl-tel-input
+    <ngx-dialer-input
       [cssClass]="'custom-tel-input'"
+      name="phone"
       formControlName="phone"
       customPlaceholder="{{ placeholder | languageTransform: 'System' | async }}"
+      [disabled]="readOnly"
       [enableAutoCountrySelect]="true"
       [enablePlaceholder]="false"
       [searchCountryFlag]="true"
       [phoneValidation]="true"
-      [selectedCountryISO]="countryISO"
       [preferredCountries]="preferredCountries"
-      [separateDialCode]="separateDialCode"
       [numberFormat]="phoneNumberFormat"
-      [disabled]="readOnly"
+      [maxLength]="15"
       (ngModelChange)="onChangeValue($event)"
-      (countryChange)="onChangeCountry()"></ngx-intl-tel-input>
+      (countryChange)="onChangeCountry()"></ngx-dialer-input>
   </form>
 </kendo-label>
 
@@ -30,20 +30,21 @@
     }}</kendo-formerror>
   </div>
   <form [formGroup]="phoneNumberForm">
-    <ngx-intl-tel-input
+    <ngx-dialer-input
       [cssClass]="'custom-tel-input'"
+      name="phone"
       formControlName="phone"
       customPlaceholder="{{ placeholder | languageTransform: 'System' | async }}"
+      [disabled]="readOnly"
       [enableAutoCountrySelect]="true"
       [enablePlaceholder]="false"
       [searchCountryFlag]="true"
       [phoneValidation]="true"
-      [selectedCountryISO]="countryISO"
+      [phoneValidation]="true"
       [preferredCountries]="preferredCountries"
-      [separateDialCode]="separateDialCode"
       [numberFormat]="phoneNumberFormat"
-      [disabled]="readOnly"
+      [maxLength]="15"
       (ngModelChange)="onChangeValue($event)"
-      (countryChange)="onChangeCountry()"></ngx-intl-tel-input>
+      (countryChange)="onChangeCountry()"></ngx-dialer-input>
   </form>
 </div>

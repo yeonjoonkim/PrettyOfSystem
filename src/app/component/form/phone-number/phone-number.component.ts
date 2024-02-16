@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
+import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-dialer-input';
+
 import * as Constant from 'src/app/constant/constant';
 export interface PhoneNumber {
   countryCode: string;
@@ -101,10 +102,10 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
       this.isTitleRequired && !this.isPreviousPhoneNumber && !this.isNewPhoneNumber
         ? 'label.title.phone'
         : this.isTitleRequired && this.isPreviousPhoneNumber
-        ? 'label.title.previousphonenumber'
-        : this.isTitleRequired && this.isNewPhoneNumber
-        ? 'label.title.newphonenumber'
-        : '';
+          ? 'label.title.previousphonenumber'
+          : this.isTitleRequired && this.isNewPhoneNumber
+            ? 'label.title.newphonenumber'
+            : '';
   }
 
   private onChangeReadOnly() {
@@ -143,20 +144,20 @@ export class PhoneNumberComponent implements OnInit, OnChanges {
     this.placeholder = this.isRequired
       ? 'placeholder.title.required'
       : this.isOptional
-      ? 'placholder.title.optional'
-      : '';
+        ? 'placholder.title.optional'
+        : '';
   }
   private setDefaultCountry() {
     this.countryISO =
       this.defaultCountry === Constant.Default.CountryCodeType.Australia
         ? CountryISO.Australia
         : this.defaultCountry === Constant.Default.CountryCodeType.China
-        ? CountryISO.China
-        : this.defaultCountry === Constant.Default.CountryCodeType.Japan
-        ? CountryISO.Japan
-        : this.defaultCountry === Constant.Default.CountryCodeType.Korean
-        ? CountryISO.SouthKorea
-        : CountryISO.Australia;
+          ? CountryISO.China
+          : this.defaultCountry === Constant.Default.CountryCodeType.Japan
+            ? CountryISO.Japan
+            : this.defaultCountry === Constant.Default.CountryCodeType.Korean
+              ? CountryISO.SouthKorea
+              : CountryISO.Australia;
   }
 
   private isPhoneNumber(obj: any): obj is PhoneNumber {

@@ -398,27 +398,6 @@ kendo-pager-prev-buttons {
   justify-content: center;
 }
 
-/*itl-phone*/
-.iti--allow-dropdown {
-  margin-top: 12px;
-  margin-bottom: 10px;
-  max-width: 100%;
-  min-width: 100px;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  background-color: #101010;
-  border: #232323 1px solid;
-  &:hover {
-    border: #333333 1px solid;
-  }
-  &:focus-within {
-    border-color: rgba(255, 255, 255, 0.16);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
-    outline: unset;
-  }
-}
-
 @media (max-width: 520px) {
   .svg-icon-title {
     font-size: 10px;
