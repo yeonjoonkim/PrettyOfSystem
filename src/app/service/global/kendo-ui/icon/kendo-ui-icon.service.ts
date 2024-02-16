@@ -9,6 +9,8 @@ import {
   listUnorderedSquareIcon,
   parameterDateTimeIcon,
   checkIcon,
+  alignItemsStretchAltIcon,
+  alignItemsStretchIcon,
 } from '@progress/kendo-svg-icons';
 @Injectable({
   providedIn: 'root',
@@ -22,6 +24,8 @@ export class KendoUiIconService {
   public listUnorderedSquareIcon: SVGIcon = listUnorderedSquareIcon;
   public parameterDateTimeIcon: SVGIcon = parameterDateTimeIcon;
   public checkIcon: SVGIcon = checkIcon;
+  public alignHorizontalIcon: SVGIcon = alignItemsStretchAltIcon;
+  public alignVerticalIcon: SVGIcon = alignItemsStretchIcon;
 
   constructor() {}
 }

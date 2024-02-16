@@ -12,7 +12,7 @@
 }
 
 .date-popover-container::part(content) {
-  top: 50% !important;
+  margin: auto;
   --min-width: 300px;
   --max-width: 300px;
 }

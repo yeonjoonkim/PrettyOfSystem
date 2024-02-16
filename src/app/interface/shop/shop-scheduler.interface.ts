@@ -32,9 +32,28 @@ export type ShopScheduleDocumentType = {
   active: boolean;
 };
 
+export type ShopReservationScheduleResourceType = {
+  name: string;
+  data: ShopReservationScheduleResourceDataType[];
+  field: 'employeeId';
+  valueField: 'id';
+  textField: 'firstName';
+  colorField: 'workingStatusColor';
+};
+
+export type ShopReservationScheduleResourceDataType = Pick<
+  ShopScheduleDocumentType,
+  'employeeId' | 'gender' | 'firstName' | 'lastName' | 'isWorking' | 'workHours'
+>;
+
 export type ShopEmployeeBreakTimeType = {
   startDateTime: string; //yyyy-MM-dd'T'HH:mm:ss
   endDateTime: string; //yyyy-MM-dd'T'HH:mm:ss
+};
+
+export type ShopEmployeeBreakUpdateFinderType = {
+  before: ShopEmployeeBreakTimeType;
+  after: ShopEmployeeBreakTimeType;
 };
 
 export type ShopEmployeeScheduledConsultType = {

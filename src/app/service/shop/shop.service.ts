@@ -11,6 +11,8 @@ import {
   ShopEmployeeManagementUserType,
   ShopExtraDocumentType,
   ShopPackageDocumentType,
+  ShopScheduleDocumentType,
+  ShopSchedulerDocumentType,
   ShopServiceDocumentType,
   ShopWorkHoursType,
 } from 'src/app/interface';
@@ -28,51 +30,55 @@ import { SystemShopCapacityRepositoryService } from 'src/app/firebase/system-rep
 import * as Constant from 'src/app/constant/constant';
 import { DateService } from '../global/date/date.service';
 import { ClientCredentialRepositoryService } from 'src/app/firebase/user-repository/client-credential-repository/client-credential-repository.service';
+import { ShopSchedulerRepositoryService } from 'src/app/firebase/shop-repository/shop-scheduler-repository/shop-scheduler-repository.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
-  public id$!: Observable<string | null>;
-  public role$!: Observable<RoleConfigurationType | null>;
-  public config$!: Observable<ShopConfigurationType | null>;
-  public capacity$!: Observable<ShopCapacityType | null>;
-  public timezone$!: Observable<string | null>;
-  public translatedRequests$!: Observable<ChatGptTranslateDocumentType[]>;
-  public services$!: Observable<ShopServiceDocumentType[]>;
-  public extras$!: Observable<ShopExtraDocumentType[]>;
-  public packages$!: Observable<ShopPackageDocumentType[]>;
-  public userName$!: Observable<string>;
-  public employees$!: Observable<ShopEmployeeManagementUserType[]>;
-  public specializedEmployeeFilter$!: Observable<NameValuePairType[]>;
-  public extraFilter$!: Observable<NameValuePairType[]>;
-  public serviceFilter$!: Observable<NameValuePairType[]>;
-  public operatingWorkHours$!: Observable<ShopWorkHoursType | null>;
-  public coupons$!: Observable<ShopCouponDocumentType[]>;
-  public logoImage$!: Observable<Blob | null>;
-  public shopImage1$!: Observable<Blob | null>;
-  public shopImage2$!: Observable<Blob | null>;
-  public shopImage3$!: Observable<Blob | null>;
+  public id$: Observable<string | null> = of(null);
+  public role$: Observable<RoleConfigurationType | null> = of(null);
+  public config$: Observable<ShopConfigurationType | null> = of(null);
+  public capacity$: Observable<ShopCapacityType | null> = of(null);
+  public timezone$: Observable<string | null> = of(null);
+  public translatedRequests$: Observable<ChatGptTranslateDocumentType[]> = of([]);
+  public services$: Observable<ShopServiceDocumentType[]> = of([]);
+  public extras$: Observable<ShopExtraDocumentType[]> = of([]);
+  public packages$: Observable<ShopPackageDocumentType[]> = of([]);
+  public userName$: Observable<string>;
+  public employees$: Observable<ShopEmployeeManagementUserType[]> = of([]);
+  public specializedEmployeeFilter$: Observable<NameValuePairType[]> = of([]);
+  public extraFilter$: Observable<NameValuePairType[]> = of([]);
+  public serviceFilter$: Observable<NameValuePairType[]> = of([]);
+  public operatingWorkHours$: Observable<ShopWorkHoursType | null> = of(null);
+  public coupons$: Observable<ShopCouponDocumentType[]> = of([]);
+  public logoImage$: Observable<Blob | null> = of(null);
+  public shopImage1$: Observable<Blob | null> = of(null);
+  public shopImage2$: Observable<Blob | null> = of(null);
+  public shopImage3$: Observable<Blob | null> = of(null);
   //Price List
-  public couponPriceList$!: Observable<ShopCouponDocumentType[]>;
-  public packagePriceList$!: Observable<ShopPackageDocumentType[]>;
-  public servicePriceList$!: Observable<ShopServiceDocumentType[]>;
-  public extraPriceList$!: Observable<ShopExtraDocumentType[]>;
+  public couponPriceList$: Observable<ShopCouponDocumentType[]> = of([]);
+  public packagePriceList$: Observable<ShopPackageDocumentType[]> = of([]);
+  public servicePriceList$: Observable<ShopServiceDocumentType[]> = of([]);
+  public extraPriceList$: Observable<ShopExtraDocumentType[]> = of([]);
 
   //Has
-  public hasInsuranceProvider$!: Observable<boolean>;
-  public hasNotInsuranceProvider$!: Observable<boolean>;
+  public hasInsuranceProvider$: Observable<boolean> = of(false);
+  public hasNotInsuranceProvider$: Observable<boolean> = of(false);
 
   //Related
-  public category$!: Observable<ShopCategoryType | null>;
-  public isRelatedToMedical$!: Observable<boolean>;
+  public category$: Observable<ShopCategoryType | null> = of(null);
+  public isRelatedToMedical$: Observable<boolean> = of(false);
 
-  public isMassageShop$!: Observable<boolean>;
-  public isSkinCare$!: Observable<boolean>;
-  public isHairSalon$!: Observable<boolean>;
-  public isPersonalTraining$!: Observable<boolean>;
-  public isNailArt$!: Observable<boolean>;
-  public isMobileShop$!: Observable<boolean>;
+  public isMassageShop$: Observable<boolean> = of(false);
+  public isSkinCare$: Observable<boolean> = of(false);
+  public isHairSalon$: Observable<boolean> = of(false);
+  public isPersonalTraining$: Observable<boolean> = of(false);
+  public isNailArt$: Observable<boolean> = of(false);
+  public isMobileShop$: Observable<boolean> = of(false);
+
+  //Scheduler
+  public defaultScheduler$: Observable<ShopSchedulerDocumentType | null> = of(null);
 
   constructor(
     public role: UserRoleService,
@@ -85,6 +91,7 @@ export class ShopService {
     private _couponRepo: ShopCouponRepositoryService,
     private _pictureRepo: ShopPictureRepositoryService,
     private _clientRepo: ClientCredentialRepositoryService,
+    private _schedulerRepo: ShopSchedulerRepositoryService,
     private _systemLanguage: SystemLanguageManagementService,
     private _capacity: SystemShopCapacityRepositoryService,
     private _date: DateService
@@ -117,6 +124,7 @@ export class ShopService {
     this.insuranceProviderListener();
     this.isRelatedToMedical();
     this.relatedShopCategoryListener();
+    this.defaultSchedulerListener();
   }
 
   public translatedRequestFilterByServiceIds(shopId: string, serviceIds: string[]) {
@@ -520,6 +528,14 @@ export class ShopService {
         } else {
           return of(false);
         }
+      })
+    );
+  }
+
+  public defaultSchedulerListener() {
+    this.defaultScheduler$ = this.config$.pipe(
+      switchMap(config => {
+        return config !== null ? this._schedulerRepo.getAsObservable(config.id) : of(null);
       })
     );
   }

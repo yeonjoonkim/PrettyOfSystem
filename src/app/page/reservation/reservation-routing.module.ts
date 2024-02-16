@@ -11,6 +11,13 @@ const routes: Routes = [
     path: 'price-list',
     loadChildren: () => import('./price-list/price-list.module').then(m => m.PriceListPageModule),
   },
+  {
+    path: 'schedule',
+    loadChildren: () =>
+      import('./shop-reservation-scheduler/shop-reservation-scheduler.module').then(
+        m => m.ShopReservationSchedulerPageModule
+      ),
+  },
 ];
 
 @NgModule({

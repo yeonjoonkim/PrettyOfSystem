@@ -7,7 +7,7 @@ import {
 export class ShopScheduleDocument {
   public updated: boolean = false;
   private document!: ShopScheduleDocumentType;
-  private deletedConsults!: ShopEmployeeScheduledConsultType[];
+  private deletedConsults: ShopEmployeeScheduledConsultType[] = [];
 
   get id() {
     return this.document.id;
@@ -47,8 +47,18 @@ export class ShopScheduleDocument {
     return this.document.startDateTime;
   }
 
+  set startDateTime(dateTime: string) {
+    this.document.startDateTime = dateTime;
+    this.updateTime();
+  }
+
   get endDateTime() {
     return this.document.endDateTime;
+  }
+
+  set endDateTime(dateTime: string) {
+    this.document.endDateTime = dateTime;
+    this.updateTime();
   }
 
   get dayIndex() {
@@ -59,8 +69,17 @@ export class ShopScheduleDocument {
     return this.document.isWorking;
   }
 
+  set isWorking(isWorking: boolean) {
+    this.document.isWorking = isWorking;
+  }
+
   get breakTimes() {
     return this.document.breakTimes;
+  }
+
+  set breakTimes(breakTimes: ShopEmployeeBreakTimeType[]) {
+    this.document.breakTimes = breakTimes;
+    this.updateTime();
   }
 
   get scheduledConsults() {
@@ -405,12 +424,22 @@ export class ShopScheduleDocument {
 }
 
 const timesOverlap = function (
-  startTimeA: string,
-  endTimeA: string,
-  startTimeB: string,
-  endTimeB: string
+  aStartDate: string,
+  aEndDate: string,
+  bStartDate: string,
+  bEndDate: string
 ): boolean {
-  return startTimeA < endTimeB && startTimeB < endTimeA;
+  // Check if a starts within b
+  const aStartWithinB = aStartDate >= bStartDate && aStartDate < bEndDate;
+  // Check if a ends within b (non-inclusive end)
+  const aEndWithinB = aEndDate > bStartDate && aEndDate < bEndDate;
+
+  // Check if b starts within a
+  const bStartWithinA = bStartDate >= aStartDate && bStartDate < aEndDate;
+  // Check if b ends within a (non-inclusive end)
+  const bEndWithinA = bEndDate > aStartDate && bEndDate < aEndDate;
+
+  return aStartWithinB || aEndWithinB || bStartWithinA || bEndWithinA;
 };
 
 const getBreakTimeHours = function (breakTimes: ShopEmployeeBreakTimeType[]) {

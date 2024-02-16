@@ -111,3 +111,14 @@
   background: #191919;
   background-color: #191919;
 }
+
+//Scheduler Setting
+.k-scheduler .k-scheduler-toolbar,
+.k-scheduler .k-scheduler-footer {
+  display: none;
+}
+.hide-all-day .k-scheduler-table tr:nth-of-type(0),
+.k-scheduler-times-all-day,
+.k-scheduler-table.k-scheduler-header-all-day {
+  display: none;
+}

@@ -86,7 +86,7 @@ export class ShopEmployeeAddBreakService {
     this.input.set({
       id: this._global.newId(),
       start: start,
-      end: end,
+      end: start,
       durationHour: this._emp.durationHours(this._emp.startTimeItem(), this._emp.endTimeItem()),
     });
   }

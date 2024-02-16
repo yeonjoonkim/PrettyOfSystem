@@ -2,6 +2,7 @@ import * as I from '../../../../interface';
 import * as Repository from '../../../../repository/index';
 import * as DateSvc from '../../../date/service-date';
 import * as Constant from '../../../../constant';
+import * as Schedule from '../manage-schedule/manage-schedule';
 import { logger } from 'firebase-functions/v2';
 
 export const manage = async function (before: I.IUser, after: I.IUser) {
@@ -117,8 +118,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of mon) {
-        const updated = Repository.Shop.Schedule.updateDocumentByRoster(after.defaultRoster, doc);
-        await Repository.Shop.Schedule.updateDocument(updated);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
       }
     }
 
@@ -130,8 +130,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of tue) {
-        const updated = Repository.Shop.Schedule.updateDocumentByRoster(after.defaultRoster, doc);
-        await Repository.Shop.Schedule.updateDocument(updated);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
       }
     }
 
@@ -143,8 +142,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of wed) {
-        const updated = Repository.Shop.Schedule.updateDocumentByRoster(after.defaultRoster, doc);
-        await Repository.Shop.Schedule.updateDocument(updated);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
       }
     }
 
@@ -156,8 +154,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of thur) {
-        const updated = Repository.Shop.Schedule.updateDocumentByRoster(after.defaultRoster, doc);
-        await Repository.Shop.Schedule.updateDocument(updated);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
       }
     }
 
@@ -169,8 +166,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of fri) {
-        const updated = Repository.Shop.Schedule.updateDocumentByRoster(after.defaultRoster, doc);
-        await Repository.Shop.Schedule.updateDocument(updated);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
       }
     }
 
@@ -182,8 +178,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of sat) {
-        const updated = Repository.Shop.Schedule.updateDocumentByRoster(after.defaultRoster, doc);
-        await Repository.Shop.Schedule.updateDocument(updated);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
       }
     }
 
@@ -195,8 +190,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of sun) {
-        const updated = Repository.Shop.Schedule.updateDocumentByRoster(after.defaultRoster, doc);
-        await Repository.Shop.Schedule.updateDocument(updated);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
       }
     }
   }
@@ -329,36 +323,14 @@ export const isRosterChange = function (b: I.ShopWorkHoursType, a: I.ShopWorkHou
   });
   const afterWorkHours = DateSvc.getWorkHours(afterStartDate, afterEndDate, afterBreakTimes);
   const isWorkingChange = b[day].isOpen !== a[day].isOpen;
+  const updated = Schedule.compareBreakTimes(b[day].breakTimes, a[day].breakTimes);
   return {
     isWorkHoursChange: beforeWorkHours !== afterWorkHours,
     isStartTimeChange: beforeStartDate !== afterStartDate,
     isEndTimeChange: beforeEndDate !== afterEndDate,
-    breakTimes: compareBreakTimes(beforeBreakTimes, afterBreakTimes),
     isWorkingChange: isWorkingChange,
+    breakTimes: updated,
   };
-};
-
-const compareBreakTimes = function (
-  beforeBreakTimes: I.ShopEmployeeBreakTimeType[],
-  afterBreakTimes: I.ShopEmployeeBreakTimeType[]
-) {
-  const added = afterBreakTimes.filter(
-    at => !beforeBreakTimes.some(bt => bt.startDateTime === at.startDateTime && bt.endDateTime === at.endDateTime)
-  );
-
-  const deleted = beforeBreakTimes.filter(
-    bt => !afterBreakTimes.some(at => at.startDateTime === bt.startDateTime && at.endDateTime === bt.endDateTime)
-  );
-
-  const updated = afterBreakTimes.filter(at =>
-    beforeBreakTimes.some(
-      bt =>
-        (bt.startDateTime === at.startDateTime || bt.endDateTime === at.endDateTime) &&
-        (bt.startDateTime !== at.startDateTime || bt.endDateTime !== at.endDateTime)
-    )
-  );
-
-  return { added, deleted, updated };
 };
 
 export const generateDefaultSchedulesByCreate = async function (user: I.IUser) {

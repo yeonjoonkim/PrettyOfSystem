@@ -8,9 +8,12 @@ import {
   addHours,
   addMinutes,
   addMonths,
+  addWeeks,
   addYears,
+  differenceInDays,
   differenceInHours,
   differenceInMinutes,
+  differenceInWeeks,
   eachDayOfInterval,
   endOfDay,
   endOfMonth,
@@ -85,6 +88,13 @@ export class DateService {
     return format;
   }
 
+  addWeek(date: DateType, week: number) {
+    const localDate = this.transform.toLocalDateTime(date);
+    const added = addWeeks(localDate, week);
+    const format = this.transform.formatLocalDateTime(added);
+    return format;
+  }
+
   addMonth(date: DateType, month: number) {
     const localDate = this.transform.toLocalDateTime(date);
     const added = addMonths(localDate, month);
@@ -142,6 +152,20 @@ export class DateService {
     const startDate = this.transform.toLocalDateTime(start);
     const endDate = this.transform.toLocalDateTime(end);
     const diff = differenceInHours(startDate, endDate);
+    return diff;
+  }
+
+  differenceInDays(start: DateType, end: DateType) {
+    const startDate = this.transform.toLocalDateTime(start);
+    const endDate = this.transform.toLocalDateTime(end);
+    const diff = differenceInDays(startDate, endDate);
+    return diff;
+  }
+
+  differenceInWeeks(start: DateType, end: DateType) {
+    const startDate = this.transform.toLocalDateTime(start);
+    const endDate = this.transform.toLocalDateTime(end);
+    const diff = differenceInWeeks(startDate, endDate);
     return diff;
   }
 

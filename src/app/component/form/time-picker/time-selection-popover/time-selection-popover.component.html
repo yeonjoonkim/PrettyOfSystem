@@ -1,13 +1,12 @@
 <ion-datetime
   presentation="time"
   [(ngModel)]="time"
-  hourCycle="h12"
+  hourCycle="h23"
   [min]="prop.minDateTime"
   [max]="prop.maxDateTime"
   [hourValues]="prop.hourSelection"
   [minuteValues]="prop.minSelection"
   (ngModelChange)="onChangeTime($event)"></ion-datetime>
-
 <flex-row>
   <flex-row-item>
     <button kendoButton (click)="onClickApply()" class="apply">

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ShopService } from '../shop.service';
 import {
-  DayIndexType,
   RoleConfigurationType,
   ShopConfigurationType,
   ShopEmployeeManagementUserType,
@@ -11,8 +10,6 @@ import {
 import { Observable, map, of, switchMap } from 'rxjs';
 import { ShopEmployeeManagementService } from '../shop-employee-management/shop-employee-management.service';
 import { ShopScheduleTimeService } from './shop-schedule-time/shop-schedule-time.service';
-import { ShopEmployeeScheduleModalService } from './shop-employee-schedule-modal/shop-employee-schedule-modal.service';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -26,7 +23,6 @@ export class ShopEmployeeScheduleService {
   public scheduledTime$!: Observable<ShopEmployeeScheduleTimeType | null>;
 
   constructor(
-    public modal: ShopEmployeeScheduleModalService,
     private _shop: ShopService,
     private _employeeManagement: ShopEmployeeManagementService,
     private _scheduleTime: ShopScheduleTimeService
