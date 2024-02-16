@@ -122,8 +122,8 @@
               {
                 "input": "../prettyOfSystem/pretty-of-system-dark-theme/dist/css/pretty-of-system-dark-theme.css"
               },
+              "./node_modules/intl-tel-input/build/css/intlTelInput.css",
               "src/theme/variables.scss",
-              "node_modules/intl-tel-input/build/css/intlTelInput.css",
               "src/global.scss"
             ],
             "scripts": []

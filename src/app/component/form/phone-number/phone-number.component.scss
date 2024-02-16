@@ -2,3 +2,125 @@
   pointer-events: none;
   opacity: 1;
 }
+
+:host ::ng-deep ngx-dialer-input {
+  .iti {
+    display: flex !important;
+    flex-direction: row !important;
+    height: 32px;
+  }
+
+  .iti__flag-container {
+    position: unset;
+  }
+
+  .custom-tel-input[disabled] {
+    background-color: unset !important;
+  }
+
+  .custom-tel-input {
+    position: unset;
+    margin: 0px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .country-dropdown {
+    border: unset !important;
+  }
+  .iti--allow-dropdown input[type='tel']:disabled {
+    color: unset !important;
+  }
+
+  .iti--allow-dropdown {
+    display: flex !important;
+    flex-direction: row !important;
+    background-color: #101010;
+    border: #232323 1px solid;
+    &:hover {
+      border: #333333 1px solid;
+    }
+    &:focus-within {
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+      outline: unset;
+    }
+  }
+
+  /*itl-phone*/
+  .iti--allow-dropdown input[type='tel'] {
+    height: 30px;
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    background-color: unset;
+    border-radius: unset;
+    border: unset;
+    &:hover {
+      border: unset;
+    }
+    &:focus-visible {
+      border-color: unset;
+      box-shadow: unset;
+      outline: unset;
+    }
+    &:disabled {
+      color: unset;
+      background: di;
+    }
+  }
+
+  /*itl-phone*/
+  .iti--allow-dropdown input::placeholder,
+  .iti--allow-dropdown input:disabled {
+    color: white;
+    font-size: 14px;
+  }
+
+  /*itl-phone*/
+  .dropdown-menu.country-dropdown.show {
+    border: rgba(255, 255, 255, 0.08) 1px solid !important;
+    overflow: hidden;
+    overflow-y: auto;
+    background-color: #101010;
+    padding: 0px;
+    border-collapse: collapse;
+    .iti__country {
+      padding: 5px;
+    }
+    .search-container,
+    .iti__country-list {
+      font-size: 14px;
+      color: white;
+      #country-search-box {
+        padding: 15px;
+        background-color: #101010;
+        border-bottom: unset;
+        border: unset;
+        height: 30px;
+        &:hover {
+          border: unset;
+        }
+        &:focus-visible {
+          border-color: unset;
+          box-shadow: unset;
+          outline: unset;
+        }
+      }
+      &:hover {
+        border: unset;
+      }
+      &:focus-visible {
+        border-color: unset;
+        box-shadow: unset;
+        outline: unset;
+      }
+    }
+    .iti__country-list {
+      background: #101010;
+      color: white;
+      max-width: 300px;
+    }
+  }
+}

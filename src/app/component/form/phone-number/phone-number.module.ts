@@ -5,13 +5,13 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/cor
 //Import Pipe
 import { LanguageTransformPipeModule } from 'src/app/pipe/language-transform-pipe/language-transform.pipe.module';
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
-import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { NgxDialerInputModule } from 'ngx-dialer-input';
 
 import { PhoneNumberComponent } from './phone-number.component';
 
 @NgModule({
   declarations: [PhoneNumberComponent],
-  imports: [CommonModule, LanguageTransformPipeModule, KendoUiModule, FormsModule, NgxIntlTelInputModule],
+  imports: [CommonModule, LanguageTransformPipeModule, KendoUiModule, FormsModule, NgxDialerInputModule],
   exports: [PhoneNumberComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
