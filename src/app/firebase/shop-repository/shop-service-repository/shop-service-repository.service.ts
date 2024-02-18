@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ShopConfigurationType, ShopServiceDocumentType } from 'src/app/interface';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ShopService } from 'src/app/constant/firebase-path';
 import { map } from 'rxjs';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
@@ -9,12 +8,33 @@ import { TextTransformService } from 'src/app/service/global/text-transform/text
 import { DateService } from 'src/app/service/global/date/date.service';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 import * as Document from 'functions/src/service/override/shop/document-override/index';
+import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/firebase-api.service';
+
+const param = createKeyMap<ShopServiceDocumentType>([
+  'id',
+  'shopId',
+  'descriptionProp',
+  'extraIds',
+  'isInsuranceCover',
+  'isOil',
+  'lastModifiedDate',
+  'lastModifiedEmployee',
+  'options',
+  'recommandForPregnant',
+  'relatedService',
+  'shopId',
+  'specializedEmployees',
+  'title',
+  'titleProp',
+]);
+
 @Injectable({
   providedIn: 'root',
 })
 export class ShopServiceRepositoryService {
+  private _api = inject(FirebaseApiService);
+
   constructor(
-    private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
     private _textTransform: TextTransformService,
     private _languageStorage: SystemLanguageStorageService,
@@ -22,17 +42,14 @@ export class ShopServiceRepositoryService {
   ) {}
 
   public serviceValueChangeListener(shopId: string) {
-    return this._afs
-      .collection<ShopServiceDocumentType>(ShopService(shopId))
-      .valueChanges()
-      .pipe(
-        map(services =>
-          services.map(service => {
-            service = Document.Service.override(service);
-            return this.orderOptionsByMinASC(service);
-          })
-        )
-      );
+    return this._api.valueChangeDocuments<ShopServiceDocumentType>(ShopService(shopId)).pipe(
+      map(services =>
+        services.map(service => {
+          service = Document.Service.override(service);
+          return this.orderOptionsByMinASC(service);
+        })
+      )
+    );
   }
 
   public async addService(doc: ShopServiceDocumentType) {
@@ -40,9 +57,14 @@ export class ShopServiceRepositoryService {
     doc.descriptionProp = this._textTransform.preCleansingTranslateProp(doc.descriptionProp);
     doc = Document.Service.override(doc);
     try {
-      this._afs.collection<ShopServiceDocumentType>(ShopService(doc.shopId)).doc(doc.id).set(doc);
-      await this._toaster.addSuccess();
-      return true;
+      const saved = await this._api.set<ShopServiceDocumentType>(ShopService(doc.shopId), doc);
+      if (saved !== null) {
+        await this._toaster.addSuccess();
+      } else {
+        await this._toaster.addFail('');
+      }
+
+      return saved !== null;
     } catch (error) {
       await this._toaster.addFail(error);
       console.error(error);
@@ -55,9 +77,14 @@ export class ShopServiceRepositoryService {
     doc.descriptionProp = this._textTransform.preCleansingTranslateProp(doc.descriptionProp);
     doc = Document.Service.override(doc);
     try {
-      this._afs.collection<ShopServiceDocumentType>(ShopService(doc.shopId)).doc(doc.id).update(doc);
-      await this._toaster.updateSuccess();
-      return true;
+      const updated = await this._api.updateDocument<ShopServiceDocumentType>(ShopService(doc.shopId), doc);
+      if (updated) {
+        await this._toaster.updateSuccess();
+      } else {
+        await this._toaster.updateFail('');
+      }
+
+      return updated;
     } catch (error) {
       await this._toaster.updateFail(error);
       console.error(error);
@@ -67,11 +94,15 @@ export class ShopServiceRepositoryService {
 
   public async deleteService(doc: ShopServiceDocumentType) {
     try {
-      this._afs.collection<ShopServiceDocumentType>(ShopService(doc.shopId)).doc(doc.id).delete();
-      await this._toaster.deleteSuccess();
-      return true;
+      const deleted = await this._api.delete<ShopServiceDocumentType>(ShopService(doc.shopId), doc.id);
+      if (deleted) {
+        await this._toaster.deleteSuccess();
+      } else {
+        await this._toaster.deleteFail('');
+      }
+
+      return deleted;
     } catch (error) {
-      await this._toaster.deleteFail(error);
       console.error(error);
       return false;
     }
@@ -79,7 +110,7 @@ export class ShopServiceRepositoryService {
 
   public defaultServiceDocument() {
     let result: ShopServiceDocumentType = {
-      id: this._afs.createId(),
+      id: this._api.newId(),
       shopId: '',
       titleProp: '',
       descriptionProp: '',

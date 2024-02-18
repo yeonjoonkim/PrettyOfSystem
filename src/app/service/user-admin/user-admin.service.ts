@@ -14,7 +14,6 @@ import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/syste
 import { SystemRoleRepositoryService } from 'src/app/firebase/system-repository/role/system-role-repository.service';
 import { UserAdminPopoverService } from './user-admin-popover/user-admin-popover.service';
 import * as Constant from 'src/app/constant/constant';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { TextTransformService } from '../global/text-transform/text-transform.service';
 @Injectable({
   providedIn: 'root',

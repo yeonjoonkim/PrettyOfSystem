@@ -1,7 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
 import {
-  GenderType,
   IUser,
   ShopClientManagementUserType,
   ShopConfigurationType,
@@ -11,39 +9,45 @@ import {
 import { Observable, from, map } from 'rxjs';
 import { override } from 'functions/src/service/override/user/user-setting-override/user-setting-override';
 import * as Db from 'src/app/constant/firebase-path';
-import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
 import * as Constant from 'src/app/constant/constant';
-
+import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/firebase-api.service';
 const allGender = [Constant.Default.Gender.Female, Constant.Default.Gender.Male, Constant.Default.Gender.Other];
+const userParam = createKeyMap<IUser>([
+  'id',
+  'firstName',
+  'lastName',
+  'associatedShopIds',
+  'disabledAccount',
+  'dob',
+  'email',
+  'gender',
+  'isSystemAdmin',
+  'phoneNumber',
+  'signature',
+  'visitedShopIds',
+]);
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientCredentialRepositoryService {
-  private readonly _timeStamp = { lastModifiedDate: new Date() };
-  constructor(
-    private _afs: AngularFirestore,
-    private _date: DateService
-  ) {}
+  private _api = inject(FirebaseApiService);
+
+  constructor(private _date: DateService) {}
 
   public getAssociatedClients(shopId: string): Observable<ShopClientManagementUserType[]> {
-    return from(
-      this._afs
-        .collection<IUser>(Db.Context.User, ref =>
-          ref.where('visitedShopIds', 'array-contains', shopId).orderBy('firstName', 'asc')
-        )
-        .get()
-    ).pipe(
-      map(querySnapshot => {
-        return querySnapshot.docs.map(doc => doc.data() as IUser);
-      }),
-      map(filteredUsers =>
-        filteredUsers.map(user => this.transformIntoShopClientManagementUserType(user, shopId))
-      ),
-      map(transformedUsers => transformedUsers.filter(user => user !== null)),
-      map(nonNullUsers => nonNullUsers as ShopClientManagementUserType[])
-    );
+    return this._api
+      .getDocuments<IUser>(Db.Context.User, ref =>
+        ref.where(userParam.visitedShopIds, Query.ArrayContains, shopId).orderBy(userParam.firstName, 'asc')
+      )
+      .pipe(
+        map(filteredUsers =>
+          filteredUsers.map(user => this.transformIntoShopClientManagementUserType(user, shopId))
+        ),
+        map(transformedUsers => transformedUsers.filter(user => user !== null)),
+        map(nonNullUsers => nonNullUsers as ShopClientManagementUserType[])
+      );
   }
 
   public getClientsByQuery(
@@ -54,43 +58,38 @@ export class ClientCredentialRepositoryService {
     email: string,
     phoneNumber: string
   ): Observable<ShopClientManagementUserType[]> {
-    return from(
-      this._afs
-        .collection<IUser>(Db.Context.User, ref =>
-          ref.where('visitedShopIds', 'array-contains', shopId).orderBy('firstName', 'asc')
-        )
-        .get()
-    ).pipe(
-      map(querySnapshot => {
-        return querySnapshot.docs.map(doc => doc.data() as IUser);
-      }),
-      map(users =>
-        users.filter(user => {
-          const firstNameValid =
-            !firstName ||
-            firstName.trim().length === 0 ||
-            this.queryString(user.firstName).includes(this.queryString(firstName));
-          const lastNameValid =
-            !lastName ||
-            lastName.trim().length === 0 ||
-            this.queryString(user.lastName).includes(this.queryString(lastName));
-          const genderValid =
-            !gender || gender.length === 0 || user.gender === gender || Constant.Default.Gender.All === gender;
-          const emailValid =
-            !email || email.length === 0 || this.queryString(user.email).includes(this.queryString(email));
-          const phoneNumberValid =
-            !phoneNumber ||
-            phoneNumber.length === 0 ||
-            this.queryString(user.phoneNumber).includes(this.queryString(phoneNumber));
-          return firstNameValid && lastNameValid && genderValid && emailValid && phoneNumberValid;
-        })
-      ),
-      map(filteredUsers =>
-        filteredUsers.map(user => this.transformIntoShopClientManagementUserType(user, shopId))
-      ),
-      map(transformedUsers => transformedUsers.filter(user => user !== null)),
-      map(nonNullUsers => nonNullUsers as ShopClientManagementUserType[])
-    );
+    return this._api
+      .getDocuments<IUser>(Db.Context.User, ref =>
+        ref.where(userParam.visitedShopIds, Query.ArrayContains, shopId).orderBy(userParam.firstName, 'asc')
+      )
+      .pipe(
+        map(users =>
+          users.filter(user => {
+            const firstNameValid =
+              !firstName ||
+              firstName.trim().length === 0 ||
+              this.queryString(user.firstName).includes(this.queryString(firstName));
+            const lastNameValid =
+              !lastName ||
+              lastName.trim().length === 0 ||
+              this.queryString(user.lastName).includes(this.queryString(lastName));
+            const genderValid =
+              !gender || gender.length === 0 || user.gender === gender || Constant.Default.Gender.All === gender;
+            const emailValid =
+              !email || email.length === 0 || this.queryString(user.email).includes(this.queryString(email));
+            const phoneNumberValid =
+              !phoneNumber ||
+              phoneNumber.length === 0 ||
+              this.queryString(user.phoneNumber).includes(this.queryString(phoneNumber));
+            return firstNameValid && lastNameValid && genderValid && emailValid && phoneNumberValid;
+          })
+        ),
+        map(filteredUsers =>
+          filteredUsers.map(user => this.transformIntoShopClientManagementUserType(user, shopId))
+        ),
+        map(transformedUsers => transformedUsers.filter(user => user !== null)),
+        map(nonNullUsers => nonNullUsers as ShopClientManagementUserType[])
+      );
   }
 
   private queryString(str: string) {

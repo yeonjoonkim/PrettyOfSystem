@@ -1,29 +1,47 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { ChatGptTranslateDocumentType, ShopServiceDocumentType } from 'src/app/interface';
-import * as Db from 'src/app/constant/firebase-path';
 import { firstValueFrom, map } from 'rxjs';
-import * as Constant from 'src/app/constant/constant';
 import { TextTransformService } from 'src/app/service/global/text-transform/text-transform.service';
+import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/firebase-api.service';
+import * as Constant from 'src/app/constant/constant';
+import * as Db from 'src/app/constant/firebase-path';
+
+const chatGptParam = createKeyMap<ChatGptTranslateDocumentType>([
+  'id',
+  'attempt',
+  'createdDate',
+  'error',
+  'format',
+  'isSystemAdmin',
+  'languages',
+  'packageKey',
+  'parentId',
+  'prop',
+  'result',
+  'serviceId',
+  'shopId',
+  'status',
+  'translateResult',
+]);
+
 @Injectable({
   providedIn: 'root',
 })
 export class TranslateRequestRepositoryService {
+  private _api = inject(FirebaseApiService);
   constructor(
-    private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
     private _textTransform: TextTransformService
   ) {}
 
   public async request(doc: ChatGptTranslateDocumentType) {
     try {
-      await this._afs
-        .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest)
-        .doc(doc.id)
-        .set(doc);
-      await this._toaster.requestSuccess();
-      return true;
+      const requested = await this._api.set<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, doc);
+      if (requested !== null) {
+        await this._toaster.requestSuccess();
+      }
+      return requested !== null;
     } catch (error) {
       await this._toaster.requestFail(error);
       console.error(error);
@@ -33,11 +51,7 @@ export class TranslateRequestRepositoryService {
 
   public async delete(id: string) {
     try {
-      await this._afs
-        .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest)
-        .doc(id)
-        .delete();
-      return true;
+      return await this._api.delete<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, id);
     } catch (error) {
       console.error(error);
       return false;
@@ -45,54 +59,40 @@ export class TranslateRequestRepositoryService {
   }
 
   public shopDocumentsValueChangeListener() {
-    return this._afs
-      .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
-        ref.where('isSystemAdmin', '==', false).orderBy('requestDate', 'asc')
-      )
-      .valueChanges()
-      .pipe(map(snapShots => snapShots.map(doc => doc as ChatGptTranslateDocumentType)));
+    return this._api.valueChangeDocuments<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
+      ref.where(chatGptParam.isSystemAdmin, Query.Equal, false).orderBy(chatGptParam.createdDate, 'asc')
+    );
   }
 
   public selectedShopDocumentsValueChangeListener(shopId: string) {
-    return this._afs
-      .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
-        ref.where('shopId', '==', shopId).where('isSystemAdmin', '==', false)
-      )
-      .valueChanges()
-      .pipe(
-        map(snapShots =>
-          snapShots.map(doc => {
-            const data = doc as ChatGptTranslateDocumentType;
-            return data;
-          })
-        )
-      );
+    return this._api.valueChangeDocuments<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
+      ref.where(chatGptParam.isSystemAdmin, Query.Equal, false).where(chatGptParam.shopId, Query.Equal, shopId)
+    );
   }
 
   public selectedShopServiceValueChangeListener(shopId: string, serviceIds: string[]) {
-    return this._afs
-      .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
-        ref.where('shopId', '==', shopId).where('isSystemAdmin', '==', false).where('serviceId', 'in', serviceIds)
-      )
-      .valueChanges()
-      .pipe(
-        map(snapShots =>
-          snapShots.map(doc => {
-            const data = doc as ChatGptTranslateDocumentType;
-            return data;
-          })
-        )
-      );
+    return this._api.valueChangeDocuments<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
+      ref
+        .where(chatGptParam.isSystemAdmin, Query.Equal, false)
+        .where(chatGptParam.shopId, Query.Equal, shopId)
+        .where(chatGptParam.serviceId, Query.In, serviceIds)
+    );
   }
 
   public async updateDocument(doc: ChatGptTranslateDocumentType) {
     try {
-      await this._afs
-        .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest)
-        .doc(doc.id)
-        .update(doc);
-      await this._toaster.requestSuccess();
-      return true;
+      const updated = await this._api.updateDocument<ChatGptTranslateDocumentType>(
+        Db.Context.ChatGptTranslateRequest,
+        doc
+      );
+
+      if (updated) {
+        await this._toaster.requestSuccess();
+      } else {
+        await this._toaster.requestFail('');
+      }
+
+      return updated;
     } catch (error) {
       await this._toaster.requestFail(error);
       console.error(error);
@@ -104,21 +104,18 @@ export class TranslateRequestRepositoryService {
     doc: ShopServiceDocumentType,
     format: string
   ): Promise<ChatGptTranslateDocumentType | null> {
-    const collectionRef = this._afs.collection<ChatGptTranslateDocumentType>(
-      Db.Context.ChatGptTranslateRequest,
-      ref => ref.where('serviceId', '==', doc.id).where('format', '==', format).limit(1)
+    const document = this._api.getDocument<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
+      ref
+        .where(chatGptParam.serviceId, Query.Equal, doc.id)
+        .where(chatGptParam.format, Query.Equal, format)
+        .limit(1)
     );
-    const snap = await firstValueFrom(collectionRef.get());
-
-    if (!snap.empty) {
-      return snap.docs[0].data();
-    }
-    return null;
+    return await firstValueFrom(document);
   }
 
   public getTitleDocument(shopId: string, serviceId: string, prop: string) {
     const result: ChatGptTranslateDocumentType = {
-      id: this._afs.createId(),
+      id: this._api.newId(),
       shopId: shopId,
       serviceId: serviceId,
       packageKey: serviceId,
@@ -140,7 +137,7 @@ export class TranslateRequestRepositoryService {
 
   public getDescriptionDocument(shopId: string, serviceId: string, prop: string) {
     const result: ChatGptTranslateDocumentType = {
-      id: this._afs.createId(),
+      id: this._api.newId(),
       shopId: shopId,
       serviceId: serviceId,
       packageKey: serviceId,

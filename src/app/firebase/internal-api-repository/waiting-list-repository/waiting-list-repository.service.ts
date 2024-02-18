@@ -1,39 +1,29 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
 import { WaitingListCriteriaType, WaitingListSessionType } from 'src/app/interface';
 import { DateService } from 'src/app/service/global/date/date.service';
 import * as Db from 'src/app/constant/firebase-path';
-import { map } from 'rxjs';
+import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/firebase-api.service';
 
+const criteriaParam = createKeyMap<WaitingListCriteriaType>(['id', 'expiredTime', 'shopId']);
+const sessionParam = createKeyMap<WaitingListSessionType>(['id', 'expiredDate', 'ipAddress', 'shopId']);
 @Injectable({
   providedIn: 'root',
 })
 export class WaitingListRepositoryService {
-  constructor(
-    private _afs: AngularFirestore,
-    private _date: DateService
-  ) {}
+  private _api = inject(FirebaseApiService);
+
+  constructor(private _date: DateService) {}
 
   public getCriteria(criteriaId: string) {
-    const criteriaRef = this._afs.collection<WaitingListCriteriaType>(Db.Context.WaitingList.Criteria, ref =>
-      ref.where('id', '==', criteriaId).limit(1)
-    );
-    return criteriaRef.get().pipe(
-      map(snapshot => {
-        if (snapshot.docs.length > 0) {
-          return snapshot.docs[0].data();
-        } else {
-          return null;
-        }
-      })
+    return this._api.getDocument<WaitingListCriteriaType>(Db.Context.WaitingList.Criteria, ref =>
+      ref.where(criteriaParam.id, Query.Equal, criteriaId).limit(1)
     );
   }
 
   public async createSession(criteria: WaitingListCriteriaType, ipAddress: string | null) {
     try {
       const url = this.createURL(criteria, ipAddress);
-      await this._afs.collection<WaitingListSessionType>(Db.Context.WaitingList.Session).doc(url.id).set(url);
-      return url.id;
+      return await this._api.set<WaitingListSessionType>(Db.Context.WaitingList.Session, url);
     } catch (error) {
       console.error(error);
       return null;
@@ -41,25 +31,14 @@ export class WaitingListRepositoryService {
   }
 
   public sessionValueListener(sessionId: string) {
-    const sessionRef = this._afs.collection<WaitingListSessionType>(Db.Context.WaitingList.Session, ref =>
-      ref.where('id', '==', sessionId).limit(1)
-    );
-
-    return sessionRef.valueChanges().pipe(
-      map(snapshot => {
-        if (snapshot.length > 0) {
-          return snapshot[0];
-        } else {
-          return null;
-        }
-      })
+    return this._api.valueChangeDocument<WaitingListSessionType>(Db.Context.WaitingList.Session, ref =>
+      ref.where(sessionParam.id, Query.Equal, sessionId).limit(1)
     );
   }
 
   public async deleteSession(sessionId: string) {
     try {
-      this._afs.collection<WaitingListSessionType>(Db.Context.WaitingList.Session).doc(sessionId).delete();
-      return true;
+      return await this._api.delete<WaitingListSessionType>(Db.Context.WaitingList.Session, sessionId);
     } catch (error) {
       console.error(error);
       return false;
@@ -67,18 +46,11 @@ export class WaitingListRepositoryService {
   }
 
   public getSession(sessionId: string, ipAddress: string | null) {
-    const sessionRef = this._afs.collection<WaitingListSessionType>(Db.Context.WaitingList.Session, ref =>
-      ref.where('id', '==', sessionId).where('ipAddress', '==', ipAddress).limit(1)
-    );
-
-    return sessionRef.get().pipe(
-      map(snapshot => {
-        if (snapshot.docs.length > 0) {
-          return snapshot.docs[0].data();
-        } else {
-          return null;
-        }
-      })
+    return this._api.getDocument<WaitingListSessionType>(Db.Context.WaitingList.Session, ref =>
+      ref
+        .where(sessionParam.id, Query.Equal, sessionId)
+        .where(sessionParam.ipAddress, Query.Equal, ipAddress)
+        .limit(1)
     );
   }
 
@@ -86,7 +58,7 @@ export class WaitingListRepositoryService {
     const shopNow = this._date.shopTimeStamp('Australia/Brisbane');
     const expiredDate = this._date.addMin(shopNow, criteria.expiredTime);
     return {
-      id: this._afs.createId(),
+      id: this._api.newId(),
       shopId: criteria.shopId,
       expiredDate: expiredDate,
       ipAddress: ipAddress,

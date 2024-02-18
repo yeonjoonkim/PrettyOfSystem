@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MenuCategoryType, MenuContentType } from 'src/app/interface/menu/menu.interface';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { from, lastValueFrom, map, Observable } from 'rxjs';
+import { lastValueFrom, map, Observable } from 'rxjs';
 import * as Db from 'src/app/constant/firebase-path';
 import { RoleAccessLevelType } from 'src/app/interface/system/role/role.interface';
 import { RoleRateService } from 'src/app/service/authentication/role-rate/role-rate.service';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
+import { FirebaseApiService } from '../../firebase-api/firebase-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SystemMenuRepositoryService {
+  private _api = inject(FirebaseApiService);
   private readonly _timeStamp = { lastModifiedDate: new Date() };
 
   constructor(
-    private _afs: AngularFirestore,
     private _roleRate: RoleRateService,
     private _toaster: FirebaseToasterService
   ) {}
@@ -31,23 +31,19 @@ export class SystemMenuRepositoryService {
   }
 
   public valueChangeListener(): Observable<MenuCategoryType[]> {
-    return this._afs
-      .collection<MenuCategoryType>(Db.Context.System.Menu.Category)
-      .valueChanges()
-      .pipe(
-        map(categories => categories.sort(this.compareByContentName)),
-        map(categories =>
-          categories.map(cat => {
-            cat.content.sort(this.compareByName);
-            return cat;
-          })
-        )
-      );
+    return this._api.valueChangeDocuments<MenuCategoryType>(Db.Context.System.Menu.Category).pipe(
+      map(categories => categories.sort(this.compareByContentName)),
+      map(categories =>
+        categories.map(cat => {
+          cat.content.sort(this.compareByName);
+          return cat;
+        })
+      )
+    );
   }
 
   public getSystemMenuCategories(): Observable<MenuCategoryType[]> {
-    return from(this._afs.collection<MenuCategoryType>(Db.Context.System.Menu.Category).get()).pipe(
-      map(querySnapshot => querySnapshot.docs.map(doc => doc.data() as MenuCategoryType)),
+    return this._api.getDocuments<MenuCategoryType>(Db.Context.System.Menu.Category).pipe(
       map(categories => categories.sort(this.compareByContentName)),
       map(categories =>
         categories.map(cat => {
@@ -98,12 +94,17 @@ export class SystemMenuRepositoryService {
 
   /**Save into db */
   public async addSystemMenuCategory(newCategory: MenuCategoryType) {
-    let newId = this._afs.createId();
-    let category = { ...newCategory, ...this._timeStamp, id: newId };
+    let category = { ...newCategory, ...this._timeStamp };
     try {
-      await this._afs.collection(Db.Context.System.Menu.Category).doc(newId).set(category);
-      await this._toaster.addSuccess();
-      return true;
+      const saved = await this._api.set<MenuCategoryType>(Db.Context.System.Menu.Category, category);
+
+      if (saved !== null) {
+        await this._toaster.addSuccess();
+      } else {
+        await this._toaster.addFail('');
+      }
+
+      return saved !== null;
     } catch (error) {
       console.error(error);
       await this._toaster.addFail(error);
@@ -113,11 +114,16 @@ export class SystemMenuRepositoryService {
 
   /**Based on systemMenuCat Id update */
   public async updateSystemMenuCategory(selectedSystemMenuCategory: MenuCategoryType) {
-    const doc = Db.Context.System.Menu.Category + '/' + selectedSystemMenuCategory.id;
     try {
-      await this._afs.doc(doc).update(selectedSystemMenuCategory);
-      await this._toaster.updateSuccess();
-      return true;
+      const updated = await this._api.updateDocument(Db.Context.System.Menu.Category, selectedSystemMenuCategory);
+
+      if (updated) {
+        await this._toaster.updateSuccess();
+      } else {
+        await this._toaster.updateFail('');
+      }
+
+      return updated;
     } catch (error) {
       await this._toaster.updateFail(error);
       console.error(error);
@@ -126,11 +132,15 @@ export class SystemMenuRepositoryService {
   }
 
   public async deleteSystemMenuCategory(selectedSystemMenuCategoryId: string) {
-    const doc = Db.Context.System.Menu.Category + '/' + selectedSystemMenuCategoryId;
     try {
-      await this._afs.doc(doc).delete();
-      await this._toaster.deleteSuccess();
-      return true;
+      const deleted = await this._api.delete(Db.Context.System.Menu.Category, selectedSystemMenuCategoryId);
+      if (deleted) {
+        await this._toaster.deleteSuccess();
+      } else {
+        await this._toaster.deleteFail('');
+      }
+
+      return deleted;
     } catch (error) {
       await this._toaster.deleteFail(error);
       console.error(error);
