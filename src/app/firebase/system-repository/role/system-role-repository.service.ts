@@ -1,61 +1,37 @@
 import { RoleConfigurationType } from 'src/app/interface/system/role/role.interface';
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { inject, Injectable } from '@angular/core';
 import { lastValueFrom, map, Observable } from 'rxjs';
 import * as Db from 'src/app/constant/firebase-path';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
+import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/firebase-api.service';
 
+const param = createKeyMap<RoleConfigurationType>(['id', 'description', 'accessLevel', 'name', 'rate']);
 @Injectable({
   providedIn: 'root',
 })
 export class SystemRoleRepositoryService {
+  private _api = inject(FirebaseApiService);
   private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(
-    private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
-  ) {}
+  constructor(private _toaster: FirebaseToasterService) {}
 
   /** This will return as Observalble of all role configs  */
   public getRoleConfigurations(): Observable<RoleConfigurationType[]> {
-    return this._afs
-      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref => ref.orderBy('rate'))
-      .get()
-      .pipe(
-        map(snapshot => {
-          return snapshot.docs.map(doc => {
-            return doc.data();
-          });
-        })
-      );
+    return this._api.getDocuments<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
+      ref.orderBy(param.rate)
+    );
   }
 
   public subscribeAvailableRoles(role: RoleConfigurationType) {
-    return this._afs
-      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
-        ref.where('rate', '<=', role.rate).orderBy('rate')
-      )
-      .get()
-      .pipe(
-        map(snapshot => {
-          return snapshot.docs.map(doc => {
-            return doc.data();
-          });
-        })
-      );
+    return this._api.getDocuments<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
+      ref.where(param.rate, Query.LessThanOrEqual, role.rate).orderBy(param.rate)
+    );
   }
 
   public valueChangeListener(): Observable<RoleConfigurationType[]> {
-    return this._afs
-      .collection<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref => ref.orderBy('rate'))
-      .valueChanges()
-      .pipe(
-        map(roleConfigs =>
-          roleConfigs.map(rc => {
-            return rc;
-          })
-        )
-      );
+    return this._api.valueChangeDocuments<RoleConfigurationType>(Db.Context.System.Role.Configuration, ref =>
+      ref.orderBy(param.rate)
+    );
   }
 
   /** This will get only selectedId */
@@ -66,15 +42,17 @@ export class SystemRoleRepositoryService {
 
   /** This will add new System Role */
   public async addSystemRoleConfiguration(newConfig: RoleConfigurationType) {
-    const newId = this._afs.createId();
-    const collection = Db.Context.System.Role.Configuration;
-    newConfig.id = newId;
     const addCommand = { ...newConfig, ...this._timeStamp };
-
     try {
-      await this._afs.collection(collection).doc(newConfig.id).set(addCommand);
-      await this._toaster.addSuccess();
-      return true;
+      const saved = await this._api.set<RoleConfigurationType>(Db.Context.System.Role.Configuration, addCommand);
+
+      if (saved !== null) {
+        await this._toaster.addSuccess();
+      } else {
+        await this._toaster.addFail('');
+      }
+
+      return saved !== null;
     } catch (error) {
       await this._toaster.addFail(error);
       console.error(error);
@@ -84,11 +62,17 @@ export class SystemRoleRepositoryService {
 
   /** This will update the value of config */
   public async updateSystemRoleConfiguration(config: RoleConfigurationType) {
-    const doc = Db.Context.System.Role.Configuration + '/' + config.id;
     try {
-      await this._afs.doc(doc).update({ ...config, ...this._timeStamp });
-      await this._toaster.updateSuccess();
-      return true;
+      const updated = await this._api.updateDocument<RoleConfigurationType>(Db.Context.System.Role.Configuration, {
+        ...config,
+        ...this._timeStamp,
+      });
+      if (updated) {
+        await this._toaster.updateSuccess();
+      } else {
+        await this._toaster.updateFail('');
+      }
+      return updated;
     } catch (error) {
       await this._toaster.updateFail(error);
       console.error(error);
@@ -98,11 +82,15 @@ export class SystemRoleRepositoryService {
 
   /** This will delete the value of config*/
   public async deleteSystemRoleConfiguration(id: string) {
-    const doc = Db.Context.System.Role.Configuration + '/' + id;
     try {
-      await this._afs.doc(doc).delete();
-      await this._toaster.deleteSuccess();
-      return true;
+      const deleted = await this._api.delete<RoleConfigurationType>(Db.Context.System.Role.Configuration, id);
+      if (deleted) {
+        await this._toaster.deleteSuccess();
+      } else {
+        await this._toaster.deleteFail('');
+      }
+
+      return deleted;
     } catch (error) {
       await this._toaster.deleteFail(error);
       console.error(error);

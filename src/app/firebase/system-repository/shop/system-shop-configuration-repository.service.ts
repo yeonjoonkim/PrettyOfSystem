@@ -1,33 +1,32 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { catchError, from, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { lastValueFrom, map, Observable, of } from 'rxjs';
 import { ShopCategoryType, ShopConfigurationType, ShopCountryType } from 'src/app/interface/shop/shop.interface';
-import * as Db from 'src/app/constant/firebase-path';
-import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { override } from '../../../../../functions/src/service/override/shop/shop-config-override/shop-config-override';
 import { PostCodeItemType } from 'src/app/interface';
+import { override } from '../../../../../functions/src/service/override/shop/shop-config-override/shop-config-override';
+import { FirebaseApiService, Query } from '../../firebase-api/firebase-api.service';
+import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
+import * as Db from 'src/app/constant/firebase-path';
+
 @Injectable({
   providedIn: 'root',
 })
 export class SystemShopConfigurationRepositoryService {
+  private _api = inject(FirebaseApiService);
   private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(
-    private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
-  ) {}
+  constructor(private _toaster: FirebaseToasterService) {}
 
   public categoryListener(): Observable<ShopCategoryType[]> {
-    return this._afs
-      .collection<ShopCategoryType>(Db.Context.System.Shop.Category, ref => ref.orderBy('name'))
-      .get()
-      .pipe(
-        map(snapshot => {
-          return snapshot.docs.map(doc => {
-            return doc.data();
-          });
-        })
-      );
+    return this._api.getDocuments<ShopCategoryType>(Db.Context.System.Shop.Category, ref => ref.orderBy('name'));
+  }
+
+  public countryListener(): Observable<ShopCountryType[]> {
+    return this._api.getDocuments<ShopCountryType>(Db.Context.System.Shop.Country, ref => ref.orderBy('name'));
+  }
+
+  public async getSelectedSystemShopCountry(selectedId: string): Promise<ShopCountryType | undefined> {
+    let categories = await lastValueFrom(this.countryListener());
+    return categories.find(countries => countries.id === selectedId);
   }
 
   public async getCategory(selectedId: string): Promise<ShopCategoryType | undefined> {
@@ -35,105 +34,71 @@ export class SystemShopConfigurationRepositoryService {
     return systemShopCategories.find(r => r.id === selectedId);
   }
 
-  public countryListener(): Observable<ShopCountryType[]> {
-    return this._afs
-      .collection<ShopCountryType>(Db.Context.System.Shop.Country, ref => ref.orderBy('name'))
-      .get()
+  public allShopConfigurationGetListener(): Observable<ShopConfigurationType[]> {
+    return this._api
+      .getDocuments<ShopConfigurationType>(Db.Context.ShopConfiguration, ref => ref.orderBy('name'))
       .pipe(
-        map(snapshot => {
-          return snapshot.docs.map(doc => {
-            return doc.data();
+        map(docs => {
+          return docs.map(doc => {
+            return this.overrideConfig(doc);
           });
         })
-      );
-  }
-  public async getSelectedSystemShopCountry(selectedId: string): Promise<ShopCountryType | undefined> {
-    let categories = await lastValueFrom(this.countryListener());
-    return categories.find(countries => countries.id === selectedId);
-  }
-
-  public allShopConfigurationGetListener(): Observable<ShopConfigurationType[]> {
-    return this._afs
-      .collection<ShopConfigurationType>(Db.Context.ShopConfiguration, ref => ref.orderBy('name'))
-      .get()
-      .pipe(
-        switchMap(configs =>
-          from(
-            Promise.all(
-              configs.docs.map(snapshot => {
-                let shopconfig = snapshot.data();
-                shopconfig = this.overrideConfig(shopconfig);
-                return shopconfig;
-              })
-            )
-          )
-        )
       );
   }
 
   public postcodeAssociatedShopConfigurationValueChangeListener(
     query: PostCodeItemType
-  ): Observable<ShopConfigurationType[] | []> {
-    return this._afs
-      .collection<ShopConfigurationType>(Db.Context.ShopConfiguration, ref =>
+  ): Observable<ShopConfigurationType[]> {
+    return this._api
+      .valueChangeDocuments<ShopConfigurationType>(Db.Context.ShopConfiguration, ref =>
         ref.where('address.suburb', '==', query.suburb).where('address.postCode', '==', query.postCode)
       )
-      .valueChanges()
       .pipe(
-        map(snapShots =>
-          snapShots.map(doc => {
-            let data = doc as ShopConfigurationType;
-            data = this.overrideConfig(data);
-            return data;
-          })
-        )
+        map(docs => {
+          return docs.map(doc => {
+            return this.overrideConfig(doc);
+          });
+        })
       );
   }
 
   public assocatedShopConfigurationValueChangeListener(
     selectedIds: string[]
-  ): Observable<ShopConfigurationType[] | []> {
+  ): Observable<ShopConfigurationType[]> {
     if (!selectedIds.length) return of([]);
-
-    return this._afs
-      .collection<ShopConfigurationType>(Db.Context.ShopConfiguration, ref => ref.where('id', 'in', selectedIds))
-      .valueChanges()
+    return this._api
+      .valueChangeDocuments<ShopConfigurationType>(Db.Context.ShopConfiguration, ref =>
+        ref.where('id', 'in', selectedIds)
+      )
       .pipe(
-        map(snapShots =>
-          snapShots.map(doc => {
-            let data = doc as ShopConfigurationType;
-            data = this.overrideConfig(data);
-            return data;
-          })
-        )
+        map(docs => {
+          return docs.map(doc => {
+            return this.overrideConfig(doc);
+          });
+        })
       );
   }
 
   public shopConfigurationValueChangeListener(id: string): Observable<ShopConfigurationType | null> {
-    const docRef = this._afs.collection<ShopConfigurationType>(Db.Context.ShopConfiguration).doc(id);
-    return docRef.valueChanges().pipe(
-      switchMap((data: ShopConfigurationType | undefined) => {
-        if (data) {
-          data = this.overrideConfig(data);
-          return of(data);
-        } else {
-          return of(null);
-        }
-      }),
-      catchError(error => {
-        console.error('Error getting shop configuration:', error);
-        return of(null); // Return null on error
-      })
-    );
+    return this._api
+      .valueChangeDocument<ShopConfigurationType>(Db.Context.ShopConfiguration, ref =>
+        ref.where('id', Query.Equal, id).limit(1)
+      )
+      .pipe(map(doc => (doc !== null ? this.overrideConfig(doc) : null)));
   }
 
   public async createNewShopConfiguration(shopConfig: ShopConfigurationType): Promise<boolean> {
     const config = { ...shopConfig, ...this._timeStamp };
 
     try {
-      await this._afs.collection(Db.Context.ShopConfiguration).doc(shopConfig.id).set(config);
-      await this._toaster.addSuccess();
-      return true;
+      const saved = await this._api.set<ShopConfigurationType>(Db.Context.ShopConfiguration, config);
+      if (saved !== null) {
+        await this._toaster.addSuccess();
+      } else {
+        await this._toaster.addFail('');
+      }
+
+      return saved !== null;
     } catch (error) {
       await this._toaster.addFail(error);
       console.error(error);
@@ -143,11 +108,19 @@ export class SystemShopConfigurationRepositoryService {
 
   public async updateShopConfiguration(shopConfig: ShopConfigurationType): Promise<boolean> {
     const updatedConfig = { ...shopConfig, ...this._timeStamp };
-    const collection = Db.Context.ShopConfiguration;
+
     try {
-      await this._afs.collection(collection).doc(updatedConfig.id).update(updatedConfig);
-      await this._toaster.editSuccess();
-      return true;
+      const updated = await this._api.updateDocument<ShopConfigurationType>(
+        Db.Context.ShopConfiguration,
+        updatedConfig
+      );
+      if (updated) {
+        await this._toaster.editSuccess();
+      } else {
+        await this._toaster.editFail('');
+      }
+
+      return updated;
     } catch (error) {
       await this._toaster.editFail(error);
       console.error(error);
@@ -157,9 +130,14 @@ export class SystemShopConfigurationRepositoryService {
 
   public async deleteShopConfiguration(shopConfigId: string): Promise<boolean> {
     try {
-      await this._afs.collection(Db.Context.ShopConfiguration).doc(shopConfigId).delete();
-      await this._toaster.deleteSuccess();
-      return true;
+      const deleted = await this._api.delete<ShopConfigurationType>(Db.Context.ShopConfiguration, shopConfigId);
+      if (deleted) {
+        await this._toaster.deleteSuccess();
+      } else {
+        await this._toaster.deleteFail('');
+      }
+
+      return deleted;
     } catch (error) {
       await this._toaster.deleteFail(error);
       console.error(error);

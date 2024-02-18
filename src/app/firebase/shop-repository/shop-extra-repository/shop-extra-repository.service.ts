@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { ShopConfigurationType, ShopExtraDocumentType } from 'src/app/interface';
 import { ShopExtra } from 'src/app/constant/firebase-path';
@@ -9,13 +8,15 @@ import { TextTransformService } from 'src/app/service/global/text-transform/text
 import { DateService } from 'src/app/service/global/date/date.service';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 import * as Document from 'functions/src/service/override/shop/document-override/index';
+import { FirebaseApiService } from '../../firebase-api/firebase-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopExtraRepositoryService {
+  private _api = inject(FirebaseApiService);
+
   constructor(
-    private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
     private _textTransform: TextTransformService,
     private _languageStorage: SystemLanguageStorageService,
@@ -23,18 +24,21 @@ export class ShopExtraRepositoryService {
   ) {}
 
   public extraValueChangeListener(shopId: string) {
-    return this._afs
-      .collection<ShopExtraDocumentType>(ShopExtra(shopId))
-      .valueChanges()
+    return this._api
+      .valueChangeDocuments<ShopExtraDocumentType>(ShopExtra(shopId))
       .pipe(map(extras => extras.map(extra => Document.Extra.override(extra))));
   }
 
   public async addExtra(doc: ShopExtraDocumentType) {
     doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     try {
-      this._afs.collection<ShopExtraDocumentType>(ShopExtra(doc.shopId)).doc(doc.id).set(doc);
-      await this._toaster.addSuccess();
-      return true;
+      const saved = await this._api.set<ShopExtraDocumentType>(ShopExtra(doc.shopId), doc);
+      if (saved !== null) {
+        await this._toaster.addSuccess();
+      } else {
+        await this._toaster.addFail('');
+      }
+      return saved !== null;
     } catch (error) {
       await this._toaster.addFail(error);
       console.error(error);
@@ -46,9 +50,13 @@ export class ShopExtraRepositoryService {
     doc.titleProp = this._textTransform.preCleansingTranslateProp(doc.titleProp);
     doc = Document.Extra.override(doc);
     try {
-      this._afs.collection<ShopExtraDocumentType>(ShopExtra(doc.shopId)).doc(doc.id).update(doc);
-      await this._toaster.updateSuccess();
-      return true;
+      const updated = await this._api.updateDocument<ShopExtraDocumentType>(ShopExtra(doc.shopId), doc);
+      if (updated) {
+        await this._toaster.updateSuccess();
+      } else {
+        await this._toaster.updateFail('');
+      }
+      return updated;
     } catch (error) {
       await this._toaster.updateFail(error);
       console.error(error);
@@ -58,9 +66,15 @@ export class ShopExtraRepositoryService {
 
   public async deleteExtra(doc: ShopExtraDocumentType) {
     try {
-      this._afs.collection<ShopExtraDocumentType>(ShopExtra(doc.shopId)).doc(doc.id).delete();
-      await this._toaster.deleteSuccess();
-      return true;
+      const deleted = await this._api.delete<ShopExtraDocumentType>(ShopExtra(doc.shopId), doc.id);
+
+      if (deleted) {
+        await this._toaster.deleteSuccess();
+      } else {
+        await this._toaster.deleteFail('');
+      }
+
+      return deleted;
     } catch (error) {
       await this._toaster.deleteFail(error);
       console.error(error);
@@ -70,7 +84,7 @@ export class ShopExtraRepositoryService {
 
   public defaultExtraDocument() {
     let result: ShopExtraDocumentType = {
-      id: this._afs.createId(),
+      id: this._api.newId(),
       shopId: '',
       titleProp: '',
       title: '',

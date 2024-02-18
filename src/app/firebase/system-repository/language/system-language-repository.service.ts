@@ -1,47 +1,40 @@
 import { LanguageSelectionType, ILanguageKey } from 'src/app/interface/system/language/language.interface';
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
 import { map } from 'rxjs';
 import * as Db from 'src/app/constant/firebase-path';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
+import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/firebase-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SystemLanguageRepositoryService {
+  private _api = inject(FirebaseApiService);
   private readonly _timeStamp = { lastModifiedDate: new Date() };
 
-  constructor(
-    private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
-  ) {}
+  constructor(private _toaster: FirebaseToasterService) {}
 
   public getLanguageSelectionResult() {
-    return this._afs
-      .collection(Db.Context.System.Language.Selection)
-      .get()
-      .pipe(
-        map(snapshot => {
-          return snapshot.docs.map(doc => {
-            let result = this.setILanuageSelection(doc.data(), doc.id);
-            return result;
-          });
-        })
-      );
+    return this._api.getDocuments<LanguageSelectionType>(Db.Context.System.Language.Selection).pipe(
+      map(docs => {
+        return docs.map(doc => {
+          let result = this.setILanuageSelection(doc, doc.id);
+          return result;
+        });
+      })
+    );
   }
 
   public getLanguageKeyResult() {
-    return this._afs
-      .collection(Db.Context.System.Language.Key)
-      .get()
-      .pipe(
-        map(snapshot => {
-          return snapshot.docs.map(doc => {
-            let result = this.setILanguageKey(doc.data(), doc.id);
-            return result;
-          });
-        })
-      );
+    return this._api.getDocuments<ILanguageKey>(Db.Context.System.Language.Key).pipe(
+      map(docs => {
+        return docs.map(doc => {
+          const id = doc.id !== undefined ? doc.id : '';
+          let result = this.setILanguageKey(doc, id);
+          return result;
+        });
+      })
+    );
   }
 
   private setILanuageSelection(response: any, id?: string) {
@@ -61,9 +54,16 @@ export class SystemLanguageRepositoryService {
   public async updateLanguageSelection(criteria: LanguageSelectionType) {
     let updateCommand = { ...criteria, ...this._timeStamp };
     try {
-      await this._afs.collection(Db.Context.System.Language.Selection).doc(criteria.id).update(updateCommand);
-      await this._toaster.updateSuccess();
-      return true;
+      const updated = await this._api.updateDocument<LanguageSelectionType>(
+        Db.Context.System.Language.Selection,
+        updateCommand
+      );
+      if (updated) {
+        await this._toaster.updateSuccess();
+      } else {
+        await this._toaster.updateFail('');
+      }
+      return updated;
     } catch (error) {
       await this._toaster.updateFail(error);
       console.error(error);
@@ -73,11 +73,14 @@ export class SystemLanguageRepositoryService {
 
   public async updateLanguageKey(criteria: ILanguageKey) {
     const updateCommand = { ...criteria, ...this._timeStamp };
-    const collection = Db.Context.System.Language.Key;
     try {
-      await this._afs.collection(collection).doc(criteria.id).update(updateCommand);
-      await this._toaster.updateSuccess();
-      return true;
+      const updated = await this._api.updateDocument<ILanguageKey>(Db.Context.System.Language.Key, updateCommand);
+      if (updated) {
+        await this._toaster.updateSuccess();
+      } else {
+        await this._toaster.updateFail('');
+      }
+      return updated;
     } catch (error) {
       await this._toaster.updateFail(error);
       console.error(error);
@@ -87,10 +90,12 @@ export class SystemLanguageRepositoryService {
 
   public async addNewLanguageSelection(criteria: LanguageSelectionType) {
     try {
-      const id = this._afs.createId();
-      const newSelection = { ...criteria, ...this._timeStamp, id: id };
-      await this._afs.collection(Db.Context.System.Language.Selection).doc(id).set(newSelection);
-      await this._toaster.addSuccess();
+      const saved = await this._api.set<LanguageSelectionType>(Db.Context.System.Language.Selection, criteria);
+      if (saved) {
+        await this._toaster.addSuccess();
+      } else {
+        await this._toaster.addFail('');
+      }
       return true;
     } catch (error) {
       console.error(error);

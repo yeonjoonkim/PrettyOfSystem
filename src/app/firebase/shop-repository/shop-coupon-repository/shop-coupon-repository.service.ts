@@ -1,28 +1,49 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import * as Constant from '../../../constant/constant';
 import { ShopCoupon } from 'src/app/constant/firebase-path';
 import { ShopConfigurationType, ShopCouponDocumentType } from 'src/app/interface';
-import { map, of } from 'rxjs';
+import { map } from 'rxjs';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';
 import * as Document from 'functions/src/service/override/shop/document-override/index';
+import { FirebaseApiService, createKeyMap } from '../../firebase-api/firebase-api.service';
+
+const param = createKeyMap<ShopCouponDocumentType>([
+  'id',
+  'description',
+  'discount',
+  'discountAmount',
+  'discountPrice',
+  'expiryMonth',
+  'lastModifiedDate',
+  'lastModifiedEmployee',
+  'numOfCoupon',
+  'lastModifiedEmployee',
+  'shopId',
+  'title',
+  'titleProp',
+  'serviceId',
+  'relatedService',
+  'option',
+]);
 @Injectable({
   providedIn: 'root',
 })
 export class ShopCouponRepositoryService {
+  private _api = inject(FirebaseApiService);
+
   constructor(
-    private _afs: AngularFirestore,
     private _toaster: FirebaseToasterService,
     private _date: DateService,
     private _languageStorage: SystemLanguageStorageService
   ) {}
 
   public valueChangeListener(shopId: string) {
-    return this._afs
-      .collection<ShopCouponDocumentType>(ShopCoupon(shopId), ref => ref.orderBy('discountPrice', 'desc'))
-      .valueChanges()
+    return this._api
+      .valueChangeDocuments<ShopCouponDocumentType>(ShopCoupon(shopId), ref =>
+        ref.orderBy(param.discountPrice, 'desc')
+      )
       .pipe(
         map(coupons => {
           return coupons.map(coupon => {
@@ -35,9 +56,15 @@ export class ShopCouponRepositoryService {
   public async addCoupon(doc: ShopCouponDocumentType) {
     try {
       doc = Document.Coupon.override(doc);
-      this._afs.collection<ShopCouponDocumentType>(ShopCoupon(doc.shopId)).doc(doc.id).set(doc);
-      await this._toaster.addSuccess();
-      return true;
+      const saved = await this._api.set<ShopCouponDocumentType>(ShopCoupon(doc.shopId), doc);
+
+      if (saved !== null) {
+        await this._toaster.addSuccess();
+      } else {
+        await this._toaster.addFail('');
+      }
+
+      return saved !== null;
     } catch (error) {
       await this._toaster.addFail(error);
       console.error(error);
@@ -48,8 +75,14 @@ export class ShopCouponRepositoryService {
   public async updateCoupon(doc: ShopCouponDocumentType) {
     try {
       doc = Document.Coupon.override(doc);
-      this._afs.collection<ShopCouponDocumentType>(ShopCoupon(doc.shopId)).doc(doc.id).update(doc);
-      await this._toaster.updateSuccess();
+
+      const updated = await this._api.updateDocument<ShopCouponDocumentType>(ShopCoupon(doc.shopId), doc);
+      if (updated) {
+        await this._toaster.updateSuccess();
+      } else {
+        await this._toaster.updateFail('');
+      }
+
       return true;
     } catch (error) {
       await this._toaster.updateFail(error);
@@ -60,9 +93,13 @@ export class ShopCouponRepositoryService {
 
   public async deleteCoupon(doc: ShopCouponDocumentType) {
     try {
-      this._afs.collection<ShopCouponDocumentType>(ShopCoupon(doc.shopId)).doc(doc.id).delete();
-      await this._toaster.deleteSuccess();
-      return true;
+      const deleted = await this._api.delete<ShopCouponDocumentType>(ShopCoupon(doc.shopId), doc.id);
+      if (deleted) {
+        await this._toaster.deleteSuccess();
+      } else {
+        await this._toaster.deleteFail('');
+      }
+      return deleted;
     } catch (error) {
       await this._toaster.deleteFail(error);
       console.error(error);
@@ -71,7 +108,7 @@ export class ShopCouponRepositoryService {
   }
   public defaultDocument(empName: string, shopId: string) {
     const result: ShopCouponDocumentType = {
-      id: this._afs.createId(),
+      id: this._api.newId(),
       serviceId: '',
       shopId: shopId,
       title: '',

@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import {
   ChatGptTranslateDocumentType,
@@ -7,22 +6,48 @@ import {
   SystemLanguageTranslateRequestType,
 } from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
-import { map } from 'rxjs';
+import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/firebase-api.service';
+
+const chatGptParam = createKeyMap<ChatGptTranslateDocumentType>([
+  'id',
+  'attempt',
+  'createdDate',
+  'error',
+  'format',
+  'isSystemAdmin',
+  'languages',
+  'packageKey',
+  'parentId',
+  'prop',
+  'result',
+  'serviceId',
+  'shopId',
+  'status',
+  'translateResult',
+]);
+
 @Injectable({
   providedIn: 'root',
 })
 export class SystemTranslateRequestRepositoryService {
-  constructor(
-    private _afs: AngularFirestore,
-    private _toaster: FirebaseToasterService
-  ) {}
+  private _api = inject(FirebaseApiService);
+  constructor(private _toaster: FirebaseToasterService) {}
 
   public async createAddLanguageRequest(language: NameValuePairType) {
     const form = this.languageForm(language);
     try {
-      await this._afs.collection(Db.Context.SystemLangaugeTranslateRequest).doc(form.id).set(form);
-      await this._toaster.requestSuccess();
-      return true;
+      const requested = await this._api.set<SystemLanguageTranslateRequestType>(
+        Db.Context.SystemLangaugeTranslateRequest,
+        form
+      );
+
+      if (requested !== null) {
+        await this._toaster.requestSuccess();
+      } else {
+        await this._toaster.requestFail('');
+      }
+
+      return requested !== null;
     } catch (error) {
       await this._toaster.requestFail(error);
       console.error(error);
@@ -31,17 +56,14 @@ export class SystemTranslateRequestRepositoryService {
   }
 
   public systemLanguageRequestValueChangeListener() {
-    return this._afs
-      .collection<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
-        ref.where('isSystemAdmin', '==', true)
-      )
-      .valueChanges()
-      .pipe(map(snapShots => snapShots.map(doc => doc as ChatGptTranslateDocumentType)));
+    return this._api.valueChangeDocuments<ChatGptTranslateDocumentType>(Db.Context.ChatGptTranslateRequest, ref =>
+      ref.where(chatGptParam.isSystemAdmin, Query.Equal, true)
+    );
   }
 
   private languageForm(language: NameValuePairType) {
     const form: SystemLanguageTranslateRequestType = {
-      id: this._afs.createId(),
+      id: this._api.newId(),
       name: language.name,
       code: language.value,
       reqeustDate: new Date(),

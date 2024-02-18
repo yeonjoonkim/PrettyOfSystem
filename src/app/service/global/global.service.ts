@@ -17,10 +17,10 @@ import { TimerService } from './timer/timer.service';
 import { NetworkConnectionStatusService } from './network-connection-status/network-connection-status.service';
 import { CryptService } from './crypt/crypt.service';
 import { AgreementModalService } from './agreement-modal/agreement-modal.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DeviceService } from './device/device.service';
 import { PrivateHealthInsuranceService } from './private-health-insurance/private-health-insurance.service';
 import { DOCUMENT } from '@angular/common';
+import { FirebaseApiService } from 'src/app/firebase/firebase-api/firebase-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +48,7 @@ export class GlobalService {
     public crypt: CryptService,
     public device: DeviceService,
     public privateHealth: PrivateHealthInsuranceService,
-    private _afs: AngularFirestore
+    private _api: FirebaseApiService
   ) {}
 
   public isUndefinedOrNull(data: any): boolean {
@@ -66,6 +66,6 @@ export class GlobalService {
   }
 
   public newId() {
-    return this._afs.createId();
+    return this._api.newId();
   }
 }

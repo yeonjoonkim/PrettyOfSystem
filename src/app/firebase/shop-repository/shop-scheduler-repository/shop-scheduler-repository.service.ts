@@ -1,16 +1,7 @@
 import { Injectable, Signal, inject } from '@angular/core';
-import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import {
-  APIQueryMethodType,
-  QueryOperatorType,
-  ShopScheduleDocumentType,
-  ShopSchedulerDocumentType,
-} from 'src/app/interface';
+import { ShopSchedulerDocumentType } from 'src/app/interface';
 import { Context } from 'src/app/constant/firebase-path';
-import * as Constant from 'src/app/constant/constant';
-import { of, switchMap } from 'rxjs';
-import { FirebaseApiService, createKeyMap } from '../../firebase-api/firebase-api.service';
+import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/firebase-api.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 const param = createKeyMap<ShopSchedulerDocumentType>([
@@ -30,19 +21,12 @@ const param = createKeyMap<ShopSchedulerDocumentType>([
 })
 export class ShopSchedulerRepositoryService {
   private _api = inject(FirebaseApiService);
-  private _afs = inject(AngularFirestore);
 
   constructor() {}
 
   public getAsObservable(shopId: string) {
-    const collection = this._afs.collection<ShopSchedulerDocumentType>(Context.ShopScheduler, ref =>
-      ref.where(param.shopId, Constant.Query.Equal, shopId).limit(1)
-    );
-
-    return this._api.getAsObservable<ShopSchedulerDocumentType>(collection).pipe(
-      switchMap(documents => {
-        return of(documents.length > 0 ? documents[0] : null);
-      })
+    return this._api.getDocument<ShopSchedulerDocumentType>(Context.ShopScheduler, ref =>
+      ref.where(param.shopId, Query.Equal, shopId).limit(1)
     );
   }
 

@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
 import { ChangeNumberUserCriteriaType, ChangePhoneNumberRequestDocumentType } from 'src/app/interface';
 import * as Db from 'src/app/constant/firebase-path';
 import { UserCredentialRepositoryService } from '../../user-repository/user-credential-repository/user-credential-repository.service';
@@ -7,14 +6,26 @@ import { firstValueFrom, map } from 'rxjs';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { UserAdminService } from 'src/app/service/user-admin/user-admin.service';
+import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/firebase-api.service';
+
+const param = createKeyMap<ChangePhoneNumberRequestDocumentType>([
+  'id',
+  'attempt',
+  'emailAddress',
+  'expiredDate',
+  'newPhoneNumber',
+  'status',
+  'url',
+  'userId',
+]);
 @Injectable({
   providedIn: 'root',
 })
 export class ChangePhoneNumberRequestRepositoryService {
+  private _api = inject(FirebaseApiService);
   private readonly _email: RegExp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   constructor(
     private _userRepo: UserCredentialRepositoryService,
-    private _afs: AngularFirestore,
     private _global: GlobalService,
     private _toast: FirebaseToasterService,
     private _admin: UserAdminService
@@ -54,12 +65,17 @@ export class ChangePhoneNumberRequestRepositoryService {
     const isExistingAccount = await this._userRepo.verifyUserAccount(newPhoneNumber);
     if (!isExistingAccount) {
       try {
-        await this._afs
-          .collection<ChangePhoneNumberRequestDocumentType>(Db.Context.ChangePhoneNumberRequest)
-          .doc(requestId)
-          .update({ status: 'Submit', newPhoneNumber: newPhoneNumber });
-        await this._toast.requestSuccess();
-        return true;
+        const submitted = await this._api.updateField<ChangePhoneNumberRequestDocumentType>(
+          Db.Context.ChangePhoneNumberRequest,
+          requestId,
+          { status: 'Submit', newPhoneNumber: newPhoneNumber }
+        );
+
+        if (submitted) {
+          await this._toast.requestSuccess();
+        }
+
+        return submitted;
       } catch (error) {
         console.error(error);
         await this._toast.requestFail(error);
@@ -72,29 +88,19 @@ export class ChangePhoneNumberRequestRepositoryService {
   }
 
   public get(requestId: string) {
-    const requestRef = this._afs.collection<ChangePhoneNumberRequestDocumentType>(
-      Db.Context.ChangePhoneNumberRequest,
-      ref => ref.where('id', '==', requestId).where('status', '==', 'SentEmail').limit(1)
-    );
-    return requestRef.get().pipe(
-      map(snapshot => {
-        if (snapshot.docs.length > 0) {
-          return snapshot.docs[0].data();
-        } else {
-          return null;
-        }
-      })
+    return this._api.getDocument<ChangePhoneNumberRequestDocumentType>(Db.Context.ChangePhoneNumberRequest, ref =>
+      ref.where(param.id, Query.Equal, requestId).limit(1)
     );
   }
 
   public async request(doc: ChangePhoneNumberRequestDocumentType) {
     try {
-      await this._afs
-        .collection<ChangePhoneNumberRequestDocumentType>(Db.Context.ChangePhoneNumberRequest)
-        .doc(doc.id)
-        .set(doc);
+      const requested = await this._api.set<ChangePhoneNumberRequestDocumentType>(
+        Db.Context.ChangePhoneNumberRequest,
+        doc
+      );
       await this._toast.requestSuccess();
-      return true;
+      return requested;
     } catch (error) {
       console.error(error);
       await this._toast.requestFail(error);
