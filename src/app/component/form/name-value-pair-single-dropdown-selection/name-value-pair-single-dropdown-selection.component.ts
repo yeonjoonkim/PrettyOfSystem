@@ -11,6 +11,7 @@ import {
   SimpleChange,
   SimpleChanges,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { NameValuePairType, PairNameValueTypeFilterParamType } from 'src/app/interface';
 import * as Constant from 'src/app/constant/constant';
@@ -18,6 +19,7 @@ import { GlobalService } from 'src/app/service/global/global.service';
 import { cloneDeep } from 'lodash-es';
 import { PopoverController } from '@ionic/angular';
 import { NameValuePairSingleDropdownlistComponent } from './name-value-pair-single-dropdown-list/name-value-pair-single-dropdown-list.component';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 
 @Component({
   selector: 'name-value-pair-single-dropdown-selection',
@@ -25,6 +27,8 @@ import { NameValuePairSingleDropdownlistComponent } from './name-value-pair-sing
   styleUrls: ['./name-value-pair-single-dropdown-selection.component.scss'],
 })
 export class NameValuePairSingleDropdownSelectionComponent implements OnInit, OnChanges, AfterViewInit {
+  public kendo = inject(KendoUiService);
+
   @ViewChild('dropdownListBtn') dropdownListBtn!: ElementRef;
   @ViewChild('selectedName') selectedName!: ElementRef;
   @ViewChild('dropDownArrow') dropDownArrow!: ElementRef;
@@ -75,7 +79,7 @@ export class NameValuePairSingleDropdownSelectionComponent implements OnInit, On
   }
 
   private setupEventListeners() {
-    if (this.dropdownListBtn && this.selectedName) {
+    if (this.dropdownListBtn && this.selectedName && this.dropDownArrow) {
       // Handle button click event separately
       this._renderer.listen(this.dropdownListBtn.nativeElement, 'click', (event: Event) => {
         this.handleButtonClick(event);

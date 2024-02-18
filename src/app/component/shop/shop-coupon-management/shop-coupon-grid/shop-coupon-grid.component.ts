@@ -1,16 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import {
   ChatGptTranslateDocumentType,
   ShopCouponDocumentType,
   ShopLanguagePackageModalProp,
 } from 'src/app/interface';
 import * as Constant from 'src/app/constant/constant';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 @Component({
   selector: 'shop-coupon-grid',
   templateUrl: './shop-coupon-grid.component.html',
   styleUrls: ['./shop-coupon-grid.component.scss'],
 })
 export class ShopCouponGridComponent implements OnInit {
+  public kendo = inject(KendoUiService);
   @Output() onEditLanguagePackage = new EventEmitter<ShopLanguagePackageModalProp>();
   @Output() onEdit = new EventEmitter<ShopCouponDocumentType>();
   @Output() onCreate = new EventEmitter<boolean>();

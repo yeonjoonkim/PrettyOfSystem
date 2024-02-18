@@ -9,14 +9,14 @@
           <div class="button-container">
             <signature-transfer-upload-photo [(signature)]="signature"></signature-transfer-upload-photo>
             <button kendoButton class="signature-btn" (click)="onClickLink($event)">
-              <span class="k-icon k-i-link"></span>
+              <kendo-svgicon [icon]="kendo.icon.link"></kendo-svgicon>
             </button>
             <button
               kendoButton
               class="signature-btn"
               *ngIf="type === 'client' || mode === 'create'"
               (click)="onClickClearSignature()">
-              <span class="k-icon k-i-reset"></span>
+              <kendo-svgicon [icon]="kendo.icon.refresh"></kendo-svgicon>
             </button>
           </div>
         </flex-col-item>

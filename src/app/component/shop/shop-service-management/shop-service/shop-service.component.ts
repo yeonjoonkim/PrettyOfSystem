@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   IFormHeaderModalProp,
   NameValuePairType,
@@ -11,7 +11,8 @@ import * as Constant from 'src/app/constant/constant';
 import { cloneDeep } from 'lodash-es';
 import { ModalController } from '@ionic/angular';
 import { ShopServiceManagementService } from 'src/app/service/shop/shop-service-management/shop-service-management.service';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 
 @Component({
   selector: 'shop-service',
@@ -19,6 +20,7 @@ import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
   styleUrls: ['./shop-service.component.scss'],
 })
 export class ShopServiceComponent implements OnInit, OnDestroy {
+  public kendo = inject(KendoUiService);
   private _destroy$ = new Subject<void>();
   public country!: ShopCountryType;
   public form!: IFormHeaderModalProp;

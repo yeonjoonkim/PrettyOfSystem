@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
+import { KendoUiIconService } from 'src/app/service/global/kendo-ui/icon/kendo-ui-icon.service';
 
 @Component({
   selector: 'form-header',
@@ -21,8 +22,10 @@ export class FormHeaderComponent implements OnInit {
   @Input() title!: string;
   @Input() action: Constant.FormActionType = Constant.Default.FormAction.Read;
   public status: Constant.FormStatusType = Constant.Default.FormStatus.Reading;
-
-  constructor(private _global: GlobalService) {}
+  constructor(
+    private _global: GlobalService,
+    public kendo: KendoUiIconService
+  ) {}
 
   ngOnInit() {
     this.setDefaultStatus();
@@ -34,10 +37,10 @@ export class FormHeaderComponent implements OnInit {
       this.action === Constant.Default.FormAction.Create
         ? (this.status = Constant.Default.FormStatus.Creating)
         : this.action === Constant.Default.FormAction.Edit
-        ? (this.status = Constant.Default.FormStatus.Editing)
-        : this.action === Constant.Default.FormAction.Read
-        ? (this.status = Constant.Default.FormStatus.Reading)
-        : (this.status = Constant.Default.FormStatus.Reading);
+          ? (this.status = Constant.Default.FormStatus.Editing)
+          : this.action === Constant.Default.FormAction.Read
+            ? (this.status = Constant.Default.FormStatus.Reading)
+            : (this.status = Constant.Default.FormStatus.Reading);
   }
 
   public async onClickSaveButton() {

@@ -50,12 +50,11 @@ export class ShopEmployeeManagementService {
     this.activeProgressBar();
   }
 
-  public async buildNewEmployee() {
-    const shop = await firstValueFrom(this.shopConfig$);
-    const roles = await firstValueFrom(this.availableRoles$);
-    const employeeRole = roles.find(e => e.accessLevel.isEmployee);
-    const currentLanguage = await this._languageStorage.getCurrentLanguage();
-
+  public async buildNewEmployee(
+    shop: ShopConfigurationType,
+    employeeRole: RoleConfigurationType,
+    currentLanguage: string
+  ) {
     if (shop !== null && employeeRole !== undefined) {
       const setting = this._admin.setDefaultUserSetting();
       const result: ShopEmployeeManagementUserType = {

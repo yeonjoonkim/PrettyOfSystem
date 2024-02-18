@@ -10,10 +10,10 @@
     <div>
       <kendo-buttongroup>
         <button kendoButton [disabled]="!scheduler.allowPreviousDate()" (click)="scheduler.previousDay()">
-          <span class="k-icon k-i-arrow-60-left"></span>
+          <kendo-svgicon [icon]="kendo.icon.left"></kendo-svgicon>
         </button>
         <button kendoButton [disabled]="!scheduler.allowNextDate()" (click)="scheduler.nextDay()">
-          <span class="k-icon k-i-arrow-60-right"></span>
+          <kendo-svgicon [icon]="kendo.icon.right"></kendo-svgicon>
         </button>
       </kendo-buttongroup>
     </div>

@@ -1,4 +1,6 @@
 <kendo-button id="dropdown-list-btn" #dropdownListBtn>
   <span id="selected-name" #selectedName>{{ selected.name }} </span>
-  <span #dropDownArrow id="dropdown-list-down" class="k-icon k-i-arrow-60-down"></span>
+  <span #dropDownArrow id="dropdown-list-down">
+    <kendo-svgicon [icon]="kendo.icon.down"></kendo-svgicon>
+  </span>
 </kendo-button>

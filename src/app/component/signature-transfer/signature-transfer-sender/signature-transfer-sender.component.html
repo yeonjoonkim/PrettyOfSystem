@@ -2,7 +2,7 @@
   <flex-col-item>
     <div class="button-container">
       <button kendoButton (click)="mode = 'input'" [ngClass]="{ active: mode === 'input' }">
-        <span class="k-icon k-i-pencil"></span>
+        <kendo-svgicon [icon]="kendo.icon.pencil"></kendo-svgicon>
       </button>
       <signature-transfer-upload-photo
         [ngClass]="{ activeSignatureUpload: mode === 'upload' }"
@@ -10,7 +10,7 @@
         (signatureChange)="onUpload()"
         (click)="mode = 'upload'"></signature-transfer-upload-photo>
       <button kendoButton (click)="signature = ''">
-        <span class="k-icon k-i-reset"></span>
+        <kendo-svgicon [icon]="kendo.icon.refresh"></kendo-svgicon>
       </button>
     </div>
   </flex-col-item>

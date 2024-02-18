@@ -71,6 +71,7 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
         this.specializedEmployees
       ) {
         this._isModalOpen = true;
+        await this._global.loading.show();
         const prop: ShopServiceModalDocumentProp = {
           service: await this._shopService.getNewService(this._config.id, this.employeeName),
           specializedEmployees: this.specializedEmployees,
@@ -80,6 +81,8 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
           titleStatus: Constant.API.TranslateStatus.Create,
           descriptionStatus: Constant.API.TranslateStatus.Create,
         };
+
+        await this._global.loading.dismiss();
         const modal = await this._shopService.modal.presentNewService(prop);
         await modal.present();
         await this.handleModalClose(modal);

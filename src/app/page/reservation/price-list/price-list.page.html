@@ -7,7 +7,11 @@
     <!-- Title -->
     <ion-title>{{'menucontent.title.pricelist'| languageTransform:'System' | async }} </ion-title>
     <ion-buttons slot="end" id="edit-btn">
-      <kendo-button icon="edit" themeColor="success" routerLink="/shop/service-management"></kendo-button>
+      <kendo-button
+        icon="edit"
+        themeColor="success"
+        [svgIcon]="kendo.editIcon"
+        routerLink="/shop/service-management"></kendo-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
