@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import {
   ChatGptTranslateDocumentType,
   ShopCountryType,
@@ -8,6 +8,7 @@ import {
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopExtraManagementService } from 'src/app/service/shop/shop-extra-management/shop-extra-management.service';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 
 @Component({
   selector: 'shop-extra-grid',
@@ -15,6 +16,8 @@ import { ShopExtraManagementService } from 'src/app/service/shop/shop-extra-mana
   styleUrls: ['./shop-extra-grid.component.scss'],
 })
 export class ShopExtraGridComponent implements OnInit {
+  public kendo = inject(KendoUiService);
+
   @Output() onEditPackage = new EventEmitter<ShopLanguagePackageModalProp>();
   @Output() onEdit = new EventEmitter<ShopExtraDocumentType>();
   @Output() onCreate = new EventEmitter<boolean>();

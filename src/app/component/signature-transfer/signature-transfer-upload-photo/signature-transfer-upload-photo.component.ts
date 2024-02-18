@@ -1,7 +1,18 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { NgxPhotoEditorService } from 'ngx-photo-editor';
 import { take } from 'rxjs';
 import { Image } from 'image-js';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 
 @Component({
   selector: 'signature-transfer-upload-photo',
@@ -9,6 +20,7 @@ import { Image } from 'image-js';
   styleUrls: ['./signature-transfer-upload-photo.component.scss'],
 })
 export class SignatureTransferUploadPhotoComponent implements OnInit {
+  public kendo = inject(KendoUiService);
   @ViewChild('fileInput') fileInput!: ElementRef;
   @Output() signatureChange = new EventEmitter<string>();
   @Output() onClickUpload = new EventEmitter<void>();

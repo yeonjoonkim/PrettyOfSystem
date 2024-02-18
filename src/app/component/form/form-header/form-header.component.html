@@ -11,6 +11,7 @@
           isDeleteRequired
         "
         icon="trash"
+        [svgIcon]="kendo.trash"
         themeColor="error"
         (click)="onClickDeleteButton()"></kendo-button>
     </kendo-buttongroup>
@@ -26,6 +27,7 @@
         *ngIf="status === 'editing' && readOnly"
         icon="edit"
         themeColor="success"
+        [svgIcon]="kendo.editIcon"
         (click)="onClickEditButton()"></kendo-button>
 
       <kendo-button
@@ -37,6 +39,7 @@
         "
         [disabled]="!enabledSavebutton"
         icon="save"
+        [svgIcon]="kendo.saveIcon"
         themeColor="success"
         (click)="onClickSaveButton()"></kendo-button>
     </kendo-buttongroup>

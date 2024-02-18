@@ -3055,6 +3055,11 @@
   resolved "https://registry.npmjs.org/@progress/kendo-file-saver/-/kendo-file-saver-1.1.1.tgz"
   integrity sha512-mo0Cw3MLoLcx2bA+Ma/VAxkM9vHSJ4Sg0vgh6U1ZIvPXmnfO8Dgsdiv/475lafyju0kG8KOhl3bcVagCF71glQ==
 
+"@progress/kendo-font-icons@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/@progress/kendo-font-icons/-/kendo-font-icons-2.1.0.tgz"
+  integrity sha512-G+QvyLdtNnFjXtF+Lpwr8eSPITOfD0f+X8AgiRYg9p0rXTgD9dr5UjczqXnEXvcZO4NyAV71y0LnAyQbbD103Q==
+
 "@progress/kendo-font-icons@1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@progress/kendo-font-icons/-/kendo-font-icons-1.2.0.tgz"

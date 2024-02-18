@@ -33,7 +33,7 @@ import { ToolBarModule } from '@progress/kendo-angular-toolbar';
 import { UploadsModule } from '@progress/kendo-angular-upload';
 import { UtilsModule } from '@progress/kendo-angular-utils';
 import { FormFieldModule } from '@progress/kendo-angular-inputs';
-
+import { IconsModule } from '@progress/kendo-angular-icons';
 //DATA QUERY
 //https://www.telerik.com/kendo-angular-ui/components/data-query/get-started/
 import { process, orderBy, filterBy } from '@progress/kendo-data-query';
@@ -82,6 +82,7 @@ import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
     ToolBarModule,
     UploadsModule,
     UtilsModule,
+    IconsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

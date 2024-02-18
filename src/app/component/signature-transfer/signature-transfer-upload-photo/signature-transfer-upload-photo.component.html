@@ -1,6 +1,6 @@
 <div id="change-button-container">
   <input type="file" #fileInput style="display: none" (change)="fileChangeHandler($event)" />
   <button kendoButton (click)="openFileDialog()" id="change-button">
-    <span class="k-icon k-i-photo-camera"></span>
+    <kendo-svgicon [icon]="kendo.icon.camera"></kendo-svgicon>
   </button>
 </div>

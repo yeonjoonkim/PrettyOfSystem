@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { KendoUiIconService } from 'src/app/service/global/kendo-ui/icon/kendo-ui-icon.service';
 import {
   IShopServiceMenuOptionAction,
   ShopServiceMenuOptionControllerService,
@@ -10,8 +11,10 @@ import {
   styleUrls: ['./shop-service-management.page.scss'],
 })
 export class ShopServiceManagementPage implements OnInit {
+  public kendo = inject(KendoUiIconService);
   public selected: IShopServiceMenuOptionAction = this._menuCtrl.setDefault();
   public selection: IShopServiceMenuOptionAction[] = this._menuCtrl.buttons();
+
   constructor(private _menuCtrl: ShopServiceMenuOptionControllerService) {}
 
   ngOnInit() {}

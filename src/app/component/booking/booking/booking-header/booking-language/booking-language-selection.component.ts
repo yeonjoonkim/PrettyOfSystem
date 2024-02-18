@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild, inject } from '@angular/core';
 import { NameValuePairType } from 'src/app/interface';
 import { PopoverController } from '@ionic/angular';
 import { BookingLanguageDropDownListComponent } from './booking-language-dropdown-list/booking-language-dropdown-list.component';
 import { LanguageService } from 'src/app/service/global/language/language.service';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 
 @Component({
   selector: 'booking-language-selection',
@@ -10,6 +11,8 @@ import { LanguageService } from 'src/app/service/global/language/language.servic
   styleUrls: ['./booking-language-selection.component.scss'],
 })
 export class BookingLanguageSelectionComponent implements OnInit, AfterViewInit {
+  public kendo = inject(KendoUiService);
+
   @ViewChild('dropdownListBtn') dropdownListBtn!: ElementRef;
   @ViewChild('selectedName') selectedName!: ElementRef;
   @ViewChild('dropDownArrow') dropDownArrow!: ElementRef;
@@ -55,7 +58,7 @@ export class BookingLanguageSelectionComponent implements OnInit, AfterViewInit 
   }
 
   private setupEventListeners() {
-    if (this.dropdownListBtn && this.selectedName) {
+    if (this.dropdownListBtn && this.selectedName && this.dropDownArrow) {
       // Handle button click event separately
       this._renderer.listen(this.dropdownListBtn.nativeElement, 'click', (event: Event) => {
         this.handleButtonClick(event);

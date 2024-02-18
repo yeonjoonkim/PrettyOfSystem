@@ -126,7 +126,7 @@
           id="service-add-button"
           *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')"
           (click)="onClickEditService($event)">
-          <span class="k-icon k-i-change-manually"></span>
+          <kendo-svgicon [icon]="kendo.icon.changeManuallyIcon"></kendo-svgicon>
         </button>
       </flex-col-item>
       <ng-container *ngFor="let service of current.services">
@@ -166,7 +166,7 @@
           id="extra-add-button"
           *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')"
           (click)="onClickEditExtra($event)">
-          <span class="k-icon k-i-change-manually"></span>
+          <kendo-svgicon [icon]="kendo.icon.changeManuallyIcon"></kendo-svgicon>
         </button>
       </flex-col-item>
       <ng-container *ngFor="let extra of current.extras">

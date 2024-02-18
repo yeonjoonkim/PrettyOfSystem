@@ -48,8 +48,8 @@
   --tool-tip: #949494;
 }
 
+@import '@progress/kendo-font-icons/dist/index.css';
 @import './theme/pretty-of-system-dark-theme/dist/scss';
-@import './theme/itl-phone/itl-phone.scss';
 @import './theme/variables.scss';
 @import './theme/price-card//price-card.scss';
 @import './theme/ion-popover/ion-popover.scss';

@@ -2,7 +2,7 @@
   <!-- Add -->
   <ng-template kendoGridToolbarTemplate>
     <button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole() && !isReachToMax">
-      <span class="k-icon k-i-plus"></span>
+      <kendo-svgicon [icon]="kendo.icon.plus"></kendo-svgicon>
     </button>
   </ng-template>
 

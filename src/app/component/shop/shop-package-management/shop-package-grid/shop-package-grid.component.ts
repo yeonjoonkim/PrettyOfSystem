@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -10,6 +10,7 @@ import * as Constant from 'src/app/constant/constant';
 import { ShopPackageManagementService } from 'src/app/service/shop/shop-package-management/shop-package-management.service';
 import { cloneDeep } from 'lodash-es';
 import { Observable } from 'rxjs';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 
 @Component({
   selector: 'shop-package-grid',
@@ -17,6 +18,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./shop-package-grid.component.scss'],
 })
 export class ShopPackageGridComponent implements OnInit {
+  public kendo = inject(KendoUiService);
   @Output() onEditLanguagePackage = new EventEmitter<ShopLanguagePackageModalProp>();
   @Output() onEdit = new EventEmitter<ShopPackageDocumentType>();
   @Output() onCreate = new EventEmitter<boolean>();

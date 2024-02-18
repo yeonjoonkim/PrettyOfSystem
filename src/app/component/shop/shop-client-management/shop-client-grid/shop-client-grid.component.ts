@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Subject, map, takeUntil } from 'rxjs';
 import { DateService } from 'src/app/service/global/date/date.service';
@@ -6,7 +6,7 @@ import { ShopClientManagementService } from 'src/app/service/shop/shop-client-ma
 import { ShopVerifyNewClientPhoneNumberPopoverComponent } from '../shop-verify-new-client-phone-number-popover/shop-verify-new-client-phone-number-popover.component';
 import { ShopClientManagementUserType } from 'src/app/interface';
 import { Router } from '@angular/router';
-import { CryptService } from 'src/app/service/global/crypt/crypt.service';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 
 @Component({
   selector: 'shop-client-grid',
@@ -14,6 +14,8 @@ import { CryptService } from 'src/app/service/global/crypt/crypt.service';
   styleUrls: ['./shop-client-grid.component.scss'],
 })
 export class ShopClientGridComponent implements OnInit, OnDestroy {
+  public kendo = inject(KendoUiService);
+
   @Output() onRequestNewClientPhoneNumber = new EventEmitter<string>();
   private _destroy$ = new Subject<void>();
   public loaded$ = this._clientManagement.query.loaded$;

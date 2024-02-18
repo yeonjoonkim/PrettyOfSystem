@@ -23,9 +23,10 @@ import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopReservationScheduleComponent implements OnInit, AfterViewInit, OnDestroy {
+  public kendo = inject(KendoUiService);
+
   private _el = inject(ElementRef);
   private _destroy$ = new Subject<void>();
-  public kendo = inject(KendoUiService);
   private _device$ = inject(BreakpointObserver);
   public scheduler = inject(ShopReservationSchedulerService);
   private _isMobile$ = this._device$.observe([Breakpoints.Handset]).pipe(

@@ -9,6 +9,7 @@ import {
   ShopEmployeeManagementUserType,
   ShopLimitedProgpressBarType,
 } from 'src/app/interface';
+import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employee-management/shop-employee-management.service';
 
 @Component({
@@ -38,7 +39,10 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
     takeUntil(this._onDestroy$)
   );
 
-  constructor(private _shopEmp: ShopEmployeeManagementService) {}
+  constructor(
+    private _shopEmp: ShopEmployeeManagementService,
+    private _global: GlobalService
+  ) {}
 
   async ngOnInit() {
     this.shopEmployees();
@@ -88,17 +92,27 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
 
   public async handleClickCreateUser() {
     if (this._addNewEmployee) {
-      const newEmployee = await this._shopEmp.buildNewEmployee();
-      if (newEmployee !== null && this._shopConfig !== null && !this._isModalOpen) {
-        const modal = await this._shopEmp.modal.presentNewEmployee(
-          newEmployee,
-          this._roleProp,
-          !this._addNewEmployee
+      if (this._shopConfig !== null && !this._isModalOpen && this.currentRole !== null) {
+        await this._global.loading.show();
+        const newEmployee = await this._shopEmp.buildNewEmployee(
+          this._shopConfig,
+          this.currentRole,
+          this._global.language.management.currentLanguage
         );
 
-        this._isModalOpen = true;
-        await modal.present();
-        await this.handleModalDismiss(modal);
+        if (newEmployee) {
+          const modal = await this._shopEmp.modal.presentNewEmployee(
+            newEmployee,
+            this._roleProp,
+            !this._addNewEmployee
+          );
+          this._isModalOpen = true;
+          await this._global.loading.dismiss();
+          await modal.present();
+          await this.handleModalDismiss(modal);
+        } else {
+          await this._global.loading.dismiss();
+        }
       }
     } else {
       await this._shopEmp.toastReachedToMaximumError();

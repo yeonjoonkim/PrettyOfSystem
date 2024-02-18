@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { SignatureTransferReceiverComponent } from 'src/app/component/signature-transfer/signature-transfer-receiver/signature-transfer-receiver.component';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 import { SignatureTransferService } from 'src/app/service/signature-transfer/signature-transfer.service';
 
 @Component({
@@ -9,6 +10,8 @@ import { SignatureTransferService } from 'src/app/service/signature-transfer/sig
   styleUrls: ['./client-consent-editor.component.scss'],
 })
 export class ClientConsentEditorComponent implements OnInit {
+  public kendo = inject(KendoUiService);
+
   @Input() forceMobile!: boolean;
   @Input() isRelatedToMedical!: boolean;
   @Input() isMassageShop!: boolean;

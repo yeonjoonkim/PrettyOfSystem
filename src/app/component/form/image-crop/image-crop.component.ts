@@ -1,6 +1,17 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { NgxPhotoEditorService } from 'ngx-photo-editor';
 import { Subject, takeUntil } from 'rxjs';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 
 @Component({
   selector: 'image-crop',
@@ -8,6 +19,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./image-crop.component.scss'],
 })
 export class ImageCropComponent implements OnInit, OnDestroy {
+  public kendo = inject(KendoUiService);
   @ViewChild('fileInput') fileInput!: ElementRef;
   @Output() currentImageChange = new EventEmitter<string>();
   @Output() fileChange = new EventEmitter<File>();

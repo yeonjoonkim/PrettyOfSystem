@@ -34,6 +34,9 @@
             ],
             "styles": [
               {
+                "input": "node_modules/@progress/kendo-font-icons/dist/index.css"
+              },     
+              {
                 "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
               },
               "src/theme/variables.scss",
@@ -119,6 +122,9 @@
               }
             ],
             "styles": [
+              {
+                "input": "node_modules/@progress/kendo-font-icons/dist/index.css"
+              },        
               {
                 "input": "../prettyOfSystem/pretty-of-system-dark-theme/dist/css/pretty-of-system-dark-theme.css"
               },

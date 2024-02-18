@@ -18,10 +18,10 @@
       <!-- Add -->
       <ng-template kendoGridToolbarTemplate>
         <button kendoGridAddCommand (click)="refresh()">
-          <span class="k-icon k-i-refresh"></span>
+          <kendo-svgicon [icon]="kendo.icon.refresh"></kendo-svgicon>
         </button>
         <button kendoGridAddCommand *ngIf="isAuthorised$ | async" (click)="onClickAdd($event)">
-          <span class="k-icon k-i-plus"></span>
+          <kendo-svgicon [icon]="kendo.icon.plus"></kendo-svgicon>
         </button>
       </ng-template>
 

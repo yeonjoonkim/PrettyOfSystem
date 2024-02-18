@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 import { SignatureTransferService } from 'src/app/service/signature-transfer/signature-transfer.service';
 
 @Component({
@@ -8,6 +9,8 @@ import { SignatureTransferService } from 'src/app/service/signature-transfer/sig
   styleUrls: ['./signature-transfer-sender.component.scss'],
 })
 export class SignatureTransferSenderComponent implements OnInit {
+  public kendo = inject(KendoUiService);
+
   @Input() sessionId!: string | null;
   public signature = '';
   public mode: 'input' | 'upload' | 'none' = 'none';

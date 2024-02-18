@@ -8,12 +8,14 @@ import {
   Output,
   Renderer2,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import * as Constant from 'src/app/constant/constant';
 import { GlobalService } from 'src/app/service/global/global.service';
 import { DateSelectionPopoverComponent } from './date-selection-popover/date-selection-popover.component';
 import { ShopWorkHoursType } from 'src/app/interface';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 
 @Component({
   selector: 'date-picker',
@@ -21,6 +23,8 @@ import { ShopWorkHoursType } from 'src/app/interface';
   styleUrls: ['./date-picker.component.scss'],
 })
 export class DatePickerComponent implements OnInit, OnChanges {
+  public kendo = inject(KendoUiService);
+
   @ViewChild('dropdownListBtn') dropdownListBtn!: ElementRef;
   @ViewChild('selectedName') selectedName!: ElementRef;
   @ViewChild('dropDownArrow') dropDownArrow!: ElementRef;
@@ -64,7 +68,7 @@ export class DatePickerComponent implements OnInit, OnChanges {
   }
 
   private setupEventListeners() {
-    if (this.dropdownListBtn && this.selectedName) {
+    if (this.dropdownListBtn && this.selectedName && this.dropDownArrow) {
       // Handle button click event separately
       this._renderer.listen(this.dropdownListBtn.nativeElement, 'click', (event: Event) => {
         this.handleButtonClick(event);

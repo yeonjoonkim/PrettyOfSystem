@@ -1,10 +1,14 @@
 <kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="title">
   <kendo-button id="dropdown-list-btn" #dropdownListBtn>
     <span id="selected-name" #selectedName>{{ time | timeItemTransform }} </span>
-    <span #dropDownArrow id="dropdown-list-down" class="k-icon k-i-arrow-60-down"></span>
+    <span #dropDownArrow id="dropdown-list-down">
+      <kendo-svgicon [icon]="kendo.icon.down"></kendo-svgicon>
+    </span>
   </kendo-button>
 </kendo-label>
 <kendo-button id="dropdown-list-btn" #dropdownListBtn *ngIf="!title">
   <span id="selected-name" #selectedName>{{ time | timeItemTransform }} </span>
-  <span #dropDownArrow id="dropdown-list-down" class="k-icon k-i-arrow-60-down"></span>
+  <span #dropDownArrow id="dropdown-list-down">
+    <kendo-svgicon [icon]="kendo.icon.down"></kendo-svgicon>
+  </span>
 </kendo-button>

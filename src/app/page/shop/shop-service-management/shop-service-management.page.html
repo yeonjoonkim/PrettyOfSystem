@@ -10,7 +10,11 @@
       'System' | async }}
     </ion-title>
     <ion-buttons slot="end" id="preview-btn">
-      <kendo-button icon="hyperlink-open" themeColor="success" routerLink="/reservation/price-list"></kendo-button>
+      <kendo-button
+        icon="hyperlink-open"
+        themeColor="success"
+        [svgIcon]="kendo.hyperlinkOpenIcon"
+        routerLink="/reservation/price-list"></kendo-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

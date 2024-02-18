@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import {
   IFormHeaderModalProp,
@@ -13,12 +13,14 @@ import * as Constant from 'src/app/constant/constant';
 import { cloneDeep } from 'lodash-es';
 import { ShopPackageManagementService } from 'src/app/service/shop/shop-package-management/shop-package-management.service';
 import { Observable } from 'rxjs';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 @Component({
   selector: 'shop-package',
   templateUrl: './shop-package.component.html',
   styleUrls: ['./shop-package.component.scss'],
 })
 export class ShopPackageComponent implements OnInit {
+  public kendo = inject(KendoUiService);
   public form!: IFormHeaderModalProp;
   public discountTypes: NameValuePairType[] = [
     { name: 'label.title.percent', value: 'Percent' },
@@ -234,11 +236,8 @@ export class ShopPackageComponent implements OnInit {
       const offerdays = this.current.package.limitedTime.offeredDateIndex.map(s => s.toString());
       this.selectedDays =
         this.current.package.limitedTime.offeredDateIndex.length > 0
-          ? days.filter(
-              s =>
-                this.current.package.limitedTime?.offeredDateIndex.includes(
-                  Number(s.value) as Constant.DayIndexType
-                )
+          ? days.filter(s =>
+              this.current.package.limitedTime?.offeredDateIndex.includes(Number(s.value) as Constant.DayIndexType)
             )
           : [];
     } else {

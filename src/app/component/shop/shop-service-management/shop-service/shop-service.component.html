@@ -117,7 +117,7 @@
         id="option-add-button"
         (click)="createOption()"
         *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
-        <span class="k-icon k-i-plus"></span>
+        <kendo-svgicon [icon]="kendo.icon.plus"></kendo-svgicon>
       </button>
     </flex-col-item>
   </flex-col>
@@ -158,7 +158,7 @@
             id="option-delete-button"
             (click)="deleteOption(opt)"
             *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
-            <span class="k-icon k-i-trash"></span>
+            <kendo-svgicon [icon]="kendo.icon.trash"></kendo-svgicon>
           </button>
         </flex-row-item>
       </flex-row>
