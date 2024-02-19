@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["lodash", "hammerjs", "localforage", "lodash.memoize", "@progress/kendo-date-math/tz/all", "google-libphonenumber", "crypto-js", "moment", "cropperjs", "date-fns", "date-fns-tz", "moment-timezone"],
+            "allowedCommonJsDependencies": ["lodash", "hammerjs", "localforage", "lodash.memoize", "@progress/kendo-date-math/tz/all", "google-libphonenumber", "crypto-js", "moment", "cropperjs", "date-fns", "date-fns-tz", "moment-timezone", "new-array"],
             "outputPath": "www",
             "index": "src/index.html",
             "main": "src/main.ts",
