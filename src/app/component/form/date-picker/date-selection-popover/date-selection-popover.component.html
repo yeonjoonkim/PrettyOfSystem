@@ -13,13 +13,13 @@
 </flex-col>
 <flex-row>
   <flex-row-item>
-    <button kendoButton (click)="onClickApply()" class="apply">
+    <kendo-button kendoButton (click)="onClickApply()" class="apply">
       {{ 'label.title.apply' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-row-item>
   <flex-row-item>
-    <button kendoButton (click)="onClickCancel()">
+    <kendo-button kendoButton (click)="onClickCancel()">
       {{ 'button.title.cancel' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-row-item>
 </flex-row>

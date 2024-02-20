@@ -52,14 +52,14 @@
       (ngModelChange)="onChangePainScaleRating()"></ion-range>
   </flex-col-item>
   <flex-col-item class="popover-buttons" [ngClass]="{ 'justify-end': !isExistedArea() }">
-    <button kendoButton class="edit" *ngIf="isExistedArea()" (click)="onClickEdit()">
+    <kendo-button kendoButton class="edit" *ngIf="isExistedArea()" (click)="onClickEdit()">
       {{ 'button.title.edit' | languageTransform: 'System' | async }}
-    </button>
-    <button kendoButton class="delete" *ngIf="isExistedArea()" (click)="onClickDelete()">
+    </kendo-button>
+    <kendo-button kendoButton class="delete" *ngIf="isExistedArea()" (click)="onClickDelete()">
       {{ 'button.title.delete' | languageTransform: 'System' | async }}
-    </button>
-    <button kendoButton class="save" *ngIf="!isExistedArea()" (click)="onClickAdd()">
+    </kendo-button>
+    <kendo-button kendoButton class="save" *ngIf="!isExistedArea()" (click)="onClickAdd()">
       {{ 'button.title.add' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-col-item>
 </flex-col>

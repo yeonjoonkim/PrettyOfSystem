@@ -4,9 +4,9 @@
       <img src="assets/logo/prettyofsystem-logo-white.svg" alt="Prettyofsystem Logo" />
     </div>
     <div id="btn-container">
-      <button id="homepage-btn" kendoButton (click)="redirectToBooking()">
+      <kendo-button id="homepage-btn" kendoButton (click)="redirectToBooking()">
         {{ 'label.title.homepage' | languageTransform:'System' | async }}
-      </button>
+      </kendo-button>
       <booking-language-selection></booking-language-selection>
     </div>
   </div>

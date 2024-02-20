@@ -15,12 +15,12 @@
         <div *ngIf="key.name === lang.value && current.isTitle">
           <flex-col id="title-container">
             <flex-col-item>
-              <button
+              <kendo-button
                 kendoButton
                 id="refresh-btn"
                 icon="refresh"
                 *ngIf="!form.readOnly"
-                (click)="refresh(key, lang)"></button>
+                (click)="refresh(key, lang)"></kendo-button>
               <text-box
                 [title]="lang.name"
                 [(value)]="key.value"
@@ -32,12 +32,12 @@
         <div *ngIf="key.name === lang.value && !current.isTitle">
           <flex-col id="description-container">
             <flex-col-item>
-              <button
+              <kendo-button
                 kendoButton
                 id="refresh-btn"
                 icon="refresh"
                 *ngIf="!form.readOnly"
-                (click)="refresh(key, lang)"></button>
+                (click)="refresh(key, lang)"></kendo-button>
               <text-area
                 [title]="lang.name"
                 [(value)]="key.value"

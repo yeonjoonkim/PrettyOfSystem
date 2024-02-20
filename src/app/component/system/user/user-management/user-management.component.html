@@ -27,13 +27,13 @@
         [selectable]="false">
         <!-- Add Button -->
         <ng-template kendoGridToolbarTemplate>
-          <button kendoGridEditCommand icon="refresh" (click)="refresh()"></button>
-          <button kendoGridAddCommand (click)="onClickCreateSystemAdmin()">
+          <kendo-button kendoGridEditCommand icon="refresh" (click)="refresh()"></kendo-button>
+          <kendo-button kendoGridAddCommand (click)="onClickCreateSystemAdmin()">
             {{ 'label.title.newsystemadmin' | languageTransform: 'System' | async }}
-          </button>
-          <button kendoGridAddCommand (click)="onClickCreateUser()">
+          </kendo-button>
+          <kendo-button kendoGridAddCommand (click)="onClickCreateUser()">
             {{ 'button.title.adduser' | languageTransform: 'System' | async }}
-          </button>
+          </kendo-button>
         </ng-template>
 
         <!--Full Name-->

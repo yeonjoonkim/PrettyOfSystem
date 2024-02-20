@@ -112,13 +112,13 @@
       <legend>
         {{ 'label.title.option' | languageTransform: 'System' | async }}
       </legend>
-      <button
+      <kendo-button
         kendoButton
         id="option-add-button"
         (click)="createOption()"
         *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
         <kendo-svgicon [icon]="kendo.icon.plus"></kendo-svgicon>
-      </button>
+      </kendo-button>
     </flex-col-item>
   </flex-col>
   <div *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
@@ -152,14 +152,14 @@
         <flex-row-item
           class="price-option"
           *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
-          <button
+          <kendo-button
             kendoButton
             themeColor="error"
             id="option-delete-button"
             (click)="deleteOption(opt)"
             *ngIf="!form.readOnly && (form.action === 'create' || form.action === 'edit')">
             <kendo-svgicon [icon]="kendo.icon.trash"></kendo-svgicon>
-          </button>
+          </kendo-button>
         </flex-row-item>
       </flex-row>
     </div>

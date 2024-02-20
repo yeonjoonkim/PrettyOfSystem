@@ -50,9 +50,9 @@
       </flex-col-item>
       <flex-col-item
         *ngIf="action === marketing && hasMarketingEmailConsent !== null && hasMarketingSMSConsent !== null ">
-        <button class="update-btn" kendoButton (click)="updateClientConsent()">
+        <kendo-button class="update-btn" kendoButton (click)="updateClientConsent()">
           {{'label.title.update' | languageTransform:'System' | async}}
-        </button>
+        </kendo-button>
       </flex-col-item>
     </flex-col>
   </div>

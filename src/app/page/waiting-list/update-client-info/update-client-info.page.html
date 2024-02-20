@@ -2,9 +2,9 @@
   <ion-toolbar>
     <!-- Title -->
     <ion-title>{{'label.title.personalinformation'| languageTransform:'System' | async }}</ion-title>
-    <button slot="end" kendoButton *ngIf="category$ | async as category" (click)="onClickNext(category)">
+    <kendo-button slot="end" kendoButton *ngIf="category$ | async as category" (click)="onClickNext(category)">
       {{'label.title.next' | languageTransform:'System' | async}}
-    </button>
+    </kendo-button>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" *ngIf="(loaded$ | async)">

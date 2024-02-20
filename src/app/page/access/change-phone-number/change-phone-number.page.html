@@ -13,9 +13,9 @@
       <phone-number [(phone)]="phoneNumber" [isNewPhoneNumber]="true" [(validate)]="validator"></phone-number>
     </div>
     <div class="btn">
-      <button kendoButton [disabled]="!validator" themeColor="success" (click)="onSubmit()">
+      <kendo-button kendoButton [disabled]="!validator" themeColor="success" (click)="onSubmit()">
         <p>{{'label.title.request' | languageTransform: 'System' | async}}</p>
-      </button>
+      </kendo-button>
     </div>
   </div>
   <div class="modal-container margin-auto success" *ngIf="verified && start">

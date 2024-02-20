@@ -1,14 +1,14 @@
 <flex-col class="mobile-body-selector">
   <flex-col-item>
     <kendo-buttongroup selection="single" width="100%">
-      <button
+      <kendo-button
         kendoButton
         *ngFor="let page of pages"
         [toggleable]="true"
         [selected]="selectedPage === page"
         (selectedChange)="onPageChange(page)">
         {{ page | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </kendo-buttongroup>
   </flex-col-item>
   <flex-col-item class="mobile-front-body-selector">

@@ -15,9 +15,9 @@
       [selectable]="true"
       (cellClick)="onClickLanguage($event)">
       <ng-template kendoGridToolbarTemplate>
-        <button kendoGridAddCommand (click)="onClickCreate()">
+        <kendo-button kendoGridAddCommand (click)="onClickCreate()">
           {{ 'button.title.add' | languageTransform: 'System' | async }}
-        </button>
+        </kendo-button>
       </ng-template>
 
       <!-- Name -->

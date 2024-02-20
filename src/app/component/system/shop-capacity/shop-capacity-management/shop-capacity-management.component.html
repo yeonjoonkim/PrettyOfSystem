@@ -11,9 +11,9 @@
     scrollable="virtual">
     <!-- Add Button -->
     <ng-template kendoGridToolbarTemplate>
-      <button kendoGridAddCommand (click)="onClickAdd()">
+      <kendo-button kendoGridAddCommand (click)="onClickAdd()">
         {{ 'button.title.add' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </ng-template>
 
     <!-- Name -->

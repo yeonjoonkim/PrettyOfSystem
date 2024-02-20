@@ -12,14 +12,14 @@
 <ion-content>
   <!-- Button -->
   <kendo-buttongroup selection="single" width="100%">
-    <button
+    <kendo-button
       kendoButton
       *ngFor="let button of systemMenu"
       [toggleable]="true"
       [selected]="button.name === selectedSystemMenu.name"
       (selectedChange)="processSystemMenuOption(button)">
       {{button.name}}
-    </button>
+    </kendo-button>
   </kendo-buttongroup>
   <system-menu-management *ngIf="selectedSystemMenu.isMenuManagement"></system-menu-management>
   <system-role-management *ngIf="selectedSystemMenu.isRoleManagement"></system-role-management>

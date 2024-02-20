@@ -1,9 +1,9 @@
 <kendo-grid [kendoGridBinding]="coupons" [height]="600" [sortable]="true">
   <!-- Add -->
   <ng-template kendoGridToolbarTemplate>
-    <button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole && !isReachToMax">
+    <kendo-button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole && !isReachToMax">
       <kendo-svgicon [icon]="kendo.icon.plus"></kendo-svgicon>
-    </button>
+    </kendo-button>
   </ng-template>
 
   <!-- Name -->

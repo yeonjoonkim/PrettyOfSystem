@@ -1,9 +1,9 @@
 <kendo-grid [kendoGridBinding]="employees" [height]="600" [sortable]="true">
   <!-- Add -->
   <ng-template kendoGridToolbarTemplate>
-    <button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole() && !isReachToMax">
+    <kendo-button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole() && !isReachToMax">
       {{ 'button.title.adduser' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </ng-template>
 
   <!-- Name -->

@@ -24,11 +24,15 @@ import {
   linkIcon,
   pencilIcon,
   cameraIcon,
+  clockArrowRotateIcon,
+  clockIcon,
 } from '@progress/kendo-svg-icons';
 @Injectable({
   providedIn: 'root',
 })
 export class KendoUiIconService {
+  public fullClock: SVGIcon = clockIcon;
+  public halfClock: SVGIcon = clockArrowRotateIcon;
   public trash: SVGIcon = trashIcon;
   public plus: SVGIcon = plusIcon;
   public link: SVGIcon = linkIcon;

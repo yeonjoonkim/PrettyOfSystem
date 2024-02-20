@@ -15,36 +15,41 @@
     <kendo-buttongroup selection="single" width="100%">
       <!--Information Button -->
 
-      <button id="info-btn" kendoButton [toggleable]="true" (click)="onClickInfo()" [(selected)]="display.info">
+      <kendo-button
+        id="info-btn"
+        kendoButton
+        [toggleable]="true"
+        (click)="onClickInfo()"
+        [(selected)]="display.info">
         {{ 'label.title.info' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
       <!--Work hour Button-->
-      <button
+      <kendo-button
         id="workhours-btn"
         kendoButton
         [toggleable]="true"
         (click)="onClickHours()"
         [(selected)]="display.workHours">
         {{ 'label.title.workhours' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
       <!--Address Button-->
-      <button
+      <kendo-button
         id="address-btn"
         kendoButton
         [toggleable]="true"
         (click)="onClickAddress()"
         [(selected)]="display.address">
         {{ 'label.title.address' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
       <!--Subscription Button-->
-      <button
+      <kendo-button
         id="subscription-btn"
         kendoButton
         [toggleable]="true"
         (click)="onClickCapacity()"
         [(selected)]="display.capacity">
         {{ 'label.title.capacity' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </kendo-buttongroup>
 
     <!--Information-->

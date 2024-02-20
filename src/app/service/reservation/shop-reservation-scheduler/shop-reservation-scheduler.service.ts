@@ -117,6 +117,7 @@ export class ShopReservationSchedulerService {
   public slotDuration = signal(30); // Min
   public weekStart = signal(Constant.Date.DayIndex.Sun);
   public onlyWorkingEmployees = signal(false);
+  public showWorkHours = signal(true);
 
   public workDayStart = () => {
     const startOfDay = this.startOfDay();
@@ -167,6 +168,16 @@ export class ShopReservationSchedulerService {
     const scheduler = this._defaultScheduler.data();
     const startOfDay = this.startOfDay();
     return scheduler !== null ? scheduler.endDate > startOfDay : false;
+  });
+
+  public allowToday = computed(() => {
+    const loaded = this.loaded();
+    const scheduler = this._defaultScheduler.data();
+    if (!loaded && !scheduler) {
+      return false;
+    }
+
+    return scheduler !== null ? scheduler.isOpenToday : false;
   });
 
   //Query
@@ -248,8 +259,19 @@ export class ShopReservationSchedulerService {
       .subscribe(scheduler => {
         const startOfDay =
           scheduler !== null ? scheduler.currentDate : this._dateSvc.startDay(this._dateSvc.shopNow(null));
-        this.startOfDay.set(startOfDay);
+        const availableDate = this.findNexAvailableDay(startOfDay);
+        this.startOfDay.set(availableDate);
       });
+  }
+
+  private findNexAvailableDay(date: string) {
+    const disabledDates = this.disableDates();
+    const isInDisabledDates = (date: string) => disabledDates.includes(date);
+    let currentDate = date;
+    while (isInDisabledDates(currentDate)) {
+      currentDate = this._dateSvc.addDay(currentDate, 1);
+    }
+    return currentDate;
   }
 
   public activeDisplayInSystemEmployeesByShop(shopId: string, startOfDay: string) {
@@ -301,9 +323,11 @@ export class ShopReservationSchedulerService {
   }
 
   public today() {
-    const scheduler = this._defaultScheduler.data();
-    this.startOfDay.set(
-      scheduler !== null ? scheduler.currentDate : this._dateSvc.startDay(this._dateSvc.shopNow(null))
-    );
+    if (this.allowToday()) {
+      const scheduler = this._defaultScheduler.data();
+      this.startOfDay.set(
+        scheduler !== null ? scheduler.currentDate : this._dateSvc.startDay(this._dateSvc.shopNow(null))
+      );
+    }
   }
 }

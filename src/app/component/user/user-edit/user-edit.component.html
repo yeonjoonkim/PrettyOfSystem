@@ -13,14 +13,14 @@
   <!-- Page Button -->
   <flex-col>
     <kendo-buttongroup selection="single" width="100%" *ngIf="user.associatedShops.length > 0">
-      <button
+      <kendo-button
         kendoButton
         *ngFor="let page of pages"
         [toggleable]="true"
         [selected]="page.name === currentPage.name"
         (selectedChange)="onPageChange(page)">
         {{ page.name | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </kendo-buttongroup>
   </flex-col>
 

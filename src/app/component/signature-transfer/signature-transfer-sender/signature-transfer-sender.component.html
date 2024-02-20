@@ -1,25 +1,25 @@
 <flex-col>
   <flex-col-item>
     <div class="button-container">
-      <button kendoButton (click)="mode = 'input'" [ngClass]="{ active: mode === 'input' }">
+      <kendo-button kendoButton (click)="mode = 'input'" [ngClass]="{ active: mode === 'input' }">
         <kendo-svgicon [icon]="kendo.icon.pencil"></kendo-svgicon>
-      </button>
+      </kendo-button>
       <signature-transfer-upload-photo
         [ngClass]="{ activeSignatureUpload: mode === 'upload' }"
         [(signature)]="signature"
         (signatureChange)="onUpload()"
         (click)="mode = 'upload'"></signature-transfer-upload-photo>
-      <button kendoButton (click)="signature = ''">
+      <kendo-button kendoButton (click)="signature = ''">
         <kendo-svgicon [icon]="kendo.icon.refresh"></kendo-svgicon>
-      </button>
+      </kendo-button>
     </div>
   </flex-col-item>
   <flex-col-item class="signature-container" *ngIf="mode !== 'none'">
     <signature-input [(signature)]="signature" [readOnly]="isReadOnly()"></signature-input>
   </flex-col-item>
   <flex-col-item>
-    <button class="confirmation-btn" kendoButton (click)="send()" [disabled]="!(signature.length > 0)">
+    <kendo-button class="confirmation-btn" kendoButton (click)="send()" [disabled]="!(signature.length > 0)">
       {{ 'label.title.confirmation' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-col-item>
 </flex-col>

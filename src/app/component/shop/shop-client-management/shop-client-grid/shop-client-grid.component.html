@@ -17,12 +17,12 @@
       *ngIf="loaded$ | async">
       <!-- Add -->
       <ng-template kendoGridToolbarTemplate>
-        <button kendoGridAddCommand (click)="refresh()">
+        <kendo-button kendoGridAddCommand (click)="refresh()">
           <kendo-svgicon [icon]="kendo.icon.refresh"></kendo-svgicon>
-        </button>
-        <button kendoGridAddCommand *ngIf="isAuthorised$ | async" (click)="onClickAdd($event)">
+        </kendo-button>
+        <kendo-button kendoGridAddCommand *ngIf="isAuthorised$ | async" (click)="onClickAdd($event)">
           <kendo-svgicon [icon]="kendo.icon.plus"></kendo-svgicon>
-        </button>
+        </kendo-button>
       </ng-template>
 
       <!--VIP-->

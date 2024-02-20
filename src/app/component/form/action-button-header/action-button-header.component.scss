@@ -13,7 +13,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  button {
+  kendo-button {
     background-color: transparent;
     font-weight: 700;
     height: 32px;
@@ -26,7 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  button {
+  kendo-button {
     background-color: var(--success);
     font-weight: 700;
     height: 32px;

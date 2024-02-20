@@ -1,9 +1,9 @@
 <kendo-grid [kendoGridBinding]="services" [height]="600" [sortable]="true">
   <!-- Add -->
   <ng-template kendoGridToolbarTemplate>
-    <button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole() && !isReachToMax">
+    <kendo-button kendoGridAddCommand (click)="onClickCreate()" *ngIf="isAuthorisedRole() && !isReachToMax">
       <kendo-svgicon [icon]="kendo.icon.plus"></kendo-svgicon>
-    </button>
+    </kendo-button>
   </ng-template>
 
   <!-- Name -->
@@ -177,7 +177,10 @@
   <kendo-grid-column>
     <ng-template kendoGridCellTemplate let-service>
       <div *ngIf="translatedRequests && allowRefresh(service, translatedRequests)">
-        <button kendoGridEditCommand icon="refresh" (click)="handleRefresh(service, translatedRequests)"></button>
+        <kendo-button
+          kendoGridEditCommand
+          icon="refresh"
+          (click)="handleRefresh(service, translatedRequests)"></kendo-button>
       </div>
     </ng-template>
   </kendo-grid-column>

@@ -11,7 +11,7 @@
       <flex-col-item class="card-title">
         <ion-card-title>{{ coupon.title | languageTransform: type | async }}</ion-card-title>
         <div class="option-add package-add" *ngIf="enabledAdd">
-          <button class="add-btn" kendoButton (click)="onClickAdd()" icon="plus"></button>
+          <kendo-button class="add-btn" kendoButton (click)="onClickAdd()" icon="plus"></kendo-button>
         </div>
       </flex-col-item>
     </flex-col>

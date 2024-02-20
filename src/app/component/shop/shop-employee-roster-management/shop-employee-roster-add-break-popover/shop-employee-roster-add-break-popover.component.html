@@ -29,14 +29,14 @@
 
   <flex-row class="button-container">
     <flex-row-item>
-      <button kendoButton (click)="onSave()" class="apply" [disabled]="!newBreakTime.allowAddBreakTime()">
+      <kendo-button kendoButton (click)="onSave()" class="apply" [disabled]="!newBreakTime.allowAddBreakTime()">
         {{ 'label.title.apply' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-row-item>
     <flex-row-item>
-      <button kendoButton (click)="onDismiss()">
+      <kendo-button kendoButton (click)="onDismiss()">
         {{ 'button.title.cancel' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-row-item>
   </flex-row>
 </div>

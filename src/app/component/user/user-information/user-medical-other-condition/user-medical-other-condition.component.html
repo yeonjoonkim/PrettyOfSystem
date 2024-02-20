@@ -1,17 +1,17 @@
 <flex-row *ngIf="otherStatus || otherStatus === null">
   <flex-row-item class="setting-title">
     <legend>{{ 'label.title.ohterstatus' | languageTransform: 'System' | async }}</legend>
-    <button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
+    <kendo-button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
       {{ 'button.title.edit' | languageTransform: 'System' | async }}
-    </button>
-    <button
+    </kendo-button>
+    <kendo-button
       *ngIf="!readOnly"
       class="save-btn"
       themeColor="success"
       (click)="onSave()"
       [disabled]="!enableSaveBtn || requesting">
       {{ 'button.title.save' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-row-item>
 </flex-row>
 

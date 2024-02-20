@@ -8,16 +8,16 @@
           <legend>{{ 'label.title.signature' | languageTransform: 'System' | async }}</legend>
           <div class="button-container">
             <signature-transfer-upload-photo [(signature)]="signature"></signature-transfer-upload-photo>
-            <button kendoButton class="signature-btn" (click)="onClickLink($event)">
+            <kendo-button kendoButton class="signature-btn" (click)="onClickLink($event)">
               <kendo-svgicon [icon]="kendo.icon.link"></kendo-svgicon>
-            </button>
-            <button
+            </kendo-button>
+            <kendo-button
               kendoButton
               class="signature-btn"
               *ngIf="type === 'client' || mode === 'create'"
               (click)="onClickClearSignature()">
               <kendo-svgicon [icon]="kendo.icon.refresh"></kendo-svgicon>
-            </button>
+            </kendo-button>
           </div>
         </flex-col-item>
         <flex-col-item class="signature-conatiner">
@@ -48,21 +48,21 @@
   </flex-row>
 
   <flex-col-item *ngIf="mode === 'create'">
-    <button class="action-btn" kendoButton [disabled]="!validator" (click)="onClickAction.emit()">
+    <kendo-button class="action-btn" kendoButton [disabled]="!validator" (click)="onClickAction.emit()">
       {{ 'label.title.registeration' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-col-item>
 
   <flex-row>
     <flex-row-item *ngIf="mode === 'edit' && type === 'shop'">
-      <button class="delete-btn" kendoButton [disabled]="!validator" (click)="onClickDelete.emit()">
+      <kendo-button class="delete-btn" kendoButton [disabled]="!validator" (click)="onClickDelete.emit()">
         {{ 'button.title.delete' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-row-item>
     <flex-row-item *ngIf="mode === 'edit'">
-      <button class="action-btn" kendoButton [disabled]="!validator" (click)="onClickAction.emit()">
+      <kendo-button class="action-btn" kendoButton [disabled]="!validator" (click)="onClickAction.emit()">
         {{ 'label.title.edit' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-row-item>
   </flex-row>
 </flex-col>

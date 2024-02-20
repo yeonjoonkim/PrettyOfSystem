@@ -1,14 +1,14 @@
 <div class="action-footer-container">
   <flex-row class="action-footer" [ngStyle]="{ 'max-width': maxwidth }">
     <flex-row-item class="secondary-action-button" *ngIf="isRequiredSecondaryButton">
-      <button kendoButton [disabled]="!secondaryButtonEnabled" (click)="onClickSecondaryButton()">
+      <kendo-button kendoButton [disabled]="!secondaryButtonEnabled" (click)="onClickSecondaryButton()">
         {{ secondaryButtonLabel | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-row-item>
     <flex-row-item class="primary-action-button" *ngIf="isRequiredPrimaryButton">
-      <button kendoButton [disabled]="!primaryButtonEnabled" (click)="onClickPrimaryButton()">
+      <kendo-button kendoButton [disabled]="!primaryButtonEnabled" (click)="onClickPrimaryButton()">
         {{ primaryButtonLabel | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-row-item>
   </flex-row>
 </div>

@@ -42,11 +42,11 @@
               {{ option.price | currencyTransform }}
             </flex-row-item>
             <flex-row-item class="option-add" [ngClass]="{ 'option-start': i === 0 }" *ngIf="enabledAdd">
-              <button
+              <kendo-button
                 class="add-btn"
                 kendoButton
                 (click)="onClickAdd(option, service.relatedService)"
-                icon="plus"></button>
+                icon="plus"></kendo-button>
             </flex-row-item>
           </flex-row>
         </ng-container>

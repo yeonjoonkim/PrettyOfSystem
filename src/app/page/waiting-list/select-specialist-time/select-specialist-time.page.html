@@ -1,13 +1,18 @@
 <ion-header *ngIf="loaded$ | async">
   <ion-toolbar>
-    <button class="goback-btn" slot="start" kendoButton (click)="onClickGoback()">
+    <kendo-button class="goback-btn" slot="start" kendoButton (click)="onClickGoback()">
       {{'label.title.goback' | languageTransform:'System' | async}}
-    </button>
+    </kendo-button>
     <!-- Title -->
     <ion-title>{{'label.title.selectspecialistandtime'| languageTransform:'System' | async }}</ion-title>
-    <button class="next-btn" slot="end" kendoButton (click)="onClickNext()" [disabled]="!(enableNext$ | async)">
+    <kendo-button
+      class="next-btn"
+      slot="end"
+      kendoButton
+      (click)="onClickNext()"
+      [disabled]="!(enableNext$ | async)">
       {{'label.title.next' | languageTransform:'System' | async}}
-    </button>
+    </kendo-button>
   </ion-toolbar>
 </ion-header>
 

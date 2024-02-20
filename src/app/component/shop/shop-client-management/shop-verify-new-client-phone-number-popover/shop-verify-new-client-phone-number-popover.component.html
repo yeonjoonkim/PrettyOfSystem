@@ -11,9 +11,9 @@
       <phone-number [isRequired]="true" [(validate)]="validator" [(phone)]="phoneNumber"></phone-number>
     </flex-col-item>
     <flex-col-item>
-      <button kendoButton class="verify-btn" [disabled]="!validator" (click)="onClickVerifyAccount()">
+      <kendo-button kendoButton class="verify-btn" [disabled]="!validator" (click)="onClickVerifyAccount()">
         {{ 'label.title.verification' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-col-item>
   </flex-col>
 </ion-content>
