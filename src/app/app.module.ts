@@ -22,7 +22,14 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import {
+  connectFirestoreEmulator,
+  enableIndexedDbPersistence,
+  getFirestore,
+  provideFirestore,
+} from '@angular/fire/firestore';
 
 //Import Language Package
 import { LanguageTransformPipeModule } from './pipe/language-transform-pipe/language-transform.pipe.module';
@@ -61,8 +68,16 @@ import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
     MintueTransformPipeModule.forRoot(),
     DaysTransformPipeModule.forRoot(),
     IonicStorageModule.forRoot(),
+
     AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      connectFirestoreEmulator(firestore, 'localhost', 8080);
+      enableIndexedDbPersistence(firestore);
+      return firestore;
+    }),
+    provideStorage(() => getStorage()),
     provideAuth(() => getAuth()),
   ],
   exports: [],
