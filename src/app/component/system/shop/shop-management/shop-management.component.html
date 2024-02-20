@@ -13,9 +13,9 @@
     (cellClick)="onClickCell($event)">
     <!-- Add Button -->
     <ng-template kendoGridToolbarTemplate>
-      <button kendoGridAddCommand (click)="onClickCreateShopConfiguration()">
+      <kendo-button kendoGridAddCommand (click)="onClickCreateShopConfiguration()">
         {{ 'button.title.add' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </ng-template>
 
     <!-- Name -->

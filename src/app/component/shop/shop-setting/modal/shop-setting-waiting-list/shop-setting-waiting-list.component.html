@@ -35,13 +35,13 @@
         (selectedChange)="onChangeIntervalMin()"></name-value-pair-single-dropdown-selection>
     </flex-col-item>
     <flex-col-item class="qr-code-header">
-      <button kendoButton icon="download" id="download-btn" (click)="exportPNG()"></button>
-      <button
+      <kendo-button kendoButton icon="download" id="download-btn" (click)="exportPNG()"></kendo-button>
+      <kendo-button
         kendoButton
         icon="refresh"
         id="refresh-btn"
         (click)="onRefreshQRCode()"
-        *ngIf="!form.readOnly && url"></button>
+        *ngIf="!form.readOnly && url"></kendo-button>
     </flex-col-item>
     <flex-col-item *ngIf="url">
       <kendo-qrcode [value]="url" #qrcode errorCorrection="Q" size="200px"> </kendo-qrcode>

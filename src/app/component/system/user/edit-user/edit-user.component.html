@@ -11,14 +11,14 @@
   </form-header>
   <flex-col>
     <kendo-buttongroup selection="single" width="100%">
-      <button
+      <kendo-button
         kendoButton
         *ngFor="let page of pages"
         [toggleable]="true"
         [selected]="page.name === currentPage.name"
         (selectedChange)="onPageChange(page)">
         {{ page.name | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </kendo-buttongroup>
   </flex-col>
 
@@ -127,9 +127,9 @@
       <kendo-grid [kendoGridBinding]="user.associatedShops" [height]="400">
         <!--Add-->
         <ng-template kendoGridToolbarTemplate>
-          <button kendoGridAddCommand (click)="onClickAddAssociatedShopRole($event)" *ngIf="!form.readOnly">
+          <kendo-button kendoGridAddCommand (click)="onClickAddAssociatedShopRole($event)" *ngIf="!form.readOnly">
             {{ 'button.title.add' | languageTransform: 'System' | async }}
-          </button>
+          </kendo-button>
         </ng-template>
         <kendo-grid-column
           title="{{ 'label.title.businessname' | languageTransform: 'System' | async }}"
@@ -181,13 +181,13 @@
         </kendo-grid-column>
         <kendo-grid-command-column [width]="50">
           <ng-template kendoGridCellTemplate let-shop>
-            <button
+            <kendo-button
               *ngIf="!form.readOnly"
               id="delete-btn"
               kendoGridRemoveCommand
               themeColor="error"
               icon="trash"
-              (click)="onClickDeleteAssociatedShop(shop)"></button>
+              (click)="onClickDeleteAssociatedShop(shop)"></kendo-button>
           </ng-template>
         </kendo-grid-command-column>
       </kendo-grid>

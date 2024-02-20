@@ -98,9 +98,9 @@
     </flex-col-item>
 
     <flex-col-item>
-      <button kendoButton [disabled]="!form.enabledSavebutton" (click)="onCreate()" class="sign-up-btn">
+      <kendo-button kendoButton [disabled]="!form.enabledSavebutton" (click)="onCreate()" class="sign-up-btn">
         {{ 'label.title.signup' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-col-item>
   </flex-col>
 </ion-content>

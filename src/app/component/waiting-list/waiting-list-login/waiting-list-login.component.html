@@ -10,13 +10,13 @@
       [(validate)]="validator.phone"></phone-number>
   </flex-col-item>
   <flex-col-item class="login">
-    <button
+    <kendo-button
       class="login-btn"
       kendoButton
       [disabled]="!validator.phone || login.verifying"
       (click)="verifyingAccount()">
       {{ 'label.title.findmyaccount' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-col-item>
 </flex-col>
 
@@ -30,33 +30,33 @@
     <kendo-progressbar [value]="timer.percent.used" [label]="{ visible: false }" [max]="100"> </kendo-progressbar>
   </flex-col-item>
   <flex-col-item class="verify-btn">
-    <button kendoButton [disabled]="!(validator.otp && timer && !timer.end)" (click)="verifyPhoneOTP()">
+    <kendo-button kendoButton [disabled]="!(validator.otp && timer && !timer.end)" (click)="verifyPhoneOTP()">
       {{ 'label.title.securityconfirmation' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-col-item>
 </flex-col>
 
 <flex-col *ngIf="!login.verifying">
   <flex-col-item id="account-container">
     <flex-col-item *ngIf="sendOTP">
-      <button id="resend" kendoButton (click)="resendOTP()">
+      <kendo-button id="resend" kendoButton (click)="resendOTP()">
         {{ 'label.title.resend' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-col-item>
-    <button id="change-phone-number-btn" (click)="changePhoneNumber()">
+    <kendo-button id="change-phone-number-btn" (click)="changePhoneNumber()">
       {{ 'label.description.changephonenumber' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-col-item>
 </flex-col>
 
 <flex-col *ngIf="!login.verifying">
   <flex-col-item id="login-policy-container">
-    <button id="privacy-policy-btn" (click)="presentPrivacyPolicy()">
+    <kendo-button id="privacy-policy-btn" (click)="presentPrivacyPolicy()">
       {{ 'label.title.privacypolicy' | languageTransform: 'System' | async }}
-    </button>
-    <button id="terms-and-condition-btn" (click)="presentTermandCondition()">
+    </kendo-button>
+    <kendo-button id="terms-and-condition-btn" (click)="presentTermandCondition()">
       {{ 'label.title.termsandconditions' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-col-item>
 </flex-col>
 

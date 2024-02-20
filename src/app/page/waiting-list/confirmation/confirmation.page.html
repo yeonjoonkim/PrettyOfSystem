@@ -1,8 +1,8 @@
 <ion-header *ngIf="loaded$ | async">
   <ion-toolbar>
-    <button class="goback-btn" slot="start" kendoButton (click)="onClickGoback()">
+    <kendo-button class="goback-btn" slot="start" kendoButton (click)="onClickGoback()">
       {{'label.title.goback' | languageTransform:'System' | async}}
-    </button>
+    </kendo-button>
     <!-- Title -->
     <ion-title>{{'label.title.confirmation'| languageTransform:'System' | async }}</ion-title>
   </ion-toolbar>

@@ -18,7 +18,7 @@
 }
 
 .activeSignatureUpload {
-  ::ng-deep button {
+  ::ng-deep kendo-button {
     background-color: var(--active);
   }
 }

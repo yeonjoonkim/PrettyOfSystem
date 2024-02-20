@@ -65,9 +65,9 @@
       </flex-row-item>
     </flex-row>
     <flex-col-item>
-      <button kendoButton [disabled]="!form.enabledSavebutton" (click)="onRequest()" class="request-up-btn">
+      <kendo-button kendoButton [disabled]="!form.enabledSavebutton" (click)="onRequest()" class="request-up-btn">
         {{ 'label.title.request' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-col-item>
   </flex-col>
   <flex-col *ngIf="!verifying && verified" class="modal-container">

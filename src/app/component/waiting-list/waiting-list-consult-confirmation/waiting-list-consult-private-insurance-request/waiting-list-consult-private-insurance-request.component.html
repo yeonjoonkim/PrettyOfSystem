@@ -30,8 +30,8 @@
   </flex-col-item>
 
   <flex-col-item>
-    <button kendoButton [disabled]="!enahbleSaveBtn" (click)="OnClickSave()">
+    <kendo-button kendoButton [disabled]="!enahbleSaveBtn" (click)="OnClickSave()">
       {{ 'label.title.update' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-col-item>
 </flex-col>

@@ -44,8 +44,8 @@
     {{ 'label.description.parentconsent' | languageTransform: 'System' | async }}
   </flex-col-item>
   <flex-col-item>
-    <button kendoButton [disabled]="!enableUpdateRequestButton" (click)="OnClickSave()">
+    <kendo-button kendoButton [disabled]="!enableUpdateRequestButton" (click)="OnClickSave()">
       {{ 'label.title.confirmation' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </flex-col-item>
 </flex-col>

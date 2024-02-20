@@ -8,9 +8,9 @@
       <time-picker [(time)]="copyValue.openTime" [intervalMin]="intervalMin" [readOnly]="readOnly"></time-picker>
       <p id="time-picker-seperator">-</p>
       <time-picker [(time)]="copyValue.closeTime" [intervalMin]="intervalMin" [readOnly]="readOnly"></time-picker>
-      <button kendoButton id="copy-button" (click)="onClickCopy()">
+      <kendo-button kendoButton id="copy-button" (click)="onClickCopy()">
         {{ 'button.title.copy' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </time-picker-group>
   </flex-row-item>
   <!--Error-->

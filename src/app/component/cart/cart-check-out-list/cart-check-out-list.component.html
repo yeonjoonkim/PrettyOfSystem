@@ -25,26 +25,30 @@
             <p class="title-tooltip">({{ checkout.type | languageTransform: 'System' | async }})</p>
           </div>
           <div class="item-qty">
-            <button
+            <kendo-button
               *ngIf="!isConfirmation"
               class="item-minus"
               kendoButton
               icon="minus"
               [disabled]="!checkout.qty"
-              (click)="onDecrement(checkout)"></button>
+              (click)="onDecrement(checkout)"></kendo-button>
             <p>{{ checkout.qty }}</p>
-            <button
+            <kendo-button
               *ngIf="!isConfirmation"
               class="item-plus"
               kendoButton
               icon="plus"
-              (click)="onIncrement(checkout)"></button>
+              (click)="onIncrement(checkout)"></kendo-button>
           </div>
           <div class="item-price">
             {{ checkout.price * checkout.qty | currencyTransform }}
           </div>
           <div class="delete" *ngIf="!isConfirmation">
-            <button class="item-delete" kendoButton icon="delete" (click)="onDelete(checkout)"></button>
+            <kendo-button
+              class="item-delete"
+              kendoButton
+              icon="delete"
+              (click)="onDelete(checkout)"></kendo-button>
           </div>
         </flex-row-item>
       </flex-row>

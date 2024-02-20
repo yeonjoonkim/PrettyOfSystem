@@ -50,20 +50,20 @@
       </legend>
     </flex-col-item>
     <flex-row-item class="insurance-btns">
-      <button
+      <kendo-button
         kendoButton
         class="provide-btn"
         *ngIf="!(hasParentConsent$ | async)"
         (click)="displayParentConfirmation()">
         {{ 'label.title.provide' | languageTransform: 'System' | async }}
-      </button>
-      <button
+      </kendo-button>
+      <kendo-button
         kendoButton
         class="update-btn"
         *ngIf="hasParentConsent$ | async"
         (click)="displayParentConfirmation()">
         {{ 'label.title.view' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-row-item>
   </flex-col>
 
@@ -83,20 +83,20 @@
       </legend>
     </flex-col-item>
     <flex-row-item class="insurance-btns">
-      <button
+      <kendo-button
         kendoButton
         class="provide-btn"
         *ngIf="!(hasPrivateInsurance$ | async)"
         (click)="displayPrivateInsurance()">
         {{ 'label.title.provide' | languageTransform: 'System' | async }}
-      </button>
-      <button
+      </kendo-button>
+      <kendo-button
         kendoButton
         class="update-btn"
         *ngIf="hasPrivateInsurance$ | async"
         (click)="displayPrivateInsurance()">
         {{ 'label.title.view' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-row-item>
     <flex-col-item>
       <div class="insurance-tool-tip" *ngIf="prop.hasInsuranceCartCheckout && !(hasPrivateInsurance$ | async)">

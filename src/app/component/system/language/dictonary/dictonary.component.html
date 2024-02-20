@@ -19,16 +19,16 @@
       <flex-col-item>
         <kendo-grid [data]="gridData" [height]="400" [sortable]="true" [autoSize]="true">
           <ng-template kendoGridToolbarTemplate>
-            <button kendoGridAddCommand (click)="setLanguageSelection()" icon="refresh"></button>
-            <button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
+            <kendo-button kendoGridAddCommand (click)="setLanguageSelection()" icon="refresh"></kendo-button>
+            <kendo-button kendoGridAddCommand (click)="openAddLanguageTransform($event)">
               {{ 'button.title.add' | languageTransform: 'System' | async }}
-            </button>
-            <button kendoGridAddCommand (click)="export()">
+            </kendo-button>
+            <kendo-button kendoGridAddCommand (click)="export()">
               {{ 'button.title.download' | languageTransform: 'System' | async }}
-            </button>
-            <button kendoGridAddCommand (click)="allExport()">
+            </kendo-button>
+            <kendo-button kendoGridAddCommand (click)="allExport()">
               {{ 'button.title.downloadall' | languageTransform: 'System' | async }}
-            </button>
+            </kendo-button>
           </ng-template>
           <kendo-grid-column
             title="{{ 'label.title.key' | languageTransform: 'System' | async }}"

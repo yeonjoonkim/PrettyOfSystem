@@ -21,12 +21,12 @@
       <gender-selection [(gender)]="query.genderParam" mode="filter"></gender-selection>
     </flex-row-item>
     <flex-row-item class="filter-tooltip">
-      <button kendoButton class="apply-btn" (click)="applyFilter()">
+      <kendo-button kendoButton class="apply-btn" (click)="applyFilter()">
         {{ 'label.title.apply' | languageTransform: 'System' | async }}
-      </button>
-      <button kendoButton class="reset-btn" (click)="reset()">
+      </kendo-button>
+      <kendo-button kendoButton class="reset-btn" (click)="reset()">
         {{ 'label.title.reset' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </flex-row-item>
   </flex-row>
 </div>

@@ -1,9 +1,9 @@
 :host ::ng-deep .k-scheduler-table > tr > th {
-  width: 100px !important;
+  width: 150px !important;
 }
 
 :host ::ng-deep .k-scheduler-content.k-user-select-none > .k-scheduler-table > tr > td {
-  width: 100px !important;
+  width: 150px !important;
 }
 
 :host ::ng-deep .k-scheduler-times > .k-scheduler-table {
@@ -37,4 +37,22 @@
 .scheduler {
   height: 600px !important;
   overflow-y: auto;
+}
+.date-picker-query-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  date-picker {
+    width: 150px;
+  }
+
+  .display-picker-button,
+  .date-picker-button {
+    gap: 1px;
+    height: 30px;
+    margin-top: 18px;
+    margin-bottom: 10px;
+  }
 }

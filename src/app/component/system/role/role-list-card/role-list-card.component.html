@@ -4,9 +4,9 @@
 <kendo-grid [data]="gridData" [height]="500">
   <!-- Add Button -->
   <ng-template kendoGridToolbarTemplate>
-    <button kendoGridAddCommand (click)="presentAddRole()">
+    <kendo-button kendoGridAddCommand (click)="presentAddRole()">
       {{ 'button.title.add' | languageTransform: 'System' | async }}
-    </button>
+    </kendo-button>
   </ng-template>
 
   <!--Role Name -->
@@ -86,8 +86,16 @@
   <!--Edit-->
   <kendo-grid-command-column>
     <ng-template kendoGridCellTemplate let-role>
-      <button kendoGridEditCommand themeColor="tertiary" icon="edit" (click)="presentEditRole(role)"></button>
-      <button kendoGridRemoveCommand themeColor="error" icon="trash" (click)="onClickDeleteRole(role)"></button>
+      <kendo-button
+        kendoGridEditCommand
+        themeColor="tertiary"
+        icon="edit"
+        (click)="presentEditRole(role)"></kendo-button>
+      <kendo-button
+        kendoGridRemoveCommand
+        themeColor="error"
+        icon="trash"
+        (click)="onClickDeleteRole(role)"></kendo-button>
     </ng-template>
   </kendo-grid-command-column>
 

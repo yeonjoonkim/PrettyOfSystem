@@ -63,13 +63,13 @@ legend {
   gap: 10px;
   flex-direction: row;
   align-items: center;
-  button {
+  kendo-button {
     height: 32px;
   }
 }
 
 :host ::ng-deep signature-transfer-upload-photo {
-  button {
+  kendo-button {
     height: 32px;
   }
 }

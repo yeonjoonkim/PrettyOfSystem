@@ -3,11 +3,16 @@
   <ion-toolbar>
     <kendo-buttongroup slot="start">
       <!-- Save -->
-      <button *ngIf="!editMode" kendoButton size="large" rounded="large" (click)="onClickSaveRoleConfiguration()">
+      <kendo-button
+        *ngIf="!editMode"
+        kendoButton
+        size="large"
+        rounded="large"
+        (click)="onClickSaveRoleConfiguration()">
         {{ 'button.title.save' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
       <!-- Edit -->
-      <button
+      <kendo-button
         *ngIf="editMode"
         kendoButton
         size="large"
@@ -15,7 +20,7 @@
         (click)="onClickEditRoleConfiguration()"
         themeColor="success">
         {{ 'button.title.edit' | languageTransform: 'System' | async }}
-      </button>
+      </kendo-button>
     </kendo-buttongroup>
     <ion-title *ngIf="!editMode">{{ 'label.title.newrole' | languageTransform: 'System' | async }}</ion-title>
     <ion-title *ngIf="editMode"

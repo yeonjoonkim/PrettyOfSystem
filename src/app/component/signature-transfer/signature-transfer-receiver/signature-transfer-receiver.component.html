@@ -6,9 +6,9 @@
       </flex-col-item>
       <flex-col-item class="qrcode-container" *ngIf="status === 'StandBy'">
         <kendo-qrcode *ngIf="url" [value]="url" #qrcode errorCorrection="Q" size="200px"> </kendo-qrcode>
-        <button class="btn" kendoButton (click)="copyText()">
+        <kendo-button class="btn" kendoButton (click)="copyText()">
           {{ 'label.title.copy' | languageTransform: 'System' | async }}
-        </button>
+        </kendo-button>
       </flex-col-item>
     </div>
   </div>
