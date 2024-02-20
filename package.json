@@ -1,7 +1,7 @@
 {
   "name": "pretty-of-system",
-  "version": "0.0.2",
-  "author": "Ionic Framework",
+  "version": "0.0.3",
+  "author": "Pretty Of System",
   "homepage": "https://pos.clinic",
   "scripts": {
     "ng": "ng",
@@ -48,7 +48,7 @@
     "@capacitor/keyboard": "^5.0.6",
     "@capacitor/network": "^5.0.6",
     "@capacitor/status-bar": "^5.0.6",
-    "@ionic/angular": "^7.7.2",
+    "@ionic/angular": "^7.4.1",
     "@ionic/angular-server": "^7.0.0-rc.5",
     "@ionic/storage": "^3.0.6",
     "@ionic/storage-angular": "^4.0.0",
@@ -102,8 +102,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "add": "^2.0.6",
     "address": "^2.0.1",
-    "audit": "^0.0.6",
-    "axios": "^1.6.7",
+    "axios": "^1.6.5",
     "bootstrap": "^5.2.3",
     "browserify-sign": "^4.2.2",
     "cldr-data": "^36.0.0",
@@ -160,10 +159,10 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^16.0.1",
     "@angular-devkit/build-angular": "^16.2.3",
-    "@angular-eslint/builder": "^14.0.0",
-    "@angular-eslint/eslint-plugin": "^14.0.0",
-    "@angular-eslint/eslint-plugin-template": "^14.0.0",
-    "@angular-eslint/template-parser": "^14.0.0",
+    "@angular-eslint/builder": "^16.0.0",
+    "@angular-eslint/eslint-plugin": "^16.0.0",
+    "@angular-eslint/eslint-plugin-template": "^16.0.0",
+    "@angular-eslint/template-parser": "^16.0.0",
     "@angular/compiler": "^16.2.12",
     "@angular/compiler-cli": "^16.2.6",
     "@angular/language-service": "^15.2.4",
@@ -194,5 +193,5 @@
     "ts-node": "~8.3.0",
     "typescript": "^4.9.5"
   },
-  "description": "An Ionic project"
+  "description": "Pretty Of System Project"
 }
