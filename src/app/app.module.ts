@@ -68,7 +68,6 @@ import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
     MintueTransformPipeModule.forRoot(),
     DaysTransformPipeModule.forRoot(),
     IonicStorageModule.forRoot(),
-
     AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => {

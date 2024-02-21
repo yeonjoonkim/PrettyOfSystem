@@ -50,7 +50,6 @@ export class ShopOperatingHoursService {
   public closeTime(day: Constant.DayType) {
     const closeTimeItem = this.closeTimeItem(day);
     const is24Hours = this.is24Hours(day);
-    console.log(is24Hours);
     return is24Hours ? '23:59:59' : this._dateSvc.getTimeByTimeItem(closeTimeItem);
   }
 

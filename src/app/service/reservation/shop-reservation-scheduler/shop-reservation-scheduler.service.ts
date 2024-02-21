@@ -132,8 +132,6 @@ export class ShopReservationSchedulerService {
     const dayType = this._dateSvc.getDay(startOfDay);
     const closeTime = this._operatingHours.closeTime(dayType);
     const [hours, minutes] = closeTime.split(':');
-    console.log(closeTime);
-
     return `${hours}:${minutes}`;
   };
 
@@ -197,7 +195,6 @@ export class ShopReservationSchedulerService {
 
   public events: Signal<SchedulerEvent[]> = computed(() => {
     const query = this.schedules();
-    console.log(query);
 
     const breakTimeEvents: SchedulerEvent[] = query
       .filter(q => q.breakTimes && q.breakTimes.length > 0)
