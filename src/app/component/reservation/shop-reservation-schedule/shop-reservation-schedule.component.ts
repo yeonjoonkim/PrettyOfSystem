@@ -27,14 +27,7 @@ export class ShopReservationScheduleComponent implements OnInit, AfterViewInit, 
 
   private _el = inject(ElementRef);
   private _destroy$ = new Subject<void>();
-  private _device$ = inject(BreakpointObserver);
   public scheduler = inject(ShopReservationSchedulerService);
-  private _isMobile$ = this._device$.observe([Breakpoints.Handset]).pipe(
-    takeUntil(this._destroy$),
-    map(result => result.matches),
-    shareReplay()
-  );
-  public isMobile = toSignal(this._isMobile$, { initialValue: false });
 
   constructor() {}
 
@@ -43,16 +36,6 @@ export class ShopReservationScheduleComponent implements OnInit, AfterViewInit, 
   }
 
   async ngOnInit() {
-    this._isMobile$
-      .pipe(
-        filter(isMobile => isMobile === true && isMobile !== null),
-        takeUntil(this._destroy$)
-      )
-      .subscribe(async isMobile => {
-        if (isMobile) {
-          await this.onChangeView(SchedulerViewMode.Timeline);
-        }
-      });
   }
 
   ngOnDestroy() {

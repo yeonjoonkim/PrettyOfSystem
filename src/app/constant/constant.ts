@@ -1,4 +1,5 @@
-import firestore from 'firebase/firestore';
+//import firestore from 'firebase/firestore';
+import firebase from 'firebase/compat';
 import {
   Default,
   State,
@@ -55,7 +56,7 @@ export type ChangeNumberRequestStatusType =
   (typeof ChangeNumberRequestStatus)[keyof typeof ChangeNumberRequestStatus];
 
 //Date
-export type TimeStamp = firestore.Timestamp;
+export type TimeStamp = firebase.firestore.Timestamp; //firebase.Timestamp;
 export type TimeZoneType = (typeof TimeZone)[keyof typeof TimeZone];
 export type DayIndexType = (typeof Date.DayIndex)[keyof typeof Date.DayIndex];
 export type DayType = (typeof Date.Day)[keyof typeof Date.Day];

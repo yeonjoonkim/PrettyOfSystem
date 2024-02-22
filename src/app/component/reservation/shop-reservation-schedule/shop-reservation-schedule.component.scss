@@ -38,21 +38,3 @@
   height: 600px !important;
   overflow-y: auto;
 }
-.date-picker-query-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-  date-picker {
-    width: 150px;
-  }
-
-  .display-picker-button,
-  .date-picker-button {
-    gap: 1px;
-    height: 30px;
-    margin-top: 18px;
-    margin-bottom: 10px;
-  }
-}

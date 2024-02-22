@@ -12,9 +12,9 @@ import { SharedFormModule } from 'src/app/component/form/form.module';
 import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.module';
 
 import { ShopReservationScheduleComponent } from './shop-reservation-schedule.component';
-
+import { ShopReservationSchedulerToolbarComponent } from './shop-reservation-scheduler-toolbar/shop-reservation-scheduler-toolbar.component';
 @NgModule({
-  declarations: [ShopReservationScheduleComponent],
+  declarations: [ShopReservationScheduleComponent, ShopReservationSchedulerToolbarComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -23,6 +23,7 @@ import { ShopReservationScheduleComponent } from './shop-reservation-schedule.co
     SharedFormModule,
     KendoUiModule,
     DatePipeModule,
+    
   ],
   exports: [ShopReservationScheduleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

@@ -1,3 +1,49 @@
-<p>
-  shop-reservation-scheduler-toolbar works!
-</p>
+<flex-row *ngIf="loaded">
+  <flex-row-item>
+    <div class="date-picker-query-container">
+      <kendo-buttongroup class="date-picker-button">
+        <kendo-button kendoButton *ngIf="showWorkHours" (click)="onClickClock.emit()">
+          <kendo-svgicon [icon]="kendo.icon.fullClock"></kendo-svgicon>
+        </kendo-button>
+        <kendo-button kendoButton *ngIf="!showWorkHours" (click)="onClickClock.emit()">
+          <kendo-svgicon [icon]="kendo.icon.halfClock"></kendo-svgicon>
+        </kendo-button>
+      </kendo-buttongroup>
+
+      <kendo-buttongroup class="date-picker-button">
+        <kendo-button kendoButton [disabled]="!allowPreviousDate" (click)="onClickPreviousDate.emit()">
+          <kendo-svgicon [icon]="kendo.icon.left"></kendo-svgicon>
+        </kendo-button>
+        <kendo-button kendoButton [disabled]="!allowToday" (click)="onClickToday.emit()">
+          <p>{{ 'label.title.today' | languageTransform: 'System' | async }}</p>
+        </kendo-button>
+        <kendo-button kendoButton [disabled]="!allowNextDate" (click)="onClickNextDate.emit()">
+          <kendo-svgicon [icon]="kendo.icon.right"></kendo-svgicon>
+        </kendo-button>
+      </kendo-buttongroup>
+
+      <date-picker
+      [date]="startOfDay"
+      [shopTimeZone]="timezone"
+      [displayNextDay]="displayNextDays"
+      [displayPreviousDay]="displayPreviousDays"
+      [operatingHours]="operatingHours"
+      (dateChange)="onChangeDate.emit($event)"></date-picker>
+      
+      <kendo-buttongroup class="display-picker-button">
+        <kendo-button
+          kendoButton
+          [ngClass]="{ active: isDayView }"
+          [svgIcon]="kendo.icon.alignHorizontalIcon"
+          [selected]="isDayView"
+          (click)="onClickView.emit(dayMode)"></kendo-button>
+        <kendo-button
+          kendoButton
+          [ngClass]="{ active: isTimelineView }"
+          [svgIcon]="kendo.icon.alignVerticalIcon"
+          [selected]="isTimelineView"
+          (click)="onClickView.emit(timelineMode)"></kendo-button>
+      </kendo-buttongroup>
+    </div>
+  </flex-row-item>
+</flex-row>

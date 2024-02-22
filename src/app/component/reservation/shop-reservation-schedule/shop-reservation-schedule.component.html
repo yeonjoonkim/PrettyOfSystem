@@ -1,53 +1,24 @@
 <flex-col *ngIf="scheduler.loaded()">
-  <flex-row>
-    <!--Date-->
-    <flex-row-item>
-      <div class="date-picker-query-container">
-        <kendo-buttongroup class="date-picker-button">
-          <kendo-button kendoButton *ngIf="scheduler.showWorkHours()" (click)="scheduler.showWorkHours.set(false)">
-            <kendo-svgicon [icon]="kendo.icon.fullClock"></kendo-svgicon>
-          </kendo-button>
-          <kendo-button kendoButton *ngIf="!scheduler.showWorkHours()" (click)="scheduler.showWorkHours.set(true)">
-            <kendo-svgicon [icon]="kendo.icon.halfClock"></kendo-svgicon>
-          </kendo-button>
-        </kendo-buttongroup>
-
-        <kendo-buttongroup class="date-picker-button">
-          <kendo-button kendoButton [disabled]="!scheduler.allowPreviousDate()" (click)="scheduler.previousDay()">
-            <kendo-svgicon [icon]="kendo.icon.left"></kendo-svgicon>
-          </kendo-button>
-          <kendo-button kendoButton [disabled]="!scheduler.allowToday()" (click)="scheduler.today()">
-            <p>{{ 'label.title.today' | languageTransform: 'System' | async }}</p>
-          </kendo-button>
-          <kendo-button kendoButton [disabled]="!scheduler.allowNextDate()" (click)="scheduler.nextDay()">
-            <kendo-svgicon [icon]="kendo.icon.right"></kendo-svgicon>
-          </kendo-button>
-        </kendo-buttongroup>
-        <date-picker
-          [date]="scheduler.startOfDay()"
-          [shopTimeZone]="scheduler.timezone()"
-          [displayNextDay]="scheduler.displayNextDays()"
-          [displayPreviousDay]="scheduler.displayPreviousDay()"
-          [operatingHours]="scheduler.operatingHours()"
-          (dateChange)="scheduler.startOfDay.set($event)"></date-picker>
-        <kendo-buttongroup class="display-picker-button">
-          <kendo-button
-            kendoButton
-            [ngClass]="{ active: scheduler.isDayViewMode() }"
-            [svgIcon]="kendo.icon.alignHorizontalIcon"
-            [selected]="scheduler.isDayViewMode()"
-            (click)="onChangeView(scheduler.dayMode)"></kendo-button>
-          <kendo-button
-            kendoButton
-            [ngClass]="{ active: scheduler.isTimelineViewMode() }"
-            [svgIcon]="kendo.icon.alignVerticalIcon"
-            [selected]="scheduler.isTimelineViewMode()"
-            (click)="onChangeView(scheduler.timelineMode)"></kendo-button>
-        </kendo-buttongroup>
-      </div>
-    </flex-row-item>
-  </flex-row>
-</flex-col>
+  <shop-reservation-scheduler-toolbar 
+  [loaded]="scheduler.loaded()"
+  [showWorkHours]="scheduler.showWorkHours()" 
+  [allowPreviousDate]="scheduler.allowPreviousDate()"
+  [allowToday]="scheduler.allowToday()"
+  [allowNextDate]="scheduler.allowNextDate()"
+  [timezone]="scheduler.timezone()"
+  [displayNextDays]="scheduler.displayNextDays()"
+  [displayPreviousDays]="scheduler.displayPreviousDay()"
+  [operatingHours]="scheduler.operatingHours()"
+  [startOfDay]="scheduler.startOfDay()"
+  [isDayView]="scheduler.isDayViewMode()"
+  [isTimelineView]="scheduler.isTimelineViewMode()"
+  (onClickPreviousDate)="scheduler.previousDay()"
+  (onClickNextDate)="scheduler.nextDay()"
+  (onClickView)="onChangeView($event)"
+  (onClickToday)="scheduler.today()"
+  (onChangeDate)="scheduler.startOfDay.set($event)"
+  (onClickClock)="scheduler.showWorkHours.set(!scheduler.showWorkHours())"
+  ></shop-reservation-scheduler-toolbar>
 
 <flex-col *ngIf="scheduler.isDayViewMode()">
   <flex-col-item class="horizontal-container">
