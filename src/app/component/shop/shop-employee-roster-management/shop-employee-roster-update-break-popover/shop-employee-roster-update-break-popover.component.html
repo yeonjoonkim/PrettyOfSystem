@@ -1,35 +1,44 @@
-<form-header action="read" (onClickDismiss)="onDismiss()" title="label.title.updatebreaktime"></form-header>
+<form-header (onClickDismiss)="onDismiss()" action="read" title="label.title.updatebreaktime"></form-header>
 
 <div class="container">
   <flex-col>
     <error-message-item *ngIf="updateBreakTime.conflictWithBreakTimes()">
-      <p>{{ 'messageerror.description.conflictwithbreaktimes' | languageTransform: 'System' | async }}</p>
+      <p>
+        {{ 'messageerror.description.conflictwithbreaktimes' | languageTransform: 'System' | async }}
+      </p>
     </error-message-item>
     <error-message-item *ngIf="updateBreakTime.conflictWithConsults()">
-      <p>{{ 'messageerror.description.conflictwithconsults' | languageTransform: 'System' | async }}</p>
+      <p>
+        {{ 'messageerror.description.conflictwithconsults' | languageTransform: 'System' | async }}
+      </p>
     </error-message-item>
     <error-message-item *ngIf="updateBreakTime.conflictWithStartEndTime()">
-      <p>{{ 'messageerror.description.conflictwithstartendtime' | languageTransform: 'System' | async }}</p>
+      <p>
+        {{ 'messageerror.description.conflictwithstartendtime' | languageTransform: 'System' | async }}
+      </p>
     </error-message-item>
     <error-message-item *ngIf="updateBreakTime.isInvalid()">
-      <p>{{ 'messageerror.description.invalidworkhours' | languageTransform: 'System' | async }}</p>
+      <p>
+        {{ 'messageerror.description.invalidworkhours' | languageTransform: 'System' | async }}
+      </p>
     </error-message-item>
     <time-from-to
+      [displayCenter]="true"
       [min]="updateBreakTime.employeeStartTimeItem()"
       [timeFrom]="updateBreakTime.breakStartTimeItem()"
-      (timeFromChange)="updateBreakTime.onUpdateAfterStartTimeItem($event)"
       [timeTo]="updateBreakTime.breakEndTimeItem()"
+      (timeFromChange)="updateBreakTime.onUpdateAfterStartTimeItem($event)"
       (timeToChange)="updateBreakTime.onUpdateAfterEndTimeItem($event)"></time-from-to>
   </flex-col>
 
   <flex-row class="button-container">
     <flex-row-item>
-      <kendo-button kendoButton (click)="onUpdate()" class="apply" [disabled]="!updateBreakTime.allowUpdate()">
+      <kendo-button [disabled]="!updateBreakTime.allowUpdate()" (click)="onUpdate()" kendoButton class="apply">
         {{ 'label.title.apply' | languageTransform: 'System' | async }}
       </kendo-button>
     </flex-row-item>
     <flex-row-item>
-      <kendo-button kendoButton (click)="onDismiss()">
+      <kendo-button (click)="onDismiss()" kendoButton>
         {{ 'button.title.cancel' | languageTransform: 'System' | async }}
       </kendo-button>
     </flex-row-item>

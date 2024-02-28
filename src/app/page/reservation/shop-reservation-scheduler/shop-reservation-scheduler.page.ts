@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Component, DestroyRef, OnInit, computed, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ShopReservationSchedulerService } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-scheduler.service';
 
 @Component({
@@ -7,22 +7,25 @@ import { ShopReservationSchedulerService } from 'src/app/service/reservation/sho
   templateUrl: './shop-reservation-scheduler.page.html',
   styleUrls: ['./shop-reservation-scheduler.page.scss'],
 })
-export class ShopReservationSchedulerPage implements OnInit, OnDestroy {
-  private _destroy$ = new Subject<void>();
+export class ShopReservationSchedulerPage implements OnInit {
   private _scheduler = inject(ShopReservationSchedulerService);
+  private _destroyRef = inject(DestroyRef);
   protected loaded = this._scheduler.loaded;
+  protected schedulerStatus = computed(() => {
+    const status = this._scheduler.dateStatus();
+    return status.isFutureDate
+      ? 'label.title.future'
+      : status.isPreviousDate
+        ? 'label.title.previous'
+        : 'label.title.today';
+  });
 
   constructor() {}
 
   ngOnInit() {
     this._scheduler.start();
-    this._scheduler.query$.pipe(takeUntil(this._destroy$)).subscribe(query => {
+    this._scheduler.query$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(query => {
       this._scheduler.schedules.set(query);
     });
-  }
-
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
   }
 }

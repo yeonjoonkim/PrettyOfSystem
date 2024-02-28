@@ -1,0 +1,53 @@
+<div class="popover-container">
+  <flex-col>
+    <flex-col-item>
+      <name-value-pair-single-dropdown-selection
+        [filterable]="false"
+        [orderByName]="false"
+        [selection]="workingEmployeeSelection"
+        [selected]="selectedWorkingEmployee()"
+        (selectedChange)="onChangeEmployeeSelection($event)"
+        title="label.title.employee"
+        class="employee-selection-dropdown">
+      </name-value-pair-single-dropdown-selection>
+    </flex-col-item>
+
+    <flex-col-item>
+      <kendo-label text="{{ 'label.title.workhours' | languageTransform: 'System' | async }}">
+        <kendo-buttongroup class="hours-view-buttons">
+          <kendo-button
+            [selected]="scheduler.showWorkHours()"
+            (click)="scheduler.showWorkHours.set(true)"
+            kendoButton>
+            <kendo-svgicon [icon]="kendo.icon.halfClock"></kendo-svgicon>
+          </kendo-button>
+          <kendo-button
+            [selected]="!scheduler.showWorkHours()"
+            (click)="scheduler.showWorkHours.set(false)"
+            kendoButton>
+            <kendo-svgicon [icon]="kendo.icon.fullClock"></kendo-svgicon>
+          </kendo-button>
+        </kendo-buttongroup>
+      </kendo-label>
+    </flex-col-item>
+
+    <flex-col-item>
+      <kendo-label text="{{ 'label.title.display' | languageTransform: 'System' | async }}">
+        <kendo-buttongroup class="employee-view-buttons">
+          <kendo-button
+            [selected]="scheduler.isDayViewMode()"
+            (click)="scheduler.selectedViewMode = 'Day'"
+            kendoButton>
+            <kendo-svgicon [icon]="kendo.icon.columnsIcon"></kendo-svgicon>
+          </kendo-button>
+          <kendo-button
+            [selected]="scheduler.isTimelineViewMode()"
+            (click)="scheduler.selectedViewMode = 'Timeline'"
+            kendoButton>
+            <kendo-svgicon [icon]="kendo.icon.rowsIcon"></kendo-svgicon>
+          </kendo-button>
+        </kendo-buttongroup>
+      </kendo-label>
+    </flex-col-item>
+  </flex-col>
+</div>

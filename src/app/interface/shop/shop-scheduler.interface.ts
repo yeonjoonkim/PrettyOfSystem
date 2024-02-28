@@ -35,16 +35,16 @@ export type ShopScheduleDocumentType = {
 export type ShopReservationScheduleResourceType = {
   name: string;
   data: ShopReservationScheduleResourceDataType[];
-  field: 'employeeId';
+  field: 'id';
   valueField: 'id';
   textField: 'firstName';
-  colorField: 'workingStatusColor';
 };
 
-export type ShopReservationScheduleResourceDataType = Pick<
-  ShopScheduleDocumentType,
-  'employeeId' | 'gender' | 'firstName' | 'lastName' | 'isWorking' | 'workHours'
->;
+export type ShopReservationScheduleResourceDataType = {
+  id: string;
+  firstName: string;
+  info: ShopScheduleDocumentType;
+};
 
 export type ShopEmployeeBreakTimeType = {
   startDateTime: string; //yyyy-MM-dd'T'HH:mm:ss

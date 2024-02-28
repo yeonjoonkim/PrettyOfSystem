@@ -8,9 +8,17 @@ import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui
 import { DatePickerComponent } from './date-picker.component';
 import { DateSelectionPopoverComponent } from './date-selection-popover/date-selection-popover.component';
 import { DatePipeModule } from 'src/app/pipe/date/date.pipe.module';
+import { DayTransformPipeModule } from 'src/app/pipe/day/day.pipe.module';
 @NgModule({
   declarations: [DatePickerComponent, DateSelectionPopoverComponent],
-  imports: [CommonModule, LanguageTransformPipeModule, KendoUiModule, FormsModule, DatePipeModule],
+  imports: [
+    CommonModule,
+    LanguageTransformPipeModule,
+    KendoUiModule,
+    FormsModule,
+    DatePipeModule,
+    DayTransformPipeModule,
+  ],
   exports: [DatePickerComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

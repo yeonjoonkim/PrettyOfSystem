@@ -1,0 +1,12 @@
+<section *ngIf="currentDateTime !== null" class="employee-info-container">
+  <kendo-svgicon [icon]="statusIcon()" [themeColor]="statusColor()" size="xlarge"></kendo-svgicon>
+
+  <div class="employee-info">
+    <p>{{ employeeInfo.firstName }} {{ employeeInfo.lastName }}</p>
+    <p class="default-placeholder">
+      {{ statusTitle() | languageTransform: 'System' | async }}
+    </p>
+  </div>
+</section>
+
+<kendo-loader *ngIf="currentDateTime === null" size="large"></kendo-loader>

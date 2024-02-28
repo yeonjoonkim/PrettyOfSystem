@@ -5,13 +5,16 @@
       <ion-menu-button auto-hide="true"></ion-menu-button>
     </ion-buttons>
     <!-- Title -->
-    <ion-title>{{'menucontent.title.reservationschedule'| languageTransform:'System' | async }} </ion-title>
+    <ion-title>
+      {{schedulerStatus() | languageTransform:'System' | async }} {{'menucontent.title.reservationschedule'|
+      languageTransform:'System' | async }}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <shop-reservation-schedule *ngIf="loaded()"></shop-reservation-schedule>
-  <div class="loading-container" *ngIf="!loaded()">
+  <div *ngIf="!loaded()" class="loading-container">
     <kendo-loader size="large"></kendo-loader>
   </div>
 </ion-content>

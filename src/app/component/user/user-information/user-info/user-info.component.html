@@ -1,15 +1,17 @@
 <flex-row *ngIf="user">
   <flex-row-item class="setting-title">
-    <legend>{{ 'label.title.information' | languageTransform: 'System' | async }}</legend>
+    <legend>
+      {{ 'label.title.information' | languageTransform: 'System' | async }}
+    </legend>
     <kendo-button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
       {{ 'button.title.edit' | languageTransform: 'System' | async }}
     </kendo-button>
     <kendo-button
       *ngIf="!readOnly"
-      class="save-btn"
-      themeColor="success"
+      [disabled]="!enableSaveBtn || requesting"
       (click)="onSave()"
-      [disabled]="!enableSaveBtn || requesting">
+      class="save-btn"
+      themeColor="success">
       {{ 'button.title.save' | languageTransform: 'System' | async }}
     </kendo-button>
   </flex-row-item>
@@ -36,26 +38,26 @@
 <flex-row *ngIf="user && !requesting">
   <flex-row-item>
     <text-box
-      title="label.title.firstname"
       [readOnly]="readOnly"
       [isRequired]="true"
       [min]="1"
       [max]="100"
       [(value)]="user.firstName"
       [(validate)]="validator.firstName"
-      (validateChange)="handleEnableSaveBtn()">
+      (validateChange)="handleEnableSaveBtn()"
+      title="label.title.firstname">
     </text-box>
   </flex-row-item>
   <flex-row-item>
     <text-box
-      title="label.title.lastname"
       [readOnly]="readOnly"
       [isRequired]="true"
       [min]="1"
       [max]="100"
       [(value)]="user.lastName"
       [(validate)]="validator.lastName"
-      (validateChange)="handleEnableSaveBtn()">
+      (validateChange)="handleEnableSaveBtn()"
+      title="label.title.lastname">
     </text-box>
   </flex-row-item>
 </flex-row>
@@ -85,11 +87,12 @@
 <flex-row *ngIf="user && !requesting">
   <flex-row-item>
     <date-picker
-      title="label.title.dateofbrith"
+      [displayCenter]="true"
       [displayNextDay]="0"
       [isDateOfBrith]="true"
       [readOnly]="readOnly"
-      [(date)]="user.dob"></date-picker>
+      [(date)]="user.dob"
+      title="label.title.dateofbrith"></date-picker>
   </flex-row-item>
 </flex-row>
 

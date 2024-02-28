@@ -1,0 +1,63 @@
+<flex-row *ngIf="loaded" class="scheduler-toolbar-container">
+  <!-- Date Picker -->
+  <flex-row-item class="date-picker-query-container">
+    <date-picker
+      [date]="startOfDay"
+      [shopTimeZone]="timezone"
+      [displayNextDay]="displayNextDays"
+      [displayPreviousDay]="displayPreviousDays"
+      [displayDay]="true"
+      [displayCenter]="false"
+      [operatingHours]="operatingHours"
+      (dateChange)="onChangeDate.emit($event)"></date-picker>
+
+    <kendo-buttongroup class="date-picker-button">
+      <kendo-button [disabled]="!allowPreviousDate" (click)="onClickPreviousDate.emit()" kendoButton>
+        <kendo-svgicon [icon]="kendo.icon.left"></kendo-svgicon>
+      </kendo-button>
+      <kendo-button [disabled]="!allowToday || isToday" (click)="onClickToday.emit()" kendoButton>
+        <span>
+          {{ 'label.title.today' | languageTransform: 'System' | async }}
+        </span>
+      </kendo-button>
+      <kendo-button [disabled]="!allowNextDate" (click)="onClickNextDate.emit()" kendoButton>
+        <kendo-svgicon [icon]="kendo.icon.right"></kendo-svgicon>
+      </kendo-button>
+    </kendo-buttongroup>
+
+    <kendo-buttongroup class="mobile-toolbar-query-container">
+      <kendo-button (click)="onOpenPopover($event)" kendoButton>
+        <kendo-svgicon [icon]="kendo.icon.tableCellPropertiesIcon" size="xlarge"></kendo-svgicon>
+      </kendo-button>
+    </kendo-buttongroup>
+  </flex-row-item>
+
+  <flex-row-item class="toolbar-query-container">
+    <kendo-buttongroup class="hours-view-buttons">
+      <kendo-button [selected]="showWorkHours" (click)="onClickClock.emit()" kendoButton>
+        <kendo-svgicon [icon]="kendo.icon.halfClock"></kendo-svgicon>
+      </kendo-button>
+      <kendo-button [selected]="!showWorkHours" (click)="onClickClock.emit()" kendoButton>
+        <kendo-svgicon [icon]="kendo.icon.fullClock"></kendo-svgicon>
+      </kendo-button>
+    </kendo-buttongroup>
+
+    <kendo-buttongroup class="employee-view-buttons">
+      <kendo-button [selected]="viewModeType === 'Day'" (click)="onClickView.emit('Day')" kendoButton>
+        <kendo-svgicon [icon]="kendo.icon.columnsIcon"></kendo-svgicon>
+      </kendo-button>
+      <kendo-button [selected]="viewModeType === 'Timeline'" (click)="onClickView.emit('Timeline')" kendoButton>
+        <kendo-svgicon [icon]="kendo.icon.rowsIcon"></kendo-svgicon>
+      </kendo-button>
+    </kendo-buttongroup>
+    <name-value-pair-single-dropdown-selection
+      [filterable]="false"
+      [isRequiredTitle]="false"
+      [orderByName]="false"
+      [selection]="workingEmployeeSelection"
+      [(selected)]="selectedWorkingEmployee"
+      (selectedChange)="onChangeEmployeeSelection($event)"
+      class="employee-selection-dropdown">
+    </name-value-pair-single-dropdown-selection>
+  </flex-row-item>
+</flex-row>

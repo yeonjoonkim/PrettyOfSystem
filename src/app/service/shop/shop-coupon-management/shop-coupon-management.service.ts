@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatestWith, map, of, switchMap } from 'rxjs';
+import { Observable, combineLatestWith, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -106,6 +106,39 @@ export class ShopCouponManagementService {
 
   public async requeueTranslatedRequest(doc: ChatGptTranslateDocumentType) {
     await this._shop.requeueTranslatedRequest(doc);
+  }
+
+  public prop() {
+    return this.config$.pipe(
+      combineLatestWith(
+        this.services$,
+        this.coupons$,
+        this.isReachToMax$,
+        this.serviceFilter$,
+        this.translatedRequest$
+      ),
+      filter(
+        ([config, services, coupons, isReachToMax, serviceFilter, translatedRequest]) =>
+          config !== null &&
+          services !== null &&
+          services !== undefined &&
+          coupons !== null &&
+          coupons !== undefined &&
+          typeof isReachToMax === 'boolean' &&
+          serviceFilter !== null &&
+          serviceFilter !== undefined &&
+          translatedRequest !== null &&
+          translatedRequest !== undefined
+      ),
+      map(([config, services, coupons, isReachToMax, serviceFilter, translatedRequest]) => ({
+        config: config,
+        services: services,
+        coupons: coupons,
+        isReachToMax: isReachToMax,
+        serviceFilter: serviceFilter,
+        translatedRequest: translatedRequest,
+      }))
+    );
   }
 
   public async add(coupon: ShopCouponDocumentType) {

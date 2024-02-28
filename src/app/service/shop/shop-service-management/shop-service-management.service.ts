@@ -10,7 +10,7 @@ import {
   ShopLimitedProgpressBarType,
   ShopServiceDocumentType,
 } from 'src/app/interface';
-import { Observable, combineLatestWith, map, of, switchMap } from 'rxjs';
+import { Observable, combineLatestWith, filter, map, of, switchMap } from 'rxjs';
 import { ShopServiceRepositoryService } from 'src/app/firebase/shop-repository/shop-service-repository/shop-service-repository.service';
 import { TextTransformService } from '../../global/text-transform/text-transform.service';
 import { ShopRelatedServiceService } from './shop-related-service/shop-related-service.service';
@@ -115,6 +115,48 @@ export class ShopServiceManagementService {
             indeterminate: false,
           });
         }
+      })
+    );
+  }
+
+  public prop() {
+    return this.currentShopConfig$.pipe(
+      combineLatestWith(
+        this.employeName$,
+        this.isReachToMax$,
+        this.extra$,
+        this.extraFilter$,
+        this.service$,
+        this.translatedRequest$,
+        this.specialisedEmployees$,
+        this.currentRole$,
+        this.progressBar$
+      ),
+      filter(
+        ([config, empName, max, extra, filter, service, request, specialists, currentRole, progressBar]) =>
+          config != null &&
+          empName != null &&
+          typeof max === 'boolean' &&
+          extra != null &&
+          filter != null &&
+          service != null &&
+          request != null &&
+          specialists != null &&
+          progressBar != null &&
+          currentRole != null
+      ),
+      map(([config, empName, max, extra, filter, service, request, specialists, currentRole, progressBar]) => {
+        return {
+          config: config,
+          empName: empName,
+          isReachToMax: max,
+          extra: extra,
+          extraFilter: filter,
+          services: service,
+          request: request,
+          specialists: specialists,
+          currentRole: currentRole,
+        };
       })
     );
   }

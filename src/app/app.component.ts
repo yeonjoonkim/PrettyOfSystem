@@ -46,7 +46,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isLogin = isLogin;
     });
     this._user.claim$.pipe(takeUntil(this._onDestroy$)).subscribe(claim => {
-      console.log(claim);
+      if (claim) {
+        console.log(claim.claims)
+      }
     });
   }
 

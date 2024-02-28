@@ -1,7 +1,7 @@
 {
   "name": "pretty-of-system",
-  "version": "0.0.2",
-  "author": "Ionic Framework",
+  "version": "0.0.3",
+  "author": "Pretty Of System",
   "homepage": "https://pos.clinic",
   "scripts": {
     "ng": "ng",
@@ -29,7 +29,7 @@
     "@angular/cli": "^16.0.0",
     "@angular/common": "16.2.12",
     "@angular/core": "16.2.12",
-    "@angular/fire": "^16.0.0",
+    "@angular/fire": "^7.6.1",
     "@angular/forms": "16.2.12",
     "@angular/localize": "16.2.12",
     "@angular/platform-browser": "16.2.12",
@@ -159,10 +159,10 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^16.0.1",
     "@angular-devkit/build-angular": "^16.2.3",
-    "@angular-eslint/builder": "^14.0.0",
-    "@angular-eslint/eslint-plugin": "^14.0.0",
-    "@angular-eslint/eslint-plugin-template": "^14.0.0",
-    "@angular-eslint/template-parser": "^14.0.0",
+    "@angular-eslint/builder": "^16.0.0",
+    "@angular-eslint/eslint-plugin": "^16.0.0",
+    "@angular-eslint/eslint-plugin-template": "^16.0.0",
+    "@angular-eslint/template-parser": "^16.0.0",
     "@angular/compiler": "^16.2.12",
     "@angular/compiler-cli": "^16.2.6",
     "@angular/language-service": "^15.2.4",
@@ -193,5 +193,5 @@
     "ts-node": "~8.3.0",
     "typescript": "^4.9.5"
   },
-  "description": "An Ionic project"
+  "description": "Pretty Of System Project"
 }

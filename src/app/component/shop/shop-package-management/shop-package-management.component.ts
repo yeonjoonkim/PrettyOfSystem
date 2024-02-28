@@ -45,13 +45,21 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.isReachToMaxListener();
-    this.packageListener();
     this.translatedRequest();
-    this.filterPropListener();
-    this.servicesListener();
-    this.extrasListener();
-    this.operatingHoursListener();
+    this._shopPackage
+      .prop()
+      .pipe(takeUntil(this._onDestroy$))
+      .subscribe(prop => {
+        this.packages = prop.packages;
+        this.translatedRequests = prop.request;
+        this.serviceTranslatedRequest = prop.serviceRequest;
+        this.extraTranslatedRequest = prop.extraRequest;
+        this.isReachToMax = prop.isReachToMax;
+        this._filterProp = prop.filterProp;
+        this._extras = prop.extras;
+        this._services = prop.services;
+        this._operatingWorkHour = prop.operatingHours;
+      });
   }
 
   ngOnDestroy() {
@@ -59,23 +67,7 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
     this._onDestroy$.complete();
   }
 
-  private packageListener() {
-    this._shopPackage.packages$.pipe(takeUntil(this._onDestroy$)).subscribe(packages => {
-      this.packages = packages;
-    });
-  }
-
   private translatedRequest() {
-    this._shopPackage.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(requests => {
-      this.translatedRequests = requests;
-    });
-    this._shopPackage.serviceTranslatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
-      this.serviceTranslatedRequest = request;
-    });
-
-    this._shopPackage.extraServiceRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
-      this.extraTranslatedRequest = request;
-    });
     this._shopPackage.translatedRequest$
       .pipe(pairwise(), takeUntil(this._onDestroy$))
       .subscribe(([before, after]) => {
@@ -91,36 +83,6 @@ export class ShopPackageManagementComponent implements OnInit, OnDestroy {
           console.log('Updated Status:', updatedStatusArray);
         }
       });
-  }
-
-  private isReachToMaxListener() {
-    this._shopPackage.isReachToMax$.pipe(takeUntil(this._onDestroy$)).subscribe(isMax => {
-      this.isReachToMax = isMax;
-    });
-  }
-
-  private filterPropListener() {
-    this._shopPackage.filterProp$.pipe(takeUntil(this._onDestroy$)).subscribe(filterProp => {
-      this._filterProp = filterProp;
-    });
-  }
-
-  private extrasListener() {
-    this._shopPackage.extras$.pipe(takeUntil(this._onDestroy$)).subscribe(extras => {
-      this._extras = extras;
-    });
-  }
-
-  private servicesListener() {
-    this._shopPackage.services$.pipe(takeUntil(this._onDestroy$)).subscribe(services => {
-      this._services = services;
-    });
-  }
-
-  private operatingHoursListener() {
-    this._shopPackage.operatingWorkHour$.pipe(takeUntil(this._onDestroy$)).subscribe(workHours => {
-      this._operatingWorkHour = workHours;
-    });
   }
 
   public async handleEdit(doc: ShopPackageDocumentType) {

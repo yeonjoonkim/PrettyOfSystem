@@ -26,6 +26,18 @@ import {
   cameraIcon,
   clockArrowRotateIcon,
   clockIcon,
+  checkCircleIcon,
+  minusCircleIcon,
+  xCircleIcon,
+  kpiStatusOpenIcon,
+  checkOutlineIcon,
+  cancelCircleIcon,
+  rowsIcon,
+  columnsIcon,
+  xIcon,
+  chartLineStackedIcon,
+  imageEditIcon,
+  tableCellPropertiesIcon,
 } from '@progress/kendo-svg-icons';
 @Injectable({
   providedIn: 'root',
@@ -57,5 +69,18 @@ export class KendoUiIconService {
   public right: SVGIcon = caretAltRightIcon;
   public down: SVGIcon = caretAltDownIcon;
   public up: SVGIcon = caretAltUpIcon;
+
+  public checkCircleIcon = checkCircleIcon;
+  public cancelCircleIcon = cancelCircleIcon;
+  public checkOutlineIcon = checkOutlineIcon;
+  public minusCircleIcon = minusCircleIcon;
+  public xCircleIcon = xCircleIcon;
+  public kpiStatusOpenIcon = kpiStatusOpenIcon;
+  public rowsIcon = rowsIcon;
+  public columnsIcon = columnsIcon;
+  public xIcon = xIcon;
+  public chartLineStackedIcon = chartLineStackedIcon;
+  public imageEditIcon = imageEditIcon;
+  public tableCellPropertiesIcon = tableCellPropertiesIcon;
   constructor() {}
 }

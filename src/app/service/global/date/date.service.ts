@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import { DateTransformService, DateType, localTimezone } from './date-transform/date-transform.service';
 import * as Constant from '../../../constant/constant';
-import { IDateIndexPairDay, DatePeriodType, TimeItemType } from 'src/app/interface/global/global.interface';
+import {
+  IDateIndexPairDay,
+  DatePeriodType,
+  TimeItemType,
+  NameValuePairType,
+} from 'src/app/interface/global/global.interface';
 import { utcToZonedTime } from 'date-fns-tz';
 import {
   addDays,
   addHours,
   addMinutes,
   addMonths,
+  addSeconds,
   addWeeks,
   addYears,
   differenceInDays,
@@ -46,6 +52,12 @@ export class DateService {
     { name: 'date.title.annually', type: Constant.Date.Period.Annually, week: 52, day: 365 },
     { name: 'date.title.custom', type: Constant.Date.Period.Custom, week: 0, day: 0 },
   ];
+  public timeSelection: NameValuePairType[] = [
+    { name: 'label.title.5min', value: '5' },
+    { name: 'label.title.10min', value: '10' },
+    { name: 'label.title.15min', value: '15' },
+    { name: 'label.title.30min', value: '30' },
+  ];
 
   constructor(public transform: DateTransformService) {}
 
@@ -65,6 +77,13 @@ export class DateService {
   shopTimeStamp(timezone: Constant.TimeZoneType | undefined | null) {
     const now = this.shopNow(timezone);
     return this.transform.formatLocalDateTime(now);
+  }
+
+  addSec(date: DateType, sec: number) {
+    const localDate = this.transform.toLocalDateTime(date);
+    const added = addSeconds(localDate, sec);
+    const format = this.transform.formatLocalDateTime(added);
+    return format;
   }
 
   addMin(date: DateType, min: number) {

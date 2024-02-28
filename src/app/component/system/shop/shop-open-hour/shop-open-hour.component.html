@@ -1,24 +1,34 @@
 <flex-col id="work-hours-container">
-  <!--Title-->
+  <!-- Title -->
   <legend *ngIf="requiresTitle">
     {{ 'label.title.operatinghours' | languageTransform: 'System' | async }}
   </legend>
-  <flex-row-item id="time-container" *ngIf="!readOnly && (action === 'create' || action === 'edit')">
+  <flex-row-item *ngIf="!readOnly && (action === 'create' || action === 'edit')" id="time-container">
     <time-picker-group>
-      <time-picker [(time)]="copyValue.openTime" [intervalMin]="intervalMin" [readOnly]="readOnly"></time-picker>
+      <time-picker
+        [displayCenter]="true"
+        [(time)]="copyValue.openTime"
+        [intervalMin]="intervalMin"
+        [readOnly]="readOnly"
+        [displayCenter]="true"></time-picker>
       <p id="time-picker-seperator">-</p>
-      <time-picker [(time)]="copyValue.closeTime" [intervalMin]="intervalMin" [readOnly]="readOnly"></time-picker>
-      <kendo-button kendoButton id="copy-button" (click)="onClickCopy()">
+      <time-picker
+        [displayCenter]="true"
+        [(time)]="copyValue.closeTime"
+        [intervalMin]="intervalMin"
+        [readOnly]="readOnly"
+        [displayCenter]="true"></time-picker>
+      <kendo-button (click)="onClickCopy()" kendoButton id="copy-button">
         {{ 'button.title.copy' | languageTransform: 'System' | async }}
       </kendo-button>
     </time-picker-group>
   </flex-row-item>
-  <!--Error-->
+  <!-- Error -->
   <flex-col-item id="error-container">
-    <div class="form-error-container" *ngIf="!inputValidator && (action === 'create' || action === 'edit')">
-      <kendo-formerror>{{
-        'messageerror.description.workhours' | languageTransform: 'System' | async
-      }}</kendo-formerror>
+    <div *ngIf="!inputValidator && (action === 'create' || action === 'edit')" class="form-error-container">
+      <kendo-formerror>
+        {{ 'messageerror.description.workhours' | languageTransform: 'System' | async }}
+      </kendo-formerror>
     </div>
   </flex-col-item>
 
@@ -28,22 +38,24 @@
       <div id="title">
         <legend [ngClass]="{ 'error-text': !validator.sun }">Sun</legend>
         <input
+          [(ngModel)]="inputWorkHours.sun.isOpen"
+          [disabled]="readOnly"
+          (ngModelChange)="onChangeSun()"
           id="close-open-button"
           type="checkbox"
-          kendoCheckBox
-          [(ngModel)]="inputWorkHours.sun.isOpen"
-          (ngModelChange)="onChangeSun()"
-          [disabled]="readOnly" />
+          kendoCheckBox />
       </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.sun.isOpen">
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.sun.operatingHours.openTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
             (timeChange)="onChangeSun()"></time-picker>
           <p id="time-picker-seperator">-</p>
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.sun.operatingHours.closeTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
@@ -52,28 +64,30 @@
       </flex-row-item>
     </flex-row>
   </flex-col-item>
-  <!--Monday-->
+  <!-- Monday -->
   <flex-col-item>
     <flex-row>
       <div id="title">
         <legend [ngClass]="{ 'error-text': !validator.mon }">Mon</legend>
         <input
+          [(ngModel)]="inputWorkHours.mon.isOpen"
+          [disabled]="readOnly"
+          (ngModelChange)="onChangeMon()"
           id="close-open-button"
           type="checkbox"
-          kendoCheckBox
-          [(ngModel)]="inputWorkHours.mon.isOpen"
-          (ngModelChange)="onChangeMon()"
-          [disabled]="readOnly" />
+          kendoCheckBox />
       </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.mon.isOpen">
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.mon.operatingHours.openTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
             (timeChange)="onChangeMon()"></time-picker>
           <p id="time-picker-seperator">-</p>
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.mon.operatingHours.closeTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
@@ -88,22 +102,24 @@
       <div id="title">
         <legend [ngClass]="{ 'error-text': !validator.tue }">Tue</legend>
         <input
+          [(ngModel)]="inputWorkHours.tue.isOpen"
+          [disabled]="readOnly"
+          (ngModelChange)="onChangeTue()"
           id="close-open-button"
           type="checkbox"
-          kendoCheckBox
-          [(ngModel)]="inputWorkHours.tue.isOpen"
-          (ngModelChange)="onChangeTue()"
-          [disabled]="readOnly" />
+          kendoCheckBox />
       </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.tue.isOpen">
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.tue.operatingHours.openTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
             (timeChange)="onChangeTue()"></time-picker>
           <p id="time-picker-seperator">-</p>
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.tue.operatingHours.closeTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
@@ -118,22 +134,24 @@
       <div id="title">
         <legend [ngClass]="{ 'error-text': !validator.wed }">Wed</legend>
         <input
+          [(ngModel)]="inputWorkHours.wed.isOpen"
+          [disabled]="readOnly"
+          (ngModelChange)="onChangeWed()"
           id="close-open-button"
           type="checkbox"
-          kendoCheckBox
-          [(ngModel)]="inputWorkHours.wed.isOpen"
-          (ngModelChange)="onChangeWed()"
-          [disabled]="readOnly" />
+          kendoCheckBox />
       </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.wed.isOpen">
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.wed.operatingHours.openTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
             (timeChange)="onChangeWed()"></time-picker>
           <p id="time-picker-seperator">-</p>
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.wed.operatingHours.closeTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
@@ -149,22 +167,24 @@
       <div id="title">
         <legend [ngClass]="{ 'error-text': !validator.thu }">Thu</legend>
         <input
+          [(ngModel)]="inputWorkHours.thu.isOpen"
+          [disabled]="readOnly"
+          (ngModelChange)="onChangeThu()"
           id="close-open-button"
           type="checkbox"
-          kendoCheckBox
-          [(ngModel)]="inputWorkHours.thu.isOpen"
-          (ngModelChange)="onChangeThu()"
-          [disabled]="readOnly" />
+          kendoCheckBox />
       </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.thu.isOpen">
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.thu.operatingHours.openTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
             (timeChange)="onChangeThu()"></time-picker>
           <p id="time-picker-seperator">-</p>
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.thu.operatingHours.closeTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
@@ -180,22 +200,24 @@
       <div id="title">
         <legend [ngClass]="{ 'error-text': !validator.fri }">Fri</legend>
         <input
+          [(ngModel)]="inputWorkHours.fri.isOpen"
+          [disabled]="readOnly"
+          (ngModelChange)="onChangeFri()"
           id="close-open-button"
           type="checkbox"
-          kendoCheckBox
-          [(ngModel)]="inputWorkHours.fri.isOpen"
-          (ngModelChange)="onChangeFri()"
-          [disabled]="readOnly" />
+          kendoCheckBox />
       </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.fri.isOpen">
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.fri.operatingHours.openTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
             (timeChange)="onChangeFri()"></time-picker>
           <p id="time-picker-seperator">-</p>
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.fri.operatingHours.closeTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
@@ -211,22 +233,24 @@
       <div id="title">
         <legend [ngClass]="{ 'error-text': !validator.sat }">Sat</legend>
         <input
+          [(ngModel)]="inputWorkHours.sat.isOpen"
+          [disabled]="readOnly"
+          (ngModelChange)="onChangeSat()"
           id="close-open-button"
           type="checkbox"
-          kendoCheckBox
-          [(ngModel)]="inputWorkHours.sat.isOpen"
-          (ngModelChange)="onChangeSat()"
-          [disabled]="readOnly" />
+          kendoCheckBox />
       </div>
       <flex-row-item id="time-container">
         <time-picker-group *ngIf="inputWorkHours.sat.isOpen">
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.sat.operatingHours.openTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"
             (timeChange)="onChangeSat()"></time-picker>
           <p id="time-picker-seperator">-</p>
           <time-picker
+            [displayCenter]="true"
             [(time)]="inputWorkHours.sat.operatingHours.closeTime"
             [intervalMin]="intervalMin"
             [readOnly]="readOnly"

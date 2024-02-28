@@ -9,7 +9,7 @@ import {
   ShopConfigurationType,
   UserClaimType,
 } from 'src/app/interface';
-import { Observable, combineLatest, firstValueFrom, map, of, switchMap } from 'rxjs';
+import { Observable, firstValueFrom, map, of, switchMap } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { SystemMenuRepositoryService } from 'src/app/firebase/system-repository/menu/system-menu-repository.service';
@@ -81,13 +81,11 @@ export class UserService {
   }
 
   public async presentEdit() {
-    combineLatest([this.data$, this.shopSelection$])
-      .pipe(take(1))
-      .subscribe(([user, shopSelection]) => {
-        if (user && shopSelection) {
-          this.modal.presentEdit(user, shopSelection).then(modal => modal.present());
-        }
-      });
+    this.data$.pipe(combineLatestWith(this.shopSelection$), take(1)).subscribe(([user, shopSelection]) => {
+      if (user && shopSelection) {
+        this.modal.presentEdit(user, shopSelection).then(modal => modal.present());
+      }
+    });
   }
 
   public async fullName() {

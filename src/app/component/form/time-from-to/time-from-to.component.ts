@@ -13,6 +13,7 @@ export class TimeFromToComponent implements OnInit {
   private _timeFrom!: TimeItemType;
   private _timeTo!: TimeItemType;
 
+  @Input() displayCenter: boolean = false;
   @Input()
   get timeFrom(): TimeItemType {
     return this._timeFrom;

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   Observable,
-  combineLatest,
   combineLatestWith,
   distinctUntilChanged,
   filter,
@@ -116,7 +115,8 @@ export class WaitingListService {
   }
 
   public isAvailableTime() {
-    return combineLatest([this.start$, this.cart.cart$]).pipe(
+    return this.start$.pipe(
+      combineLatestWith(this.cart.cart$),
       filter(([start, cart]) => start === true && cart !== null),
       switchMap(([start, cart]) => {
         if (start && cart !== null && cart.selectedTime !== null) {
@@ -141,7 +141,8 @@ export class WaitingListService {
   }
 
   private startWaitingList() {
-    this.start$ = combineLatest([this.startSessionShopId$, this.client.isLoggedin$]).pipe(
+    this.start$ = this.startSessionShopId$.pipe(
+      combineLatestWith(this.client.isLoggedin$),
       switchMap(([startId, isLogin]) => {
         if (startId === null) {
           return of(null);

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest, combineLatestWith, filter, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatestWith, filter, map, of, switchMap } from 'rxjs';
 import { WaitingListService } from '../waiting-list.service';
 import * as Constant from 'src/app/constant/constant';
 import { WaitingListStepService } from './waiting-list-step/waiting-list-step.service';
@@ -28,13 +28,13 @@ export class WaitingListStepperService {
   ) {}
 
   public validator() {
-    return combineLatest([
-      this._waitingList.client.isLoggedin$,
-      this._waitingList.cart.hasRelatedService(),
-      this._waitingList.cart.hasSelectDateTime(),
-      this._waitingList.cart.hasSpecialist(),
-      this._waitingList.cart.hasOnlyCoupon(),
-    ]).pipe(
+    return this._waitingList.client.isLoggedin$.pipe(
+      combineLatestWith(
+        this._waitingList.cart.hasRelatedService(),
+        this._waitingList.cart.hasSelectDateTime(),
+        this._waitingList.cart.hasSpecialist(),
+        this._waitingList.cart.hasOnlyCoupon()
+      ),
       map(([isLogin, hasCheckout, hasSelectedTime, hasSelectedSpeicalist, hasOnlyCoupon]) => {
         return {
           isLogin: isLogin,

@@ -10,11 +10,18 @@ import { DatePipeModule } from 'src/app/pipe/date/date.pipe.module';
 //Import Module
 import { SharedFormModule } from 'src/app/component/form/form.module';
 import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.module';
+import { ShopReservationScheduleEmployeeInfoModule } from '../shop-reservation-schedule-employee-info/shop-reservation-schedule-employee-info.module';
 
 import { ShopReservationScheduleComponent } from './shop-reservation-schedule.component';
+import { ShopReservationSchedulerToolbarComponent } from './shop-reservation-scheduler-toolbar/shop-reservation-scheduler-toolbar.component';
+import { ShopReservationSchedulerMobileToolbarPopoverComponent } from './shop-reservation-scheduler-mobile-toolbar-popover/shop-reservation-scheduler-mobile-toolbar-popover.component';
 
 @NgModule({
-  declarations: [ShopReservationScheduleComponent],
+  declarations: [
+    ShopReservationScheduleComponent,
+    ShopReservationSchedulerToolbarComponent,
+    ShopReservationSchedulerMobileToolbarPopoverComponent,
+  ],
   imports: [
     CommonModule,
     IonicModule,
@@ -23,6 +30,7 @@ import { ShopReservationScheduleComponent } from './shop-reservation-schedule.co
     SharedFormModule,
     KendoUiModule,
     DatePipeModule,
+    ShopReservationScheduleEmployeeInfoModule,
   ],
   exports: [ShopReservationScheduleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

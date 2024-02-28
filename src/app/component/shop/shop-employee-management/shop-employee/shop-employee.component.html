@@ -11,37 +11,37 @@
 </form-header>
 
 <ion-content [scrollable]="true">
-  <!--Page 1. Information-->
+  <!-- Page 1. Information -->
   <flex-col class="modal-container">
     <flex-row>
       <flex-row-item>
         <name-value-pair-single-dropdown-selection
-          title="label.title.role"
           [readOnly]="form.readOnly"
           [selection]="availableRoleFilter"
           [(selected)]="selectedRole"
-          (selectedChange)="onChangeRole()"></name-value-pair-single-dropdown-selection>
+          (selectedChange)="onChangeRole()"
+          title="label.title.role"></name-value-pair-single-dropdown-selection>
       </flex-row-item>
       <flex-row-item>
         <flex-col>
           <flex-col-item id="active">
             <kendo-label text="{{ 'label.title.active' | languageTransform: 'System' | async }}">
               <input
-                kendoCheckBox
-                type="checkbox"
                 [disabled]="form.readOnly || isReachToMax"
                 [(ngModel)]="employee.active"
-                (ngModelChange)="onChangeActive()" />
+                (ngModelChange)="onChangeActive()"
+                kendoCheckBox
+                type="checkbox" />
             </kendo-label>
           </flex-col-item>
           <flex-col-item id="display-in-booking">
             <kendo-label text="{{ 'label.title.displayinBooking' | languageTransform: 'System' | async }}">
               <input
-                kendoCheckBox
-                type="checkbox"
                 [disabled]="form.readOnly || employee.role.accessLevel.isReception"
                 [(ngModel)]="employee.displayInSystem"
-                (ngModelChange)="handleEnabledSaveBtn()" />
+                (ngModelChange)="handleEnabledSaveBtn()"
+                kendoCheckBox
+                type="checkbox" />
             </kendo-label>
           </flex-col-item>
         </flex-col>
@@ -52,11 +52,12 @@
     <flex-row>
       <flex-row-item>
         <date-picker
-          title="label.title.dateofbrith"
           [displayNextDay]="0"
+          [displayCenter]="true"
           [isDateOfBrith]="true"
           [readOnly]="form.readOnly"
-          [(date)]="employee.dob"></date-picker>
+          [(date)]="employee.dob"
+          title="label.title.dateofbrith"></date-picker>
       </flex-row-item>
       <flex-row-item>
         <langauge-selection
@@ -70,10 +71,10 @@
     <flex-row id="login-gender-container">
       <flex-row-item id="login-option-container">
         <login-option-selection
-          mode="form"
           [loginOption]="employee.loginOption"
           [readOnly]="true"
-          (loginOptionChange)="handleEnabledSaveBtn()"></login-option-selection>
+          (loginOptionChange)="handleEnabledSaveBtn()"
+          mode="form"></login-option-selection>
       </flex-row-item>
       <flex-row-item>
         <gender-selection
@@ -87,25 +88,25 @@
     <flex-row>
       <flex-row-item>
         <text-box
-          title="label.title.firstname"
           [(value)]="employee.firstName"
           [readOnly]="form.readOnly"
           [isRequired]="true"
           [max]="100"
           [min]="1"
           [(validate)]="validator.firstName"
-          (validateChange)="handleEnabledSaveBtn()"></text-box>
+          (validateChange)="handleEnabledSaveBtn()"
+          title="label.title.firstname"></text-box>
       </flex-row-item>
       <flex-row-item>
         <text-box
-          title="label.title.lastname"
           [(value)]="employee.lastName"
           [readOnly]="form.readOnly"
           [isRequired]="true"
           [max]="100"
           [min]="1"
           [(validate)]="validator.lastName"
-          (validateChange)="handleEnabledSaveBtn()"></text-box>
+          (validateChange)="handleEnabledSaveBtn()"
+          title="label.title.lastname"></text-box>
       </flex-row-item>
     </flex-row>
 
@@ -133,35 +134,37 @@
       <flex-row-item>
         <date-picker
           *ngIf="shopConfig !== undefined"
-          title="label.title.activefrom"
           [readOnly]="form.readOnly"
           [dateFormatter]="shopConfig.country.dateFormat"
           [shopTimeZone]="shopConfig.timezone"
-          [(date)]="employee.activeFrom"></date-picker>
+          [(date)]="employee.activeFrom"
+          title="label.title.activefrom"></date-picker>
       </flex-row-item>
       <flex-row-item>
         <date-picker
           *ngIf="shopConfig !== undefined && employee.activeTo !== null"
-          title="label.title.activeto"
           [readOnly]="form.readOnly"
+          [displayCenter]="true"
           [dateFormatter]="shopConfig.country.dateFormat"
+          [displayCenter]="true"
           [shopTimeZone]="shopConfig.timezone"
-          [(date)]="employee.activeTo"></date-picker>
+          [(date)]="employee.activeTo"
+          title="label.title.activeto"></date-picker>
       </flex-row-item>
     </flex-row>
 
-    <!-- Password  -->
+    <!-- Password -->
     <flex-col-item id="password-reset">
       <yes-no-selection
         *ngIf="employee.loginOption.email && form.action === 'edit' && !form.readOnly"
-        title="label.title.passwordreset"
         [(value)]="resetPassword"
         [readOnly]="form.readOnly"
-        (valueChange)="onClickResetPassword()"></yes-no-selection>
+        (valueChange)="onClickResetPassword()"
+        title="label.title.passwordreset"></yes-no-selection>
     </flex-col-item>
     <password-confirmation
       *ngIf="resetPassword"
-      (passwordChange)="setPassword($event)"
-      [(validate)]="validator.password"></password-confirmation>
+      [(validate)]="validator.password"
+      (passwordChange)="setPassword($event)"></password-confirmation>
   </flex-col>
 </ion-content>

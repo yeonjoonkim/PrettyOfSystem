@@ -46,14 +46,26 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    this.activateEmployeeNameListener();
-    this.activateRoleListener();
-    this.activateShopConfigListener();
-    this.activateShopServiceListener();
-    this.activateShopEmployeeListener();
+    this._shopService
+      .prop()
+      .pipe(takeUntil(this._onDestroy$))
+      .subscribe(prop => {
+        if (prop.config !== null) {
+          this._relatedServiceTypes = this._shopService.relateShopService.getShopRelatedServiceTypes(
+            prop.config.category
+          );
+        }
+        this.isReachToMax = prop.isReachToMax;
+        this.employeeName = prop.empName;
+        this.role = prop.currentRole;
+        this._config = prop.config;
+        this.extraFilter = prop.extraFilter;
+        this.extras = prop.extra;
+        this.services = prop.services;
+        this.translatedRequests = prop.request;
+        this.specializedEmployees = prop.specialists;
+      });
     this.activateShopTranslatedRequest();
-    this.activateShopExtraListener();
-    this.activeIsReachToMaxListener();
   }
 
   ngOnDestroy() {
@@ -126,55 +138,7 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
       this._isModalOpen = false;
     }
   }
-
-  private activateShopExtraListener() {
-    this._shopService.extra$.pipe(takeUntil(this._onDestroy$)).subscribe(extras => {
-      this.extras = extras;
-    });
-    this._shopService.extraFilter$.pipe(takeUntil(this._onDestroy$)).subscribe(extraFilter => {
-      this.extraFilter = extraFilter;
-    });
-  }
-
-  private activeIsReachToMaxListener() {
-    this._shopService.isReachToMax$.pipe(takeUntil(this._onDestroy$)).subscribe(isReachMax => {
-      this.isReachToMax = isReachMax;
-    });
-  }
-
-  private activateEmployeeNameListener() {
-    this._shopService.employeName$.pipe(takeUntil(this._onDestroy$)).subscribe(name => {
-      this.employeeName = name;
-    });
-  }
-
-  private activateRoleListener() {
-    this._shopService.currentRole$.pipe(takeUntil(this._onDestroy$)).subscribe(role => {
-      this.role = role;
-    });
-  }
-
-  private activateShopConfigListener() {
-    this._shopService.currentShopConfig$.pipe(takeUntil(this._onDestroy$)).subscribe(config => {
-      this._config = config;
-      if (config !== null) {
-        this._relatedServiceTypes = this._shopService.relateShopService.getShopRelatedServiceTypes(
-          config.category
-        );
-      }
-    });
-  }
-
-  private activateShopServiceListener() {
-    this._shopService.service$.pipe(takeUntil(this._onDestroy$)).subscribe(services => {
-      this.services = services;
-    });
-  }
-
   private activateShopTranslatedRequest() {
-    this._shopService.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(requests => {
-      this.translatedRequests = requests;
-    });
     this._shopService.translatedRequest$
       .pipe(pairwise(), takeUntil(this._onDestroy$))
       .subscribe(([before, after]) => {
@@ -190,12 +154,6 @@ export class ShopServiceManagementComponent implements OnInit, OnDestroy {
           console.log('Updated Status:', updatedStatusArray);
         }
       });
-  }
-
-  private activateShopEmployeeListener() {
-    this._shopService.specialisedEmployees$.pipe(takeUntil(this._onDestroy$)).subscribe(employees => {
-      this.specializedEmployees = employees;
-    });
   }
 
   private async presentReachedToMaxError() {

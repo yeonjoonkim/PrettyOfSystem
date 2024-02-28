@@ -1,0 +1,27 @@
+.employee-info-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  min-width: 130px;
+  height: 50px;
+  p{
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.employee-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0px;
+  p{
+    text-align: left;
+    margin: 0px;
+    padding: 0px;
+  }
+}

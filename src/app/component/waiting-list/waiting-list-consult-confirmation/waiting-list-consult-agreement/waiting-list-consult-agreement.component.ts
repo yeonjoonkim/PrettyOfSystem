@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject, combineLatest, map, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatestWith, map, takeUntil } from 'rxjs';
 import { UserVisitShopConsentType } from 'src/app/interface';
 import { WaitingListConsultService } from 'src/app/service/waiting-list/waiting-list-consult/waiting-list-consult.service';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
@@ -31,7 +31,8 @@ export class WaitingListConsultAgreementComponent implements OnInit, OnChanges, 
   public agreement: boolean = false;
   public requesting: boolean = false;
 
-  public disableRequestBtn$: Observable<boolean> = combineLatest([this.validator$, this.isAvailableTime$]).pipe(
+  public disableRequestBtn$: Observable<boolean> = this.validator$.pipe(
+    combineLatestWith(this.isAvailableTime$),
     map(([validatorResult, isAvailableTimeResult]) => {
       return validatorResult && isAvailableTimeResult;
     })

@@ -2,7 +2,8 @@ import { parseISO } from 'date-fns';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import { Injectable } from '@angular/core';
 import { TimeItemType } from 'src/app/interface/global/global.interface';
-import * as firestore from 'firebase/firestore';
+//import * as firestore from 'firebase/firestore';
+import firebase from 'firebase/compat/app';
 
 import * as Constant from 'src/app/constant/constant';
 import * as deafultTimezone from 'moment-timezone';
@@ -10,7 +11,7 @@ import * as deafultTimezone from 'moment-timezone';
 const dateFormatter = `yyyy-MM-dd'T'HH:mm:ss`;
 export const localTimezone = deafultTimezone.tz.guess();
 
-export type DateType = firestore.Timestamp | string | Date;
+export type DateType = firebase.firestore.Timestamp | string | Date;
 @Injectable({
   providedIn: 'root',
 })
@@ -55,8 +56,8 @@ export class DateTransformService {
     return format(date, dateFormatter);
   }
 
-  private isTimeStamp(value: any): value is firestore.Timestamp {
-    return value instanceof firestore.Timestamp;
+  private isTimeStamp(value: any): value is firebase.firestore.Timestamp {
+    return value instanceof firebase.firestore.Timestamp;
   }
 
   private parseLocalDateTime(stringDate: string): Date {

@@ -1,20 +1,20 @@
 <ion-datetime
-  presentation="time"
   [(ngModel)]="time"
-  hourCycle="h23"
   [min]="prop.minDateTime"
   [max]="prop.maxDateTime"
   [hourValues]="prop.hourSelection"
   [minuteValues]="prop.minSelection"
-  (ngModelChange)="onChangeTime($event)"></ion-datetime>
+  (ngModelChange)="onChangeTime($event)"
+  presentation="time"
+  hourCycle="h12"></ion-datetime>
 <flex-row>
   <flex-row-item>
-    <kendo-button kendoButton (click)="onClickApply()" class="apply">
+    <kendo-button (click)="onClickApply()" kendoButton class="apply">
       {{ 'label.title.apply' | languageTransform: 'System' | async }}
     </kendo-button>
   </flex-row-item>
   <flex-row-item>
-    <kendo-button kendoButton (click)="onClickCancel()">
+    <kendo-button (click)="onClickCancel()" kendoButton>
       {{ 'button.title.cancel' | languageTransform: 'System' | async }}
     </kendo-button>
   </flex-row-item>

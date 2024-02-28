@@ -1,4 +1,5 @@
-import firestore from 'firebase/firestore';
+//import firestore from 'firebase/firestore';
+import firebase from 'firebase/compat';
 import {
   Default,
   State,
@@ -17,6 +18,7 @@ import {
   Transaction,
   Query,
   SignatureTransferStatus,
+  Scheduler,
 } from './constant-value';
 export {
   Default,
@@ -38,6 +40,7 @@ export {
   Transaction,
   Query,
   SignatureTransferStatus,
+  Scheduler,
 } from './constant-value';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
@@ -55,7 +58,7 @@ export type ChangeNumberRequestStatusType =
   (typeof ChangeNumberRequestStatus)[keyof typeof ChangeNumberRequestStatus];
 
 //Date
-export type TimeStamp = firestore.Timestamp;
+export type TimeStamp = firebase.firestore.Timestamp; //firebase.Timestamp;
 export type TimeZoneType = (typeof TimeZone)[keyof typeof TimeZone];
 export type DayIndexType = (typeof Date.DayIndex)[keyof typeof Date.DayIndex];
 export type DayType = (typeof Date.Day)[keyof typeof Date.Day];
@@ -302,3 +305,8 @@ export type ConsultOriginType =
   | ConsultWalkInOrigin
   | ConsultOnlineOrigin
   | ConsultWaitingListOrigin;
+
+//Scheduler
+export type SchedulerViewModeType = (typeof Scheduler.View)[keyof typeof Scheduler.View];
+export type SchedulerEmployeeViewModeType = (typeof Scheduler.EmployeeView)[keyof typeof Scheduler.EmployeeView];
+export type SchedulerEmployeeStatusType = (typeof Scheduler.WorkingStatus)[keyof typeof Scheduler.WorkingStatus];

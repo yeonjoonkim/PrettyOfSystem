@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ShopService } from '../../../shop/shop.service';
 import { ShopScheduleRepositoryService } from 'src/app/firebase/shop-repository/shop-schedule-repository/shop-schedule-repository.service';
-import { BehaviorSubject, combineLatest, filter, map, of, switchMap, take } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, filter, map, of, switchMap, take } from 'rxjs';
 import * as Constant from 'src/app/constant/constant';
 import { DateService } from '../../../global/date/date.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -24,7 +24,8 @@ export class ShopReservationDayQueryService {
   }
 
   public startOfDay$ = this._startOfDay.asObservable();
-  public schedules$ = combineLatest([this.startOfDay$, this._shop.config$]).pipe(
+  public schedules$ = this.startOfDay$.pipe(
+    combineLatestWith(this._shop.config$),
     filter(([startOfDay, config]) => startOfDay !== null && config !== null),
     switchMap(([startOfDay, config]) => {
       if (startOfDay !== null && config !== null) {
@@ -52,12 +53,8 @@ export class ShopReservationDayQueryService {
     })
   );
 
-  public loaded$ = combineLatest([
-    this.startOfDay$,
-    this.shopStartOfDay$,
-    this._shop.config$,
-    this.schedules$,
-  ]).pipe(
+  public loaded$ = this.startOfDay$.pipe(
+    combineLatestWith(this.shopStartOfDay$, this._shop.config$, this.schedules$),
     map(
       ([startOfDay, shopStartOfDay, config, schedules]) =>
         startOfDay !== null && config !== null && schedules !== null && shopStartOfDay !== null
