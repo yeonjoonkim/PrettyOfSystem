@@ -32,10 +32,20 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
   constructor(private _extraService: ShopExtraManagementService) {}
 
   ngOnInit() {
-    this.activateShopConfig();
-    this.activateShopExtra();
+    this._extraService
+      .prop()
+      .pipe(takeUntil(this._onDestroy$))
+      .subscribe(prop => {
+        if (prop.shopConfig !== null) {
+          this._currentShopConfig = prop.shopConfig;
+          this.country = prop.shopConfig.country;
+        }
+
+        this.isReachToMax = prop.isReachToMax;
+        this.extra = prop.extra;
+        this.translatedRequest = prop.request;
+      });
     this.activateTranslatedRequest();
-    this.activateIsReachToMax();
   }
 
   ngOnDestroy() {
@@ -43,31 +53,7 @@ export class ShopExtraManagementComponent implements OnInit, OnDestroy {
     this._onDestroy$.complete();
   }
 
-  private activateShopConfig() {
-    this._extraService.currentShopConfig$.pipe(takeUntil(this._onDestroy$)).subscribe(config => {
-      if (config !== null) {
-        this._currentShopConfig = config;
-        this.country = config.country;
-      }
-    });
-  }
-
-  private activateIsReachToMax() {
-    this._extraService.isReachToMax$.pipe(takeUntil(this._onDestroy$)).subscribe(isReachToMax => {
-      this.isReachToMax = isReachToMax;
-    });
-  }
-
-  private activateShopExtra() {
-    this._extraService.extra$.pipe(takeUntil(this._onDestroy$)).subscribe(extra => {
-      this.extra = extra;
-    });
-  }
-
   private activateTranslatedRequest() {
-    this._extraService.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
-      this.translatedRequest = request;
-    });
     this._extraService.translatedRequest$
       .pipe(pairwise(), takeUntil(this._onDestroy$))
       .subscribe(([before, after]) => {

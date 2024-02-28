@@ -8,49 +8,34 @@
   (onClickEdit)="handleEdit()"
   (onClickSave)="handleSave()">
 </form-header>
-<ion-content [scrollable]="true" *ngIf="setting">
+<ion-content *ngIf="setting" [scrollable]="true">
   <flex-col class="modal-container">
     <flex-col-item>
-      <kendo-label text="{{ 'label.title.openingbalance' | languageTransform: 'System' | async }}">
-        <div id="opening-balance-section">
-          <p>$</p>
-          <kendo-numerictextbox
-            id="opening-balance-input"
-            [(value)]="setting.financial.openingBalance"
-            [decimals]="2"
-            [min]="0"
-            [spinners]="false"
-            (valueChange)="onChangeOpeningBalance()"
-            [readonly]="form.readOnly"></kendo-numerictextbox>
-        </div>
-      </kendo-label>
-    </flex-col-item>
-    <flex-col-item>
       <percentage
-        title="label.title.tax"
         [(value)]="setting.financial.taxRate"
         [readOnly]="form.readOnly"
         [max]="0.5"
         [autoCorrect]="true"
-        (valueChange)="onChangeTaxRate()"></percentage>
+        (valueChange)="onChangeTaxRate()"
+        title="label.title.tax"></percentage>
     </flex-col-item>
     <flex-col-item>
       <percentage
-        title="label.title.cardsurcharge"
         [(value)]="setting.financial.cardSurchargeRate"
         [readOnly]="form.readOnly"
         [max]="0.5"
         [autoCorrect]="true"
-        (onChangeValue)="onChangeCardSurcharge()"></percentage>
+        (onChangeValue)="onChangeCardSurcharge()"
+        title="label.title.cardsurcharge"></percentage>
     </flex-col-item>
     <flex-col-item>
       <kendo-label text="{{ 'label.title.cashdiscount' | languageTransform: 'System' | async }}">
         <input
-          type="checkbox"
-          kendoCheckBox
           [checked]="setting.financial.cashDiscount !== null"
+          [disabled]="form.readOnly"
           (click)="onClickCashDiscount()"
-          [disabled]="form.readOnly" />
+          type="checkbox"
+          kendoCheckBox />
       </kendo-label>
     </flex-col-item>
   </flex-col>
@@ -67,39 +52,39 @@
     <flex-col-item class="cash-discount-type">
       <kendo-label text="{{ 'label.title.applycouponproductcashdiscount' | languageTransform: 'System' | async }}">
         <input
-          type="checkbox"
-          kendoCheckBox
           [(ngModel)]="setting.financial.cashDiscount.enableCoupon"
-          [disabled]="form.readOnly" />
+          [disabled]="form.readOnly"
+          type="checkbox"
+          kendoCheckBox />
       </kendo-label>
     </flex-col-item>
     <flex-col-item class="cash-discount-type">
       <kendo-label
         text="{{ 'label.title.applypackageproductcashdiscount' | languageTransform: 'System' | async }}">
         <input
-          type="checkbox"
-          kendoCheckBox
           [(ngModel)]="setting.financial.cashDiscount.enablePackage"
-          [disabled]="form.readOnly" />
+          [disabled]="form.readOnly"
+          type="checkbox"
+          kendoCheckBox />
       </kendo-label>
     </flex-col-item>
     <flex-col-item class="cash-discount-type">
       <kendo-label
         text="{{ 'label.title.applyserviceproductcashdiscount' | languageTransform: 'System' | async }}">
         <input
-          type="checkbox"
-          kendoCheckBox
           [(ngModel)]="setting.financial.cashDiscount.enableService"
-          [disabled]="form.readOnly" />
+          [disabled]="form.readOnly"
+          type="checkbox"
+          kendoCheckBox />
       </kendo-label>
     </flex-col-item>
     <flex-col-item class="cash-discount-type">
       <kendo-label text="{{ 'label.title.applyextraproductcashdiscount' | languageTransform: 'System' | async }}">
         <input
-          type="checkbox"
-          kendoCheckBox
           [(ngModel)]="setting.financial.cashDiscount.enableService"
-          [disabled]="form.readOnly" />
+          [disabled]="form.readOnly"
+          type="checkbox"
+          kendoCheckBox />
       </kendo-label>
     </flex-col-item>
   </flex-col>

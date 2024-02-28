@@ -39,6 +39,8 @@ export class DatePickerComponent implements OnInit, OnChanges {
   @Input() isDateOfBrith: boolean = false;
   @Input() type: 'start' | 'end' = 'start';
   @Input() operatingHours!: ShopWorkHoursType | undefined;
+  @Input() displayCenter: boolean = false;
+  @Input() displayDay: boolean = false;
 
   public inputDate: Date = new Date();
   public minDate: Date = new Date();
@@ -51,6 +53,10 @@ export class DatePickerComponent implements OnInit, OnChanges {
   set date(input: string) {
     const ofDay = this.type === 'start' ? this._global.date.startDay(input) : this._global.date.endDay(input);
     this.inputDate = this._global.date.transform.toLocalDateTime(ofDay);
+  }
+
+  public getDays(days: string) {
+    return this._global.date.getDay(days);
   }
 
   constructor(
@@ -132,12 +138,15 @@ export class DatePickerComponent implements OnInit, OnChanges {
   }
 
   private async getPopoverSettings(event: any) {
+    const customClass = this.displayCenter
+      ? 'date-popover-container center-popover-container'
+      : 'date-popover-container';
     return await this._popoverCtrl.create({
       component: DateSelectionPopoverComponent,
       event: event,
       translucent: true,
-      size: 'auto',
-      cssClass: 'date-popover-container',
+      size: 'cover',
+      cssClass: customClass,
       componentProps: {
         date: this.inputDate,
         minDate: this.minDate,

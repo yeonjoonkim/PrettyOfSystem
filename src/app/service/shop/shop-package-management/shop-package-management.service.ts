@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest, combineLatestWith, map, of, switchMap } from 'rxjs';
+import { Observable, combineLatestWith, filter, map, of, switchMap } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -98,7 +98,8 @@ export class ShopPackageManagementService {
   }
 
   private filterPropListener() {
-    this.filterProp$ = combineLatest([this.serviceFilter$, this.extraFilter$, this.specialisedEmployees$]).pipe(
+    this.filterProp$ = this.serviceFilter$.pipe(
+      combineLatestWith(this.extraFilter$, this.specialisedEmployees$),
       map(([servicesFilter, extrasFilter, specialisedEmployees]) => {
         const shopPackageFilterDoc: ShopPackageFilterDocumentProp = {
           services: servicesFilter,
@@ -143,6 +144,73 @@ export class ShopPackageManagementService {
           return false;
         }
       })
+    );
+  }
+
+  public prop() {
+    return this.config$.pipe(
+      combineLatestWith(
+        this.packages$,
+        this.translatedRequest$,
+        this.serviceTranslatedRequest$,
+        this.extraServiceRequest$,
+        this.isReachToMax$,
+        this.filterProp$,
+        this.extras$,
+        this.services$,
+        this.operatingWorkHour$
+      ),
+      filter(
+        ([
+          config,
+          packages,
+          request,
+          serviceRequest,
+          extraRequest,
+          isReachToMax,
+          filterProp,
+          extras,
+          services,
+          operatingHours,
+        ]) =>
+          config !== null &&
+          packages != null &&
+          request != null &&
+          serviceRequest != null &&
+          extraRequest != null &&
+          typeof isReachToMax === 'boolean' &&
+          filterProp != null &&
+          extras != null &&
+          services != null &&
+          operatingHours != null
+      ),
+      map(
+        ([
+          config,
+          packages,
+          request,
+          serviceRequest,
+          extraRequest,
+          isReachToMax,
+          filterProp,
+          extras,
+          services,
+          operatingHours,
+        ]) => {
+          return {
+            config: config,
+            packages: packages,
+            request: request,
+            serviceRequest: serviceRequest,
+            extraRequest: extraRequest,
+            isReachToMax: isReachToMax,
+            filterProp: filterProp,
+            extras: extras,
+            services: services,
+            operatingHours: operatingHours,
+          };
+        }
+      )
     );
   }
 

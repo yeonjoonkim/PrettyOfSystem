@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Observable, combineLatestWith, takeUntil, combineLatest, switchMap, of, filter } from 'rxjs';
+import { Subject, Observable, combineLatestWith, takeUntil, switchMap, of, filter } from 'rxjs';
 import { ShopEmployeeTimeSheet } from 'src/app/interface';
 import { CheckOutSpecialistType } from 'src/app/interface/booking/cart/cart.interface';
 import { WaitingListService } from 'src/app/service/waiting-list/waiting-list.service';
@@ -21,10 +21,8 @@ export class SelectSpecialistTimePage implements OnInit, OnDestroy {
     this._waitingList.cart.selectedSpecialist();
   public cart$ = this._waitingList.cart$;
   public availableTime$ = this._waitingList.selectTodaySpecialistTime();
-  public enableNext$ = combineLatest([
-    this._waitingList.cart.hasSpecialist(),
-    this._waitingList.cart.hasSelectDateTime(),
-  ]).pipe(
+  public enableNext$ = this._waitingList.cart.hasSpecialist().pipe(
+    combineLatestWith(this._waitingList.cart.hasSelectDateTime()),
     switchMap(([hasSpecialist, hasTime]) => {
       if (hasSpecialist && hasTime) {
         return of(true);

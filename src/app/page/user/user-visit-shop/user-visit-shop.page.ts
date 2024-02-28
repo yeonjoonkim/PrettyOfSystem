@@ -1,16 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
-import {
-  BehaviorSubject,
-  Subject,
-  combineLatest,
-  combineLatestWith,
-  firstValueFrom,
-  map,
-  of,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
+import { BehaviorSubject, Subject, combineLatestWith, firstValueFrom, of, switchMap, takeUntil } from 'rxjs';
 import { NameValuePairType, UserVisitShopConsentType } from 'src/app/interface';
 import { UserService } from 'src/app/service/user/user.service';
 
@@ -126,14 +116,14 @@ export class UserVisitShopPage implements OnInit, OnDestroy {
     })
   );
 
-  public prop$ = combineLatest(
-    this._selection$,
-    this._selectedShop,
-    this._associatedConsent$,
-    this._user.data$,
-    this._action$,
-    this._buttons$
-  ).pipe(
+  public prop$ = this._selection$.pipe(
+    combineLatestWith(
+      this._selectedShop,
+      this._associatedConsent$,
+      this._user.data$,
+      this._action$,
+      this._buttons$
+    ),
     switchMap(([selection, selected, consent, user, action, buttons]) => {
       if (selection.length > 0 && selected && user !== null && consent !== null) {
         return of({

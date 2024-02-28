@@ -32,21 +32,16 @@ export class ShopCouponManagementComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.isAuthorisedRole = await this._couponService.isAuthorisedRole();
-    this._couponService.services$.pipe(takeUntil(this._onDestroy$)).subscribe(s => {
-      this._service = s;
-    });
-    this._couponService.serviceFilter$.pipe(takeUntil(this._onDestroy$)).subscribe(sf => {
-      this._serviceFilter = sf;
-    });
-    this._couponService.isReachToMax$.pipe(takeUntil(this._onDestroy$)).subscribe(i => {
-      this.isReachToMax = i;
-    });
-    this._couponService.coupons$.pipe(takeUntil(this._onDestroy$)).subscribe(c => {
-      this.coupons = c;
-    });
-    this._couponService.translatedRequest$.pipe(takeUntil(this._onDestroy$)).subscribe(request => {
-      this.translatedRequest = request;
-    });
+    this._couponService
+      .prop()
+      .pipe(takeUntil(this._onDestroy$))
+      .subscribe(s => {
+        this._service = s.services;
+        this._serviceFilter = s.serviceFilter;
+        this.isReachToMax = s.isReachToMax;
+        this.coupons = s.coupons;
+        this.translatedRequest = s.translatedRequest;
+      });
   }
 
   ngOnDestroy() {

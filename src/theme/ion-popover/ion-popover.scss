@@ -7,12 +7,19 @@
 }
 
 .center-popover-container::part(content) {
-  top: 20% !important;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  margin-top: -125px !important;
+  margin-left: -100px !important;
+}
+
+.reservation-mobile-popover-container::part(content) {
   --min-width: 300px;
+  --max-width: 300px;
 }
 
 .date-popover-container::part(content) {
-  margin: auto;
   --min-width: 300px;
   --max-width: 300px;
 }

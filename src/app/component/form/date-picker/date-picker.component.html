@@ -1,13 +1,23 @@
-<kendo-label text="{{ title | languageTransform: 'System' | async }}" *ngIf="title">
-  <kendo-button id="dropdown-list-btn" #dropdownListBtn>
-    <span id="selected-name" #selectedName>{{ date | dateTransform: 'LongDate' }} </span>
+<kendo-label *ngIf="title" text="{{ title | languageTransform: 'System' | async }}">
+  <kendo-button #dropdownListBtn id="dropdown-list-btn">
+    <span #selectedName id="selected-name">
+      {{ date | dateTransform: 'LongDate' }}
+    </span>
+    <span #selectedName *ngIf="displayDay" id="selected-name">
+      {{ date | dayTransform | async }}
+    </span>
     <span #dropDownArrow id="dropdown-list-down">
       <kendo-svgicon [icon]="kendo.icon.down"></kendo-svgicon>
     </span>
   </kendo-button>
 </kendo-label>
-<kendo-button id="dropdown-list-btn" #dropdownListBtn *ngIf="!title">
-  <span id="selected-name" #selectedName>{{ date | dateTransform: 'LongDate' }} </span>
+<kendo-button #dropdownListBtn *ngIf="!title" id="dropdown-list-btn">
+  <span #selectedName id="selected-name">
+    {{ date | dateTransform: 'LongDate' }}
+  </span>
+  <span #selectedName *ngIf="displayDay" id="selected-name">
+    {{ date | dayTransform | async }}
+  </span>
   <span #dropDownArrow id="dropdown-list-down">
     <kendo-svgicon [icon]="kendo.icon.down"></kendo-svgicon>
   </span>

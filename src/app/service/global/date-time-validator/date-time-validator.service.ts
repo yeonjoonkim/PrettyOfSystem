@@ -1,10 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { DateService } from '../date/date.service';
-
-@Injectable({
-  providedIn: 'root'
-})
-
 type StartEndType = {
   start: string; // range 00:00:00 - 23:59:59
   end: string; // range 00:00:00 - 23:59:59
@@ -12,6 +7,9 @@ type StartEndType = {
 const IsoDateChecker = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
 const TimeChecker = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
 
+@Injectable({
+  providedIn: 'root'
+})
 export class DateTimeValidatorService {
   private _dateSvc = inject(DateService);
   constructor() {}
@@ -34,8 +32,8 @@ export class DateTimeValidatorService {
     if (is24Hours) {
       return true;
     }
-    
-    return !is24Hours ? targetTime <= checker.start && targetTime <= checker.end : true;
+  
+    return !is24Hours ? targetTime >= checker.start && targetTime <= checker.end : true;
   }
 
 

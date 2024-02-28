@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, combineLatestWith, map, of } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, map, of } from 'rxjs';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { ShopService } from '../../shop.service';
 
@@ -111,18 +111,18 @@ export class ShopClientValidatorService {
   private _privateInsurance$ = this._privateInsurance.asObservable();
   private _emergencyContact$ = this._emergencyContact.asObservable();
 
-  public validator$ = combineLatest([
-    this._shop.isRelatedToMedical$,
-    this._firstName$,
-    this._lastName$,
-    this._phoneNumber$,
-    this._email$,
-    this._address$,
-    this._termAndCondition$,
-    this._signature$,
-    this._privateInsurance$,
-    this._emergencyContact$,
-  ]).pipe(
+  public validator$ = this._shop.isRelatedToMedical$.pipe(
+    combineLatestWith(
+      this._firstName$,
+      this._lastName$,
+      this._phoneNumber$,
+      this._email$,
+      this._address$,
+      this._termAndCondition$,
+      this._signature$,
+      this._privateInsurance$,
+      this._emergencyContact$
+    ),
     map(
       ([
         isRelatedToMedical,

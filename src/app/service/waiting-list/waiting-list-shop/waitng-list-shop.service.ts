@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, switchMap, of, map, firstValueFrom, combineLatest, filter } from 'rxjs';
+import { Observable, switchMap, of, map, firstValueFrom, filter, combineLatestWith } from 'rxjs';
 import { ShopCouponRepositoryService } from 'src/app/firebase/shop-repository/shop-coupon-repository/shop-coupon-repository.service';
 import { SystemShopConfigurationRepositoryService } from 'src/app/firebase/system-repository/shop/system-shop-configuration-repository.service';
 import {
@@ -212,8 +212,9 @@ export class WaitngListShopService {
   }
 
   public getCartCriteriaValueChangeListener(isPregnant: boolean) {
-    return combineLatest([this.coupons(), this.services(), this.packages(), this.config$]).pipe(
-      map(([coupons, services, packages, config]) => {
+    return this.config$.pipe(
+      combineLatestWith(this.coupons(), this.services(), this.packages()),
+      map(([config, coupons, services, packages]) => {
         services = isPregnant ? services : services.filter(s => !s.recommandForPregnant);
         packages = isPregnant ? packages : packages.filter(s => !s.recommandForPregnant);
         const result: WaitingListShopCartCriteriaType = {

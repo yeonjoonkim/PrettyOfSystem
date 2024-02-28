@@ -26,12 +26,14 @@ import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service
 })
 export class TimePickerComponent implements OnInit, OnChanges {
   public kendo = inject(KendoUiService);
+  
 
   @ViewChild('dropdownListBtn') dropdownListBtn!: ElementRef;
   @ViewChild('selectedName') selectedName!: ElementRef;
   @ViewChild('dropDownArrow') dropDownArrow!: ElementRef;
   @Output() timeChange = new EventEmitter<TimeItemType>();
 
+  @Input() displayCenter: boolean = false;
   @Input() readOnly: boolean = false;
   @Input() timezone: Constant.TimeZoneType = Constant.TimeZone.EuropeRiga;
   @Input() intervalMin: number = Constant.ShopSetting.Calender.IntervalMin;
@@ -164,11 +166,13 @@ export class TimePickerComponent implements OnInit, OnChanges {
   }
 
   private async getPopoverSettings(event: any) {
+    const customClass = this.displayCenter ? 'time-popover-container center-popover-container' : 'time-popover-container';
     return await this._popoverCtrl.create({
       component: TimeSelectionPopoverComponent,
       event: event,
       translucent: true,
       size: 'auto',
+      cssClass: customClass,
       componentProps: {
         min: this._global.date.transform.formatLocalDateTime(this.minTime),
         max: this._global.date.transform.formatLocalDateTime(this.maxTime),

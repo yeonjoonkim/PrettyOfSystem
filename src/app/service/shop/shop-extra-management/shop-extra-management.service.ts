@@ -8,7 +8,7 @@ import {
   ShopExtraDocumentType,
   ShopLimitedProgpressBarType,
 } from 'src/app/interface';
-import { Observable, combineLatestWith, map, of, switchMap } from 'rxjs';
+import { Observable, combineLatestWith, filter, map, of, switchMap } from 'rxjs';
 import { ShopExtraRepositoryService } from 'src/app/firebase/shop-repository/shop-extra-repository/shop-extra-repository.service';
 import { LoadingService } from '../../global/loading/loading.service';
 import { ShopLanguagePackageService } from '../shop-language-package/shop-language-package.service';
@@ -151,6 +151,27 @@ export class ShopExtraManagementService {
       return extra;
     }
     return null;
+  }
+
+  public prop() {
+    return this.currentShopConfig$.pipe(
+      combineLatestWith(this.isReachToMax$, this.extra$, this.translatedRequest$),
+      filter(
+        ([config, max, extra, request]) =>
+          config !== null &&
+          typeof max === 'boolean' &&
+          extra !== null &&
+          extra !== undefined &&
+          request !== null &&
+          request !== undefined
+      ),
+      map(([config, max, extra, request]) => ({
+        shopConfig: config,
+        isReachToMax: max,
+        extra: extra,
+        request: request,
+      }))
+    );
   }
 
   public async getShopConfig() {

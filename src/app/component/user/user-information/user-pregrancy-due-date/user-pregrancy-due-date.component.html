@@ -1,34 +1,36 @@
 <flex-row>
   <flex-row-item class="setting-title">
-    <legend>{{ 'label.title.expecteddateofbirth' | languageTransform: 'System' | async }}</legend>
+    <legend>
+      {{ 'label.title.expecteddateofbirth' | languageTransform: 'System' | async }}
+    </legend>
     <kendo-button *ngIf="readOnly" (click)="readOnly = false" class="edit-btn">
       {{ 'button.title.edit' | languageTransform: 'System' | async }}
     </kendo-button>
     <kendo-button
       *ngIf="!readOnly"
-      class="save-btn"
-      themeColor="success"
+      [disabled]="!enableSaveBtn || requesting"
       (click)="onSave()"
-      [disabled]="!enableSaveBtn || requesting">
+      class="save-btn"
+      themeColor="success">
       {{ 'button.title.save' | languageTransform: 'System' | async }}
     </kendo-button>
   </flex-row-item>
 </flex-row>
 
 <flex-row *ngIf="!requesting">
-  <flex-row-item class="description" *ngIf="pregnancyDueDate === null && readOnly">
+  <flex-row-item *ngIf="pregnancyDueDate === null && readOnly" class="description">
     <p class="default-placeholder">
       {{ 'label.description.noexpecteddateofbirthprovided' | languageTransform: 'System' | async }}
     </p>
   </flex-row-item>
-  <flex-row-item class="description" *ngIf="(pregnancyDueDate || pregnancyDueDate === null) && !readOnly">
+  <flex-row-item *ngIf="(pregnancyDueDate || pregnancyDueDate === null) && !readOnly" class="description">
     {{ 'label.description.doyouwanttoprovideexpecteddateofbirth' | languageTransform: 'System' | async }}
     <input
-      type="checkbox"
-      kendoCheckBox
       [checked]="pregnancyDueDate !== null"
       [disabled]="readOnly"
-      (click)="onChangeDueDateFormat()" />
+      (click)="onChangeDueDateFormat()"
+      type="checkbox"
+      kendoCheckBox />
   </flex-row-item>
 </flex-row>
 
@@ -36,9 +38,10 @@
   <flex-row-item class="pregrency-due-date-picker-container">
     <date-picker
       [(date)]="pregnancyDueDate"
+      [displayCenter]="true"
       [shopTimeZone]="localTimezone"
-      (dateChange)="onChangeDate()"
-      [restrictedFromToday]="true"></date-picker>
+      [restrictedFromToday]="true"
+      (dateChange)="onChangeDate()"></date-picker>
   </flex-row-item>
 </flex-row>
 

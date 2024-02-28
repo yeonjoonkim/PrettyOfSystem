@@ -1,40 +1,119 @@
-:host ::ng-deep .k-scheduler-table > tr > th {
-  width: 150px !important;
-}
+:host ::ng-deep .k-scheduler-layout.k-scheduler-flex-layout.k-scheduler-dayview > .k-scheduler-pane {
+  .k-scheduler-table > tr > th {
+    width: 130px !important;
+  }
 
-:host ::ng-deep .k-scheduler-content.k-user-select-none > .k-scheduler-table > tr > td {
-  width: 150px !important;
-}
-
-:host ::ng-deep .k-scheduler-times > .k-scheduler-table {
-  width: 82px !important;
-  tr > th {
+  .k-scheduler-header.k-state-default {
+    height: 67px !important;
+    .k-scheduler-header-wrap {
+      height: 67px !important;
+      background-color: #232323 !important;
+    }
+  }
+  .k-scheduler-times,
+  .k-scheduler-times > .k-scheduler-table > tr,
+  .k-scheduler-times > .k-scheduler-table > tr > th {
     width: 80px !important;
+    background-color: #232323 !important;
+  }
+  .k-scheduler-content.k-user-select-none > .k-scheduler-table > tr > td.k-nonwork-hour {
+    width: 130px !important;
+    background-color: #494949 !important;
+  }
+  .k-scheduler-content.k-user-select-none > .k-scheduler-table > tr > td {
+    width: 130px !important;
+    background-color: #1e1e1e !important;
+  }
+}
+
+:host ::ng-deep .k-scheduler-layout.k-scheduler-flex-layout.k-scheduler-timeline-view > .k-scheduler-pane {
+  .k-scheduler-header-wrap,
+  .k-scheduler-times {
+    background-color: #232323 !important;
+  }
+  .k-scheduler-header-wrap > .k-scheduler-table > tr > .k-slot-cell {
+    display: none !important;
+  }
+  .k-scheduler-times > .k-scheduler-table,
+  .k-scheduler-times > .k-scheduler-table > tr > th {
+    height: 0px !important;
+    border: none;
+  }
+  .k-scheduler-content > .k-scheduler-table > tr > td.k-nonwork-hour {
+    background-color: #494949 !important;
+  }
+  .k-scheduler-content > .k-scheduler-table > tr > td {
+    background-color: #1e1e1e !important;
   }
 }
 
 :host ::ng-deep .header-top {
+  background-color: #232323 !important;
   position: -webkit-sticky;
   position: sticky;
-  top: 0;
+  top: -1px;
   z-index: 1000;
 }
-
-.horizontal-container {
+:host ::ng-deep .k-scheduler-pane.header-top {
+  .k-scheduler-table > tr {
+    height: 70px !important;
+  }
+  .k-scheduler-times,
+  .k-scheduler-times > .k-scheduler-table > tr,
+  .k-scheduler-times > .k-scheduler-table > tr > th {
+    width: 80px !important;
+  }
+}
+.horizontal-scheduler {
+  height: 950px !important;
   overflow-y: auto;
-  height: 600px;
-  overflow: hidden;
-  overflow-y: auto;
+}
 
-  :host ::ng-deep kendo-scheduler {
-    overflow-y: scroll;
-    height: 600px;
-    overflow-y: auto;
-    width: 100%;
+.slide-button-group {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  justify-content: space-between;
+  background-color: #232323 !important;
+  kendo-button {
+    background: transparent;
+    background-color: #232323 !important;
+    &:hover {
+      background: transparent;
+      background-color: #232323 !important;
+    }
+  }
+  kendo-button.left {
+    display: flex;
+    justify-content: flex-start;
+  }
+  kendo-button.center {
+    display: flex;
+    justify-content: center;
+  }
+  kendo-button.right {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
-.scheduler {
-  height: 600px !important;
-  overflow-y: auto;
+@media (max-width: 900px) {
+  .horizontal-scheduler {
+    height: 800px !important;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 550px) {
+  .horizontal-scheduler {
+    height: 700px !important;
+    overflow-y: auto;
+  }
+}
+@media (max-width: 390px) {
+  .horizontal-scheduler {
+    height: 500px !important;
+    overflow-y: auto;
+  }
 }

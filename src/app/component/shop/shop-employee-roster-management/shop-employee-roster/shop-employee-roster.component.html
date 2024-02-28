@@ -1,154 +1,190 @@
-<form-header
-  *ngIf="roster.loaded()"
-  [action]="form.action"
-  [title]="title()"
-  [isDeleteRequired]="false"
-  [enabledSavebutton]="roster.allowUpdate()"
-  [isSkipEdit]="true"
-  (onClickSave)="onUpdate()"
-  (onClickDismiss)="onDismiss()"></form-header>
+<form-header *ngIf="roster.loaded()"
+	[action]="form.action"
+	[title]="title()"
+	[isDeleteRequired]="false"
+	[enabledSavebutton]="roster.allowUpdate()"
+	[isSkipEdit]="true"
+	(onClickSave)="onUpdate()"
+	(onClickDismiss)="onDismiss()"></form-header>
 
-<ion-content [scrollable]="true" *ngIf="roster.loaded()">
-  <!-- Information -->
-  <flex-row class="modal-container roster-info">
-    <flex-row-item class="roster-info-detail">
-      <legend>{{ [roster.day()] | daysTransform | async }}</legend>
-    </flex-row-item>
-    <flex-row-item class="check-box-container roster-info-detail">
-      <kendo-label text="{{ 'label.title.dayoff' | languageTransform: 'System' | async }}">
-        <input
-          type="checkbox"
-          kendoCheckBox
-          [ngModel]="!roster.isWorking()"
-          (ngModelChange)="roster.updateWorkingStatus()" />
-      </kendo-label>
-    </flex-row-item>
-  </flex-row>
-  <flex-col>
-    <flex-col-item class="current-status" *ngIf="roster.isWorking()">
-      <p>
-        {{ 'label.title.workhours' | languageTransform: 'System' | async }}:
+<ion-content *ngIf="roster.loaded()"
+	[scrollable]="true">
+	<!-- Information -->
+	<flex-row class="modal-container roster-info">
+		<flex-row-item class="roster-info-detail">
+			<legend>
+				{{ [roster.day()] | daysTransform | async }}
+			</legend>
+		</flex-row-item>
+		<flex-row-item class="check-box-container roster-info-detail">
+			<kendo-label text="{{ 'label.title.dayoff' | languageTransform: 'System' | async }}">
+				<input [ngModel]="!roster.isWorking()"
+					(ngModelChange)="roster.updateWorkingStatus()"
+					type="checkbox"
+					kendoCheckBox>
+			</kendo-label>
+		</flex-row-item>
+	</flex-row>
+	<flex-col>
+		<flex-col-item *ngIf="roster.isWorking()"
+			class="current-status">
+			<p>
+				{{ 'label.title.workhours' | languageTransform: 'System' | async }}:
         {{ roster.workHours() }}
         {{ 'date.title.hour' | languageTransform: 'System' | async }}
-      </p>
-      <p>
-        {{ 'label.title.breaktime' | languageTransform: 'System' | async }}: {{ roster.breakHours() }}
+			</p>
+			<p>
+				{{ 'label.title.breaktime' | languageTransform: 'System' | async }}: {{ roster.breakHours() }}
         {{ 'date.title.hour' | languageTransform: 'System' | async }}
-      </p>
-    </flex-col-item>
-  </flex-col>
+			</p>
+		</flex-col-item>
+	</flex-col>
 
-  <!-- Error -->
-  <flex-col>
-    <error-message-item *ngIf="roster.isOutRangeOfOperatingOpenTime()">
-      <p>{{ 'messageerror.description.isoutrangeofoperatingopentime' | languageTransform: 'System' | async }}</p>
-    </error-message-item>
-    <error-message-item *ngIf="roster.isOutRangeOfOperatingCloseTime()">
-      <p>{{ 'messageerror.description.isoutrangeofoperatingclosetime' | languageTransform: 'System' | async }}</p>
-    </error-message-item>
-    <error-message-item *ngIf="roster.isBreakOverlap()">
-      <p>{{ 'messageerror.description.conflictwithbreaktimes' | languageTransform: 'System' | async }}</p>
-    </error-message-item>
-    <error-message-item *ngIf="roster.hasOutRangeBreakTimes()">
-      <p>{{ 'messageerror.description.hasoutrangebreaktimes' | languageTransform: 'System' | async }}</p>
-    </error-message-item>
-    <error-message-item *ngIf="roster.hasConsultOverlapWithBreakTimes()">
-      <p>{{ 'messageerror.description.hasconsultoverlapwithbreaktimes' | languageTransform: 'System' | async }}</p>
-    </error-message-item>
-    <error-message-item *ngIf="roster.hasOutOfRangeConsults()">
-      <p>{{ 'messageerror.description.hasoutofrangeconsults' | languageTransform: 'System' | async }}</p>
-    </error-message-item>
-    <error-message-item *ngIf="roster.invalidWorkHours()">
-      <p>
-        {{ 'messageerror.description.invalidworkhours' | languageTransform: 'System' | async }}
-      </p>
-    </error-message-item>
-  </flex-col>
+	<!-- Error -->
+	<flex-col>
+		<error-message-item *ngIf="roster.isOutRangeOfOperatingOpenTime()">
+			<p>
+				{{ 'messageerror.description.isoutrangeofoperatingopentime' | languageTransform: 'System' | async }}
+			</p>
+		</error-message-item>
+		<error-message-item *ngIf="roster.isOutRangeOfOperatingCloseTime()">
+			<p>
+				{{ 'messageerror.description.isoutrangeofoperatingclosetime' | languageTransform: 'System' | async }}
+			</p>
+		</error-message-item>
+		<error-message-item *ngIf="roster.isBreakOverlap()">
+			<p>
+				{{ 'messageerror.description.conflictwithbreaktimes' | languageTransform: 'System' | async }}
+			</p>
+		</error-message-item>
+		<error-message-item *ngIf="roster.hasOutRangeBreakTimes()">
+			<p>
+				{{ 'messageerror.description.hasoutrangebreaktimes' | languageTransform: 'System' | async }}
+			</p>
+		</error-message-item>
+		<error-message-item *ngIf="roster.hasConsultOverlapWithBreakTimes()">
+			<p>
+				{{ 'messageerror.description.hasconsultoverlapwithbreaktimes' | languageTransform: 'System' | async }}
+			</p>
+		</error-message-item>
+		<error-message-item *ngIf="roster.hasOutOfRangeConsults()">
+			<p>
+				{{ 'messageerror.description.hasoutofrangeconsults' | languageTransform: 'System' | async }}
+			</p>
+		</error-message-item>
+		<error-message-item *ngIf="roster.invalidWorkHours()">
+			<p>
+				{{ 'messageerror.description.invalidworkhours' | languageTransform: 'System' | async }}
+			</p>
+		</error-message-item>
+	</flex-col>
 
-  <!--Working Time -->
-  <flex-col *ngIf="roster.isWorking()">
-    <flex-col-item>
-      <legend>{{ 'label.title.workingtime' | languageTransform: 'System' | async }}</legend>
-    </flex-col-item>
-    <time-from-to
-      [min]="roster.operatingHours.openTimeItem(roster.day())"
-      [max]="roster.operatingHours.closeTimeItem(roster.day())"
-      [timeFrom]="roster.startTimeItem()"
-      (timeFromChange)="roster.updateStartTimeItem($event)"
-      [timeTo]="roster.endTimeItem()"
-      (timeToChange)="roster.updateEndTimeItem($event)"></time-from-to>
-  </flex-col>
+	<!-- Working Time -->
+	<flex-col *ngIf="roster.isWorking()">
+		<flex-col-item>
+			<legend>
+				{{ 'label.title.workingtime' | languageTransform: 'System' | async }}
+			</legend>
+		</flex-col-item>
+		<time-from-to [displayCenter]="true"
+			[min]="roster.operatingHours.openTimeItem(roster.day())"
+			[max]="roster.operatingHours.closeTimeItem(roster.day())"
+			[timeFrom]="roster.startTimeItem()"
+			[timeTo]="roster.endTimeItem()"
+			(timeFromChange)="roster.updateStartTimeItem($event)"
+			(timeToChange)="roster.updateEndTimeItem($event)"></time-from-to>
+	</flex-col>
 
-  <!--Break Time-->
-  <flex-row class="break-time-title-container" *ngIf="roster.isWorking()">
-    <flex-row-item class="break-time-title">
-      <legend>{{ 'label.title.breaktime' | languageTransform: 'System' | async }}</legend>
-    </flex-row-item>
-    <flx-row-item class="break-time-add">
-      <kendo-button class="add-btn" kendoButton icon="plus" (click)="onAddBreakTime($event)"></kendo-button>
-    </flx-row-item>
-  </flex-row>
+	<!-- Break Time -->
+	<flex-row *ngIf="roster.isWorking()"
+		class="break-time-title-container">
+		<flex-row-item class="break-time-title">
+			<legend>
+				{{ 'label.title.breaktime' | languageTransform: 'System' | async }}
+			</legend>
+		</flex-row-item>
+		<flx-row-item class="break-time-add">
+			<kendo-button (click)="onAddBreakTime($event)"
+				class="add-btn"
+				kendoButton
+				icon="plus"></kendo-button>
+		</flx-row-item>
+	</flex-row>
 
-  <!--Break Time Brid-->
-  <flex-col *ngIf="roster.isWorking()">
-    <flex-col-item>
-      <kendo-grid [data]="roster.breakTimes()" [height]="200" [sortable]="true" [pageable]="false">
-        <!-- NO Data-->
-        <kendo-grid-column
-          title="{{ 'label.title.start' | languageTransform: 'System' | async }}"
-          field="start"
-          [width]="100">
-          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-            <span class="column-header">{{ column.title }}</span>
-          </ng-template>
-          <ng-template kendoGridCellTemplate let-breakTime>
-            <p>{{ breakTime.start | timeItemTransform }}</p>
-          </ng-template>
-        </kendo-grid-column>
+	<!-- Break Time Brid -->
+	<flex-col *ngIf="roster.isWorking()">
+		<flex-col-item>
+			<kendo-grid [data]="roster.breakTimes()"
+				[height]="200"
+				[sortable]="true"
+				[pageable]="false">
+				<!-- NO Data -->
+				<kendo-grid-column [width]="100"
+					title="{{ 'label.title.start' | languageTransform: 'System' | async }}"
+					field="start">
+					<ng-template kendoGridHeaderTemplate
+						let-column
+						let-columnIndex="columnIndex">
+						<span class="column-header">{{ column.title }}</span>
+					</ng-template>
+					<ng-template kendoGridCellTemplate
+						let-breakTime>
+						<p>
+							{{ breakTime.start | timeItemTransform }}
+						</p>
+					</ng-template>
+				</kendo-grid-column>
 
-        <kendo-grid-column
-          title="{{ 'label.title.end' | languageTransform: 'System' | async }}"
-          field="end"
-          [width]="100">
-          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-            <span class="column-header">{{ column.title }}</span>
-          </ng-template>
-          <ng-template kendoGridCellTemplate let-breakTime>
-            <p>{{ breakTime.end | timeItemTransform }}</p>
-          </ng-template>
-        </kendo-grid-column>
+				<kendo-grid-column [width]="100"
+					title="{{ 'label.title.end' | languageTransform: 'System' | async }}"
+					field="end">
+					<ng-template kendoGridHeaderTemplate
+						let-column
+						let-columnIndex="columnIndex">
+						<span class="column-header">{{ column.title }}</span>
+					</ng-template>
+					<ng-template kendoGridCellTemplate
+						let-breakTime>
+						<p>
+							{{ breakTime.end | timeItemTransform }}
+						</p>
+					</ng-template>
+				</kendo-grid-column>
 
-        <kendo-grid-column [width]="80" [sortable]="true">
-          <ng-template kendoGridCellTemplate let-breakTime>
-            <kendo-button
-              icon="edit"
-              themeColor="success"
-              (click)="onUpdateBreakTime($event, breakTime)"></kendo-button>
-          </ng-template>
-        </kendo-grid-column>
+				<kendo-grid-column [width]="80"
+					[sortable]="true">
+					<ng-template kendoGridCellTemplate
+						let-breakTime>
+						<kendo-button (click)="onUpdateBreakTime($event, breakTime)"
+							icon="edit"
+							themeColor="success"></kendo-button>
+					</ng-template>
+				</kendo-grid-column>
 
-        <kendo-grid-column [width]="80" [sortable]="true">
-          <ng-template kendoGridCellTemplate let-breakTime>
-            <kendo-button
-              icon="trash"
-              themeColor="error"
-              (click)="roster.deleteBreakTime(breakTime)"></kendo-button>
-          </ng-template>
-        </kendo-grid-column>
-        <ng-template kendoGridNoRecordsTemplate>
-          <p class="default-placeholder">
-            {{ 'label.description.thereisnobreaktimes' | languageTransform: 'System' | async }}
-          </p>
-        </ng-template>
-      </kendo-grid>
-    </flex-col-item>
-  </flex-col>
+				<kendo-grid-column [width]="80"
+					[sortable]="true">
+					<ng-template kendoGridCellTemplate
+						let-breakTime>
+						<kendo-button (click)="roster.deleteBreakTime(breakTime)"
+							icon="trash"
+							themeColor="error"></kendo-button>
+					</ng-template>
+				</kendo-grid-column>
+				<ng-template kendoGridNoRecordsTemplate>
+					<p class="default-placeholder">
+						{{ 'label.description.thereisnobreaktimes' | languageTransform: 'System' | async }}
+					</p>
+				</ng-template>
+			</kendo-grid>
+		</flex-col-item>
+	</flex-col>
 
-  <!-- TODO: ADD Consult Validator -->
+	<!-- TODO: ADD Consult Validator -->
 
-  <flex-col *ngFor="let consult of roster.consultsValidators()"> </flex-col>
+	<flex-col *ngFor="let consult of roster.consultsValidators()"></flex-col>
 </ion-content>
 
-<div class="loading-container" *ngIf="!roster.loaded()">
-  <kendo-loader size="large"></kendo-loader>
+<div *ngIf="!roster.loaded()"
+	class="loading-container">
+	<kendo-loader size="large"></kendo-loader>
 </div>

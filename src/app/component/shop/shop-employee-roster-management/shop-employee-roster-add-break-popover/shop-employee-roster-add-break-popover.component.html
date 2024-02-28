@@ -1,40 +1,49 @@
 <form-header
-  action="read"
+  *ngIf="newBreakTime.loaded()"
   (onClickDismiss)="onDismiss()"
-  title="label.title.addbreaktime"
-  *ngIf="newBreakTime.loaded()"></form-header>
+  action="read"
+  title="label.title.addbreaktime"></form-header>
 
-<div class="container" *ngIf="newBreakTime.loaded()">
+<div *ngIf="newBreakTime.loaded()" class="popover-container">
   <flex-col>
     <error-message-item *ngIf="newBreakTime.conflictWithBreaktimes()">
-      <p>{{ 'messageerror.description.conflictwithbreaktimes' | languageTransform: 'System' | async }}</p>
+      <p>
+        {{ 'messageerror.description.conflictwithbreaktimes' | languageTransform: 'System' | async }}
+      </p>
     </error-message-item>
     <error-message-item *ngIf="newBreakTime.conflictWithConsults()">
-      <p>{{ 'messageerror.description.conflictwithconsults' | languageTransform: 'System' | async }}</p>
+      <p>
+        {{ 'messageerror.description.conflictwithconsults' | languageTransform: 'System' | async }}
+      </p>
     </error-message-item>
     <error-message-item *ngIf="newBreakTime.conflictWithStartEndTime()">
-      <p>{{ 'messageerror.description.conflictwithstartendtime' | languageTransform: 'System' | async }}</p>
+      <p>
+        {{ 'messageerror.description.conflictwithstartendtime' | languageTransform: 'System' | async }}
+      </p>
     </error-message-item>
     <error-message-item *ngIf="newBreakTime.invalidBreakTime()">
-      <p>{{ 'messageerror.description.invalidworkhours' | languageTransform: 'System' | async }}</p>
+      <p>
+        {{ 'messageerror.description.invalidworkhours' | languageTransform: 'System' | async }}
+      </p>
     </error-message-item>
     <time-from-to
+      [displayCenter]="true"
       [min]="newBreakTime.employeeStartTimeItem()"
       [max]="newBreakTime.employeeEndTimeItem()"
       [timeFrom]="newBreakTime.breakStartTimeItem()"
-      (timeFromChange)="newBreakTime.onUpdateStartTimeItem($event)"
       [timeTo]="newBreakTime.breakEndTimeItem()"
+      (timeFromChange)="newBreakTime.onUpdateStartTimeItem($event)"
       (timeToChange)="newBreakTime.onUpdateEndTimeItem($event)"></time-from-to>
   </flex-col>
 
   <flex-row class="button-container">
     <flex-row-item>
-      <kendo-button kendoButton (click)="onSave()" class="apply" [disabled]="!newBreakTime.allowAddBreakTime()">
+      <kendo-button [disabled]="!newBreakTime.allowAddBreakTime()" (click)="onSave()" kendoButton class="apply">
         {{ 'label.title.apply' | languageTransform: 'System' | async }}
       </kendo-button>
     </flex-row-item>
     <flex-row-item>
-      <kendo-button kendoButton (click)="onDismiss()">
+      <kendo-button (click)="onDismiss()" kendoButton>
         {{ 'button.title.cancel' | languageTransform: 'System' | async }}
       </kendo-button>
     </flex-row-item>

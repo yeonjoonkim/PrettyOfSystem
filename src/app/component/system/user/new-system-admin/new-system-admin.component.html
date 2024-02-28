@@ -1,87 +1,80 @@
 <ion-content [scrollable]="true">
-  <form-header
-    [title]="form.headerTitle"
-    [readOnly]="form.readOnly"
-    [enabledSavebutton]="form.enabledSavebutton"
-    [action]="form.action"
-    (onClickDismiss)="dismiss()"
-    (onClickCreate)="onClickCreate()">
-  </form-header>
+	<form-header [title]="form.headerTitle"
+		[readOnly]="form.readOnly"
+		[enabledSavebutton]="form.enabledSavebutton"
+		[action]="form.action"
+		(onClickDismiss)="dismiss()"
+		(onClickCreate)="onClickCreate()">
+	</form-header>
 
-  <form-container>
-    <flex-row id="login-otion">
-      <flex-row-item>
-        <login-option-selection
-          mode="form"
-          [readOnly]="form.readOnly"
-          [(loginOption)]="user.loginOption"
-          (loginOptionChange)="onChangeLoginOption()"></login-option-selection>
-      </flex-row-item>
-      <flex-row-item>
-        <gender-selection [(gender)]="user.gender" [readOnly]="form.readOnly"></gender-selection>
-      </flex-row-item>
-    </flex-row>
-    <!-- Name -->
-    <flex-row>
-      <flex-row-item>
-        <text-box
-          title="label.title.firstname"
-          [(value)]="user.firstName"
-          [(validate)]="validator.firstName"
-          [isRequired]="true"
-          [readOnly]="form.readOnly"
-          [min]="1"
-          [max]="100"
-          (valueChange)="handleFormEnableSaveBtn()"></text-box>
-      </flex-row-item>
-      <flex-row-item>
-        <text-box
-          title="label.title.lastname"
-          [(value)]="user.lastName"
-          [isRequired]="true"
-          [readOnly]="form.readOnly"
-          [(validate)]="validator.lastName"
-          [min]="1"
-          [max]="100"
-          (valueChange)="handleFormEnableSaveBtn()"></text-box>
-      </flex-row-item>
-    </flex-row>
-  </form-container>
-  <flex-col>
-    <flex-col-item>
-      <phone-number
-        [(phone)]="user.phoneNumber"
-        [(validate)]="validator.phone"
-        [isRequired]="true"
-        (validateChange)="handleFormEnableSaveBtn()"></phone-number>
-    </flex-col-item>
-    <flex-col-item>
-      <e-mail
-        [(email)]="user.email"
-        [isRequired]="true"
-        [(validate)]="validator.email"
-        (validateChange)="handleFormEnableSaveBtn()"></e-mail>
-    </flex-col-item>
-  </flex-col>
-  <flex-row>
-    <flex-row-item>
-      <date-picker
-        title="label.title.dateofbrith"
-        [displayNextDay]="0"
-        [isDateOfBrith]="true"
-        [readOnly]="form.readOnly"
-        [(date)]="user.dob"></date-picker>
-    </flex-row-item>
-    <flex-row-item>
-      <langauge-selection
-        [readOnly]="form.readOnly"
-        [(selectedCode)]="user.setting.preferLanguage"></langauge-selection>
-    </flex-row-item>
-  </flex-row>
-  <flex-col *ngIf="user.loginOption.email && (form.action === 'create' || form.action === 'edit')">
-    <password-confirmation
-      (passwordChange)="setPassword($event)"
-      [(validate)]="validator.password"
-      (validateChange)="onChangePasswordValidation()"></password-confirmation>
-  </flex-col>
+	<form-container>
+		<flex-row id="login-otion">
+			<flex-row-item>
+				<login-option-selection [readOnly]="form.readOnly"
+					[(loginOption)]="user.loginOption"
+					(loginOptionChange)="onChangeLoginOption()"
+					mode="form"></login-option-selection>
+			</flex-row-item>
+			<flex-row-item>
+				<gender-selection [(gender)]="user.gender"
+					[readOnly]="form.readOnly"></gender-selection>
+			</flex-row-item>
+		</flex-row>
+		<!-- Name -->
+		<flex-row>
+			<flex-row-item>
+				<text-box [(value)]="user.firstName"
+					[(validate)]="validator.firstName"
+					[isRequired]="true"
+					[readOnly]="form.readOnly"
+					[min]="1"
+					[max]="100"
+					(valueChange)="handleFormEnableSaveBtn()"
+					title="label.title.firstname"></text-box>
+			</flex-row-item>
+			<flex-row-item>
+				<text-box [(value)]="user.lastName"
+					[isRequired]="true"
+					[readOnly]="form.readOnly"
+					[(validate)]="validator.lastName"
+					[min]="1"
+					[max]="100"
+					(valueChange)="handleFormEnableSaveBtn()"
+					title="label.title.lastname"></text-box>
+			</flex-row-item>
+		</flex-row>
+	</form-container>
+	<flex-col>
+		<flex-col-item>
+			<phone-number [(phone)]="user.phoneNumber"
+				[(validate)]="validator.phone"
+				[isRequired]="true"
+				(validateChange)="handleFormEnableSaveBtn()"></phone-number>
+		</flex-col-item>
+		<flex-col-item>
+			<e-mail [(email)]="user.email"
+				[isRequired]="true"
+				[(validate)]="validator.email"
+				(validateChange)="handleFormEnableSaveBtn()"></e-mail>
+		</flex-col-item>
+	</flex-col>
+	<flex-row>
+		<flex-row-item>
+			<date-picker [displayCenter]="true"
+				[displayNextDay]="0"
+				[isDateOfBrith]="true"
+				[readOnly]="form.readOnly"
+				[(date)]="user.dob"
+				title="label.title.dateofbrith"></date-picker>
+		</flex-row-item>
+		<flex-row-item>
+			<langauge-selection [readOnly]="form.readOnly"
+				[(selectedCode)]="user.setting.preferLanguage"></langauge-selection>
+		</flex-row-item>
+	</flex-row>
+	<flex-col *ngIf="user.loginOption.email && (form.action === 'create' || form.action === 'edit')">
+		<password-confirmation [(validate)]="validator.password"
+			(passwordChange)="setPassword($event)"
+			(validateChange)="onChangePasswordValidation()"></password-confirmation>
+	</flex-col>
 </ion-content>

@@ -148,6 +148,13 @@ export type ShopSMSCreditBalanceType = {
   autoChargeStartAmount: number;
 };
 
+export type SchedulerOperatingHoursType = {
+  startDateTime: string;
+  endDateTime: string;
+  isOpen: boolean;
+  is24Hours: boolean;
+};
+
 export type ShopCreditCardType = {
   encryptedFirstName: string;
   encryptedLastName: string;

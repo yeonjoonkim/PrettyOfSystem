@@ -18,6 +18,7 @@ import {
   Transaction,
   Query,
   SignatureTransferStatus,
+  Scheduler,
 } from './constant-value';
 export {
   Default,
@@ -39,6 +40,7 @@ export {
   Transaction,
   Query,
   SignatureTransferStatus,
+  Scheduler,
 } from './constant-value';
 import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
@@ -303,3 +305,8 @@ export type ConsultOriginType =
   | ConsultWalkInOrigin
   | ConsultOnlineOrigin
   | ConsultWaitingListOrigin;
+
+//Scheduler
+export type SchedulerViewModeType = (typeof Scheduler.View)[keyof typeof Scheduler.View];
+export type SchedulerEmployeeViewModeType = (typeof Scheduler.EmployeeView)[keyof typeof Scheduler.EmployeeView];
+export type SchedulerEmployeeStatusType = (typeof Scheduler.WorkingStatus)[keyof typeof Scheduler.WorkingStatus];

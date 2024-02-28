@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest, combineLatestWith, filter, of, switchMap, take } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatestWith, filter, of, switchMap, take } from 'rxjs';
 import {
   Cart,
   ConsultClientInfoType,
@@ -261,11 +261,8 @@ export class WaitingListConsultService {
   }
 
   public isFirstVisit() {
-    return combineLatest([
-      this._waitingList.start$,
-      this._waitingList.shop.config$,
-      this._waitingList.client.info$,
-    ]).pipe(
+    return this._waitingList.start$.pipe(
+      combineLatestWith(this._waitingList.shop.config$, this._waitingList.client.info$),
       filter(([start, config, client]) => start !== null && start && config !== null && client !== null),
       switchMap(([start, config, client]) => {
         if (start && config && client) {
@@ -295,20 +292,20 @@ export class WaitingListConsultService {
   }
 
   public prop() {
-    return combineLatest([
-      this._waitingList.start$,
-      this._waitingList.shop.config$,
-      this._waitingList.cart$,
-      this._waitingList.client.info$,
-      this._waitingList.shop.hasPrivateInsuranceProvider(),
-      this._waitingList.cart.hasInsurance(),
-      this._waitingList.client.isOver18$,
-      this._waitingList.client.isPregrant$,
-      this.isFirstVisit$,
-      this._waitingList.cart.isAnyone(),
-      this._waitingList.shop.isDepositRequired(),
-      this._waitingList.consent$,
-    ]).pipe(
+    return this._waitingList.start$.pipe(
+      combineLatestWith(
+        this._waitingList.shop.config$,
+        this._waitingList.cart$,
+        this._waitingList.client.info$,
+        this._waitingList.shop.hasPrivateInsuranceProvider(),
+        this._waitingList.cart.hasInsurance(),
+        this._waitingList.client.isOver18$,
+        this._waitingList.client.isPregrant$,
+        this.isFirstVisit$,
+        this._waitingList.cart.isAnyone(),
+        this._waitingList.shop.isDepositRequired(),
+        this._waitingList.consent$
+      ),
       filter(
         ([
           start,
@@ -379,19 +376,19 @@ export class WaitingListConsultService {
   }
 
   public newConsult() {
-    return combineLatest([
-      this._waitingList.start$,
-      this._waitingList.shop.config$,
-      this._waitingList.cart$,
-      this._waitingList.client.info$,
-      this._waitingList.shop.hasPrivateInsuranceProvider(),
-      this._waitingList.cart.hasInsurance(),
-      this._waitingList.client.isOver18$,
-      this._waitingList.client.isPregrant$,
-      this.isFirstVisit$,
-      this._waitingList.shop.isDepositRequired(),
-      this._waitingList.session$,
-    ]).pipe(
+    return this._waitingList.start$.pipe(
+      combineLatestWith(
+        this._waitingList.shop.config$,
+        this._waitingList.cart$,
+        this._waitingList.client.info$,
+        this._waitingList.shop.hasPrivateInsuranceProvider(),
+        this._waitingList.cart.hasInsurance(),
+        this._waitingList.client.isOver18$,
+        this._waitingList.client.isPregrant$,
+        this.isFirstVisit$,
+        this._waitingList.shop.isDepositRequired(),
+        this._waitingList.session$
+      ),
       filter(
         ([
           start,

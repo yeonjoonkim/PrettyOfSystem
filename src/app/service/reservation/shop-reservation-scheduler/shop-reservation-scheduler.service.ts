@@ -2,24 +2,21 @@ import { Injectable, Signal, WritableSignal, computed, inject, signal } from '@a
 import { ShopOperatingHoursService } from '../../shop/shop-employee-roster-management/shop-operating-hours/shop-operating-hours.service';
 import { ShopDefaultSchedulerService } from './shop-default-scheduler/shop-default-scheduler.service';
 import { DateService } from '../../global/date/date.service';
-import { combineLatest, filter, of, switchMap, take } from 'rxjs';
+import { combineLatestWith, filter, of, switchMap, take } from 'rxjs';
 import * as Constant from 'src/app/constant/constant';
 import { DateType } from '../../global/date/date-transform/date-transform.service';
-import { CurrentTimeSettings, DateChangeEvent, Group, SchedulerEvent } from '@progress/kendo-angular-scheduler';
+import { CurrentTimeSettings, DateChangeEvent, SchedulerEvent } from '@progress/kendo-angular-scheduler';
 import {
+  DateStatusType,
+  SchedulerViewModeType,
   ShopReservationScheduleResourceDataType,
   ShopReservationScheduleResourceType,
   ShopScheduleDocumentType,
 } from 'src/app/interface';
 import { ShopScheduleRepositoryService } from 'src/app/firebase/shop-repository/shop-schedule-repository/shop-schedule-repository.service';
 import { toObservable } from '@angular/core/rxjs-interop';
-
-export const SchedulerViewMode = {
-  Timeline: 'Timeline',
-  Day: 'Day',
-} as const;
-
-export type ShopSchedulerViewModeType = (typeof SchedulerViewMode)[keyof typeof SchedulerViewMode];
+import { getTime } from 'date-fns';
+import { ShopReservationEmployeeInfoService } from './shop-reservation-employee-info/shop-reservation-employee-info.service';
 
 const nullableString: string = null as unknown as string;
 export const resourceName: string = 'EmployeeName';
@@ -30,94 +27,41 @@ export class ShopReservationSchedulerService {
   private _defaultScheduler = inject(ShopDefaultSchedulerService);
   private _operatingHours = inject(ShopOperatingHoursService);
   private _empSchedule = inject(ShopScheduleRepositoryService);
+  private _empInfoSvc = inject(ShopReservationEmployeeInfoService);
   private _dateSvc = inject(DateService);
+  public loaded = computed(() => {
+    const defaultScheduler = this._defaultScheduler.loaded();
+    const operatingHours = this._operatingHours.loaded();
+    const startOfDay = this.startOfDay();
+    return defaultScheduler && operatingHours && startOfDay !== null;
+  });
 
-  // Setting
-  public selectedViewMode: ShopSchedulerViewModeType = SchedulerViewMode.Day;
-  public timelineMode: ShopSchedulerViewModeType = SchedulerViewMode.Timeline;
-  public dayMode: ShopSchedulerViewModeType = SchedulerViewMode.Day;
+  //Setting
   public operatingHours = this._operatingHours.data;
-
-  //Date Picker
-  public displayNextDays = computed(() => {
-    const loaded = this.loaded();
-    if (!loaded) {
-      return 0;
-    }
-    const maxDate = this._defaultScheduler.maxDate();
-    const startOfDay = this._dateSvc.addDay(new Date(), -1);
-    const diff = this._dateSvc.differenceInDays(maxDate, startOfDay);
-    return parseFloat(diff.toFixed(0));
-  });
-
-  public displayPreviousDay = computed(() => {
-    const loaded = this.loaded();
-    if (!loaded) {
-      return 0;
-    }
-    const minDate = this._defaultScheduler.minDate();
-    const startOfDay = this._dateSvc.addDay(new Date(), 0);
-    const diff = this._dateSvc.differenceInDays(startOfDay, minDate);
-    return parseFloat(diff.toFixed(0));
-  });
-
-  public disableDates = computed(() => {
-    const operatingHours = this._operatingHours.data();
-    const scheduler = this._defaultScheduler.data();
-    if (operatingHours !== null && scheduler !== null) {
-      const disableDates: string[] = [];
-      const closeDays = operatingHours.closeDay;
-      const minDate = this._dateSvc.startDay(scheduler.activatedDate);
-      const minWeek = this._dateSvc.getWeek(minDate);
-      const maxDate = this._dateSvc.startDay(scheduler.endDate);
-      const maxWeek = this._dateSvc.getWeek(maxDate);
-
-      for (let day of closeDays) {
-        const min = minWeek[day];
-        const max = maxWeek[day];
-        const diff = this._dateSvc.differenceInWeeks(max, min) + 1;
-
-        for (let i = 0; i < diff; i++) {
-          const param = this._dateSvc.addWeek(min, i);
-          disableDates.push(param);
-        }
-      }
-      return disableDates;
-    }
-    return [];
-  });
-
-  public isDayViewMode = () => {
-    return this.selectedViewMode === SchedulerViewMode.Day;
-  };
-
-  public isTimelineViewMode = () => {
-    return this.selectedViewMode === SchedulerViewMode.Timeline;
-  };
-
+  public todayOperatingHours = this._operatingHours.todayOperatingHours;
+  public selectedViewMode: SchedulerViewModeType = Constant.Scheduler.View.Timeline;
+  public employeeView = signal<Constant.SchedulerEmployeeViewModeType>(Constant.Scheduler.EmployeeView.All);
+  public minDate = this._defaultScheduler.minDate;
+  public maxDate = this._defaultScheduler.maxDate;
+  public timezone = this._defaultScheduler.timezone;
+  public slotDivision = signal(2);
+  public slotDuration = signal(30); // Min
+  public weekStart = signal(Constant.Date.DayIndex.Sun);
+  public showWorkHours = signal(true);
+  public editable = signal(false);
   public currentTimeMarker: Signal<CurrentTimeSettings> = signal({
     enabled: true,
     localTimezone: false,
     updateInterval: 60000,
   });
-  public editable = signal(false);
 
-  public loaded = computed(() => {
-    const defaultScheduler = this._defaultScheduler.loaded();
-    const operatingHours = this._operatingHours.loaded();
-    const startOfDay = this.startOfDay();
-
-    return defaultScheduler && operatingHours && startOfDay !== null;
-  });
-
-  public minDate = this._defaultScheduler.minDate;
-  public maxDate = this._defaultScheduler.maxDate;
-  public timezone = this._defaultScheduler.timezone;
-  public slotDivision = signal(1);
-  public slotDuration = signal(30); // Min
-  public weekStart = signal(Constant.Date.DayIndex.Sun);
-  public onlyWorkingEmployees = signal(false);
-  public showWorkHours = signal(true);
+  //View Mode
+  public isDayViewMode = () => {
+    return this.selectedViewMode === Constant.Scheduler.View.Day;
+  };
+  public isTimelineViewMode = () => {
+    return this.selectedViewMode === Constant.Scheduler.View.Timeline;
+  };
 
   public workDayStart = () => {
     const startOfDay = this.startOfDay();
@@ -140,11 +84,49 @@ export class ShopReservationSchedulerService {
     return this._operatingHours.is24Hours(dayType);
   };
 
-  public isWorking = (date: DateType) => {
+  public isOpen = (date: DateType) => {
     const dayType = this._dateSvc.getDay(date);
     return this._operatingHours.isWorking(dayType);
   };
 
+  //Date Picker
+  public displayNextDays = computed(() => {
+    const maxDate = this._defaultScheduler.maxDate();
+    const startOfDay = this._dateSvc.addDay(new Date(), -1);
+    const diff = this._dateSvc.differenceInDays(maxDate, startOfDay);
+    return parseFloat(diff.toFixed(0));
+  });
+  public displayPreviousDay = computed(() => {
+    const minDate = this._defaultScheduler.minDate();
+    const startOfDay = this._dateSvc.addDay(new Date(), 0);
+    const diff = this._dateSvc.differenceInDays(startOfDay, minDate);
+    return parseFloat(diff.toFixed(0));
+  });
+  public disableDates = computed(() => {
+    const operatingHours = this._operatingHours.data();
+    const scheduler = this._defaultScheduler.data();
+    if (operatingHours !== null && scheduler !== null) {
+      const disableDates: string[] = [];
+      const closeDays = operatingHours.closeDay;
+      const minDate = this._dateSvc.startDay(scheduler.activatedDate);
+      const minWeek = this._dateSvc.getWeek(minDate);
+      const maxDate = this._dateSvc.startDay(scheduler.endDate);
+      const maxWeek = this._dateSvc.getWeek(maxDate);
+      for (let day of closeDays) {
+        const min = minWeek[day];
+        const max = maxWeek[day];
+        const diff = this._dateSvc.differenceInWeeks(max, min) + 1;
+        for (let i = 0; i < diff; i++) {
+          const param = this._dateSvc.addWeek(min, i);
+          disableDates.push(param);
+        }
+      }
+      return disableDates;
+    }
+    return [];
+  });
+  //Date Param
+  public startOfDay = signal(nullableString);
   public selectedDate = computed(() => {
     const startOfDay = this.startOfDay();
     const timezone = this._defaultScheduler.data()?.shopTimezone;
@@ -152,9 +134,26 @@ export class ShopReservationSchedulerService {
       ? this._dateSvc.transform.toLocalDateTime(startOfDay)
       : this._dateSvc.transform.toLocalDateTime(this._dateSvc.startDay(this._dateSvc.shopNow(timezone)));
   });
-
-  //Date Param
-  public startOfDay = signal(nullableString);
+  public isToday = computed(() => {
+    const today = this._defaultScheduler.startOfDay();
+    const startOfDay = this.selectedDate();
+    return getTime(new Date(today)) === getTime(startOfDay);
+  });
+  public dateStatus = computed(() => {
+    const startOfDay = this.startOfDay();
+    const scheduler = this._defaultScheduler.data();
+    return {
+      isToday: startOfDay && scheduler ? scheduler.currentDate === startOfDay : false,
+      isPreviousDate:
+        startOfDay && scheduler ? getTime(new Date(scheduler.currentDate)) > getTime(new Date(startOfDay)) : false,
+      isFutureDate:
+        startOfDay && scheduler ? getTime(new Date(scheduler.currentDate)) < getTime(new Date(startOfDay)) : false,
+    } as DateStatusType;
+  });
+  public selectedOperatingHours = computed(() => {
+    const startOfDay = this.startOfDay();
+    return this._operatingHours.getOperatingHours(startOfDay);
+  });
 
   //Date Change button
   public allowPreviousDate = computed(() => {
@@ -167,14 +166,12 @@ export class ShopReservationSchedulerService {
     const startOfDay = this.startOfDay();
     return scheduler !== null ? scheduler.endDate > startOfDay : false;
   });
-
   public allowToday = computed(() => {
     const loaded = this.loaded();
     const scheduler = this._defaultScheduler.data();
     if (!loaded && !scheduler) {
       return false;
     }
-
     return scheduler !== null ? scheduler.isOpenToday : false;
   });
 
@@ -182,7 +179,8 @@ export class ShopReservationSchedulerService {
   public schedules: WritableSignal<ShopScheduleDocumentType[]> = signal([]);
   public defaultScheduler$ = this._defaultScheduler.defaultScheduler$;
   public startOfDay$ = toObservable(this.startOfDay);
-  public query$ = combineLatest(this.defaultScheduler$, this.startOfDay$).pipe(
+  public query$ = this.defaultScheduler$.pipe(
+    combineLatestWith(this.startOfDay$),
     filter(([scheduler, startOfDay]) => scheduler !== null && startOfDay !== null),
     switchMap(([scheduler, startOfDay]) => {
       if (scheduler !== null && startOfDay !== null) {
@@ -192,54 +190,40 @@ export class ShopReservationSchedulerService {
       }
     })
   );
-
-  public events: Signal<SchedulerEvent[]> = computed(() => {
+  protected employees = computed(() => {
+    const employeeView = this.employeeView();
     const query = this.schedules();
-
-    const breakTimeEvents: SchedulerEvent[] = query
-      .filter(q => q.breakTimes && q.breakTimes.length > 0)
-      .map(q =>
-        q.breakTimes.map(bt => ({
-          id: q.employeeId,
-          start: this._dateSvc.transform.toLocalDateTime(bt.startDateTime),
-          startTimezone: q.shopTimezone,
-          end: this._dateSvc.transform.toLocalDateTime(bt.endDateTime),
-          endTimezone: q.shopTimezone,
-          title: 'Break Time',
-          description: 'BreakTime',
-          dataItem: null,
-          isAllDay: false,
-        }))
-      )
-      .reduce((acc, val) => acc.concat(val), []);
-    //TODO breaktimes
-    return breakTimeEvents;
+    return employeeView === Constant.Scheduler.EmployeeView.All
+      ? query
+      : employeeView === Constant.Scheduler.EmployeeView.Working
+        ? query.filter(q => q.isWorking)
+        : query.filter(q => !q.isWorking);
   });
-
+  public events = computed(() => {
+    const startOfDay = this.startOfDay();
+    const employees = this.employees();
+    const operatingHours = this.getSelectedOperatingHours();
+    return employees.every(emp => emp.startOfDay === startOfDay)
+      ? this._empInfoSvc.getEvents(employees, operatingHours)
+      : [];
+  });
   public resources = computed(() => {
-    const query = this.schedules();
-    const onlyWorkingEmployees = this.onlyWorkingEmployees();
     const resources: ShopReservationScheduleResourceType[] = [
       {
         name: resourceName,
-        data: query
-          .filter(q => (onlyWorkingEmployees ? q.isWorking : true))
-          .map(r => {
-            const resource: ShopReservationScheduleResourceDataType = {
-              employeeId: r.employeeId,
-              firstName: r.firstName,
-              lastName: r.lastName,
-              gender: r.gender,
-              isWorking: r.isWorking,
-              workHours: r.workHours,
+        data: this.employees()
+          .map(emp => {
+            const data: ShopReservationScheduleResourceDataType = {
+              id: emp.employeeId,
+              firstName: emp.firstName,
+              info: emp,
             };
-            return resource;
+            return data;
           })
-          .sort((a, b) => a.firstName.localeCompare(b.firstName)),
-        field: 'employeeId',
+          .sort((a, b) => a.info.firstName.localeCompare(b.info.firstName)),
+        field: 'id',
         valueField: 'id',
         textField: 'firstName',
-        colorField: 'workingStatusColor',
       },
     ];
     return resources;
@@ -318,8 +302,11 @@ export class ShopReservationSchedulerService {
       }
     }
   }
+  public getSelectedOperatingHours() {
+    return this.selectedOperatingHours();
+  }
 
-  public today() {
+  public setToday() {
     if (this.allowToday()) {
       const scheduler = this._defaultScheduler.data();
       this.startOfDay.set(

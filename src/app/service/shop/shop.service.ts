@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest, firstValueFrom, map, of, switchMap } from 'rxjs';
+import { Observable, combineLatestWith, firstValueFrom, map, of, switchMap } from 'rxjs';
 import {
   ChatGptTranslateDocumentType,
   NameValuePairType,
@@ -11,7 +11,6 @@ import {
   ShopEmployeeManagementUserType,
   ShopExtraDocumentType,
   ShopPackageDocumentType,
-  ShopScheduleDocumentType,
   ShopSchedulerDocumentType,
   ShopServiceDocumentType,
   ShopWorkHoursType,
@@ -36,49 +35,49 @@ import { ShopSchedulerRepositoryService } from 'src/app/firebase/shop-repository
   providedIn: 'root',
 })
 export class ShopService {
-  public id$: Observable<string | null> = of(null);
-  public role$: Observable<RoleConfigurationType | null> = of(null);
-  public config$: Observable<ShopConfigurationType | null> = of(null);
-  public capacity$: Observable<ShopCapacityType | null> = of(null);
-  public timezone$: Observable<string | null> = of(null);
-  public translatedRequests$: Observable<ChatGptTranslateDocumentType[]> = of([]);
-  public services$: Observable<ShopServiceDocumentType[]> = of([]);
-  public extras$: Observable<ShopExtraDocumentType[]> = of([]);
-  public packages$: Observable<ShopPackageDocumentType[]> = of([]);
-  public userName$: Observable<string>;
-  public employees$: Observable<ShopEmployeeManagementUserType[]> = of([]);
-  public specializedEmployeeFilter$: Observable<NameValuePairType[]> = of([]);
-  public extraFilter$: Observable<NameValuePairType[]> = of([]);
-  public serviceFilter$: Observable<NameValuePairType[]> = of([]);
-  public operatingWorkHours$: Observable<ShopWorkHoursType | null> = of(null);
-  public coupons$: Observable<ShopCouponDocumentType[]> = of([]);
-  public logoImage$: Observable<Blob | null> = of(null);
-  public shopImage1$: Observable<Blob | null> = of(null);
-  public shopImage2$: Observable<Blob | null> = of(null);
-  public shopImage3$: Observable<Blob | null> = of(null);
+  public id$!: Observable<string | null>;
+  public role$!: Observable<RoleConfigurationType | null>;
+  public config$!: Observable<ShopConfigurationType | null>;
+  public capacity$!: Observable<ShopCapacityType | null>;
+  public timezone$!: Observable<string | null>;
+  public translatedRequests$!: Observable<ChatGptTranslateDocumentType[]>;
+  public services$!: Observable<ShopServiceDocumentType[]>;
+  public extras$!: Observable<ShopExtraDocumentType[]>;
+  public packages$!: Observable<ShopPackageDocumentType[]>;
+  public userName$!: Observable<string>;
+  public employees$!: Observable<ShopEmployeeManagementUserType[]>;
+  public specializedEmployeeFilter$!: Observable<NameValuePairType[]>;
+  public extraFilter$!: Observable<NameValuePairType[]>;
+  public serviceFilter$!: Observable<NameValuePairType[]>;
+  public operatingWorkHours$!: Observable<ShopWorkHoursType | null>;
+  public coupons$!: Observable<ShopCouponDocumentType[]>;
+  public logoImage$!: Observable<Blob | null>;
+  public shopImage1$!: Observable<Blob | null>;
+  public shopImage2$!: Observable<Blob | null>;
+  public shopImage3$!: Observable<Blob | null>;
   //Price List
-  public couponPriceList$: Observable<ShopCouponDocumentType[]> = of([]);
-  public packagePriceList$: Observable<ShopPackageDocumentType[]> = of([]);
-  public servicePriceList$: Observable<ShopServiceDocumentType[]> = of([]);
-  public extraPriceList$: Observable<ShopExtraDocumentType[]> = of([]);
+  public couponPriceList$!: Observable<ShopCouponDocumentType[]>;
+  public packagePriceList$!: Observable<ShopPackageDocumentType[]>;
+  public servicePriceList$!: Observable<ShopServiceDocumentType[]>;
+  public extraPriceList$!: Observable<ShopExtraDocumentType[]>;
 
   //Has
-  public hasInsuranceProvider$: Observable<boolean> = of(false);
-  public hasNotInsuranceProvider$: Observable<boolean> = of(false);
+  public hasInsuranceProvider$!: Observable<boolean>;
+  public hasNotInsuranceProvider$!: Observable<boolean>;
 
   //Related
-  public category$: Observable<ShopCategoryType | null> = of(null);
-  public isRelatedToMedical$: Observable<boolean> = of(false);
+  public category$!: Observable<ShopCategoryType | null>;
+  public isRelatedToMedical$!: Observable<boolean>;
 
-  public isMassageShop$: Observable<boolean> = of(false);
-  public isSkinCare$: Observable<boolean> = of(false);
-  public isHairSalon$: Observable<boolean> = of(false);
-  public isPersonalTraining$: Observable<boolean> = of(false);
-  public isNailArt$: Observable<boolean> = of(false);
-  public isMobileShop$: Observable<boolean> = of(false);
+  public isMassageShop$!: Observable<boolean>;
+  public isSkinCare$!: Observable<boolean>;
+  public isHairSalon$!: Observable<boolean>;
+  public isPersonalTraining$!: Observable<boolean>;
+  public isNailArt$!: Observable<boolean>;
+  public isMobileShop$!: Observable<boolean>;
 
   //Scheduler
-  public defaultScheduler$: Observable<ShopSchedulerDocumentType | null> = of(null);
+  public defaultScheduler$!: Observable<ShopSchedulerDocumentType | null>;
 
   constructor(
     public role: UserRoleService,
@@ -265,7 +264,8 @@ export class ShopService {
   }
 
   private extraFilterListener() {
-    this.extraFilter$ = combineLatest([this.config$, this.extras$]).pipe(
+    this.extraFilter$ = this.config$.pipe(
+      combineLatestWith(this.extras$),
       map(([config, extras]) => {
         if (config !== null) {
           return extras
@@ -291,7 +291,8 @@ export class ShopService {
   }
 
   private serviceFilterListener() {
-    this.serviceFilter$ = combineLatest([this.config$, this.services$]).pipe(
+    this.serviceFilter$ = this.config$.pipe(
+      combineLatestWith(this.services$),
       map(([config, services]) => {
         if (config !== null) {
           const result = services
@@ -379,7 +380,8 @@ export class ShopService {
   }
 
   private couponPriceListListener() {
-    this.couponPriceList$ = combineLatest([this.config$, this.coupons$]).pipe(
+    this.couponPriceList$ = this.config$.pipe(
+      combineLatestWith(this.coupons$),
       map(([config, coupons]) => {
         if (config !== null) {
           const language = this._systemLanguage.storage.currentLanguage;
@@ -421,7 +423,8 @@ export class ShopService {
   }
 
   private servicePriceListListener() {
-    this.servicePriceList$ = combineLatest([this.config$, this.services$]).pipe(
+    this.servicePriceList$ = this.config$.pipe(
+      combineLatestWith(this.services$),
       map(([config, servcies]) => {
         if (config !== null) {
           const language = this._systemLanguage.storage.currentLanguage;
@@ -438,7 +441,8 @@ export class ShopService {
   }
 
   private packagePriceListListener() {
-    this.packagePriceList$ = combineLatest([this.config$, this.packages$]).pipe(
+    this.packagePriceList$ = this.config$.pipe(
+      combineLatestWith(this.packages$),
       map(([config, packages]) => {
         if (config !== null) {
           const language = this._systemLanguage.storage.currentLanguage;
@@ -451,7 +455,8 @@ export class ShopService {
   }
 
   private extraPriceListListener() {
-    this.extraPriceList$ = combineLatest([this.config$, this.extras$]).pipe(
+    this.extraPriceList$ = this.config$.pipe(
+      combineLatestWith(this.extras$),
       map(([config, extras]) => {
         if (config !== null) {
           const language = this._systemLanguage.storage.currentLanguage;

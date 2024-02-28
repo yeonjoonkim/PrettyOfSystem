@@ -17,6 +17,26 @@ export const Query = {
   NotIn: 'not-in',
 } as const;
 
+export const Scheduler = {
+  WorkingStatus: {
+    Available: 'Available',
+    DayOff: 'DayOff',
+    Consulting: 'Consulting',
+    InBreak: 'InBreak',
+    Working: 'Working',
+    OutOfOffice: 'OutOfOffice',
+  } as const,
+  View: {
+    Timeline: 'Timeline',
+    Day: 'Day',
+  } as const,
+  EmployeeView: {
+    All: 'All',
+    DayOff: 'DayOff',
+    Working: 'Working',
+  },
+} as const;
+
 export const ShopCategoryTitle = {
   MobileShop: 'label.title.mobileshop',
   PersonalTraining: 'label.title.personaltraining',

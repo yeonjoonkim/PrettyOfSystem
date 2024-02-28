@@ -1,82 +1,131 @@
-<flex-col *ngIf="scheduler.loaded()">
-  <shop-reservation-scheduler-toolbar 
-  [loaded]="scheduler.loaded()"
-  [showWorkHours]="scheduler.showWorkHours()" 
-  [allowPreviousDate]="scheduler.allowPreviousDate()"
-  [allowToday]="scheduler.allowToday()"
-  [allowNextDate]="scheduler.allowNextDate()"
-  [timezone]="scheduler.timezone()"
-  [displayNextDays]="scheduler.displayNextDays()"
-  [displayPreviousDays]="scheduler.displayPreviousDay()"
-  [operatingHours]="scheduler.operatingHours()"
-  [startOfDay]="scheduler.startOfDay()"
-  [isDayView]="scheduler.isDayViewMode()"
-  [isTimelineView]="scheduler.isTimelineViewMode()"
-  (onClickPreviousDate)="scheduler.previousDay()"
-  (onClickNextDate)="scheduler.nextDay()"
-  (onClickView)="onChangeView($event)"
-  (onClickToday)="scheduler.today()"
-  (onChangeDate)="scheduler.startOfDay.set($event)"
-  (onClickClock)="scheduler.showWorkHours.set(!scheduler.showWorkHours())"
-  ></shop-reservation-scheduler-toolbar>
+<flex-col *ngIf="loaded()">
+  <shop-reservation-scheduler-toolbar
+    [loaded]="loaded()"
+    [showWorkHours]="scheduler.showWorkHours()"
+    [allowPreviousDate]="scheduler.allowPreviousDate()"
+    [allowToday]="scheduler.allowToday()"
+    [allowNextDate]="scheduler.allowNextDate()"
+    [timezone]="scheduler.timezone()"
+    [displayNextDays]="scheduler.displayNextDays()"
+    [displayPreviousDays]="scheduler.displayPreviousDay()"
+    [operatingHours]="scheduler.operatingHours()"
+    [startOfDay]="scheduler.startOfDay()"
+    [viewModeType]="scheduler.selectedViewMode"
+    [employeeViewType]="scheduler.employeeView()"
+    [isToday]="scheduler.isToday()"
+    (onClickPreviousDate)="scheduler.previousDay()"
+    (onClickNextDate)="scheduler.nextDay()"
+    (onClickView)="scheduler.selectedViewMode = $event"
+    (onClickToday)="scheduler.setToday()"
+    (onChangeDate)="scheduler.startOfDay.set($event)"
+    (onClickClock)="scheduler.showWorkHours.set(!scheduler.showWorkHours())"
+    (onChangeEmployeeView)="scheduler.employeeView.set($event)"
+    (onClickView)="scheduler.selectedViewMode = $event"></shop-reservation-scheduler-toolbar>
 
-<flex-col *ngIf="scheduler.isDayViewMode()">
-  <flex-col-item class="horizontal-container">
-    <kendo-scheduler
-      class="scheduler"
-      [showWorkHours]="scheduler.showWorkHours()"
-      [loading]="!scheduler.loaded()"
-      [kendoSchedulerBinding]="scheduler.events()"
-      [selectedDate]="scheduler.selectedDate()"
-      [group]="{
-        resources: ['EmployeeName'],
-        orientation: 'horizontal'
-      }"
-      [resources]="scheduler.resources()"
-      [minDate]="scheduler.minDate()"
-      [maxDate]="scheduler.maxDate()"
-      [slotDuration]="scheduler.slotDuration()"
-      [slotDivisions]="scheduler.slotDivision()"
-      [workDayStart]="scheduler.workDayStart()"
-      [workDayEnd]="scheduler.workDayEnd()"
-      [currentTimeMarker]="scheduler.currentTimeMarker()"
-      [editable]="scheduler.editable()">
-      <!-- Header -->
-      <ng-template kendoSchedulerGroupHeaderTemplate let-resource="resource">
-        <span class="hey">{{ resource?.firstName }} {{ resource?.lastName }}</span>
-      </ng-template>
-      <kendo-scheduler-day-view> </kendo-scheduler-day-view>
-    </kendo-scheduler>
-  </flex-col-item>
-</flex-col>
+  <flex-col *ngIf="scheduler.isDayViewMode()">
+    <flex-col-item class="horizontal-container">
+      <kendo-buttongroup class="slide-button-group">
+        <kendo-button [disabled]="!allowDayModeLeft()" (click)="onDayModeLeft()" kendoButton class="left">
+          <kendo-svgicon [icon]="kendo.icon.left" size="xxlarge"></kendo-svgicon>
+        </kendo-button>
+        <kendo-button *ngIf="scheduler.isToday()" (click)="scrollDayModeCurrentTime()" kendoButton class="center">
+          {{ 'label.title.currenttime' | languageTransform: 'System' | async }}
+        </kendo-button>
+        <kendo-button [disabled]="!allowDayModeRight()" (click)="onDayModeRight()" kendoButton class="right">
+          <kendo-svgicon [icon]="kendo.icon.right" size="xxlarge"></kendo-svgicon>
+        </kendo-button>
+      </kendo-buttongroup>
+      <kendo-scheduler
+        #horizontalScheduler
+        [loading]="!loaded()"
+        [showWorkHours]="scheduler.showWorkHours()"
+        [kendoSchedulerBinding]="scheduler.events()"
+        [selectedDate]="scheduler.selectedDate()"
+        [group]="{ resources: ['EmployeeName'], orientation: 'horizontal' }"
+        [resources]="scheduler.resources()"
+        [minDate]="scheduler.minDate()"
+        [maxDate]="scheduler.maxDate()"
+        [slotDuration]="scheduler.slotDuration()"
+        [slotDivisions]="scheduler.slotDivision()"
+        [workDayStart]="scheduler.workDayStart()"
+        [workDayEnd]="scheduler.workDayEnd()"
+        [currentTimeMarker]="scheduler.currentTimeMarker()"
+        [editable]="scheduler.editable()"
+        [workWeekStart]="0"
+        [slotFill]="1"
+        [workWeekEnd]="6"
+        startTime="00:00"
+        endTime="23:59"
+        class="horizontal-scheduler">
+        <!-- Header -->
+        <ng-template kendoSchedulerGroupHeaderTemplate let-resource="resource">
+          <shop-reservation-schedule-employee-info
+            *ngIf="resource"
+            [employeeInfo]="resource.info"
+            [currentDateTime]="currentDateTime()"></shop-reservation-schedule-employee-info>
+        </ng-template>
 
-<flex-col *ngIf="scheduler.isTimelineViewMode()">
-  <flex-col-item>
-    <kendo-scheduler
-      [showWorkHours]="scheduler.showWorkHours()"
-      [loading]="!scheduler.loaded()"
-      [kendoSchedulerBinding]="scheduler.events()"
-      [selectedDate]="scheduler.selectedDate()"
-      [group]="{
-        resources: ['EmployeeName'],
-        orientation: 'vertical'
-      }"
-      [slotFill]="1"
-      [resources]="scheduler.resources()"
-      [minDate]="scheduler.minDate()"
-      [maxDate]="scheduler.maxDate()"
-      [slotDuration]="scheduler.slotDuration()"
-      [slotDivisions]="scheduler.slotDivision()"
-      [workDayStart]="scheduler.workDayStart()"
-      [workDayEnd]="scheduler.workDayEnd()"
-      [currentTimeMarker]="scheduler.currentTimeMarker()"
-      [editable]="scheduler.editable()"
-      [columnWidth]="75">
-      <!-- Header -->
-      <ng-template kendoSchedulerGroupHeaderTemplate let-resource="resource">
-        <span class="hey">{{ resource?.firstName }} {{ resource?.lastName }}</span>
-      </ng-template>
-      <kendo-scheduler-timeline-view></kendo-scheduler-timeline-view>
-    </kendo-scheduler>
-  </flex-col-item>
+        <kendo-scheduler-day-view></kendo-scheduler-day-view>
+      </kendo-scheduler>
+    </flex-col-item>
+  </flex-col>
+
+  <flex-col *ngIf="scheduler.isTimelineViewMode()">
+    <flex-col-item>
+      <kendo-buttongroup class="slide-button-group">
+        <kendo-button
+          [disabled]="!allowTimelineModeLeft()"
+          (click)="onTimelineModeLeft()"
+          kendoButton
+          class="left">
+          <kendo-svgicon [icon]="kendo.icon.left" size="xxlarge"></kendo-svgicon>
+        </kendo-button>
+        <kendo-button
+          *ngIf="scheduler.isToday()"
+          (click)="scrollTimelineModeCurrentTime()"
+          kendoButton
+          class="center">
+          {{ 'label.title.currenttime' | languageTransform: 'System' | async }}
+        </kendo-button>
+        <kendo-button
+          [disabled]="!allowTimelineModeRight()"
+          (click)="onTimelineModeRight()"
+          kendoButton
+          class="right">
+          <kendo-svgicon [icon]="kendo.icon.right" size="xxlarge"></kendo-svgicon>
+        </kendo-button>
+      </kendo-buttongroup>
+      <kendo-scheduler
+        [showWorkHours]="scheduler.showWorkHours()"
+        [loading]="!loaded()"
+        [kendoSchedulerBinding]="scheduler.events()"
+        [selectedDate]="scheduler.selectedDate()"
+        [group]="{ resources: ['EmployeeName'], orientation: 'vertical' }"
+        [slotFill]="1"
+        [resources]="scheduler.resources()"
+        [minDate]="scheduler.minDate()"
+        [maxDate]="scheduler.maxDate()"
+        [slotDuration]="scheduler.slotDuration()"
+        [slotDivisions]="scheduler.slotDivision()"
+        [workDayStart]="scheduler.workDayStart()"
+        [workDayEnd]="scheduler.workDayEnd()"
+        [currentTimeMarker]="scheduler.currentTimeMarker()"
+        [editable]="scheduler.editable()"
+        [columnWidth]="80"
+        [workWeekStart]="0"
+        [workWeekEnd]="6"
+        startTime="00:00"
+        endTime="23:59">
+        <!-- Header -->
+        <ng-template kendoSchedulerGroupHeaderTemplate let-resource="resource">
+          <shop-reservation-schedule-employee-info
+            *ngIf="resource"
+            [employeeInfo]="resource.info"
+            [currentDateTime]="currentDateTime()"></shop-reservation-schedule-employee-info>
+        </ng-template>
+
+        <kendo-scheduler-timeline-view></kendo-scheduler-timeline-view>
+      </kendo-scheduler>
+    </flex-col-item>
+  </flex-col>
 </flex-col>

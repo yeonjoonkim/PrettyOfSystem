@@ -16,6 +16,7 @@ export * from './massage/massage.interface';
 export * from './consult/consult.interface';
 export * from './booking/cart/cart.interface';
 export * from './payment/payment.interface';
+export * from './reservation/reservation-scheduler.interface';
 
 //Function
 export * from './function/function-scheduler/function-scheduler.interface';
