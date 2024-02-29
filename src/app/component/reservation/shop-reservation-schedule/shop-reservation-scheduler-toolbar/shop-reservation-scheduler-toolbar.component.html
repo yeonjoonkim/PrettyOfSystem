@@ -15,7 +15,12 @@
       <kendo-button [disabled]="!allowPreviousDate" (click)="onClickPreviousDate.emit()" kendoButton>
         <kendo-svgicon [icon]="kendo.icon.left"></kendo-svgicon>
       </kendo-button>
-      <kendo-button [disabled]="!allowToday || isToday" (click)="onClickToday.emit()" kendoButton>
+      <kendo-button
+        class="center"
+        [selected]="isToday"
+        [disabled]="!allowToday || isToday"
+        (click)="onClickToday.emit()"
+        kendoButton>
         <span>
           {{ 'label.title.today' | languageTransform: 'System' | async }}
         </span>
@@ -59,5 +64,7 @@
       (selectedChange)="onChangeEmployeeSelection($event)"
       class="employee-selection-dropdown">
     </name-value-pair-single-dropdown-selection>
+
+    <shop-reservation-schedule-reviews class="desktop-reviews"></shop-reservation-schedule-reviews>
   </flex-row-item>
 </flex-row>

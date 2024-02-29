@@ -1,0 +1,104 @@
+.review-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  height: 60px;
+  flex-row-item {
+    margin: 0px;
+  }
+  p {
+    margin: 0px;
+  }
+}
+
+.display-none {
+  display: none;
+}
+.display {
+  display: block;
+}
+
+.pending-reservation {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0px;
+  align-items: center;
+  .pending-reservation-btn {
+    background: transparent;
+    &:hover {
+      cursor: pointer;
+      background: transparent;
+    }
+  }
+}
+
+.icon-label {
+  z-index: -1;
+  width: 45px;
+  font-size: 12px;
+  &:hover {
+    cursor: pointer;
+    background: transparent;
+  }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qty {
+  position: absolute;
+  top: -4px;
+  right: 1px;
+  padding: 0px;
+  width: 19px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  justify-content: center;
+  margin: 0px;
+}
+.qty.zero {
+  background: var(--inprogress);
+}
+.qty.review {
+  background: var(--error);
+}
+
+@keyframes slideAndFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideAndFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+.fade-out {
+  color: transparent;
+  animation: slideAndFadeOut 0.5s ease forwards;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(-30px);
+  animation: slideAndFadeIn 0.5s ease forwards;
+}

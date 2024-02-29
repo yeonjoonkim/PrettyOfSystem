@@ -33,6 +33,21 @@ date-picker {
 .toolbar-query-container {
   margin-right: 15px;
 }
+.desktop-reviews {
+  margin-top: 37px;
+}
+.mobile-reviews {
+  display: none;
+}
+
+@media (max-width: 830px) {
+  .desktop-reviews {
+    display: none;
+  }
+  .mobile-reviews {
+    display: block;
+  }
+}
 
 @media (max-width: 650px) {
   .mobile-toolbar-query-container {

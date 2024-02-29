@@ -1,0 +1,31 @@
+<flex-row class="review-container">
+  <flex-row-item>
+    <div
+      class="pending-reservation"
+      (mouseenter)="showPendingLabel = true"
+      (mouseleave)="showPendingLabel = false">
+      <kendo-button class="pending-reservation-btn" kendoButton>
+        <kendo-svgicon [icon]="kendo.icon.calendarIcon" size="xlarge" themeColor="success"></kendo-svgicon>
+        <div class="qty" [ngClass]="{ zero: !numOfPendingReservation, review: numOfPendingReservation }">
+          {{ numOfPendingReservation }}
+        </div>
+      </kendo-button>
+      <div class="icon-label" [class.fade-in]="showPendingLabel" [class.fade-out]="!showPendingLabel">
+        {{ 'label.title.pending' | languageTransform: 'System' | async }}
+      </div>
+    </div>
+  </flex-row-item>
+  <flex-row-item>
+    <div class="pending-reservation" (mouseenter)="showCouponLabel = true" (mouseleave)="showCouponLabel = false">
+      <kendo-button class="pending-reservation-btn" kendoButton>
+        <kendo-svgicon [icon]="kendo.icon.calendarIcon" size="xlarge" themeColor="success"></kendo-svgicon>
+        <div class="qty" [ngClass]="{ zero: !numOfPendingReservation, review: numOfPendingReservation }">
+          {{ numOfPendingReservation }}
+        </div>
+      </kendo-button>
+      <div class="icon-label" [class.fade-in]="showCouponLabel" [class.fade-out]="!showCouponLabel">
+        {{ 'label.title.pending' | languageTransform: 'System' | async }}
+      </div>
+    </div>
+  </flex-row-item>
+</flex-row>

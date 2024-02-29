@@ -45,6 +45,8 @@ import { MenuComponent } from './component/global/menu/menu.component';
 import { UserEditModule } from './component/user/user-edit/user-edit.module';
 import { SharedFormModule } from './component/form/form.module';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+import { OnHoverClassDirective } from './directive/hover-class/on-hover-class/on-hover-class.directive';
+import { LeaveHoverClassDirective } from './directive/hover-class/leave-hover-class/leave-hover-class.directive';
 
 @NgModule({
   declarations: [AppComponent, MenuComponent],

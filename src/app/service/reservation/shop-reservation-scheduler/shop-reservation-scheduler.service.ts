@@ -39,7 +39,7 @@ export class ShopReservationSchedulerService {
   //Setting
   public operatingHours = this._operatingHours.data;
   public todayOperatingHours = this._operatingHours.todayOperatingHours;
-  public selectedViewMode: SchedulerViewModeType = Constant.Scheduler.View.Timeline;
+  public selectedViewMode: SchedulerViewModeType = Constant.Scheduler.View.Day;
   public employeeView = signal<Constant.SchedulerEmployeeViewModeType>(Constant.Scheduler.EmployeeView.All);
   public minDate = this._defaultScheduler.minDate;
   public maxDate = this._defaultScheduler.maxDate;

@@ -12,15 +12,20 @@ import { SharedFormModule } from 'src/app/component/form/form.module';
 import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.module';
 import { ShopReservationScheduleEmployeeInfoModule } from '../shop-reservation-schedule-employee-info/shop-reservation-schedule-employee-info.module';
 
+//Import Directive
+import { OnHoverClassDirective } from 'src/app/directive/hover-class/on-hover-class/on-hover-class.directive';
+import { LeaveHoverClassDirective } from 'src/app/directive/hover-class/leave-hover-class/leave-hover-class.directive';
+
 import { ShopReservationScheduleComponent } from './shop-reservation-schedule.component';
 import { ShopReservationSchedulerToolbarComponent } from './shop-reservation-scheduler-toolbar/shop-reservation-scheduler-toolbar.component';
 import { ShopReservationSchedulerMobileToolbarPopoverComponent } from './shop-reservation-scheduler-mobile-toolbar-popover/shop-reservation-scheduler-mobile-toolbar-popover.component';
-
+import { ShopReservationScheduleReviewsComponent } from './shop-reservation-schedule-reviews/shop-reservation-schedule-reviews.component';
 @NgModule({
   declarations: [
     ShopReservationScheduleComponent,
     ShopReservationSchedulerToolbarComponent,
     ShopReservationSchedulerMobileToolbarPopoverComponent,
+    ShopReservationScheduleReviewsComponent,
   ],
   imports: [
     CommonModule,
@@ -31,6 +36,8 @@ import { ShopReservationSchedulerMobileToolbarPopoverComponent } from './shop-re
     KendoUiModule,
     DatePipeModule,
     ShopReservationScheduleEmployeeInfoModule,
+    OnHoverClassDirective,
+    LeaveHoverClassDirective,
   ],
   exports: [ShopReservationScheduleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

@@ -98,6 +98,32 @@
   }
 }
 
+.mobile-reviews {
+  display: none;
+}
+
+@media (max-width: 830px) {
+  .mobile-reviews {
+    display: block;
+  }
+  :host ::ng-deep .mobile-reviews {
+    .review-container {
+      padding-top: 15px;
+      margin-left: 7px;
+      display: flex;
+      height: unset;
+      justify-content: flex-start;
+      flex-row-item {
+        flex: 0;
+        .pending-reservation > .icon-label.fade-out,
+        .pending-reservation > .icon-label.fade-in {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
 @media (max-width: 900px) {
   .horizontal-scheduler {
     height: 800px !important;
@@ -108,6 +134,12 @@
 @media (max-width: 550px) {
   .horizontal-scheduler {
     height: 700px !important;
+    overflow-y: auto;
+  }
+}
+@media (max-width: 450px) {
+  .horizontal-scheduler {
+    height: 600px !important;
     overflow-y: auto;
   }
 }

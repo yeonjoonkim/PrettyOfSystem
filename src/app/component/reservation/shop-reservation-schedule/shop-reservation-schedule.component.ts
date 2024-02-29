@@ -84,13 +84,13 @@ export class ShopReservationScheduleComponent implements OnInit, DoCheck {
   public onDayModeLeft() {
     const scrollableScheduler = this.dayScheduler;
     if (scrollableScheduler) {
-      scrollableScheduler.scrollBy({ left: -100 });
+      scrollableScheduler.scrollBy({ left: -130, behavior: 'smooth' });
     }
   }
   public onDayModeRight() {
     const scrollableScheduler = this.dayScheduler;
     if (scrollableScheduler) {
-      scrollableScheduler.scrollBy({ left: 100 });
+      scrollableScheduler.scrollBy({ left: 130, behavior: 'smooth' });
     }
   }
   public allowDayModeLeft(): boolean {
@@ -109,13 +109,13 @@ export class ShopReservationScheduleComponent implements OnInit, DoCheck {
   public onTimelineModeLeft() {
     const scrollableScheduler = this.timelineScheduler;
     if (scrollableScheduler) {
-      scrollableScheduler.scrollBy({ left: -100 });
+      scrollableScheduler.scrollBy({ left: -100, behavior: 'smooth' });
     }
   }
   public onTimelineModeRight() {
     const scrollableScheduler = this.timelineScheduler;
     if (scrollableScheduler) {
-      scrollableScheduler.scrollBy({ left: 100 });
+      scrollableScheduler.scrollBy({ left: 100, behavior: 'smooth' });
     }
   }
   public allowTimelineModeLeft(): boolean {
@@ -130,7 +130,15 @@ export class ShopReservationScheduleComponent implements OnInit, DoCheck {
     );
   }
 
-  scrollTimelineModeCurrentTime() {
+  public scrollToCurrentTime() {
+    if (this.scheduler.isDayViewMode()) {
+      this.scrollDayModeCurrentTime();
+    } else {
+      this.scrollTimelineModeCurrentTime();
+    }
+  }
+
+  private scrollTimelineModeCurrentTime() {
     const indicator = this.currentTimeIndicator;
     const scrollableScheduler = this.timelineScheduler;
     if (indicator && scrollableScheduler) {
@@ -139,7 +147,7 @@ export class ShopReservationScheduleComponent implements OnInit, DoCheck {
     }
   }
 
-  scrollDayModeCurrentTime() {
+  private scrollDayModeCurrentTime() {
     const indicator = this.currentTimeIndicator;
     const scrollableScheduler = this.dayYScrollScheduler;
     console.log(scrollableScheduler?.scrollTop);
