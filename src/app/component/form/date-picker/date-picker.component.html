@@ -15,7 +15,7 @@
   <span #selectedName id="selected-name">
     {{ date | dateTransform: 'LongDate' }}
   </span>
-  <span #selectedName *ngIf="displayDay" id="selected-name">
+  <span #selectedName *ngIf="displayDay" class="day" id="selected-name">
     {{ date | dayTransform | async }}
   </span>
   <span #dropDownArrow id="dropdown-list-down">

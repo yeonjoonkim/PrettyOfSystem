@@ -43,6 +43,11 @@ import {
   warningTriangleIcon,
   thumbUpIcon,
   calendarIcon,
+  filterIcon,
+  trackChangesAcceptIcon,
+  trackChangesIcon,
+  trackChangesEnableIcon,
+  trackChangesAcceptAllIcon,
 } from '@progress/kendo-svg-icons';
 @Injectable({
   providedIn: 'root',
@@ -92,5 +97,10 @@ export class KendoUiIconService {
   public warningCircleIcon = warningCircleIcon;
   public warningTriangleIcon = warningTriangleIcon;
   public thumbUpIcon = thumbUpIcon;
+  public filterIcon = filterIcon;
+  public pendingIcon = trackChangesIcon;
+  public scheduledIcon = trackChangesEnableIcon;
+  public startingIcon = trackChangesAcceptIcon;
+  public completedIcon = trackChangesAcceptAllIcon;
   constructor() {}
 }

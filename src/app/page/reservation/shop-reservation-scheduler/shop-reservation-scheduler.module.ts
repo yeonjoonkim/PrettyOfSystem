@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -10,8 +10,10 @@ import { ShopReservationSchedulerPageRoutingModule } from './shop-reservation-sc
 import { LanguageTransformPipeModule } from '../../../pipe/language-transform-pipe/language-transform.pipe.module';
 
 import { ShopReservationSchedulerPage } from './shop-reservation-scheduler.page';
+import { SharedFormModule } from 'src/app/component/form/form.module';
 import { KendoUiModule } from 'src/app/component/global/kendo-ui-module/kendo-ui-module.module';
 import { ShopReservationScheduleModule } from 'src/app/component/reservation/shop-reservation-schedule/shop-reservation-schedule.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +23,9 @@ import { ShopReservationScheduleModule } from 'src/app/component/reservation/sho
     KendoUiModule,
     ShopReservationScheduleModule,
     LanguageTransformPipeModule,
+    SharedFormModule,
   ],
   declarations: [ShopReservationSchedulerPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
 export class ShopReservationSchedulerPageModule {}

@@ -1,11 +1,20 @@
 .scheduler-toolbar-container {
   justify-content: flex-start;
-  gap: 10px;
+  gap: 20px;
 }
 
 date-picker {
-  width: 165px;
+  width: 175px;
 }
+
+.date-picker-button {
+  width: 115px;
+}
+
+.today {
+  width: 60px;
+}
+
 .date-picker-query-container,
 .toolbar-query-container {
   display: flex;
@@ -23,9 +32,6 @@ date-picker {
     margin-bottom: 10px;
   }
 }
-.mobile-toolbar-query-container {
-  display: none;
-}
 
 .date-picker-query-container {
   margin-left: 15px;
@@ -40,13 +46,32 @@ date-picker {
   display: none;
 }
 
-@media (max-width: 830px) {
+@media (max-width: 1120px) {
   .desktop-reviews {
     display: none;
   }
   .mobile-reviews {
     display: block;
   }
+}
+
+@media (max-width: 650px) {
+  .scheduler-toolbar-container {
+    flex-direction: column;
+    gap: 0px;
+  }
+  .date-picker-query-container {
+    margin-left: 15px;
+    margin-right: 15px;
+    height: 32px;
+  }
+  .toolbar-query-container {
+    display: none;
+  }
+}
+
+.mobile-toolbar-query-container {
+  display: none;
 }
 
 @media (max-width: 650px) {
@@ -60,17 +85,5 @@ date-picker {
         background-color: transparent;
       }
     }
-  }
-  .scheduler-toolbar-container {
-    flex-direction: column;
-    gap: 0px;
-  }
-  .date-picker-query-container {
-    margin-left: 15px;
-    margin-right: 15px;
-    height: 32px;
-  }
-  .toolbar-query-container {
-    display: none;
   }
 }

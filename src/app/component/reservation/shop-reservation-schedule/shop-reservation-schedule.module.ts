@@ -18,14 +18,14 @@ import { LeaveHoverClassDirective } from 'src/app/directive/hover-class/leave-ho
 
 import { ShopReservationScheduleComponent } from './shop-reservation-schedule.component';
 import { ShopReservationSchedulerToolbarComponent } from './shop-reservation-scheduler-toolbar/shop-reservation-scheduler-toolbar.component';
-import { ShopReservationSchedulerMobileToolbarPopoverComponent } from './shop-reservation-scheduler-mobile-toolbar-popover/shop-reservation-scheduler-mobile-toolbar-popover.component';
 import { ShopReservationScheduleReviewsComponent } from './shop-reservation-schedule-reviews/shop-reservation-schedule-reviews.component';
+import { ShopReservationSchedulerMobileToolbarPopoverComponent } from 'src/app/component/reservation/shop-reservation-schedule/shop-reservation-scheduler-mobile-toolbar-popover/shop-reservation-scheduler-mobile-toolbar-popover.component';
 @NgModule({
   declarations: [
     ShopReservationScheduleComponent,
     ShopReservationSchedulerToolbarComponent,
-    ShopReservationSchedulerMobileToolbarPopoverComponent,
     ShopReservationScheduleReviewsComponent,
+    ShopReservationSchedulerMobileToolbarPopoverComponent,
   ],
   imports: [
     CommonModule,

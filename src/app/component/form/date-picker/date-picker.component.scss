@@ -11,10 +11,13 @@
   }
 
   ::ng-deep span.k-button-text #selected-name {
+    padding-right: 5px;
+  }
+
+  ::ng-deep span.k-button-text.day {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-right: 5px;
   }
 
   ::ng-deep span.k-button-text #dropdown-list-down {

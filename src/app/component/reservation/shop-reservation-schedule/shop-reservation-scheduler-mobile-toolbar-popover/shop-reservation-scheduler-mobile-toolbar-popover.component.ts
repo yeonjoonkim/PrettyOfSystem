@@ -3,7 +3,6 @@ import { NameValuePairType } from 'src/app/interface';
 import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 import * as Constant from 'src/app/constant/constant';
 import { ShopReservationSchedulerService } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-scheduler.service';
-import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-shop-reservation-scheduler-mobile-toolbar-popover',

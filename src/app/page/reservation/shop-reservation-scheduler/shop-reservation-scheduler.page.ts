@@ -11,6 +11,7 @@ import { ShopReservationSchedulerService } from 'src/app/service/reservation/sho
 export class ShopReservationSchedulerPage implements OnInit {
   public kendo = inject(KendoUiService);
   private _scheduler = inject(ShopReservationSchedulerService);
+
   private _destroyRef = inject(DestroyRef);
   protected loaded = this._scheduler.loaded;
   protected schedulerStatus = computed(() => {

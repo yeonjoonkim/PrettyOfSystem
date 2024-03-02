@@ -16,7 +16,7 @@
         <kendo-svgicon [icon]="kendo.icon.left"></kendo-svgicon>
       </kendo-button>
       <kendo-button
-        class="center"
+        class="today"
         [selected]="isToday"
         [disabled]="!allowToday || isToday"
         (click)="onClickToday.emit()"
@@ -32,7 +32,7 @@
 
     <kendo-buttongroup class="mobile-toolbar-query-container">
       <kendo-button (click)="onOpenPopover($event)" kendoButton>
-        <kendo-svgicon [icon]="kendo.icon.tableCellPropertiesIcon" size="xlarge"></kendo-svgicon>
+        <kendo-svgicon [icon]="kendo.icon.filterIcon" size="xlarge"></kendo-svgicon>
       </kendo-button>
     </kendo-buttongroup>
   </flex-row-item>
