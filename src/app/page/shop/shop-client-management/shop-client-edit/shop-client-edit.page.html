@@ -16,7 +16,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="editor-container" *ngIf="!(account.requesting$ | async) && (account.client$ | async)">
+  <div
+    class="editor-container"
+    *ngIf="!(account.requesting$ | async) && (account.client$ | async) && (account.loaded$ | async)">
     <div class="client-editor">
       <ng-container
         *ngIf="{
@@ -102,7 +104,9 @@
     <div class="client-history"></div>
   </div>
 
-  <div class="loading-container" *ngIf="(account.requesting$ | async) || !(account.client$ | async)">
+  <div
+    class="loading-container"
+    *ngIf="(account.requesting$ | async) || !(account.client$ | async) || !(account.loaded$ | async)">
     <kendo-loader size="large"></kendo-loader>
   </div>
 </ion-content>

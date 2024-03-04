@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Subject } from 'rxjs';
 import { ShopClientManagementService } from 'src/app/service/shop/shop-client-management/shop-client-management.service';
 
 @Component({

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Subject, map, takeUntil } from 'rxjs';
 import { DateService } from 'src/app/service/global/date/date.service';
@@ -15,7 +15,7 @@ import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service
 })
 export class ShopClientGridComponent implements OnInit, OnDestroy {
   public kendo = inject(KendoUiService);
-
+  @Input() destroy$!: Subject<void>;
   @Output() onRequestNewClientPhoneNumber = new EventEmitter<string>();
   private _destroy$ = new Subject<void>();
   public loaded$ = this._clientManagement.query.loaded$;

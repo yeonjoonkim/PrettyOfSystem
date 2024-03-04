@@ -10,5 +10,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <shop-employee-management></shop-employee-management>
+  <shop-employee-management *ngIf="(start$ | async)" [destroy$]="destroy$"></shop-employee-management>
+
+  <div *ngIf="!(start$ | async)" class="loading-container">
+    <kendo-loader size="large"></kendo-loader>
+  </div>
 </ion-content>

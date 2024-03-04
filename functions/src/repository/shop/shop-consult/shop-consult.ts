@@ -128,3 +128,17 @@ export const updateToPendingStatus = async function (consults: I.ConsultDocument
   const results = await Promise.all(updatePromises);
   return results.every(result => result === true);
 };
+
+export const updateToPendingStatusByIds = async function (shopId: string, documentIds: string[]) {
+  if (documentIds.length > 0) {
+    const documents = await getDocumentsById(shopId, documentIds);
+    const promises = documents.map(async consult => {
+      consult.status = Constant.Consult_PendingStatus;
+      return await updateDocument(consult);
+    });
+
+    const results = await Promise.all(promises);
+    return results.every(result => result === true);
+  }
+  return true;
+};

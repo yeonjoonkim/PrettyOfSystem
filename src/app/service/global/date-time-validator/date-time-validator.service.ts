@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { DateService } from '../date/date.service';
-type StartEndType = {
+export type StartEndType = {
   start: string; // range 00:00:00 - 23:59:59
   end: string; // range 00:00:00 - 23:59:59
 };
@@ -8,7 +8,7 @@ const IsoDateChecker = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0
 const TimeChecker = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DateTimeValidatorService {
   private _dateSvc = inject(DateService);
@@ -16,7 +16,7 @@ export class DateTimeValidatorService {
 
   public isTimeOverlap(a: StartEndType, b: StartEndType) {
     const aTime = this.getStartEndTime(a);
-    const bTime = this.getStartEndTime(b); 
+    const bTime = this.getStartEndTime(b);
     return aTime !== null && bTime !== null ? timeOverlap(aTime, bTime) : true;
   }
 
@@ -24,7 +24,7 @@ export class DateTimeValidatorService {
     const checker = this.getStartEndTime({ start: startTime, end: endTime });
     const targetTime = this.getTime(target);
     const is24Hours = checker !== null ? checker.start === '00:00:00' && checker.end === '00:00:00' : false;
-    
+
     if (!checker || !targetTime) {
       return false;
     }
@@ -32,18 +32,19 @@ export class DateTimeValidatorService {
     if (is24Hours) {
       return true;
     }
-  
+
     return !is24Hours ? targetTime >= checker.start && targetTime <= checker.end : true;
   }
-
 
   private getStartEndTime(time: StartEndType) {
     const start = this.getTime(time.start);
     const end = this.getTime(time.end);
-    return start !== null && end !== null ? {
-      start: start,
-      end: end
-    } : null;
+    return start !== null && end !== null
+      ? {
+          start: start,
+          end: end,
+        }
+      : null;
   }
 
   private getTime(time: string) {

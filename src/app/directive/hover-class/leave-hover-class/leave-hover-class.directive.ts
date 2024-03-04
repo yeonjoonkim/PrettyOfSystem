@@ -15,9 +15,7 @@ export class LeaveHoverClassDirective {
   }
 
   @HostListener('mouseleave') onMouseLeave() {
-    console.log(this.ref.nativeElement);
     if (this.ref.nativeElement && this.onHoverClass) {
-      console.log(this.ref);
       this.ref.nativeElement.classList.add(this.onHoverClass);
     }
   }

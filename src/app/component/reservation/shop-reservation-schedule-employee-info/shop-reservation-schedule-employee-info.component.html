@@ -2,7 +2,9 @@
   <kendo-svgicon [icon]="statusIcon()" [themeColor]="statusColor()" size="xlarge"></kendo-svgicon>
 
   <div class="employee-info">
-    <p>{{ employeeInfo.firstName }} {{ employeeInfo.lastName }}</p>
+    <p [ngClass]="{ 'employee-name': !isPreviousDate() }" (click)="onClickName($event)">
+      {{ employeeInfo.firstName }} {{ employeeInfo.lastName }}
+    </p>
     <p class="default-placeholder">
       {{ statusTitle() | languageTransform: 'System' | async }}
     </p>

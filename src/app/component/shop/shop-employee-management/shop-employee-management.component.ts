@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import {
   EmployeeManagementEditUserPropType,
@@ -18,7 +18,7 @@ import { ShopEmployeeManagementService } from 'src/app/service/shop/shop-employe
   styleUrls: ['./shop-employee-management.component.scss'],
 })
 export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
-  private _onDestroy$ = new Subject<void>();
+  @Input() destroy$!: Subject<void>;
 
   public employees!: ShopEmployeeManagementUserType[];
   public currentRole: RoleConfigurationType | null = null;
@@ -35,9 +35,7 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
     role: [],
     filter: [],
   };
-  public progressBar$: Observable<ShopLimitedProgpressBarType> = this._shopEmp.progressBar$.pipe(
-    takeUntil(this._onDestroy$)
-  );
+  public progressBar$!: Observable<ShopLimitedProgpressBarType>;
 
   constructor(
     private _shopEmp: ShopEmployeeManagementService,
@@ -45,19 +43,17 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
+    this.progressBar$ = this._shopEmp.progressBar$.pipe(takeUntil(this.destroy$));
     this.shopEmployees();
     this.shopConfig();
     this.userRoles();
     this.addNewEmployee();
   }
 
-  ngOnDestroy() {
-    this._onDestroy$.next();
-    this._onDestroy$.complete();
-  }
+  ngOnDestroy() {}
 
   private shopEmployees() {
-    this._shopEmp.shopEmployees$.pipe(takeUntil(this._onDestroy$)).subscribe(emps => {
+    this._shopEmp.shopEmployees$.pipe(takeUntil(this.destroy$)).subscribe(emps => {
       this.employees = emps;
       this.usage.currentActiveUsers = this.employees.filter(emp => emp.active).length;
       this.usage.currentDeactiveUsers = this.employees.filter(emp => !emp.active).length;
@@ -65,19 +61,19 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
   }
 
   private userRoles() {
-    this._shopEmp.availableRoles$.pipe(takeUntil(this._onDestroy$)).subscribe(roles => {
+    this._shopEmp.availableRoles$.pipe(takeUntil(this.destroy$)).subscribe(roles => {
       this._roleProp.role = roles;
     });
-    this._shopEmp.availableRoleFilter$.pipe(takeUntil(this._onDestroy$)).subscribe(filter => {
+    this._shopEmp.availableRoleFilter$.pipe(takeUntil(this.destroy$)).subscribe(filter => {
       this._roleProp.filter = filter;
     });
-    this._shopEmp.role$.pipe(takeUntil(this._onDestroy$)).subscribe(r => {
+    this._shopEmp.role$.pipe(takeUntil(this.destroy$)).subscribe(r => {
       this.currentRole = r;
     });
   }
 
   private shopConfig() {
-    this._shopEmp.shopConfig$.pipe(takeUntil(this._onDestroy$)).subscribe(config => {
+    this._shopEmp.shopConfig$.pipe(takeUntil(this.destroy$)).subscribe(config => {
       if (config !== null) {
         this._shopConfig = config;
       }
@@ -85,7 +81,7 @@ export class ShopEmployeeManagementComponent implements OnInit, OnDestroy {
   }
 
   private addNewEmployee() {
-    this._shopEmp.addNewEmployee$.pipe(takeUntil(this._onDestroy$)).subscribe(add => {
+    this._shopEmp.addNewEmployee$.pipe(takeUntil(this.destroy$)).subscribe(add => {
       this._addNewEmployee = add;
     });
   }

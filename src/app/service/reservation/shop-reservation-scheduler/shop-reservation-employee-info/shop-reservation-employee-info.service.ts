@@ -6,7 +6,10 @@ import {
   ShopEmployeeScheduledConsultType,
   ShopScheduleDocumentType,
 } from 'src/app/interface';
-import { DateTimeValidatorService } from 'src/app/service/global/date-time-validator/date-time-validator.service';
+import {
+  DateTimeValidatorService,
+  StartEndType,
+} from 'src/app/service/global/date-time-validator/date-time-validator.service';
 import { DateType } from 'src/app/service/global/date/date-transform/date-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
 import * as Constant from 'src/app/constant/constant';
@@ -158,6 +161,23 @@ export class ShopReservationEmployeeInfoService {
       end: getTime(this._dateSvc.transform.toLocalDateTime(endDateTIme)),
     };
     return emp.start <= currentTime ? emp.end <= currentTime : true;
+  }
+
+  public getEventTimesFromDocument(document: ShopScheduleDocumentType) {
+    const breakTimes = document.breakTimes.map(bt => {
+      return {
+        start: this._dateSvc.getTime(bt.startDateTime),
+        end: this._dateSvc.getTime(bt.endDateTime),
+      } as StartEndType;
+    });
+    const consults = document.scheduledConsults.map(consult => {
+      return {
+        start: this._dateSvc.getTime(consult.startDateTime),
+        end: this._dateSvc.getTime(consult.endDateTime),
+      } as StartEndType;
+    });
+
+    return [...breakTimes, ...consults];
   }
 }
 

@@ -1,4 +1,4 @@
-.employee-info-container{
+.employee-info-container {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -6,7 +6,7 @@
   gap: 10px;
   min-width: 130px;
   height: 50px;
-  p{
+  p {
     width: 100px;
     white-space: nowrap;
     overflow: hidden;
@@ -14,14 +14,20 @@
   }
 }
 
-.employee-info{
+.employee-info {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 0px;
-  p{
+  p {
     text-align: left;
     margin: 0px;
     padding: 0px;
+  }
+  .employee-name {
+    text-decoration: underline;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

@@ -31,12 +31,19 @@ export class ShopClientEditPage implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router
   ) {}
-  async ngOnInit() {
+  async ngOnInit() {}
+
+  async ionViewWillEnter() {
     if (this._clientId === null) {
       await this.gotoClientManagement();
     } else {
       await this.account.start(this._clientId);
     }
+  }
+
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

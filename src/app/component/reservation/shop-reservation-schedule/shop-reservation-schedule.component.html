@@ -130,3 +130,6 @@
     </flex-col-item>
   </flex-col>
 </flex-col>
+<div *ngIf="!loaded()" class="loading-container">
+  <kendo-loader size="large"></kendo-loader>
+</div>

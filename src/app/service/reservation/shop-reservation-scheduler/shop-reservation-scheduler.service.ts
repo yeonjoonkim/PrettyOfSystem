@@ -18,7 +18,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { getTime } from 'date-fns';
 import { ShopReservationEmployeeInfoService } from './shop-reservation-employee-info/shop-reservation-employee-info.service';
 
-const nullableString: string = null as unknown as string;
+export const nullableString: string = null as unknown as string;
 export const resourceName: string = 'EmployeeName';
 @Injectable({
   providedIn: 'root',
