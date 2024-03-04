@@ -38,6 +38,16 @@ import {
   chartLineStackedIcon,
   imageEditIcon,
   tableCellPropertiesIcon,
+  calendarDateIcon,
+  warningCircleIcon,
+  warningTriangleIcon,
+  thumbUpIcon,
+  calendarIcon,
+  filterIcon,
+  trackChangesAcceptIcon,
+  trackChangesIcon,
+  trackChangesEnableIcon,
+  trackChangesAcceptAllIcon,
 } from '@progress/kendo-svg-icons';
 @Injectable({
   providedIn: 'root',
@@ -82,5 +92,15 @@ export class KendoUiIconService {
   public chartLineStackedIcon = chartLineStackedIcon;
   public imageEditIcon = imageEditIcon;
   public tableCellPropertiesIcon = tableCellPropertiesIcon;
+  public calendarDateIcon = calendarDateIcon;
+  public calendarIcon = calendarIcon;
+  public warningCircleIcon = warningCircleIcon;
+  public warningTriangleIcon = warningTriangleIcon;
+  public thumbUpIcon = thumbUpIcon;
+  public filterIcon = filterIcon;
+  public pendingIcon = trackChangesIcon;
+  public scheduledIcon = trackChangesEnableIcon;
+  public startingIcon = trackChangesAcceptIcon;
+  public completedIcon = trackChangesAcceptAllIcon;
   constructor() {}
 }

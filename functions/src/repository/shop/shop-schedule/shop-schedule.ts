@@ -5,6 +5,7 @@ import * as Error from '../../error/error';
 import * as Constant from '../../../constant';
 import * as Scheduler from '../shop-scheduler/shop-scheduler';
 import * as DateSvc from '../../../service/date/service-date';
+export * as UpdateRequest from './shop-update-schedule/index';
 
 export const createDefaultSchedules = async function (
   associatedShop: I.UserAssociatedShopType,
@@ -173,6 +174,23 @@ export const getSelectedDay = async function (shopId: string, employeeId: string
     return docs.length > 0 ? docs[0] : null;
   } catch (error) {
     await Error.createErrorReport('', error, 'Sync', 'getSelectedScheduleByEmployeeId');
+    return null;
+  }
+};
+
+export const getById = async function (shopId: string, documentId: string) {
+  try {
+    const allSnapshot = await firestore()
+      .collection(Db.ShopSchedule(shopId))
+      .where('id', Constant.Query.Equal, documentId)
+      .limit(1)
+      .get();
+    const docs = allSnapshot.docs.map(doc => {
+      return doc.data() as I.ShopScheduleDocumentType;
+    });
+    return docs.length > 0 ? docs[0] : null;
+  } catch (error) {
+    await Error.createErrorReport('', error, 'Sync', 'getById');
     return null;
   }
 };

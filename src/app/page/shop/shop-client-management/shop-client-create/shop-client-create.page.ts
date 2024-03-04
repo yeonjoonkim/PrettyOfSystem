@@ -29,16 +29,21 @@ export class ShopClientCreatePage implements OnInit, OnDestroy {
     private _management: ShopClientManagementService,
     private _route: ActivatedRoute,
     private _router: Router
-  ) {
-    if (this._phoneNumber) {
-      this.account.start(this._phoneNumber);
-    }
-  }
-  async ngOnInit() {
+  ) {}
+  async ngOnInit() {}
+
+  async ionViewWillEnter() {
     if (this._phoneNumber !== null) {
+      this.account.start(this._phoneNumber);
     } else {
       await this.gotoClientManagement();
     }
+  }
+
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
+    this.account.completed();
   }
 
   ngOnDestroy() {

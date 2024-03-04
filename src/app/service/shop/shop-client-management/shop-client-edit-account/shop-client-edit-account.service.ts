@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, combineLatestWith, filter, take } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, filter, map, take } from 'rxjs';
 import { ClientCredentialRepositoryService } from 'src/app/firebase/user-repository/client-credential-repository/client-credential-repository.service';
 import { UserCredentialRepositoryService } from 'src/app/firebase/user-repository/user-credential-repository/user-credential-repository.service';
 import {
@@ -29,6 +29,7 @@ export class ShopClientEditAccountService {
   public shopConfig$ = this._shop.config$;
   public client$ = this._client.asObservable();
   public requesting$ = this._requesting.asObservable();
+  public loaded$ = this.client$.pipe(map(client => client !== null));
 
   get client() {
     return this._client.getValue();

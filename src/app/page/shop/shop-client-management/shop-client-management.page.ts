@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CryptService } from 'src/app/service/global/crypt/crypt.service';
-import { GlobalService } from 'src/app/service/global/global.service';
 import { ShopClientManagementService } from 'src/app/service/shop/shop-client-management/shop-client-management.service';
 
 @Component({

@@ -27,6 +27,7 @@
 }
 
 :host ::ng-deep .k-scheduler-layout.k-scheduler-flex-layout.k-scheduler-timeline-view > .k-scheduler-pane {
+  background-color: #232323 !important;
   .k-scheduler-header-wrap,
   .k-scheduler-times {
     background-color: #232323 !important;
@@ -79,6 +80,7 @@
   kendo-button {
     background: transparent;
     background-color: #232323 !important;
+    min-width: 50px;
     &:hover {
       background: transparent;
       background-color: #232323 !important;
@@ -98,6 +100,37 @@
   }
 }
 
+.mobile-reviews {
+  display: none;
+}
+
+@media (max-width: 1120px) {
+  .mobile-reviews {
+    display: block;
+  }
+}
+
+:host ::ng-deep .mobile-reviews {
+  .review-container {
+    padding-top: 20px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: 0px;
+    display: flex;
+    height: unset;
+    justify-content: flex-start;
+    --overflow: hidden;
+    overflow: auto;
+    width: 100%;
+    flex-row-item {
+      flex: 0;
+    }
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
 @media (max-width: 900px) {
   .horizontal-scheduler {
     height: 800px !important;
@@ -108,6 +141,12 @@
 @media (max-width: 550px) {
   .horizontal-scheduler {
     height: 700px !important;
+    overflow-y: auto;
+  }
+}
+@media (max-width: 450px) {
+  .horizontal-scheduler {
+    height: 600px !important;
     overflow-y: auto;
   }
 }

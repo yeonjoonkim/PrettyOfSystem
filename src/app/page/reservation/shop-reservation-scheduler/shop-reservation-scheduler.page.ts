@@ -1,15 +1,19 @@
-import { Component, DestroyRef, OnInit, computed, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ShopReservationSchedulerService } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-scheduler.service';
+import { Component, DestroyRef, OnDestroy, OnInit, computed, inject } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
+import {
+  ShopReservationSchedulerService,
+  nullableString,
+} from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-scheduler.service';
 
 @Component({
   selector: 'shop-reservation-scheduler',
   templateUrl: './shop-reservation-scheduler.page.html',
   styleUrls: ['./shop-reservation-scheduler.page.scss'],
 })
-export class ShopReservationSchedulerPage implements OnInit {
+export class ShopReservationSchedulerPage implements OnInit, OnDestroy {
+  public kendo = inject(KendoUiService);
   private _scheduler = inject(ShopReservationSchedulerService);
-  private _destroyRef = inject(DestroyRef);
   protected loaded = this._scheduler.loaded;
   protected schedulerStatus = computed(() => {
     const status = this._scheduler.dateStatus();
@@ -19,13 +23,29 @@ export class ShopReservationSchedulerPage implements OnInit {
         ? 'label.title.previous'
         : 'label.title.today';
   });
+  protected pendingSchedules = 0;
+  protected destroy$ = new Subject<void>();
 
   constructor() {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
     this._scheduler.start();
-    this._scheduler.query$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(query => {
+    this._scheduler.query$.pipe(takeUntil(this.destroy$)).subscribe(query => {
       this._scheduler.schedules.set(query);
     });
+  }
+
+  ionViewWillLeave() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this._scheduler.startOfDay.set(nullableString);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this._scheduler.startOfDay.set(nullableString);
   }
 }

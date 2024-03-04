@@ -1,4 +1,5 @@
 <flex-col *ngIf="loaded()">
+  <shop-reservation-schedule-reviews class="mobile-reviews"></shop-reservation-schedule-reviews>
   <shop-reservation-scheduler-toolbar
     [loaded]="loaded()"
     [showWorkHours]="scheduler.showWorkHours()"
@@ -28,8 +29,10 @@
         <kendo-button [disabled]="!allowDayModeLeft()" (click)="onDayModeLeft()" kendoButton class="left">
           <kendo-svgicon [icon]="kendo.icon.left" size="xxlarge"></kendo-svgicon>
         </kendo-button>
-        <kendo-button *ngIf="scheduler.isToday()" (click)="scrollDayModeCurrentTime()" kendoButton class="center">
-          {{ 'label.title.currenttime' | languageTransform: 'System' | async }}
+        <kendo-button class="center" *ngIf="scheduler.isToday()" (click)="scrollToCurrentTime()" kendoButton>
+          <span>
+            {{ 'label.title.currenttime' | languageTransform: 'System' | async }}
+          </span>
         </kendo-button>
         <kendo-button [disabled]="!allowDayModeRight()" (click)="onDayModeRight()" kendoButton class="right">
           <kendo-svgicon [icon]="kendo.icon.right" size="xxlarge"></kendo-svgicon>
@@ -80,12 +83,10 @@
           class="left">
           <kendo-svgicon [icon]="kendo.icon.left" size="xxlarge"></kendo-svgicon>
         </kendo-button>
-        <kendo-button
-          *ngIf="scheduler.isToday()"
-          (click)="scrollTimelineModeCurrentTime()"
-          kendoButton
-          class="center">
-          {{ 'label.title.currenttime' | languageTransform: 'System' | async }}
+        <kendo-button class="center" *ngIf="scheduler.isToday()" (click)="scrollToCurrentTime()" kendoButton>
+          <span>
+            {{ 'label.title.currenttime' | languageTransform: 'System' | async }}
+          </span>
         </kendo-button>
         <kendo-button
           [disabled]="!allowTimelineModeRight()"
@@ -129,3 +130,6 @@
     </flex-col-item>
   </flex-col>
 </flex-col>
+<div *ngIf="!loaded()" class="loading-container">
+  <kendo-loader size="large"></kendo-loader>
+</div>

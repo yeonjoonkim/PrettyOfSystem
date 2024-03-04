@@ -1,0 +1,65 @@
+.review-container {
+  display: flex;
+  gap: 10px;
+  height: 60px;
+  margin-top: -20px;
+  padding-top: 12px;
+  padding-right: 10px;
+  flex-row-item {
+    margin: 0px;
+  }
+  p {
+    margin: 0px;
+  }
+  justify-content: flex-start;
+  --overflow: hidden;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0px;
+  align-items: center;
+  .review-content-button {
+    color: #ffffff;
+    border-radius: 14px;
+  }
+}
+
+.review-content-label {
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 700;
+}
+
+.qty {
+  position: absolute;
+  top: -10px;
+  right: -7px;
+  padding: 0px;
+  width: 19px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  justify-content: center;
+  margin: 0px;
+}
+.qty.zero {
+  background: var(--inprogress);
+}
+.qty.review {
+  background: var(--error);
+}

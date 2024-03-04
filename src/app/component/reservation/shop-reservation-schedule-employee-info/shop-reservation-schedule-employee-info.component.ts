@@ -18,6 +18,8 @@ import {
 } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-employee-info/shop-reservation-employee-info.service';
 import { ShopReservationSchedulerService } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-scheduler.service';
 import * as Constant from 'src/app/constant/constant';
+import { PopoverController } from '@ionic/angular';
+import { ShopReservationScheduleEmployeePopoverComponent } from './shop-reservation-schedule-employee-popover/shop-reservation-schedule-employee-popover.component';
 
 const nullableEmployee: ShopScheduleDocumentType = null as unknown as ShopScheduleDocumentType;
 @Component({
@@ -29,12 +31,14 @@ const nullableEmployee: ShopScheduleDocumentType = null as unknown as ShopSchedu
 export class ShopReservationScheduleEmployeeInfoComponent implements OnInit, OnChanges {
   private _kendo = inject(KendoUiService);
   private _scheduler = inject(ShopReservationSchedulerService);
+  private _popoverCtrl = inject(PopoverController);
   private _empInfoSvc = inject(ShopReservationEmployeeInfoService);
 
   @Input() employeeInfo!: ShopScheduleDocumentType;
   @Input() currentDateTime!: string | null;
 
   //Setting
+  protected isPreviousDate = computed(() => this._scheduler.dateStatus().isPreviousDate);
   protected timeStamp = signal<string | null>(null);
   protected info = signal<ShopScheduleDocumentType>(nullableEmployee);
   protected loaded = computed(() => this.info() !== null);
@@ -108,6 +112,27 @@ export class ShopReservationScheduleEmployeeInfoComponent implements OnInit, OnC
     if (currentDateChange) {
       let currentDateTime = currentDateChange.currentValue;
       this.timeStamp.set(currentDateTime);
+    }
+  }
+
+  public async onClickName(event: Event) {
+    if (!this.isPreviousDate()) {
+      const popover = await this._popoverCtrl.create({
+        component: ShopReservationScheduleEmployeePopoverComponent,
+        event: event,
+        translucent: true,
+        size: 'cover',
+        componentProps: {
+          info: this.employeeInfo,
+          startOfDay: this._scheduler.startOfDay(),
+          dateStatus: this._scheduler.dateStatus(),
+          employeeStatus: this.status(),
+          isShopOpen: this._scheduler.selectedOperatingHours().isOpen,
+          isWorking: this.employeeInfo.isWorking,
+          operatingHours: this._scheduler.selectedOperatingHours(),
+        },
+      });
+      await popover.present();
     }
   }
   ngOnInit() {}

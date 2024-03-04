@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <shop-reservation-schedule *ngIf="loaded()"></shop-reservation-schedule>
+  <shop-reservation-schedule *ngIf="loaded()" [destroy$]="destroy$"></shop-reservation-schedule>
   <div *ngIf="!loaded()" class="loading-container">
     <kendo-loader size="large"></kendo-loader>
   </div>

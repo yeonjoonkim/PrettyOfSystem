@@ -65,3 +65,12 @@ export type ShopEmployeeScheduledConsultType = {
   startDateTime: string; //yyyy-MM-dd'T'HH:mm:ss
   endDateTime: string; //yyyy-MM-dd'T'HH:mm:ss
 };
+
+export type ShopScheduleUpdateWorkingStatusDocumentType = {
+  id: string;
+  shopId: string;
+  employeeId: string;
+  startOfDay: string;
+  documentId: string;
+  isWorking: boolean;
+};

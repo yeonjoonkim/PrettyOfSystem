@@ -18,7 +18,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { getTime } from 'date-fns';
 import { ShopReservationEmployeeInfoService } from './shop-reservation-employee-info/shop-reservation-employee-info.service';
 
-const nullableString: string = null as unknown as string;
+export const nullableString: string = null as unknown as string;
 export const resourceName: string = 'EmployeeName';
 @Injectable({
   providedIn: 'root',
@@ -39,7 +39,7 @@ export class ShopReservationSchedulerService {
   //Setting
   public operatingHours = this._operatingHours.data;
   public todayOperatingHours = this._operatingHours.todayOperatingHours;
-  public selectedViewMode: SchedulerViewModeType = Constant.Scheduler.View.Timeline;
+  public selectedViewMode: SchedulerViewModeType = Constant.Scheduler.View.Day;
   public employeeView = signal<Constant.SchedulerEmployeeViewModeType>(Constant.Scheduler.EmployeeView.All);
   public minDate = this._defaultScheduler.minDate;
   public maxDate = this._defaultScheduler.maxDate;

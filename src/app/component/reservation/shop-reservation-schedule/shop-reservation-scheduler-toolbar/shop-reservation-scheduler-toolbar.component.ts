@@ -68,6 +68,7 @@ export class ShopReservationSchedulerToolbarComponent implements OnInit, OnChang
   @Output() onClickToday = new EventEmitter<void>();
   @Output() onChangeDate = new EventEmitter<string>();
   @Output() onChangeEmployeeView = new EventEmitter<SchedulerEmployeeViewModeType>();
+  @Output() scrollToCurrentTime = new EventEmitter<void>();
 
   constructor() {}
 

@@ -12,8 +12,10 @@ import { SharedFormModule } from 'src/app/component/form/form.module';
 import { KendoUiModule } from '../../global/kendo-ui-module/kendo-ui-module.module';
 
 import { ShopReservationScheduleEmployeeInfoComponent } from './shop-reservation-schedule-employee-info.component';
+import { ShopReservationScheduleEmployeePopoverComponent } from './shop-reservation-schedule-employee-popover/shop-reservation-schedule-employee-popover.component';
+
 @NgModule({
-  declarations: [ShopReservationScheduleEmployeeInfoComponent],
+  declarations: [ShopReservationScheduleEmployeeInfoComponent, ShopReservationScheduleEmployeePopoverComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -22,7 +24,6 @@ import { ShopReservationScheduleEmployeeInfoComponent } from './shop-reservation
     SharedFormModule,
     KendoUiModule,
     DatePipeModule,
-    
   ],
   exports: [ShopReservationScheduleEmployeeInfoComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

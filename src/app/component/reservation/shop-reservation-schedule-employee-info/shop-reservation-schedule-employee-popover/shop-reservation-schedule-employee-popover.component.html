@@ -1,3 +1,22 @@
-<p>
-  shop-reservation-schedule-employee-popover works!
-</p>
+<ion-content>
+  <flex-col>
+    <flex-col-item>
+      <div id="container">
+        <div id="btn-list">
+          <div id="btn" *ngIf="displayDayOff()" (click)="onClickDayOff()">
+            <span id="name">{{ 'label.title.dayoff' | languageTransform: 'System' | async }}</span>
+          </div>
+          <div id="btn" *ngIf="displayWorking()" (click)="onClickWorking()">
+            <span id="name">{{ 'label.title.working' | languageTransform: 'System' | async }}</span>
+          </div>
+          <div id="btn" *ngIf="displayNewBreakTime()">
+            <span id="name">{{ 'label.title.addbreaktime' | languageTransform: 'System' | async }}</span>
+          </div>
+          <div id="btn" *ngIf="displayNewConsult()">
+            <span id="name">{{ 'label.title.newbooking' | languageTransform: 'System' | async }}</span>
+          </div>
+        </div>
+      </div>
+    </flex-col-item>
+  </flex-col>
+</ion-content>

@@ -1,0 +1,68 @@
+<flex-row class="review-container">
+  <flex-row-item>
+    <div class="review-content">
+      <kendo-button class="review-content-button" kendoButton>
+        <div class="review-content-label">
+          {{ 'label.title.newbooking' | languageTransform: 'System' | async }}
+        </div>
+      </kendo-button>
+    </div>
+  </flex-row-item>
+  <flex-row-item>
+    <div class="review-content">
+      <kendo-button class="review-content-button" kendoButton>
+        <div class="review-content-label">
+          {{ 'label.title.newclient' | languageTransform: 'System' | async }}
+        </div>
+      </kendo-button>
+    </div>
+  </flex-row-item>
+  <flex-row-item>
+    <div class="review-content">
+      <kendo-button class="review-content-button" kendoButton>
+        <div class="review-content-label">
+          {{ 'label.title.pending' | languageTransform: 'System' | async }}
+        </div>
+        <div class="qty" [ngClass]="{ zero: !numOfPendingReservation, review: numOfPendingReservation }">
+          {{ numOfPendingReservation }}
+        </div>
+      </kendo-button>
+    </div>
+  </flex-row-item>
+  <flex-row-item>
+    <div class="review-content">
+      <kendo-button class="review-content-button" kendoButton>
+        <div class="review-content-label">
+          {{ 'label.title.scheduled' | languageTransform: 'System' | async }}
+        </div>
+        <div class="qty zero">
+          {{ numOfScheduledReservation }}
+        </div>
+      </kendo-button>
+    </div>
+  </flex-row-item>
+  <flex-row-item>
+    <div class="review-content">
+      <kendo-button class="review-content-button" kendoButton>
+        <div class="review-content-label">
+          {{ 'label.title.start' | languageTransform: 'System' | async }}
+        </div>
+        <div class="qty zero">
+          {{ numOfStartingReservation }}
+        </div>
+      </kendo-button>
+    </div>
+  </flex-row-item>
+  <flex-row-item>
+    <div class="review-content">
+      <kendo-button class="review-content-button" kendoButton>
+        <div class="review-content-label">
+          {{ 'label.title.completed' | languageTransform: 'System' | async }}
+        </div>
+        <div class="qty zero">
+          {{ numOfCompletedReservation }}
+        </div>
+      </kendo-button>
+    </div>
+  </flex-row-item>
+</flex-row>

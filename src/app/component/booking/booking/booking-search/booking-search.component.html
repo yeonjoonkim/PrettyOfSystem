@@ -14,11 +14,7 @@
             [placeholder]="placeholder">
             <ng-template kendoComboBoxNoDataTemplate>
               <p>
-                {{
-                  'placeholder.description.searchbookingautocomplete'
-                    | languageTransform: 'System'
-                    | async
-                }}
+                {{ 'placeholder.description.searchbookingautocomplete' | languageTransform: 'System' | async }}
               </p>
             </ng-template>
           </kendo-autocomplete>

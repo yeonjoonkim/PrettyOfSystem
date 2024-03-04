@@ -9,3 +9,7 @@ export * as Scheduler from './scheduler/index';
 export * as Email from './e-mail/e-mail';
 export * as TypeChecker from './type-checker/type-checker';
 export * as Transform from './transform/transform';
+
+export const sleep = async (duration: number) => {
+  return new Promise(resolve => setTimeout(resolve, duration));
+};
