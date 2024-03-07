@@ -19,7 +19,9 @@ export class SignatureTransferPage implements OnInit, OnDestroy {
     private _transfer: SignatureTransferService
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  async ionViewWillEnter() {
     this.session$.pipe(pairwise(), takeUntil(this._destroy$)).subscribe(async ([before, after]) => {
       const received = before === null && after !== null;
       const changeToDeleted = before !== null && after === null;
@@ -35,6 +37,11 @@ export class SignatureTransferPage implements OnInit, OnDestroy {
     if (this.sessionId) {
       this._transfer.sync(this.sessionId);
     }
+  }
+
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

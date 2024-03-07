@@ -24,7 +24,23 @@ export class UpdateClientInfoPage implements OnInit, OnDestroy {
     private _router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  async onClickNext(category: ShopCategoryType) {
+    if (category !== null) {
+      switch (category.name as Constant.ShopCategoryTitleType) {
+        case Constant.ShopCategoryTitle.MassageTheraphy:
+          await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/update-massage-preference`);
+          break;
+        default:
+          await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart`);
+      }
+    } else {
+      await this._router.navigateByUrl('booking');
+    }
+  }
+
+  async ionViewWillEnter() {
     this._waitingList.start$
       .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(async ([start, login]) => {
@@ -43,18 +59,9 @@ export class UpdateClientInfoPage implements OnInit, OnDestroy {
       });
   }
 
-  async onClickNext(category: ShopCategoryType) {
-    if (category !== null) {
-      switch (category.name as Constant.ShopCategoryTitleType) {
-        case Constant.ShopCategoryTitle.MassageTheraphy:
-          await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/update-massage-preference`);
-          break;
-        default:
-          await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart`);
-      }
-    } else {
-      await this._router.navigateByUrl('booking');
-    }
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

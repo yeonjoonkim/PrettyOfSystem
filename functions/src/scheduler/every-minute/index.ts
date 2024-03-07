@@ -6,6 +6,7 @@ import * as PregrancyUser from './manage-pregrancy-due-date/manage-pregrancy-due
 import * as Consult from './manage-consult/index';
 import * as Session from './manage-session/index';
 import * as Scheduler from './manage-shop-scheduler/manage-shop-scheduler';
+import * as UpdateScheduleRequest from './manage-update-shop-schedule/index';
 
 export const EveryMinute = onSchedule('* * * * *', async event => {
   try {
@@ -13,6 +14,7 @@ export const EveryMinute = onSchedule('* * * * *', async event => {
     const configs = Service.Scheduler.ShopTime.getConfigs(shops, event.scheduleTime);
 
     await Scheduler.manage(configs);
+    await UpdateScheduleRequest.manage(shops);
     await Session.WaitingList.manage(event.scheduleTime);
     await Session.ChangePhoneNumber.manage(event.scheduleTime);
     await Session.SigantureTransfer.manage(event.scheduleTime);

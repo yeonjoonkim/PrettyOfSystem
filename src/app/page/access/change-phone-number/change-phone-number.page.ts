@@ -41,7 +41,24 @@ export class ChangePhoneNumberPage implements OnInit, OnDestroy {
     private _router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  public async onSubmit() {
+    this.validator = false;
+    this.verfiying = true;
+    if (typeof this._requestId === 'string') {
+      const result = await this._changePhoneNumber.sumbit(this.phoneNumber, this._requestId);
+      if (result) {
+        this.verified = true;
+        setTimeout(async () => {
+          await this._router.navigateByUrl('/login');
+        }, 6000);
+      }
+    }
+    this.verfiying = false;
+  }
+
+  ionViewWillEnter() {
     if (typeof this._requestId === 'string') {
       this.start$.pipe(takeUntil(this._destroy$)).subscribe(async request => {
         if (!request) {
@@ -59,19 +76,9 @@ export class ChangePhoneNumberPage implements OnInit, OnDestroy {
     }
   }
 
-  public async onSubmit() {
-    this.validator = false;
-    this.verfiying = true;
-    if (typeof this._requestId === 'string') {
-      const result = await this._changePhoneNumber.sumbit(this.phoneNumber, this._requestId);
-      if (result) {
-        this.verified = true;
-        setTimeout(async () => {
-          await this._router.navigateByUrl('/login');
-        }, 6000);
-      }
-    }
-    this.verfiying = false;
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

@@ -1,4 +1,4 @@
-import { Injectable, Signal, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firestore';
 import { Observable, map } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';

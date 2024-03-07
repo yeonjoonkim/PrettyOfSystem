@@ -141,7 +141,7 @@ export class ShopScheduleDocument {
     return overlaps;
   }
 
-  private updateTime() {
+  public updateTime() {
     this.document.breakHours = getBreakTimeHours(this.document.breakTimes);
     this.document.workHours = getWorkHours(
       this.document.startDateTime,

@@ -120,4 +120,20 @@ export class ShopScheduleRepositoryService {
       )
       .pipe(map(document => (document !== null ? override(document) : null)));
   }
+
+  public valueChangeDocumentListener(shopId: string, documentId: string) {
+    return this._api
+      .valueChangeDocument<ShopScheduleDocumentType>(ShopSchedule(shopId), ref =>
+        ref.where(param.id, Constant.Query.Equal, documentId).limit(1)
+      )
+      .pipe(map(document => (document !== null ? override(document) : null)));
+  }
+
+  public async updateDocument(doc: ShopScheduleDocumentType) {
+    try {
+      return await this._api.updateDocument<ShopScheduleDocumentType>(ShopSchedule(doc.shopId), doc);
+    } catch (error) {
+      return false;
+    }
+  }
 }

@@ -13,12 +13,19 @@ export class UserMassageSettingPage implements OnInit {
   public user!: IUser;
   constructor(private _user: UserService) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
     this._user.data$.pipe(takeUntil(this._destroy$)).subscribe(user => {
       if (user) {
         this.user = user;
       }
     });
+  }
+
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

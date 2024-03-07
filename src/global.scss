@@ -342,13 +342,16 @@ flex-row {
   error-message-item {
     flex: 1;
     display: flex;
-
     color: var(--error);
     --background: var(--background);
     --background-color: var(--background);
     background: var(--background);
     background-color: var(--background);
+
     p {
+      font-size: 12px;
+      text-wrap: wrap;
+      overflow: hidden;
       margin: 0px;
       margin-left: 5px;
       font-weight: bold;
@@ -382,6 +385,9 @@ flex-col {
     background: var(--background);
     background-color: var(--background);
     p {
+      font-size: 12px;
+      text-wrap: wrap;
+      overflow: hidden;
       margin: 0px;
       margin-left: 5px;
       font-weight: bold;

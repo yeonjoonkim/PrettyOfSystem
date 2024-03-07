@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
     this._user.claim$.pipe(takeUntil(this._onDestroy$)).subscribe(claim => {
       if (claim) {
-        console.log(claim.claims)
+        console.log(claim.claims);
       }
     });
   }

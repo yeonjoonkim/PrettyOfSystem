@@ -29,7 +29,9 @@ export class WaitingListPage implements OnInit, OnDestroy {
     this.start$ = this._waitngList.start$;
   }
 
-  async ngOnInit() {
+  ngOnInit() {}
+
+  async ionViewWillEnter() {
     await this._waitngList.validateSession(this.sessionId);
     this._waitngList.start$
       .pipe(combineLatestWith(this._waitngList.client.isLoggedin$), takeUntil(this._destroy$))
@@ -46,6 +48,11 @@ export class WaitingListPage implements OnInit, OnDestroy {
       .subscribe(async () => {
         await this._waitngList.cart.start();
       });
+  }
+
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

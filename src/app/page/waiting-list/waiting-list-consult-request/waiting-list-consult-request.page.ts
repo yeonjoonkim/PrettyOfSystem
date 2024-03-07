@@ -63,7 +63,21 @@ export class WaitingListConsultRequestPage implements OnInit, OnDestroy {
     private _router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  private startValueChangeListener(shopId: string, consultId: string) {
+    this._consultSvc
+      .valueChangeListener(shopId, consultId)
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(consult => {
+        this.status = consult !== null ? consult.status : null;
+        this.specialist = consult !== null ? consult.associatedEmployee.name : null;
+        this.startTime = consult !== null && consult.scheduled !== null ? consult.scheduled.startDateTime : null;
+        this.endTime = consult !== null && consult.scheduled !== null ? consult.scheduled.endDateTime : null;
+      });
+  }
+
+  ionViewWillEnter() {
     this._waitingList.start$
       .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(async ([start, login]) => {
@@ -116,16 +130,9 @@ export class WaitingListConsultRequestPage implements OnInit, OnDestroy {
       });
   }
 
-  private startValueChangeListener(shopId: string, consultId: string) {
-    this._consultSvc
-      .valueChangeListener(shopId, consultId)
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(consult => {
-        this.status = consult !== null ? consult.status : null;
-        this.specialist = consult !== null ? consult.associatedEmployee.name : null;
-        this.startTime = consult !== null && consult.scheduled !== null ? consult.scheduled.startDateTime : null;
-        this.endTime = consult !== null && consult.scheduled !== null ? consult.scheduled.endDateTime : null;
-      });
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

@@ -1,0 +1,77 @@
+<form-header (onClickDismiss)="onDismiss()" action="read" title="label.title.addbreaktime"></form-header>
+
+<ng-container
+  *ngIf="{
+    conflictedWithStartEndTime: conflictedWithStartEndTime$ | async,
+    conflictWithEvents: conflictWithEvents$ | async,
+    conflictWithStartTime: conflictWithStartTime$ | async,
+    conflictWithEndTime: conflictWithEndTime$ | async,
+    startTimeItem: startTimeItem$ | async,
+    endTimeItem: endTimeItem$ | async
+  } as prop">
+  <div
+    class="popover-container"
+    *ngIf="
+      prop.startTimeItem !== null &&
+      prop.endTimeItem !== null &&
+      prop.conflictWithEvents !== null &&
+      prop.conflictedWithStartEndTime !== null &&
+      prop.conflictWithStartTime !== null &&
+      prop.conflictWithEndTime !== null
+    ">
+    <flex-col>
+      <error-message-item *ngIf="prop.conflictedWithStartEndTime">
+        <p>
+          {{ 'messageerror.description.conflictedwithstartendtime' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+
+      <error-message-item *ngIf="prop.conflictWithEvents">
+        <p>
+          {{ 'messageerror.description.conflictwithevents' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+      <error-message-item *ngIf="prop.conflictWithStartTime">
+        <p>
+          {{ 'messageerror.description.conflictwithstarttime' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+      <error-message-item *ngIf="prop.conflictWithEndTime">
+        <p>
+          {{ 'messageerror.description.conflictwithendtime' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+
+      <time-from-to
+        [displayCenter]="true"
+        [min]="employeeStartTimeItem"
+        [max]="employeeEndTimeItem"
+        [timeFrom]="prop.startTimeItem"
+        [timeTo]="prop.endTimeItem"
+        (timeFromChange)="onChangeStart($event)"
+        (timeToChange)="onChangeEnd($event)"></time-from-to>
+    </flex-col>
+
+    <flex-row class="button-container">
+      <flex-row-item>
+        <kendo-button
+          [disabled]="
+            prop.conflictedWithStartEndTime ||
+            prop.conflictWithEvents ||
+            prop.conflictWithStartTime ||
+            prop.conflictWithEndTime
+          "
+          (click)="onSave()"
+          kendoButton
+          class="apply">
+          {{ 'label.title.apply' | languageTransform: 'System' | async }}
+        </kendo-button>
+      </flex-row-item>
+      <flex-row-item>
+        <kendo-button (click)="onDismiss()" kendoButton>
+          {{ 'button.title.cancel' | languageTransform: 'System' | async }}
+        </kendo-button>
+      </flex-row-item>
+    </flex-row>
+  </div>
+</ng-container>

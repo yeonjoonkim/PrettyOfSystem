@@ -38,7 +38,17 @@ export class SelectSpecialistTimePage implements OnInit, OnDestroy {
     private _router: Router
   ) {}
 
-  async ngOnInit() {
+  async ngOnInit() {}
+
+  async onClickGoback() {
+    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart-view`);
+  }
+
+  async onClickNext() {
+    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/confirmation`);
+  }
+
+  async ionViewWillEnter() {
     this._waitingList.start$
       .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(async ([start, login]) => {
@@ -66,12 +76,9 @@ export class SelectSpecialistTimePage implements OnInit, OnDestroy {
       });
   }
 
-  async onClickGoback() {
-    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart-view`);
-  }
-
-  async onClickNext() {
-    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/confirmation`);
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import * as Constant from '../../../constant/constant';
 import { FormControllerService } from '../form/form-controller.service';
@@ -6,6 +6,7 @@ import { FormControllerService } from '../form/form-controller.service';
   providedIn: 'root',
 })
 export class ModalService {
+  public crtl = inject(ModalController);
   constructor(
     public ctrl: ModalController,
     public formCtrl: FormControllerService
