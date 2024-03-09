@@ -13,15 +13,15 @@ export class InformationPage implements OnInit, OnDestroy {
   public user!: IUser;
   constructor(private _user: UserService) {}
 
-  ngOnInit() {}
-
-  ionViewWillEnter() {
+  ngOnInit() {
     this._user.data$.pipe(takeUntil(this._destroy$)).subscribe(user => {
       if (user) {
         this.user = user;
       }
     });
   }
+
+  ionViewWillEnter() {}
 
   ngOnDestroy() {
     this._destroy$.next();

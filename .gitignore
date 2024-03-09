@@ -67,10 +67,10 @@ testem.log
 .DS_Store
 Thumbs.db
 
-
 # API
 .environments
 /environments/environment.ts
 /environments/environment.prod.ts
 openai-key.ts
 storage-key.ts
+package-lock.json

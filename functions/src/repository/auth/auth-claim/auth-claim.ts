@@ -8,6 +8,9 @@ export const update = async function (id: string, claim: I.UserClaimType) {
   if (isExistedId) {
     try {
       await admin.auth().setCustomUserClaims(id, claim);
+      logger.error('Update Claim Success ----- ');
+      logger.info(`CurrentShopId: ${claim.currentShopId}`);
+
       return true;
     } catch (error) {
       return false;

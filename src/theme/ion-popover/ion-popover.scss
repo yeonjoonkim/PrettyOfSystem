@@ -55,19 +55,11 @@
     top: 40% !important;
     left: 30% !important;
   }
-  .add-break-time-container::part(content) {
-    top: 40% !important;
-    left: 30% !important;
-  }
 }
 
 @media (max-width: 450px) {
   .signature-transfer-popover-container::part(content) {
     top: 40% !important;
     left: 25% !important;
-  }
-  .add-break-time-container::part(content) {
-    top: 40% !important;
-    left: 10% !important;
   }
 }

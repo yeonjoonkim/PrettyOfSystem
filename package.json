@@ -20,7 +20,10 @@
     "function-serve": "cd functions && npm run lint && tsc && npm run build && firebase emulators:start",
     "function-deploy": "cd functions && npm run lint && tsc && npm run build && firebase deploy --only functions --debug",
     "function-test": "cd functions && mocha --reporter spec",
-    "deploy": "npm run function-deploy && npm run hosting-deploy"
+    "deploy": "npm run function-deploy && npm run hosting-deploy",
+    "prod:manage@auth": "cd firebase-script-prod && npm run manage@auth",
+    "prod:download@storage": "cd firebase-script-prod && npm run download@storage",
+    "prod:backup@firestore": "cd firebase-script-prod && npm run backup@firestore"
   },
   "private": true,
   "dependencies": {
@@ -122,6 +125,7 @@
     "google-libphonenumber": "^3.2.32",
     "hammerjs": "^2.0.0",
     "image-js": "^0.35.5",
+    "inquirer": "^8.2.6",
     "install": "^0.13.0",
     "ionicons": "^6.0.3",
     "localforage": "^1.10.0",
@@ -170,9 +174,10 @@
     "@ionic/angular-toolkit": "10.0.0",
     "@types/chrome": "^0.0.248",
     "@types/hammerjs": "^2.0.41",
+    "@types/inquirer": "^9.0.7",
     "@types/jasmine": "~4.0.0",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.19",
+    "@types/node": "^20.11.25",
     "@typescript-eslint/parser": "^6.7.3",
     "babel-loader": "^9.1.2",
     "cordova-plugin-firebase-authentication": "^7.0.1",

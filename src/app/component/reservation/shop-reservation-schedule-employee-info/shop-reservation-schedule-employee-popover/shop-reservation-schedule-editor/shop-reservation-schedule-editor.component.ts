@@ -51,7 +51,7 @@ export class ShopReservationScheduleEditorComponent implements OnInit, OnDestroy
     this._newBreakTimeEditor.start();
     const popover = await this._popoverCtrl.create({
       component: ShopReservationScheduleAddBreakPopoverComponent,
-      cssClass: 'center-popover-container',
+      cssClass: 'add-break-time-container center-popover-container',
       event: event,
       translucent: false,
       size: 'cover',
@@ -64,7 +64,7 @@ export class ShopReservationScheduleEditorComponent implements OnInit, OnDestroy
     this._editBreakTimeEditor.start(prop);
     const popover = await this._popoverCtrl.create({
       component: ShopReservationScheduleEditBreakPopoverComponent,
-      cssClass: 'center-popover-container',
+      cssClass: 'add-break-time-container center-popover-container',
       event: event,
       translucent: false,
       size: 'cover',

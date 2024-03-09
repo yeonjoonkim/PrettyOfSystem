@@ -138,9 +138,7 @@ export class DatePickerComponent implements OnInit, OnChanges {
   }
 
   private async getPopoverSettings(event: any) {
-    const customClass = this.displayCenter
-      ? 'date-popover-container center-popover-container'
-      : 'date-popover-container';
+    const customClass = 'date-popover-container center-popover-container';
     return await this._popoverCtrl.create({
       component: DateSelectionPopoverComponent,
       event: event,
