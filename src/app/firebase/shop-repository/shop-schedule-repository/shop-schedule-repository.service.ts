@@ -5,8 +5,6 @@ import * as Constant from 'src/app/constant/constant';
 import { map } from 'rxjs';
 import { override } from 'functions/src/service/override/shop/document-override/shop-schedule-override/shop-schedule-override';
 import { FirebaseApiService, createKeyMap } from '../../firebase-api/firebase-api.service';
-import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
-import { ShopScheduleUpdateWorkingStatusRepositoryService } from './shop-schedule-update-repository/shop-schedule-update-working-status-repository/shop-schedule-update-working-status-repository.service';
 
 const param = createKeyMap<ShopScheduleDocumentType>([
   'id',
@@ -34,7 +32,6 @@ const param = createKeyMap<ShopScheduleDocumentType>([
 })
 export class ShopScheduleRepositoryService {
   private _api = inject(FirebaseApiService);
-  public updateWorkingStatus = inject(ShopScheduleUpdateWorkingStatusRepositoryService);
 
   constructor() {}
 

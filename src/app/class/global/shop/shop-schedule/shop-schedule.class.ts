@@ -391,8 +391,9 @@ export class ShopScheduleDocument {
     );
 
     const isInWorkingHours = this.isInWorkingHours(newBreak.startDateTime, newBreak.endDateTime);
+    const breakTime = getBreakTimeHours([newBreak]);
 
-    return !breakOverlap && !consultOverlap && isInWorkingHours;
+    return !breakOverlap && !consultOverlap && isInWorkingHours && breakTime > 0;
   }
 
   public allowUpdateBreakTime(before: ShopEmployeeBreakTimeType, after: ShopEmployeeBreakTimeType) {
@@ -418,8 +419,11 @@ export class ShopScheduleDocument {
       )
     );
     const isInWorkingHours = this.isInWorkingHours(after.startDateTime, after.endDateTime);
+    const breakTime = getBreakTimeHours([after]);
+    const isNotEqualToPrevious =
+      before.startDateTime !== after.startDateTime || before.endDateTime !== after.endDateTime;
 
-    return !breakOverlap && !consultOverlap && isInWorkingHours;
+    return !breakOverlap && !consultOverlap && isInWorkingHours && breakTime > 0 && isNotEqualToPrevious;
   }
 }
 
@@ -442,40 +446,38 @@ const timesOverlap = function (
   return aStartWithinB || aEndWithinB || bStartWithinA || bEndWithinA;
 };
 
-const getBreakTimeHours = function (breakTimes: ShopEmployeeBreakTimeType[]) {
-  const totalBreakMinutes = breakTimes.reduce((total, breakTime) => {
-    const start = parseTimestamp(breakTime.startDateTime);
-    const end = parseTimestamp(breakTime.endDateTime);
-    const minutes = end.hours * 60 + end.minutes - (start.hours * 60 + start.minutes);
-    return total + minutes;
+const getBreakTimeHours = (breakTimes: ShopEmployeeBreakTimeType[]): number => {
+  const totalMinutes = breakTimes.reduce((acc, curr) => {
+    const start = parseTimestamp(curr.startDateTime);
+    const end = parseTimestamp(curr.endDateTime);
+    const startTotalMinutes = start.hours * 60 + start.minutes;
+    const endTotalMinutes = end.hours * 60 + end.minutes;
+    return acc + (endTotalMinutes - startTotalMinutes);
   }, 0);
-  const totalBreakHours = totalBreakMinutes / 60;
-  return parseFloat(totalBreakHours.toFixed(2));
+  return parseFloat((totalMinutes / 60).toFixed(2));
 };
 
-const getWorkHours = function (start: string, end: string, breakTimes: ShopEmployeeBreakTimeType[]) {
-  const isMidnightStart = isMidnight(start);
-  const isMidnightEnd = isMidnight(end);
+const getWorkHours = (start: string, end: string, breakTimes: ShopEmployeeBreakTimeType[]): number => {
+  const startTimestamp = parseTimestamp(start);
+  const endTimestamp = parseTimestamp(end);
 
-  const startHours = parseTimestamp(start).hours;
-  const endHours = parseTimestamp(end).hours;
+  const startTotalMinutes = startTimestamp.hours * 60 + startTimestamp.minutes;
+  const endTotalMinutes = endTimestamp.hours * 60 + endTimestamp.minutes;
 
-  const workHours = isMidnightStart && isMidnightEnd ? 24 : endHours - startHours;
-  const breakHours = getBreakTimeHours(breakTimes);
-  const netWorkHours = workHours - breakHours;
+  const workMinutes = endTotalMinutes - startTotalMinutes;
+  const breakMinutes = getBreakTimeHours(breakTimes) * 60;
+
+  const netWorkMinutes = workMinutes - breakMinutes;
+  const netWorkHours = netWorkMinutes / 60;
 
   return parseFloat(netWorkHours.toFixed(2));
 };
 
-const isMidnight = function (timestamp: string): boolean {
-  return timestamp.endsWith('T00:00:00');
-};
-
-const parseTimestamp = function (timestamp: string): { hours: number; minutes: number } {
+const parseTimestamp = (timestamp: string): { hours: number; minutes: number } => {
   const match = timestamp.match(/T(\d{2}):(\d{2}):\d{2}/);
   if (match) {
-    const hours = parseInt(match[1]);
-    const minutes = parseInt(match[2]);
+    const hours = parseInt(match[1], 10);
+    const minutes = parseInt(match[2], 10);
     return { hours, minutes };
   }
   return { hours: 0, minutes: 0 };

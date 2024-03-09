@@ -24,6 +24,8 @@ import {
   endOfDay,
   endOfMonth,
   endOfWeek,
+  getHours,
+  getMinutes,
   intervalToDuration,
   startOfDay,
   startOfMonth,
@@ -366,6 +368,13 @@ export class DateService {
 
   getTime(date: string) {
     return date.split('T')[1];
+  }
+
+  getHour(date: string) {
+    return getHours(new Date(date));
+  }
+  getMin(date: string) {
+    return getMinutes(new Date(date));
   }
 
   getTimeByTimeItem(item: TimeItemType) {

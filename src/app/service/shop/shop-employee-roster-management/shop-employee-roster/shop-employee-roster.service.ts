@@ -1,4 +1,4 @@
-import { Injectable, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
+import { Injectable, WritableSignal, computed, inject, signal } from '@angular/core';
 import { ShopOperatingHoursService } from '../shop-operating-hours/shop-operating-hours.service';
 import * as Constant from 'src/app/constant/constant';
 import { ShopConsultRepositoryService } from 'src/app/firebase/shop-repository/shop-consult-repository/shop-consult-repository.service';
@@ -181,9 +181,15 @@ export class ShopEmployeeRosterService {
   });
 
   //Start End Time Validator
-  invalidWorkHours = computed(() => {
+  public invalidWorkHours = computed(() => {
     const workHours = this.workHours();
-    return workHours <= 0;
+    const breakHours = this.breakHours();
+    const shop24Hours = this.isShop24Hours();
+    if (shop24Hours) {
+      return !(workHours - breakHours > 0) && workHours > breakHours;
+    } else {
+      return !(workHours - breakHours > 0 && workHours < 24) && workHours > breakHours;
+    }
   });
   isOutRangeOfOperatingOpenTime = computed(() => {
     const isShop24Hours = this.operatingHours.is24Hours(this.day());

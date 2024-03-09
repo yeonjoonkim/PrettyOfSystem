@@ -3,6 +3,8 @@ import { AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firest
 import { Observable, map } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import * as Constant from 'src/app/constant/constant';
+import { AngularFirePerformance } from '@angular/fire/compat/performance';
+import { trace } from '@angular/fire/compat/performance';
 
 export const Query = Constant.Query;
 
@@ -11,6 +13,7 @@ export const Query = Constant.Query;
 })
 export class FirebaseApiService {
   private _afs = inject(AngularFirestore);
+  private perf = inject(AngularFirePerformance);
 
   constructor() {}
 
@@ -26,6 +29,7 @@ export class FirebaseApiService {
     return this.collection(path, queryFn)
       .get()
       .pipe(
+        trace(path),
         map(snapshots => {
           return snapshots.docs.map(doc => doc.data() as T);
         }),
@@ -39,6 +43,7 @@ export class FirebaseApiService {
     return this.collection(path, queryFn)
       .get()
       .pipe(
+        trace(path),
         map(snapshots => {
           return snapshots.docs.map(doc => doc.data() as T);
         })
@@ -49,6 +54,7 @@ export class FirebaseApiService {
     return this.collection(path, queryFn)
       .valueChanges()
       .pipe(
+        trace(path),
         map(snapshots => {
           return snapshots as T[];
         }),
@@ -62,6 +68,7 @@ export class FirebaseApiService {
     return this.collection(path, queryFn)
       .valueChanges()
       .pipe(
+        trace(path),
         map(snapshots => {
           return snapshots as T[];
         })
@@ -72,6 +79,7 @@ export class FirebaseApiService {
     return this.collection(path, queryFn)
       .snapshotChanges()
       .pipe(
+        trace(path),
         map(snapshots => {
           return snapshots.map(doc => {
             return doc.payload.doc.data() as T;
@@ -87,6 +95,7 @@ export class FirebaseApiService {
     return this.collection(path, queryFn)
       .snapshotChanges()
       .pipe(
+        trace(path),
         map(snapshots => {
           return snapshots.map(doc => {
             return doc.payload.doc.data() as T;

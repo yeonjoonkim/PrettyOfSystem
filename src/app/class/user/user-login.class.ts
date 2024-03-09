@@ -148,7 +148,6 @@ export class UserLogin implements IUserLogin {
       this.verifying = true;
       const userCredential = await this.confirmationResult.confirm(this.otp);
       if (userCredential) {
-        this.verifying = false;
         await this.processLogin(userCredential);
       }
     } catch (err) {
@@ -162,6 +161,7 @@ export class UserLogin implements IUserLogin {
     const user = credential?.user;
     if (user !== undefined) {
       await this.timer.end();
+      this.verifying = false;
       await this.reset();
       await this._userService.init();
     }

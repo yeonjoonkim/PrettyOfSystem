@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ShopReservationScheduleEditModalComponent } from './shop-reservation-schedule-edit-modal.component';
+import { ShopReservationScheduleEditorComponent } from './shop-reservation-schedule-editor.component';
 
 describe('ShopReservationScheduleEditModalComponent', () => {
-  let component: ShopReservationScheduleEditModalComponent;
-  let fixture: ComponentFixture<ShopReservationScheduleEditModalComponent>;
+  let component: ShopReservationScheduleEditorComponent;
+  let fixture: ComponentFixture<ShopReservationScheduleEditorComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopReservationScheduleEditModalComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ShopReservationScheduleEditorComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ShopReservationScheduleEditModalComponent);
+    fixture = TestBed.createComponent(ShopReservationScheduleEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

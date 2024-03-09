@@ -9,12 +9,17 @@ import { DatePipeModule } from 'src/app/pipe/date/date.pipe.module';
 import { DaysTransformPipeModule } from 'src/app/pipe/days/days.pipe.module';
 //Import Module
 import { SharedFormModule } from 'src/app/component/form/form.module';
-import { KendoUiModule } from '../../../global/kendo-ui-module/kendo-ui-module.module';
+import { KendoUiModule } from '../../../../global/kendo-ui-module/kendo-ui-module.module';
 
-import { ShopReservationScheduleEmployeePopoverComponent } from './shop-reservation-schedule-employee-popover.component';
-import { ShopReservationScheduleEditorModule } from './shop-reservation-schedule-editor/shop-reservation-schedule-editor.component.module';
+import { ShopReservationScheduleEditorComponent } from './shop-reservation-schedule-editor.component';
+import { ShopReservationScheduleAddBreakPopoverComponent } from './shop-reservation-schedule-add-break-popover/shop-reservation-schedule-add-break-popover.component';
+import { ShopReservationScheduleEditBreakPopoverComponent } from './shop-reservation-schedule-edit-break-popover/shop-reservation-schedule-edit-break-popover.component';
 @NgModule({
-  declarations: [ShopReservationScheduleEmployeePopoverComponent],
+  declarations: [
+    ShopReservationScheduleEditorComponent,
+    ShopReservationScheduleAddBreakPopoverComponent,
+    ShopReservationScheduleEditBreakPopoverComponent,
+  ],
   imports: [
     CommonModule,
     IonicModule,
@@ -24,9 +29,8 @@ import { ShopReservationScheduleEditorModule } from './shop-reservation-schedule
     KendoUiModule,
     DatePipeModule,
     DaysTransformPipeModule,
-    ShopReservationScheduleEditorModule,
   ],
-  exports: [ShopReservationScheduleEmployeePopoverComponent],
+  exports: [ShopReservationScheduleEditorComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class ShopReservationScheduleEmployeePopoverModule {}
+export class ShopReservationScheduleEditorModule {}

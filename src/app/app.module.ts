@@ -24,12 +24,18 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { USE_DEVICE_LANGUAGE } from '@angular/fire/compat/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { AngularFirePerformanceModule, PerformanceMonitoringService } from '@angular/fire/compat/performance';
 import {
-  connectFirestoreEmulator,
-  enableIndexedDbPersistence,
-  getFirestore,
-  provideFirestore,
-} from '@angular/fire/firestore';
+  AngularFireAnalyticsModule,
+  ScreenTrackingService,
+  UserTrackingService,
+  CONFIG,
+} from '@angular/fire/compat/analytics';
+
+//Investigate
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
 
 //Import Language Package
 import { LanguageTransformPipeModule } from './pipe/language-transform-pipe/language-transform.pipe.module';
@@ -38,15 +44,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KendoUiModule } from './component/global/kendo-ui-module/kendo-ui-module.module';
 import { LanguageSelectionModule } from './component/global/langauge-selection/language-selection.module';
 import { DaysTransformPipeModule } from './pipe/days/days.pipe.module';
-import 'hammerjs';
 
 //Delcalration for Shared Component
 import { MenuComponent } from './component/global/menu/menu.component';
 import { UserEditModule } from './component/user/user-edit/user-edit.module';
 import { SharedFormModule } from './component/form/form.module';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
-import { OnHoverClassDirective } from './directive/hover-class/on-hover-class/on-hover-class.directive';
-import { LeaveHoverClassDirective } from './directive/hover-class/leave-hover-class/leave-hover-class.directive';
 
 @NgModule({
   declarations: [AppComponent, MenuComponent],
@@ -72,17 +75,34 @@ import { LeaveHoverClassDirective } from './directive/hover-class/leave-hover-cl
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideStorage(() => getStorage()),
     provideFirestore(() => {
       const firestore = getFirestore();
-      connectFirestoreEmulator(firestore, 'localhost', 8080);
-      enableIndexedDbPersistence(firestore);
       return firestore;
     }),
-    provideStorage(() => getStorage()),
-    provideAuth(() => getAuth()),
+    provideAuth(() => {
+      const app = initializeApp(environment.firebaseConfig);
+      return getAuth(app);
+    }),
+    AngularFirePerformanceModule,
+    AngularFireAnalyticsModule,
   ],
   exports: [],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: USE_DEVICE_LANGUAGE, useValue: true }, //Firebase - Auth
+    PerformanceMonitoringService, //Firebase -- Performance Monitoring
+    UserTrackingService, //Firebase - Analaytic
+    ScreenTrackingService, //Firebase - Analaytic
+    {
+      provide: CONFIG,
+      useValue: {
+        send_page_view: true,
+        allow_ad_personalization_signals: false,
+        anonymize_ip: true,
+      }, //Firebase - Analaytic
+    },
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

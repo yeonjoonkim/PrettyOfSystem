@@ -5,20 +5,19 @@ import * as Error from '../../error/error';
 import * as Constant from '../../../constant';
 import * as Scheduler from '../shop-scheduler/shop-scheduler';
 import * as DateSvc from '../../../service/date/service-date';
-export * as UpdateRequest from './shop-update-schedule/index';
 
 export const createDefaultSchedules = async function (
   associatedShop: I.UserAssociatedShopType,
   firstName: string,
   lastName: string,
   gender: I.GenderType,
-  shopTimezone: string
+  shop: I.ShopConfigurationType
 ) {
   const scheduler = await Scheduler.getDocumentByShopId(associatedShop.shopId);
   if (scheduler !== null) {
     const dateRange = DateSvc.getDateTimeRange(scheduler.activatedDate, scheduler.endDate);
     let schedules: I.ShopScheduleDocumentType[] = dateRange.map(date => {
-      const document = newDocument(associatedShop, date, firstName, lastName, gender, shopTimezone);
+      const document = newDocument(associatedShop, date, firstName, lastName, gender, shop);
       return document;
     });
 
@@ -40,11 +39,16 @@ export const newDocument = function (
   firstName: string,
   lastName: string,
   gender: Constant.GenderType,
-  shopTimezone: Constant.TimeZoneType
+  shop: I.ShopConfigurationType
 ) {
   const dayIndex = DateSvc.getDayIndex(startOfDay);
+  const isShop24Hours = DateSvc.is24HoursByShopWorkHoursType(shop.operatingHours, startOfDay);
+  const isEmployee24Hours = DateSvc.is24HoursByShopWorkHoursType(associatedShop.defaultRoster, startOfDay);
   const startDateTime = DateSvc.getStartDateTimeByStartOfDay(associatedShop.defaultRoster, startOfDay);
-  const endDateTime = DateSvc.getEndDateTimeByStartOfDay(associatedShop.defaultRoster, startOfDay);
+  const endDateTime =
+    isShop24Hours && isEmployee24Hours
+      ? DateSvc.endDay(startOfDay)
+      : DateSvc.getEndDateTimeByStartOfDay(associatedShop.defaultRoster, startOfDay);
   const isWorking = DateSvc.getIsWorkingByStartOfDay(associatedShop.defaultRoster, startOfDay);
   const breakTimes = DateSvc.getFormattedBreakTimes(associatedShop.defaultRoster, startOfDay);
   const workHours = DateSvc.getWorkHours(startDateTime, endDateTime, breakTimes);
@@ -52,7 +56,7 @@ export const newDocument = function (
   const schedule: I.ShopScheduleDocumentType = {
     id: '',
     shopId: associatedShop.shopId,
-    shopTimezone: shopTimezone,
+    shopTimezone: shop.timezone,
     employeeId: associatedShop.userId,
     firstName: firstName,
     lastName: lastName,
@@ -93,11 +97,17 @@ export const updateDocumentByUserAndRoster = function (
   gender: Constant.GenderType,
   displayInSystem: boolean,
   active: boolean,
-  doc: I.ShopScheduleDocumentType
+  doc: I.ShopScheduleDocumentType,
+  shop: I.ShopConfigurationType
 ) {
   const dayIndex = DateSvc.getDayIndex(doc.startOfDay);
+  const isShop24Hours = DateSvc.is24HoursByShopWorkHoursType(shop.operatingHours, doc.startOfDay);
+  const isEmployee24Hours = DateSvc.is24HoursByShopWorkHoursType(roster, doc.startOfDay);
   const startDateTime = DateSvc.getStartDateTimeByStartOfDay(roster, doc.startOfDay);
-  const endDateTime = DateSvc.getEndDateTimeByStartOfDay(roster, doc.startOfDay);
+  const endDateTime =
+    isShop24Hours && isEmployee24Hours
+      ? DateSvc.endDay(doc.startOfDay)
+      : DateSvc.getEndDateTimeByStartOfDay(roster, doc.startOfDay);
   const isWorking = DateSvc.getIsWorkingByStartOfDay(roster, doc.startOfDay);
   const breakTimes = DateSvc.getFormattedBreakTimes(roster, doc.startOfDay);
   const breakHours = DateSvc.getBreakTimeHours(breakTimes);
@@ -220,10 +230,15 @@ export const getByDayIndexFromStartDay = async function (
 
 export const createDocument = async function (doc: I.ShopScheduleDocumentType) {
   try {
-    const documentRef = firestore().collection(Db.ShopSchedule(doc.shopId)).doc();
-    doc.id = documentRef.id;
-    await documentRef.set(doc);
-    return true;
+    const existing = await getSelectedDay(doc.shopId, doc.employeeId, doc.employeeId);
+    if (existing !== null) {
+      const documentRef = firestore().collection(Db.ShopSchedule(doc.shopId)).doc();
+      doc.id = documentRef.id;
+      await documentRef.set(doc);
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
     await Error.createErrorReport(document, error, 'update', 'createDocument');
     return false;

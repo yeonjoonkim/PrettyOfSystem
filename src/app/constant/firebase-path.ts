@@ -19,7 +19,6 @@ const shopConsult: string = shop + '{shopId}/consult';
 const shopPayment: string = shop + '{shopId}/payment';
 const shopTransaction: string = shop + '{shopId}/transaction';
 const shopSchedule: string = shop + '{shopId}/schedule';
-const updateScheduleWorkingStatus: string = shop + '{shopId}/updateScheduleWorkingStatus';
 
 //Reporter
 const FunctionError: string = 'functionError';
@@ -57,9 +56,6 @@ export const Context = {
     Transaction: shopTransaction,
     Payment: shopPayment,
     Schedule: shopSchedule,
-    UpdateSchedule: {
-      WorkingStatus: updateScheduleWorkingStatus,
-    },
   } as const,
   WaitingList: {
     Criteria: waitingListCriteria,

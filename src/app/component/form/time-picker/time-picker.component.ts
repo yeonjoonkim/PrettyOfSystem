@@ -26,7 +26,6 @@ import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service
 })
 export class TimePickerComponent implements OnInit, OnChanges {
   public kendo = inject(KendoUiService);
-  
 
   @ViewChild('dropdownListBtn') dropdownListBtn!: ElementRef;
   @ViewChild('selectedName') selectedName!: ElementRef;
@@ -166,7 +165,9 @@ export class TimePickerComponent implements OnInit, OnChanges {
   }
 
   private async getPopoverSettings(event: any) {
-    const customClass = this.displayCenter ? 'time-popover-container center-popover-container' : 'time-popover-container';
+    const customClass = this.displayCenter
+      ? 'time-popover-container center-popover-container'
+      : 'time-popover-container';
     return await this._popoverCtrl.create({
       component: TimeSelectionPopoverComponent,
       event: event,

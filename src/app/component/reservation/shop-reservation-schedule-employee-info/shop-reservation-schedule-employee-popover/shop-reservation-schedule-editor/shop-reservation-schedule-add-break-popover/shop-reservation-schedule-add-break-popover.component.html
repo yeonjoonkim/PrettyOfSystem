@@ -1,0 +1,47 @@
+<form-header
+  *ngIf="newBreakTimeEditor.loaded()"
+  (onClickDismiss)="onDismiss()"
+  [action]="form.action"
+  [title]="form.headerTitle"></form-header>
+<ion-content>
+  <div class="popover-container" *ngIf="newBreakTimeEditor.loaded()">
+    <flex-col>
+      <error-message-item *ngIf="!newBreakTimeEditor.allowAddBreak() && newBreakTimeEditor.validBreak()">
+        <p>
+          {{ 'messageerror.description.conflictwithevents' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+      <error-message-item *ngIf="!newBreakTimeEditor.validBreak()">
+        <p>
+          {{ 'messageerror.description.invalidbreaktime' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+      <time-from-to
+        [displayCenter]="true"
+        [intervalMin]="5"
+        [min]="newBreakTimeEditor.employeeStartItem()"
+        [max]="newBreakTimeEditor.employeeEndTimeItem()"
+        [timeFrom]="newBreakTimeEditor.startTimeItem()"
+        [timeTo]="newBreakTimeEditor.endTimeItem()"
+        (timeFromChange)="newBreakTimeEditor.startTimeItem.set($event)"
+        (timeToChange)="newBreakTimeEditor.endTimeItem.set($event)"></time-from-to>
+    </flex-col>
+
+    <flex-row class="button-container">
+      <flex-row-item>
+        <kendo-button
+          [disabled]="!newBreakTimeEditor.allowAddBreak()"
+          (click)="onAddBreakTime()"
+          kendoButton
+          class="apply">
+          {{ 'label.title.apply' | languageTransform: 'System' | async }}
+        </kendo-button>
+      </flex-row-item>
+      <flex-row-item>
+        <kendo-button (click)="onDismiss()" kendoButton>
+          {{ 'button.title.cancel' | languageTransform: 'System' | async }}
+        </kendo-button>
+      </flex-row-item>
+    </flex-row>
+  </div>
+</ion-content>

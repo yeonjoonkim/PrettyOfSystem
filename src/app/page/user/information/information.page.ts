@@ -23,11 +23,6 @@ export class InformationPage implements OnInit, OnDestroy {
     });
   }
 
-  ionViewWillLeave() {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
   ngOnDestroy() {
     this._destroy$.next();
     this._destroy$.complete();
