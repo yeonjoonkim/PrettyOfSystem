@@ -33,7 +33,6 @@ export {
   ShopCategoryTitle,
   ChangeNumberRequestStatus,
   CartItem,
-  Consult,
   Payment,
   Transaction,
   Query,
@@ -44,9 +43,7 @@ import { TimeZone } from './timezone';
 export { TimeZone } from './timezone';
 import { API } from './constant-api';
 export { API, Email } from './constant-api';
-
-export * from './constant-consult';
-export * from './constant-consult-origin';
+export * as Consult from './consult/consult.index';
 export * from './constant-payment';
 
 //Shop Category

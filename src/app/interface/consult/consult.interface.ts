@@ -1,10 +1,4 @@
-import {
-  TimeZoneType,
-  ConsultOriginType,
-  ConsultStatusType,
-  PaymentStatusType,
-  GenderType,
-} from '../../constant/constant';
+import { TimeZoneType, Consult, PaymentStatusType, GenderType } from '../../constant/constant';
 import { CheckOutItem } from '../booking/cart/cart.interface';
 import { AddressType } from '../global/global.interface';
 import {
@@ -16,12 +10,12 @@ import {
 import { MassageBodySelectorAreaType } from '../massage/massage.interface';
 
 export type ConsultDocumentType = {
-  origin: ConsultOriginType;
+  origin: Consult.OriginType;
   createdDateTime: string;
   id: string;
   shopId: string;
   shopTimezone: TimeZoneType;
-  status: ConsultStatusType;
+  status: Consult.StatusType;
   paymentId: string;
   paymentStatus: PaymentStatusType;
   scheduled: ConsultScheduleTimeType | null;

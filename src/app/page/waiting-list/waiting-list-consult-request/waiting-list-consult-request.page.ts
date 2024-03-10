@@ -15,7 +15,7 @@ export class WaitingListConsultRequestPage implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   public sessionId: string | null = this._route.snapshot.paramMap.get('id');
   private _specialist = new BehaviorSubject<string | null>(null);
-  private _status = new BehaviorSubject<Constant.ConsultStatusType | null>(null);
+  private _status = new BehaviorSubject<Constant.Consult.StatusType | null>(null);
   private _startTime = new BehaviorSubject<string | null>(null);
   private _endTime = new BehaviorSubject<string | null>(null);
 
@@ -27,7 +27,7 @@ export class WaitingListConsultRequestPage implements OnInit, OnDestroy {
     return this._status.getValue();
   }
 
-  set status(value: Constant.ConsultStatusType | null) {
+  set status(value: Constant.Consult.StatusType | null) {
     this._status.next(value);
   }
 

@@ -19,7 +19,7 @@ export class ShopConsultRepositoryService {
       .getDocument<ConsultDocumentType>(ShopConsult(shopId), ref =>
         ref
           .where('client.id', Query.Equal, clientId)
-          .where('status.type', Query.NotEqual, Constant.Consult.StatusType.Cancel)
+          .where('status.type', Query.NotEqual, Constant.Consult.Cancel.type)
           .limit(1)
       )
       .pipe(map(doc => doc !== null));
@@ -42,7 +42,7 @@ export class ShopConsultRepositoryService {
       .getDocuments<ConsultDocumentType>(ShopConsult(shopId), ref =>
         ref
           .where('scheduled.startOfDay', Query.GreaterThanOrEqual, startOfDay)
-          .where('status.type', Query.In, Constant.Consult_ScheduledStatusTypes)
+          .where('status.type', Query.In, Constant.Consult.Scheduled_Status_Types)
           .where('associatedEmployee.id', Query.Equal, employeeId)
       )
       .pipe(
@@ -112,7 +112,7 @@ export class ShopConsultRepositoryService {
     return this.getConsultsForDayValueChangeListener(startOfDay, shopId).pipe(
       switchMap(consult => {
         if (consult.length > 0) {
-          return of(consult.filter(c => c.status.type !== Constant.Consult.StatusType.Cancel));
+          return of(consult.filter(c => !Constant.Consult.isCancelType(c.status)));
         } else {
           return of(consult);
         }
@@ -124,7 +124,7 @@ export class ShopConsultRepositoryService {
     return this.getConsultsForDayValueChangeListener(startOfDay, shopId).pipe(
       switchMap(consult => {
         if (consult.length > 0) {
-          return of(consult.filter(c => c.status.type === Constant.Consult.StatusType.Cancel));
+          return of(consult.filter(c => Constant.Consult.isCancelType(c.status)));
         } else {
           return of(consult);
         }
@@ -167,7 +167,7 @@ export class ShopConsultRepositoryService {
             ref
               .where('associatedEmployee.id', '==', employeeId)
               .where('scheduled.startOfDay', 'in', startDays)
-              .where('status.type', 'in', Constant.Consult_ScheduledStatusTypes)
+              .where('status.type', 'in', Constant.Consult.Scheduled_Status_Types)
               .orderBy('scheduled.startDateTime', 'asc')
           )
           .pipe(
@@ -186,7 +186,7 @@ export class ShopConsultRepositoryService {
               .where('associatedEmployee.id', '==', employeeId)
               .where('scheduled.startDateTime', '>=', startDateTime)
               .where('scheduled.startDateTime', '<', endDateTime)
-              .where('status.type', 'in', Constant.Consult_ScheduledStatusTypes)
+              .where('status.type', 'in', Constant.Consult.Scheduled_Status_Types)
               .limit(1)
           )
           .pipe(

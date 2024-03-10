@@ -15,7 +15,7 @@ export const getEmployeesFutureScheduledStatuses = async function (
     .where('associatedEmployee.id', 'in', employeeIds)
     .where('scheduled', '!=', null)
     .where('scheduled.startOfDay', '>=', startOfDay)
-    .where('status.type', 'in', Constant.Consult_FutureScheduledStatusTypes)
+    .where('status.type', 'in', Constant.Consult.Future_Schedule_Types)
     .get();
   const docs = snapshot.docs.map(doc => {
     return Service.Override.Consult.Document.override(doc.data() as I.ConsultDocumentType);
@@ -55,7 +55,7 @@ export const getEmployeeScheduledOfDay = async function (
     .where('associatedEmployee.id', '==', employeeId)
     .where('scheduled', '!=', null)
     .where('scheduled.startOfDay', '==', startOfDay)
-    .where('status.type', 'in', Constant.Consult_ScheduledStatusTypes)
+    .where('status.type', 'in', Constant.Consult.Scheduled_Status_Types)
     .get();
   const docs = snapshot.docs.map(doc => {
     return Service.Override.Consult.Document.override(doc.data() as I.ConsultDocumentType);
@@ -71,7 +71,7 @@ export const getInCompletedStatus = async function (
   const snapshot = await firestore()
     .collection(Db.ShopConsult(shopid))
     .where('createdDateTime', '<=', createDateTime)
-    .where('status.type', 'in', Constant.Consult_InCompletedStatusTypes)
+    .where('status.type', 'in', Constant.Consult.InCompleted_Status_Types)
     .get();
   const docs = snapshot.docs.map(doc => {
     return Service.Override.Consult.Document.override(doc.data() as I.ConsultDocumentType);
@@ -101,7 +101,7 @@ export const updateToAnyoneAwaitingStatus = async function (consults: I.ConsultD
       id: '',
       name: Constant.Default.Anyone,
     };
-    consult.status = Constant.Consult_PendingStatus;
+    consult.status = Constant.Consult.Pending;
     return await updateDocument(consult);
   });
 
@@ -111,7 +111,7 @@ export const updateToAnyoneAwaitingStatus = async function (consults: I.ConsultD
 
 export const updateToCancelStatus = async function (consults: I.ConsultDocumentType[]) {
   const updatePromises = consults.map(async consult => {
-    consult.status = Constant.Consult_CancelStatus;
+    consult.status = Constant.Consult.Cancel;
     return await updateDocument(consult);
   });
 
@@ -121,7 +121,7 @@ export const updateToCancelStatus = async function (consults: I.ConsultDocumentT
 
 export const updateToPendingStatus = async function (consults: I.ConsultDocumentType[]) {
   const updatePromises = consults.map(async consult => {
-    consult.status = Constant.Consult_PendingStatus;
+    consult.status = Constant.Consult.Pending;
     return await updateDocument(consult);
   });
 
@@ -133,7 +133,7 @@ export const updateToPendingStatusByIds = async function (shopId: string, docume
   if (documentIds.length > 0) {
     const documents = await getDocumentsById(shopId, documentIds);
     const promises = documents.map(async consult => {
-      consult.status = Constant.Consult_PendingStatus;
+      consult.status = Constant.Consult.Pending;
       return await updateDocument(consult);
     });
 

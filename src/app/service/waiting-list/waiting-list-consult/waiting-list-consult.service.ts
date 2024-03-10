@@ -437,19 +437,13 @@ export class WaitingListConsultService {
           if (start && shopConfig && cart && client && session) {
             const newConsult: ConsultDocumentType = {
               id: session.id,
-              origin: {
-                type: Constant.Consult.OriginType.WaitingList,
-                description: Constant.Consult.OriginDescription.WaitingList,
-              },
+              origin: Constant.Consult.WaitingListOrigin,
               createdDateTime: this._global.date.transform.formatLocalDateTime(
                 this._global.date.shopNow(shopConfig.timezone)
               ),
               shopId: shopConfig.id,
               shopTimezone: shopConfig.timezone,
-              status: {
-                type: Constant.Consult.StatusType.Creating,
-                description: Constant.Consult.StatusDescription.Creating,
-              },
+              status: Constant.Consult.Creating,
               paymentStatus: {
                 type: Constant.Payment.Type.Unpaid,
                 description: Constant.Payment.Description.Unpaid,

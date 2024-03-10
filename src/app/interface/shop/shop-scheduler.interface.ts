@@ -1,4 +1,4 @@
-import { ConsultStatusType, GenderType, PaymentStatusType, TimeZoneType } from '..';
+import { Consult, GenderType, PaymentStatusType, TimeZoneType } from '..';
 
 export type ShopSchedulerDocumentType = {
   id: string;
@@ -60,7 +60,7 @@ export type ShopEmployeeConsultType = {
   consultId: string;
   clientId: string;
   clientName: string;
-  status: ConsultStatusType;
+  status: Consult.StatusType;
   paymentStatus: PaymentStatusType;
   startOfDay: string; //yyyy-MM-dd'T'HH:mm:ss
   startDateTime: string; //yyyy-MM-dd'T'HH:mm:ss

@@ -45,7 +45,7 @@ const manageDeleteAssociatedShop = async function (before: I.IUser, after: I.IUs
       const consults = await Repository.Shop.Consult.getEmployeeConsults(shopConfig.id, associated.userId);
       const requiresUpdates = consults.filter(c => {
         const currentDate = c.scheduled !== null && startOfDay === c.scheduled.startOfDay;
-        const inFutureStatus = Constant.Consult_FutureScheduledStatusTypes.some(st => st === c.status.type);
+        const inFutureStatus = Constant.Consult.inFutureSchedules(c.status);
         return currentDate || inFutureStatus;
       });
 

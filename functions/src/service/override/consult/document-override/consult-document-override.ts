@@ -29,19 +29,12 @@ export const override = function (doc: I.ConsultDocumentType) {
   return newDoc;
 };
 
-const origin = function (origin: I.ConsultOriginType | undefined | null): I.ConsultOriginType {
-  return origin !== undefined && origin !== null
-    ? origin
-    : { type: Constant.Consult.OriginType.WalkIn, description: Constant.Consult.OriginDescription.WalkIn };
+const origin = function (origin: I.Consult.OriginType | undefined | null): I.Consult.OriginType {
+  return origin !== undefined && origin !== null ? origin : Constant.Consult.WalkInOrigin;
 };
 
-const status = function (status: I.ConsultStatusType | undefined | null): I.ConsultStatusType {
-  return status !== undefined && status !== null
-    ? status
-    : {
-        type: Constant.Consult.StatusType.Cancel,
-        description: Constant.Consult.StatusDescription.Cancel,
-      };
+const status = function (status: I.Consult.StatusType | undefined | null): I.Consult.StatusType {
+  return status !== undefined && status !== null ? status : Constant.Consult.Cancel;
 };
 
 const associatedEmployee = function (associatedEmployee: I.ConsultAssociatedEmployee | undefined | null) {

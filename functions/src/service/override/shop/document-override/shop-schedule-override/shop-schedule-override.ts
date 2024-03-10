@@ -56,13 +56,8 @@ const shopEmployeeScheduledConsultTypes = function (consults: I.ShopEmployeeCons
     : [];
 };
 
-const status = function (status: I.ConsultStatusType | undefined | null): I.ConsultStatusType {
-  return status !== undefined && status !== null
-    ? status
-    : {
-        type: Constant.Consult.StatusType.Cancel,
-        description: Constant.Consult.StatusDescription.Cancel,
-      };
+const status = function (status: I.Consult.StatusType | undefined | null): I.Consult.StatusType {
+  return status !== undefined && status !== null ? status : Constant.Consult.Cancel;
 };
 
 const paymentStatus = function (status: I.PaymentStatusType | undefined | null): I.PaymentStatusType {
