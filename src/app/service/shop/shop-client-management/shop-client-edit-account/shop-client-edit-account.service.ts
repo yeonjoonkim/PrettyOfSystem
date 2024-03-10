@@ -343,7 +343,10 @@ export class ShopClientEditAccountService {
   //Todo: Validate Coupon and Existing Consult
   public async startDelete() {
     const confirmation = await this._global.confirmAlert.getDeleteConfirmation();
-    return await this.delete();
+    if (confirmation) {
+      await this.delete();
+    }
+    return false;
   }
 
   private async delete() {

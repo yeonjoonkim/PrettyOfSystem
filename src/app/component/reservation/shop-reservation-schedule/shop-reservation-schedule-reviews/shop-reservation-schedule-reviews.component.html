@@ -10,7 +10,7 @@
   </flex-row-item>
   <flex-row-item>
     <div class="review-content">
-      <kendo-button class="review-content-button" kendoButton>
+      <kendo-button class="review-content-button" kendoButton (click)="openClickNewClient($event)">
         <div class="review-content-label">
           {{ 'label.title.newclient' | languageTransform: 'System' | async }}
         </div>

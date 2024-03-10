@@ -27,6 +27,7 @@ export class DatePipe implements PipeTransform {
     const month = convertMonths(splited.month);
     const dayNight = convertDayNight(splited.hour);
     const hours = convertHours(splited.hour, dayNight);
+
     const time = `${hours}:${splited.min} ${dayNight}`;
     const longDate = `${splited.day}/${month}/${splited.year}`;
     const shortDate = `${splited.day}/${month}`;

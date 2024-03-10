@@ -110,7 +110,7 @@ export class UserService {
     this._router.navigateByUrl('/login');
   }
 
-  public async updateCurrentShop(shopId: string, currentLanguage: string) {
+  public async updateCurrentShop(shopId: string) {
     this.data$.pipe(take(1)).subscribe(async user => {
       if (user !== null) {
         await this._loading.show();
@@ -119,18 +119,9 @@ export class UserService {
         const sleep = async (duration: number) => {
           return new Promise(resolve => setTimeout(resolve, duration));
         };
-        sleep(1000);
-        const auth = await firstValueFrom(this._afAuth.authState);
+        await sleep(3500);
         await this._loading.dismiss();
-        if (auth !== null) {
-          const result = await auth.getIdTokenResult(true);
-          const claim = result.claims as UserClaimType;
-          this.navigateByRole(claim.role);
-        }
-
-        if (currentLanguage !== user.setting.preferLanguage) {
-          await this.global.language.onLanguageChange(user.setting.preferLanguage);
-        }
+        await this.global.language.onLanguageChange(user.setting.preferLanguage);
       }
     });
   }

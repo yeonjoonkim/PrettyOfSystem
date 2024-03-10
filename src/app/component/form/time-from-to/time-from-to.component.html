@@ -1,20 +1,24 @@
 <flex-row>
   <flex-row-item>
     <time-picker
-      [(time)]="timeFrom"
+      [time]="inputTimeFrom"
+      (timeChange)="timeFromChange.emit($event)"
       [readOnly]="readOnly"
       [openTime]="min"
       [closeTime]="max"
       [displayCenter]="displayCenter"
+      [intervalMin]="intervalMin"
       title="date.title.start"></time-picker>
   </flex-row-item>
   <flex-row-item>
     <time-picker
-      [(time)]="timeTo"
+      [time]="inputTimeTo"
+      (timeChange)="timeToChange.emit($event)"
       [readOnly]="readOnly"
       [openTime]="min"
       [closeTime]="max"
       [displayCenter]="displayCenter"
+      [intervalMin]="intervalMin"
       title="date.title.end"></time-picker>
   </flex-row-item>
 </flex-row>

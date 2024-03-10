@@ -85,7 +85,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   public async handleCurrentShopChange() {
-    await this.user.updateCurrentShop(this.selectedShop.value, this.selectedLangauge);
+    await this.user.updateCurrentShop(this.selectedShop.value);
   }
 
   private async subscribeShopSelection() {

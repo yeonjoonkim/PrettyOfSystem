@@ -41,25 +41,7 @@ export class CartPage implements OnInit, OnDestroy {
     this.client$ = this._waitingList.client.info$;
   }
 
-  async ngOnInit() {
-    this._waitingList.start$
-      .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
-      .subscribe(async ([start, login]) => {
-        const hasSessionId: boolean = typeof this.sessionId === 'string';
-        const navigateToWaitingList = !start && !login && hasSessionId;
-        const validateSession = !start && login && hasSessionId;
-        if (!hasSessionId) {
-          this._router.navigateByUrl(`booking`);
-        }
-        if (navigateToWaitingList) {
-          this._router.navigateByUrl(`waiting-list/${this.sessionId}`);
-        }
-        if (validateSession) {
-          await this._waitingList.validateSession(this.sessionId);
-        }
-        await this._waitingList.cart.start();
-      });
-  }
+  ngOnInit() {}
 
   async onClickGoback(category: ShopCategoryType) {
     if (category !== null) {
@@ -81,6 +63,31 @@ export class CartPage implements OnInit, OnDestroy {
 
   async onClickNext() {
     await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart-view`);
+  }
+
+  async ionViewWillEnter() {
+    this._waitingList.start$
+      .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
+      .subscribe(async ([start, login]) => {
+        const hasSessionId: boolean = typeof this.sessionId === 'string';
+        const navigateToWaitingList = !start && !login && hasSessionId;
+        const validateSession = !start && login && hasSessionId;
+        if (!hasSessionId) {
+          this._router.navigateByUrl(`booking`);
+        }
+        if (navigateToWaitingList) {
+          this._router.navigateByUrl(`waiting-list/${this.sessionId}`);
+        }
+        if (validateSession) {
+          await this._waitingList.validateSession(this.sessionId);
+        }
+        await this._waitingList.cart.start();
+      });
+  }
+
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

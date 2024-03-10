@@ -25,7 +25,7 @@ const updateStatusBySchedule = async function (consult: I.ConsultDocumentType) {
   logger.info(`Employee: ${anyEmployee ? 'Anyone' : `${consult.associatedEmployee.name}`}`);
   logger.info(`${scheduleOverLap ? 'Failed - There is overlapped' : 'Success - There is no overlap'}`);
 
-  consult.status = updateToScheduled ? Constant.Consult_ScheduledStatus : Constant.Consult_PendingStatus;
+  consult.status = updateToScheduled ? Constant.Consult.Scheduled : Constant.Consult.Pending;
   return consult;
 };
 
@@ -40,7 +40,7 @@ const handleCheckoutValidator = async function (consult: I.ConsultDocumentType) 
   }
 
   logger.info(`Checkout: ${failed ? 'Failed' : 'Success'}`);
-  consult.status = failed ? Constant.Consult_PendingStatus : consult.status;
+  consult.status = failed ? Constant.Consult.Pending : consult.status;
   return consult;
 };
 

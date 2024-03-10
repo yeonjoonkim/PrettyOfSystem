@@ -1,4 +1,4 @@
-import { ConsultStatusType, GenderType, TimeZoneType } from '..';
+import { Consult, GenderType, PaymentStatusType, TimeZoneType } from '..';
 
 export type ShopSchedulerDocumentType = {
   id: string;
@@ -25,7 +25,7 @@ export type ShopScheduleDocumentType = {
   dayIndex: Day; //0-6
   isWorking: boolean;
   breakTimes: ShopEmployeeBreakTimeType[];
-  scheduledConsults: ShopEmployeeScheduledConsultType[];
+  consults: ShopEmployeeConsultType[];
   workHours: number; //Int
   breakHours: number; //Int
   displayInSystem: boolean;
@@ -56,21 +56,19 @@ export type ShopEmployeeBreakUpdateFinderType = {
   after: ShopEmployeeBreakTimeType;
 };
 
-export type ShopEmployeeScheduledConsultType = {
+export type ShopEmployeeConsultType = {
   consultId: string;
   clientId: string;
   clientName: string;
-  status: ConsultStatusType;
+  status: Consult.StatusType;
+  paymentStatus: PaymentStatusType;
   startOfDay: string; //yyyy-MM-dd'T'HH:mm:ss
   startDateTime: string; //yyyy-MM-dd'T'HH:mm:ss
   endDateTime: string; //yyyy-MM-dd'T'HH:mm:ss
 };
 
-export type ShopScheduleUpdateWorkingStatusDocumentType = {
+export type ShopScheduleUpdateRequestDocumentType = {
   id: string;
   shopId: string;
-  employeeId: string;
-  startOfDay: string;
-  documentId: string;
-  isWorking: boolean;
+  after: ShopScheduleDocumentType;
 };

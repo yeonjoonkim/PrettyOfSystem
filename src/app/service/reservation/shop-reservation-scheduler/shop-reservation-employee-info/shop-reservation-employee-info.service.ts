@@ -3,7 +3,7 @@ import {
   SchedulerEmployeeStatusType,
   SchedulerOperatingHoursType,
   ShopEmployeeBreakTimeType,
-  ShopEmployeeScheduledConsultType,
+  ShopEmployeeConsultType,
   ShopScheduleDocumentType,
 } from 'src/app/interface';
 import {
@@ -47,7 +47,7 @@ export class ShopReservationEmployeeInfoService {
       return Constant.Scheduler.WorkingStatus.OutOfOffice;
     }
 
-    if (this.isInConsulting(info.scheduledConsults, timestamp)) {
+    if (this.isInConsulting(info.consults, timestamp)) {
       return Constant.Scheduler.WorkingStatus.Consulting;
     }
 
@@ -125,7 +125,7 @@ export class ShopReservationEmployeeInfoService {
       });
   }
 
-  private isInConsulting(consults: ShopEmployeeScheduledConsultType[], date: DateType) {
+  private isInConsulting(consults: ShopEmployeeConsultType[], date: DateType) {
     if (!consults) {
       return false;
     }
@@ -170,7 +170,7 @@ export class ShopReservationEmployeeInfoService {
         end: this._dateSvc.getTime(bt.endDateTime),
       } as StartEndType;
     });
-    const consults = document.scheduledConsults.map(consult => {
+    const consults = document.consults.map(consult => {
       return {
         start: this._dateSvc.getTime(consult.startDateTime),
         end: this._dateSvc.getTime(consult.endDateTime),

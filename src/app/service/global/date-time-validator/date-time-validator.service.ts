@@ -20,6 +20,23 @@ export class DateTimeValidatorService {
     return aTime !== null && bTime !== null ? timeOverlap(aTime, bTime) : true;
   }
 
+  public withinStartEndRange(target: string, startTime: string, endTime: string) {
+    const checker = this.getStartEndTime({ start: startTime, end: endTime });
+    const is24Hours = checker !== null ? checker.start === '00:00:00' && checker.end === '00:00:00' : false;
+    if (is24Hours) {
+      return true;
+    }
+    const targetTime = this.getTime(target);
+    const startMin = checker !== null ? convertTimeToMinutes(checker.start) : null;
+    const endMin = checker !== null ? convertTimeToMinutes(checker.end) : null;
+    const targetMin = targetTime !== null ? convertTimeToMinutes(targetTime) : null;
+
+    if (checker !== null && targetTime !== null && targetMin !== null && endMin !== null && startMin !== null) {
+      return targetMin >= startMin && targetMin <= endMin;
+    }
+    return false;
+  }
+
   public isTimeWithinRange(target: string, startTime: string, endTime: string) {
     const checker = this.getStartEndTime({ start: startTime, end: endTime });
     const targetTime = this.getTime(target);

@@ -330,9 +330,17 @@ export const getStartDateTimeByStartOfDay = function (roster: I.ShopWorkHoursTyp
 
 export const getEndDateTimeByStartOfDay = function (roster: I.ShopWorkHoursType, startOfDay: string) {
   const day = getDayType(startOfDay);
-  const startTime = roster[day].operatingHours.closeTime;
-  const startDateTime = formatByTimeItem(startOfDay, startTime);
-  return startDateTime;
+  const endTimeItem = roster[day].operatingHours.closeTime;
+  const endDateTime = formatByTimeItem(startOfDay, endTimeItem);
+  return endDateTime;
+};
+
+export const is24HoursByShopWorkHoursType = function (type: I.ShopWorkHoursType, startOfDay: string) {
+  const day = getDayType(startOfDay);
+  const selected = type[day];
+  const start = formatByTimeItem(startOfDay, selected.operatingHours.openTime);
+  const end = formatByTimeItem(startOfDay, selected.operatingHours.closeTime);
+  return isMidNight(start) && isMidNight(end);
 };
 
 export const getIsWorkingByStartOfDay = function (roster: I.ShopWorkHoursType, startOfDay: string) {

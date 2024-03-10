@@ -1,28 +1,23 @@
 import { Component, OnInit, computed, inject } from '@angular/core';
-import { NavParams, PopoverController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import {
   DateStatusType,
   SchedulerEmployeeStatusType,
   SchedulerOperatingHoursType,
   ShopScheduleDocumentType,
 } from 'src/app/interface';
-import { ShopScheduleRepositoryService } from 'src/app/firebase/shop-repository/shop-schedule-repository/shop-schedule-repository.service';
-import * as Constant from 'src/app/constant/constant';
-import { DateService } from 'src/app/service/global/date/date.service';
-import { ShopReservationEmployeeInfoService } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-employee-info/shop-reservation-employee-info.service';
-import { GlobalService } from 'src/app/service/global/global.service';
+import { Subject } from 'rxjs';
+import { ShopReservationScheduleEditorComponent } from './shop-reservation-schedule-editor/shop-reservation-schedule-editor.component';
+
 @Component({
   selector: 'shop-reservation-schedule-employee-popover',
   templateUrl: './shop-reservation-schedule-employee-popover.component.html',
   styleUrls: ['./shop-reservation-schedule-employee-popover.component.scss'],
 })
 export class ShopReservationScheduleEmployeePopoverComponent implements OnInit {
+  private _destroy$ = new Subject<void>();
   private _navParam = inject(NavParams);
-  private _popoverCtrl = inject(PopoverController);
-  private _schedulerRepo = inject(ShopScheduleRepositoryService);
-  private _dateSvc = inject(DateService);
-  private _employeeInfoSvc = inject(ShopReservationEmployeeInfoService);
-  private _global = inject(GlobalService);
+  private _modalCtrl = inject(ModalController);
 
   protected prop = computed(() => {
     return {
@@ -36,18 +31,9 @@ export class ShopReservationScheduleEmployeePopoverComponent implements OnInit {
     };
   });
 
-  protected displayDayOff = computed(() => {
+  protected displayEdit = computed(() => {
     const prop = this.prop();
-    return prop.isShopOpen && prop.isWorking && !prop.dateStatus.isPreviousDate;
-  });
-  protected displayWorking = computed(() => {
-    const prop = this.prop();
-    return prop.isShopOpen && !prop.isWorking && !prop.dateStatus.isPreviousDate;
-  });
-
-  protected displayNewBreakTime = computed(() => {
-    const prop = this.prop();
-    return prop.isShopOpen && prop.isWorking && !prop.dateStatus.isPreviousDate;
+    return prop.isShopOpen && !prop.dateStatus.isPreviousDate;
   });
 
   protected displayNewConsult = computed(() => {
@@ -55,72 +41,23 @@ export class ShopReservationScheduleEmployeePopoverComponent implements OnInit {
     return prop.isShopOpen && prop.isWorking && !prop.dateStatus.isPreviousDate;
   });
 
-  protected displayAdjustStartEndDateTime = computed(() => {
-    const prop = this.prop();
-    return prop.isShopOpen && prop.isWorking && !prop.dateStatus.isPreviousDate;
-  });
-
-  private consults = computed(() => this.prop()?.info?.scheduledConsults);
-  private inCompletedConsults = computed(() =>
-    this.consults().filter(c =>
-      Constant.Consult_InCompletedStatusTypes.includes(c.status.type as 'Pending' | 'Scheduled' | 'Start')
-    )
-  );
-  private allocatedTimes = computed(() => {
-    const info = this.prop().info;
-    return this._employeeInfoSvc.getEventTimesFromDocument(info);
-  });
-  private employeeStartTimeItem = computed(() =>
-    this._dateSvc.timeItem(this._dateSvc.transform.toLocalDateTime(this.prop().info.startDateTime))
-  );
-  private employeeEndTimeItem = computed(() =>
-    this._dateSvc.timeItem(this._dateSvc.transform.toLocalDateTime(this.prop().info.endDateTime))
-  );
-  private shopStartTimeItem = computed(() =>
-    this._dateSvc.transform.toLocalDateTime(this.prop().operatingHours.startDateTime)
-  );
-  private shopEndTimeItem = computed(() =>
-    this._dateSvc.transform.toLocalDateTime(this.prop().operatingHours.endDateTime)
-  );
-
   constructor() {}
 
-  public async onClickDayOff() {
-    const hasInCompletedConsults = this.inCompletedConsults().length > 0;
-    const confirmation = hasInCompletedConsults
-      ? await this._global.confirmAlert.confirmation(
-          '',
-          'label.description.hasincompletedConsultswouldyouliketocontinue'
-        )
-      : true;
-    if (confirmation) {
-      const info = this.prop().info;
-      await this._global.loading.show();
-      await this._schedulerRepo.updateWorkingStatus.request(
-        info.shopId,
-        info.employeeId,
-        info.startOfDay,
-        info.id,
-        false
-      );
-      await this._global.loading.dismiss();
-      await this._popoverCtrl.dismiss();
-    }
+  public async onClickEdit() {
+    const prop = this.prop();
+    const modal = await this._modalCtrl.create({
+      component: ShopReservationScheduleEditorComponent,
+      componentProps: {
+        documentId: prop.info.id,
+        shopId: prop.info.shopId,
+        shopOperatingHours: prop.operatingHours,
+      },
+    });
+
+    await modal.present();
   }
-  public async onClickWorking() {
-    const info = this.prop().info;
-    await this._global.loading.show();
-    await this._schedulerRepo.updateWorkingStatus.request(
-      info.shopId,
-      info.employeeId,
-      info.startOfDay,
-      info.id,
-      true
-    );
-    await this._global.loading.dismiss();
-    await this._popoverCtrl.dismiss();
-  }
-  public async onClickNewBreakTime() {}
+
   public async onClickNewConsult() {}
+
   ngOnInit() {}
 }

@@ -1,13 +1,13 @@
 import {
   ShopScheduleDocumentType,
   ShopEmployeeBreakTimeType,
-  ShopEmployeeScheduledConsultType,
+  ShopEmployeeConsultType,
 } from '../../../../interface/index';
 
 export class ShopScheduleDocument {
   public updated: boolean = false;
   private document!: ShopScheduleDocumentType;
-  private deletedConsults: ShopEmployeeScheduledConsultType[] = [];
+  private deletedConsults: ShopEmployeeConsultType[] = [];
 
   get id() {
     return this.document.id;
@@ -82,8 +82,8 @@ export class ShopScheduleDocument {
     this.updateTime();
   }
 
-  get scheduledConsults() {
-    return this.document.scheduledConsults;
+  get consults() {
+    return this.document.consults;
   }
 
   get workHours() {
@@ -114,7 +114,7 @@ export class ShopScheduleDocument {
     this.document = this.doc;
   }
 
-  private findOverlappingTime<T extends ShopEmployeeBreakTimeType | ShopEmployeeScheduledConsultType>(
+  private findOverlappingTime<T extends ShopEmployeeBreakTimeType | ShopEmployeeConsultType>(
     timePeriods: T[]
   ): T[] {
     const overlaps: T[] = [];
@@ -141,7 +141,7 @@ export class ShopScheduleDocument {
     return overlaps;
   }
 
-  private updateTime() {
+  public updateTime() {
     this.document.breakHours = getBreakTimeHours(this.document.breakTimes);
     this.document.workHours = getWorkHours(
       this.document.startDateTime,
@@ -164,9 +164,9 @@ export class ShopScheduleDocument {
       this.addIntoDeletedConsults(overlaps);
 
       for (const overlap of overlaps) {
-        const index = this.document.scheduledConsults.indexOf(overlap);
+        const index = this.document.consults.indexOf(overlap);
         if (index !== -1) {
-          this.document.scheduledConsults.splice(index, 1);
+          this.document.consults.splice(index, 1);
         }
       }
       this.updateTime();
@@ -202,12 +202,12 @@ export class ShopScheduleDocument {
   }
 
   public removeOutOfRangeConsult() {
-    const inRange = this.document.scheduledConsults.filter(consult =>
+    const inRange = this.document.consults.filter(consult =>
       this.isInWorkingHours(consult.startDateTime, consult.endDateTime)
     );
-    if (inRange.length !== this.scheduledConsults.length) {
+    if (inRange.length !== this.consults.length) {
       this.addIntoDeletedConsults(this.findOutOfRangeConsult());
-      this.document.scheduledConsults = this.document.scheduledConsults.filter(consult =>
+      this.document.consults = this.document.consults.filter(consult =>
         this.isInWorkingHours(consult.startDateTime, consult.endDateTime)
       );
       this.updateTime();
@@ -216,7 +216,7 @@ export class ShopScheduleDocument {
   }
 
   public findOutOfRangeConsult() {
-    return this.document.scheduledConsults.filter(
+    return this.document.consults.filter(
       consult => !this.isInWorkingHours(consult.startDateTime, consult.endDateTime)
     );
   }
@@ -228,7 +228,7 @@ export class ShopScheduleDocument {
   }
 
   public findconsultOverlaps() {
-    return this.findOverlappingTime(this.document.scheduledConsults);
+    return this.findOverlappingTime(this.document.consults);
   }
 
   public findBreakOverlaps() {
@@ -241,7 +241,7 @@ export class ShopScheduleDocument {
     );
   }
 
-  private addIntoDeletedConsults(request: ShopEmployeeScheduledConsultType[]) {
+  private addIntoDeletedConsults(request: ShopEmployeeConsultType[]) {
     const exisitingIds: string[] = this.deletedConsults.map(d => d.consultId);
     for (const doc of request) {
       if (!exisitingIds.some(id => id === doc.consultId)) {
@@ -250,20 +250,17 @@ export class ShopScheduleDocument {
     }
   }
 
-  public addConsult(newConsult: ShopEmployeeScheduledConsultType): boolean {
+  public addConsult(newConsult: ShopEmployeeConsultType): boolean {
     if (!this.allowAddConsult(newConsult)) {
       return false;
     }
-    this.document.scheduledConsults.push(newConsult);
+    this.document.consults.push(newConsult);
     this.updated = true;
     this.updateTime();
     return true;
   }
 
-  public updateConsult(
-    before: ShopEmployeeScheduledConsultType,
-    after: ShopEmployeeScheduledConsultType
-  ): boolean {
+  public updateConsult(before: ShopEmployeeConsultType, after: ShopEmployeeConsultType): boolean {
     if (this.allowUpdateConsult(before, after)) {
       const deleted = this.deleteConsult(before.consultId);
       const added = deleted ? this.addConsult(after) : false;
@@ -274,17 +271,17 @@ export class ShopScheduleDocument {
   }
 
   public deleteConsult(consultId: string) {
-    const consult = this.document.scheduledConsults.find(s => s.consultId === consultId);
+    const consult = this.document.consults.find(s => s.consultId === consultId);
     if (consult !== undefined) {
-      this.document.scheduledConsults = this.document.scheduledConsults.filter(s => s.consultId !== consultId);
+      this.document.consults = this.document.consults.filter(s => s.consultId !== consultId);
       this.updated = true;
       return true;
     }
     return false;
   }
 
-  public allowAddConsult(newConsult: ShopEmployeeScheduledConsultType) {
-    const consultOverlap = this.document.scheduledConsults.some(existingConsult =>
+  public allowAddConsult(newConsult: ShopEmployeeConsultType) {
+    const consultOverlap = this.document.consults.some(existingConsult =>
       timesOverlap(
         newConsult.startDateTime,
         newConsult.endDateTime,
@@ -307,8 +304,8 @@ export class ShopScheduleDocument {
     return !consultOverlap && !breakOverlap && isInWorkingHours;
   }
 
-  public allowUpdateConsult(before: ShopEmployeeScheduledConsultType, after: ShopEmployeeScheduledConsultType) {
-    const otherConsults = this.document.scheduledConsults.filter(
+  public allowUpdateConsult(before: ShopEmployeeConsultType, after: ShopEmployeeConsultType) {
+    const otherConsults = this.document.consults.filter(
       c => !(c.startDateTime === before.startDateTime && c.endDateTime === before.endDateTime)
     );
 
@@ -381,7 +378,7 @@ export class ShopScheduleDocument {
       )
     );
 
-    const consultOverlap = this.document.scheduledConsults.some(existingConsult =>
+    const consultOverlap = this.document.consults.some(existingConsult =>
       timesOverlap(
         newBreak.startDateTime,
         newBreak.endDateTime,
@@ -391,8 +388,9 @@ export class ShopScheduleDocument {
     );
 
     const isInWorkingHours = this.isInWorkingHours(newBreak.startDateTime, newBreak.endDateTime);
+    const breakTime = getBreakTimeHours([newBreak]);
 
-    return !breakOverlap && !consultOverlap && isInWorkingHours;
+    return !breakOverlap && !consultOverlap && isInWorkingHours && breakTime > 0;
   }
 
   public allowUpdateBreakTime(before: ShopEmployeeBreakTimeType, after: ShopEmployeeBreakTimeType) {
@@ -409,7 +407,7 @@ export class ShopScheduleDocument {
       )
     );
 
-    const consultOverlap = this.document.scheduledConsults.some(existingConsult =>
+    const consultOverlap = this.document.consults.some(existingConsult =>
       timesOverlap(
         after.startDateTime,
         after.endDateTime,
@@ -418,8 +416,11 @@ export class ShopScheduleDocument {
       )
     );
     const isInWorkingHours = this.isInWorkingHours(after.startDateTime, after.endDateTime);
+    const breakTime = getBreakTimeHours([after]);
+    const isNotEqualToPrevious =
+      before.startDateTime !== after.startDateTime || before.endDateTime !== after.endDateTime;
 
-    return !breakOverlap && !consultOverlap && isInWorkingHours;
+    return !breakOverlap && !consultOverlap && isInWorkingHours && breakTime > 0 && isNotEqualToPrevious;
   }
 }
 
@@ -442,40 +443,38 @@ const timesOverlap = function (
   return aStartWithinB || aEndWithinB || bStartWithinA || bEndWithinA;
 };
 
-const getBreakTimeHours = function (breakTimes: ShopEmployeeBreakTimeType[]) {
-  const totalBreakMinutes = breakTimes.reduce((total, breakTime) => {
-    const start = parseTimestamp(breakTime.startDateTime);
-    const end = parseTimestamp(breakTime.endDateTime);
-    const minutes = end.hours * 60 + end.minutes - (start.hours * 60 + start.minutes);
-    return total + minutes;
+const getBreakTimeHours = (breakTimes: ShopEmployeeBreakTimeType[]): number => {
+  const totalMinutes = breakTimes.reduce((acc, curr) => {
+    const start = parseTimestamp(curr.startDateTime);
+    const end = parseTimestamp(curr.endDateTime);
+    const startTotalMinutes = start.hours * 60 + start.minutes;
+    const endTotalMinutes = end.hours * 60 + end.minutes;
+    return acc + (endTotalMinutes - startTotalMinutes);
   }, 0);
-  const totalBreakHours = totalBreakMinutes / 60;
-  return parseFloat(totalBreakHours.toFixed(2));
+  return parseFloat((totalMinutes / 60).toFixed(2));
 };
 
-const getWorkHours = function (start: string, end: string, breakTimes: ShopEmployeeBreakTimeType[]) {
-  const isMidnightStart = isMidnight(start);
-  const isMidnightEnd = isMidnight(end);
+const getWorkHours = (start: string, end: string, breakTimes: ShopEmployeeBreakTimeType[]): number => {
+  const startTimestamp = parseTimestamp(start);
+  const endTimestamp = parseTimestamp(end);
 
-  const startHours = parseTimestamp(start).hours;
-  const endHours = parseTimestamp(end).hours;
+  const startTotalMinutes = startTimestamp.hours * 60 + startTimestamp.minutes;
+  const endTotalMinutes = endTimestamp.hours * 60 + endTimestamp.minutes;
 
-  const workHours = isMidnightStart && isMidnightEnd ? 24 : endHours - startHours;
-  const breakHours = getBreakTimeHours(breakTimes);
-  const netWorkHours = workHours - breakHours;
+  const workMinutes = endTotalMinutes - startTotalMinutes;
+  const breakMinutes = getBreakTimeHours(breakTimes) * 60;
+
+  const netWorkMinutes = workMinutes - breakMinutes;
+  const netWorkHours = netWorkMinutes / 60;
 
   return parseFloat(netWorkHours.toFixed(2));
 };
 
-const isMidnight = function (timestamp: string): boolean {
-  return timestamp.endsWith('T00:00:00');
-};
-
-const parseTimestamp = function (timestamp: string): { hours: number; minutes: number } {
+const parseTimestamp = (timestamp: string): { hours: number; minutes: number } => {
   const match = timestamp.match(/T(\d{2}):(\d{2}):\d{2}/);
   if (match) {
-    const hours = parseInt(match[1]);
-    const minutes = parseInt(match[2]);
+    const hours = parseInt(match[1], 10);
+    const minutes = parseInt(match[2], 10);
     return { hours, minutes };
   }
   return { hours: 0, minutes: 0 };

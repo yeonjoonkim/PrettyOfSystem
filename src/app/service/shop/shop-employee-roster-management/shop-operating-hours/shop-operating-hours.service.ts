@@ -120,6 +120,6 @@ export class ShopOperatingHoursService {
     const is24Hours = this.is24Hours(day);
     return !is24Hours
       ? this._dateSvc.transform.formatByTimeItem(startofDay, this.closeTimeItem(day))
-      : `${startofDay.split('T')[0]}23:59:59`;
+      : this._dateSvc.endDay(startofDay);
   }
 }

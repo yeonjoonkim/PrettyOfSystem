@@ -37,7 +37,41 @@ export class UpdateMassagePreferencePage implements OnInit {
     this.isLoading$ = this._waitingList.isLoading$;
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  async onClickGoback() {
+    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/update-client-info`);
+  }
+
+  async onClickNext() {
+    const isLoaded = !this.isLoading();
+    const before = await firstValueFrom(this._waitingList.client.info$);
+    if (isLoaded && before !== null) {
+      const after = cloneDeep(before);
+      this.request = true;
+      after.setting.massage.areas = this.massageArea;
+      after.setting.massage.pressure = this.pressure;
+      after.setting.massage.difficultChangePosition = this.position;
+      after.setting.massage.preferGender = this.preferGender;
+      const result = await this._user.updateUser(after, before);
+      if (result) {
+        this.request = false;
+        await this._router.navigateByUrl(`waiting-list/${this.sessionId}/cart`);
+      } else {
+        this.request = false;
+      }
+    }
+  }
+
+  public isLoading() {
+    return this.massageArea === undefined && this.pressure === undefined;
+  }
+
+  public onChangeAreas(areas: MassageBodySelectorAreaType[]) {
+    this.massageArea = areas;
+  }
+
+  async ionViewWillEnter() {
     this._waitingList.start$
       .pipe(
         combineLatestWith(this._waitingList.client.isLoggedin$, this._waitingList.client.info$),
@@ -80,36 +114,9 @@ export class UpdateMassagePreferencePage implements OnInit {
       });
   }
 
-  async onClickGoback() {
-    await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/update-client-info`);
-  }
-
-  async onClickNext() {
-    const isLoaded = !this.isLoading();
-    const before = await firstValueFrom(this._waitingList.client.info$);
-    if (isLoaded && before !== null) {
-      const after = cloneDeep(before);
-      this.request = true;
-      after.setting.massage.areas = this.massageArea;
-      after.setting.massage.pressure = this.pressure;
-      after.setting.massage.difficultChangePosition = this.position;
-      after.setting.massage.preferGender = this.preferGender;
-      const result = await this._user.updateUser(after, before);
-      if (result) {
-        this.request = false;
-        await this._router.navigateByUrl(`waiting-list/${this.sessionId}/cart`);
-      } else {
-        this.request = false;
-      }
-    }
-  }
-
-  public isLoading() {
-    return this.massageArea === undefined && this.pressure === undefined;
-  }
-
-  public onChangeAreas(areas: MassageBodySelectorAreaType[]) {
-    this.massageArea = areas;
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

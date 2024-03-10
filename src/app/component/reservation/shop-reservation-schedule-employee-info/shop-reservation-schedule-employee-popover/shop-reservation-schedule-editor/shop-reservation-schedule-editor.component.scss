@@ -1,0 +1,64 @@
+.check-box-container {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.schedule-info {
+  margin-bottom: 10px;
+}
+.schedule-info-detail {
+  margin-bottom: 0px;
+  legend {
+    margin: 0;
+  }
+}
+
+.current-status {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  p {
+    margin: 3px 0px;
+    font-size: 10px;
+    margin-left: 5px;
+  }
+  legend {
+    text-wrap: nowrap;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.consult-time-title-container,
+.break-time-title-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  .consult-title,
+  .break-time-title {
+    min-width: 200px;
+    height: 32px;
+    max-width: 300px;
+    display: flex;
+    align-items: center;
+    legend {
+      margin: 0;
+      text-wrap: nowrap;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  .consult-time-add,
+  .break-time-add {
+    margin-right: 15px;
+  }
+  flex-row-item {
+    flex: 1;
+  }
+}

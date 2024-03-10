@@ -59,7 +59,27 @@ export class ConfirmationPage implements OnInit, OnDestroy {
     this.hasOnlyCoupon$ = this._waitingList.cart.hasOnlyCoupon();
   }
 
-  async ngOnInit() {
+  async ngOnInit() {}
+
+  async onClickGoback() {
+    const hasOnlyCoupon = await firstValueFrom(this.hasOnlyCoupon$);
+    if (!hasOnlyCoupon) {
+      await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/select-specialist-time`);
+    } else {
+      await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart-view`);
+    }
+  }
+
+  async onClickSumbit() {
+    const hasOnlyCoupon = await firstValueFrom(this.hasOnlyCoupon$);
+    if (!hasOnlyCoupon) {
+      await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/select-specialist-time`);
+    } else {
+      this._router.navigateByUrl(`/waiting-list/${this.sessionId}/confirmation`);
+    }
+  }
+
+  async ionViewWillEnter() {
     this._waitingList.start$
       .pipe(combineLatestWith(this._waitingList.client.isLoggedin$), takeUntil(this._destroy$))
       .subscribe(async ([start, login]) => {
@@ -87,6 +107,7 @@ export class ConfirmationPage implements OnInit, OnDestroy {
           this._consult.setValue(value);
         }
       });
+
     this._waitingList.consent$
       .pipe(
         filter(consent => consent !== null),
@@ -108,22 +129,9 @@ export class ConfirmationPage implements OnInit, OnDestroy {
       });
   }
 
-  async onClickGoback() {
-    const hasOnlyCoupon = await firstValueFrom(this.hasOnlyCoupon$);
-    if (!hasOnlyCoupon) {
-      await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/select-specialist-time`);
-    } else {
-      await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/cart-view`);
-    }
-  }
-
-  async onClickSumbit() {
-    const hasOnlyCoupon = await firstValueFrom(this.hasOnlyCoupon$);
-    if (!hasOnlyCoupon) {
-      await this._router.navigateByUrl(`/waiting-list/${this.sessionId}/select-specialist-time`);
-    } else {
-      this._router.navigateByUrl(`/waiting-list/${this.sessionId}/confirmation`);
-    }
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

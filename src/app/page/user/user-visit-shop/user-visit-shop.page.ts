@@ -160,6 +160,8 @@ export class UserVisitShopPage implements OnInit, OnDestroy {
     });
   }
 
+  ionViewWillEnter() {}
+
   public async updateClientConsent() {
     const consent = this.consent;
     if (consent !== null) {
@@ -180,6 +182,11 @@ export class UserVisitShopPage implements OnInit, OnDestroy {
 
   public isActive(name: string) {
     return this.action === name;
+  }
+
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

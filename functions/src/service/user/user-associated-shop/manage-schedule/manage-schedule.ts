@@ -6,11 +6,17 @@ import { logger } from 'firebase-functions/v2';
 
 export const updateDocumentByRoster = async function (
   after: I.ShopWorkHoursType,
-  doc: I.ShopScheduleDocumentType
+  doc: I.ShopScheduleDocumentType,
+  shop: I.ShopConfigurationType
 ) {
   const dayType = DateSvc.getDayType(doc.startOfDay);
+  const isShop24Hours = DateSvc.is24HoursByShopWorkHoursType(shop.operatingHours, doc.startOfDay);
+  const isEmployee24Hours = DateSvc.is24HoursByShopWorkHoursType(after, doc.startOfDay);
   const startDateTime = DateSvc.getStartDateTimeByStartOfDay(after, doc.startOfDay);
-  const endDateTime = DateSvc.getEndDateTimeByStartOfDay(after, doc.startOfDay);
+  const endDateTime =
+    isShop24Hours && isEmployee24Hours
+      ? DateSvc.endDay(doc.startOfDay)
+      : DateSvc.getEndDateTimeByStartOfDay(after, doc.startOfDay);
   const isWorking = DateSvc.getIsWorkingByStartOfDay(after, doc.startOfDay);
 
   //Updating

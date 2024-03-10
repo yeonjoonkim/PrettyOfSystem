@@ -48,6 +48,7 @@ import {
   trackChangesIcon,
   trackChangesEnableIcon,
   trackChangesAcceptAllIcon,
+  exclamationCircleIcon,
 } from '@progress/kendo-svg-icons';
 @Injectable({
   providedIn: 'root',
@@ -102,5 +103,6 @@ export class KendoUiIconService {
   public scheduledIcon = trackChangesEnableIcon;
   public startingIcon = trackChangesAcceptIcon;
   public completedIcon = trackChangesAcceptAllIcon;
+  public exclamationCircleIcon = exclamationCircleIcon;
   constructor() {}
 }

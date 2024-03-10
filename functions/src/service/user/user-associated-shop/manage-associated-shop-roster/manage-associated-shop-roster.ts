@@ -25,7 +25,7 @@ const manageNewAssociatedShop = async function (before: I.IUser, after: I.IUser)
         after.firstName,
         after.lastName,
         after.gender,
-        shop.timezone
+        shop
       );
     }
   }
@@ -45,7 +45,7 @@ const manageDeleteAssociatedShop = async function (before: I.IUser, after: I.IUs
       const consults = await Repository.Shop.Consult.getEmployeeConsults(shopConfig.id, associated.userId);
       const requiresUpdates = consults.filter(c => {
         const currentDate = c.scheduled !== null && startOfDay === c.scheduled.startOfDay;
-        const inFutureStatus = Constant.Consult_FutureScheduledStatusTypes.some(st => st === c.status.type);
+        const inFutureStatus = Constant.Consult.inFutureSchedules(c.status);
         return currentDate || inFutureStatus;
       });
 
@@ -118,7 +118,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of mon) {
-        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc, shop);
       }
     }
 
@@ -130,7 +130,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of tue) {
-        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc, shop);
       }
     }
 
@@ -142,7 +142,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of wed) {
-        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc, shop);
       }
     }
 
@@ -154,7 +154,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of thur) {
-        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc, shop);
       }
     }
 
@@ -166,7 +166,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of fri) {
-        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc, shop);
       }
     }
 
@@ -178,7 +178,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of sat) {
-        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc, shop);
       }
     }
 
@@ -190,7 +190,7 @@ const handleUpdate = async function (
         startOfDay
       );
       for (const doc of sun) {
-        await Schedule.updateDocumentByRoster(after.defaultRoster, doc);
+        await Schedule.updateDocumentByRoster(after.defaultRoster, doc, shop);
       }
     }
   }
@@ -343,7 +343,7 @@ export const generateDefaultSchedulesByCreate = async function (user: I.IUser) {
           user.firstName,
           user.lastName,
           user.gender,
-          shopConfig.timezone
+          shopConfig
         );
       }
     }

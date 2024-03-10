@@ -13,3 +13,11 @@ kendo-button {
 ion-datetime::part(active) {
   color: var(--title);
 }
+
+:host ::ng-deep ion-datetime::part(content) {
+  .datetime-presentation-time > .datetime-time {
+    background: var(--background) !important;
+    --background: var(--background) !important;
+    background-color: var(--background) !important;
+  }
+}

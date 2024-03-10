@@ -18,9 +18,7 @@ export class SystemLanguagePage implements OnInit, OnDestroy {
 
   constructor(private _systemMenuOptionCtrl: SystemMenuOptionControllerService) {}
 
-  async ngOnInit() {
-    await this.setDefaultSystemMenuOption();
-  }
+  async ngOnInit() {}
 
   private async setDefaultSystemMenuOption() {
     this.systemMenu = await this._systemMenuOptionCtrl.getSystemLanguageButtons();
@@ -29,6 +27,15 @@ export class SystemLanguagePage implements OnInit, OnDestroy {
   /** This will process the set up the selected system menu */
   public async processSystemMenuOption(option: ISystemMenuOptionAction) {
     this.selectedSystemMenu = option;
+  }
+
+  async ionViewWillEnter() {
+    await this.setDefaultSystemMenuOption();
+  }
+
+  ionViewWillLeave() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   ngOnDestroy() {

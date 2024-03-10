@@ -16,7 +16,6 @@ import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service
 export class ShopClientGridComponent implements OnInit, OnDestroy {
   public kendo = inject(KendoUiService);
   @Input() destroy$!: Subject<void>;
-  @Output() onRequestNewClientPhoneNumber = new EventEmitter<string>();
   private _destroy$ = new Subject<void>();
   public loaded$ = this._clientManagement.query.loaded$;
   public loading$ = this._clientManagement.query.loading$;
@@ -62,14 +61,9 @@ export class ShopClientGridComponent implements OnInit, OnDestroy {
       event: event,
       translucent: true,
       size: 'auto',
-      cssClass: 'dynamic-popover-container',
+      cssClass: 'center-popover-container',
     });
     await popover.present();
-
-    const confirmation = await popover.onWillDismiss();
-    if (confirmation && typeof confirmation.data === 'string') {
-      this.onRequestNewClientPhoneNumber.emit(confirmation.data);
-    }
   }
 
   public async onClickClient(clientId: string) {

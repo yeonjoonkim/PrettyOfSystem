@@ -20,6 +20,7 @@ import { ShopReservationScheduleComponent } from './shop-reservation-schedule.co
 import { ShopReservationSchedulerToolbarComponent } from './shop-reservation-scheduler-toolbar/shop-reservation-scheduler-toolbar.component';
 import { ShopReservationScheduleReviewsComponent } from './shop-reservation-schedule-reviews/shop-reservation-schedule-reviews.component';
 import { ShopReservationSchedulerMobileToolbarPopoverComponent } from 'src/app/component/reservation/shop-reservation-schedule/shop-reservation-scheduler-mobile-toolbar-popover/shop-reservation-scheduler-mobile-toolbar-popover.component';
+import { ShopVerifyNewClientPhoneNumberPopoverComponent } from '../../shop/shop-client-management/shop-verify-new-client-phone-number-popover/shop-verify-new-client-phone-number-popover.component';
 @NgModule({
   declarations: [
     ShopReservationScheduleComponent,
@@ -38,6 +39,7 @@ import { ShopReservationSchedulerMobileToolbarPopoverComponent } from 'src/app/c
     ShopReservationScheduleEmployeeInfoModule,
     OnHoverClassDirective,
     LeaveHoverClassDirective,
+    ShopVerifyNewClientPhoneNumberPopoverComponent,
   ],
   exports: [ShopReservationScheduleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

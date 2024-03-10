@@ -7,7 +7,7 @@ import {
 } from 'src/app/interface';
 import { Injectable, inject } from '@angular/core';
 import * as Db from 'src/app/constant/firebase-path';
-import { Observable, firstValueFrom, from, map, of, switchMap, take } from 'rxjs';
+import { Observable, firstValueFrom, from, map, switchMap, take } from 'rxjs';
 import { FirebaseToasterService } from '../../firebase-toaster/firebase-toaster.service';
 import { override } from 'functions/src/service/override/user/user-setting-override/user-setting-override';
 import { SystemLanguageStorageService } from 'src/app/service/global/language/system-language-management/system-language-storage/system-language-storage.service';

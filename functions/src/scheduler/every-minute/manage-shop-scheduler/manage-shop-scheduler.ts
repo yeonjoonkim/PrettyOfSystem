@@ -37,7 +37,7 @@ const start = async function (configs: I.SchedulerShopConfigurationType[]) {
             emp.firstName,
             emp.lastName,
             emp.gender,
-            updated.shopTimezone
+            shop.config
           );
 
           logger.info(`${emp.firstName} ${emp.lastName}'s newDoc`, newDoc);

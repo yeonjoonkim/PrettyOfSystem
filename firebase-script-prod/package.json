@@ -1,0 +1,28 @@
+{
+  "name": "firebase-script",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "install": "npm install npm firebase-init",
+    "firebase-init": "firebase init",
+    "manage@auth": "node ./auth.mjs",
+    "download@storage": "node ./storage-downloader.mjs",
+    "backup@firestore": "node ./firestore-backup.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^20.11.25",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^7.8.0",
+    "firebase-admin": "^12.0.0",
+    "firebase-init": "^1.3.2",
+    "inquirer": "^9.2.15",
+    "npm": "^10.5.0"
+  }
+}

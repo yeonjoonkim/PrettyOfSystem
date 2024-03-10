@@ -10,8 +10,7 @@
   position: fixed !important;
   top: 50% !important;
   left: 50% !important;
-  margin-top: -125px !important;
-  margin-left: -100px !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 .reservation-mobile-popover-container::part(content) {
@@ -55,19 +54,11 @@
     top: 40% !important;
     left: 30% !important;
   }
-  .add-break-time-container::part(content) {
-    top: 40% !important;
-    left: 30% !important;
-  }
 }
 
 @media (max-width: 450px) {
   .signature-transfer-popover-container::part(content) {
     top: 40% !important;
     left: 25% !important;
-  }
-  .add-break-time-container::part(content) {
-    top: 40% !important;
-    left: 10% !important;
   }
 }

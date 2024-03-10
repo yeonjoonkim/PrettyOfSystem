@@ -21,4 +21,3 @@ export { OnConsultCreate } from './doc-consult/doc-consult';
 // export { onShopScheduleUpdate } from './doc-shop-schedule/doc-shop-schedule';
 
 //Shop Schedule Update
-export * from './shop-update-schedule/index';

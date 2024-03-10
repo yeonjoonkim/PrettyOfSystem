@@ -45,6 +45,9 @@ export const onUserUpdate = onDocumentUpdated(Db.Context.User + '/{userId}', asy
       }
 
       if (event.isUpdateClaim) {
+        logger.info(
+          `Before Current ShopId: ${before.currentShopId} | After Current ShopId: ${after.currentShopId}`
+        );
         await handleClaimUpdate(after);
       }
 
@@ -164,7 +167,7 @@ const handleCurrentShopRoleUpdate = async function (user: I.IUser) {
       await Repository.User.updateSelectedUser(user);
     }
 
-    const claim = getCurrentUserClaim(user);
+    const claim = await getCurrentUserClaim(user);
 
     await Repository.Auth.Claim.update(user.id, claim);
   }
@@ -228,7 +231,7 @@ const handleSystemAdminAccount = async function (user: I.IUser) {
     user.associatedShops = transformToAssociatedShop(user, allShops, systemAdminRole);
     user.associatedShopIds = allShops.map(s => s.id);
     user.currentShopId = user.associatedShops.length > 0 ? user.associatedShops[0].shopId : '';
-    const claim = getCurrentUserClaim(user);
+    const claim = await getCurrentUserClaim(user);
     await Repository.User.updateSelectedUser(user);
     await Repository.Auth.Claim.update(user.id, claim);
   }
@@ -255,16 +258,15 @@ const transformToAssociatedShop = function (
 };
 
 const handleClaimUpdate = async function (user: I.IUser) {
-  const claim = getCurrentUserClaim(user);
-  logger.info(claim);
+  const shop = await Repository.Shop.Configuration.getSelectedConfig(user.currentShopId);
+  logger.info(`handleClaimUpdate - Current Shop:  ${shop !== null ? shop.name : 'No Name'} - Selected`);
+  const claim = await getCurrentUserClaim(user);
   admin.auth().updateUser(user.id, { disabled: user.disabledAccount });
-  logger.info(claim);
   await Repository.Auth.Claim.update(user.id, claim);
 };
 
-const getCurrentUserClaim = function (user: I.IUser) {
+const getCurrentUserClaim = async function (user: I.IUser) {
   const currentShop = user.associatedShops.find(shop => user.currentShopId === shop.shopId);
-  logger.info(currentShop);
   const claim: I.UserClaimType = {
     role: {
       isSystemAdmin: user.isSystemAdmin,
@@ -279,16 +281,14 @@ const getCurrentUserClaim = function (user: I.IUser) {
   };
 
   claim.role = currentShop !== undefined ? currentShop.role.accessLevel : claim.role;
-  logger.info(claim);
   claim.language = user.setting.preferLanguage;
-  claim.currentShopId = user.currentShopId;
-  logger.info(claim);
+  claim.currentShopId = currentShop !== undefined && currentShop !== null ? currentShop.shopId : '';
   return claim;
 };
 
 const handleDeactiveLogin = async function (user: I.IUser) {
   try {
-    const claim = getCurrentUserClaim(user);
+    const claim = await getCurrentUserClaim(user);
     claim.role.isSystemAdmin = user.isSystemAdmin;
     claim.role.isAdmin = false;
     claim.role.isManager = false;
@@ -304,7 +304,7 @@ const handleDeactiveLogin = async function (user: I.IUser) {
 
 const handleActiveLogin = async function (user: I.IUser) {
   try {
-    const claim = getCurrentUserClaim(user);
+    const claim = await getCurrentUserClaim(user);
     claim.disableAccount = false;
     admin.auth().updateUser(user.id, { disabled: claim.disableAccount });
     await Repository.Auth.Claim.update(user.id, claim);
