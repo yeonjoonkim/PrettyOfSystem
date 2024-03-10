@@ -28,6 +28,7 @@
         </kendo-label>
       </flex-row-item>
     </flex-row>
+
     <!--Current Status-->
     <flex-col>
       <flex-col-item *ngIf="editor.isWorking()" class="current-status">
@@ -91,86 +92,160 @@
         <kendo-button class="add-btn" kendoButton icon="plus" (click)="onClickNewBreakTime($event)"></kendo-button>
       </flx-row-item>
     </flex-row>
+
+    <!-- Break Time Grid -->
+    <flex-col *ngIf="editor.isWorking()">
+      <flex-col-item>
+        <kendo-grid [data]="editor.breakTimeValidatorList()" [height]="200" [sortable]="true" [pageable]="false">
+          <!-- NO Data -->
+          <kendo-grid-column
+            [width]="100"
+            title="{{ 'label.title.start' | languageTransform: 'System' | async }}"
+            field="start">
+            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+              <span class="column-header">{{ column.title }}</span>
+            </ng-template>
+            <ng-template kendoGridCellTemplate let-validator>
+              <p>
+                {{ validator.data.startDateTime | dateTransform: 'Time' }}
+              </p>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column
+            [width]="100"
+            title="{{ 'label.title.end' | languageTransform: 'System' | async }}"
+            field="end">
+            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+              <span class="column-header">{{ column.title }}</span>
+            </ng-template>
+            <ng-template kendoGridCellTemplate let-validator>
+              <p>
+                {{ validator.data.endDateTime | dateTransform: 'Time' }}
+              </p>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column
+            [width]="100"
+            title="{{ 'label.title.error' | languageTransform: 'System' | async }}"
+            field="end">
+            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+              <span class="column-header">{{ column.title }}</span>
+            </ng-template>
+            <ng-template kendoGridCellTemplate let-validator>
+              <p>
+                <kendo-svgicon
+                  [icon]="kendo.icon.exclamationCircleIcon"
+                  themeColor="error"
+                  size="xlarge"
+                  *ngIf="
+                    validator.conflictWithEndTime ||
+                    validator.conflictWithStartTime ||
+                    validator.conflictedWithConsults ||
+                    validator.crashReport
+                  "></kendo-svgicon>
+              </p>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column [width]="80" [sortable]="true">
+            <ng-template kendoGridCellTemplate let-validator>
+              <kendo-button
+                icon="edit"
+                themeColor="success"
+                (click)="onClickUpdateBreakTime(validator.data, $event)"></kendo-button>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column [width]="80" [sortable]="true">
+            <ng-template kendoGridCellTemplate let-validator>
+              <kendo-button
+                (click)="editor.onDeleteBreakTime(validator.data)"
+                icon="trash"
+                themeColor="error"></kendo-button>
+            </ng-template>
+          </kendo-grid-column>
+          <ng-template kendoGridNoRecordsTemplate>
+            <p class="default-placeholder">
+              {{ 'label.description.thereisnobreaktimes' | languageTransform: 'System' | async }}
+            </p>
+          </ng-template>
+        </kendo-grid>
+      </flex-col-item>
+    </flex-col>
+
+    <!--Consult -->
+    <flex-row class="consult-time-title-container">
+      <flex-row-item class="consult-title">
+        <legend>
+          {{ 'label.title.consult' | languageTransform: 'System' | async }}
+        </legend>
+      </flex-row-item>
+      <flx-row-item class="consult-time-add"> </flx-row-item>
+    </flex-row>
+
+    <!-- Consult Time Grid -->
+    <flex-col>
+      <flex-col-item>
+        <kendo-grid [data]="editor.consultTimeValidatorList()" [height]="200" [sortable]="true" [pageable]="false">
+          <!-- NO Data -->
+          <kendo-grid-column
+            [width]="100"
+            title="{{ 'label.title.start' | languageTransform: 'System' | async }}"
+            field="start">
+            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+              <span class="column-header">{{ column.title }}</span>
+            </ng-template>
+            <ng-template kendoGridCellTemplate let-validator>
+              <p>
+                {{ validator.data.startDateTime | dateTransform: 'Time' }}
+              </p>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column
+            [width]="100"
+            title="{{ 'label.title.end' | languageTransform: 'System' | async }}"
+            field="end">
+            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+              <span class="column-header">{{ column.title }}</span>
+            </ng-template>
+            <ng-template kendoGridCellTemplate let-validator>
+              <p>
+                {{ validator.data.endDateTime | dateTransform: 'Time' }}
+              </p>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column
+            [width]="100"
+            title="{{ 'label.title.error' | languageTransform: 'System' | async }}"
+            field="end">
+            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+              <span class="column-header">{{ column.title }}</span>
+            </ng-template>
+            <ng-template kendoGridCellTemplate let-validator>
+              <p>
+                <kendo-svgicon
+                  [icon]="kendo.icon.exclamationCircleIcon"
+                  themeColor="error"
+                  size="xlarge"
+                  *ngIf="
+                    validator.conflictWithEndTime ||
+                    validator.conflictWithStartTime ||
+                    validator.conflictedWithBreak ||
+                    validator.crashReport
+                  "></kendo-svgicon>
+              </p>
+            </ng-template>
+          </kendo-grid-column>
+
+          <ng-template kendoGridNoRecordsTemplate>
+            <p class="default-placeholder">
+              {{ 'label.description.thereisnoconsults' | languageTransform: 'System' | async }}
+            </p>
+          </ng-template>
+        </kendo-grid>
+      </flex-col-item>
+    </flex-col>
   </ng-container>
-
-  <!-- Break Time Brid -->
-  <flex-col *ngIf="editor.isWorking()">
-    <flex-col-item>
-      <kendo-grid [data]="editor.breakTimeValidatorList()" [height]="200" [sortable]="true" [pageable]="false">
-        <!-- NO Data -->
-        <kendo-grid-column
-          [width]="100"
-          title="{{ 'label.title.start' | languageTransform: 'System' | async }}"
-          field="start">
-          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-            <span class="column-header">{{ column.title }}</span>
-          </ng-template>
-          <ng-template kendoGridCellTemplate let-validator>
-            <p>
-              {{ validator.data.startDateTime | dateTransform: 'Time' }}
-            </p>
-          </ng-template>
-        </kendo-grid-column>
-
-        <kendo-grid-column
-          [width]="100"
-          title="{{ 'label.title.end' | languageTransform: 'System' | async }}"
-          field="end">
-          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-            <span class="column-header">{{ column.title }}</span>
-          </ng-template>
-          <ng-template kendoGridCellTemplate let-validator>
-            <p>
-              {{ validator.data.endDateTime | dateTransform: 'Time' }}
-            </p>
-          </ng-template>
-        </kendo-grid-column>
-        <kendo-grid-column
-          [width]="100"
-          title="{{ 'label.title.error' | languageTransform: 'System' | async }}"
-          field="end">
-          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-            <span class="column-header">{{ column.title }}</span>
-          </ng-template>
-          <ng-template kendoGridCellTemplate let-validator>
-            <p>
-              <kendo-svgicon
-                [icon]="kendo.icon.exclamationCircleIcon"
-                themeColor="error"
-                size="xlarge"
-                *ngIf="
-                  validator.conflictWithEndTime ||
-                  validator.conflictWithStartTime ||
-                  validator.conflictedWithConsults ||
-                  validator.crashReport
-                "></kendo-svgicon>
-            </p>
-          </ng-template>
-        </kendo-grid-column>
-
-        <kendo-grid-column [width]="80" [sortable]="true">
-          <ng-template kendoGridCellTemplate let-validator>
-            <kendo-button
-              icon="edit"
-              themeColor="success"
-              (click)="onClickUpdateBreakTime(validator.data, $event)"></kendo-button>
-          </ng-template>
-        </kendo-grid-column>
-
-        <kendo-grid-column [width]="80" [sortable]="true">
-          <ng-template kendoGridCellTemplate let-validator>
-            <kendo-button
-              (click)="editor.onDeleteBreakTime(validator.data)"
-              icon="trash"
-              themeColor="error"></kendo-button>
-          </ng-template>
-        </kendo-grid-column>
-        <ng-template kendoGridNoRecordsTemplate>
-          <p class="default-placeholder">
-            {{ 'label.description.thereisnobreaktimes' | languageTransform: 'System' | async }}
-          </p>
-        </ng-template>
-      </kendo-grid>
-    </flex-col-item>
-  </flex-col>
 </ion-content>

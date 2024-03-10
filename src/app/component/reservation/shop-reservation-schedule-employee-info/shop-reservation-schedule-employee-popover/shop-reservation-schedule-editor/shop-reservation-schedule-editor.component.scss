@@ -32,12 +32,14 @@
   }
 }
 
+.consult-time-title-container,
 .break-time-title-container {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
+  .consult-title,
   .break-time-title {
     min-width: 200px;
     height: 32px;
@@ -52,6 +54,7 @@
       text-overflow: ellipsis;
     }
   }
+  .consult-time-add,
   .break-time-add {
     margin-right: 15px;
   }

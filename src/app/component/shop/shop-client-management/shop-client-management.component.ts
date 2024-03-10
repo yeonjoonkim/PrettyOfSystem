@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { ShopClientManagementService } from 'src/app/service/shop/shop-client-management/shop-client-management.service';
 
 @Component({
@@ -8,7 +7,6 @@ import { ShopClientManagementService } from 'src/app/service/shop/shop-client-ma
   styleUrls: ['./shop-client-management.component.scss'],
 })
 export class ShopClientManagementComponent implements OnInit {
-  @Output() onRequestNewClientPhoneNumber = new EventEmitter<string>();
   constructor(private _shopClient: ShopClientManagementService) {}
 
   ngOnInit() {}

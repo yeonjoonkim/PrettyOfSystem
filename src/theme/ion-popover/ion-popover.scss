@@ -10,8 +10,7 @@
   position: fixed !important;
   top: 50% !important;
   left: 50% !important;
-  margin-top: -125px !important;
-  margin-left: -100px !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 .reservation-mobile-popover-container::part(content) {

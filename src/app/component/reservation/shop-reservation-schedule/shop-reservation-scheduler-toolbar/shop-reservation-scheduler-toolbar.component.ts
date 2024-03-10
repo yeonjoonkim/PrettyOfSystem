@@ -20,7 +20,7 @@ import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service
 import * as Constant from 'src/app/constant/constant';
 import { PopoverController } from '@ionic/angular';
 import { ShopReservationSchedulerMobileToolbarPopoverComponent } from '../shop-reservation-scheduler-mobile-toolbar-popover/shop-reservation-scheduler-mobile-toolbar-popover.component';
-
+import { ShopVerifyNewClientPhoneNumberPopoverComponent } from 'src/app/component/shop/shop-client-management/shop-verify-new-client-phone-number-popover/shop-verify-new-client-phone-number-popover.component';
 @Component({
   selector: 'shop-reservation-scheduler-toolbar',
   templateUrl: './shop-reservation-scheduler-toolbar.component.html',

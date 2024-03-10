@@ -25,12 +25,7 @@ import { ShopClientFilterComponent } from './shop-client-filter/shop-client-filt
 import { ShopVerifyNewClientPhoneNumberPopoverComponent } from './shop-verify-new-client-phone-number-popover/shop-verify-new-client-phone-number-popover.component';
 import { GenderIconNamePipeMoudle } from 'src/app/pipe/gender-icon-name/gender-icon.pipe.module';
 @NgModule({
-  declarations: [
-    ShopClientManagementComponent,
-    ShopClientGridComponent,
-    ShopClientFilterComponent,
-    ShopVerifyNewClientPhoneNumberPopoverComponent,
-  ],
+  declarations: [ShopClientManagementComponent, ShopClientGridComponent, ShopClientFilterComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -48,6 +43,7 @@ import { GenderIconNamePipeMoudle } from 'src/app/pipe/gender-icon-name/gender-i
     GenderSelectionModule,
     PhoneNumberPipeModule,
     GenderIconNamePipeMoudle,
+    ShopVerifyNewClientPhoneNumberPopoverComponent,
   ],
   exports: [ShopClientManagementComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

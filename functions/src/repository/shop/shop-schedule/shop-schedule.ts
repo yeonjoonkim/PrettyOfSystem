@@ -68,7 +68,7 @@ export const newDocument = function (
     isWorking: isWorking,
     displayInSystem: associatedShop.displayInSystem,
     breakTimes: breakTimes,
-    scheduledConsults: [],
+    consults: [],
     workHours: workHours,
     breakHours: breakHours,
     active: associatedShop.active,

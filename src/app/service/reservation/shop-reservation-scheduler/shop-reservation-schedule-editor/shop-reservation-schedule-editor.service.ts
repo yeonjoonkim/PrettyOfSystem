@@ -90,7 +90,7 @@ export class ShopReservationScheduleEditorService {
   });
   public hasConsults = computed(() => {
     const doc = this.query();
-    return doc !== null ? doc.scheduledConsults.length > 0 : false;
+    return doc !== null ? doc.consults.length > 0 : false;
   });
   public startOfDay = computed(() => this.query().startOfDay);
   public startOfDayType = computed(() => this._dateSvc.getDay(this.startOfDay()));
@@ -113,7 +113,7 @@ export class ShopReservationScheduleEditorService {
   });
   public consults = computed(() => {
     const doc = this.query();
-    return doc !== null ? doc.scheduledConsults : [];
+    return doc !== null ? doc.consults : [];
   });
 
   public breakTimeValidatorList = computed(() => {
@@ -248,7 +248,7 @@ export class ShopReservationScheduleEditorService {
   public allowWorkStatusChange = computed(() => {
     const onChange = this.query();
     if (onChange !== null) {
-      return !(onChange.scheduledConsults.length > 0 && onChange.isWorking);
+      return !(onChange.consults.length > 0 && onChange.isWorking);
     }
     return false;
   });

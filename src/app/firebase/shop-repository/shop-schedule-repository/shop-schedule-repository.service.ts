@@ -20,7 +20,7 @@ const param = createKeyMap<ShopScheduleDocumentType>([
   'dayIndex',
   'isWorking',
   'breakTimes',
-  'scheduledConsults',
+  'consults',
   'workHours',
   'breakHours',
   'displayInSystem',

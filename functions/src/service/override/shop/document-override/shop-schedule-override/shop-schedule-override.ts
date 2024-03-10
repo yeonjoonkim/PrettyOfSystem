@@ -17,7 +17,7 @@ export const override = function (doc: I.ShopScheduleDocumentType): I.ShopSchedu
     dayIndex: T.dayIndex(doc?.dayIndex),
     isWorking: T.boolean(doc?.isWorking),
     breakTimes: shopEmployeeBreakTimeTypes(doc?.breakTimes),
-    scheduledConsults: shopEmployeeScheduledConsultTypes(doc?.scheduledConsults),
+    consults: shopEmployeeScheduledConsultTypes(doc?.consults),
     workHours: T.decimal(doc?.workHours, 2),
     breakHours: T.decimal(doc?.breakHours, 2),
     displayInSystem: T.boolean(doc?.displayInSystem),
@@ -38,16 +38,15 @@ const shopEmployeeBreakTimeTypes = function (bt: I.ShopEmployeeBreakTimeType[] |
     : [];
 };
 
-const shopEmployeeScheduledConsultTypes = function (
-  consults: I.ShopEmployeeScheduledConsultType[] | undefined | null
-) {
+const shopEmployeeScheduledConsultTypes = function (consults: I.ShopEmployeeConsultType[] | undefined | null) {
   return consults !== undefined && consults !== null
     ? consults.map(consult => {
-        const result: I.ShopEmployeeScheduledConsultType = {
+        const result: I.ShopEmployeeConsultType = {
           consultId: T.string(consult?.consultId),
           clientId: T.string(consult?.clientId),
           clientName: T.string(consult?.clientName),
           status: status(consult?.status),
+          paymentStatus: paymentStatus(consult?.paymentStatus),
           startOfDay: T.ISODate(consult?.startOfDay),
           startDateTime: T.ISODate(consult?.startDateTime),
           endDateTime: T.ISODate(consult?.endDateTime),
@@ -63,5 +62,14 @@ const status = function (status: I.ConsultStatusType | undefined | null): I.Cons
     : {
         type: Constant.Consult.StatusType.Cancel,
         description: Constant.Consult.StatusDescription.Cancel,
+      };
+};
+
+const paymentStatus = function (status: I.PaymentStatusType | undefined | null): I.PaymentStatusType {
+  return status !== undefined && status !== null
+    ? status
+    : {
+        type: Constant.Payment.Type.Unpaid,
+        description: Constant.Payment.Description.Unpaid,
       };
 };
