@@ -12,7 +12,6 @@ import { FirebaseApiService } from '../../firebase-api/firebase-api.service';
 })
 export class SystemMenuRepositoryService {
   private _api = inject(FirebaseApiService);
-  private readonly _timeStamp = { lastModifiedDate: new Date() };
 
   constructor(
     private _roleRate: RoleRateService,
@@ -94,7 +93,7 @@ export class SystemMenuRepositoryService {
 
   /**Save into db */
   public async addSystemMenuCategory(newCategory: MenuCategoryType) {
-    let category = { ...newCategory, ...this._timeStamp };
+    let category = { ...newCategory };
     try {
       const saved = await this._api.set<MenuCategoryType>(Db.Context.System.Menu.Category, category);
 

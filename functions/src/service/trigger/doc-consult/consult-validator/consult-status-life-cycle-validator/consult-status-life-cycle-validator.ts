@@ -2,7 +2,7 @@ import * as I from '../../../../../interface';
 import * as Constant from '../../../../../constant';
 
 //** b = Before, a = After */
-export const get = function (b: I.ConsultStatusType, a: I.ConsultStatusType) {
+export const get = function (b: I.Consult.StatusType, a: I.Consult.StatusType) {
   const before = detect(b);
   const after = detect(a);
   const result: I.ConsultDocumentStatusLifeCycleType = {
@@ -17,26 +17,14 @@ export const get = function (b: I.ConsultStatusType, a: I.ConsultStatusType) {
   return result;
 };
 
-const detect = function (status: I.ConsultStatusType) {
+const detect = function (status: I.Consult.StatusType) {
   const result: I.ConsultDocumentStatusDetectionType = {
-    Is_Creating:
-      status.type === Constant.Consult.StatusType.Creating &&
-      status.description === Constant.Consult.StatusDescription.Creating,
-    Is_Pending:
-      status.type === Constant.Consult.StatusType.Pending &&
-      status.description === Constant.Consult.StatusDescription.Pending,
-    Is_Scheduled:
-      status.type === Constant.Consult.StatusType.Scheduled &&
-      status.description === Constant.Consult.StatusDescription.Scheduled,
-    Is_Start:
-      status.type === Constant.Consult.StatusType.Start &&
-      status.description === Constant.Consult.StatusDescription.Start,
-    Is_Completed:
-      status.type === Constant.Consult.StatusType.Completed &&
-      status.description === Constant.Consult.StatusDescription.Completed,
-    Is_Cancel:
-      status.type === Constant.Consult.StatusType.Cancel &&
-      status.description === Constant.Consult.StatusDescription.Cancel,
+    Is_Creating: Constant.Consult.isCreatingType(status),
+    Is_Pending: Constant.Consult.isPendingType(status),
+    Is_Scheduled: Constant.Consult.isScheduledType(status),
+    Is_Start: Constant.Consult.isStartType(status),
+    Is_Completed: Constant.Consult.isCompletedType(status),
+    Is_Cancel: Constant.Consult.isCancelType(status),
   };
   return result;
 };

@@ -12,7 +12,6 @@ import * as Db from 'src/app/constant/firebase-path';
 })
 export class SystemShopConfigurationRepositoryService {
   private _api = inject(FirebaseApiService);
-  private readonly _timeStamp = { lastModifiedDate: new Date() };
 
   constructor(private _toaster: FirebaseToasterService) {}
 
@@ -88,7 +87,7 @@ export class SystemShopConfigurationRepositoryService {
   }
 
   public async createNewShopConfiguration(shopConfig: ShopConfigurationType): Promise<boolean> {
-    const config = { ...shopConfig, ...this._timeStamp };
+    const config = { ...shopConfig };
 
     try {
       const saved = await this._api.set<ShopConfigurationType>(Db.Context.ShopConfiguration, config);
@@ -107,7 +106,7 @@ export class SystemShopConfigurationRepositoryService {
   }
 
   public async updateShopConfiguration(shopConfig: ShopConfigurationType): Promise<boolean> {
-    const updatedConfig = { ...shopConfig, ...this._timeStamp };
+    const updatedConfig = { ...shopConfig };
 
     try {
       const updated = await this._api.updateDocument<ShopConfigurationType>(

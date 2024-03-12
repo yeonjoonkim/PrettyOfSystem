@@ -1,4 +1,4 @@
-import { TextFormatType, APITranslationStatus, TimeStamp } from '../../../constant/constant';
+import { TextFormatType, APITranslationStatus } from '../../../constant/constant';
 import { NameValuePairType } from '../../global/global.interface';
 import {
   ILanguageTranslateResult,
@@ -85,7 +85,7 @@ export type ChatGptTranslateDocumentType = {
   result: NameValuePairType[];
   prop: string;
   status: APITranslationStatus;
-  createdDate: Date | TimeStamp;
+  createdDate: Date;
   error: NameValuePairType[];
   attempt: number;
   translateResult: ChatGptTranslateResult[];

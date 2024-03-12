@@ -1,4 +1,4 @@
-import { Consult, GenderType, PaymentStatusType, TimeZoneType } from '..';
+import { Consult, GenderType, Payment, TimeZoneType } from '..';
 
 export type ShopSchedulerDocumentType = {
   id: string;
@@ -26,6 +26,7 @@ export type ShopScheduleDocumentType = {
   isWorking: boolean;
   breakTimes: ShopEmployeeBreakTimeType[];
   consults: ShopEmployeeConsultType[];
+  consultIds: string[];
   workHours: number; //Int
   breakHours: number; //Int
   displayInSystem: boolean;
@@ -61,7 +62,7 @@ export type ShopEmployeeConsultType = {
   clientId: string;
   clientName: string;
   status: Consult.StatusType;
-  paymentStatus: PaymentStatusType;
+  paymentStatus: Payment.StatusType;
   startOfDay: string; //yyyy-MM-dd'T'HH:mm:ss
   startDateTime: string; //yyyy-MM-dd'T'HH:mm:ss
   endDateTime: string; //yyyy-MM-dd'T'HH:mm:ss

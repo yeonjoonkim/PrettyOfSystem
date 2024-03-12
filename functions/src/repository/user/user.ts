@@ -75,7 +75,7 @@ export const updateSelectedUser = async function (user: I.IUser) {
   const data = await documentation.get();
   if (data.exists) {
     try {
-      await documentation.update({ ...user, lastModifiedDate: new Date() });
+      await documentation.update({ ...user });
       return true;
     } catch (err) {
       logger.error(err);

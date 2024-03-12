@@ -11,7 +11,6 @@ const param = createKeyMap<RoleConfigurationType>(['id', 'description', 'accessL
 })
 export class SystemRoleRepositoryService {
   private _api = inject(FirebaseApiService);
-  private readonly _timeStamp = { lastModifiedDate: new Date() };
 
   constructor(private _toaster: FirebaseToasterService) {}
 
@@ -42,7 +41,7 @@ export class SystemRoleRepositoryService {
 
   /** This will add new System Role */
   public async addSystemRoleConfiguration(newConfig: RoleConfigurationType) {
-    const addCommand = { ...newConfig, ...this._timeStamp };
+    const addCommand = { ...newConfig };
     try {
       const saved = await this._api.set<RoleConfigurationType>(Db.Context.System.Role.Configuration, addCommand);
 
@@ -65,7 +64,6 @@ export class SystemRoleRepositoryService {
     try {
       const updated = await this._api.updateDocument<RoleConfigurationType>(Db.Context.System.Role.Configuration, {
         ...config,
-        ...this._timeStamp,
       });
       if (updated) {
         await this._toaster.updateSuccess();

@@ -20,6 +20,6 @@ export const override = function (doc: I.PaymentDocumentType): I.PaymentDocument
   return result;
 };
 
-const status = function (st: I.PaymentStatusType | undefined | null) {
-  return st !== undefined && st !== null ? st : Constant.Payment_UnPaid;
+const status = function (st: I.Payment.StatusType | undefined | null) {
+  return st !== undefined && st !== null ? st : Constant.Payment.UnPaid;
 };

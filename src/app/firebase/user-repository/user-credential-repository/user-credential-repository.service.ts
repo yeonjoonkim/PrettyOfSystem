@@ -35,7 +35,6 @@ const userParam = createKeyMap<IUser>([
 })
 export class UserCredentialRepositoryService {
   private _api = inject(FirebaseApiService);
-  private readonly _timeStamp = { lastModifiedDate: new Date() };
   private readonly _emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   constructor(
     private _toaster: FirebaseToasterService,
@@ -199,7 +198,7 @@ export class UserCredentialRepositoryService {
   }
 
   public async createUser(user: IUser): Promise<boolean> {
-    let command = { ...user, ...this._timeStamp };
+    let command = { ...user };
     try {
       const saved = await this._api.set<IUser>(Db.Context.User, command);
       if (saved) {
@@ -214,7 +213,7 @@ export class UserCredentialRepositoryService {
   }
 
   public async updateUser(user: IUser) {
-    const updateCriteria = { ...user, ...this._timeStamp };
+    const updateCriteria = { ...user };
     try {
       const updated = await this._api.updateDocument<IUser>(Db.Context.User, updateCriteria);
 
@@ -231,7 +230,7 @@ export class UserCredentialRepositoryService {
   }
 
   public async updateUserWithoutSuccessNotification(user: IUser) {
-    const updateCriteria = { ...user, ...this._timeStamp };
+    const updateCriteria = { ...user };
     try {
       return await this._api.updateDocument<IUser>(Db.Context.User, updateCriteria);
     } catch (error) {

@@ -2,9 +2,9 @@ import * as Repository from '../../../../repository/index';
 import * as Constant from '../../../../constant';
 import * as Consult from '../../../../service/trigger/doc-consult/consult-validator/consult-validator';
 import * as I from '../../../../interface';
-import * as Db from '../../../../db';
+//import * as Db from '../../../../db';
 import { logger } from 'firebase-functions/v2';
-import { firestore } from 'firebase-admin';
+//import { firestore } from 'firebase-admin';
 export const Start = async function (consult: I.ConsultDocumentType) {
   const shopConfig = await Repository.Shop.Configuration.getSelectedConfig(consult.shopId);
   if (shopConfig !== null) {
@@ -13,7 +13,7 @@ export const Start = async function (consult: I.ConsultDocumentType) {
 
     await Repository.Shop.Consult.updateDocument(consult);
     logger.info(`Consult has moved to ${consult.status.type}`);
-    await handlePayment(consult);
+    //await handlePayment(consult);
   }
 };
 
@@ -44,39 +44,39 @@ const handleCheckoutValidator = async function (consult: I.ConsultDocumentType) 
   return consult;
 };
 
-const handlePayment = async function (consult: I.ConsultDocumentType) {
-  const payment = await Repository.Shop.Payment.createPaymentByConsult(consult);
-  if (payment !== null) {
-    const purchaseCouponTransactions = createPurchasedCouponTransactions(consult, payment.id);
-    const transactions = [...purchaseCouponTransactions];
-    if (transactions.length > 0) {
-      // const sendTransactions = transactions.map(async tx => {
-      //   await sleep(500);
+// const handlePayment = async function (consult: I.ConsultDocumentType) {
+//   const payment = await Repository.Shop.Payment.createPaymentByConsult(consult);
+//   if (payment !== null) {
+//     //const purchaseCouponTransactions = createPurchasedCouponTransactions(consult, payment.id);
+//     const transactions = [...purchaseCouponTransactions];
+//     if (transactions.length > 0) {
+//       // const sendTransactions = transactions.map(async tx => {
+//       //   await sleep(500);
 
-      //   return true;
-      // });
-      // const sent = (await Promise.all(sendTransactions)).every(sent => sent === true);
-      // logger.info(`All Sent: ${sent}`);
-      // Todo
-      logger.info(`Transaction Length: ${transactions.length}`);
-    }
+//       //   return true;
+//       // });
+//       // const sent = (await Promise.all(sendTransactions)).every(sent => sent === true);
+//       // logger.info(`All Sent: ${sent}`);
+//       // Todo
+//       logger.info(`Transaction Length: ${transactions.length}`);
+//     }
 
-    logger.info(`purchaseCouponTransactions: ${purchaseCouponTransactions.length}`);
-  }
-};
+//     logger.info(`purchaseCouponTransactions: ${purchaseCouponTransactions.length}`);
+//   }
+// };
 
-const createPurchasedCouponTransactions = function (consult: I.ConsultDocumentType, paymentId: string) {
-  const purchasedCoupons = Consult.Checkout.Get.findPurchasedCoupon(consult.checkouts);
-  return purchasedCoupons.map(c => {
-    const result: I.PaymentTransactionType = {
-      id: firestore().collection(Db.ShopTransaction(consult.shopId)).doc().id,
-      paymentId: paymentId,
-      couponId: c.itemId,
-      type: Constant.Transaction.Method.Coupon,
-      surChargedRate: 0,
-      chargedAmount: 0,
-      unRealisedProfitLoss: 0,
-    };
-    return result;
-  });
-};
+// const createPurchasedCouponTransactions = function (consult: I.ConsultDocumentType, paymentId: string) {
+//   const purchasedCoupons = Consult.Checkout.Get.findPurchasedCoupon(consult.checkouts);
+//   return purchasedCoupons.map(c => {
+//     const result: I.PaymentTransactionType = {
+//       id: firestore().collection(Db.ShopTransaction(consult.shopId)).doc().id,
+//       paymentId: paymentId,
+//       couponId: c.itemId,
+//       type: Constant.Transaction.Method.Coupon,
+//       surChargedRate: 0,
+//       chargedAmount: 0,
+//       unRealisedProfitLoss: 0,
+//     };
+//     return result;
+//   });
+// };

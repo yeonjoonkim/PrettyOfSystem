@@ -110,6 +110,10 @@ export class ShopScheduleDocument {
     return this.deletedConsults;
   }
 
+  get consultIds() {
+    return this.document.consultIds;
+  }
+
   constructor(private doc: ShopScheduleDocumentType) {
     this.document = this.doc;
   }
@@ -255,6 +259,7 @@ export class ShopScheduleDocument {
       return false;
     }
     this.document.consults.push(newConsult);
+    this.document.consultIds.push(newConsult.consultId);
     this.updated = true;
     this.updateTime();
     return true;
@@ -274,6 +279,7 @@ export class ShopScheduleDocument {
     const consult = this.document.consults.find(s => s.consultId === consultId);
     if (consult !== undefined) {
       this.document.consults = this.document.consults.filter(s => s.consultId !== consultId);
+      this.document.consultIds = this.document.consultIds.filter(id => id !== id);
       this.updated = true;
       return true;
     }
@@ -301,7 +307,9 @@ export class ShopScheduleDocument {
 
     const isInWorkingHours = this.isInWorkingHours(newConsult.startDateTime, newConsult.endDateTime);
 
-    return !consultOverlap && !breakOverlap && isInWorkingHours;
+    const hasSameConsult = this.document.consultIds.some(id => id === newConsult.consultId);
+
+    return !consultOverlap && !breakOverlap && isInWorkingHours && !hasSameConsult;
   }
 
   public allowUpdateConsult(before: ShopEmployeeConsultType, after: ShopEmployeeConsultType) {

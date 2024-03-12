@@ -22,6 +22,7 @@ export const override = function (doc: I.ShopScheduleDocumentType): I.ShopSchedu
     breakHours: T.decimal(doc?.breakHours, 2),
     displayInSystem: T.boolean(doc?.displayInSystem),
     active: T.boolean(doc?.active),
+    consultIds: T.stringArray(doc?.consultIds),
   };
   return result;
 };
@@ -60,11 +61,6 @@ const status = function (status: I.Consult.StatusType | undefined | null): I.Con
   return status !== undefined && status !== null ? status : Constant.Consult.Cancel;
 };
 
-const paymentStatus = function (status: I.PaymentStatusType | undefined | null): I.PaymentStatusType {
-  return status !== undefined && status !== null
-    ? status
-    : {
-        type: Constant.Payment.Type.Unpaid,
-        description: Constant.Payment.Description.Unpaid,
-      };
+const paymentStatus = function (status: I.Payment.StatusType | undefined | null): I.Payment.StatusType {
+  return status !== undefined && status !== null ? status : Constant.Payment.UnPaid;
 };

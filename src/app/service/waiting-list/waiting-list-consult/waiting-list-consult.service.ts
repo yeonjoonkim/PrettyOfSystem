@@ -444,10 +444,7 @@ export class WaitingListConsultService {
               shopId: shopConfig.id,
               shopTimezone: shopConfig.timezone,
               status: Constant.Consult.Creating,
-              paymentStatus: {
-                type: Constant.Payment.Type.Unpaid,
-                description: Constant.Payment.Description.Unpaid,
-              },
+              paymentStatus: Constant.Payment.UnPaid,
               scheduled:
                 cart.selectedTime !== null
                   ? {

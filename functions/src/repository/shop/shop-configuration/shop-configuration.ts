@@ -91,7 +91,7 @@ export const updateConfig = async function (config: I.ShopConfigurationType): Pr
   const data = await documentation.get();
   if (data.exists) {
     try {
-      await documentation.update({ ...config, lastModifiedDate: new Date() });
+      await documentation.update({ ...config });
       return true;
     } catch (error) {
       await Repository.Error.createErrorReport(config, error, 'update', 'updateConfig');
