@@ -1,4 +1,4 @@
-import { TimeZoneType, Consult, PaymentStatusType, GenderType } from '../../constant/constant';
+import { TimeZoneType, Consult, Payment, GenderType } from '../../constant/constant';
 import { CheckOutItem } from '../booking/cart/cart.interface';
 import { AddressType } from '../global/global.interface';
 import {
@@ -17,7 +17,7 @@ export type ConsultDocumentType = {
   shopTimezone: TimeZoneType;
   status: Consult.StatusType;
   paymentId: string;
-  paymentStatus: PaymentStatusType;
+  paymentStatus: Payment.StatusType;
   scheduled: ConsultScheduleTimeType | null;
   checkouts: CheckOutItem[];
   totalMin: number;

@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import * as Constant from 'src/app/constant/constant';
 import { AngularFirePerformance } from '@angular/fire/compat/performance';
 import { trace } from '@angular/fire/compat/performance';
+import { DateService } from 'src/app/service/global/date/date.service';
 
 export const Query = Constant.Query;
 
@@ -13,7 +14,8 @@ export const Query = Constant.Query;
 })
 export class FirebaseApiService {
   private _afs = inject(AngularFirestore);
-  private perf = inject(AngularFirePerformance);
+  private _perf = inject(AngularFirePerformance);
+  private _dateSvc = inject(DateService);
 
   constructor() {}
 
@@ -136,6 +138,7 @@ export class FirebaseApiService {
 
   public async updateField<T>(path: string, documentId: string, field: Partial<T>): Promise<boolean> {
     try {
+      const param = { field };
       await this._afs.collection<T>(path).doc(documentId).update(field);
       return true;
     } catch (error) {

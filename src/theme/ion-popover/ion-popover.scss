@@ -23,6 +23,11 @@
   --max-width: 300px;
 }
 
+.verify-phone-container::part(content) {
+  --min-width: 340px;
+  --max-width: 340px;
+}
+
 .popover-container::part(content) {
   top: 50% !important;
   --min-width: 200px;

@@ -29,7 +29,6 @@ export const updateSelectedRole = async function (role: I.RoleConfigurationType)
     try {
       await documentation.update({
         ...role,
-        lastModifiedDate: new Date(),
       });
       return true;
     } catch (error) {
@@ -49,7 +48,6 @@ export const createRole = async function (role: I.RoleConfigurationType): Promis
     try {
       await documentation.set({
         ...role,
-        lastModifiedDate: new Date(),
       });
       return true;
     } catch (error) {

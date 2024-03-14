@@ -260,17 +260,54 @@ export const Massage = {
   } as const,
 };
 
-export const Transaction = {
-  Method: {
+export const TransactionMethod = {
+  Type: {
     Coupon: 'Coupon',
     Cash: 'Cash',
-    Card: 'Card',
+    CreditCard: 'CreditCard',
     Hicap: 'Hicap',
     ApplePay: 'ApplePay',
-    GPay: 'GPay',
+    GooglePay: 'GooglePay',
     OnlineCard: 'OnlineCard',
-  },
+    BankTransfer: 'BankTransfer',
+  } as const,
+  Description: {
+    Coupon: 'label.title.coupon',
+    Cash: 'label.title.cash',
+    CreditCard: 'label.title.creditcard',
+    Hicap: 'Hicap',
+    ApplePay: 'label.title.applepay',
+    GooglePay: 'label.title.googlepay',
+    OnlineCard: 'label.title.onlinecard',
+    BankTransfer: 'label.title.banktransfer',
+  } as const,
 } as const;
+
+export const TransactionAction = {
+  Type: {
+    Withdraw: 'Withdraw',
+    Refund: 'Refund',
+    Deposit: 'Deposit',
+  } as const,
+  Description: {
+    Withdraw: 'label.title.withdraw',
+    Refund: 'label.title.refund',
+    Deposit: 'label.title.deposit',
+  } as const,
+} as const;
+
+export const TransactionType = {
+  Type: {
+    CashBalance: 'CashBalance',
+    Payment: 'Payment',
+    SMSRepayment: 'SMSRepayment',
+  } as const,
+  Description: {
+    CashBalance: 'label.title.cashbalance',
+    Payment: 'label.title.payment',
+    SMSRepayment: 'label.title.smsrepayment',
+  } as const,
+};
 
 export const Payment = {
   Type: {

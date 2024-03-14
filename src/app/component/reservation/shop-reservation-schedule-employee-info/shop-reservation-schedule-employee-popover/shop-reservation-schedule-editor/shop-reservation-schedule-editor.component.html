@@ -6,7 +6,8 @@
   [enabledSavebutton]="false"
   [isSkipEdit]="true"
   [enabledSavebutton]="editor.allowEdit()"
-  (onClickDismiss)="onClickDismiss()"></form-header>
+  (onClickDismiss)="onClickDismiss()"
+  (onClickSave)="request()"></form-header>
 <ion-content [fullscreen]="true">
   <ng-container *ngIf="editor.load()">
     <!--Information-->

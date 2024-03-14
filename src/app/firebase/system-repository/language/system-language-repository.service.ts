@@ -10,7 +10,6 @@ import { FirebaseApiService, createKeyMap, Query } from '../../firebase-api/fire
 })
 export class SystemLanguageRepositoryService {
   private _api = inject(FirebaseApiService);
-  private readonly _timeStamp = { lastModifiedDate: new Date() };
 
   constructor(private _toaster: FirebaseToasterService) {}
 
@@ -52,7 +51,7 @@ export class SystemLanguageRepositoryService {
   }
 
   public async updateLanguageSelection(criteria: LanguageSelectionType) {
-    let updateCommand = { ...criteria, ...this._timeStamp };
+    let updateCommand = { ...criteria };
     try {
       const updated = await this._api.updateDocument<LanguageSelectionType>(
         Db.Context.System.Language.Selection,
@@ -72,7 +71,7 @@ export class SystemLanguageRepositoryService {
   }
 
   public async updateLanguageKey(criteria: ILanguageKey) {
-    const updateCommand = { ...criteria, ...this._timeStamp };
+    const updateCommand = { ...criteria };
     try {
       const updated = await this._api.updateDocument<ILanguageKey>(Db.Context.System.Language.Key, updateCommand);
       if (updated) {

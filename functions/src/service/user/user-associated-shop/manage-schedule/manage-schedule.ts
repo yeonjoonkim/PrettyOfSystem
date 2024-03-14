@@ -34,7 +34,7 @@ export const updateDocument = async function (doc: C.ShopScheduleDocument) {
   const currentDate = DateSvc.startDay(shopNow);
   const isDeactivated = !doc.active || !doc.displayInSystem;
   const isFutureDocument = currentDate <= doc.startOfDay;
-  const wipeOutConsults = isDeactivated && doc.scheduledConsults.length > 0 && isFutureDocument;
+  const wipeOutConsults = isDeactivated && doc.consults.length > 0 && isFutureDocument;
   const isFuturecDocumentUpdated = doc.updated && isFutureDocument;
 
   if (!isDeactivated) {
@@ -45,7 +45,7 @@ export const updateDocument = async function (doc: C.ShopScheduleDocument) {
   }
 
   if (wipeOutConsults || (isFutureDocument && !doc.isWorking)) {
-    for (const scheduled of doc.scheduledConsults) {
+    for (const scheduled of doc.consults) {
       doc.deleteConsult(scheduled.consultId);
     }
   }
@@ -62,7 +62,7 @@ export const updateDocument = async function (doc: C.ShopScheduleDocument) {
 
 const updateConsultToPendtingStatus = async function (
   doc: I.ShopScheduleDocumentType,
-  consults: I.ShopEmployeeScheduledConsultType[],
+  consults: I.ShopEmployeeConsultType[],
   isFuture: boolean
 ) {
   const consultIds = consults.map(consult => consult.consultId);

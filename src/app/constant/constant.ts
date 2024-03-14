@@ -1,5 +1,4 @@
 //import firestore from 'firebase/firestore';
-import firebase from 'firebase/compat';
 import {
   Default,
   State,
@@ -13,7 +12,6 @@ import {
   Medical,
   ShopCategoryTitle,
   CartItem,
-  Transaction,
   Query,
   SignatureTransferStatus,
   Scheduler,
@@ -33,8 +31,6 @@ export {
   ShopCategoryTitle,
   ChangeNumberRequestStatus,
   CartItem,
-  Payment,
-  Transaction,
   Query,
   SignatureTransferStatus,
   Scheduler,
@@ -44,7 +40,8 @@ export { TimeZone } from './timezone';
 import { API } from './constant-api';
 export { API, Email } from './constant-api';
 export * as Consult from './consult/consult.index';
-export * from './constant-payment';
+export * as Payment from './payment/payment.index';
+export * as Transaction from './transaction/transaction.index';
 
 //Shop Category
 export type ShopCategoryTitleType = (typeof ShopCategoryTitle)[keyof typeof ShopCategoryTitle];
@@ -57,7 +54,6 @@ export type ChangeNumberRequestStatusType =
   (typeof ChangeNumberRequestStatus)[keyof typeof ChangeNumberRequestStatus];
 
 //Date
-export type TimeStamp = firebase.firestore.Timestamp; //firebase.Timestamp;
 export type TimeZoneType = (typeof TimeZone)[keyof typeof TimeZone];
 export type DayIndexType = (typeof Date.DayIndex)[keyof typeof Date.DayIndex];
 export type DayType = (typeof Date.Day)[keyof typeof Date.Day];
@@ -115,6 +111,7 @@ export type QueryOperatorType = (typeof Query)[keyof typeof Query];
 export type APIResponseType = (typeof API.Response)[keyof typeof API.Response];
 export type APIActionType = (typeof API.Action)[keyof typeof API.Action];
 export type APITranslationStatus = (typeof API.TranslateStatus)[keyof typeof API.TranslateStatus];
+export type APIStatusType = (typeof API.Status)[keyof typeof API.Status];
 export type APIQueryMethodType = (typeof API.QueryMethod)[keyof typeof API.QueryMethod];
 
 //Booking
@@ -146,20 +143,6 @@ export type MedicalHistoryType = (typeof Medical.History.Type)[keyof typeof Medi
 
 //Cart
 export type CartItemType = (typeof CartItem)[keyof typeof CartItem];
-
-//Transaction Method
-export const Transaction_OnlineTypes = [
-  Transaction.Method.OnlineCard,
-  Transaction.Method.ApplePay,
-  Transaction.Method.GPay,
-];
-export const Transaction_OfflineTypes = [
-  Transaction.Method.Card,
-  Transaction.Method.Hicap,
-  Transaction.Method.Cash,
-  Transaction.Method.Coupon,
-];
-export type TransactionType = (typeof Transaction.Method)[keyof typeof Transaction.Method];
 
 //Scheduler
 export type SchedulerViewModeType = (typeof Scheduler.View)[keyof typeof Scheduler.View];

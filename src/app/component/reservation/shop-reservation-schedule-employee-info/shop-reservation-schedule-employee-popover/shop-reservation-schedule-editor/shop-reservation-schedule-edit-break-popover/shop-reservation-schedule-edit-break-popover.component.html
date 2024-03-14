@@ -11,9 +11,14 @@
           {{ 'messageerror.description.conflictwithevents' | languageTransform: 'System' | async }}
         </p>
       </error-message-item>
-      <error-message-item *ngIf="!editBreakTimeEditor.validBreak()">
+      <error-message-item *ngIf="!editBreakTimeEditor.validBreak() && editBreakTimeEditor.isNotEqualToPrevious()">
         <p>
           {{ 'messageerror.description.invalidbreaktime' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+      <error-message-item *ngIf="!editBreakTimeEditor.isNotEqualToPrevious()">
+        <p>
+          {{ 'messageerror.description.samewithpreviousbreaktime' | languageTransform: 'System' | async }}
         </p>
       </error-message-item>
       <time-from-to

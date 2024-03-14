@@ -8,7 +8,6 @@ import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service
 import { ShopReservationScheduleEditBreakTimeEditorService } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-schedule-editor/shop-reservation-schedule-edit-break-time-editor/shop-reservation-schedule-edit-break-time-editor.service';
 import { ShopReservationScheduleEditBreakPopoverComponent } from './shop-reservation-schedule-edit-break-popover/shop-reservation-schedule-edit-break-popover.component';
 import { ShopReservationScheduleAddBreakTimeEditorService } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-schedule-editor/shop-reservation-schedule-add-break-time-editor/shop-reservation-schedule-add-break-time-editor.service';
-
 @Component({
   selector: 'app-shop-reservation-schedule-editor',
   templateUrl: './shop-reservation-schedule-editor.component.html',
@@ -34,13 +33,20 @@ export class ShopReservationScheduleEditorComponent implements OnInit, OnDestroy
 
   ngOnInit() {}
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.editor.start(this._shopId, this._documentId, this._shopOperatingHours);
+    this.editor.completedRequest$.pipe(takeUntil(this._destroy$)).subscribe(async () => {
+      await this.onClickDismiss();
+    });
     this.editor._query$.pipe(takeUntil(this._destroy$)).subscribe(doc => {
       if (doc !== null) {
         this.editor.query.set(doc);
       }
     });
+  }
+
+  public async request() {
+    await this.editor.updateRequest();
   }
 
   public async onClickDismiss() {

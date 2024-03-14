@@ -46,13 +46,8 @@ const associatedEmployee = function (associatedEmployee: I.ConsultAssociatedEmpl
       };
 };
 
-const paymentStatus = function (paymentStatus: I.PaymentStatusType | undefined | null): I.PaymentStatusType {
-  return paymentStatus !== undefined && paymentStatus !== null
-    ? paymentStatus
-    : {
-        type: Constant.Payment.Type.Unpaid,
-        description: Constant.Payment.Description.Unpaid,
-      };
+const paymentStatus = function (paymentStatus: I.Payment.StatusType | undefined | null): I.Payment.StatusType {
+  return paymentStatus !== undefined && paymentStatus !== null ? paymentStatus : Constant.Payment.UnPaid;
 };
 
 const scheduled = function (scheduled: I.ConsultScheduleTimeType | undefined | null) {

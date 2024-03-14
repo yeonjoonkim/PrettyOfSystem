@@ -5,7 +5,7 @@ import { DateService } from '../../global/date/date.service';
 import { combineLatestWith, filter, of, switchMap, take } from 'rxjs';
 import * as Constant from 'src/app/constant/constant';
 import { DateType } from '../../global/date/date-transform/date-transform.service';
-import { CurrentTimeSettings, DateChangeEvent, SchedulerEvent } from '@progress/kendo-angular-scheduler';
+import { CurrentTimeSettings, DateChangeEvent } from '@progress/kendo-angular-scheduler';
 import {
   DateStatusType,
   SchedulerViewModeType,
@@ -45,7 +45,7 @@ export class ShopReservationSchedulerService {
   public maxDate = this._defaultScheduler.maxDate;
   public timezone = this._defaultScheduler.timezone;
   public slotDivision = signal(2);
-  public slotDuration = signal(30); // Min
+  public slotDuration = signal(60); // Min
   public weekStart = signal(Constant.Date.DayIndex.Sun);
   public showWorkHours = signal(true);
   public editable = signal(false);

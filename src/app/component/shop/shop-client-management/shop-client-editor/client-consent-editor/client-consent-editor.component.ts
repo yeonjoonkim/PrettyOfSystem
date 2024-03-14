@@ -89,6 +89,7 @@ export class ClientConsentEditorComponent implements OnInit {
         component: SignatureTransferReceiverComponent,
         event: event,
         translucent: true,
+        backdropDismiss: false,
         size: 'auto',
         cssClass: 'signature-transfer-popover-container',
       });

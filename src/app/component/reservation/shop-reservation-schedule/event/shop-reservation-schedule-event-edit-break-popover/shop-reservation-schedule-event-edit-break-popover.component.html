@@ -1,0 +1,53 @@
+<form-header
+  (onClickDismiss)="onDismiss()"
+  [action]="form.action"
+  [isSaveRequired]="false"
+  [title]="form.headerTitle"
+  (onClickDelete)="onDelete()"></form-header>
+<ion-content>
+  <div class="popover-container" *ngIf="editBreakTimeEditor.loaded()">
+    <flex-col>
+      <error-message-item *ngIf="!editBreakTimeEditor.allowUpdateBreakTime() && editBreakTimeEditor.validBreak()">
+        <p>
+          {{ 'messageerror.description.conflictwithevents' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+      <error-message-item *ngIf="!editBreakTimeEditor.validBreak() && editBreakTimeEditor.isNotEqualToPrevious()">
+        <p>
+          {{ 'messageerror.description.invalidbreaktime' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+      <error-message-item *ngIf="!editBreakTimeEditor.isNotEqualToPrevious()">
+        <p>
+          {{ 'messageerror.description.samewithpreviousbreaktime' | languageTransform: 'System' | async }}
+        </p>
+      </error-message-item>
+      <time-from-to
+        [displayCenter]="true"
+        [intervalMin]="5"
+        [min]="editBreakTimeEditor.employeeStartItem()"
+        [max]="editBreakTimeEditor.employeeEndTimeItem()"
+        [timeFrom]="editBreakTimeEditor.startTimeItem()"
+        [timeTo]="editBreakTimeEditor.endTimeItem()"
+        (timeFromChange)="editBreakTimeEditor.startTimeItem.set($event)"
+        (timeToChange)="editBreakTimeEditor.endTimeItem.set($event)"></time-from-to>
+    </flex-col>
+
+    <flex-row class="button-container">
+      <flex-row-item>
+        <kendo-button
+          [disabled]="!editBreakTimeEditor.allowUpdateBreakTime()"
+          (click)="onUpdateBreakTime()"
+          kendoButton
+          class="apply">
+          {{ 'label.title.apply' | languageTransform: 'System' | async }}
+        </kendo-button>
+      </flex-row-item>
+      <flex-row-item>
+        <kendo-button (click)="onDismiss()" kendoButton>
+          {{ 'button.title.cancel' | languageTransform: 'System' | async }}
+        </kendo-button>
+      </flex-row-item>
+    </flex-row>
+  </div>
+</ion-content>

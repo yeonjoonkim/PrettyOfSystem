@@ -5,7 +5,8 @@ import * as Error from '../../error/error';
 import * as Constant from '../../../constant';
 import * as Scheduler from '../shop-scheduler/shop-scheduler';
 import * as DateSvc from '../../../service/date/service-date';
-
+import * as Override from '../../../service/override/index';
+export * as UpdateRequest from './shop-schedule-update-request/shop-schedule-update-request';
 export const createDefaultSchedules = async function (
   associatedShop: I.UserAssociatedShopType,
   firstName: string,
@@ -69,6 +70,7 @@ export const newDocument = function (
     displayInSystem: associatedShop.displayInSystem,
     breakTimes: breakTimes,
     consults: [],
+    consultIds: [],
     workHours: workHours,
     breakHours: breakHours,
     active: associatedShop.active,
@@ -143,7 +145,8 @@ export const getByEmployeeId = async function (shopId: string, employeeId: strin
       .where('employeeId', '==', employeeId)
       .get();
     const docs = allSnapshot.docs.map(doc => {
-      return doc.data() as I.ShopScheduleDocumentType;
+      const document = doc.data() as I.ShopScheduleDocumentType;
+      return Override.Shop.Document.Schedule.override(document);
     });
 
     return docs;
@@ -161,7 +164,8 @@ export const getByEmployeeIdFromStartDay = async function (shopId: string, emplo
       .where('startOfDay', Constant.Query.GreaterThanOrEqual, startDay)
       .get();
     const docs = allSnapshot.docs.map(doc => {
-      return doc.data() as I.ShopScheduleDocumentType;
+      const document = doc.data() as I.ShopScheduleDocumentType;
+      return Override.Shop.Document.Schedule.override(document);
     });
     return docs;
   } catch (error) {
@@ -179,7 +183,8 @@ export const getSelectedDay = async function (shopId: string, employeeId: string
       .limit(1)
       .get();
     const docs = allSnapshot.docs.map(doc => {
-      return doc.data() as I.ShopScheduleDocumentType;
+      const document = doc.data() as I.ShopScheduleDocumentType;
+      return Override.Shop.Document.Schedule.override(document);
     });
     return docs.length > 0 ? docs[0] : null;
   } catch (error) {
@@ -196,7 +201,8 @@ export const getById = async function (shopId: string, documentId: string) {
       .limit(1)
       .get();
     const docs = allSnapshot.docs.map(doc => {
-      return doc.data() as I.ShopScheduleDocumentType;
+      const document = doc.data() as I.ShopScheduleDocumentType;
+      return Override.Shop.Document.Schedule.override(document);
     });
     return docs.length > 0 ? docs[0] : null;
   } catch (error) {
@@ -219,7 +225,8 @@ export const getByDayIndexFromStartDay = async function (
       .where('dayIndex', Constant.Query.Equal, dayIndex)
       .get();
     const docs = allSnapshot.docs.map(doc => {
-      return doc.data() as I.ShopScheduleDocumentType;
+      const document = doc.data() as I.ShopScheduleDocumentType;
+      return Override.Shop.Document.Schedule.override(document);
     });
     return docs;
   } catch (error) {

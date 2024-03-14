@@ -1,4 +1,4 @@
-import { PaymentStatusType, TransactionType } from '../../constant/constant';
+import { Payment } from '../../constant/constant';
 
 export type PaymentDocumentType = {
   id: string;
@@ -6,21 +6,11 @@ export type PaymentDocumentType = {
   shopId: string;
   consultId: string;
   transactionIds: string[];
-  status: PaymentStatusType;
+  status: Payment.StatusType;
   totalPrice: number;
   adjustedPrice: number;
   discountedRate: number;
   remainingBalance: number;
   createAt: string;
   modifiedAt: string;
-};
-
-export type PaymentTransactionType = {
-  id: string;
-  paymentId: string;
-  couponId: string | null;
-  type: TransactionType;
-  surChargedRate: number;
-  chargedAmount: number;
-  unRealisedProfitLoss: number;
 };

@@ -48,6 +48,10 @@ export class SignatureTransferReceiverComponent implements OnInit, OnDestroy {
     await this._global.toast.present(msg);
   }
 
+  public async cancel() {
+    await this._popover.dismiss();
+  }
+
   async ngOnDestroy() {
     this._destroy$.next();
     this._destroy$.complete();

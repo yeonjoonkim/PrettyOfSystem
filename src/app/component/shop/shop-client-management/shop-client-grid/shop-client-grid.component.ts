@@ -61,7 +61,7 @@ export class ShopClientGridComponent implements OnInit, OnDestroy {
       event: event,
       translucent: true,
       size: 'auto',
-      cssClass: 'center-popover-container',
+      cssClass: 'center-popover-container verify-phone-container',
     });
     await popover.present();
   }

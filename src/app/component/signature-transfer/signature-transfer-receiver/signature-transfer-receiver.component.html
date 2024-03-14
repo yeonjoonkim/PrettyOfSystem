@@ -6,13 +6,22 @@
       </flex-col-item>
       <flex-col-item class="qrcode-container" *ngIf="status === 'StandBy'">
         <kendo-qrcode *ngIf="url" [value]="url" #qrcode errorCorrection="Q" size="200px"> </kendo-qrcode>
-        <kendo-button class="btn" kendoButton (click)="copyText()">
-          {{ 'label.title.copy' | languageTransform: 'System' | async }}
-        </kendo-button>
       </flex-col-item>
     </div>
   </div>
 </flex-col>
+<flex-row *ngIf="transfer.status$ | async as status">
+  <flex-row-item *ngIf="status === 'StandBy'">
+    <kendo-button class="apply" kendoButton (click)="copyText()">
+      {{ 'label.title.copy' | languageTransform: 'System' | async }}
+    </kendo-button>
+  </flex-row-item>
+  <flex-row-item>
+    <kendo-button kendoButton (click)="cancel()">
+      {{ 'button.title.cancel' | languageTransform: 'System' | async }}
+    </kendo-button>
+  </flex-row-item>
+</flex-row>
 
 <flex-col *ngIf="!loaded() || !url" class="signature-qr-code-loading-container">
   <kendo-loader size="large"></kendo-loader>

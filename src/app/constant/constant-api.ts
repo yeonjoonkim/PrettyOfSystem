@@ -23,6 +23,12 @@ export const API = {
     Completed: 'Completed',
     Failed: 'Failed',
   },
+  Status: {
+    Pending: 'Pending',
+    Error: 'Error',
+    Success: 'Success',
+    Blocked: 'Blocked',
+  },
   QueryMethod: {
     Get: 'Get',
     Snapshot: 'Snapshot',

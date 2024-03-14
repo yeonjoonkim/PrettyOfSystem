@@ -1,13 +1,16 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { getTime } from 'date-fns';
-import { combineLatestWith, delay, exhaustMap, filter, map, of, switchMap } from 'rxjs';
+import { Subject, combineLatestWith, exhaustMap, filter, map, take } from 'rxjs';
 import { ShopScheduleDocument } from 'src/app/class/global';
+import { FirebaseToasterService } from 'src/app/firebase/firebase-toaster/firebase-toaster.service';
 import { ShopScheduleRepositoryService } from 'src/app/firebase/shop-repository/shop-schedule-repository/shop-schedule-repository.service';
 import { SchedulerOperatingHoursType, ShopEmployeeBreakTimeType, TimeItemType } from 'src/app/interface';
 import { DateTimeValidatorService } from 'src/app/service/global/date-time-validator/date-time-validator.service';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { FormControllerService } from 'src/app/service/global/form/form-controller.service';
+import { LoadingService } from 'src/app/service/global/loading/loading.service';
+import * as Constant from 'src/app/constant/constant';
 
 const nullableSchedule = null as unknown as ShopScheduleDocument;
 const nullableString = null as unknown as string;
@@ -21,7 +24,8 @@ export class ShopReservationScheduleEditorService {
   private _scheduleRepo = inject(ShopScheduleRepositoryService);
   private _dateSvc = inject(DateService);
   private _dateTimeValidator = inject(DateTimeValidatorService);
-
+  private _toastSvc = inject(FirebaseToasterService);
+  private _loadingSvc = inject(LoadingService);
   //Param
   private _shopId = signal<string>(nullableString);
   private _documentId = signal<string>(nullableString);
@@ -68,6 +72,7 @@ export class ShopReservationScheduleEditorService {
       ? this._dateSvc.timeItem(new Date(shopOperatingHours.endDateTime))
       : nullableTimeItem;
   });
+  public completedRequest$ = new Subject<void>();
 
   // Header
   public title = computed(() => {
@@ -253,20 +258,34 @@ export class ShopReservationScheduleEditorService {
     return false;
   });
 
+  private _isInProgress$ = this._paramLoaded$.pipe(
+    combineLatestWith(this._shopId$, this._documentId$),
+    filter(([load, shopId, Id]) => typeof load === 'boolean' && load && Boolean(shopId) && Boolean(Id)),
+    exhaustMap(([_, shopId, Id]) => this._scheduleRepo.updateRequest.isInProgress(shopId, Id))
+  );
+  public isInProgress = toSignal(this._isInProgress$, { initialValue: false });
+
   public allowEdit = computed(() => {
     const onChange = this.query();
     const isWorking = this.isWorking();
+    const isInProgress = this.isInProgress();
     if (onChange !== null && isWorking) {
       const conflictBetweenStartEndOperatingHours = this.conflictBetweenStartEndOperatingHours();
       const conflictBreakTime = this.conflictBreakTime();
       const conflictConsult = this.conflictConsult();
       const invalidWorkTimes = this.invalidWorkTimes();
-      return !conflictBetweenStartEndOperatingHours && !conflictBreakTime && !conflictConsult && !invalidWorkTimes;
+      return (
+        !conflictBetweenStartEndOperatingHours &&
+        !conflictBreakTime &&
+        !conflictConsult &&
+        !invalidWorkTimes &&
+        !isInProgress
+      );
     }
 
     if (onChange !== null && !isWorking) {
       const hasConsults = this.hasConsults();
-      return !hasConsults;
+      return !hasConsults && !isInProgress;
     }
 
     return false;
@@ -322,5 +341,41 @@ export class ShopReservationScheduleEditorService {
     const doc = this.query();
     doc.endDateTime = this._dateSvc.transform.formatByTimeItem(startOfDay, time);
     this.query.set(doc);
+  }
+
+  public async updateRequest() {
+    await this._loadingSvc.start('label.title.requesting');
+    const updateRequestId = await this._scheduleRepo.updateRequest.send(this.query().data);
+    if (updateRequestId !== null) {
+      this._scheduleRepo.updateRequest
+        .requestListener(updateRequestId)
+        .pipe(
+          filter(request => request !== null && request.status !== Constant.API.Status.Pending),
+          take(1)
+        )
+        .subscribe(async request => {
+          if (request !== null) {
+            if (request.status === Constant.API.Status.Error) {
+              await this._loadingSvc.dismiss();
+              await this._toastSvc.updateFail('');
+            }
+            if (request.status === Constant.API.Status.Success) {
+              await this._loadingSvc.dismiss();
+              await this._toastSvc.updateSuccess();
+              this.completedRequest$.next();
+            }
+            if (request.status === Constant.API.Status.Blocked) {
+              await this._loadingSvc.dismiss();
+              await this._toastSvc.blocked();
+            }
+          } else {
+            await this._loadingSvc.dismiss();
+            await this._toastSvc.requestFail('');
+          }
+        });
+    } else {
+      await this._loadingSvc.dismiss();
+      await this._toastSvc.requestFail('');
+    }
   }
 }
