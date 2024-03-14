@@ -13,8 +13,12 @@ import { KendoUiModule } from '../../../global/kendo-ui-module/kendo-ui-module.m
 
 import { ShopReservationScheduleEmployeePopoverComponent } from './shop-reservation-schedule-employee-popover.component';
 import { ShopReservationScheduleEditorModule } from './shop-reservation-schedule-editor/shop-reservation-schedule-editor.component.module';
+import { ShopReservationScheduleEmployeeNewBreakPopoverComponent } from './shop-reservation-schedule-employee-new-break-popover/shop-reservation-schedule-employee-new-break-popover.component';
 @NgModule({
-  declarations: [ShopReservationScheduleEmployeePopoverComponent],
+  declarations: [
+    ShopReservationScheduleEmployeePopoverComponent,
+    ShopReservationScheduleEmployeeNewBreakPopoverComponent,
+  ],
   imports: [
     CommonModule,
     IonicModule,

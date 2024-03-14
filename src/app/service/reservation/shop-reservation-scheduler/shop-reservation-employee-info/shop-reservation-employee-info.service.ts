@@ -10,12 +10,26 @@ import {
   DateTimeValidatorService,
   StartEndType,
 } from 'src/app/service/global/date-time-validator/date-time-validator.service';
-import { DateType } from 'src/app/service/global/date/date-transform/date-transform.service';
 import { DateService } from 'src/app/service/global/date/date.service';
 import * as Constant from 'src/app/constant/constant';
 import { DateStatusType } from 'src/app/interface/reservation/reservation-scheduler.interface';
 import { getTime } from 'date-fns';
 import { SchedulerEvent } from '@progress/kendo-angular-scheduler';
+import { DateType } from 'src/app/service/global/date/date-transform/date-transform.service';
+export type ReservationSchedulerEventType = {
+  id: string;
+  start: Date;
+  end: Date;
+  startTimezone: string;
+  endTimezone: string;
+  title: string;
+  description: Constant.SchedulerEmployeeStatusType;
+  isAllDay: boolean;
+  data: {
+    selectedTime: StartEndType;
+    employee: ShopScheduleDocumentType;
+  };
+};
 
 @Injectable({
   providedIn: 'root',
@@ -60,7 +74,10 @@ export class ShopReservationEmployeeInfoService {
       : Constant.Scheduler.WorkingStatus.Available;
   }
 
-  getEvents(employees: ShopScheduleDocumentType[], operatingHours: SchedulerOperatingHoursType): SchedulerEvent[] {
+  getEvents(
+    employees: ShopScheduleDocumentType[],
+    operatingHours: SchedulerOperatingHoursType
+  ): ReservationSchedulerEventType[] {
     const emps = employees.filter(s => s.isWorking);
     const breakTimes = this.getBreakTimeEvents(employees);
     const startOutOfOffice = this.getStartOutOfOffice(emps, operatingHours);
@@ -68,7 +85,7 @@ export class ShopReservationEmployeeInfoService {
     return [...breakTimes, ...startOutOfOffice, ...endOutOfOffice];
   }
 
-  private getBreakTimeEvents(employees: ShopScheduleDocumentType[]) {
+  private getBreakTimeEvents(employees: ShopScheduleDocumentType[]): ReservationSchedulerEventType[] {
     return employees
       .filter(q => q.breakTimes && q.breakTimes.length > 0)
       .map(q =>
@@ -78,20 +95,26 @@ export class ShopReservationEmployeeInfoService {
           startTimezone: q.shopTimezone,
           end: this._dateSvc.transform.toLocalDateTime(bt.endDateTime),
           endTimezone: q.shopTimezone,
-          title: 'Break Time',
+          title: 'label.title.breaktime',
           description: Constant.Scheduler.WorkingStatus.InBreak,
-          dataItem: q,
           isAllDay: false,
+          data: {
+            selectedTime: { start: bt.startDateTime, end: bt.endDateTime },
+            employee: q,
+          },
         }))
       )
       .reduce((acc, val) => acc.concat(val), []);
   }
 
-  private getStartOutOfOffice(employees: ShopScheduleDocumentType[], operatingHours: SchedulerOperatingHoursType) {
+  private getStartOutOfOffice(
+    employees: ShopScheduleDocumentType[],
+    operatingHours: SchedulerOperatingHoursType
+  ): ReservationSchedulerEventType[] {
     return employees
       .filter(q => getTime(new Date(q.startDateTime)) !== getTime(new Date(operatingHours.startDateTime)))
       .map(q => {
-        const event: SchedulerEvent = {
+        const event: ReservationSchedulerEventType = {
           id: q.employeeId,
           start: this._dateSvc.transform.toLocalDateTime(operatingHours.startDateTime),
           startTimezone: q.shopTimezone,
@@ -99,18 +122,24 @@ export class ShopReservationEmployeeInfoService {
           endTimezone: q.shopTimezone,
           title: 'Out Of Office',
           description: Constant.Scheduler.WorkingStatus.OutOfOffice,
-          dataItem: q,
           isAllDay: false,
+          data: {
+            selectedTime: { start: operatingHours.startDateTime, end: q.startDateTime },
+            employee: q,
+          },
         };
         return event;
       });
   }
 
-  private getEndOutofOffice(employees: ShopScheduleDocumentType[], operatingHours: SchedulerOperatingHoursType) {
+  private getEndOutofOffice(
+    employees: ShopScheduleDocumentType[],
+    operatingHours: SchedulerOperatingHoursType
+  ): ReservationSchedulerEventType[] {
     return employees
       .filter(q => getTime(new Date(q.endDateTime)) !== getTime(new Date(operatingHours.endDateTime)))
       .map(q => {
-        const event: SchedulerEvent = {
+        const event: ReservationSchedulerEventType = {
           id: q.employeeId,
           start: this._dateSvc.transform.toLocalDateTime(q.endDateTime),
           startTimezone: q.shopTimezone,
@@ -118,8 +147,11 @@ export class ShopReservationEmployeeInfoService {
           endTimezone: q.shopTimezone,
           title: 'Out Of Office',
           description: Constant.Scheduler.WorkingStatus.OutOfOffice,
-          dataItem: q,
           isAllDay: false,
+          data: {
+            selectedTime: { start: q.endDateTime, end: operatingHours.endDateTime },
+            employee: q,
+          },
         };
         return event;
       });

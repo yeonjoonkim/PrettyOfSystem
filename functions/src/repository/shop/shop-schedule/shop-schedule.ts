@@ -6,6 +6,7 @@ import * as Constant from '../../../constant';
 import * as Scheduler from '../shop-scheduler/shop-scheduler';
 import * as DateSvc from '../../../service/date/service-date';
 import * as Override from '../../../service/override/index';
+export * as UpdateRequest from './shop-schedule-update-request/shop-schedule-update-request';
 export const createDefaultSchedules = async function (
   associatedShop: I.UserAssociatedShopType,
   firstName: string,

@@ -21,12 +21,14 @@ import { ShopReservationSchedulerToolbarComponent } from './shop-reservation-sch
 import { ShopReservationScheduleReviewsComponent } from './shop-reservation-schedule-reviews/shop-reservation-schedule-reviews.component';
 import { ShopReservationSchedulerMobileToolbarPopoverComponent } from 'src/app/component/reservation/shop-reservation-schedule/shop-reservation-scheduler-mobile-toolbar-popover/shop-reservation-scheduler-mobile-toolbar-popover.component';
 import { ShopVerifyNewClientPhoneNumberPopoverComponent } from '../../shop/shop-client-management/shop-verify-new-client-phone-number-popover/shop-verify-new-client-phone-number-popover.component';
+import { ShopReservationScheduleEventEditBreakPopoverComponent } from './event/shop-reservation-schedule-event-edit-break-popover/shop-reservation-schedule-event-edit-break-popover.component';
 @NgModule({
   declarations: [
     ShopReservationScheduleComponent,
     ShopReservationSchedulerToolbarComponent,
     ShopReservationScheduleReviewsComponent,
     ShopReservationSchedulerMobileToolbarPopoverComponent,
+    ShopReservationScheduleEventEditBreakPopoverComponent,
   ],
   imports: [
     CommonModule,

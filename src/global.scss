@@ -411,3 +411,8 @@ kendo-pager-prev-buttons {
     font-size: 10px;
   }
 }
+
+.popover-translucent .popover-content,
+.popover-translucent .popover-arrow::after {
+  display: none;
+}

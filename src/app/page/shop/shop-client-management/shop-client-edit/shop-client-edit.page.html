@@ -17,96 +17,90 @@
 
 <ion-content [fullscreen]="true">
   <div
-    class="editor-container"
-    *ngIf="!(account.requesting$ | async) && (account.client$ | async) && (account.loaded$ | async)">
-    <div class="client-editor">
-      <ng-container
-        *ngIf="{
-    isRelatedToMedical: isRelatedToMedical$ | async, 
-    
-    isMassageShop: isMassageShop$ | async, 
-    isSkinCare: isSkinCare$ | async,
-    isHairSalon: isHairSalon$ | async,
-    isMobileShop: isMobileShop$ | async,
-    isPersonalTraining: isPersonalTraining$ | async,
-    isNailArt: isNailArt$ | async,
-
-    isAuthroised: isAuthroised$ | async, 
-    account: account.client$ | async , 
-    validator: account.validator.validator$ | async} as view">
-        <div
-          *ngIf="
-    view.isAuthroised && 
-    view.account !== null && 
-    view.validator !== null && 
-
-    view.isMassageShop !== null && 
-    view.isHairSalon !== null && 
-    view.isSkinCare !== null && 
-    view.isNailArt !== null && 
-    view.isMobileShop !== null && 
-    view.isPersonalTraining !== null &&
-
-    view.isRelatedToMedical !== null && 
-    account.massage !== null && 
-    account.medical !== null">
-          <shop-client-editor
-            *ngIf="!(account.requesting$ | async)"
-            [mode]="mode"
-            [type]="type"
-            [forceMobile]="true"
-            [validator]="view.validator"
-            [isRelatedToMedical]="view.isRelatedToMedical"
-            [isMassageShop]="view.isMassageShop"
-            [isHairSalon]="view.isHairSalon"
-            [isNailArt]="view.isNailArt"
-            [isSkinCare]="view.isSkinCare"
-            [isMobileShop]="view.isMobileShop"
-            [isPersonalTraining]="view.isPersonalTraining"
-            [timezone]="account.timezone"
-            [isUnderAge]="account.validator.underAge"
-            [isUnderAge]="account.validator.underAge"
-            [underAge]="account.validator.isUnderAge"
-            [(isVIP)]="account.isVIP"
-            [(hasMarketingEmailConsent)]="account.hasMarketingEmailConsent"
-            [(hasMarketingSMSConsent)]="account.hasMarketingSMSConsent"
-            [(hasTermandConditionConsent)]="account.hasTermandConditionConsent"
-            [(firstName)]="account.firstName"
-            [(lastName)]="account.lastName"
-            [(gender)]="account.gender"
-            [(phoneNumber)]="account.phoneNumber"
-            [(dob)]="account.dob"
-            [(email)]="account.email"
-            [(address)]="account.address"
-            [(signature)]="account.signature"
-            [(preferLanguage)]="account.preferLanguage"
-            [(pregancyDueDate)]="account.pregancyDueDate"
-            [(massage)]="account.massage"
-            [(medical)]="account.medical"
-            [(emergencyContact)]="account.emergencyContact"
-            [(firstNameValidator)]="account.validator.firstName"
-            [(lastNameValidator)]="account.validator.lastName"
-            [(emailValidator)]="account.validator.email"
-            [(phoneNumberValidator)]="account.validator.phoneNumber"
-            [(addressValidator)]="account.validator.address"
-            [(privateInsurance)]="account.privateInsurance"
-            [(signatureValidator)]="account.validator.signature"
-            [(termAndConditionValidator)]="account.validator.termAndCondition"
-            [(privateInsuranceValidator)]="account.validator.privateInsurance"
-            [(emergencyContactValidator)]="account.validator.emergencyContact"
-            (hasTermandConditionConsentChange)="account.validator.termAndCondition = $event"
-            (underAgeChange)="onUnderAgeChange($event)"
-            (onClickAction)="account.edit()"
-            (onClickDelete)="account.startDelete()"></shop-client-editor>
-        </div>
-      </ng-container>
+    *ngIf="{
+      requesting: account.requesting$ | async, 
+      client: account.client$ | async, 
+      load: account.loaded$ | async,    
+      isRelatedToMedical: isRelatedToMedical$ | async,     
+      isMassageShop: isMassageShop$ | async, 
+      isSkinCare: isSkinCare$ | async,
+      isHairSalon: isHairSalon$ | async,
+      isMobileShop: isMobileShop$ | async,
+      isPersonalTraining: isPersonalTraining$ | async,
+      isNailArt: isNailArt$ | async,
+      isAuthroised: isAuthroised$ | async, 
+      account: account.client$ | async , 
+      validator: account.validator.validator$ | async} as view">
+    <div class="editor-container" *ngIf="!view.requesting && view.client && view.load">
+      <div
+        class="client-editor"
+        *ngIf="
+      view.isAuthroised && 
+      view.account !== null && 
+      view.validator !== null && 
+      view.isMassageShop !== null && 
+      view.isHairSalon !== null && 
+      view.isSkinCare !== null && 
+      view.isNailArt !== null && 
+      view.isMobileShop !== null && 
+      view.isPersonalTraining !== null &&
+      view.isRelatedToMedical !== null && 
+      account.massage !== null && 
+      account.medical !== null">
+        <shop-client-editor
+          *ngIf="!view.requesting"
+          [mode]="mode"
+          [type]="type"
+          [forceMobile]="true"
+          [validator]="view.validator"
+          [isRelatedToMedical]="view.isRelatedToMedical"
+          [isMassageShop]="view.isMassageShop"
+          [isHairSalon]="view.isHairSalon"
+          [isNailArt]="view.isNailArt"
+          [isSkinCare]="view.isSkinCare"
+          [isMobileShop]="view.isMobileShop"
+          [isPersonalTraining]="view.isPersonalTraining"
+          [timezone]="account.timezone"
+          [isUnderAge]="account.validator.underAge"
+          [isUnderAge]="account.validator.underAge"
+          [underAge]="account.validator.isUnderAge"
+          [(isVIP)]="account.isVIP"
+          [(hasMarketingEmailConsent)]="account.hasMarketingEmailConsent"
+          [(hasMarketingSMSConsent)]="account.hasMarketingSMSConsent"
+          [(hasTermandConditionConsent)]="account.hasTermandConditionConsent"
+          [(firstName)]="account.firstName"
+          [(lastName)]="account.lastName"
+          [(gender)]="account.gender"
+          [(phoneNumber)]="account.phoneNumber"
+          [(dob)]="account.dob"
+          [(email)]="account.email"
+          [(address)]="account.address"
+          [(signature)]="account.signature"
+          [(preferLanguage)]="account.preferLanguage"
+          [(pregancyDueDate)]="account.pregancyDueDate"
+          [(massage)]="account.massage"
+          [(medical)]="account.medical"
+          [(emergencyContact)]="account.emergencyContact"
+          [(firstNameValidator)]="account.validator.firstName"
+          [(lastNameValidator)]="account.validator.lastName"
+          [(emailValidator)]="account.validator.email"
+          [(phoneNumberValidator)]="account.validator.phoneNumber"
+          [(addressValidator)]="account.validator.address"
+          [(privateInsurance)]="account.privateInsurance"
+          [(signatureValidator)]="account.validator.signature"
+          [(termAndConditionValidator)]="account.validator.termAndCondition"
+          [(privateInsuranceValidator)]="account.validator.privateInsurance"
+          [(emergencyContactValidator)]="account.validator.emergencyContact"
+          (hasTermandConditionConsentChange)="account.validator.termAndCondition = $event"
+          (underAgeChange)="onUnderAgeChange($event)"
+          (onClickAction)="account.edit()"
+          (onClickDelete)="account.startDelete()"></shop-client-editor>
+      </div>
+      <div class="client-history"></div>
     </div>
-    <div class="client-history"></div>
-  </div>
 
-  <div
-    class="loading-container"
-    *ngIf="(account.requesting$ | async) || !(account.client$ | async) || !(account.loaded$ | async)">
-    <kendo-loader size="large"></kendo-loader>
+    <div class="loading-container" *ngIf="view.requesting || !view.client || !view.load">
+      <kendo-loader size="large"></kendo-loader>
+    </div>
   </div>
 </ion-content>

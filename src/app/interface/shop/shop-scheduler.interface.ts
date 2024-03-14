@@ -1,4 +1,4 @@
-import { Consult, GenderType, Payment, TimeZoneType } from '..';
+import { APIStatusType, Consult, GenderType, Payment, TimeZoneType } from '..';
 
 export type ShopSchedulerDocumentType = {
   id: string;
@@ -71,5 +71,8 @@ export type ShopEmployeeConsultType = {
 export type ShopScheduleUpdateRequestDocumentType = {
   id: string;
   shopId: string;
+  documentId: string;
   after: ShopScheduleDocumentType;
+  shopTimestamp: number;
+  status: APIStatusType;
 };

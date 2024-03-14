@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   DoCheck,
   ElementRef,
   Input,
@@ -15,7 +14,15 @@ import { ShopReservationSchedulerService } from 'src/app/service/reservation/sho
 import { KendoUiService } from 'src/app/service/global/kendo-ui/kendo-ui.service';
 import { DateService } from 'src/app/service/global/date/date.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { SchedulerViewModeType } from 'src/app/interface';
+import { SchedulerEmployeeStatusType, SchedulerViewModeType, ShopScheduleDocumentType } from 'src/app/interface';
+import { EventClickEvent, EventStyleArgs } from '@progress/kendo-angular-scheduler';
+import * as Constant from 'src/app/constant/constant';
+import { ReservationSchedulerEventType } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-employee-info/shop-reservation-employee-info.service';
+import { PopoverController } from '@ionic/angular';
+import { ShopReservationScheduleEditorService } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-schedule-editor/shop-reservation-schedule-editor.service';
+import { ShopReservationScheduleEditBreakTimeEditorService } from 'src/app/service/reservation/shop-reservation-scheduler/shop-reservation-schedule-editor/shop-reservation-schedule-edit-break-time-editor/shop-reservation-schedule-edit-break-time-editor.service';
+import { StartEndType } from 'src/app/service/global/date-time-validator/date-time-validator.service';
+import { ShopReservationScheduleEventEditBreakPopoverComponent } from './event/shop-reservation-schedule-event-edit-break-popover/shop-reservation-schedule-event-edit-break-popover.component';
 @Component({
   selector: 'shop-reservation-schedule',
   templateUrl: './shop-reservation-schedule.component.html',
@@ -23,11 +30,15 @@ import { SchedulerViewModeType } from 'src/app/interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopReservationScheduleComponent implements OnInit, DoCheck, OnDestroy {
+  private _popoverCtrl = inject(PopoverController);
+
   @Input() destroy$!: Subject<void>;
   public kendo = inject(KendoUiService);
   public scheduler = inject(ShopReservationSchedulerService);
   private _el = inject(ElementRef);
   private _dateSvc = inject(DateService);
+  private _scheduleEditorSvc = inject(ShopReservationScheduleEditorService);
+  private _editBreakEditorSvc = inject(ShopReservationScheduleEditBreakTimeEditorService);
   private _interval$ = interval(1000);
   private _currentDateTime = new BehaviorSubject<string | null>(null);
   private _currentDateTime$ = this._currentDateTime.asObservable();
@@ -39,6 +50,32 @@ export class ShopReservationScheduleComponent implements OnInit, DoCheck, OnDest
     const loaded = this.scheduler.loaded();
     return currentDateTime !== null && loaded;
   });
+
+  public getEventClass = (args: EventStyleArgs) => {
+    const description = args.event.dataItem.description as SchedulerEmployeeStatusType;
+    switch (description) {
+      case Constant.Scheduler.WorkingStatus.InBreak:
+        return 'in-break';
+      case Constant.Scheduler.WorkingStatus.OutOfOffice:
+        return 'out-of-office';
+      case Constant.Scheduler.WorkingStatus.Consulting:
+        return 'in-consult';
+      default:
+        return '';
+    }
+  };
+
+  public inConsult = (description: SchedulerEmployeeStatusType) => {
+    return description === Constant.Scheduler.WorkingStatus.Consulting;
+  };
+
+  public inOutOfOffice = (description: SchedulerEmployeeStatusType) => {
+    return description === Constant.Scheduler.WorkingStatus.OutOfOffice;
+  };
+
+  public inBreakTime = (description: SchedulerEmployeeStatusType) => {
+    return description === Constant.Scheduler.WorkingStatus.InBreak;
+  };
 
   private get dayScheduler(): HTMLElement | null {
     return this._el.nativeElement.querySelector('.k-scheduler-content.k-user-select-none');
@@ -88,15 +125,33 @@ export class ShopReservationScheduleComponent implements OnInit, DoCheck, OnDest
   public onDayModeLeft() {
     const scrollableScheduler = this.dayScheduler;
     if (scrollableScheduler) {
-      scrollableScheduler.scrollBy({ left: -130, behavior: 'smooth' });
+      // Calculate the new scroll position
+      const newScrollPosition = scrollableScheduler.scrollLeft - 100;
+
+      // Scroll to 0 if the new scroll position is negative, otherwise scroll by -100
+      if (newScrollPosition < 0) {
+        scrollableScheduler.scrollTo({ left: 0 });
+      } else {
+        scrollableScheduler.scrollBy({ left: -100 });
+      }
     }
   }
   public onDayModeRight() {
     const scrollableScheduler = this.dayScheduler;
     if (scrollableScheduler) {
-      scrollableScheduler.scrollBy({ left: 130, behavior: 'smooth' });
+      // Calculate the new scroll position
+      const newScrollPosition = scrollableScheduler.scrollLeft + 100;
+      const maxScrollPosition = scrollableScheduler.scrollWidth - scrollableScheduler.clientWidth;
+
+      // Scroll to the maximum scroll position if the new scroll position is beyond it, otherwise scroll by +100
+      if (newScrollPosition > maxScrollPosition) {
+        scrollableScheduler.scrollTo({ left: maxScrollPosition, behavior: 'smooth' });
+      } else {
+        scrollableScheduler.scrollBy({ left: 100, behavior: 'smooth' });
+      }
     }
   }
+
   public allowDayModeLeft(): boolean {
     const scrollableScheduler = this.dayScheduler;
     return scrollableScheduler !== null && scrollableScheduler.scrollLeft > 0;
@@ -113,19 +168,39 @@ export class ShopReservationScheduleComponent implements OnInit, DoCheck, OnDest
   public onTimelineModeLeft() {
     const scrollableScheduler = this.timelineScheduler;
     if (scrollableScheduler) {
-      scrollableScheduler.scrollBy({ left: -100, behavior: 'smooth' });
+      // Calculate the new scroll position
+      const newScrollPosition = scrollableScheduler.scrollLeft - 100;
+
+      // Scroll to 0 if the new scroll position is negative, otherwise scroll by -100
+      if (newScrollPosition < 0) {
+        scrollableScheduler.scrollTo({ left: 0 });
+      } else {
+        scrollableScheduler.scrollBy({ left: -100 });
+      }
     }
   }
+
   public onTimelineModeRight() {
     const scrollableScheduler = this.timelineScheduler;
     if (scrollableScheduler) {
-      scrollableScheduler.scrollBy({ left: 100, behavior: 'smooth' });
+      // Calculate the new scroll position
+      const newScrollPosition = scrollableScheduler.scrollLeft + 100;
+      const maxScrollPosition = scrollableScheduler.scrollWidth - scrollableScheduler.clientWidth;
+
+      // Scroll to the maximum scroll position if the new scroll position is beyond it, otherwise scroll by +100
+      if (newScrollPosition > maxScrollPosition) {
+        scrollableScheduler.scrollTo({ left: maxScrollPosition, behavior: 'smooth' });
+      } else {
+        scrollableScheduler.scrollBy({ left: 100, behavior: 'smooth' });
+      }
     }
   }
+
   public allowTimelineModeLeft(): boolean {
     const scrollableScheduler = this.timelineScheduler;
     return scrollableScheduler !== null && scrollableScheduler.scrollLeft > 0;
   }
+
   public allowTimelineModeRight(): boolean {
     const scrollableScheduler = this.timelineScheduler;
     return (
@@ -142,12 +217,48 @@ export class ShopReservationScheduleComponent implements OnInit, DoCheck, OnDest
     }
   }
 
+  public async onClickEvent(target: EventClickEvent) {
+    const dateStatus = this.scheduler.dateStatus();
+    const event = target.event.dataItem as ReservationSchedulerEventType;
+    const description = target.event.description as Constant.SchedulerEmployeeStatusType;
+
+    if (!dateStatus.isPreviousDate) {
+      const document = event.data.employee;
+      const selectedTime = event.data.selectedTime;
+      const clickEvent = target.originalEvent as Event;
+      console.log(event);
+      if (event.description === Constant.Scheduler.WorkingStatus.InBreak) {
+        await this.onEditBreakTime(document, selectedTime);
+      }
+    }
+  }
+
+  private async onEditBreakTime(document: ShopScheduleDocumentType, selectedTime: StartEndType) {
+    this._scheduleEditorSvc.start(document.shopId, document.id, this.scheduler.selectedOperatingHours());
+    this._editBreakEditorSvc.start({ startDateTime: selectedTime.start, endDateTime: selectedTime.end });
+    const popover = await this._popoverCtrl.create({
+      component: ShopReservationScheduleEventEditBreakPopoverComponent,
+      cssClass: 'add-break-time-container center-popover-container',
+      event: event,
+      translucent: false,
+      size: 'cover',
+      backdropDismiss: false,
+    });
+    await popover.present();
+
+    const finalised = await popover.onWillDismiss();
+    if (finalised) {
+      this._editBreakEditorSvc.complete();
+      this._scheduleEditorSvc.completed();
+    }
+  }
+
   private scrollTimelineModeCurrentTime() {
     const indicator = this.currentTimeIndicator;
     const scrollableScheduler = this.timelineScheduler;
     if (indicator && scrollableScheduler) {
       const scrollDifference = indicator.offsetLeft - scrollableScheduler.scrollLeft;
-      scrollableScheduler.scrollBy({ left: scrollDifference, behavior: 'smooth' });
+      scrollableScheduler.scrollBy({ left: scrollDifference });
     }
   }
 

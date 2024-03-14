@@ -48,6 +48,25 @@
   }
 }
 
+:host ::ng-deep .in-break.k-event {
+  color: white;
+  $darker-color: lighten(#787586, 30%);
+  $transparent-color: rgba(red($darker-color), green($darker-color), blue($darker-color), 0.3);
+  background-color: $transparent-color !important;
+}
+:host ::ng-deep .out-of-office.k-event {
+  color: white;
+  $darker-color: lighten(#787586, 30%);
+  $transparent-color: rgba(red($darker-color), green($darker-color), blue($darker-color), 0.3);
+  background-color: $transparent-color !important;
+}
+:host ::ng-deep .in-consult.k-event {
+  color: white;
+  $darker-color: lighten(#787586, 30%);
+  $transparent-color: rgba(red($darker-color), green($darker-color), blue($darker-color), 0.3);
+  background-color: $transparent-color !important;
+}
+
 :host ::ng-deep .header-top {
   background-color: #232323 !important;
   position: -webkit-sticky;

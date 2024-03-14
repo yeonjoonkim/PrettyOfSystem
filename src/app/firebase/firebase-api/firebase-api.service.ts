@@ -113,7 +113,7 @@ export class FirebaseApiService {
         return document.id;
       } else {
         const docRef = await this._afs.collection<T>(path).add(document);
-        await docRef.set({ ...document, id: docRef.id, this. }, { merge: true });
+        await docRef.set({ ...document, id: docRef.id }, { merge: true });
         return docRef.id;
       }
     } catch (error) {
@@ -138,7 +138,7 @@ export class FirebaseApiService {
 
   public async updateField<T>(path: string, documentId: string, field: Partial<T>): Promise<boolean> {
     try {
-      const param = {field}
+      const param = { field };
       await this._afs.collection<T>(path).doc(documentId).update(field);
       return true;
     } catch (error) {

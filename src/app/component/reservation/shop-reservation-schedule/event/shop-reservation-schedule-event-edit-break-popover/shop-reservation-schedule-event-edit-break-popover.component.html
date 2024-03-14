@@ -1,8 +1,9 @@
 <form-header
-  *ngIf="editBreakTimeEditor.loaded()"
   (onClickDismiss)="onDismiss()"
   [action]="form.action"
-  [title]="form.headerTitle"></form-header>
+  [isSaveRequired]="false"
+  [title]="form.headerTitle"
+  (onClickDelete)="onDelete()"></form-header>
 <ion-content>
   <div class="popover-container" *ngIf="editBreakTimeEditor.loaded()">
     <flex-col>

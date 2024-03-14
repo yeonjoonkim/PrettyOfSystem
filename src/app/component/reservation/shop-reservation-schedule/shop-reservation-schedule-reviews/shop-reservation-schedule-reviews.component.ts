@@ -24,7 +24,7 @@ export class ShopReservationScheduleReviewsComponent implements OnInit {
       event: event,
       translucent: true,
       size: 'auto',
-      cssClass: 'center-popover-container',
+      cssClass: 'center-popover-container verify-phone-container',
     });
     await popover.present();
   }

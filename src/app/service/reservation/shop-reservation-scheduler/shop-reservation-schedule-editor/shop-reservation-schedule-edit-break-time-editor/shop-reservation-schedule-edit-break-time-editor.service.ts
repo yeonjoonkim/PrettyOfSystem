@@ -45,15 +45,22 @@ export class ShopReservationScheduleEditBreakTimeEditorService {
   });
 
   public validBreak = computed(() => {
-    const previousBreakDateTime = this.previousBreakTime();
+    const isNotEqualToPrevious = this.isNotEqualToPrevious();
     const newBreakDateTime = this.newBreakTime();
     const validNewBreakTime =
       getTime(new Date(newBreakDateTime.endDateTime)) - getTime(new Date(newBreakDateTime.startDateTime)) > 0;
+
+    return isNotEqualToPrevious && validNewBreakTime;
+  });
+
+  public isNotEqualToPrevious = computed(() => {
+    const previousBreakDateTime = this.previousBreakTime();
+    const newBreakDateTime = this.newBreakTime();
     const isNotEqualToPrevious =
       getTime(new Date(previousBreakDateTime.endDateTime)) !== getTime(new Date(newBreakDateTime.endDateTime)) ||
       getTime(new Date(previousBreakDateTime.startDateTime)) !== getTime(new Date(newBreakDateTime.startDateTime));
 
-    return isNotEqualToPrevious && validNewBreakTime;
+    return isNotEqualToPrevious;
   });
 
   constructor() {}
@@ -71,6 +78,14 @@ export class ShopReservationScheduleEditBreakTimeEditorService {
     const newBreak = this.newBreakTime();
     const query = this.editorSvc.query();
     const updated = query.updateBreaktTime(previousBreak, newBreak);
+    this.editorSvc.query.set(query);
+    return updated;
+  }
+
+  public delete() {
+    const previousBreak = this.previousBreakTime();
+    const query = this.editorSvc.query();
+    const updated = query.deleteBreak(previousBreak);
     this.editorSvc.query.set(query);
     return updated;
   }

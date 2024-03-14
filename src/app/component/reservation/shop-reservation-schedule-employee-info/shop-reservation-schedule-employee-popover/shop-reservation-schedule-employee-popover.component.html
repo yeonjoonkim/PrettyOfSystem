@@ -6,6 +6,9 @@
           <div id="btn" *ngIf="displayEdit()" (click)="onClickEdit()">
             <span id="name">{{ 'label.title.edit' | languageTransform: 'System' | async }}</span>
           </div>
+          <div id="btn" *ngIf="displayNewBreakTime()" (click)="onClickNewBreakTime()">
+            <span id="name">{{ 'label.title.addbreaktime' | languageTransform: 'System' | async }}</span>
+          </div>
           <div id="btn" *ngIf="displayNewConsult()">
             <span id="name">{{ 'label.title.newbooking' | languageTransform: 'System' | async }}</span>
           </div>

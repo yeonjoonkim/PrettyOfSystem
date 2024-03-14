@@ -1,16 +1,6 @@
 <flex-row *ngIf="loaded" class="scheduler-toolbar-container">
   <!-- Date Picker -->
   <flex-row-item class="date-picker-query-container">
-    <date-picker
-      [date]="startOfDay"
-      [shopTimeZone]="timezone"
-      [displayNextDay]="displayNextDays"
-      [displayPreviousDay]="displayPreviousDays"
-      [displayDay]="true"
-      [displayCenter]="false"
-      [operatingHours]="operatingHours"
-      (dateChange)="onChangeDate.emit($event)"></date-picker>
-
     <kendo-buttongroup class="date-picker-button">
       <kendo-button [disabled]="!allowPreviousDate" (click)="onClickPreviousDate.emit()" kendoButton>
         <kendo-svgicon [icon]="kendo.icon.left"></kendo-svgicon>
@@ -29,6 +19,16 @@
         <kendo-svgicon [icon]="kendo.icon.right"></kendo-svgicon>
       </kendo-button>
     </kendo-buttongroup>
+
+    <date-picker
+      [date]="startOfDay"
+      [shopTimeZone]="timezone"
+      [displayNextDay]="displayNextDays"
+      [displayPreviousDay]="displayPreviousDays"
+      [displayDay]="true"
+      [displayCenter]="false"
+      [operatingHours]="operatingHours"
+      (dateChange)="onChangeDate.emit($event)"></date-picker>
 
     <kendo-buttongroup class="mobile-toolbar-query-container">
       <kendo-button (click)="onOpenPopover($event)" kendoButton>

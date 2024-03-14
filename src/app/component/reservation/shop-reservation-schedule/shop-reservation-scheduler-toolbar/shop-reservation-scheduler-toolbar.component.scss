@@ -4,7 +4,8 @@
 }
 
 date-picker {
-  width: 190px;
+  max-width: 190px;
+  min-width: 160px;
 }
 
 .date-picker-button {
